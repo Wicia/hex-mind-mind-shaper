@@ -4,6 +4,13 @@
 # Log file
 *.log
 
+.gradle/
+
+.idea/*
+!.idea/codeStyles
+!.idea/misc.xml
+!.idea/gradle.xml
+
 # BlueJ files
 *.ctxt
 
