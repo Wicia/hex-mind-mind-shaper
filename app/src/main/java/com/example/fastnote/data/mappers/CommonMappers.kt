@@ -1,4 +1,4 @@
-package com.example.fastnote.db.mappers
+package com.example.fastnote.data.mappers
 
 import androidx.room.TypeConverter
 import java.util.Date

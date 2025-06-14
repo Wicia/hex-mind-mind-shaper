@@ -1,10 +1,12 @@
-package com.example.fastnote.db
+package com.example.fastnote.features.thoughtslist
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.example.fastnote.db.repositories.ThoughtsRepository
+import com.example.fastnote.data.AppDatabase
+import com.example.fastnote.data.models.ThoughtEntity
+import com.example.fastnote.data.repositories.ThoughtsRepository
 import kotlinx.coroutines.launch
 
 class ThoughtViewModel (application: Application) : AndroidViewModel(application) {

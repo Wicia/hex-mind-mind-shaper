@@ -1,12 +1,13 @@
-package com.example.fastnote.db
+package com.example.fastnote.data
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.fastnote.db.mappers.CommonMappers
-import com.example.fastnote.db.repositories.ThoughtsDAO
+import com.example.fastnote.data.mappers.CommonMappers
+import com.example.fastnote.data.models.ThoughtEntity
+import com.example.fastnote.data.repositories.ThoughtsDAO
 
 @Database(entities = [ThoughtEntity::class], version = 2, exportSchema = true)
 @TypeConverters(CommonMappers::class)

@@ -1,22 +1,20 @@
-package com.example.fastnote
+package com.example.fastnote.features.thoughtslist
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.ViewModelProvider
-import com.example.fastnote.databinding.ActivityMainBinding
-import com.example.fastnote.db.ThoughtEntity
-import com.example.fastnote.db.ThoughtViewModel
+import com.example.fastnote.databinding.ThoughtListLayoutBinding
+import com.example.fastnote.data.models.ThoughtEntity
 
-class MainActivity : AppCompatActivity() {
+class ThoughtsListActivity : AppCompatActivity() {
 
     private lateinit var adapter: ThoughtsListAdapter
     private lateinit var viewModel: ThoughtViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        val binding = ThoughtListLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         adapter = ThoughtsListAdapter(emptyList())
@@ -25,9 +23,9 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[ThoughtViewModel::class.java]
 
-        //viewModel.addThought(ThoughtEntity(area = "test", content = "Myśl2", priority = 2))
-
         // ! applying observing
         viewModel.thoughts.observe(this) { thoughts -> adapter.updateData(thoughts) }
+
+        viewModel.addThought(ThoughtEntity(area = "test", content = "Myśl3", priority = 2))
     }
 }

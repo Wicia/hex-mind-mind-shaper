@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:paddingTop="?attr/actionBarSize"
     android:background="@color/background"
-    tools:context=".MainActivity">
+    tools:context=".features.thoughtslist.ThoughtsListActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

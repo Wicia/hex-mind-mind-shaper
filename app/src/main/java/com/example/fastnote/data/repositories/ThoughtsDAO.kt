@@ -1,8 +1,8 @@
-package com.example.fastnote.db.repositories
+package com.example.fastnote.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.fastnote.db.ThoughtEntity
+import com.example.fastnote.data.models.ThoughtEntity
 
 @Dao
 interface ThoughtsDAO {

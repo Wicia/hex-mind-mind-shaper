@@ -1,7 +1,7 @@
-package com.example.fastnote.db.repositories
+package com.example.fastnote.data.repositories
 
 import androidx.lifecycle.LiveData
-import com.example.fastnote.db.ThoughtEntity
+import com.example.fastnote.data.models.ThoughtEntity
 
 class ThoughtsRepository (private val dao: ThoughtsDAO) {
 
