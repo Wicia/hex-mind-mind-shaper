@@ -1,8 +1,8 @@
-package com.example.fastnote.data.repositories
+package pl.hexmind.fastnote.data.repositories
 
-import com.example.fastnote.data.models.AreaIdentifier
-import com.example.fastnote.data.models.ContextEntity
-import com.example.fastnote.data.models.ThoughtEntity
+import pl.hexmind.fastnote.data.models.AreaIdentifier
+import pl.hexmind.fastnote.data.models.ContextEntity
+import pl.hexmind.fastnote.data.models.ThoughtEntity
 
 class ThoughtsRepository (
     private val thoughtsDAO: ThoughtsDAO,

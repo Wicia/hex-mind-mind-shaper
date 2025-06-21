@@ -1,15 +1,15 @@
-package com.example.fastnote.data
+package pl.hexmind.fastnote.data
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.fastnote.data.mappers.CommonTypesConverters
-import com.example.fastnote.data.models.ContextEntity
-import com.example.fastnote.data.models.ThoughtEntity
-import com.example.fastnote.data.repositories.ContextsDAO
-import com.example.fastnote.data.repositories.ThoughtsDAO
+import pl.hexmind.fastnote.data.mappers.CommonTypesConverters
+import pl.hexmind.fastnote.data.models.ContextEntity
+import pl.hexmind.fastnote.data.models.ThoughtEntity
+import pl.hexmind.fastnote.data.repositories.ContextsDAO
+import pl.hexmind.fastnote.data.repositories.ThoughtsDAO
 
 @Database(
     entities = [ThoughtEntity::class, ContextEntity::class],

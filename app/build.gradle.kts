@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.fastnote"
+    namespace = "pl.hexmind.fastnote"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.fastnote"
+        applicationId = "pl.hexmind.fastnote"
         minSdk = 30
         targetSdk = 35
         versionCode = 1

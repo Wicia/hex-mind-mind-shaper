@@ -1,11 +1,11 @@
-package com.example.fastnote.features.thoughtslist
+package pl.hexmind.fastnote.features.thoughtslist
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.ViewModelProvider
-import com.example.fastnote.data.models.AreaIdentifier
-import com.example.fastnote.databinding.ThoughtListLayoutBinding
+import pl.hexmind.fastnote.data.models.AreaIdentifier
+import pl.hexmind.fastnote.databinding.ThoughtListLayoutBinding
 
 class ThoughtsListActivity : AppCompatActivity() {
 

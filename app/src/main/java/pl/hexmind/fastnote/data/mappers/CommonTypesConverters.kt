@@ -1,7 +1,7 @@
-package com.example.fastnote.data.mappers
+package pl.hexmind.fastnote.data.mappers
 
 import androidx.room.TypeConverter
-import com.example.fastnote.data.models.AreaIdentifier
+import pl.hexmind.fastnote.data.models.AreaIdentifier
 import java.util.Date
 
 class CommonTypesConverters {

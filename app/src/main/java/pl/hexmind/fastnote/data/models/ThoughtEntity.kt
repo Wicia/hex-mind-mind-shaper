@@ -1,4 +1,4 @@
-package com.example.fastnote.data.models
+package pl.hexmind.fastnote.data.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

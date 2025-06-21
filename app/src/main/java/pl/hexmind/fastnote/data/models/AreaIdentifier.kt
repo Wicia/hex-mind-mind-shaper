@@ -1,4 +1,4 @@
-package com.example.fastnote.data.models
+package pl.hexmind.fastnote.data.models
 
 enum class AreaIdentifier (val value: Int) {
 

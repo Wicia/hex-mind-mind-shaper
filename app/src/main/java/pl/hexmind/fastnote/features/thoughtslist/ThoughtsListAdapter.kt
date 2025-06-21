@@ -1,12 +1,12 @@
-package com.example.fastnote.features.thoughtslist
+package pl.hexmind.fastnote.features.thoughtslist
 
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fastnote.R
-import com.example.fastnote.data.models.relations.ThoughtWithContext
+import pl.hexmind.fastnote.R
+import pl.hexmind.fastnote.data.models.relations.ThoughtWithContext
 
 class ThoughtsListAdapter(
     private var items: List<ThoughtWithContext>

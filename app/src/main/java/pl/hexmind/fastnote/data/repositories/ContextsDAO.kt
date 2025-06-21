@@ -1,7 +1,7 @@
-package com.example.fastnote.data.repositories
+package pl.hexmind.fastnote.data.repositories
 
 import androidx.lifecycle.LiveData
-import com.example.fastnote.data.models.ThoughtEntity
+import pl.hexmind.fastnote.data.models.ThoughtEntity
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -9,7 +9,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.fastnote.data.models.ContextEntity
+import pl.hexmind.fastnote.data.models.ContextEntity
 
 @Dao
 

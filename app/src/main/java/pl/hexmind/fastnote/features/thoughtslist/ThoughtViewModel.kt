@@ -1,13 +1,13 @@
-package com.example.fastnote.features.thoughtslist
+package pl.hexmind.fastnote.features.thoughtslist
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.example.fastnote.data.AppDatabase
-import com.example.fastnote.data.models.AreaIdentifier
-import com.example.fastnote.data.models.relations.ThoughtWithContext
-import com.example.fastnote.data.repositories.ThoughtsRepository
+import pl.hexmind.fastnote.data.AppDatabase
+import pl.hexmind.fastnote.data.models.AreaIdentifier
+import pl.hexmind.fastnote.data.models.relations.ThoughtWithContext
+import pl.hexmind.fastnote.data.repositories.ThoughtsRepository
 import kotlinx.coroutines.launch
 
 class ThoughtViewModel (application: Application) : AndroidViewModel(application) {
