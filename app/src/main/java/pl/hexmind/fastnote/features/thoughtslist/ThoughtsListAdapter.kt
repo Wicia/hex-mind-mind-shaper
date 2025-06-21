@@ -6,10 +6,10 @@ import android.widget.TextView
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.fastnote.R
-import pl.hexmind.fastnote.data.models.relations.ThoughtWithContext
+import pl.hexmind.fastnote.data.models.relations.ThoughtWithArea
 
 class ThoughtsListAdapter(
-    private var items: List<ThoughtWithContext>
+    private var items: List<ThoughtWithArea>
 ) : RecyclerView.Adapter<ThoughtsListAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -31,7 +31,7 @@ class ThoughtsListAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    fun updateData(newItems: List<ThoughtWithContext>) {
+    fun updateData(newItems: List<ThoughtWithArea>) {
         items = newItems
         notifyDataSetChanged()
     }

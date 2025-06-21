@@ -26,6 +26,6 @@ class ThoughtsListActivity : AppCompatActivity() {
         // ! applying observing
         viewModel.thoughts.observe(this) { thoughts -> adapter.updateData(thoughts) }
 
-        viewModel.addThought(essence = "Myśl3", areaIdentifier = AreaIdentifier.AREA_1, thread = null, priority = 2)
+        //viewModel.addThought(essence = "Myśl3", areaIdentifier = AreaIdentifier.AREA_1, thread = null, priority = 2)
     }
 }

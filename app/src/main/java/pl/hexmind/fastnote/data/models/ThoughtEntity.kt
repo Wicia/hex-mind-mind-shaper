@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import androidx.room.Index
 
 import java.util.Date
 
@@ -12,20 +13,24 @@ import java.util.Date
     tableName = "THOUGHTS",
     foreignKeys = [
         ForeignKey(
-            entity = ContextEntity::class,
+            entity = AreaEntity::class,
             parentColumns = ["id"],
-            childColumns = ["context_id"],
-            onDelete = ForeignKey.SET_NULL // ! When linked Context entity is deleted = don't delete this entity
+            childColumns = ["area_id"],
+            onDelete = ForeignKey.SET_NULL // ! When child entity is deleted = don't delete this (parent) entity
         )
-    ]
+    ],
+    indices = [Index(value = ["area_id"])]
 )
 data class ThoughtEntity(
 
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
 
-    @ColumnInfo(name = "context_id")
-    val contextId: Int?, // Foreign key to ContextEntity
+    @ColumnInfo(name = "area_id")
+    val areaId: Int?,
+
+    @ColumnInfo(name = "thread")
+    val thread: String? = null,
 
     @ColumnInfo(name = "essence")
     val essence: String,
@@ -36,3 +41,7 @@ data class ThoughtEntity(
     @ColumnInfo(name = "priority")
     val priority: Int = 3
 )
+{
+    val areaIdentifier: AreaIdentifier?
+        get() = areaId?.let { AreaIdentifier.fromIntOrDefault(it) }
+}

@@ -10,7 +10,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import pl.hexmind.fastnote.data.models.relations.ThoughtWithContext
+import pl.hexmind.fastnote.data.models.relations.ThoughtWithArea
 
 @Dao
 interface ThoughtsDAO {
@@ -38,15 +38,15 @@ interface ThoughtsDAO {
     @Query("SELECT * FROM thoughts WHERE id = :id")
     suspend fun getThoughtById(id: Int): ThoughtEntity?
 
-    @Query("SELECT * FROM thoughts WHERE context_id = :contextId")
-    suspend fun getThoughtByContextId(contextId: Int): ThoughtEntity?
+    @Query("SELECT * FROM thoughts WHERE area_id = :areaId")
+    suspend fun getThoughtByAreaId(areaId: Int): ThoughtEntity?
 
     // Relationship queries - these are the important ones for 1:1 relationships
     @Transaction
     @Query("SELECT * FROM thoughts ORDER BY created_at DESC")
-    fun getAllThoughtsWithContext(): LiveData<List<ThoughtWithContext>>
+    fun getAllThoughtsWithArea(): LiveData<List<ThoughtWithArea>>
 
     @Transaction
     @Query("SELECT * FROM thoughts WHERE id = :thoughtId")
-    suspend fun getThoughtWithContext(thoughtId: Int): ThoughtWithContext?
+    suspend fun getThoughtWithArea(thoughtId: Int): ThoughtWithArea?
 }

@@ -1,6 +1,6 @@
 package pl.hexmind.fastnote.data.models
 
-enum class AreaIdentifier (val value: Int) {
+enum class AreaIdentifier(val value: Int) {
 
     NOT_SET(-1),
     AREA_1(0),
@@ -19,9 +19,12 @@ enum class AreaIdentifier (val value: Int) {
                 ?: throw IllegalArgumentException("AreaIdentifier must be between 0-8, got: $value")
         }
 
-        // Or with default fallback
         fun fromIntOrDefault(value: Int, default: AreaIdentifier = NOT_SET): AreaIdentifier {
             return entries.find { it.value == value } ?: default
+        }
+
+        fun availableAreas(): List<AreaIdentifier> {
+            return entries.filter { it.value >= 0 }
         }
     }
 }

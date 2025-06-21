@@ -1,42 +1,25 @@
 package pl.hexmind.fastnote.data.repositories
 
 import pl.hexmind.fastnote.data.models.AreaIdentifier
-import pl.hexmind.fastnote.data.models.ContextEntity
+import pl.hexmind.fastnote.data.models.AreaEntity
 import pl.hexmind.fastnote.data.models.ThoughtEntity
 
 class ThoughtsRepository (
     private val thoughtsDAO: ThoughtsDAO,
-    private val contextsDAO: ContextsDAO) {
+    private val areaDAO: AreaDAO) {
 
-    fun getAllThoughtsWithContext() = thoughtsDAO.getAllThoughtsWithContext()
+    fun getAllThoughtsWithArea() = thoughtsDAO.getAllThoughtsWithArea()
 
-    suspend fun createThoughtWithContext(
+    suspend fun createThoughtWithExistingArea(
         essence: String,
-        areaIdentifier: AreaIdentifier,
+        areaId: AreaIdentifier,
         priority: Int = 3,
-        thread: String? = null
-    ): Long {
-        // First, create or find the context
-        val context = ContextEntity(areaIdentifier = areaIdentifier, thread = thread)
-        val contextId = contextsDAO.insert(context)
-
-        // Then create the thought with the context ID
-        val thought = ThoughtEntity(
-            contextId = contextId.toInt(),
-            essence = essence,
-            priority = priority
-        )
-        return thoughtsDAO.insert(thought)
-    }
-
-    suspend fun createThoughtWithExistingContext(
-        essence: String,
-        contextId: Int,
-        priority: Int = 3
+        thread : String? = null
     ): Long {
         val thought = ThoughtEntity(
-            contextId = contextId,
             essence = essence,
+            areaId = areaId.value,
+            thread = thread,
             priority = priority
         )
         return thoughtsDAO.insert(thought)
