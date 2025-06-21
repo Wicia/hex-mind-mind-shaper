@@ -5,15 +5,22 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.fastnote.data.mappers.CommonMappers
+import com.example.fastnote.data.mappers.CommonTypesConverters
+import com.example.fastnote.data.models.ContextEntity
 import com.example.fastnote.data.models.ThoughtEntity
+import com.example.fastnote.data.repositories.ContextsDAO
 import com.example.fastnote.data.repositories.ThoughtsDAO
 
-@Database(entities = [ThoughtEntity::class], version = 2, exportSchema = true)
-@TypeConverters(CommonMappers::class)
+@Database(
+    entities = [ThoughtEntity::class, ContextEntity::class],
+    version = 4,
+    exportSchema = true
+)
+@TypeConverters(CommonTypesConverters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun thoughtsDao(): ThoughtsDAO
+    abstract fun contextsDAO(): ContextsDAO
 
     companion object {
 

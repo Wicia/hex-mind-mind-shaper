@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.ViewModelProvider
+import com.example.fastnote.data.models.AreaIdentifier
 import com.example.fastnote.databinding.ThoughtListLayoutBinding
-import com.example.fastnote.data.models.ThoughtEntity
 
 class ThoughtsListActivity : AppCompatActivity() {
 
@@ -26,6 +26,6 @@ class ThoughtsListActivity : AppCompatActivity() {
         // ! applying observing
         viewModel.thoughts.observe(this) { thoughts -> adapter.updateData(thoughts) }
 
-        viewModel.addThought(ThoughtEntity(area = "test", content = "Myśl3", priority = 2))
+        viewModel.addThought(essence = "Myśl3", areaIdentifier = AreaIdentifier.AREA_1, thread = null, priority = 2)
     }
 }

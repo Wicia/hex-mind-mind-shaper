@@ -1,13 +1,44 @@
 package com.example.fastnote.data.repositories
 
-import androidx.lifecycle.LiveData
+import com.example.fastnote.data.models.AreaIdentifier
+import com.example.fastnote.data.models.ContextEntity
 import com.example.fastnote.data.models.ThoughtEntity
 
-class ThoughtsRepository (private val dao: ThoughtsDAO) {
+class ThoughtsRepository (
+    private val thoughtsDAO: ThoughtsDAO,
+    private val contextsDAO: ContextsDAO) {
 
-    fun getThoughts(): LiveData<List<ThoughtEntity>> = dao.getAll()
+    fun getAllThoughtsWithContext() = thoughtsDAO.getAllThoughtsWithContext()
 
-    suspend fun addThought(thought: ThoughtEntity) = dao.insertAll(thought)
+    suspend fun createThoughtWithContext(
+        essence: String,
+        areaIdentifier: AreaIdentifier,
+        priority: Int = 3,
+        thread: String? = null
+    ): Long {
+        // First, create or find the context
+        val context = ContextEntity(areaIdentifier = areaIdentifier, thread = thread)
+        val contextId = contextsDAO.insert(context)
 
-    suspend fun deleteThought(thought: ThoughtEntity) = dao.delete(thought)
+        // Then create the thought with the context ID
+        val thought = ThoughtEntity(
+            contextId = contextId.toInt(),
+            essence = essence,
+            priority = priority
+        )
+        return thoughtsDAO.insert(thought)
+    }
+
+    suspend fun createThoughtWithExistingContext(
+        essence: String,
+        contextId: Int,
+        priority: Int = 3
+    ): Long {
+        val thought = ThoughtEntity(
+            contextId = contextId,
+            essence = essence,
+            priority = priority
+        )
+        return thoughtsDAO.insert(thought)
+    }
 }

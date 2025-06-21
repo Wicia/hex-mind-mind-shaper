@@ -6,10 +6,10 @@ import android.widget.TextView
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fastnote.R
-import com.example.fastnote.data.models.ThoughtEntity
+import com.example.fastnote.data.models.relations.ThoughtWithContext
 
 class ThoughtsListAdapter(
-    private var items: List<ThoughtEntity>
+    private var items: List<ThoughtWithContext>
 ) : RecyclerView.Adapter<ThoughtsListAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -25,13 +25,13 @@ class ThoughtsListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val element = items[position]
-        holder.thought.text = element.content
-        holder.expiration.text = element.createdAt.toString()
+        holder.thought.text = element.thought.essence
+        holder.expiration.text = element.thought.createdAt.toString()
     }
 
     override fun getItemCount(): Int = items.size
 
-    fun updateData(newItems: List<ThoughtEntity>) {
+    fun updateData(newItems: List<ThoughtWithContext>) {
         items = newItems
         notifyDataSetChanged()
     }
