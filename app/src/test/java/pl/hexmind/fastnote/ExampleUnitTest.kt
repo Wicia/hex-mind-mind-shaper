@@ -1,4 +1,4 @@
-package pl.hexmind..fastnote
+package pl.hexmind.fastnote
 
 import org.junit.Test
 
