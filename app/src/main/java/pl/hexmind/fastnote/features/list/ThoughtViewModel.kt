@@ -1,4 +1,4 @@
-package pl.hexmind.fastnote.features.thoughtslist
+package pl.hexmind.fastnote.features.list
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
