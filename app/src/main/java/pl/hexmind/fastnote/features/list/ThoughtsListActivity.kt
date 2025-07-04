@@ -1,6 +1,5 @@
 package pl.hexmind.fastnote.features.list
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import pl.hexmind.fastnote.R
 import pl.hexmind.fastnote.databinding.ThoughtListLayoutBinding
-import pl.hexmind.fastnote.features.details.DetailsActivity
 
 class ThoughtsListActivity : AppCompatActivity() {
 
@@ -50,7 +48,6 @@ class ThoughtsListActivity : AppCompatActivity() {
     }
 
     private fun onAddButtonClick(view: View){
-        val intent = Intent(this, DetailsActivity::class.java)
-        startActivity(intent)
+        // TODO: Czy to jest potrzebne?
     }
 }

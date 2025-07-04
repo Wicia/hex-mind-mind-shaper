@@ -13,18 +13,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FastNote"
         tools:targetApi="31">
+
         <activity
-            android:name=".features.list.ThoughtsListActivity"
+            android:name=".features.capture.ThoughtsCaptureActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".features.details.DetailsActivity"
+            android:name=".features.list.ThoughtsListActivity"
             android:exported="false"
-            android:parentActivityName=".features.list.ThoughtsListActivity" />
+            android:parentActivityName=".features.capture.ThoughtsCaptureActivity" />
     </application>
 
 </manifest>

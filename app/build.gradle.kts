@@ -109,9 +109,6 @@ dependencies {
     implementation(libs.androidx.preference.ktx)
     kapt(libs.androidx.room.compiler)
 
-    // Usuń duplikaty Material Design
-    // implementation(libs.material.v1110) // <-- usuń to, masz już libs.material
-
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -122,4 +119,7 @@ dependencies {
     // Debug
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Floating button extras
+    implementation(libs.speeddial)
 }

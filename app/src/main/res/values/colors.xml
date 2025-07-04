@@ -8,4 +8,15 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="background">#323232</color>
+    <color name="orange_fab">#FF8A65</color>
+    <color name="label_background">#DD000000</color>
+
+    <!-- Stonowane wersje FAB colors -->
+    <color name="fab_new_thought_color">#E0941A</color>  <!-- Orange: z #FF9800 na cieplejszy, mniej jaskrawy -->
+
+    <color name="fab_note_color">#1976D2</color>        <!-- Blue: z #2196F3 na głębszy, bardziej profesjonalny -->
+    <color name="fab_voice_color">#388E3C</color>       <!-- Green: z #4CAF50 na bardziej ziemisty, naturalny -->
+    <color name="fab_drawing_color">#D32F2F</color>     <!-- Red: z #F44336 na spokojniejszy, mniej agresywny -->
+    <color name="fab_photo_color">#7B1FA2</color>       <!-- Purple: z #9C27B0 na bardziej elegancki, królewski -->
+
 </resources>
