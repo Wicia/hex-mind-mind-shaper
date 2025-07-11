@@ -27,6 +27,11 @@
             android:name=".features.list.ThoughtsListActivity"
             android:exported="false"
             android:parentActivityName=".features.capture.ThoughtsCaptureActivity" />
+
+        <activity
+            android:name=".features.details.ThoughtDetailsActivity"
+            android:exported="false"
+            android:parentActivityName=".features.capture.ThoughtsCaptureActivity" />
     </application>
 
 </manifest>

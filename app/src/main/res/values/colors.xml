@@ -5,18 +5,33 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <!-- BACKGROUNDS -->
+    <color name="background_main_hex_gray">#3A3A3A</color>
     <color name="background">#323232</color>
-    <color name="orange_fab">#FF8A65</color>
-    <color name="label_background">#DD000000</color>
+    <color name="background_main_orange">#F9EDDC</color>
+    <color name="background_orange_light">#FFCC99</color>
 
-    <!-- Stonowane wersje FAB colors -->
-    <color name="fab_new_thought_color">#E0941A</color>  <!-- Orange: z #FF9800 na cieplejszy, mniej jaskrawy -->
+    <!-- TILES -->
+    <color name="clickables_orange_light">#FFCC99</color>
+    <color name="clickables_orange_mid">#FFB380</color>
+    <color name="clickables_orange_dark">#FF8C42</color>
 
-    <color name="fab_note_color">#1976D2</color>        <!-- Blue: z #2196F3 na głębszy, bardziej profesjonalny -->
-    <color name="fab_voice_color">#388E3C</color>       <!-- Green: z #4CAF50 na bardziej ziemisty, naturalny -->
-    <color name="fab_drawing_color">#D32F2F</color>     <!-- Red: z #F44336 na spokojniejszy, mniej agresywny -->
-    <color name="fab_photo_color">#7B1FA2</color>       <!-- Purple: z #9C27B0 na bardziej elegancki, królewski -->
+    <!-- TEXTS -->
+    <color name="text_dark">#333333</color>
+    <color name="text_secondary">#666666</color>
+
+    <!-- APP BAR & NAVIGATION BAR  -->
+    <color name="bars_orange_dark">#FF8C42</color>
+
+    <!-- Common -->
+    <color name="common_orange">#E0941A</color>
+    <color name="common_blue">#1976D2</color>
+    <color name="common_green">#388E3C</color>
+    <color name="common_red">#D32F2F</color>
+    <color name="common_purple">#7B1FA2</color>
+    <color name="common_black">#FF000000</color>
+    <color name="common_white">#FFFFFFFF</color>
+    <color name="common_gray">#E0E0E0</color>
 
 </resources>
