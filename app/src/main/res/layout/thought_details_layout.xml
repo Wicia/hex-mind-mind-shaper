@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_orange_light"
+    android:background="@color/app_background"
     android:orientation="vertical"
     android:padding="4dp">
 
@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.35"
             android:layout_marginEnd="4dp"
-            android:background="@drawable/shape_tile_background"
+            android:background="@drawable/shape_clickable_background"
             android:orientation="vertical">
 
             <ImageView
@@ -59,7 +59,7 @@
                 android:layout_height="0dp"
                 android:layout_marginBottom="4dp"
                 android:layout_weight="1.8"
-                android:background="@drawable/shape_tile_background"
+                android:background="@drawable/shape_clickable_background"
                 android:gravity="center_vertical"
                 android:paddingStart="24dp"
                 android:text="Najprościej rozbroić śmiechem u ludzi emocjonalną broń którą używają na co dzień"
@@ -78,7 +78,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.9"
                     android:layout_marginEnd="4dp"
-                    android:background="@drawable/shape_tile_background"
+                    android:background="@drawable/shape_clickable_background"
                     android:gravity="center_vertical"
                     android:padding="12dp"
                     android:text="Ważne idee \u000A Umysł i Serce"
@@ -90,7 +90,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.4"
-                    android:background="@drawable/shape_tile_background"
+                    android:background="@drawable/shape_clickable_background"
                     android:scaleType="centerInside"
                     android:paddingTop="4dp"
                     android:paddingBottom="4dp"

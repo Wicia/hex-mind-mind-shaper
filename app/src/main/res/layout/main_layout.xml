@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/app_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Main FAB -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_new_thought"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:src="@drawable/icon_catch"
+        android:scaleType="centerInside"
+        android:padding="16dp"
+        app:backgroundTint="@color/clickables_orange_mid"
+        app:fabSize="normal"
+        app:elevation="6dp" />
+
+    <!-- Menu FABs -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_note_type"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:src="@drawable/icon_aspect_note"
+        android:scaleType="centerInside"
+        android:padding="16dp"
+        app:backgroundTint="@color/clickables_orange_mid"
+        app:fabSize="normal"
+        app:elevation="6dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_voice_type"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:src="@drawable/icon_aspect_sound"
+        android:scaleType="centerInside"
+        android:padding="16dp"
+        app:backgroundTint="@color/clickables_orange_mid"
+        app:fabSize="normal"
+        app:elevation="6dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_drawing_type"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:src="@drawable/icon_aspect_drawing"
+        android:scaleType="centerInside"
+        android:padding="16dp"
+        app:backgroundTint="@color/clickables_orange_mid"
+        app:fabSize="normal"
+        app:elevation="6dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_photo_type"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:src="@drawable/icon_aspect_photo"
+        android:scaleType="centerInside"
+        android:padding="16dp"
+        app:backgroundTint="@color/clickables_orange_mid"
+        app:fabSize="normal"
+        app:elevation="6dp" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

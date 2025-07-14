@@ -1,144 +1,126 @@
 package pl.hexmind.fastnote.features.capture
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlin.math.cos
-import kotlin.math.sin
 import pl.hexmind.fastnote.R
-import pl.hexmind.fastnote.features.details.ThoughtDetailsActivity
+import pl.hexmind.fastnote.features.capture.handlers.TextInputHandler
+import pl.hexmind.fastnote.features.capture.handlers.VoiceRecordingHandler
+import pl.hexmind.fastnote.features.capture.models.CaptureData
+import pl.hexmind.fastnote.features.capture.ui.CaptureViewManager
 
+// Main capturing activity
 class ThoughtsCaptureActivity : AppCompatActivity() {
 
-    private lateinit var fab_new_thought: FloatingActionButton
-    private lateinit var fab_note_type: FloatingActionButton
-    private lateinit var fab_voice_type: FloatingActionButton
-    private lateinit var fab_drawing_type: FloatingActionButton
-    private lateinit var fab_photo_type: FloatingActionButton
+    companion object {
+        const val INPUT_TYPE = "input_type"
+        const val TYPE_UNKNOWN = "???"
+        const val TYPE_NOTE = "rich_text"
+        const val TYPE_VOICE = "voice"
+        const val TYPE_PHOTO = "photo"
+        const val TYPE_DRAWING = "drawing"
+    }
 
-    private var isMenuOpen = false
+    private lateinit var viewManager: CaptureViewManager
+    private lateinit var textInputHandler: TextInputHandler
+    private lateinit var voiceRecordingHandler: VoiceRecordingHandler
+    // Future handlers
+    // private lateinit var photoCaptureHandler: PhotoCaptureHandler
+    // private lateinit var drawingHandler: DrawingHandler
+
+    private var currentCaptureData = CaptureData()
+    private var currentInputType = TYPE_UNKNOWN
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.thought_capture_layout)
 
-        initViews()
-        setupClickListeners()
+        currentInputType = intent.getStringExtra(INPUT_TYPE) ?: TYPE_UNKNOWN
+
+        initializeComponents()
+        setupMode()
+        setupListeners()
     }
 
-    private fun initViews() {
-        fab_new_thought = findViewById(R.id.fab_new_thought)
-        fab_note_type = findViewById(R.id.fab_note_type)
-        fab_voice_type = findViewById(R.id.fab_voice_type)
-        fab_drawing_type = findViewById(R.id.fab_drawing_type)
-        fab_photo_type = findViewById(R.id.fab_photo_type)
+    private fun initializeComponents() {
+        viewManager = CaptureViewManager(this)
+        viewManager.initializeViews()
 
-        // Initially hide all menu buttons
-        listOf(fab_note_type, fab_voice_type, fab_drawing_type, fab_photo_type).forEach { fab ->
-            fab.hide()
-            fab.alpha = 0f
-        }
-    }
+        textInputHandler = TextInputHandler(viewManager)
+        voiceRecordingHandler = VoiceRecordingHandler(this, viewManager)
 
-    private fun setupClickListeners() {
-        fab_new_thought.setOnClickListener {
-            toggleMenu()
+        // Set up data change listeners
+        textInputHandler.setOnDataChangedListener { data ->
+            currentCaptureData = currentCaptureData.copy(
+                essence = data.essence,
+                richText = data.richText
+            )
         }
 
-        fab_note_type.setOnClickListener {
-            // Handle camera action
-            closeMenu()
-            val intent = Intent(this, ThoughtDetailsActivity::class.java)
-            startActivity(intent)
-        }
-
-        fab_voice_type.setOnClickListener {
-            // Handle edit action
-            closeMenu()
-        }
-
-        fab_drawing_type.setOnClickListener {
-            // Handle document action
-            closeMenu()
-        }
-
-        fab_photo_type.setOnClickListener {
-            // Handle add action
-            closeMenu()
+        voiceRecordingHandler.setOnDataChangedListener { data ->
+            currentCaptureData = currentCaptureData.copy(
+                audioFile = data.audioFile
+            )
         }
     }
 
-    private fun toggleMenu() {
-        if (isMenuOpen) {
-            closeMenu()
-        } else {
-            openMenu()
+    private fun setupMode() {
+        viewManager.setupModeVisibility(currentInputType)
+
+        when (currentInputType) {
+            TYPE_NOTE -> {
+                textInputHandler.setupRichTextEditor()
+            }
+            TYPE_VOICE -> {
+                voiceRecordingHandler.requestPermission()
+            }
+            TYPE_PHOTO -> {
+                // photoCaptureHandler.requestPermission()
+            }
+            TYPE_DRAWING -> {
+                // drawingHandler.setupDrawingCanvas()
+            }
         }
     }
 
-    private fun openMenu() {
-        isMenuOpen = true
+    private fun setupListeners() {
+        textInputHandler.setupTextWatcher()
+        voiceRecordingHandler.setupListeners()
 
-        // Rotate main FAB
-        fab_new_thought.animate()
-            .rotation(45f)
-            .setDuration(300)
-            .setInterpolator(AccelerateDecelerateInterpolator())
-            .start()
+        viewManager.btnSave.setOnClickListener {
+            saveThought()
+        }
+    }
 
-        // Show and animate menu buttons - DOKŁADNIE 90° do 180°
-        val fabs = listOf(fab_note_type, fab_voice_type, fab_drawing_type, fab_photo_type)
-
-        // NOWE kąty - równomiernie rozłożone między 90° a 180°
-        val angles = listOf(
-            90.0,  // czysto góra (północ)
-            120.0, // północny-zachód
-            150.0, // bardziej zachód
-            180.0  // czysto lewo (zachód)
+    private fun saveThought() {
+        // Merge current data from all handlers
+        val finalData = currentCaptureData.copy(
+            essence = textInputHandler.getCurrentData().essence,
+            richText = textInputHandler.getCurrentData().richText,
+            audioFile = voiceRecordingHandler.getCurrentData().audioFile,
+            inputType = currentInputType
         )
 
-        val radius = 300f
-
-        fabs.forEachIndexed { index, fab ->
-            fab.show()
-
-            val angleRad = Math.toRadians(angles[index])
-            val x = (radius * cos(angleRad)).toFloat()
-            val y = (radius * sin(angleRad)).toFloat()
-
-            fab.animate()
-                .translationX(x)
-                .translationY(-y) // Ujemne Y bo Android ma Y w dół
-                .alpha(1f)
-                .setDuration(300)
-                .setStartDelay(index * 50L)
-                .setInterpolator(AccelerateDecelerateInterpolator())
-                .start()
+        if (!finalData.isValid()) {
+            if (finalData.essence.isEmpty()) {
+                Toast.makeText(this, getString(R.string.capture_essence_error_empty), Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, getString(R.string.capture_essence_error_too_long), Toast.LENGTH_SHORT).show()
+            }
+            return
         }
+
+        // TODO: Save to database/storage
+        // saveToDatabase(finalData)
+
+        Toast.makeText(this, getString(R.string.capture_main_state_saved), Toast.LENGTH_SHORT).show()
+        finish()
     }
 
-    private fun closeMenu() {
-        isMenuOpen = false
-
-        // Rotate main FAB back
-        fab_new_thought.animate()
-            .rotation(0f)
-            .setDuration(300)
-            .setInterpolator(AccelerateDecelerateInterpolator())
-            .start()
-
-        // Hide menu buttons
-        listOf(fab_note_type, fab_voice_type, fab_drawing_type, fab_photo_type).forEach { fab ->
-            fab.animate()
-                .translationX(0f)
-                .translationY(0f)
-                .alpha(0f)
-                .setDuration(300)
-                .setInterpolator(AccelerateDecelerateInterpolator())
-                .withEndAction { fab.hide() }
-                .start()
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        voiceRecordingHandler.cleanup()
+        // Future: photoCaptureHandler.cleanup()
+        // Future: drawingHandler.cleanup()
     }
 }

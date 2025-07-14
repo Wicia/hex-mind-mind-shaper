@@ -1,37 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
 
-    <!-- BACKGROUNDS -->
-    <color name="background_main_hex_gray">#3A3A3A</color>
-    <color name="background">#323232</color>
-    <color name="background_main_orange">#F9EDDC</color>
-    <color name="background_orange_light">#FFCC99</color>
+    <!-- ====================================== -->
+    <!--    BASE COLORS -->
+    <!-- ====================================== -->
 
-    <!-- TILES -->
-    <color name="clickables_orange_light">#FFCC99</color>
-    <color name="clickables_orange_mid">#FFB380</color>
-    <color name="clickables_orange_dark">#FF8C42</color>
+    <color name="common_orange_light">#FFCDA0</color>
+    <color name="common_orange_mid">#FFAF7A</color>
+    <color name="common_orange_dark">#FF8C42</color>
 
-    <!-- TEXTS -->
-    <color name="text_dark">#333333</color>
-    <color name="text_secondary">#666666</color>
+    <color name="common_gray_light">#E0E0E0</color>
+    <color name="common_gray_mid">#666666</color>
+    <color name="common_gray_dark">#333333</color>
 
-    <!-- APP BAR & NAVIGATION BAR  -->
-    <color name="bars_orange_dark">#FF8C42</color>
-
-    <!-- Common -->
-    <color name="common_orange">#E0941A</color>
     <color name="common_blue">#1976D2</color>
     <color name="common_green">#388E3C</color>
     <color name="common_red">#D32F2F</color>
     <color name="common_purple">#7B1FA2</color>
     <color name="common_black">#FF000000</color>
     <color name="common_white">#FFFFFFFF</color>
-    <color name="common_gray">#E0E0E0</color>
+
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+
+    <!-- ====================================== -->
+    <!--    COLORS "IMPLEMENTATIONS" IN CONTROLS -->
+    <!-- ====================================== -->
+
+    <!-- CORE: APP BAR & NAVIGATION BAR  -->
+    <color name="app_bars">@color/common_orange_dark</color>
+    <color name="app_background">@color/common_orange_light</color>
+
+    <!-- BUTTONS & CLICKABLE TILES -->
+    <color name="clickables_orange_light">#FFCDA0</color>
+    <color name="clickables_orange_mid">#FFAF7A</color>
+    <color name="clickables_orange_dark">#FF8C42</color>
+
+    <!-- TEXTS VIEWS -->
+    <color name="text_dark">@color/common_gray_dark</color>
+    <color name="text_secondary">@color/common_gray_light</color>
+
+    <!-- INPUTS -->
+    <color name="input_background">@color/common_orange_light</color>
+    <color name="input_stroke">@color/common_orange_mid</color>
 
 </resources>

@@ -1,30 +1,51 @@
 <resources>
+
+    <!-- [module/feature] / [component/screen] -> [message type] -> [details] -->
+    <!-- [module/feature] / [component/screen] -> label -> [element] -->
+
+    <!-- ====================================== -->
+    <!-- CORE / COMMON -->
+    <!-- ====================================== -->
+
     <string name="app_name">FastNote</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="title_activity_main_new">MainActivityNew</string>
-    <string name="title_activity_main2">MainActivity2</string>
-    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="common_btn_save">Zapisz</string>
+    <string name="common_btn_record">Nagrywaj</string>
 
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
+    <!-- PERMISSIONS: Voice Recording -->
+    <string name="permission_audio_error_required">Uprawnienie do nagrywania audio jest wymagane dla notatek głosowych</string>
+    <string name="permission_audio_message_settings">Proszę włączyć uprawnienie do audio w ustawieniach aplikacji</string>
+    <string name="permission_audio_message_rationale">Uprawnienie do audio jest potrzebne do nagrywania notatek głosowych</string>
 
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
+    <!-- ====================================== -->
+    <!-- ACTIVITY: CAPTURE THOUGHT -->
+    <!-- ====================================== -->
 
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <!-- Core -->
+    <string name="capture_main_label">Chwytaj myśl...</string>
+    <string name="capture_main_state_saved">Myśl została pomyślnie uchwycona...</string>
 
-    <!-- DETAILS Strings -->
-    <string name="activity_details_tile">Jakiś tytuł</string>
-    <string name="activity_details_add_button">Zapisz</string>
-    <string name="activity_details_edit_button">Edytuj</string>
-    <string name="activity_details_delete_button">Usuń</string>
+    <!-- Common: Essence -->
+    <string name="capture_essence_label_words_counter">Czekam na słowa</string>
+    <string name="capture_essence_tooltip">Uchwyć esencję w max. 10 słowach</string>
+
+    <string name="capture_essence_error_empty">Podaj esencję...</string>
+    <string name="capture_essence_error_too_long">Twoja esencja przekracza 10 słów...</string>
+
+    <!-- Type: Rich Text Note -->
+    <string name="capture_note_label">Szczegółowe notatki</string>
+
+    <!-- Type: Voice Recording -->
+    <string name="capture_voice_header">Nagranie głosowe</string>
+    <string name="capture_voice_tooltip">Gotowy do nagrywania</string>
+    <string name="capture_voice_record_new">Nagrywaj nowy</string>
+    <string name="capture_voice_record_stop">Zatrzymaj</string>
+    <string name="capture_voice_play">Odsłuchaj</string>
+
+    <string name="capture_voice_error_recording_failed">Nagrywanie nie powiodło się: %s</string>
+    <string name="capture_voice_error_no_recording">Brak nagrania do odtworzenia</string>
+
+    <string name="capture_voice_status_recording">Nagrywanie...</string>
+    <string name="capture_voice_status_recording_saved">Nagranie zapisane</string>
+    <string name="capture_voice_status_recording_playing">Odtwarzanie...</string>
+
 </resources>

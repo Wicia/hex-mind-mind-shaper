@@ -122,4 +122,7 @@ dependencies {
 
     // Floating button extras
     implementation(libs.speeddial)
+
+    // Permissions
+    implementation(libs.dexter)
 }

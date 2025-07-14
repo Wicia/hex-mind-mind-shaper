@@ -1,5 +1,5 @@
 [versions]
-agp = "8.11.0"
+agp = "8.11.1"
 googleMaterial = "1.12.0"
 kotlin = "2.0.21"
 coreKtx = "1.16.0"
@@ -19,6 +19,7 @@ room = "2.7.2"
 preference = "1.2.1"
 preferenceKtx = "1.2.1"
 speeddial = "3.3.0"
+dexter = "6.2.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -48,6 +49,7 @@ androidx-preference = { group = "androidx.preference", name = "preference", vers
 androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preferenceKtx" }
 material = { module = "com.google.android.material:material", version.ref = "googleMaterial" }
 speeddial = { group = "com.leinardi.android", name = "speed-dial", version.ref = "speeddial" }
+dexter = { group = "com.karumi", name = "dexter", version.ref = "dexter" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
