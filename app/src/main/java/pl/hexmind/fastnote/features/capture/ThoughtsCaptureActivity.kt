@@ -1,12 +1,15 @@
 package pl.hexmind.fastnote.features.capture
 
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import pl.hexmind.fastnote.R
 import pl.hexmind.fastnote.features.capture.handlers.TextInputHandler
 import pl.hexmind.fastnote.features.capture.handlers.VoiceRecordingHandler
-import pl.hexmind.fastnote.features.capture.models.CaptureData
+import pl.hexmind.fastnote.features.capture.models.CapturedThought
+import pl.hexmind.fastnote.features.capture.models.CapturedThoughtValidator
+import pl.hexmind.fastnote.features.capture.models.InitialThoughtType
 import pl.hexmind.fastnote.features.capture.ui.CaptureViewManager
 
 // Main capturing activity
@@ -14,32 +17,37 @@ class ThoughtsCaptureActivity : AppCompatActivity() {
 
     companion object {
         const val INPUT_TYPE = "input_type"
-        const val TYPE_UNKNOWN = "???"
-        const val TYPE_NOTE = "rich_text"
-        const val TYPE_VOICE = "voice"
-        const val TYPE_PHOTO = "photo"
-        const val TYPE_DRAWING = "drawing"
     }
 
     private lateinit var viewManager: CaptureViewManager
+
+    // Handlers
     private lateinit var textInputHandler: TextInputHandler
     private lateinit var voiceRecordingHandler: VoiceRecordingHandler
+    // TODO
     // Future handlers
     // private lateinit var photoCaptureHandler: PhotoCaptureHandler
     // private lateinit var drawingHandler: DrawingHandler
 
-    private var currentCaptureData = CaptureData()
-    private var currentInputType = TYPE_UNKNOWN
+    private var currentCapturedThought = CapturedThought()
+    private var currentInputType = InitialThoughtType.UNKNOWN
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.thought_capture_layout)
-
-        currentInputType = intent.getStringExtra(INPUT_TYPE) ?: TYPE_UNKNOWN
-
+        initializeFromIntent()
         initializeComponents()
         setupMode()
         setupListeners()
+    }
+
+    private fun initializeFromIntent() {
+        currentInputType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(INPUT_TYPE, InitialThoughtType::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getParcelableExtra(INPUT_TYPE)
+        } ?: InitialThoughtType.UNKNOWN
     }
 
     private fun initializeComponents() {
@@ -51,14 +59,14 @@ class ThoughtsCaptureActivity : AppCompatActivity() {
 
         // Set up data change listeners
         textInputHandler.setOnDataChangedListener { data ->
-            currentCaptureData = currentCaptureData.copy(
+            currentCapturedThought = currentCapturedThought.copy(
                 essence = data.essence,
                 richText = data.richText
             )
         }
 
         voiceRecordingHandler.setOnDataChangedListener { data ->
-            currentCaptureData = currentCaptureData.copy(
+            currentCapturedThought = currentCapturedThought.copy(
                 audioFile = data.audioFile
             )
         }
@@ -68,17 +76,20 @@ class ThoughtsCaptureActivity : AppCompatActivity() {
         viewManager.setupModeVisibility(currentInputType)
 
         when (currentInputType) {
-            TYPE_NOTE -> {
+            InitialThoughtType.NOTE -> {
                 textInputHandler.setupRichTextEditor()
             }
-            TYPE_VOICE -> {
+            InitialThoughtType.VOICE -> {
                 voiceRecordingHandler.requestPermission()
             }
-            TYPE_PHOTO -> {
+            InitialThoughtType.PHOTO -> {
                 // photoCaptureHandler.requestPermission()
             }
-            TYPE_DRAWING -> {
+            InitialThoughtType.DRAWING -> {
                 // drawingHandler.setupDrawingCanvas()
+            }
+            InitialThoughtType.UNKNOWN -> {
+                // TODO: co wtedy?
             }
         }
     }
@@ -86,35 +97,30 @@ class ThoughtsCaptureActivity : AppCompatActivity() {
     private fun setupListeners() {
         textInputHandler.setupTextWatcher()
         voiceRecordingHandler.setupListeners()
-
-        viewManager.btnSave.setOnClickListener {
-            saveThought()
-        }
+        viewManager.btnSave.setOnClickListener { saveThought() }
     }
 
     private fun saveThought() {
         // Merge current data from all handlers
-        val finalData = currentCaptureData.copy(
+        val finalData = currentCapturedThought.copy(
             essence = textInputHandler.getCurrentData().essence,
             richText = textInputHandler.getCurrentData().richText,
             audioFile = voiceRecordingHandler.getCurrentData().audioFile,
-            inputType = currentInputType
+            initialThoughtType = currentInputType
         )
 
-        if (!finalData.isValid()) {
-            if (finalData.essence.isEmpty()) {
-                Toast.makeText(this, getString(R.string.capture_essence_error_empty), Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, getString(R.string.capture_essence_error_too_long), Toast.LENGTH_SHORT).show()
-            }
-            return
+        val validationResult = CapturedThoughtValidator.validate(finalData)
+        when(validationResult){
+            is CapturedThoughtValidator.ValidationResult.Error -> return
+            is CapturedThoughtValidator.ValidationResult.Valid -> performSaving()
         }
 
-        // TODO: Save to database/storage
-        // saveToDatabase(finalData)
-
-        Toast.makeText(this, getString(R.string.capture_main_state_saved), Toast.LENGTH_SHORT).show()
         finish()
+    }
+
+    private fun performSaving(){
+        // TODO: Save to DB
+        Toast.makeText(this, getString(R.string.capture_main_state_saved), Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroy() {

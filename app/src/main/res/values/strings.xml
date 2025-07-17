@@ -25,11 +25,12 @@
     <string name="capture_main_state_saved">Myśl została pomyślnie uchwycona...</string>
 
     <!-- Common: Essence -->
-    <string name="capture_essence_label_words_counter">Czekam na słowa</string>
-    <string name="capture_essence_tooltip">Uchwyć esencję w max. 10 słowach</string>
-
+    <string name="capture_essence_tooltip">Uchwyć esencję w max. %1$s słowach</string>
+    <string name="capture_essence_state_initial">Czekam na słowa</string>
+    <string name="capture_essence_state_remaining">Pozostało Ci %1$s słów</string>
+    <string name="capture_essence_state_no_words_left">Wykorzystano wszystkie słowa</string>
     <string name="capture_essence_error_empty">Podaj esencję...</string>
-    <string name="capture_essence_error_too_long">Twoja esencja przekracza 10 słów...</string>
+    <string name="capture_essence_error_too_long">Twoja esencja przekracza %1$s słów...</string>
 
     <!-- Type: Rich Text Note -->
     <string name="capture_note_label">Szczegółowe notatki</string>

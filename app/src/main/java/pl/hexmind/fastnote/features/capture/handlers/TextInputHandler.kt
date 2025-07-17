@@ -1,42 +1,41 @@
 package pl.hexmind.fastnote.features.capture.handlers
 
 import android.text.TextWatcher
-import pl.hexmind.fastnote.features.capture.models.CaptureData
+import pl.hexmind.fastnote.features.capture.models.CapturedThought
 import pl.hexmind.fastnote.features.capture.ui.CaptureViewManager
 
 // Handler for business logic related to RICH TEXT - thought type
 class TextInputHandler(private val viewManager: CaptureViewManager) {
     
-    private var onDataChangedListener: ((CaptureData) -> Unit)? = null
+    private var onDataChangedListener: ((CapturedThought) -> Unit)? = null
     
     fun setupTextWatcher() {
         viewManager.editThoughtEssence.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: android.text.Editable?) {
-                updateWordCount()
+                updateEssenceInfo()
                 notifyDataChanged()
             }
         })
     }
     
-    private fun updateWordCount() {
+    private fun updateEssenceInfo() {
         val text = viewManager.editThoughtEssence.text.toString().trim()
-        val wordCount = if (text.isEmpty()) 0 else text.split("\\s+".toRegex()).size
-        viewManager.updateWordCount(wordCount)
+        viewManager.updateWordsCounterTextView(text)
     }
     
-    fun getCurrentData(): CaptureData {
+    fun getCurrentData(): CapturedThought {
         val essence = viewManager.editThoughtEssence.text.toString().trim()
         val richText = viewManager.etRichText.text.toString().trim()
         
-        return CaptureData(
+        return CapturedThought(
             essence = essence,
             richText = richText
         )
     }
     
-    fun setOnDataChangedListener(listener: (CaptureData) -> Unit) {
+    fun setOnDataChangedListener(listener: (CapturedThought) -> Unit) {
         onDataChangedListener = listener
     }
     

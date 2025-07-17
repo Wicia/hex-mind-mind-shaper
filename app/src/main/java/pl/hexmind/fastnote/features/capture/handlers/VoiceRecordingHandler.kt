@@ -13,7 +13,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import pl.hexmind.fastnote.R
-import pl.hexmind.fastnote.features.capture.models.CaptureData
+import pl.hexmind.fastnote.features.capture.models.CapturedThought
 import pl.hexmind.fastnote.features.capture.ui.CaptureViewManager
 import java.io.File
 import java.io.IOException
@@ -24,15 +24,19 @@ class VoiceRecordingHandler(
     private val viewManager: CaptureViewManager
 ) {
 
+    // Main objects
     private var mediaRecorder: MediaRecorder? = null
     private var mediaPlayer: MediaPlayer? = null
     private var audioFilePath: String = ""
+
+    // Permissions
+    private var permissionToRecordAccepted = false
+
+    // State & Listeners
     private var isRecording = false
     private var isCurrentlyPlaying = false
     private var hasRecording = false
-    private var permissionToRecordAccepted = false
-
-    private var onDataChangedListener: ((CaptureData) -> Unit)? = null
+    private var onDataChangedListener: ((CapturedThought) -> Unit)? = null
 
     init {
         setupAudioPath()
@@ -139,7 +143,7 @@ class VoiceRecordingHandler(
                 isRecording = true
                 hasRecording = false
                 updateUI()
-                viewManager.updateRecordingStatus(
+                viewManager.updateRecordingStatusTextViews(
                     activity.getString(R.string.capture_voice_status_recording),
                     android.R.color.holo_red_dark
                 )
@@ -169,7 +173,7 @@ class VoiceRecordingHandler(
         isRecording = false
         hasRecording = true
         updateUI()
-        viewManager.updateRecordingStatus(
+        viewManager.updateRecordingStatusTextViews(
             activity.getString(R.string.capture_voice_status_recording_saved),
             android.R.color.holo_green_dark
         )
@@ -194,7 +198,7 @@ class VoiceRecordingHandler(
                 start()
                 isCurrentlyPlaying = true
                 updateUI()
-                viewManager.updateRecordingStatus(
+                viewManager.updateRecordingStatusTextViews(
                     activity.getString(R.string.capture_voice_status_recording_playing),
                     android.R.color.holo_blue_dark
                 )
@@ -221,7 +225,7 @@ class VoiceRecordingHandler(
         mediaPlayer = null
         isCurrentlyPlaying = false
         updateUI()
-        viewManager.updateRecordingStatus(
+        viewManager.updateRecordingStatusTextViews(
             activity.getString(R.string.capture_voice_status_recording_saved),
             android.R.color.holo_green_dark
         )
@@ -242,13 +246,13 @@ class VoiceRecordingHandler(
     }
 
     // Returns current capture data with audio file if available
-    fun getCurrentData(): CaptureData {
+    fun getCurrentData(): CapturedThought {
         val audioFile = if (hasRecording) File(audioFilePath) else null
-        return CaptureData(audioFile = audioFile)
+        return CapturedThought(audioFile = audioFile)
     }
 
     // Sets listener for data change notifications
-    fun setOnDataChangedListener(listener: (CaptureData) -> Unit) {
+    fun setOnDataChangedListener(listener: (CapturedThought) -> Unit) {
         onDataChangedListener = listener
     }
 

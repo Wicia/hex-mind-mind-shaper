@@ -2,6 +2,7 @@ package pl.hexmind.fastnote.features.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -9,6 +10,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 import pl.hexmind.fastnote.R
 import pl.hexmind.fastnote.features.capture.ThoughtsCaptureActivity
+import pl.hexmind.fastnote.features.capture.models.InitialThoughtType
 
 class MainActivity : AppCompatActivity() {
 
@@ -51,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             // Handle camera action
             closeMenu()
             val intent = Intent(this, ThoughtsCaptureActivity::class.java)
-            intent.putExtra(ThoughtsCaptureActivity.INPUT_TYPE, ThoughtsCaptureActivity.TYPE_NOTE)
+            intent.putExtra(ThoughtsCaptureActivity.INPUT_TYPE, InitialThoughtType.NOTE as Parcelable)
             startActivity(intent)
         }
 
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             // Handle edit action
             closeMenu()
             val intent = Intent(this, ThoughtsCaptureActivity::class.java)
-            intent.putExtra(ThoughtsCaptureActivity.INPUT_TYPE, ThoughtsCaptureActivity.TYPE_VOICE)
+            intent.putExtra(ThoughtsCaptureActivity.INPUT_TYPE, InitialThoughtType.VOICE as Parcelable)
             startActivity(intent)
         }
 

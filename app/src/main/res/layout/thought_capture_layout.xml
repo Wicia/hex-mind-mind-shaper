@@ -38,7 +38,7 @@
             android:id="@+id/tvWordCount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/capture_essence_label_words_counter"
+            android:text="@string/capture_essence_state_initial"
             android:textSize="12sp"
             android:gravity="end"
             android:textColor="@android:color/darker_gray"
