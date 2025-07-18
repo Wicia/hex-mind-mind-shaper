@@ -16,7 +16,7 @@
         android:src="@drawable/icon_catch"
         android:scaleType="centerInside"
         android:padding="16dp"
-        app:backgroundTint="@color/clickables_orange_mid"
+        app:backgroundTint="@color/common_orange_mid"
         app:fabSize="normal"
         app:elevation="6dp" />
 
@@ -30,7 +30,7 @@
         android:src="@drawable/icon_aspect_note"
         android:scaleType="centerInside"
         android:padding="16dp"
-        app:backgroundTint="@color/clickables_orange_mid"
+        app:backgroundTint="@color/common_orange_mid"
         app:fabSize="normal"
         app:elevation="6dp" />
 
@@ -43,7 +43,7 @@
         android:src="@drawable/icon_aspect_sound"
         android:scaleType="centerInside"
         android:padding="16dp"
-        app:backgroundTint="@color/clickables_orange_mid"
+        app:backgroundTint="@color/common_orange_mid"
         app:fabSize="normal"
         app:elevation="6dp" />
 
@@ -56,7 +56,7 @@
         android:src="@drawable/icon_aspect_drawing"
         android:scaleType="centerInside"
         android:padding="16dp"
-        app:backgroundTint="@color/clickables_orange_mid"
+        app:backgroundTint="@color/common_orange_mid"
         app:fabSize="normal"
         app:elevation="6dp" />
 
@@ -69,7 +69,7 @@
         android:src="@drawable/icon_aspect_photo"
         android:scaleType="centerInside"
         android:padding="16dp"
-        app:backgroundTint="@color/clickables_orange_mid"
+        app:backgroundTint="@color/common_orange_mid"
         app:fabSize="normal"
         app:elevation="6dp" />
 

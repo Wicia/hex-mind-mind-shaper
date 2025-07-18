@@ -109,7 +109,7 @@
                     app:icon="@drawable/icon_aspect_sound"
                     app:iconGravity="textStart"
                     app:iconSize="32dp"
-                    app:iconTint="@color/clickables_orange_light" />
+                    app:iconTint="@color/common_orange_mid" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnRecordStopNPlay"
@@ -124,7 +124,7 @@
                     app:icon="@drawable/icon_stop_circle"
                     app:iconGravity="textStart"
                     app:iconSize="32dp"
-                    app:iconTint="@color/clickables_orange_light" />
+                    app:iconTint="@color/common_orange_mid" />
 
             </LinearLayout>
 

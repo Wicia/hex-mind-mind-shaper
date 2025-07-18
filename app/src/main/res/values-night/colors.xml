@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ====================================== -->
+    <!--    DARK THEME OVERRIDES -->
+    <!-- ====================================== -->
+
+    <!-- Adjusted orange colors for dark theme (brighter variants) -->
+    <color name="orange_light">#FFAF7A</color>
+    <color name="orange_mid">#FF8C42</color>
+    <color name="orange_dark">#FFCDA0</color>
+
+    <!-- Dark theme backgrounds -->
+    <color name="app_background">#121212</color>
+    <color name="app_surface">#1E1E1E</color>
+
+    <!-- Dark theme text colors -->
+    <color name="text_primary">#E0E0E0</color>
+    <color name="text_secondary">#CCCCCC</color>
+    <color name="text_on_primary">#121212</color>
+
+    <!-- Dark theme input controls -->
+    <color name="input_background">#2A1F1A</color>
+    <color name="input_stroke">#FF8C42</color>
+    <color name="input_focused">#FFAF7A</color>
+
+    <!-- Dark theme overrides for pure colors -->
+    <color name="white">#E0E0E0</color>
+    <color name="black">#121212</color>
+
+</resources>

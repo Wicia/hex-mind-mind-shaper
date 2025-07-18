@@ -49,4 +49,18 @@
     <string name="capture_voice_status_recording_saved">Nagranie zapisane</string>
     <string name="capture_voice_status_recording_playing">Odtwarzanie...</string>
 
+    <string name="thoughts_carousel_title">Moje Myśli</string>
+    <string name="previous_thought">Poprzednia myśl</string>
+    <string name="next_thought">Następna myśl</string>
+    <string name="thought_type_icon">Ikona typu myśli</string>
+
+    <string name="color_scheme_updated">Paleta kolorów została zaktualizowana</string>
+    <string name="theme_changed">Motyw zmieniony</string>
+    <string name="color_error">Błąd kolorów</string>
+
+    <!-- Theme messages -->
+    <string name="light_theme">Jasny motyw</string>
+    <string name="dark_theme">Ciemny motyw</string>
+    <string name="theme_applied">Motyw został zastosowany</string>
+
 </resources>

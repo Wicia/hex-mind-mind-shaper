@@ -2,49 +2,86 @@
 <resources>
 
     <!-- ====================================== -->
-    <!--    BASE COLORS -->
+    <!--    CORE ORANGE PALETTE -->
     <!-- ====================================== -->
 
-    <color name="common_orange_light">#FFCDA0</color>
-    <color name="common_orange_mid">#FFAF7A</color>
-    <color name="common_orange_dark">#FF8C42</color>
+    <!-- Main orange colors for the app theme -->
+    <color name="orange_light">#FFCDA0</color>
+    <color name="orange_mid">#FFAF7A</color>
+    <color name="orange_dark">#FF8C42</color>
 
-    <color name="common_gray_light">#E0E0E0</color>
-    <color name="common_gray_mid">#666666</color>
-    <color name="common_gray_dark">#333333</color>
-
-    <color name="common_blue">#1976D2</color>
-    <color name="common_green">#388E3C</color>
-    <color name="common_red">#D32F2F</color>
-    <color name="common_purple">#7B1FA2</color>
-    <color name="common_black">#FF000000</color>
-    <color name="common_white">#FFFFFFFF</color>
-
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <!-- Extended orange shades for subtle variations -->
+    <color name="orange_extra_light">#FFF4E6</color>
+    <color name="orange_extra_dark">#E6793A</color>
 
     <!-- ====================================== -->
-    <!--    COLORS "IMPLEMENTATIONS" IN CONTROLS -->
+    <!--    NEUTRAL COLORS -->
     <!-- ====================================== -->
 
-    <!-- CORE: APP BAR & NAVIGATION BAR  -->
-    <color name="app_bars">@color/common_orange_dark</color>
-    <color name="app_background">@color/common_orange_light</color>
+    <!-- Grayscale for text and backgrounds -->
+    <color name="gray_light">#E0E0E0</color>
+    <color name="gray_mid">#666666</color>
+    <color name="gray_dark">#333333</color>
 
-    <!-- BUTTONS & CLICKABLE TILES -->
-    <color name="clickables_orange_light">#FFCDA0</color>
-    <color name="clickables_orange_mid">#FFAF7A</color>
-    <color name="clickables_orange_dark">#FF8C42</color>
+    <!-- Pure colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 
-    <!-- TEXTS VIEWS -->
-    <color name="text_dark">@color/common_gray_dark</color>
-    <color name="text_secondary">@color/common_gray_light</color>
+    <!-- ====================================== -->
+    <!--    SEMANTIC COLORS -->
+    <!-- ====================================== -->
 
-    <!-- INPUTS -->
-    <color name="input_background">@color/common_orange_light</color>
-    <color name="input_stroke">@color/common_orange_mid</color>
+    <!-- Success, error, warning states -->
+    <color name="success_green">#388E3C</color>
+    <color name="error_red">#D32F2F</color>
+    <color name="info_blue">#1976D2</color>
+
+    <!-- ====================================== -->
+    <!--    LEGACY MAPPINGS (for backward compatibility) -->
+    <!-- ====================================== -->
+
+    <!-- TODO: Remove these after updating all references -->
+    <color name="common_orange_light">@color/orange_light</color>
+    <color name="common_orange_mid">@color/orange_mid</color>
+    <color name="common_orange_dark">@color/orange_dark</color>
+    <color name="common_gray_light">@color/gray_light</color>
+    <color name="common_gray_mid">@color/gray_mid</color>
+    <color name="common_gray_dark">@color/gray_dark</color>
+    <color name="common_green">@color/success_green</color>
+    <color name="common_red">@color/error_red</color>
+    <color name="common_blue">@color/info_blue</color>
+    <color name="common_white">@color/white</color>
+    <color name="common_black">@color/black</color>
+
+    <!-- ====================================== -->
+    <!--    THEME MAPPINGS -->
+    <!-- ====================================== -->
+
+    <!-- App structure colors -->
+    <color name="app_primary">@color/orange_dark</color>
+    <color name="app_secondary">@color/orange_mid</color>
+    <color name="app_background">@color/orange_light</color>
+    <color name="app_surface">@color/white</color>
+
+    <!-- Legacy app structure mappings -->
+    <color name="app_bars">@color/orange_dark</color>
+
+    <!-- Text colors -->
+    <color name="text_primary">@color/gray_dark</color>
+    <color name="text_secondary">@color/gray_mid</color>
+    <color name="text_on_primary">@color/white</color>
+
+    <!-- Legacy text mappings -->
+    <color name="text_dark">@color/gray_dark</color>
+
+    <!-- Input controls -->
+    <color name="input_background">@color/orange_extra_light</color>
+    <color name="input_stroke">@color/orange_mid</color>
+    <color name="input_focused">@color/orange_dark</color>
+
+    <!-- Button states -->
+    <color name="button_primary">@color/orange_dark</color>
+    <color name="button_secondary">@color/orange_mid</color>
+    <color name="button_disabled">@color/gray_light</color>
 
 </resources>

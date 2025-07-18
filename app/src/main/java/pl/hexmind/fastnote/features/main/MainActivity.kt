@@ -11,6 +11,7 @@ import kotlin.math.sin
 import pl.hexmind.fastnote.R
 import pl.hexmind.fastnote.features.capture.ThoughtsCaptureActivity
 import pl.hexmind.fastnote.features.capture.models.InitialThoughtType
+import pl.hexmind.fastnote.features.carousel.ThoughtCarouselActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -66,7 +67,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         fab_drawing_type.setOnClickListener {
-            // Handle document action
+            // TODO: To be replaced with proper code !!!
+            val intent = Intent(this, ThoughtCarouselActivity::class.java)
+            startActivity(intent)
             closeMenu()
         }
 

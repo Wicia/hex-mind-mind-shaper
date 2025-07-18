@@ -125,4 +125,16 @@ dependencies {
 
     // Permissions
     implementation(libs.dexter)
+
+    // Material Design Components
+    implementation("com.google.android.material:material:1.9.0")
+
+    // ViewPager2 for carousel
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+
+    // CardView for thought items
+    implementation("androidx.cardview:cardview:1.0.0")
+
+    // RecyclerView (if not already added)
+    implementation("androidx.recyclerview:recyclerview:1.3.0")
 }
