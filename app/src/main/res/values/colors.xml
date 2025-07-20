@@ -5,7 +5,7 @@
     <!--    CORE PALETTE -->
     <!-- ====================================== -->
 
-    <!-- ORANGE: Main orange colors for the app theme -->
+    <!-- ORANGE: Main orange color for the app theme -->
     <color name="_orange_extra_light">#FFF4E6</color>
     <color name="_orange_light">#FFCDA0</color>
     <color name="_orange_mid">#FFAF7A</color>
@@ -32,7 +32,7 @@
     <!--    APP THEME MAPPINGS -->
     <!-- ====================================== -->
 
-    <color name="app_primary">@color/_orange_dark</color>
+    <color name="app_primary">@color/_orange_extra_dark</color>
     <color name="app_secondary">@color/_orange_mid</color>
     <color name="app_background">@color/_orange_extra_light</color>
     <color name="app_surface">@color/_white</color>
@@ -41,26 +41,29 @@
     <!--    WIDGETS MAPPINGS -->
     <!-- ====================================== -->
 
-    <!-- Text colors -->
+    <!-- TEXT COLORS -->
     <color name="text_primary">@color/_gray_dark</color>
     <color name="text_secondary">@color/_gray_mid</color>
     <color name="text_on_primary">@color/_white</color>
 
-    <!-- Input controls -->
+    <!-- INPUT CONTROLS -->
     <color name="input_background">@color/_orange_extra_light</color>
     <color name="input_stroke">@color/_orange_mid</color>
     <color name="input_focused">@color/_orange_dark</color>
 
-    <!-- Buttons -->
+    <!-- BUTTONS -->
     <color name="button_primary">@color/_orange_mid</color>
     <color name="button_secondary">@color/_orange_light</color>
-    <color name="button_disabled">@color/_gray_light</color>
-    <color name="button_icon_primary">@color/_orange_light</color>
+    <color name="button_disabled">@color/_gray_mid</color>
 
-    <!-- Card Views -->
+    <!-- BUTTONS : ICONS -->
+    <color name="button_icon_primary">@color/_orange_light</color>
+    <color name="button_icon_disabled">@color/_gray_light</color>
+
+    <!-- CARD VIEWS -->
     <color name="card_view_background">@color/_orange_light</color>
 
-    <!-- Separator / Views -->
+    <!-- SEPARATOR / VIEWS -->
     <color name="separator_background">@color/_orange_dark</color>
 
 </resources>

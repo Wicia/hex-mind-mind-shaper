@@ -3,30 +3,30 @@
     <!-- Base application theme for light mode -->
     <style name="Theme.FastNote" parent="Theme.Material3.Light">
 
-        <!-- Primary colors -->
+        <!-- Primary color -->
         <item name="colorPrimary">@color/app_primary</item>
         <item name="colorOnPrimary">@color/text_on_primary</item>
         <item name="colorPrimaryContainer">@color/_orange_light</item>
         <item name="colorOnPrimaryContainer">@color/text_primary</item>
 
-        <!-- Secondary colors -->
+        <!-- Secondary color -->
         <item name="colorSecondary">@color/app_secondary</item>
         <item name="colorOnSecondary">@color/_white</item>
         <item name="colorSecondaryContainer">@color/_orange_extra_light</item>
         <item name="colorOnSecondaryContainer">@color/text_primary</item>
 
-        <!-- Surface colors -->
+        <!-- Surface color -->
         <item name="colorSurface">@color/app_surface</item>
         <item name="colorOnSurface">@color/text_primary</item>
         <item name="colorSurfaceVariant">@color/_orange_extra_light</item>
         <item name="colorOnSurfaceVariant">@color/text_secondary</item>
 
-        <!-- Background colors -->
+        <!-- Background color -->
         <item name="android:colorBackground">@color/app_background</item>
         <item name="colorOnBackground">@color/text_primary</item>
         <item name="android:windowBackground">@color/app_background</item>
 
-        <!-- Error colors -->
+        <!-- Error color -->
         <item name="colorError">@color/error_red</item>
         <item name="colorOnError">@color/_white</item>
 
