@@ -94,22 +94,22 @@ class CaptureViewManager(private val activity: AppCompatActivity) {
     fun updateRecordingButtons(isRecording: Boolean, isPlaying: Boolean, hasRecording: Boolean) {
         when {
             isRecording -> {
-                btnRecordStopNPlay.icon = ContextCompat.getDrawable(activity, R.drawable.icon_stop_circle)
+                btnRecordStopNPlay.icon = ContextCompat.getDrawable(activity, R.drawable.ic_stop_circle)
                 btnRecordStopNPlay.text = ContextCompat.getString(activity, R.string.capture_voice_record_stop)
                 btnRecordStopNPlay.isEnabled = true
             }
             isPlaying -> {
-                btnRecordStopNPlay.icon = ContextCompat.getDrawable(activity, R.drawable.icon_stop_circle)
+                btnRecordStopNPlay.icon = ContextCompat.getDrawable(activity, R.drawable.ic_stop_circle)
                 btnRecordStopNPlay.text = ContextCompat.getString(activity, R.string.capture_voice_record_stop)
                 btnRecordStopNPlay.isEnabled = true
             }
             hasRecording -> {
-                btnRecordStopNPlay.icon = ContextCompat.getDrawable(activity, R.drawable.icon_recording_play)
+                btnRecordStopNPlay.icon = ContextCompat.getDrawable(activity, R.drawable.ic_recording_play)
                 btnRecordStopNPlay.text = ContextCompat.getString(activity, R.string.capture_voice_play)
                 btnRecordStopNPlay.isEnabled = true
             }
             else -> {
-                btnRecordStopNPlay.icon = ContextCompat.getDrawable(activity, R.drawable.icon_recording_play)
+                btnRecordStopNPlay.icon = ContextCompat.getDrawable(activity, R.drawable.ic_recording_play)
                 btnRecordStopNPlay.text = ContextCompat.getString(activity, R.string.capture_voice_play)
                 btnRecordStopNPlay.isEnabled = false
             }

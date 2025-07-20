@@ -32,7 +32,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="3"
                 android:paddingTop="6dp"
-                android:src="@drawable/icon_value_4" />
+                android:src="@drawable/ic_value_4" />
 
             <TextView
                 android:id="@+id/valueText"
@@ -93,7 +93,7 @@
                     android:scaleType="centerInside"
                     android:paddingTop="4dp"
                     android:paddingBottom="4dp"
-                    android:src="@drawable/icon_emotion_joy" />
+                    android:src="@drawable/ic_emotion_joy" />
 
             </LinearLayout>
 
@@ -118,7 +118,7 @@
             style="@style/Widget.MaterialComponents.Button.Icon"
             app:backgroundTint="@color/common_orange_mid"
             app:cornerRadius="8dp"
-            app:icon="@drawable/icon_aspect_sound"
+            app:icon="@drawable/ic_thought_type_sound"
             app:iconGravity="textStart"
             app:iconSize="64dp"
             app:iconTint="@color/orange_light" />
@@ -132,7 +132,7 @@
             style="@style/Widget.MaterialComponents.Button.Icon"
             app:backgroundTint="@color/common_orange_mid"
             app:cornerRadius="8dp"
-            app:icon="@drawable/icon_aspect_drawing"
+            app:icon="@drawable/ic_thought_type_drawing"
             app:iconGravity="textStart"
             app:iconSize="64dp"
             app:iconTint="@color/orange_light" />
@@ -148,7 +148,7 @@
         android:textSize="16sp"
         app:backgroundTint="@color/common_orange_mid"
         app:cornerRadius="8dp"
-        app:icon="@drawable/icon_aspect_note"
+        app:icon="@drawable/ic_thought_type_note"
         app:iconGravity="textStart"
         app:iconSize="64dp"
         app:iconTint="@color/orange_light" />
@@ -162,7 +162,7 @@
         android:textSize="16sp"
         app:backgroundTint="@color/common_orange_mid"
         app:cornerRadius="8dp"
-        app:icon="@drawable/icon_aspect_photo"
+        app:icon="@drawable/ic_thought_type_photo"
         app:iconGravity="textStart"
         app:iconSize="64dp"
         app:iconTint="@color/orange_light" />

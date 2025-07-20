@@ -1,23 +1,37 @@
 package pl.hexmind.fastnote.features.carousel
 
 import android.os.Bundle
-import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.button.MaterialButton
 import pl.hexmind.fastnote.R
+import pl.hexmind.fastnote.features.main.CoreActivity
 import kotlin.math.abs
 
 /**
  * Activity for browsing thoughts in an elegant carousel format with 3D animations
  */
-class ThoughtCarouselActivity : AppCompatActivity() {
+class ThoughtCarouselActivity : CoreActivity() {
 
     private lateinit var viewPager: ViewPager2
-    private lateinit var btnPrevious: MaterialButton
-    private lateinit var btnNext: MaterialButton
     private lateinit var adapter: ThoughtCarouselAdapter
+
+    // Additional panel of the bottom
+    private lateinit var iv_phase_info_icon : ImageView
+    private lateinit var tv_phase_info_header : TextView
+    private lateinit var tv_phase_info_thoughts_captured : TextView
+    private lateinit var tv_phase_info_next_phase : TextView
+
+    private val phaseToResourceMap = mapOf(
+        ThoughtProcessingPhaseName.GATHERING to R.drawable.ic_phase_gathering,
+        ThoughtProcessingPhaseName.CHOOSING to R.drawable.ic_phase_choosing,
+        ThoughtProcessingPhaseName.SILENT to R.drawable.ic_phase_silent,
+    )
+    private val phaseToHeaderStringMap = mapOf(
+        ThoughtProcessingPhaseName.GATHERING to R.string.carousel_phase_state_gathering,
+        ThoughtProcessingPhaseName.CHOOSING to R.string.carousel_phase_state_choosing,
+        ThoughtProcessingPhaseName.SILENT to R.string.carousel_phase_state_silent,
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +39,6 @@ class ThoughtCarouselActivity : AppCompatActivity() {
 
         initializeViews()
         setupCarousel()
-        setupButtons()
         loadThoughts()
     }
 
@@ -34,8 +47,27 @@ class ThoughtCarouselActivity : AppCompatActivity() {
      */
     private fun initializeViews() {
         viewPager = findViewById(R.id.viewPager_thoughts)
-        btnPrevious = findViewById(R.id.btn_previous)
-        btnNext = findViewById(R.id.btn_next)
+        tv_phase_info_thoughts_captured = findViewById(R.id.tv_phase_info_gathered_thoughts)
+        setupPhasePanel()
+    }
+
+    private fun setupPhasePanel(){
+        val currentPhase : ThoughtProcessingPhase = getCurrentPhase()
+
+        iv_phase_info_icon = findViewById(R.id.iv_phase_info_icon)
+        val resourceIconId = phaseToResourceMap[currentPhase.currentPhaseName] ?: -1
+        iv_phase_info_icon.setImageResource(resourceIconId)
+
+        tv_phase_info_header = findViewById(R.id.tv_phase_info_header)
+        val phaseDisplayName : String = getString(phaseToHeaderStringMap[currentPhase.currentPhaseName] ?: -1)
+        tv_phase_info_header.text = phaseDisplayName
+
+        // Next phase launch
+        tv_phase_info_next_phase = findViewById(R.id.tv_phase_info_next_phase)
+
+        val phaseNextDisplayName : String = getString(phaseToHeaderStringMap[currentPhase.getNextPhaseName()] ?: -1)
+        val resourceNextPhaseId = getString(R.string.carousel_phase_next_state_for, phaseNextDisplayName, currentPhase.minRemaining.toString())
+        tv_phase_info_next_phase.text = resourceNextPhaseId
     }
 
     /**
@@ -80,45 +112,8 @@ class ThoughtCarouselActivity : AppCompatActivity() {
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                updateNavigationButtons(position)
             }
         })
-    }
-
-    /**
-     * Setup navigation buttons with smooth animations
-     */
-    private fun setupButtons() {
-        btnPrevious.setOnClickListener {
-            val currentItem = viewPager.currentItem
-            if (currentItem > 0) {
-                viewPager.setCurrentItem(currentItem - 1, true)
-            }
-        }
-
-        btnNext.setOnClickListener {
-            val currentItem = viewPager.currentItem
-            if (currentItem < adapter.itemCount - 1) {
-                viewPager.setCurrentItem(currentItem + 1, true)
-            }
-        }
-    }
-
-    /**
-     * Update navigation buttons visibility based on current position
-     */
-    private fun updateNavigationButtons(position: Int) {
-        btnPrevious.animate()
-            .alpha(if (position == 0) 0.3f else 1f)
-            .setDuration(300)
-            .setInterpolator(AccelerateDecelerateInterpolator())
-            .start()
-
-        btnNext.animate()
-            .alpha(if (position == adapter.itemCount - 1) 0.3f else 1f)
-            .setDuration(300)
-            .setInterpolator(AccelerateDecelerateInterpolator())
-            .start()
     }
 
     /**
@@ -133,6 +128,5 @@ class ThoughtCarouselActivity : AppCompatActivity() {
         )
 
         adapter.submitList(sampleThoughts)
-        updateNavigationButtons(0)
     }
 }

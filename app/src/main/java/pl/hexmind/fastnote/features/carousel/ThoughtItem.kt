@@ -5,6 +5,7 @@ import java.util.UUID
 /**
  * Data class representing a single thought item
  */
+// TODO: Przeniesc do /data?
 data class ThoughtItem(
     val id: String = UUID.randomUUID().toString(),
     val content: String,

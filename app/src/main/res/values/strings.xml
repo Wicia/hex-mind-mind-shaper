@@ -63,4 +63,11 @@
     <string name="dark_theme">Ciemny motyw</string>
     <string name="theme_applied">Motyw został zastosowany</string>
 
+    <string name="info_icon_description">Ikona informacji</string>
+
+    <string name="carousel_phase_state_gathering">faza Zbierania</string>
+    <string name="carousel_phase_state_choosing">faza Wybierania</string>
+    <string name="carousel_phase_state_silent">faza Odpoczynku</string>
+    <string name="carousel_phase_next_state_for">%1$s za %2$s minut</string>
+
 </resources>
