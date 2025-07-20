@@ -11,6 +11,6 @@ import pl.hexmind.fastnote.features.carousel.ThoughtProcessingPhaseName
 open class CoreActivity() : AppCompatActivity() {
 
     fun getCurrentPhase() : ThoughtProcessingPhase{
-        return ThoughtProcessingPhase(ThoughtProcessingPhaseName.SILENT, 10)
+        return ThoughtProcessingPhase(ThoughtProcessingPhaseName.GATHERING, 10)
     }
 }

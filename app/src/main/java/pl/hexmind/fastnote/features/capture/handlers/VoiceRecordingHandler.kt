@@ -145,7 +145,7 @@ class VoiceRecordingHandler(
                 updateUI()
                 viewManager.updateRecordingStatusTextViews(
                     activity.getString(R.string.capture_voice_status_recording),
-                    android.R.color.holo_red_dark
+                    R.color.error_red
                 )
             } catch (e: IOException) {
                 Toast.makeText(
@@ -175,7 +175,7 @@ class VoiceRecordingHandler(
         updateUI()
         viewManager.updateRecordingStatusTextViews(
             activity.getString(R.string.capture_voice_status_recording_saved),
-            android.R.color.holo_green_dark
+            R.color.success_green
         )
         notifyDataChanged()
     }
@@ -200,7 +200,7 @@ class VoiceRecordingHandler(
                 updateUI()
                 viewManager.updateRecordingStatusTextViews(
                     activity.getString(R.string.capture_voice_status_recording_playing),
-                    android.R.color.holo_blue_dark
+                    R.color.info_blue
                 )
 
                 setOnCompletionListener {
@@ -227,7 +227,7 @@ class VoiceRecordingHandler(
         updateUI()
         viewManager.updateRecordingStatusTextViews(
             activity.getString(R.string.capture_voice_status_recording_saved),
-            android.R.color.holo_green_dark
+            R.color.success_green
         )
     }
 

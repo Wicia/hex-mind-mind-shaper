@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.35"
             android:layout_marginEnd="4dp"
-            android:background="@drawable/shape_clickable_background"
+            android:background="@drawable/shape_button"
             android:orientation="vertical">
 
             <ImageView
@@ -59,7 +59,7 @@
                 android:layout_height="0dp"
                 android:layout_marginBottom="4dp"
                 android:layout_weight="1.8"
-                android:background="@drawable/shape_clickable_background"
+                android:background="@drawable/shape_button"
                 android:gravity="center_vertical"
                 android:paddingStart="24dp"
                 android:text="Najprościej rozbroić śmiechem u ludzi emocjonalną broń którą używają na co dzień"
@@ -78,7 +78,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.9"
                     android:layout_marginEnd="4dp"
-                    android:background="@drawable/shape_clickable_background"
+                    android:background="@drawable/shape_button"
                     android:gravity="center_vertical"
                     android:padding="12dp"
                     android:text="Ważne idee \u000A Umysł i Serce"
@@ -89,7 +89,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.4"
-                    android:background="@drawable/shape_clickable_background"
+                    android:background="@drawable/shape_button"
                     android:scaleType="centerInside"
                     android:paddingTop="4dp"
                     android:paddingBottom="4dp"
@@ -116,12 +116,12 @@
             android:layout_weight="1"
             android:layout_marginEnd="4dp"
             style="@style/Widget.MaterialComponents.Button.Icon"
-            app:backgroundTint="@color/common_orange_mid"
+            app:backgroundTint="@color/button_primary"
             app:cornerRadius="8dp"
             app:icon="@drawable/ic_thought_type_sound"
             app:iconGravity="textStart"
             app:iconSize="64dp"
-            app:iconTint="@color/orange_light" />
+            app:iconTint="@color/_orange_light" />
 
         <!-- Drawing button -->
         <com.google.android.material.button.MaterialButton
@@ -130,12 +130,12 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             style="@style/Widget.MaterialComponents.Button.Icon"
-            app:backgroundTint="@color/common_orange_mid"
+            app:backgroundTint="@color/button_primary"
             app:cornerRadius="8dp"
             app:icon="@drawable/ic_thought_type_drawing"
             app:iconGravity="textStart"
             app:iconSize="64dp"
-            app:iconTint="@color/orange_light" />
+            app:iconTint="@color/_orange_light" />
 
     </LinearLayout>
 
@@ -146,12 +146,12 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         android:textSize="16sp"
-        app:backgroundTint="@color/common_orange_mid"
+        app:backgroundTint="@color/button_primary"
         app:cornerRadius="8dp"
         app:icon="@drawable/ic_thought_type_note"
         app:iconGravity="textStart"
         app:iconSize="64dp"
-        app:iconTint="@color/orange_light" />
+        app:iconTint="@color/_orange_light" />
 
     <!-- Fifth row: PHOTO -->
     <com.google.android.material.button.MaterialButton
@@ -160,11 +160,11 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         android:textSize="16sp"
-        app:backgroundTint="@color/common_orange_mid"
+        app:backgroundTint="@color/button_primary"
         app:cornerRadius="8dp"
         app:icon="@drawable/ic_thought_type_photo"
         app:iconGravity="textStart"
         app:iconSize="64dp"
-        app:iconTint="@color/orange_light" />
+        app:iconTint="@color/_orange_light" />
 
 </LinearLayout>

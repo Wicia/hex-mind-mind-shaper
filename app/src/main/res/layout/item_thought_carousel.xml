@@ -7,7 +7,7 @@
     android:layout_margin="8dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="8dp"
-    app:cardBackgroundColor="@color/common_orange_light">
+    app:cardBackgroundColor="@color/card_view_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         <!-- Thought title -->
         <TextView
             android:id="@+id/tv_thought_title"
-            style="@style/Text_Header"
+            style="@style/TextView_Header"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -33,7 +33,7 @@
         <!-- Thought content -->
         <TextView
             android:id="@+id/tv_thought_content"
-            style="@style/Text_Body"
+            style="@style/TextView_Body"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"

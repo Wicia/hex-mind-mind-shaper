@@ -76,12 +76,12 @@ class CaptureViewManager(private val activity: AppCompatActivity) {
         when (val validationResult = CapturedThoughtValidator.validateEssence(text)){
             is CapturedThoughtValidator.ValidationResult.Error -> {
                 tvWordCount.text = activity.getString(validationResult.messageId, validationResult.param)
-                tvWordCount.setTextColor(ContextCompat.getColor(activity, android.R.color.holo_red_dark))
+                tvWordCount.setTextColor(ContextCompat.getColor(activity, R.color.error_red))
             }
             is CapturedThoughtValidator.ValidationResult.Valid -> {
                 tvWordCount.text = activity.getString(validationResult.messageId, validationResult.param)
                 // TODO: Znalezc inne te android.R i czy zostawic czy zastapic swoimi?
-                tvWordCount.setTextColor(ContextCompat.getColor(activity, android.R.color.darker_gray))
+                tvWordCount.setTextColor(ContextCompat.getColor(activity, R.color.success_green))
             }
         }
     }

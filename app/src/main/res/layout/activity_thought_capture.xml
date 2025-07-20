@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@color/app_background"
-    >
+    android:background="@color/app_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,16 +13,17 @@
 
         <!-- Header -->
         <TextView
+            style="@style/TextView_Header_Activity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/capture_main_label"
-            android:textSize="24sp"
-            android:textStyle="bold"
             android:gravity="center"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="12dp" />
 
         <!-- Short Thought Section (Always visible) -->
         <EditText
+            style="@style/EditText_Hint"
             android:id="@+id/editThoughtEssence"
             android:layout_width="match_parent"
             android:layout_height="66dp"
@@ -36,12 +36,11 @@
 
         <TextView
             android:id="@+id/tvWordCount"
+            style="@style/TextView_Info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/capture_essence_state_initial"
-            android:textSize="12sp"
             android:gravity="end"
-            android:textColor="@android:color/darker_gray"
             android:layout_marginBottom="24dp" />
 
         <!-- Rich Text Section (Visible when MODE_RICH_TEXT) -->
@@ -53,11 +52,10 @@
             android:visibility="gone">
 
             <TextView
+                style="@style/TextView_Header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/capture_note_label"
-                android:textSize="16sp"
-                android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
 
             <EditText
@@ -82,11 +80,10 @@
             android:visibility="visible">
 
             <TextView
+                style="@style/TextView_Header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/capture_voice_header"
-                android:textSize="16sp"
-                android:textStyle="bold"
                 android:layout_marginBottom="16dp" />
 
             <LinearLayout
@@ -103,13 +100,12 @@
                     android:layout_weight="1"
                     android:layout_marginEnd="4dp"
                     android:text="@string/capture_voice_record_new"
-                    style="@style/Widget.MaterialComponents.Button.Icon"
-                    android:background="@drawable/shape_clickable_background"
+                    android:backgroundTint="@color/button_primary"
                     app:cornerRadius="8dp"
                     app:icon="@drawable/ic_thought_type_sound"
                     app:iconGravity="textStart"
                     app:iconSize="32dp"
-                    app:iconTint="@color/common_orange_mid" />
+                    app:iconTint="@color/button_icon_primary" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnRecordStopNPlay"
@@ -118,25 +114,23 @@
                     android:layout_weight="1"
                     android:layout_marginEnd="4dp"
                     android:text="@string/capture_voice_record_stop"
-                    style="@style/Widget.MaterialComponents.Button.Icon"
-                    android:background="@drawable/shape_clickable_background"
+                    android:backgroundTint="@color/button_primary"
                     app:cornerRadius="8dp"
                     app:icon="@drawable/ic_stop_circle"
                     app:iconGravity="textStart"
                     app:iconSize="32dp"
-                    app:iconTint="@color/common_orange_mid" />
+                    app:iconTint="@color/button_icon_primary" />
 
             </LinearLayout>
 
             <TextView
                 android:id="@+id/tvRecordingStatus"
+                style="@style/TextView_Info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/capture_voice_tooltip"
-                android:textSize="14sp"
                 android:gravity="center"
-                android:layout_marginBottom="24dp"
-                android:textColor="@android:color/darker_gray" />
+                android:layout_marginBottom="24dp" />
 
         </LinearLayout>
 
@@ -146,10 +140,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text='@string/common_btn_save'
-            android:textSize="16sp"
             android:padding="16dp"
             android:layout_marginTop="24dp"
-            android:background="@drawable/shape_clickable_background" />
+            android:backgroundTint="@color/button_primary"
+            app:cornerRadius="8dp"/>
 
     </LinearLayout>
 
