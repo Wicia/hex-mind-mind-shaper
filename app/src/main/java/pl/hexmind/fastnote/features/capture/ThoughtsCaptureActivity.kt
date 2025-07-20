@@ -34,7 +34,7 @@ class ThoughtsCaptureActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.thought_capture_layout)
+        setContentView(R.layout.activity_thought_capture)
         initializeFromIntent()
         initializeComponents()
         setupMode()
