@@ -18,7 +18,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // Optymalizacja bazy danych Room
+        // Room database optimization
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments += mapOf(
@@ -62,14 +62,14 @@ android {
     buildFeatures {
         viewBinding = true
         compose = true
-        buildConfig = false // Wyłącz jeśli nie używasz BuildConfig
+        buildConfig = false // Disabled if not using BuildConfig
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.8" // lub użyj wersji z libs.versions.toml
+        kotlinCompilerExtensionVersion = "1.5.8"
     }
 
-    // Optymalizacja pakowania
+    // Packaging optimization
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -77,7 +77,6 @@ android {
     }
 }
 
-// Usuń osobną konfigurację kapt - została przeniesiona do defaultConfig
 dependencies {
     // Core Android
     implementation(libs.androidx.core.ktx)
@@ -102,12 +101,25 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    // Room - użyj wersji z libs.versions.toml
+    // Room database for thought persistence
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
+
+    // Preferences for app settings
     implementation(libs.androidx.preference)
     implementation(libs.androidx.preference.ktx)
-    kapt(libs.androidx.room.compiler)
+
+    // UI Components for thought display and carousel
+    implementation(libs.androidx.viewpager2)
+    implementation(libs.androidx.cardview)
+    implementation(libs.androidx.recyclerview)
+
+    // Floating action button with speed dial
+    implementation(libs.speeddial)
+
+    // Permissions handling for camera and audio
+    implementation(libs.dexter)
 
     // Testing
     testImplementation(libs.junit)
@@ -116,25 +128,7 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
 
-    // Debug
+    // Debug tools
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-    // Floating button extras
-    implementation(libs.speeddial)
-
-    // Permissions
-    implementation(libs.dexter)
-
-    // Material Design Components
-    implementation("com.google.android.material:material:1.9.0")
-
-    // ViewPager2 for carousel
-    implementation("androidx.viewpager2:viewpager2:1.0.0")
-
-    // CardView for thought items
-    implementation("androidx.cardview:cardview:1.0.0")
-
-    // RecyclerView (if not already added)
-    implementation("androidx.recyclerview:recyclerview:1.3.0")
 }

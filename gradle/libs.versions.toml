@@ -1,25 +1,30 @@
 [versions]
 agp = "8.11.1"
 googleMaterial = "1.12.0"
-kotlin = "2.0.21"
+kotlin = "2.2.0"
 coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.1"
 constraintlayout = "2.2.1"
-lifecycleLivedataKtx = "2.9.1"
-lifecycleViewmodelKtx = "2.9.1"
-navigationFragmentKtx = "2.9.1"
-navigationUiKtx = "2.9.1"
-lifecycleRuntimeKtx = "2.9.1"
+lifecycleLivedataKtx = "2.9.2"
+lifecycleViewmodelKtx = "2.9.2"
+navigationFragmentKtx = "2.9.2"
+navigationUiKtx = "2.9.2"
+lifecycleRuntimeKtx = "2.9.2"
 activityCompose = "1.10.1"
-composeBom = "2025.06.01"
+composeBom = "2025.07.00"
 room = "2.7.2"
 preference = "1.2.1"
 preferenceKtx = "1.2.1"
 speeddial = "3.3.0"
 dexter = "6.2.3"
+
+# Additional UI components for memory app
+viewpager2 = "1.1.0"
+cardview = "1.0.0"
+recyclerview = "1.4.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -51,8 +56,12 @@ material = { module = "com.google.android.material:material", version.ref = "goo
 speeddial = { group = "com.leinardi.android", name = "speed-dial", version.ref = "speeddial" }
 dexter = { group = "com.karumi", name = "dexter", version.ref = "dexter" }
 
+androidx-viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "viewpager2" }
+# UI components for thought carousel and display
+androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-
