@@ -3,17 +3,25 @@ package pl.hexmind.fastnote.features.main
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.view.animation.AccelerateDecelerateInterpolator
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.TextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlin.math.cos
-import kotlin.math.sin
 import pl.hexmind.fastnote.R
 import pl.hexmind.fastnote.features.capture.ThoughtsCaptureActivity
 import pl.hexmind.fastnote.features.capture.models.InitialThoughtType
 import pl.hexmind.fastnote.features.carousel.ThoughtCarouselActivity
+import pl.hexmind.fastnote.features.settings.AppSettingsStorage
+import pl.hexmind.fastnote.settings.SettingsActivity
+import kotlin.math.abs
+import kotlin.math.cos
+import kotlin.math.sin
 
-class MainActivity : AppCompatActivity() {
+// Main activity handling FAB menu and swipe gestures for settings access
+class MainActivity : CoreActivity(), GestureDetector.OnGestureListener {
+
+    private lateinit var appSettingsStorage: AppSettingsStorage
 
     private lateinit var fab_new_thought: FloatingActionButton
     private lateinit var fab_note_type: FloatingActionButton
@@ -21,6 +29,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fab_drawing_type: FloatingActionButton
     private lateinit var fab_photo_type: FloatingActionButton
 
+    private lateinit var header_greetings : TextView
+
+    private lateinit var gestureDetector: GestureDetector
     private var isMenuOpen = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,14 +40,20 @@ class MainActivity : AppCompatActivity() {
 
         initViews()
         setupClickListeners()
+        setupGestureDetector()
     }
 
     private fun initViews() {
+        appSettingsStorage = AppSettingsStorage(this)
+
         fab_new_thought = findViewById(R.id.fab_new_thought)
         fab_note_type = findViewById(R.id.fab_note_type)
         fab_voice_type = findViewById(R.id.fab_voice_type)
         fab_drawing_type = findViewById(R.id.fab_drawing_type)
         fab_photo_type = findViewById(R.id.fab_photo_type)
+
+        header_greetings = findViewById(R.id.tv_greetings)
+        header_greetings.text = appSettingsStorage.getYourName()
 
         // Initially hide all menu buttons
         listOf(fab_note_type, fab_voice_type, fab_drawing_type, fab_photo_type).forEach { fab ->
@@ -77,6 +94,57 @@ class MainActivity : AppCompatActivity() {
             // Handle add action
             closeMenu()
         }
+    }
+
+    // Initialize gesture detector for swipe down recognition
+    private fun setupGestureDetector() {
+        gestureDetector = GestureDetector(this, this)
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        return gestureDetector.onTouchEvent(event!!) || super.onTouchEvent(event)
+    }
+
+    override fun onDown(e: MotionEvent): Boolean {
+        return true
+    }
+
+    override fun onShowPress(e: MotionEvent) {}
+
+    override fun onSingleTapUp(e: MotionEvent): Boolean {
+        return false
+    }
+
+    override fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
+        return false
+    }
+
+    override fun onLongPress(e: MotionEvent) {}
+
+    // Detect swipe down gesture and open settings
+    override fun onFling(
+        e1: MotionEvent?,
+        e2: MotionEvent,
+        velocityX: Float,
+        velocityY: Float
+    ): Boolean {
+        if (e1 == null) return false
+
+        val diffY = e2.y - e1.y
+        val diffX = e2.x - e1.x
+
+        // Check if it's a vertical swipe down with sufficient distance and velocity
+        if (abs(diffY) > abs(diffX) &&
+            diffY > 100 &&
+            abs(velocityY) > 100) {
+
+            // Open settings activity
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+            return true
+        }
+
+        return false
     }
 
     private fun toggleMenu() {

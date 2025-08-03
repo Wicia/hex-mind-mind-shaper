@@ -22,17 +22,6 @@ class ThoughtCarouselActivity : CoreActivity() {
     private lateinit var tv_phase_info_thoughts_captured : TextView
     private lateinit var tv_phase_info_next_phase : TextView
 
-    private val phaseToResourceMap = mapOf(
-        ThoughtProcessingPhaseName.GATHERING to R.drawable.ic_phase_gathering,
-        ThoughtProcessingPhaseName.CHOOSING to R.drawable.ic_phase_choosing,
-        ThoughtProcessingPhaseName.SILENT to R.drawable.ic_phase_silent,
-    )
-    private val phaseToHeaderStringMap = mapOf(
-        ThoughtProcessingPhaseName.GATHERING to R.string.carousel_phase_state_gathering,
-        ThoughtProcessingPhaseName.CHOOSING to R.string.carousel_phase_state_choosing,
-        ThoughtProcessingPhaseName.SILENT to R.string.carousel_phase_state_silent,
-    )
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_thought_carousel)

@@ -16,6 +16,35 @@
     <string name="permission_audio_message_settings">Proszę włączyć uprawnienie do audio w ustawieniach aplikacji</string>
     <string name="permission_audio_message_rationale">Uprawnienie do audio jest potrzebne do nagrywania notatek głosowych</string>
 
+    <string name="common_phase_prefix">Faza</string>
+    <string name="core_phase1_default_name">Zbierania</string>
+    <string name="core_phase2_default_name">Wybierania</string>
+    <string name="core_phase3_default_name">Odpoczynku</string>
+
+    <!-- Common -->
+    <string name="core_info_save_changes">Zapisz zmiany</string>
+    <string name="core_info_changes_saved">Zmiany zostały zapisane</string>
+
+    <!-- NAVIGATION -->
+
+    <!-- FILES -->
+    <string name="audio_file_no_longer_accessible">Plik audio nie jest już dostępny</string>
+    <string name="audio_file_error">Błąd odczytu pliku audio</string>
+    <string name="no_audio_file_selected">Nie wybrano pliku audio</string>
+    <string name="cannot_open_file_picker">Nie można otworzyć selektora plików</string>
+    <string name="file_selected">Wybrano plik: %1$s</string>
+    <string name="file_selected_temp_access">Plik wybrany - dostęp może być tymczasowy</string>
+    <string name="error_selecting_file">Błąd podczas wyboru pliku</string>
+    <string name="unknown_audio_file">Nieznany plik audio</string>
+    <string name="unknown_file">Nieznany plik</string>
+    <string name="in_folder">w folderze</string>
+
+    <!-- ====================================== -->
+    <!-- ACTIVITY: MAIN -->
+    <!-- ====================================== -->
+
+    <string name="main_greetings_header_default">Cześć Człowiek!</string>
+
     <!-- ====================================== -->
     <!-- ACTIVITY: CAPTURE THOUGHT -->
     <!-- ====================================== -->
@@ -65,9 +94,27 @@
 
     <string name="info_icon_description">Ikona informacji</string>
 
-    <string name="carousel_phase_state_gathering">faza Zbierania</string>
-    <string name="carousel_phase_state_choosing">faza Wybierania</string>
-    <string name="carousel_phase_state_silent">faza Odpoczynku</string>
     <string name="carousel_phase_next_state_for">%1$s za %2$s minut</string>
+
+    <!-- ====================================== -->
+    <!-- ACTIVITY: SETTINGS -->
+    <!-- ====================================== -->
+
+    <string name="your_personalization">Twoja Personalizacja</string>
+
+    <!-- Your Name Setting -->
+    <string name="settings_pYour_name_header">Jak brzmi Twoje prawdziwe imię?</string>
+    <string name="settings_pYour_name_hint">Jak mi nie powiesz to będę zwracać się jak niżej :)</string>
+
+    <!-- Greeting Sound Setting -->
+    <string name="settings_pGreeting_sound_header">Powitanie</string>
+    <string name="settings_pGreeting_sound_hint">Dźwięk odtwarzany przy pierwszym uruchomieniu dnia</string>
+    <string name="settings_pGreeting_choose_sound_file">Wybierz plik dźwiękowy</string>
+    <string name="settings_pGreeting_state_no_file">Nie wybrano pliku</string>
+    <string name="settings_pGreeting_state_file_name">Wybrano: %1$s</string>
+
+    <!-- Phase Names Setting -->
+    <string name="settings_pPhase_names_header">Nazwy faz</string>
+    <string name="settings_pPhase_names_hint">Dostosuj nazwy faz pracy z myślami</string>
 
 </resources>

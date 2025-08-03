@@ -8,9 +8,21 @@
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- Permission for audio recording - required for voice notes -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- Permission for managing files -->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.OPEN_DOCUMENT" />
+            <data android:mimeType="audio/*" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -48,6 +60,12 @@
             android:name=".features.carousel.ThoughtCarouselActivity"
             android:exported="false"
             android:theme="@style/Theme.FastNote.NoActionBar" />
+
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:exported="true"
+            android:theme="@style/Theme.FastNote.NoActionBar"
+            android:parentActivityName=".features.main.MainActivity"/>
 
     </application>
 
