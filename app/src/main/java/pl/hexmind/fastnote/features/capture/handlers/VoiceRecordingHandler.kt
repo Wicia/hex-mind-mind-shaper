@@ -76,14 +76,14 @@ class VoiceRecordingHandler(
                     permissionToRecordAccepted = false
                     Toast.makeText(
                         activity,
-                        activity.getString(R.string.permission_audio_error_required),
+                        activity.getString(R.string.common_permission_audio_error_required),
                         Toast.LENGTH_LONG
                     ).show()
 
                     if (response.isPermanentlyDenied) {
                         Toast.makeText(
                             activity,
-                            activity.getString(R.string.permission_audio_message_settings),
+                            activity.getString(R.string.common_permission_audio_message_settings),
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -95,7 +95,7 @@ class VoiceRecordingHandler(
                 ) {
                     Toast.makeText(
                         activity,
-                        activity.getString(R.string.permission_audio_message_rationale),
+                        activity.getString(R.string.common_permission_audio_message_rationale),
                         Toast.LENGTH_LONG
                     ).show()
                     token.continuePermissionRequest()

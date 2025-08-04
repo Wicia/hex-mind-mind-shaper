@@ -18,9 +18,9 @@ open class CoreActivity() : AppCompatActivity() {
         ThoughtProcessingPhaseName.SILENT to R.drawable.ic_phase_silent,
     )
     internal val phaseToHeaderStringMap = mapOf(
-        ThoughtProcessingPhaseName.GATHERING to R.string.core_phase1_default_name,
-        ThoughtProcessingPhaseName.CHOOSING to R.string.core_phase2_default_name,
-        ThoughtProcessingPhaseName.SILENT to R.string.core_phase3_default_name,
+        ThoughtProcessingPhaseName.GATHERING to R.string.common_phase1_default_name,
+        ThoughtProcessingPhaseName.CHOOSING to R.string.common_phase2_default_name,
+        ThoughtProcessingPhaseName.SILENT to R.string.common_phase3_default_name,
     )
 
     fun getCurrentPhase() : ThoughtProcessingPhase{

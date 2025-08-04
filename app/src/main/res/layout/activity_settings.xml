@@ -23,7 +23,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/your_personalization"
+                android:text="@string/settings_your_personalization"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#FF8C42"
@@ -186,7 +186,7 @@
                             android:id="@+id/etPhase1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/core_phase1_default_name"
+                            android:hint="@string/common_phase1_default_name"
                             android:maxLines="1"
                             android:inputType="text" />
 
@@ -204,7 +204,7 @@
                             android:id="@+id/etPhase2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/core_phase2_default_name"
+                            android:hint="@string/common_phase2_default_name"
                             android:maxLines="1"
                             android:inputType="text" />
 
@@ -221,7 +221,7 @@
                             android:id="@+id/etPhase3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/core_phase3_default_name"
+                            android:hint="@string/common_phase3_default_name"
                             android:maxLines="1"
                             android:inputType="text" />
 
@@ -237,7 +237,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/core_info_save_changes"
+                android:text="@string/common_info_save_changes"
                 app:backgroundTint="#FF8C42"
                 app:cornerRadius="12dp"
                 android:textColor="@android:color/white"

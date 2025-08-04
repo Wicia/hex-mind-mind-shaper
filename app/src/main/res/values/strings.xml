@@ -8,24 +8,16 @@
     <!-- ====================================== -->
 
     <string name="app_name">FastNote</string>
+
+    <!-- SAVE AND LOAD -->
     <string name="common_btn_save">Zapisz</string>
-    <string name="common_btn_record">Nagrywaj</string>
+    <string name="common_info_save_changes">Zapisz zmiany</string>
+    <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
 
     <!-- PERMISSIONS: Voice Recording -->
-    <string name="permission_audio_error_required">Uprawnienie do nagrywania audio jest wymagane dla notatek głosowych</string>
-    <string name="permission_audio_message_settings">Proszę włączyć uprawnienie do audio w ustawieniach aplikacji</string>
-    <string name="permission_audio_message_rationale">Uprawnienie do audio jest potrzebne do nagrywania notatek głosowych</string>
-
-    <string name="common_phase_prefix">Faza</string>
-    <string name="core_phase1_default_name">Zbierania</string>
-    <string name="core_phase2_default_name">Wybierania</string>
-    <string name="core_phase3_default_name">Odpoczynku</string>
-
-    <!-- Common -->
-    <string name="core_info_save_changes">Zapisz zmiany</string>
-    <string name="core_info_changes_saved">Zmiany zostały zapisane</string>
-
-    <!-- NAVIGATION -->
+    <string name="common_permission_audio_error_required">Uprawnienie do nagrywania audio jest wymagane dla notatek głosowych</string>
+    <string name="common_permission_audio_message_settings">Proszę włączyć uprawnienie do audio w ustawieniach aplikacji</string>
+    <string name="common_permission_audio_message_rationale">Uprawnienie do audio jest potrzebne do nagrywania notatek głosowych</string>
 
     <!-- FILES -->
     <string name="audio_file_no_longer_accessible">Plik audio nie jest już dostępny</string>
@@ -38,6 +30,12 @@
     <string name="unknown_audio_file">Nieznany plik audio</string>
     <string name="unknown_file">Nieznany plik</string>
     <string name="in_folder">w folderze</string>
+
+    <!-- DOMAIN of THOUGHTS ETC. -->
+    <string name="common_phase_prefix">Faza</string>
+    <string name="common_phase1_default_name">Zbierania</string>
+    <string name="common_phase2_default_name">Wybierania</string>
+    <string name="common_phase3_default_name">Odpoczynku</string>
 
     <!-- ====================================== -->
     <!-- ACTIVITY: MAIN -->
@@ -83,24 +81,19 @@
     <string name="next_thought">Następna myśl</string>
     <string name="thought_type_icon">Ikona typu myśli</string>
 
-    <string name="color_scheme_updated">Paleta kolorów została zaktualizowana</string>
-    <string name="theme_changed">Motyw zmieniony</string>
-    <string name="color_error">Błąd kolorów</string>
-
-    <!-- Theme messages -->
-    <string name="light_theme">Jasny motyw</string>
-    <string name="dark_theme">Ciemny motyw</string>
-    <string name="theme_applied">Motyw został zastosowany</string>
-
-    <string name="info_icon_description">Ikona informacji</string>
+    <!-- ====================================== -->
+    <!-- ACTIVITY: THOUGHTS PREVIEW / CAROUSEL  -->
+    <!-- ====================================== -->
 
     <string name="carousel_phase_next_state_for">%1$s za %2$s minut</string>
+
+    <string name="_carousel_info_icon_description">Ikona informacji</string>
 
     <!-- ====================================== -->
     <!-- ACTIVITY: SETTINGS -->
     <!-- ====================================== -->
 
-    <string name="your_personalization">Twoja Personalizacja</string>
+    <string name="settings_your_personalization">Twoja Personalizacja</string>
 
     <!-- Your Name Setting -->
     <string name="settings_pYour_name_header">Jak brzmi Twoje prawdziwe imię?</string>

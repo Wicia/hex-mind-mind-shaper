@@ -18,7 +18,7 @@ import pl.hexmind.fastnote.features.settings.AppSettingsStorage
 class SettingsActivity : CoreActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
-    private lateinit var appSettingsStorage: AppSettingsStorage
+    private lateinit var appSettingsStorage: AppSettingsStorage // TODO: ? moze przeniesc do CoreActivit
     private var selectedAudioUri: Uri? = null
 
     // Activity result launcher for audio file selection
@@ -88,13 +88,13 @@ class SettingsActivity : CoreActivity() {
 
         // Load phase names with default fallbacks
         binding.etPhase1.setText(
-            appSettingsStorage.getPhaseGatheringAlias(getString(R.string.core_phase1_default_name))
+            appSettingsStorage.getPhaseGatheringAlias(getString(R.string.common_phase1_default_name))
         )
         binding.etPhase2.setText(
-            appSettingsStorage.getPhaseChoosingAlias(getString(R.string.core_phase2_default_name))
+            appSettingsStorage.getPhaseChoosingAlias(getString(R.string.common_phase2_default_name))
         )
         binding.etPhase3.setText(
-            appSettingsStorage.getPhaseSilentAlias(getString(R.string.core_phase3_default_name))
+            appSettingsStorage.getPhaseSilentAlias(getString(R.string.common_phase3_default_name))
         )
     }
 
@@ -310,15 +310,15 @@ class SettingsActivity : CoreActivity() {
 
         // Save phase names with defaults
         val phase1 = binding.etPhase1.text?.toString()?.trim()
-            ?: getString(R.string.core_phase1_default_name)
+            ?: getString(R.string.common_phase1_default_name)
         val phase2 = binding.etPhase2.text?.toString()?.trim()
-            ?: getString(R.string.core_phase2_default_name)
+            ?: getString(R.string.common_phase2_default_name)
         val phase3 = binding.etPhase3.text?.toString()?.trim()
-            ?: getString(R.string.core_phase3_default_name)
+            ?: getString(R.string.common_phase3_default_name)
 
         appSettingsStorage.setPhaseNames(phase1, phase2, phase3)
 
-        showShortToast(R.string.core_info_changes_saved)
+        showShortToast(R.string.common_info_changes_saved)
         finish()
     }
 }
