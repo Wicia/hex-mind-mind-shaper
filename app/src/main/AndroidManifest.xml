@@ -62,7 +62,7 @@
             android:theme="@style/Theme.FastNote.NoActionBar" />
 
         <activity
-            android:name=".settings.SettingsActivity"
+            android:name=".features.settings.SettingsActivity"
             android:exported="true"
             android:theme="@style/Theme.FastNote.NoActionBar"
             android:parentActivityName=".features.main.MainActivity"/>

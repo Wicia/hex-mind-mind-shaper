@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:orientation="horizontal">
 
     <!-- Custom Toolbar -->
 
@@ -23,20 +23,20 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:text="@string/settings_your_personalization"
-                android:textSize="18sp"
-                android:textStyle="bold"
                 android:textColor="#FF8C42"
-                android:layout_marginBottom="16dp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <!-- App Name Setting Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@android:color/white">
+                app:cardElevation="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -47,19 +47,19 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
                         android:text="@string/settings_pYour_name_header"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
                         android:textColor="@android:color/black"
-                        android:layout_marginBottom="4dp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
                         android:text="@string/settings_pYour_name_hint"
-                        android:textSize="14sp"
                         android:textColor="#666666"
-                        android:layout_marginBottom="12dp" />
+                        android:textSize="14sp" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
@@ -71,8 +71,8 @@
                             android:id="@+id/etYourName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:maxLines="1"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:maxLines="1" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,9 +85,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@android:color/white">
+                app:cardElevation="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -98,34 +98,34 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
                         android:text="@string/settings_pGreeting_sound_header"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
                         android:textColor="@android:color/black"
-                        android:layout_marginBottom="4dp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
                         android:text="@string/settings_pGreeting_sound_hint"
-                        android:textSize="14sp"
                         android:textColor="#666666"
-                        android:layout_marginBottom="12dp" />
+                        android:textSize="14sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnSelectAudio"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/settings_pGreeting_choose_sound_file"
+                            android:textColor="@android:color/black"
                             app:backgroundTint="#FFAF7A"
-                            app:cornerRadius="8dp"
-                            android:textColor="@android:color/black" />
+                            app:cornerRadius="8dp" />
 
                         <TextView
                             android:id="@+id/tvSelectedFile"
@@ -133,8 +133,8 @@
                             android:layout_height="0dp"
                             android:layout_weight="1"
                             android:text="@string/settings_pGreeting_state_no_file"
-                            android:textSize="14sp"
-                            android:textColor="#666666" />
+                            android:textColor="#666666"
+                            android:textSize="14sp" />
 
                     </LinearLayout>
 
@@ -147,9 +147,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@android:color/white">
+                app:cardElevation="3dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -160,19 +160,19 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
                         android:text="@string/settings_pPhase_names_header"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
                         android:textColor="@android:color/black"
-                        android:layout_marginBottom="4dp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
                         android:text="@string/settings_pPhase_names_hint"
-                        android:textSize="14sp"
                         android:textColor="#666666"
-                        android:layout_marginBottom="16dp" />
+                        android:textSize="14sp" />
 
                     <!-- Phase 1 Input -->
                     <com.google.android.material.textfield.TextInputLayout
@@ -187,8 +187,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/common_phase1_default_name"
-                            android:maxLines="1"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:maxLines="1" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -205,8 +205,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/common_phase2_default_name"
-                            android:maxLines="1"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:maxLines="1" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -222,10 +222,67 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/common_phase3_default_name"
-                            android:maxLines="1"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:maxLines="1" />
 
                     </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Domains Setting Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="3dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:text="@string/settings_domains_header"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/settings_domains_hint"
+                        android:textColor="#666666"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_domains_state_loading_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:textColor="#666666"
+                        android:visibility="gone"
+                        android:textSize="14sp" />
+
+                    <!-- Grid of domain buttons (4 rows x 2 columns) -->
+                    <GridLayout
+                        android:id="@+id/domains_grid_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:alignmentMode="alignBounds"
+                        android:columnCount="2"
+                        android:columnOrderPreserved="false"
+                        android:rowCount="4">
+
+                    </GridLayout>
 
                 </LinearLayout>
 
@@ -238,11 +295,11 @@
                 android:layout_height="56dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/common_info_save_changes"
-                app:backgroundTint="#FF8C42"
-                app:cornerRadius="12dp"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:backgroundTint="#FF8C42"
+                app:cornerRadius="12dp" />
 
         </LinearLayout>
 

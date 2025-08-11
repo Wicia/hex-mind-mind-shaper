@@ -13,6 +13,7 @@
     <string name="common_btn_save">Zapisz</string>
     <string name="common_info_save_changes">Zapisz zmiany</string>
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
+    <string name="common_btn_cancel">Anuluj</string>
 
     <!-- PERMISSIONS: Voice Recording -->
     <string name="common_permission_audio_error_required">Uprawnienie do nagrywania audio jest wymagane dla notatek głosowych</string>
@@ -36,6 +37,10 @@
     <string name="common_phase1_default_name">Zbierania</string>
     <string name="common_phase2_default_name">Wybierania</string>
     <string name="common_phase3_default_name">Odpoczynku</string>
+
+    <!-- TODO: To be replaced later -->
+    <string name="common_placeholder_accessibility_content_desc">PLACEHOLDER</string>
+    <string name="common_activity_tile_placeholder">PLACEHOLDER</string>
 
     <!-- ====================================== -->
     <!-- ACTIVITY: MAIN -->
@@ -107,7 +112,32 @@
     <string name="settings_pGreeting_state_file_name">Wybrano: %1$s</string>
 
     <!-- Phase Names Setting -->
-    <string name="settings_pPhase_names_header">Nazwy faz</string>
+    <string name="settings_pPhase_names_header">Nazwy Faz</string>
     <string name="settings_pPhase_names_hint">Dostosuj nazwy faz pracy z myślami</string>
+
+    <!-- Domains -->
+    <string name="settings_domains_header">Nazwy Dziedzin</string>
+    <string name="settings_domains_hint">Tutaj możesz zmienić nazwę oraz ikonkę dziedziny</string>
+
+    <string name="settings_domains_loading_error">Błąd podczas ładowania ikon domen</string>
+
+    <string-array name="settings_domains_default_names_list">
+        <item>Bóg, Sens, Pasja</item>
+        <item>Miłość i Wewnętrzne Dziecko</item>
+        <item>Pisanie</item>
+        <item>Budowanie</item>
+        <item>Programowanie</item>
+        <item>Relacje i Ludzie</item>
+        <item>Praca</item>
+        <item>Odpoczynek</item>
+
+    </string-array>
+
+    <array name="common_greetings_values_list">
+        <item>Witaj %s</item>
+        <item>Jak może być jeszcze lepiej %s?</item>
+        <item>%s, co dobrego dzisiaj przyszło do Ciebie?</item>
+        <item>Jak się czujesz %s?</item>
+    </array>
 
 </resources>

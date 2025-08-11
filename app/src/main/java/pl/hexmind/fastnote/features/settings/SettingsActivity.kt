@@ -1,16 +1,29 @@
-package pl.hexmind.fastnote.settings
+package pl.hexmind.fastnote.features.settings
 
-import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import android.provider.OpenableColumns
+import android.view.View
+import android.widget.GridLayout
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.launch
 import pl.hexmind.fastnote.R
 import pl.hexmind.fastnote.databinding.ActivitySettingsBinding
 import pl.hexmind.fastnote.features.main.CoreActivity
-import pl.hexmind.fastnote.features.settings.AppSettingsStorage
+import pl.hexmind.fastnote.features.main.MainActivity
+import pl.hexmind.fastnote.services.DomainIconLoader
+import pl.hexmind.fastnote.services.IconPickerAdapter
 
 /**
  * Activity providing personalized settings for the memory app
@@ -18,14 +31,15 @@ import pl.hexmind.fastnote.features.settings.AppSettingsStorage
 class SettingsActivity : CoreActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
-    private lateinit var appSettingsStorage: AppSettingsStorage // TODO: ? moze przeniesc do CoreActivit
+    private lateinit var appSettingsStorage: AppSettingsStorage
+
     private var selectedAudioUri: Uri? = null
 
     // Activity result launcher for audio file selection
     private val audioPickerLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == RESULT_OK) {
             result.data?.data?.let { uri ->
                 handleSelectedAudioFile(uri)
             }
@@ -57,6 +71,79 @@ class SettingsActivity : CoreActivity() {
         binding.btnSaveSettings.setOnClickListener {
             saveSettings()
         }
+
+        val gridLayout = findViewById<GridLayout>(R.id.domains_grid_layout)
+        createDomainButtons(gridLayout)
+    }
+
+    private fun createDomainButtons(gridLayout: GridLayout) {
+        val titles = resources.getStringArray(R.array.settings_domains_default_names_list)
+        val iconsLoader = DomainIconLoader(this)
+
+        // ! Async loading
+        lifecycleScope.launch {
+            try {
+                val availableIcons = iconsLoader.getAvailableIcons()
+
+                // Prepare icon numbers for each button
+                val iconNumbers = titles.mapIndexed { index, _ ->
+                    if (index < availableIcons.size) availableIcons[index]
+                    else availableIcons.randomOrNull() ?: 0
+                }
+
+                // Batch load all icons at once for better performance
+                val loadedIcons = iconsLoader.loadIconsBatch(iconNumbers)
+
+                // Create buttons with loaded icons
+                titles.forEachIndexed { index, title ->
+                    val buttonView = layoutInflater.inflate(R.layout.item_settings_domain, gridLayout, false)
+
+                    buttonView.findViewById<TextView>(R.id.domain_text).text = title
+                    val iconView = buttonView.findViewById<ImageView>(R.id.domain_icon)
+
+                    val iconNumber = iconNumbers[index]
+                    val drawable = loadedIcons[iconNumber]
+
+                    when {
+                        drawable != null -> {
+                            iconView.setImageDrawable(drawable)
+                        }
+                        else -> {
+                            iconView.setImageResource(R.drawable.ic_domain_default)
+                        }
+                    }
+
+                    buttonView.setOnClickListener {
+                        onDomainButtonClick(index, title, iconNumber)
+                    }
+
+                    gridLayout.addView(buttonView)
+                }
+
+            } catch (e: Exception) {
+                showErrorMessage(getString(R.string.settings_domains_loading_error))
+            }
+        }
+    }
+
+    private fun showErrorMessage(message: String) {
+        findViewById<TextView>(R.id.tv_domains_state_loading_info)?.let { errorView ->
+            errorView.text = message
+            errorView.visibility = View.VISIBLE
+            errorView.setTextColor(ContextCompat.getColor(this, R.color.error_red))
+        }
+    }
+
+    private fun onDomainButtonClick(index: Int, title: String, currentIconNumber: Int) {
+        showIconPickerDialog(currentIconNumber) { newIconNumber ->
+            // Update the domain button with new icon
+            updateDomainButtonIcon(index, newIconNumber)
+            saveDomainIconPreferences(index, title, currentIconNumber)
+        }
+    }
+
+    private fun saveDomainIconPreferences(index: Int, title: String, currentIconNumber: Int){
+        // TODO: Zapis do bazy danych a nie w preferences -> użyj DomainDTO
     }
 
     /**
@@ -112,7 +199,7 @@ class SettingsActivity : CoreActivity() {
      */
     private fun showAudioErrorMessage(message: String) {
         binding.tvSelectedFile.text = message
-        binding.tvSelectedFile.setTextColor(getColor(android.R.color.holo_red_dark))
+        binding.tvSelectedFile.setTextColor(getColor(R.color.error_red))
     }
 
     /**
@@ -182,7 +269,7 @@ class SettingsActivity : CoreActivity() {
                 try {
                     // Try to get display name from content resolver
                     val displayName = contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-                        val nameIndex = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+                        val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                         if (nameIndex >= 0 && cursor.moveToFirst()) {
                             cursor.getString(nameIndex)
                         } else null
@@ -277,7 +364,7 @@ class SettingsActivity : CoreActivity() {
             "content" -> {
                 try {
                     contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-                        val nameIndex = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+                        val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                         if (nameIndex >= 0 && cursor.moveToFirst()) {
                             cursor.getString(nameIndex)
                         } else null
@@ -295,7 +382,9 @@ class SettingsActivity : CoreActivity() {
      */
     private fun saveSettings() {
         // Save app name
-        val appName = binding.etYourName.text?.toString()?.trim() ?: ""
+        val appName = binding.etYourName.text?.toString()?.trim()
+            ?.takeIf { it.isNotEmpty() }
+            ?: getString(R.string.main_greetings_header_default)
         appSettingsStorage.setYourName(appName)
 
         // Save audio file path only if accessible
@@ -310,15 +399,91 @@ class SettingsActivity : CoreActivity() {
 
         // Save phase names with defaults
         val phase1 = binding.etPhase1.text?.toString()?.trim()
+            ?.takeIf { it.isNotEmpty() }
             ?: getString(R.string.common_phase1_default_name)
+        binding.etPhase1.setText(phase1)
+
         val phase2 = binding.etPhase2.text?.toString()?.trim()
+            ?.takeIf { it.isNotEmpty() }
             ?: getString(R.string.common_phase2_default_name)
+        binding.etPhase2.setText(phase2)
+
         val phase3 = binding.etPhase3.text?.toString()?.trim()
+            ?.takeIf { it.isNotEmpty() }
             ?: getString(R.string.common_phase3_default_name)
+        binding.etPhase3.setText(phase3)
 
         appSettingsStorage.setPhaseNames(phase1, phase2, phase3)
 
         showShortToast(R.string.common_info_changes_saved)
-        finish()
+
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
+
+    /**
+     * Show icon picker dialog with 3 columns and vertical scrolling
+     */
+    private fun showIconPickerDialog(currentIconNumber: Int, onIconSelected: (Int) -> Unit) {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_icon_picker, null)
+        val recyclerView = dialogView.findViewById<RecyclerView>(R.id.icons_recycler)
+        val loadingIndicator = dialogView.findViewById<ProgressBar>(R.id.loading_icons)
+
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(getString(R.string.common_activity_tile_placeholder))
+            .setView(dialogView)
+            .setNegativeButton(getString(R.string.common_btn_cancel), null)
+            .create()
+
+        // Fixed 3 columns with vertical scrolling
+        recyclerView.layoutManager = GridLayoutManager(this, 3)
+
+        lifecycleScope.launch {
+            try {
+                loadingIndicator.visibility = View.VISIBLE
+                recyclerView.visibility = View.GONE
+
+                val domainsIconsLoader = DomainIconLoader(this@SettingsActivity)
+                val availableIcons = domainsIconsLoader.getAvailableIcons()
+                val iconsMap = domainsIconsLoader.loadIconsBatch(availableIcons)
+
+                loadingIndicator.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
+
+                val adapter = IconPickerAdapter(
+                    icons = availableIcons,
+                    iconsMap = iconsMap,
+                    selectedIconNumber = currentIconNumber
+                ) { selectedIconNumber ->
+                    onIconSelected(selectedIconNumber)
+                    dialog.dismiss()
+                }
+
+                recyclerView.adapter = adapter
+
+            } catch (e: Exception) {
+                loadingIndicator.visibility = View.GONE
+            }
+        }
+
+        dialog.show()
+    }
+
+    /**
+     * Helper method to update button icon after selection
+     */
+    private fun updateDomainButtonIcon(buttonIndex: Int, newIconNumber: Int) {
+        lifecycleScope.launch {
+            val domainsIconsLoader = DomainIconLoader(this@SettingsActivity)
+            val drawable = domainsIconsLoader.loadIcon(newIconNumber)
+
+            // Find the button in GridLayout and update its icon
+            val gridLayout = findViewById<GridLayout>(R.id.domains_grid_layout)
+            if (buttonIndex < gridLayout.childCount) {
+                val buttonView = gridLayout.getChildAt(buttonIndex)
+                val iconView = buttonView.findViewById<ImageView>(R.id.domain_icon)
+                iconView.setImageDrawable(drawable)
+            }
+        }
     }
 }

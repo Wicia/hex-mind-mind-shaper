@@ -104,15 +104,6 @@ class AppSettingsStorage(private val context: Context) {
     // === PHASE NAMES ===
 
     /**
-     * Saves phase 1 custom name
-     */
-    fun setPhaseGatheringAlias(name: String) {
-        sharedPreferences.edit {
-            putString(PARAM_PHASE_GATHERING_ALIAS, name.trim())
-        }
-    }
-
-    /**
      * Retrieves phase 1 name with fallback to default
      */
     fun getPhaseGatheringAlias(defaultName: String = "Faza 1"): String {
@@ -120,28 +111,10 @@ class AppSettingsStorage(private val context: Context) {
     }
 
     /**
-     * Saves phase 2 custom name
-     */
-    fun setPhaseChoosingAlias(name: String) {
-        sharedPreferences.edit {
-            putString(PARAM_PHASE_CHOOSING_ALIAS, name.trim())
-        }
-    }
-
-    /**
      * Retrieves phase 2 name with fallback to default
      */
     fun getPhaseChoosingAlias(defaultName: String = "Faza 2"): String {
         return sharedPreferences.getString(PARAM_PHASE_CHOOSING_ALIAS, defaultName) ?: defaultName
-    }
-
-    /**
-     * Saves phase 3 custom name
-     */
-    fun setPhaseSilentAlias(name: String) {
-        sharedPreferences.edit {
-            putString(PARAM_PHASE_SILENT_ALIAS, name.trim())
-        }
     }
 
     /**

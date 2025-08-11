@@ -13,7 +13,8 @@ import pl.hexmind.fastnote.features.capture.ThoughtsCaptureActivity
 import pl.hexmind.fastnote.features.capture.models.InitialThoughtType
 import pl.hexmind.fastnote.features.carousel.ThoughtCarouselActivity
 import pl.hexmind.fastnote.features.settings.AppSettingsStorage
-import pl.hexmind.fastnote.settings.SettingsActivity
+import pl.hexmind.fastnote.services.GreetingsService
+import pl.hexmind.fastnote.features.settings.SettingsActivity
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
@@ -52,14 +53,24 @@ class MainActivity : CoreActivity(), GestureDetector.OnGestureListener {
         fab_drawing_type = findViewById(R.id.fab_drawing_type)
         fab_photo_type = findViewById(R.id.fab_photo_type)
 
-        header_greetings = findViewById(R.id.tv_greetings)
-        header_greetings.text = appSettingsStorage.getYourName()
+        setupGreetingsTextView()
 
         // Initially hide all menu buttons
         listOf(fab_note_type, fab_voice_type, fab_drawing_type, fab_photo_type).forEach { fab ->
             fab.hide()
             fab.alpha = 0f
         }
+    }
+
+    //TODO: moze to dac do klasy Service -> przekazac dodatkowy parametr currentTemplate?
+    private fun setupGreetingsTextView(){
+        header_greetings = findViewById(R.id.tv_greetings)
+        val currentGreetingsText = header_greetings.text.toString()
+        var newGreetingsText : String
+        do {
+            newGreetingsText = GreetingsService.getGreetingsString(this, appSettingsStorage.getYourName())
+        } while (currentGreetingsText == newGreetingsText)
+        header_greetings.text = newGreetingsText
     }
 
     private fun setupClickListeners() {
