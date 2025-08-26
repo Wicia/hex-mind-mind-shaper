@@ -13,21 +13,21 @@ import java.util.Date
     tableName = "THOUGHTS",
     foreignKeys = [
         ForeignKey(
-            entity = AreaEntity::class,
+            entity = DomainEntity::class,
             parentColumns = ["id"],
-            childColumns = ["area_id"],
+            childColumns = ["domain_id"],
             onDelete = ForeignKey.SET_NULL // ! When child entity is deleted = don't delete this (parent) entity
         )
     ],
-    indices = [Index(value = ["area_id"])]
+    indices = [Index(value = ["domain_id"])]
 )
 data class ThoughtEntity(
 
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
 
-    @ColumnInfo(name = "area_id")
-    val areaId: Int?,
+    @ColumnInfo(name = "domain_id")
+    val domainId: Int?,
 
     @ColumnInfo(name = "thread")
     val thread: String? = null,
@@ -41,7 +41,3 @@ data class ThoughtEntity(
     @ColumnInfo(name = "priority")
     val priority: Int = 3
 )
-{
-    val areaIdentifier: AreaIdentifier?
-        get() = areaId?.let { AreaIdentifier.fromIntOrDefault(it) }
-}

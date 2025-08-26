@@ -1,7 +1,7 @@
 package pl.hexmind.fastnote.data.mappers
 
 import androidx.room.TypeConverter
-import pl.hexmind.fastnote.data.models.AreaIdentifier
+import pl.hexmind.fastnote.data.models.DomainIdentifier
 import java.util.Date
 
 class CommonTypesConverters {
@@ -14,16 +14,5 @@ class CommonTypesConverters {
     @TypeConverter
     fun dateToTimestamp(date: Date?): Long? {
         return date?.time
-    }
-
-    @TypeConverter
-    fun fromAreaIdentifier(areaIdentifier: AreaIdentifier): Int {
-        return areaIdentifier.value
-    }
-
-    @TypeConverter
-    fun toAreaIdentifier(areaIdentifier: Int): AreaIdentifier {
-        return AreaIdentifier.fromInt(areaIdentifier) // Will throw exception if invalid
-        // Or use: return Priority.fromIntOrDefault(value) // Safe with default
     }
 }

@@ -25,6 +25,7 @@
     </queries>
 
     <application
+        android:name=".ApplicationMain"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -35,7 +36,7 @@
         android:theme="@style/Theme.FastNote">
 
         <activity
-            android:name=".features.main.MainActivity"
+            android:name=".activities.main.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.FastNote.NoActionBar">
             <intent-filter>
@@ -45,27 +46,27 @@
         </activity>
 
         <activity
-            android:name=".features.details.ThoughtDetailsActivity"
+            android:name=".activities.details.ThoughtDetailsActivity"
             android:exported="false"
-            android:parentActivityName=".features.main.MainActivity"
+            android:parentActivityName=".activities.main.MainActivity"
             android:theme="@style/Theme.FastNote.NoActionBar" />
 
         <activity
-            android:name=".features.capture.ThoughtsCaptureActivity"
+            android:name=".activities.capture.ThoughtsCaptureActivity"
             android:exported="false"
-            android:parentActivityName=".features.main.MainActivity"
+            android:parentActivityName=".activities.main.MainActivity"
             android:theme="@style/Theme.FastNote.NoActionBar" />
 
         <activity
-            android:name=".features.carousel.ThoughtCarouselActivity"
+            android:name=".activities.carousel.ThoughtCarouselActivity"
             android:exported="false"
             android:theme="@style/Theme.FastNote.NoActionBar" />
 
         <activity
-            android:name=".features.settings.SettingsActivity"
+            android:name=".activities.settings.SettingsActivity"
             android:exported="true"
             android:theme="@style/Theme.FastNote.NoActionBar"
-            android:parentActivityName=".features.main.MainActivity"/>
+            android:parentActivityName=".activities.main.MainActivity"/>
 
     </application>
 

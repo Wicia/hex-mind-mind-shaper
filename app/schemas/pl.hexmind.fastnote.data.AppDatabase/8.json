@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 7,
-    "identityHash": "d8cf2bff0f4ca8d99da53979ac6fca96",
+    "version": 8,
+    "identityHash": "c783a37d9faf1b1286491dda927c16c9",
     "entities": [
       {
         "tableName": "THOUGHTS",
@@ -76,7 +76,7 @@
       },
       {
         "tableName": "DOMAINS",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `assets_icon_id` TEXT NOT NULL, `custom_name` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `assets_icon_id` INTEGER NOT NULL, `custom_name` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -87,7 +87,7 @@
           {
             "fieldPath": "assetsIconId",
             "columnName": "assets_icon_id",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -106,7 +106,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd8cf2bff0f4ca8d99da53979ac6fca96')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c783a37d9faf1b1286491dda927c16c9')"
     ]
   }
 }

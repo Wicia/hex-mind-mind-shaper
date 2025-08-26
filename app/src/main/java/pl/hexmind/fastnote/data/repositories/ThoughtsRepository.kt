@@ -1,27 +1,27 @@
 package pl.hexmind.fastnote.data.repositories
 
-import pl.hexmind.fastnote.data.models.AreaIdentifier
-import pl.hexmind.fastnote.data.models.AreaEntity
+import pl.hexmind.fastnote.data.models.DomainIdentifier
 import pl.hexmind.fastnote.data.models.ThoughtEntity
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ThoughtsRepository (
-    private val thoughtsDAO: ThoughtsDAO,
-    private val areaDAO: AreaDAO) {
+@Singleton
+class ThoughtsRepository @Inject constructor (
+    private val thoughtsDAO: ThoughtsDAO) {
 
-    fun getAllThoughtsWithArea() = thoughtsDAO.getAllThoughtsWithArea()
+    suspend fun getThoughtById(id: Long): ThoughtEntity? {
+        return thoughtsDAO.getById(id)
+    }
 
-    suspend fun createThoughtWithExistingArea(
-        essence: String,
-        areaId: AreaIdentifier,
-        priority: Int = 3,
-        thread : String? = null
-    ): Long {
-        val thought = ThoughtEntity(
-            essence = essence,
-            areaId = areaId.value,
-            thread = thread,
-            priority = priority
-        )
-        return thoughtsDAO.insert(thought)
+    suspend fun insertThought(thought: ThoughtEntity) {
+        thoughtsDAO.insert(thought)
+    }
+
+    suspend fun updateThought(thought: ThoughtEntity) {
+        thoughtsDAO.update(thought)
+    }
+
+    suspend fun deleteThought(thought: ThoughtEntity) {
+        thoughtsDAO.delete(thought)
     }
 }
