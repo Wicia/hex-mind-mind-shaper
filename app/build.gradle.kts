@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    kotlin("kapt")
+    alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
 
@@ -18,14 +18,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += mapOf(
-                    "room.schemaLocation" to "$projectDir/schemas",
-                    "room.incremental" to "true",
-                    "room.expandProjection" to "true"
-                )
-            }
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+            arg("room.incremental", "true")
+            arg("room.expandProjection", "true")
         }
     }
 
@@ -70,16 +66,6 @@ android {
     packaging {
         resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
     }
-
-    // Optymalizacja kapt dla lepszej wydajności
-    kapt {
-        correctErrorTypes = true
-        useBuildCache = true
-        mapDiagnosticLocations = true
-        javacOptions {
-            option("-Xmaxerrs", 500)
-        }
-    }
 }
 
 dependencies {
@@ -96,13 +82,13 @@ dependencies {
 
     // Dependency Injection - Hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     // Navigation
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
-    // Compose BOM - zarządza wersjami wszystkich bibliotek Compose
+    // Compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.material3)
@@ -113,7 +99,7 @@ dependencies {
     // Database - Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 
     // Settings & Preferences
     implementation(libs.androidx.preference.ktx)
@@ -125,6 +111,9 @@ dependencies {
 
     // Permissions
     implementation(libs.dexter)
+
+    // Logging - Timber
+    implementation(libs.timber)
 
     // External Libraries
     implementation(libs.androidsvg)

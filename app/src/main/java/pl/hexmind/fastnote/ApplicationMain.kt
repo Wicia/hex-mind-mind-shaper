@@ -7,6 +7,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @HiltAndroidApp
 class ApplicationMain : Application() {
@@ -16,6 +17,11 @@ class ApplicationMain : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        // Debug build - show logs
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
 
         // Initialize database on app startup
         CoroutineScope(Dispatchers.IO).launch {

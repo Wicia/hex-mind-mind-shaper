@@ -3,15 +3,19 @@
 #===================================================================================================
 [versions]
 
-#  Build Tools & Core
+# Build Tools & Core
 agp = "8.6.1"
 kotlin = "1.9.25"
 coreKtx = "1.15.0"
+ksp = "1.9.25-1.0.20"
 
 #  Testing
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
+
+# Logging
+timber = "5.0.1"
 
 #  UI & Layout
 appcompat = "1.7.0"
@@ -23,7 +27,7 @@ speeddial = "3.3.0"
 
 #  Lifecycle & Architecture
 lifecycle = "2.8.7"
-hilt = "2.48"
+hilt = "2.52"
 
 #  Navigation
 navigation = "2.8.5"
@@ -87,6 +91,9 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 # Preferences
 androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preference" }
 
+# Logging
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+
 # External Libraries
 dexter = { group = "com.karumi", name = "dexter", version.ref = "dexter" }
 androidsvg = { group = "com.caverock", name = "androidsvg-aar", version.ref = "androidsvg" }
@@ -105,3 +112,4 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
