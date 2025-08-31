@@ -6,9 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-
 import pl.hexmind.fastnote.data.models.DomainEntity
-import pl.hexmind.fastnote.data.models.DomainIdentifier
 
 @Dao
 interface DomainDAO {

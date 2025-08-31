@@ -17,17 +17,24 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.fastnote.R
-import pl.hexmind.fastnote.databinding.ActivitySettingsBinding
 import pl.hexmind.fastnote.activities.main.CoreActivity
 import pl.hexmind.fastnote.activities.main.MainActivity
+import pl.hexmind.fastnote.databinding.ActivitySettingsBinding
 import pl.hexmind.fastnote.services.AppSettingsStorage
+import pl.hexmind.fastnote.services.DomainsService
+import javax.inject.Inject
 
 /**
  * Activity providing personalized settings for the memory app
  */
+@AndroidEntryPoint
 class SettingsActivity : CoreActivity() {
+
+    @Inject
+    lateinit var domainService : DomainsService
 
     private lateinit var binding: ActivitySettingsBinding
     private lateinit var appSettingsStorage: AppSettingsStorage

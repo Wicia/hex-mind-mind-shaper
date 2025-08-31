@@ -38,9 +38,10 @@
     <string name="common_phase2_default_name">Wybierania</string>
     <string name="common_phase3_default_name">Odpoczynku</string>
 
-    <!-- TODO: To be replaced later -->
+    <!-- PLACEHOLDERS AND TODO: To be replaced later -->
     <string name="common_placeholder_accessibility_content_desc">PLACEHOLDER</string>
     <string name="common_activity_tile_placeholder">PLACEHOLDER</string>
+    <string name="common_domain_name_placeholder">Nieznana dziedzina!</string>
 
     <!-- ====================================== -->
     <!-- ACTIVITY: MAIN -->
@@ -121,6 +122,8 @@
 
     <string name="settings_domains_loading_error">Błąd podczas ładowania ikon domen</string>
 
+    <string name="settings_domains_domain_name">Twoja nazwa dla Dziedziny</string>
+
     <string-array name="settings_domains_default_names_list">
         <item>Bóg, Sens, Pasja</item>
         <item>Miłość i Wewnętrzne Dziecko</item>
@@ -135,6 +138,7 @@
 
     <array name="common_greetings_values_list">
         <item>Witaj %s</item>
+        <item>Cześć %s</item>
         <item>Jak może być jeszcze lepiej %s?</item>
         <item>%s, co dobrego dzisiaj przyszło do Ciebie?</item>
         <item>Jak się czujesz %s?</item>
