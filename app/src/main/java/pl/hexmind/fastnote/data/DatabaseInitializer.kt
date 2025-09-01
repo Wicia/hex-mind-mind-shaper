@@ -14,14 +14,14 @@ import javax.inject.Singleton
 @Singleton
 class DatabaseInitializer @Inject constructor(
     private val domainDAO: DomainDAO,
-    @ApplicationContext private val resContext : Context
+    @ApplicationContext private val context : Context
 ) {
 
     // Initialize database with default domains if needed
     suspend fun initializeIfNeeded() {
         if (domainDAO.getCount() > 0) return
 
-        val defaultDomains = resContext.resources.getStringArray(R.array.settings_domains_default_names_list)
+        val defaultDomains = context.resources.getStringArray(R.array.settings_domains_default_names_list)
         val entities: MutableList<DomainEntity> = mutableListOf()
 
         for (domainId in defaultDomains.indices) {

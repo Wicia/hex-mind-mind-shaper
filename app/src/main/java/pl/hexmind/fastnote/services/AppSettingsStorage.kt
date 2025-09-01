@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.net.Uri
 import androidx.core.content.edit
 import androidx.core.net.toUri
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,7 +13,9 @@ import javax.inject.Singleton
  * Service class for managing FastNote application settings and preferences
  */
 @Singleton
-class AppSettingsStorage @Inject constructor(private val context: Context) {
+class AppSettingsStorage @Inject constructor(
+    @ApplicationContext private val context : Context
+) {
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
         SETTINGS, Context.MODE_PRIVATE
@@ -123,21 +126,6 @@ class AppSettingsStorage @Inject constructor(private val context: Context) {
             putString(PARAM_PHASE_GATHERING_ALIAS, phase1.trim())
             putString(PARAM_PHASE_CHOOSING_ALIAS, phase2.trim())
             putString(PARAM_PHASE_SILENT_ALIAS, phase3.trim())
-        }
-    }
-
-    // === UTILITY METHODS ===
-
-    /**
-     * Checks if URI is still accessible by trying to query it
-     */
-    fun isUriAccessible(uri: Uri): Boolean {
-        return try {
-            context.contentResolver.query(uri, null, null, null, null)?.use {
-                it.moveToFirst()
-            } ?: false
-        } catch (e: Exception) {
-            false
         }
     }
 }

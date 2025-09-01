@@ -25,6 +25,7 @@ import pl.hexmind.fastnote.activities.main.MainActivity
 import pl.hexmind.fastnote.databinding.ActivitySettingsBinding
 import pl.hexmind.fastnote.services.AppSettingsStorage
 import pl.hexmind.fastnote.services.DomainsService
+import pl.hexmind.fastnote.services.MediaStorageService
 import javax.inject.Inject
 
 /**
@@ -36,8 +37,13 @@ class SettingsActivity : CoreActivity() {
     @Inject
     lateinit var domainService : DomainsService
 
+    @Inject
+    lateinit var appSettingsStorage: AppSettingsStorage
+
+    @Inject
+    lateinit var mediaStorageService : MediaStorageService
+
     private lateinit var binding: ActivitySettingsBinding
-    private lateinit var appSettingsStorage: AppSettingsStorage
 
     private var selectedAudioUri: Uri? = null
 
@@ -56,9 +62,6 @@ class SettingsActivity : CoreActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // Initialize AppSettingsStorage
-        appSettingsStorage = AppSettingsStorage(this)
 
         setupUI()
         loadSavedSettings()
@@ -104,18 +107,19 @@ class SettingsActivity : CoreActivity() {
                 titles.forEachIndexed { index, title ->
                     val buttonView = layoutInflater.inflate(R.layout.item_settings_domain, gridLayout, false)
 
-                    buttonView.findViewById<TextView>(R.id.domain_text).text = title
-                    val iconView = buttonView.findViewById<ImageView>(R.id.domain_icon)
+                    val ivDomainName = buttonView.findViewById<TextView>(R.id.domain_text)
+                    ivDomainName.text = title
+
+                    val ivDomainIcon = buttonView.findViewById<ImageView>(R.id.domain_icon)
 
                     val iconNumber = iconNumbers[index]
                     val drawable = loadedIcons[iconNumber]
-
                     when {
                         drawable != null -> {
-                            iconView.setImageDrawable(drawable)
+                            ivDomainIcon.setImageDrawable(drawable)
                         }
                         else -> {
-                            iconView.setImageResource(R.drawable.ic_domain_default)
+                            ivDomainIcon.setImageResource(R.drawable.ic_domain_default)
                         }
                     }
 
@@ -166,7 +170,7 @@ class SettingsActivity : CoreActivity() {
         if (audioUri != null) {
             try {
                 // Test if URI is still accessible
-                if (appSettingsStorage.isUriAccessible(audioUri)) {
+                if (mediaStorageService.isUriAccessible(audioUri)) {
                     selectedAudioUri = audioUri
                     updateAudioFileDisplay(audioUri)
                 } else {
@@ -263,104 +267,8 @@ class SettingsActivity : CoreActivity() {
      * Update audio file display with filename, extension and folder
      */
     private fun updateAudioFileDisplay(uri: Uri) {
-        val fileInfo = getDetailedFileInfo(uri)
+        val fileInfo = mediaStorageService.getDetailedFileInfo(uri)
         binding.tvSelectedFile.text = fileInfo
-    }
-
-    /**
-     * Get detailed file information: filename.extension in /folder/path
-     */
-    private fun getDetailedFileInfo(uri: Uri): String {
-        return when (uri.scheme) {
-            "content" -> {
-                try {
-                    // Try to get display name from content resolver
-                    val displayName = contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-                        val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                        if (nameIndex >= 0 && cursor.moveToFirst()) {
-                            cursor.getString(nameIndex)
-                        } else null
-                    }
-
-                    // Try to get folder path for Documents provider
-                    val folderPath = if (DocumentsContract.isDocumentUri(this, uri)) {
-                        try {
-                            val docId = DocumentsContract.getDocumentId(uri)
-                            when {
-                                uri.authority == "com.android.providers.media.documents" -> {
-                                    // Media documents - try to get folder from MediaStore
-                                    getMediaFolderPath(docId)
-                                }
-                                uri.authority == "com.android.providers.downloads.documents" -> {
-                                    "Downloads"
-                                }
-                                uri.authority?.contains("externalstorage") == true -> {
-                                    // External storage documents
-                                    val pathParts = docId.split(":")
-                                    if (pathParts.size > 1) {
-                                        val relativePath = pathParts[1]
-                                        val folder = relativePath.substringBeforeLast("/", "")
-                                        if (folder.isNotEmpty()) "/$folder" else ""
-                                    } else ""
-                                }
-                                else -> ""
-                            }
-                        } catch (e: Exception) {
-                            ""
-                        }
-                    } else ""
-
-                    val fileName = displayName ?: "unknown_file.mp3"
-                    if (folderPath.isNotEmpty()) {
-                        "$fileName"
-                    } else {
-                        fileName
-                    }
-
-                } catch (e: Exception) {
-                    getString(R.string.unknown_audio_file)
-                }
-            }
-            "file" -> {
-                val path = uri.path ?: ""
-                val fileName = path.substringAfterLast("/")
-                val folderPath = path.substringBeforeLast("/")
-                if (folderPath.isNotEmpty() && fileName.isNotEmpty()) {
-                    "$fileName\n${getString(R.string.in_folder)}: $folderPath"
-                } else {
-                    fileName.ifEmpty { getString(R.string.unknown_file) }
-                }
-            }
-            else -> getString(R.string.unknown_audio_file)
-        }
-    }
-
-    /**
-     * Get folder path from MediaStore for media documents
-     */
-    private fun getMediaFolderPath(docId: String): String {
-        return try {
-            val id = docId.split(":")[1]
-            val projection = arrayOf(MediaStore.Audio.Media.DATA)
-            val selection = MediaStore.Audio.Media._ID + "=?"
-            val selectionArgs = arrayOf(id)
-
-            contentResolver.query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                projection,
-                selection,
-                selectionArgs,
-                null
-            )?.use { cursor ->
-                if (cursor.moveToFirst()) {
-                    val dataIndex = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
-                    val fullPath = cursor.getString(dataIndex)
-                    fullPath?.substringBeforeLast("/")?.substringAfterLast("/") ?: ""
-                } else ""
-            } ?: ""
-        } catch (e: Exception) {
-            ""
-        }
     }
 
     /**
@@ -396,7 +304,7 @@ class SettingsActivity : CoreActivity() {
 
         // Save audio file path only if accessible
         selectedAudioUri?.let { uri ->
-            if (appSettingsStorage.isUriAccessible(uri)) {
+            if (mediaStorageService.isUriAccessible(uri)) {
                 appSettingsStorage.setWelcomeAudioUri(uri)
             } else {
                 appSettingsStorage.clearWelcomeAudio()
