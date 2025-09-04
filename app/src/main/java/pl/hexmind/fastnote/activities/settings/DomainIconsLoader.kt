@@ -11,11 +11,15 @@ import java.io.IOException
 import pl.hexmind.fastnote.R
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.drawable.toDrawable
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Loader for icons organized by domains in assets/domains/ folder structure
  */
-class DomainIconLoader(private val context: Context) {
+@Singleton
+class DomainIconLoader @Inject constructor(@ApplicationContext private val context: Context) {
 
     private val iconCache = mutableMapOf<Int, Drawable>()
     private var availableIcons: List<Int>? = null

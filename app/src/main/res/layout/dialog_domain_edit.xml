@@ -16,7 +16,7 @@
         app:hintTextColor="#FFAF7A">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etDomainName"
+            android:id="@+id/et_domain_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textCapWords"

@@ -9,7 +9,7 @@
 
     <!-- Bigger icon for 3-column layout -->
     <ImageView
-        android:id="@+id/icon_image"
+        android:id="@+id/iv_icon"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_gravity="center"
@@ -18,7 +18,7 @@
 
     <!-- Selection indicator -->
     <View
-        android:id="@+id/selection_indicator"
+        android:id="@+id/v_selection_indicator"
         android:layout_width="10dp"
         android:layout_height="10dp"
         android:layout_gravity="top|end"

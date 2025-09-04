@@ -34,8 +34,8 @@ class IconPickerAdapter(
     override fun getItemCount(): Int = icons.size
 
     inner class IconViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val iconView: ImageView = itemView.findViewById(R.id.icon_image)
-        private val selectionIndicator: View = itemView.findViewById(R.id.selection_indicator)
+        private val iconView: ImageView = itemView.findViewById(R.id.iv_icon)
+        private val selectionIndicator: View = itemView.findViewById(R.id.v_selection_indicator)
 
         fun bind(iconNumber: Int, drawable: Drawable?, isSelected: Boolean) {
             // Set icon with fallback

@@ -4,8 +4,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.DocumentsContract
-import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.view.View
 import android.widget.GridLayout
@@ -17,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.fastnote.R
@@ -26,6 +25,7 @@ import pl.hexmind.fastnote.databinding.ActivitySettingsBinding
 import pl.hexmind.fastnote.services.AppSettingsStorage
 import pl.hexmind.fastnote.services.DomainsService
 import pl.hexmind.fastnote.services.MediaStorageService
+import pl.hexmind.fastnote.services.dto.DomainDTO
 import javax.inject.Inject
 
 /**
@@ -42,6 +42,9 @@ class SettingsActivity : CoreActivity() {
 
     @Inject
     lateinit var mediaStorageService : MediaStorageService
+
+    @Inject
+    lateinit var domainIconsLoader : DomainIconLoader
 
     private lateinit var binding: ActivitySettingsBinding
 
@@ -82,49 +85,26 @@ class SettingsActivity : CoreActivity() {
         }
 
         val gridLayout = findViewById<GridLayout>(R.id.domains_grid_layout)
-        createDomainButtons(gridLayout)
+        initDomainButtons(gridLayout)
     }
 
-    private fun createDomainButtons(gridLayout: GridLayout) {
-        val titles = resources.getStringArray(R.array.settings_domains_default_names_list)
-        val iconsLoader = DomainIconLoader(this)
-
-        // ! Async loading
+    private fun initDomainButtons(gridLayout: GridLayout) {
         lifecycleScope.launch {
+            val titles = domainService.getAllDomains()
+
             try {
-                val availableIcons = iconsLoader.getAvailableIcons()
-
-                // Prepare icon numbers for each button
-                val iconNumbers = titles.mapIndexed { index, _ ->
-                    if (index < availableIcons.size) availableIcons[index]
-                    else availableIcons.randomOrNull() ?: 0
-                }
-
-                // Batch load all icons at once for better performance
-                val loadedIcons = iconsLoader.loadIconsBatch(iconNumbers)
-
                 // Create buttons with loaded icons
-                titles.forEachIndexed { index, title ->
+                titles.forEachIndexed { domainIndex , domainDTO ->
                     val buttonView = layoutInflater.inflate(R.layout.item_settings_domain, gridLayout, false)
 
-                    val ivDomainName = buttonView.findViewById<TextView>(R.id.domain_text)
-                    ivDomainName.text = title
+                    val ivDomainName = buttonView.findViewById<TextView>(R.id.tv_domain_name)
+                    ivDomainName.text = domainDTO.name
 
-                    val ivDomainIcon = buttonView.findViewById<ImageView>(R.id.domain_icon)
-
-                    val iconNumber = iconNumbers[index]
-                    val drawable = loadedIcons[iconNumber]
-                    when {
-                        drawable != null -> {
-                            ivDomainIcon.setImageDrawable(drawable)
-                        }
-                        else -> {
-                            ivDomainIcon.setImageResource(R.drawable.ic_domain_default)
-                        }
-                    }
+                    val ivDomainIcon = buttonView.findViewById<ImageView>(R.id.iv_domain_icon)
+                    ivDomainIcon.setImageDrawable(domainIconsLoader.loadIcon(domainDTO.assetImageId))
 
                     buttonView.setOnClickListener {
-                        onDomainButtonClick(index, title, iconNumber)
+                        onDomainButtonClick(domainIndex, domainDTO)
                     }
 
                     gridLayout.addView(buttonView)
@@ -144,17 +124,11 @@ class SettingsActivity : CoreActivity() {
         }
     }
 
-    private fun onDomainButtonClick(index: Int, title: String, currentIconNumber: Int) {
-        showIconPickerDialog(currentIconNumber) { newIconNumber ->
-            // Update the domain button with new icon
-            updateDomainButtonIcon(index, newIconNumber)
-            saveDomainIconPreferences(index, title, currentIconNumber)
+    private fun onDomainButtonClick(domainTileIndex: Int, currentDomainDTO : DomainDTO) {
+        showIconPickerDialog(currentDomainDTO) { updatedDTO ->
+            updateDomainButtonIcon(domainTileIndex, updatedDTO)
+            lifecycleScope.launch { domainService.updateDomain(dto = updatedDTO) }
         }
-    }
-
-    private fun saveDomainIconPreferences(index: Int, title: String, currentIconNumber: Int){
-
-        // TODO: Zapis do bazy danych a nie w preferences -> użyj DomainDTO
     }
 
     /**
@@ -339,13 +313,13 @@ class SettingsActivity : CoreActivity() {
     /**
      * Show icon picker dialog with 3 columns and vertical scrolling
      */
-    private fun showIconPickerDialog(currentIconNumber: Int, onIconSelected: (Int) -> Unit) {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_icon_picker, null)
+    private fun showIconPickerDialog(currentDomainDTO: DomainDTO, onDTOUpdated: (DomainDTO) -> Unit) {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_domain_edit, null)
+        dialogView.findViewById<TextInputEditText>(R.id.et_domain_name).setText(currentDomainDTO.name)
         val recyclerView = dialogView.findViewById<RecyclerView>(R.id.icons_recycler)
         val loadingIndicator = dialogView.findViewById<ProgressBar>(R.id.loading_icons)
 
         val dialog = AlertDialog.Builder(this)
-            .setTitle(getString(R.string.common_activity_tile_placeholder))
             .setView(dialogView)
             .setNegativeButton(getString(R.string.common_btn_cancel), null)
             .create()
@@ -358,9 +332,8 @@ class SettingsActivity : CoreActivity() {
                 loadingIndicator.visibility = View.VISIBLE
                 recyclerView.visibility = View.GONE
 
-                val domainsIconsLoader = DomainIconLoader(this@SettingsActivity)
-                val availableIcons = domainsIconsLoader.getAvailableIcons()
-                val iconsMap = domainsIconsLoader.loadIconsBatch(availableIcons)
+                val availableIcons = domainIconsLoader.getAvailableIcons()
+                val iconsMap = domainIconsLoader.loadIconsBatch(availableIcons)
 
                 loadingIndicator.visibility = View.GONE
                 recyclerView.visibility = View.VISIBLE
@@ -368,9 +341,10 @@ class SettingsActivity : CoreActivity() {
                 val adapter = IconPickerAdapter(
                     icons = availableIcons,
                     iconsMap = iconsMap,
-                    selectedIconNumber = currentIconNumber
+                    selectedIconNumber = currentDomainDTO.assetImageId
                 ) { selectedIconNumber ->
-                    onIconSelected(selectedIconNumber)
+                    val updatedName = dialogView.findViewById<TextInputEditText>(R.id.et_domain_name)
+                    onDTOUpdated(DomainDTO(id = currentDomainDTO.id, name = updatedName.text.toString(), assetImageId = selectedIconNumber))
                     dialog.dismiss()
                 }
 
@@ -387,17 +361,19 @@ class SettingsActivity : CoreActivity() {
     /**
      * Helper method to update button icon after selection
      */
-    private fun updateDomainButtonIcon(buttonIndex: Int, newIconNumber: Int) {
+    private fun updateDomainButtonIcon(buttonIndex: Int, updatedDomainDTO : DomainDTO) {
         lifecycleScope.launch {
-            val domainsIconsLoader = DomainIconLoader(this@SettingsActivity)
-            val drawable = domainsIconsLoader.loadIcon(newIconNumber)
+            val drawable = domainIconsLoader.loadIcon(updatedDomainDTO.assetImageId)
 
             // Find the button in GridLayout and update its icon
             val gridLayout = findViewById<GridLayout>(R.id.domains_grid_layout)
             if (buttonIndex < gridLayout.childCount) {
                 val buttonView = gridLayout.getChildAt(buttonIndex)
-                val iconView = buttonView.findViewById<ImageView>(R.id.domain_icon)
+                val iconView = buttonView.findViewById<ImageView>(R.id.iv_domain_icon)
                 iconView.setImageDrawable(drawable)
+
+                val textView = buttonView.findViewById<TextView>(R.id.tv_domain_name)
+                textView.text = updatedDomainDTO.name
             }
         }
     }

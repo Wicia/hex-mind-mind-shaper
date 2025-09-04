@@ -14,7 +14,7 @@ import pl.hexmind.fastnote.data.repositories.ThoughtsDAO
         ThoughtEntity::class,
         DomainEntity::class
     ],
-    version = 9,
+    version = 10,
     exportSchema = true
 )
 @TypeConverters(CommonTypesConverters::class)
