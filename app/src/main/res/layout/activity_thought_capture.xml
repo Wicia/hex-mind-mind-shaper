@@ -12,30 +12,45 @@
         android:orientation="vertical">
 
         <!-- Header -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+            app:srcCompat="@drawable/ic_phase_gathering" />
+
         <TextView
             style="@style/TextView_Header_Activity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/capture_main_label"
             android:gravity="center"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="24dp" />
 
         <!-- Short Thought Section (Always visible) -->
-        <EditText
-            style="@style/EditText_Hint"
-            android:id="@+id/editThoughtEssence"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="66dp"
-            android:layout_marginBottom="4dp"
-            android:background="@drawable/shape_edit_text"
-            android:hint="@string/capture_essence_tooltip"
-            android:inputType="textMultiLine"
-            android:maxLines="3"
-            android:padding="12dp" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:boxStrokeColor="#FFAF7A"
+            app:hintTextColor="#FF8C42"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_essence"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_edit_text"
+                android:hint="@string/capture_essence_tooltip"
+                android:inputType="textMultiLine"
+                android:minLines="2"
+                android:padding="12dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/tvWordCount"
+            android:id="@+id/tv_essence_words_info"
             style="@style/TextView_Info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,8 +59,9 @@
             android:layout_marginBottom="24dp" />
 
         <!-- Rich Text Section (Visible when MODE_RICH_TEXT) -->
+
         <LinearLayout
-            android:id="@+id/notesLayout"
+            android:id="@+id/ll_notes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -58,22 +74,29 @@
                 android:text="@string/capture_note_label"
                 android:layout_marginBottom="8dp" />
 
-            <EditText
-                android:id="@+id/richNotes"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:inputType="textMultiLine"
-                android:gravity="top"
-                android:padding="12dp"
-                android:background="@drawable/shape_edit_text"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                />
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_rich_rotes"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:inputType="textMultiLine"
+                    android:gravity="top"
+                    android:padding="12dp"
+                    android:hint="@string/capture_note_hint"
+                    android:background="@drawable/shape_edit_text"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
         <!-- Voice Recording Section (Visible when MODE_VOICE) -->
         <LinearLayout
-            android:id="@+id/voiceRecordingLayout"
+            android:id="@+id/ll_voice_recording"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -94,7 +117,7 @@
                 android:layout_marginBottom="12dp">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnRecordNew"
+                    android:id="@+id/btn_record_new"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -108,7 +131,7 @@
                     app:iconTint="@color/button_icon_primary" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnRecordStopNPlay"
+                    android:id="@+id/btn_record_stop_play"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -124,8 +147,8 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tvRecordingStatus"
                 style="@style/TextView_Info"
+                android:id="@+id/tv_recording_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/capture_voice_tooltip"
@@ -136,7 +159,7 @@
 
         <!-- Save Button -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSave"
+            android:id="@+id/btn_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text='@string/common_btn_save'

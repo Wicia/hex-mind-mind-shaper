@@ -35,17 +35,17 @@ class CaptureViewManager(private val activity: AppCompatActivity) {
     // lateinit var drawingLayout: LinearLayout
     
     fun initializeViews() {
-        editThoughtEssence = activity.findViewById(R.id.editThoughtEssence)
+        editThoughtEssence = activity.findViewById(R.id.et_essence)
         editThoughtEssence.hint = activity.getString(R.string.capture_essence_tooltip, CapturedThoughtValidator.ESSENCE_MAX_WORDS)
 
-        etRichText = activity.findViewById(R.id.richNotes)
-        voiceRecordingLayout = activity.findViewById(R.id.voiceRecordingLayout)
-        makingNotesLayout = activity.findViewById(R.id.notesLayout)
-        btnRecordNew = activity.findViewById(R.id.btnRecordNew)
-        btnRecordStopNPlay = activity.findViewById(R.id.btnRecordStopNPlay)
-        btnSave = activity.findViewById(R.id.btnSave)
-        tvWordCount = activity.findViewById(R.id.tvWordCount)
-        tvRecordingStatus = activity.findViewById(R.id.tvRecordingStatus)
+        etRichText = activity.findViewById(R.id.et_rich_rotes)
+        voiceRecordingLayout = activity.findViewById(R.id.ll_voice_recording)
+        makingNotesLayout = activity.findViewById(R.id.ll_notes)
+        btnRecordNew = activity.findViewById(R.id.btn_record_new)
+        btnRecordStopNPlay = activity.findViewById(R.id.btn_record_stop_play)
+        btnSave = activity.findViewById(R.id.btn_save)
+        tvWordCount = activity.findViewById(R.id.tv_essence_words_info)
+        tvRecordingStatus = activity.findViewById(R.id.tv_recording_status)
     }
     
     fun setupModeVisibility(inputType: InitialThoughtType) {

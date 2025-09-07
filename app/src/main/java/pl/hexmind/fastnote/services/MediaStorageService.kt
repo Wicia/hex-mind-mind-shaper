@@ -125,4 +125,25 @@ class MediaStorageService @Inject constructor(
             ""
         }
     }
+
+    /**
+     * Get simple filename for toast messages
+     */
+    fun getSimpleFileName(uri: Uri): String {
+        return when (uri.scheme) {
+            "content" -> {
+                try {
+                    context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                        val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                        if (nameIndex >= 0 && cursor.moveToFirst()) {
+                            cursor.getString(nameIndex)
+                        } else null
+                    } ?: "audio_file.mp3"
+                } catch (e: Exception) {
+                    "audio_file.mp3"
+                }
+            }
+            else -> uri.lastPathSegment ?: "audio_file.mp3"
+        }
+    }
 }

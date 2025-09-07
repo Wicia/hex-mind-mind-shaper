@@ -43,6 +43,15 @@
     <string name="common_activity_tile_placeholder">PLACEHOLDER</string>
     <string name="common_domain_name_placeholder">Nieznana dziedzina!</string>
 
+    <array name="common_greetings_values_list">
+        <item>Witaj %s</item>
+        <item>Cześć %s</item>
+        <item>Jak może być jeszcze lepiej %s?</item>
+        <item>%s, co dobrego dzisiaj przyszło do Ciebie?</item>
+        <item>Jak się czujesz %s?</item>
+        <item>Co chodzi Ci dzisiaj po głowie %s?</item>
+    </array>
+
     <!-- ====================================== -->
     <!-- ACTIVITY: MAIN -->
     <!-- ====================================== -->
@@ -67,6 +76,7 @@
 
     <!-- Type: Rich Text Note -->
     <string name="capture_note_label">Szczegółowe notatki</string>
+    <string name="capture_note_hint">Pisz, niech palce płoną :)</string>
 
     <!-- Type: Voice Recording -->
     <string name="capture_voice_header">Nagranie głosowe</string>
@@ -125,23 +135,17 @@
     <string name="settings_domains_domain_name">Twoja nazwa dla Dziedziny</string>
 
     <string-array name="settings_domains_default_names_list">
-        <item>Bóg, Sens, Pasja</item>
-        <item>Miłość i Wewnętrzne Dziecko</item>
-        <item>Pisanie</item>
-        <item>Budowanie</item>
-        <item>Programowanie</item>
-        <item>Relacje i Ludzie</item>
-        <item>Praca</item>
-        <item>Odpoczynek</item>
+        <item>Rozwój, Praca i Biznes</item>
+        <item>Finanse, Wolność, Niezależność</item>
+        <item>Ciało, Zdrowie i Energia</item>
+        <item>Umysł, Wyobraźnia i Logika</item>
+        <item>Emocje, Serce i Miłość</item>
+        <item>Dusza, Życie i Śmierć</item>
+        <item>Pasja, Twórczość i Piękno</item>
+        <item>Hobby, Zabawa i Odpoczynek</item>
+        <item>Rodzina, Relacje i Związki</item>
+        <item>Przyroda, Otoczenie i Środowisko</item>
 
     </string-array>
-
-    <array name="common_greetings_values_list">
-        <item>Witaj %s</item>
-        <item>Cześć %s</item>
-        <item>Jak może być jeszcze lepiej %s?</item>
-        <item>%s, co dobrego dzisiaj przyszło do Ciebie?</item>
-        <item>Jak się czujesz %s?</item>
-    </array>
 
 </resources>

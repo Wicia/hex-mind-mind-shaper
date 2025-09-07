@@ -220,7 +220,7 @@ class SettingsActivity : CoreActivity() {
             selectedAudioUri = uri
             updateAudioFileDisplay(uri)
 
-            val fileName = getSimpleFileName(uri)
+            val fileName = mediaStorageService.getSimpleFileName(uri)
             showShortToast(R.string.file_selected, fileName)
 
             // Reset text color to default - TODO: Use custom color from colors.xml
@@ -243,27 +243,6 @@ class SettingsActivity : CoreActivity() {
     private fun updateAudioFileDisplay(uri: Uri) {
         val fileInfo = mediaStorageService.getDetailedFileInfo(uri)
         binding.tvSelectedFile.text = fileInfo
-    }
-
-    /**
-     * Get simple filename for toast messages
-     */
-    private fun getSimpleFileName(uri: Uri): String {
-        return when (uri.scheme) {
-            "content" -> {
-                try {
-                    contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-                        val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                        if (nameIndex >= 0 && cursor.moveToFirst()) {
-                            cursor.getString(nameIndex)
-                        } else null
-                    } ?: "audio_file.mp3"
-                } catch (e: Exception) {
-                    "audio_file.mp3"
-                }
-            }
-            else -> uri.lastPathSegment ?: "audio_file.mp3"
-        }
     }
 
     /**
@@ -315,9 +294,11 @@ class SettingsActivity : CoreActivity() {
      */
     private fun showIconPickerDialog(currentDomainDTO: DomainDTO, onDTOUpdated: (DomainDTO) -> Unit) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_domain_edit, null)
-        dialogView.findViewById<TextInputEditText>(R.id.et_domain_name).setText(currentDomainDTO.name)
         val recyclerView = dialogView.findViewById<RecyclerView>(R.id.icons_recycler)
         val loadingIndicator = dialogView.findViewById<ProgressBar>(R.id.loading_icons)
+        val etDomainName = dialogView.findViewById<TextInputEditText>(R.id.et_domain_name)
+
+        etDomainName.setText(currentDomainDTO.name)
 
         val dialog = AlertDialog.Builder(this)
             .setView(dialogView)
@@ -342,9 +323,10 @@ class SettingsActivity : CoreActivity() {
                     icons = availableIcons,
                     iconsMap = iconsMap,
                     selectedIconNumber = currentDomainDTO.assetImageId
-                ) { selectedIconNumber ->
-                    val updatedName = dialogView.findViewById<TextInputEditText>(R.id.et_domain_name)
-                    onDTOUpdated(DomainDTO(id = currentDomainDTO.id, name = updatedName.text.toString(), assetImageId = selectedIconNumber))
+                )
+                { selectedIconNumber ->
+                    val updatedName = etDomainName.text.toString()
+                    onDTOUpdated(DomainDTO(id = currentDomainDTO.id, name = updatedName, assetImageId = selectedIconNumber))
                     dialog.dismiss()
                 }
 
