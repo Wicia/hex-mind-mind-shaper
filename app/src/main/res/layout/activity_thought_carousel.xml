@@ -7,21 +7,31 @@
     android:background="@color/app_background"
     tools:context=".activities.carousel.ThoughtCarouselActivity">
 
-    <!-- Header smaller for landscape -->
+    <ImageView
+        android:id="@+id/iv_header_image"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:srcCompat="@drawable/ic_activity_header_carousel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/tv_header"
         style="@style/TextView_Header_Activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/thoughts_carousel_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_header_image" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager_thoughts"
+        android:id="@+id/vp_thoughts"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -32,14 +42,14 @@
         android:clipToPadding="false"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/panel_info"
+        app:layout_constraintBottom_toTopOf="@+id/cv_panel_info"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_header" />
 
     <!-- Static info panel -->
     <androidx.cardview.widget.CardView
-        android:id="@+id/panel_info"
+        android:id="@+id/cv_panel_info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
