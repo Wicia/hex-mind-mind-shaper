@@ -8,7 +8,6 @@ import androidx.room.Index
 
 import java.util.Date
 
-// #TODO when project is getting more & more complex -> improve code by adding Thought DTO + mapper
 @Entity(
     tableName = "THOUGHTS",
     foreignKeys = [

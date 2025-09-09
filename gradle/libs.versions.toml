@@ -45,6 +45,10 @@ dexter = "6.2.3"
 androidsvg = "1.4"
 coroutines = "1.8.1"
 
+# Mapping and DTOs
+mapstruct = "1.5.5.Final"
+mapstruct_processor = "1.5.5.Final"
+
 #===================================================================================================
 #  📚 LIBRARIES
 #===================================================================================================
@@ -103,6 +107,10 @@ kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
+# Mappings and DTOS
+mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstruct" }
+mapstruct-processor = { group = "org.mapstruct", name = "mapstruct-processor", version.ref = "mapstruct" }
 
 #===================================================================================================
 #  🔧 PLUGINS

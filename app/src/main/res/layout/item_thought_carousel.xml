@@ -14,9 +14,8 @@
         android:layout_height="match_parent"
         android:padding="24dp">
 
-        <!-- Thought title -->
         <TextView
-            android:id="@+id/tv_thought_title"
+            android:id="@+id/tv_thought_thread"
             style="@style/TextView_Header"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -27,12 +26,31 @@
             android:fontFamily="@font/montserrat_regular"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Przykładowy tytuł myśli" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Thought content -->
+        <ImageView
+            android:id="@+id/iv_domain_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="12dp"
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+            android:src="@drawable/ic_launcher_foreground"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_thought_thread" />
+
         <TextView
-            android:id="@+id/tv_thought_content"
+            android:id="@+id/tv_created_at"
+            style="@style/TextView_Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toTopOf="@id/iv_domain_icon"
+            app:layout_constraintBottom_toBottomOf="@id/iv_domain_icon"
+            app:layout_constraintStart_toEndOf="@id/iv_domain_icon"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_thought_essence"
             style="@style/TextView_Body"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -40,11 +58,10 @@
             android:layout_marginBottom="16dp"
             android:lineSpacingExtra="4dp"
             android:scrollbars="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_domain_icon"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_thought_title"
-            tools:text="To jest przykładowa treść myśli która może być dłuższa i zawierać więcej informacji o tym co użytkownik chciał zapamiętać." />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -7,6 +7,9 @@ import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.fastnote.R
 import pl.hexmind.fastnote.activities.main.CoreActivity
+import pl.hexmind.fastnote.services.ThoughtsService
+import pl.hexmind.fastnote.ui.carousel.ThoughtCarouselAdapter
+import javax.inject.Inject
 import kotlin.math.abs
 
 /**
@@ -14,6 +17,9 @@ import kotlin.math.abs
  */
 @AndroidEntryPoint
 class ThoughtCarouselActivity : CoreActivity() {
+
+    @Inject
+    lateinit var thoughtsService : ThoughtsService
 
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: ThoughtCarouselAdapter
@@ -30,7 +36,7 @@ class ThoughtCarouselActivity : CoreActivity() {
 
         initializeViews()
         setupCarousel()
-        loadThoughts()
+        setupReactiveDataObserver()
     }
 
     /**
@@ -107,16 +113,13 @@ class ThoughtCarouselActivity : CoreActivity() {
     }
 
     /**
-     * Load thoughts data into carousel
+     * Setup reactive data observer that automatically updates UI when database changes
      */
-    private fun loadThoughts() {
-        // TODO: Replace with actual data loading from database
-        val sampleThoughts = listOf(
-            ThoughtItem(tags = "Pierwsza myśl", content = "To jest przykładowa treść pierwszej myśli"),
-            ThoughtItem(tags ="Druga myśl", content = "Kolejna interesująca myśl do zapamiętania"),
-            ThoughtItem(tags ="Trzecia myśl", content = "Jeszcze jedna ważna myśl")
-        )
-
-        adapter.submitList(sampleThoughts)
+    private fun setupReactiveDataObserver() {
+        // Observe LiveData - automatically updates when database changes (add/edit/delete)
+        thoughtsService.getAllThoughts().observe(this) { thoughtsDTO ->
+            // Submit to adapter - will automatically animate changes with DiffUtil
+            adapter.submitList(thoughtsDTO)
+        }
     }
 }

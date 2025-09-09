@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    id("org.jetbrains.kotlin.kapt") // ! Only for MapStruct
 }
 
 android {
@@ -129,4 +130,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    // Mappings and DTO
+    implementation(libs.mapstruct)
+    kapt(libs.mapstruct.processor) // ! using kapt to generate MapStruct mappers
 }
