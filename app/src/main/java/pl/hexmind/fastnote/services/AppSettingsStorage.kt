@@ -32,6 +32,22 @@ class AppSettingsStorage @Inject constructor(
         private const val PARAM_PHASE_GATHERING_ALIAS = "param_phase_gathering_alias"
         private const val PARAM_PHASE_CHOOSING_ALIAS = "param_phase_choosing_alias"
         private const val PARAM_PHASE_SILENT_ALIAS = "param_phase_silent_alias"
+
+        private const val PARAM_DB_CURRENT_VERSION = "param_db_current_version"
+    }
+
+    fun getApplicationContext() : Context {
+        return context
+    }
+
+    fun setCurrentDBVersion(currentDBVersion: Int) {
+        sharedPreferences.edit {
+            putInt(PARAM_DB_CURRENT_VERSION, currentDBVersion)
+        }
+    }
+
+    fun getCurrentDBVersion(): Int {
+        return sharedPreferences.getInt(PARAM_DB_CURRENT_VERSION, -1)
     }
 
     // === YOUR NAME ===

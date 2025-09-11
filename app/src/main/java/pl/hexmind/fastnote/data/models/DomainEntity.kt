@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class DomainEntity(
 
     @PrimaryKey
-    val id: Int? = 0,
+    val id: Int? = null,
 
     @ColumnInfo(name = "assets_icon_id")
     val assetsIconId: Int,

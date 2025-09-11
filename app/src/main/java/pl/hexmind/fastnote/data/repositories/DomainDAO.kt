@@ -34,4 +34,7 @@ interface DomainDAO {
 
     @Query("SELECT COUNT(*) FROM domains")
     suspend fun getCount(): Int
+
+    @Query("DELETE FROM domains")
+    suspend fun clearAll()
 }
