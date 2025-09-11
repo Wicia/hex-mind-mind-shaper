@@ -33,18 +33,24 @@
     <!-- ====================================== -->
 
     <color name="app_primary">@color/_orange_extra_dark</color>
+    <color name="app_primary_variant">@color/_orange_dark</color>
     <color name="app_secondary">@color/_orange_mid</color>
+    <color name="app_secondary_variant">@color/_orange_light</color>
     <color name="app_background">@color/_orange_extra_light</color>
     <color name="app_surface">@color/_white</color>
 
     <!-- ====================================== -->
-    <!--    WIDGETS MAPPINGS -->
+    <!--    TEXT COLORS -->
     <!-- ====================================== -->
 
-    <!-- TEXT COLORS -->
     <color name="text_primary">@color/_gray_dark</color>
     <color name="text_secondary">@color/_gray_mid</color>
     <color name="text_on_primary">@color/_white</color>
+    <color name="text_on_secondary">@color/_white</color>
+
+    <!-- ====================================== -->
+    <!--    WIDGET COLORS -->
+    <!-- ====================================== -->
 
     <!-- INPUT CONTROLS -->
     <color name="input_background">@color/_orange_extra_light</color>
@@ -56,14 +62,14 @@
     <color name="button_secondary">@color/_orange_light</color>
     <color name="button_disabled">@color/_gray_mid</color>
 
-    <!-- BUTTONS : ICONS -->
+    <!-- BUTTON ICONS -->
     <color name="button_icon_primary">@color/_orange_light</color>
     <color name="button_icon_disabled">@color/_gray_light</color>
 
     <!-- CARD VIEWS -->
     <color name="card_view_background">@color/_orange_light</color>
 
-    <!-- SEPARATOR / VIEWS -->
+    <!-- SEPARATOR / DIVIDERS -->
     <color name="separator_background">@color/_orange_dark</color>
 
 </resources>

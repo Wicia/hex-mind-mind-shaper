@@ -32,7 +32,7 @@
 
         <!-- Status bar and navigation -->
         <item name="android:statusBarColor">@color/app_primary</item>
-        <item name="android:navigationBarColor">@color/app_background</item>
+        <item name="android:navigationBarColor">@color/app_primary</item>
 
     </style>
 

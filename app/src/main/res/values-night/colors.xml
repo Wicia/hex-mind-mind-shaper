@@ -2,30 +2,74 @@
 <resources>
 
     <!-- ====================================== -->
-    <!--    DARK THEME OVERRIDES -->
+    <!--    CORE PALETTE -->
     <!-- ====================================== -->
 
-    <!-- Adjusted orange color for dark theme (brighter variants) -->
-    <color name="_orange_light">#FFAF7A</color>
-    <color name="_orange_mid">#FF8C42</color>
-    <color name="_orange_dark">#FFCDA0</color>
+    <!-- ORANGE: Main orange color for the app theme -->
+    <color name="_orange_extra_light">#FFF4E6</color>
+    <color name="_orange_light">#FFCDA0</color>
+    <color name="_orange_mid">#FFAF7A</color>
+    <color name="_orange_dark">#FF8C42</color>
+    <color name="_orange_extra_dark">#E6793A</color>
 
-    <!-- Dark theme backgrounds -->
-    <color name="app_background">#121212</color>
-    <color name="app_surface">#1E1E1E</color>
+    <!-- NEUTRAL: Grayscale for text and backgrounds -->
+    <color name="_white">#FFFFFF</color>
+    <color name="_gray_light">#D3D3D3</color>
+    <color name="_gray_mid">#666666</color>
+    <color name="_gray_dark">#333333</color>
+    <color name="_black">#000000</color>
 
-    <!-- Dark theme text color -->
-    <color name="text_primary">#E0E0E0</color>
-    <color name="text_secondary">#CCCCCC</color>
-    <color name="text_on_primary">#121212</color>
+    <!-- ====================================== -->
+    <!--    SEMANTIC COLORS -->
+    <!-- ====================================== -->
 
-    <!-- Dark theme input controls -->
-    <color name="input_background">#2A1F1A</color>
-    <color name="input_stroke">#FF8C42</color>
-    <color name="input_focused">#FFAF7A</color>
+    <!-- Success, error, warning states -->
+    <color name="success_green">#388E3C</color>
+    <color name="error_red">#D32F2F</color>
+    <color name="info_blue">#1976D2</color>
 
-    <!-- Dark theme overrides for pure color -->
-    <color name="_white">#E0E0E0</color>
-    <color name="_black">#121212</color>
+    <!-- ====================================== -->
+    <!--    APP THEME MAPPINGS -->
+    <!-- ====================================== -->
+
+    <color name="app_primary">@color/_orange_extra_dark</color>
+    <color name="app_primary_variant">@color/_orange_dark</color>
+    <color name="app_secondary">@color/_orange_mid</color>
+    <color name="app_secondary_variant">@color/_orange_light</color>
+    <color name="app_background">@color/_orange_extra_light</color>
+    <color name="app_surface">@color/_white</color>
+
+    <!-- ====================================== -->
+    <!--    TEXT COLORS -->
+    <!-- ====================================== -->
+
+    <color name="text_primary">@color/_gray_dark</color>
+    <color name="text_secondary">@color/_gray_mid</color>
+    <color name="text_on_primary">@color/_white</color>
+    <color name="text_on_secondary">@color/_white</color>
+
+    <!-- ====================================== -->
+    <!--    WIDGET COLORS -->
+    <!-- ====================================== -->
+
+    <!-- INPUT CONTROLS -->
+    <color name="input_background">@color/_orange_extra_light</color>
+    <color name="input_stroke">@color/_orange_mid</color>
+    <color name="input_focused">@color/_orange_dark</color>
+
+    <!-- BUTTONS -->
+    <color name="button_primary">@color/_orange_mid</color>
+    <color name="button_secondary">@color/_orange_light</color>
+    <color name="button_disabled">@color/_gray_mid</color>
+
+    <!-- BUTTON ICONS -->
+    <color name="button_icon_primary">@color/_orange_light</color>
+    <color name="button_icon_disabled">@color/_gray_light</color>
+
+    <!-- CARD VIEWS -->
+    <color name="card_view_background">@color/_orange_light</color>
+
+    <!-- SEPARATOR / DIVIDERS -->
+    <color name="separator_background">@color/_orange_dark</color>
 
 </resources>
