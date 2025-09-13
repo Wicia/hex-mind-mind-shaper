@@ -7,6 +7,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import pl.hexmind.fastnote.services.PhasesService
 import timber.log.Timber
 
 @HiltAndroidApp
@@ -14,6 +15,9 @@ class ApplicationMain : Application() {
 
     @Inject
     lateinit var databaseInitializer: DatabaseInitializer
+
+    @Inject
+    lateinit var phasesService: PhasesService
 
     override fun onCreate() {
         super.onCreate()
@@ -27,5 +31,7 @@ class ApplicationMain : Application() {
         CoroutineScope(Dispatchers.IO).launch {
             databaseInitializer.initializeIfNeeded()
         }
+
+        phasesService.saveAppLaunchTime()
     }
 }

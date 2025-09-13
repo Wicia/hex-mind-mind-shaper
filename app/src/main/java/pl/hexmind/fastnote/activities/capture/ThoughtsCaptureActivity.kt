@@ -3,21 +3,28 @@ package pl.hexmind.fastnote.activities.capture
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.fastnote.R
+import pl.hexmind.fastnote.common.validation.ValidationResult
 import pl.hexmind.fastnote.activities.capture.handlers.TextInputHandler
 import pl.hexmind.fastnote.activities.capture.handlers.VoiceRecordingHandler
 import pl.hexmind.fastnote.activities.capture.models.CapturedThought
-import pl.hexmind.fastnote.activities.capture.models.CapturedThoughtValidator
+import pl.hexmind.fastnote.activities.capture.models.ThoughtValidator
 import pl.hexmind.fastnote.activities.capture.models.InitialThoughtType
 import pl.hexmind.fastnote.activities.capture.ui.CaptureViewManager
+import pl.hexmind.fastnote.activities.main.CoreActivity
+import javax.inject.Inject
 
 // Main capturing activity
-class ThoughtsCaptureActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class ThoughtsCaptureActivity : CoreActivity() {
 
     companion object {
         const val INPUT_TYPE = "input_type"
     }
+
+    @Inject
+    lateinit var thoughtValidator: ThoughtValidator
 
     private lateinit var viewManager: CaptureViewManager
 
@@ -109,10 +116,10 @@ class ThoughtsCaptureActivity : AppCompatActivity() {
             initialThoughtType = currentInputType
         )
 
-        val validationResult = CapturedThoughtValidator.validate(finalData)
+        val validationResult = thoughtValidator.validate(finalData)
         when(validationResult){
-            is CapturedThoughtValidator.ValidationResult.Error -> return
-            is CapturedThoughtValidator.ValidationResult.Valid -> performSaving()
+            is ValidationResult.Error -> return
+            is ValidationResult.Valid -> performSaving()
         }
 
         finish()

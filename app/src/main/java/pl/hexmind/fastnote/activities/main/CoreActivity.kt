@@ -2,26 +2,18 @@ package pl.hexmind.fastnote.activities.main
 
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import pl.hexmind.fastnote.R
 import pl.hexmind.fastnote.activities.carousel.ThoughtProcessingPhase
 import pl.hexmind.fastnote.activities.carousel.ThoughtProcessingPhaseName
+import pl.hexmind.fastnote.services.PhasesService
+import javax.inject.Inject
 
-/*
+/**
  * Core activity which should be parent  to be inherited by children
  */
-// TODO: Do przeniesienia? albo czy zrobić oddzielna klase tylko do sprawdzania fazy?
 open class CoreActivity() : AppCompatActivity() {
 
-    internal val phaseToResourceMap = mapOf(
-        ThoughtProcessingPhaseName.GATHERING to R.drawable.ic_phase_gathering,
-        ThoughtProcessingPhaseName.CHOOSING to R.drawable.ic_phase_choosing,
-        ThoughtProcessingPhaseName.SILENT to R.drawable.ic_phase_silent,
-    )
-    internal val phaseToHeaderStringMap = mapOf(
-        ThoughtProcessingPhaseName.GATHERING to R.string.common_phase1_default_name,
-        ThoughtProcessingPhaseName.CHOOSING to R.string.common_phase2_default_name,
-        ThoughtProcessingPhaseName.SILENT to R.string.common_phase3_default_name,
-    )
+    @Inject
+    lateinit var phasesService: PhasesService
 
     fun getCurrentPhase() : ThoughtProcessingPhase{
         return ThoughtProcessingPhase(ThoughtProcessingPhaseName.CHOOSING, 10)

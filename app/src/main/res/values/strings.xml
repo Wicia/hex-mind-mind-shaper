@@ -134,6 +134,8 @@
     <string name="settings_domains_loading_error">Błąd podczas ładowania ikon domen</string>
 
     <string name="settings_domains_domain_name">Twoja nazwa dla Dziedziny</string>
+    <string name="settings_domains_error_name_empty">Nazwa dziedziny nie może być pusta</string>
+    <string name="settings_domains_error_name_too_long">Nazwa dziedziny nie może przekraczać %s znaków</string>
 
     <string-array name="settings_domains_default_names_list">
         <item>Rozwój, Praca i Biznes</item>

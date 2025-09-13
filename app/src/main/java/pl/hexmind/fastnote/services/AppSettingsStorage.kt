@@ -6,6 +6,8 @@ import android.net.Uri
 import androidx.core.content.edit
 import androidx.core.net.toUri
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,10 +36,26 @@ class AppSettingsStorage @Inject constructor(
         private const val PARAM_PHASE_SILENT_ALIAS = "param_phase_silent_alias"
 
         private const val PARAM_DB_CURRENT_VERSION = "param_db_current_version"
+
+        private const val PARAM_APP_LAUNCH_DATES = "param_app_launch_dates"
     }
 
     fun getApplicationContext() : Context {
         return context
+    }
+
+    fun setAppLaunchDate(lastDateAppLaunch: LocalDate) {
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val today = lastDateAppLaunch.format(formatter)
+        val launches = sharedPreferences.getStringSet(PARAM_APP_LAUNCH_DATES, mutableSetOf())?.toMutableSet() ?: mutableSetOf()
+        launches.add(today)
+        sharedPreferences.edit { putStringSet(PARAM_APP_LAUNCH_DATES, launches) }
+    }
+
+    fun getAppLaunchDates(): Set<LocalDate>? {
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val launches = sharedPreferences.getStringSet(PARAM_APP_LAUNCH_DATES, emptySet()) ?: emptySet()
+        return launches.map { LocalDate.parse(it, formatter) }.toSet()
     }
 
     fun setCurrentDBVersion(currentDBVersion: Int) {

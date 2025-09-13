@@ -1,12 +1,17 @@
 package pl.hexmind.fastnote.activities.carousel
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.fastnote.R
 import pl.hexmind.fastnote.activities.main.CoreActivity
+import pl.hexmind.fastnote.activities.main.MainActivity
+import pl.hexmind.fastnote.activities.settings.SettingsActivity
 import pl.hexmind.fastnote.services.ThoughtsService
 import pl.hexmind.fastnote.ui.carousel.ThoughtCarouselAdapter
 import javax.inject.Inject
@@ -16,7 +21,7 @@ import kotlin.math.abs
  * Activity for browsing thoughts in an elegant carousel format with 3D animations
  */
 @AndroidEntryPoint
-class ThoughtCarouselActivity : CoreActivity() {
+class ThoughtCarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
 
     @Inject
     lateinit var thoughtsService : ThoughtsService
@@ -30,6 +35,19 @@ class ThoughtCarouselActivity : CoreActivity() {
     private lateinit var tvPhaseInfoThoughtsCaptured : TextView
     private lateinit var tvPhaseInfoNextPhase : TextView
 
+    private lateinit var gestureDetector: GestureDetector
+
+    internal val phaseToResourceMap = mapOf(
+        ThoughtProcessingPhaseName.GATHERING to R.drawable.ic_phase_gathering,
+        ThoughtProcessingPhaseName.CHOOSING to R.drawable.ic_phase_choosing,
+        ThoughtProcessingPhaseName.SILENT to R.drawable.ic_phase_silent,
+    )
+    internal val phaseToHeaderStringMap = mapOf(
+        ThoughtProcessingPhaseName.GATHERING to R.string.common_phase1_default_name,
+        ThoughtProcessingPhaseName.CHOOSING to R.string.common_phase2_default_name,
+        ThoughtProcessingPhaseName.SILENT to R.string.common_phase3_default_name,
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_thought_carousel)
@@ -37,6 +55,7 @@ class ThoughtCarouselActivity : CoreActivity() {
         initializeViews()
         setupCarousel()
         setupReactiveDataObserver()
+        setupGestureDetector()
     }
 
     /**
@@ -121,5 +140,61 @@ class ThoughtCarouselActivity : CoreActivity() {
             // Submit to adapter - will automatically animate changes with DiffUtil
             adapter.submitList(thoughtsDTO)
         }
+    }
+
+    // Initialize gesture detector for swipe down recognition
+    private fun setupGestureDetector() {
+        gestureDetector = GestureDetector(this, this)
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        return gestureDetector.onTouchEvent(event!!) || super.onTouchEvent(event)
+    }
+
+    override fun onDown(e: MotionEvent): Boolean {
+        return true
+    }
+
+    override fun onShowPress(e: MotionEvent) {}
+
+    override fun onSingleTapUp(e: MotionEvent): Boolean {
+        return false
+    }
+
+    override fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
+        return false
+    }
+
+    override fun onLongPress(e: MotionEvent) {}
+
+    /**
+     * Detect swipe gestures
+     */
+    override fun onFling(
+        e1: MotionEvent?,
+        e2: MotionEvent,
+        velocityX: Float,
+        velocityY: Float
+    ): Boolean {
+        if (e1 == null) return false
+
+        val diffY = e2.y - e1.y
+        val diffX = e2.x - e1.x
+
+        // Vertical swipes have priority
+        if (abs(diffY) > abs(diffX) && abs(velocityY) > 100) {
+
+            if (diffY > 100) {
+                // Swipe DOWN
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                return true
+            } else if (diffY < -100) {
+                // Swipe UP
+                return true
+            }
+        }
+
+        return false
     }
 }

@@ -27,6 +27,14 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Loading indicator -->
+    <TextView
+        android:id="@+id/tv_domain_name_validation_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:text="" />
+
     <ProgressBar
         android:id="@+id/loading_icons"
         android:layout_width="wrap_content"

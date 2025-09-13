@@ -5,10 +5,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import pl.hexmind.fastnote.R
+import pl.hexmind.fastnote.activities.main.CoreActivity
 
-class ThoughtDetailsActivity : AppCompatActivity() {
+class ThoughtDetailsActivity : CoreActivity() {
 
     private lateinit var essenceText: TextView
     private lateinit var areaAndSubjectText: TextView

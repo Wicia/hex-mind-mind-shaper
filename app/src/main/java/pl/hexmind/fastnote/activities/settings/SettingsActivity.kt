@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
 import android.view.View
 import android.widget.GridLayout
 import android.widget.ImageView
@@ -21,6 +20,7 @@ import kotlinx.coroutines.launch
 import pl.hexmind.fastnote.R
 import pl.hexmind.fastnote.activities.main.CoreActivity
 import pl.hexmind.fastnote.activities.main.MainActivity
+import pl.hexmind.fastnote.common.validation.ValidationResult
 import pl.hexmind.fastnote.databinding.ActivitySettingsBinding
 import pl.hexmind.fastnote.services.AppSettingsStorage
 import pl.hexmind.fastnote.services.DomainsService
@@ -45,6 +45,9 @@ class SettingsActivity : CoreActivity() {
 
     @Inject
     lateinit var domainIconsLoader : DomainIconLoader
+
+    @Inject
+    lateinit var domainValidator: DomainValidator
 
     private lateinit var binding: ActivitySettingsBinding
 
@@ -126,7 +129,7 @@ class SettingsActivity : CoreActivity() {
 
     private fun onDomainButtonClick(domainTileIndex: Int, currentDomainDTO : DomainDTO) {
         showIconPickerDialog(currentDomainDTO) { updatedDTO ->
-            updateDomainButtonIcon(domainTileIndex, updatedDTO)
+            updateDomainButton(domainTileIndex, updatedDTO)
             lifecycleScope.launch { domainService.updateDomain(dto = updatedDTO) }
         }
     }
@@ -297,6 +300,7 @@ class SettingsActivity : CoreActivity() {
         val recyclerView = dialogView.findViewById<RecyclerView>(R.id.icons_recycler)
         val loadingIndicator = dialogView.findViewById<ProgressBar>(R.id.loading_icons)
         val etDomainName = dialogView.findViewById<TextInputEditText>(R.id.et_domain_name)
+        val tvDomainNameValidationInfo = dialogView.findViewById<TextView>(R.id.tv_domain_name_validation_info)
 
         etDomainName.setText(currentDomainDTO.name)
 
@@ -326,8 +330,17 @@ class SettingsActivity : CoreActivity() {
                 )
                 { selectedIconNumber ->
                     val updatedName = etDomainName.text.toString()
-                    onDTOUpdated(DomainDTO(id = currentDomainDTO.id, name = updatedName, assetImageId = selectedIconNumber))
-                    dialog.dismiss()
+                    val updatedDTO = DomainDTO(id = currentDomainDTO.id, name = updatedName, assetImageId = selectedIconNumber)
+                    val validationResult = domainValidator.validate(updatedDTO)
+                    when(validationResult){
+                        is ValidationResult.Valid -> {
+                            onDTOUpdated(updatedDTO)
+                            dialog.dismiss()
+                        }
+                        is ValidationResult.Error -> {
+                            tvDomainNameValidationInfo.text = validationResult.message
+                        }
+                    }
                 }
 
                 recyclerView.adapter = adapter
@@ -343,19 +356,19 @@ class SettingsActivity : CoreActivity() {
     /**
      * Helper method to update button icon after selection
      */
-    private fun updateDomainButtonIcon(buttonIndex: Int, updatedDomainDTO : DomainDTO) {
+    private fun updateDomainButton(buttonIndex: Int, updatedDomainDTO : DomainDTO) {
         lifecycleScope.launch {
-            val drawable = domainIconsLoader.loadIcon(updatedDomainDTO.assetImageId)
-
             // Find the button in GridLayout and update its icon
             val gridLayout = findViewById<GridLayout>(R.id.domains_grid_layout)
             if (buttonIndex < gridLayout.childCount) {
                 val buttonView = gridLayout.getChildAt(buttonIndex)
-                val iconView = buttonView.findViewById<ImageView>(R.id.iv_domain_icon)
-                iconView.setImageDrawable(drawable)
 
-                val textView = buttonView.findViewById<TextView>(R.id.tv_domain_name)
-                textView.text = updatedDomainDTO.name
+                val ivDomainIcon = buttonView.findViewById<ImageView>(R.id.iv_domain_icon)
+                val drawable = domainIconsLoader.loadIcon(updatedDomainDTO.assetImageId)
+                ivDomainIcon.setImageDrawable(drawable)
+
+                val tvDomainName = buttonView.findViewById<TextView>(R.id.tv_domain_name)
+                tvDomainName.text = updatedDomainDTO.name
             }
         }
     }

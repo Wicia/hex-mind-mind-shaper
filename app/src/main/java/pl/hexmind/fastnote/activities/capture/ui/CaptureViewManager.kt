@@ -8,11 +8,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import pl.hexmind.fastnote.R
-import pl.hexmind.fastnote.activities.capture.models.CapturedThoughtValidator
+import pl.hexmind.fastnote.activities.capture.models.ThoughtValidator
 import pl.hexmind.fastnote.activities.capture.models.InitialThoughtType
+import pl.hexmind.fastnote.common.validation.ValidationResult
+import javax.inject.Inject
+import javax.inject.Singleton
 
-// Manager which encapsulates UI logic (handles UI update requests from Handlers)
-class CaptureViewManager(private val activity: AppCompatActivity) {
+/**
+ * Manager which encapsulates UI logic (handles UI update requests from Handlers)
+ */
+@Singleton
+class CaptureViewManager @Inject constructor(
+    private val activity: AppCompatActivity
+) {
+
+    @Inject
+    lateinit var thoughtValidator: ThoughtValidator
 
     // UI Components - Essence
     lateinit var editThoughtEssence: EditText
@@ -36,7 +47,7 @@ class CaptureViewManager(private val activity: AppCompatActivity) {
     
     fun initializeViews() {
         editThoughtEssence = activity.findViewById(R.id.et_essence)
-        editThoughtEssence.hint = activity.getString(R.string.capture_essence_tooltip, CapturedThoughtValidator.ESSENCE_MAX_WORDS)
+        editThoughtEssence.hint = activity.getString(R.string.capture_essence_tooltip, ThoughtValidator.ESSENCE_MAX_WORDS)
 
         etRichText = activity.findViewById(R.id.et_rich_rotes)
         voiceRecordingLayout = activity.findViewById(R.id.ll_voice_recording)
@@ -73,13 +84,13 @@ class CaptureViewManager(private val activity: AppCompatActivity) {
     }
     
     fun updateWordsCounterTextView(text: String) {
-        when (val validationResult = CapturedThoughtValidator.validateEssence(text)){
-            is CapturedThoughtValidator.ValidationResult.Error -> {
-                tvWordCount.text = activity.getString(validationResult.messageId, validationResult.param)
+        when (val validationResult = thoughtValidator.validateEssence(text)){
+            is ValidationResult.Error -> {
+                tvWordCount.text = validationResult.message
                 tvWordCount.setTextColor(ContextCompat.getColor(activity, R.color.error_red))
             }
-            is CapturedThoughtValidator.ValidationResult.Valid -> {
-                tvWordCount.text = activity.getString(validationResult.messageId, validationResult.param)
+            is ValidationResult.Valid -> {
+                tvWordCount.text = validationResult.message
                 // TODO: Znalezc inne te android.R i czy zostawic czy zastapic swoimi?
                 tvWordCount.setTextColor(ContextCompat.getColor(activity, R.color.success_green))
             }
