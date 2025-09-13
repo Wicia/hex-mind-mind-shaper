@@ -2,7 +2,7 @@ package pl.hexmind.fastnote.services.mappers
 
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
-import pl.hexmind.fastnote.data.models.ThoughtEntity
+import pl.hexmind.fastnote.database.models.ThoughtEntity
 import pl.hexmind.fastnote.services.dto.ThoughtDTO
 import org.mapstruct.factory.Mappers
 

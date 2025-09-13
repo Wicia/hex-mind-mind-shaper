@@ -1,9 +1,8 @@
-package pl.hexmind.fastnote.data
+package pl.hexmind.fastnote.database
 
-import androidx.room.Room
 import pl.hexmind.fastnote.R
-import pl.hexmind.fastnote.data.models.DomainEntity
-import pl.hexmind.fastnote.data.repositories.DomainDAO
+import pl.hexmind.fastnote.database.models.DomainEntity
+import pl.hexmind.fastnote.database.repositories.DomainDAO
 import pl.hexmind.fastnote.services.AppSettingsStorage
 import javax.inject.Inject
 import javax.inject.Singleton

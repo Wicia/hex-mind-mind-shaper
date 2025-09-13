@@ -1,6 +1,6 @@
 package pl.hexmind.fastnote.services
 
-import pl.hexmind.fastnote.data.repositories.DomainRepository
+import pl.hexmind.fastnote.database.repositories.DomainRepository
 import pl.hexmind.fastnote.services.dto.DomainDTO
 import pl.hexmind.fastnote.services.mappers.DomainMapper
 import javax.inject.Inject

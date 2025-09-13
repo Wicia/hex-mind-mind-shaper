@@ -1,6 +1,6 @@
 package pl.hexmind.fastnote.services.mappers
 
-import pl.hexmind.fastnote.data.models.DomainEntity
+import pl.hexmind.fastnote.database.models.DomainEntity
 import pl.hexmind.fastnote.services.dto.DomainDTO
 import javax.inject.Inject
 import javax.inject.Singleton

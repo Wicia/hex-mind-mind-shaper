@@ -1,7 +1,7 @@
-package pl.hexmind.fastnote.data.repositories
+package pl.hexmind.fastnote.database.repositories
 
 import androidx.lifecycle.LiveData
-import pl.hexmind.fastnote.data.models.ThoughtEntity
+import pl.hexmind.fastnote.database.models.ThoughtEntity
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -10,7 +10,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import pl.hexmind.fastnote.data.models.relations.ThoughtWithDomain
+import pl.hexmind.fastnote.database.models.relations.ThoughtWithDomain
 
 @Dao
 interface ThoughtsDAO {

@@ -1,8 +1,8 @@
-package pl.hexmind.fastnote.data.repositories
+package pl.hexmind.fastnote.database.repositories
 
 import androidx.lifecycle.LiveData
-import pl.hexmind.fastnote.data.models.ThoughtEntity
-import pl.hexmind.fastnote.data.models.relations.ThoughtWithDomain
+import pl.hexmind.fastnote.database.models.ThoughtEntity
+import pl.hexmind.fastnote.database.models.relations.ThoughtWithDomain
 import javax.inject.Inject
 import javax.inject.Singleton
 

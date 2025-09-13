@@ -1,9 +1,9 @@
-package pl.hexmind.fastnote.data.models.relations
+package pl.hexmind.fastnote.database.models.relations
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import pl.hexmind.fastnote.data.models.DomainEntity
-import pl.hexmind.fastnote.data.models.ThoughtEntity
+import pl.hexmind.fastnote.database.models.DomainEntity
+import pl.hexmind.fastnote.database.models.ThoughtEntity
 
 /**
  * Data class to represent a Context with its associated Thought

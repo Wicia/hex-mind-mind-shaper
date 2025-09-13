@@ -2,8 +2,8 @@ package pl.hexmind.fastnote.services
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import pl.hexmind.fastnote.data.models.ThoughtEntity
-import pl.hexmind.fastnote.data.repositories.ThoughtsRepository
+import pl.hexmind.fastnote.database.models.ThoughtEntity
+import pl.hexmind.fastnote.database.repositories.ThoughtsRepository
 import pl.hexmind.fastnote.services.dto.ThoughtDTO
 import pl.hexmind.fastnote.services.mappers.ThoughtsMapper
 import javax.inject.Inject

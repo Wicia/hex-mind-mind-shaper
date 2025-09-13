@@ -1,4 +1,4 @@
-package pl.hexmind.fastnote.data.di
+package pl.hexmind.fastnote.database.di
 
 import android.content.Context
 import androidx.room.Room
@@ -7,9 +7,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import pl.hexmind.fastnote.data.AppDatabase
-import pl.hexmind.fastnote.data.repositories.DomainDAO
-import pl.hexmind.fastnote.data.repositories.ThoughtsDAO
+import pl.hexmind.fastnote.database.AppDatabase
+import pl.hexmind.fastnote.database.repositories.DomainDAO
+import pl.hexmind.fastnote.database.repositories.ThoughtsDAO
 import javax.inject.Singleton
 
 // Module providing database and DAO instances

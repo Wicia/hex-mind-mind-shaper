@@ -2,7 +2,7 @@ package pl.hexmind.fastnote
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
-import pl.hexmind.fastnote.data.DatabaseInitializer
+import pl.hexmind.fastnote.database.DatabaseInitializer
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

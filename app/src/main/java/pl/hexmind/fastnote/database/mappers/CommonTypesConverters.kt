@@ -1,4 +1,4 @@
-package pl.hexmind.fastnote.data.mappers
+package pl.hexmind.fastnote.database.mappers
 
 import androidx.room.TypeConverter
 import java.util.Date

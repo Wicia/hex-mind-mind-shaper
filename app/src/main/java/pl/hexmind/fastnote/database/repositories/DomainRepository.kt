@@ -1,6 +1,6 @@
-package pl.hexmind.fastnote.data.repositories
+package pl.hexmind.fastnote.database.repositories
 
-import pl.hexmind.fastnote.data.models.DomainEntity
+import pl.hexmind.fastnote.database.models.DomainEntity
 import javax.inject.Inject
 import javax.inject.Singleton
 
