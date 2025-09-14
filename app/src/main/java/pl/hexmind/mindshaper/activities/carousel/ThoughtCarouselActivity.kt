@@ -42,9 +42,9 @@ class ThoughtCarouselActivity : CoreActivity(), GestureDetector.OnGestureListene
         ThoughtProcessingPhaseName.SILENT to R.drawable.ic_phase_silent,
     )
     internal val phaseToHeaderStringMap = mapOf(
-        ThoughtProcessingPhaseName.GATHERING to R.string.common_phase1_default_name,
-        ThoughtProcessingPhaseName.CHOOSING to R.string.common_phase2_default_name,
-        ThoughtProcessingPhaseName.SILENT to R.string.common_phase3_default_name,
+        ThoughtProcessingPhaseName.GATHERING to R.string.common_phase1_name,
+        ThoughtProcessingPhaseName.CHOOSING to R.string.common_phase2_name,
+        ThoughtProcessingPhaseName.SILENT to R.string.common_phase3_name,
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -124,9 +124,6 @@ class ThoughtCarouselActivity : CoreActivity(), GestureDetector.OnGestureListene
 
         // Smooth page change callback
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-            }
         })
     }
 

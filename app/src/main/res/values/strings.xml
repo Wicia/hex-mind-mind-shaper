@@ -32,11 +32,12 @@
     <string name="unknown_file">Nieznany plik</string>
     <string name="in_folder">w folderze</string>
 
+    <!-- TODO: Keep this feature or remove it -->
     <!-- DOMAIN of THOUGHTS ETC. -->
-    <string name="common_phase_prefix">Faza</string>
-    <string name="common_phase1_default_name">Zbierania</string>
-    <string name="common_phase2_default_name">Wybierania</string>
-    <string name="common_phase3_default_name">Odpoczynku</string>
+    <string name="common_phase_prefix">Faza %s</string>
+    <string name="common_phase1_name">Zbierania</string>
+    <string name="common_phase2_name">Wybierania</string>
+    <string name="common_phase3_name">Odpoczynku</string>
 
     <!-- PLACEHOLDERS AND TODO: To be replaced later -->
     <string name="common_placeholder_accessibility_content_desc">PLACEHOLDER</string>

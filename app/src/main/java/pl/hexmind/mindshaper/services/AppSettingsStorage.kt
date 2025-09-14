@@ -30,11 +30,6 @@ class AppSettingsStorage @Inject constructor(
         private const val PARAM_YOUR_NAME = "param_your_name"
         private const val PARAM_WELCOME_AUDIO_FILE = "param_greeting_audio_path"
 
-        // Phase names
-        private const val PARAM_PHASE_GATHERING_ALIAS = "param_phase_gathering_alias"
-        private const val PARAM_PHASE_CHOOSING_ALIAS = "param_phase_choosing_alias"
-        private const val PARAM_PHASE_SILENT_ALIAS = "param_phase_silent_alias"
-
         private const val PARAM_DB_CURRENT_VERSION = "param_db_current_version"
 
         private const val PARAM_APP_LAUNCH_DATES = "param_app_launch_dates"
@@ -127,39 +122,5 @@ class AppSettingsStorage @Inject constructor(
      */
     fun clearWelcomeAudio() {
         setWelcomeAudioUri(null)
-    }
-
-    // === PHASE NAMES ===
-
-    /**
-     * Retrieves phase 1 name with fallback to default
-     */
-    fun getPhaseGatheringAlias(defaultName: String = "Faza 1"): String {
-        return sharedPreferences.getString(PARAM_PHASE_GATHERING_ALIAS, defaultName) ?: defaultName
-    }
-
-    /**
-     * Retrieves phase 2 name with fallback to default
-     */
-    fun getPhaseChoosingAlias(defaultName: String = "Faza 2"): String {
-        return sharedPreferences.getString(PARAM_PHASE_CHOOSING_ALIAS, defaultName) ?: defaultName
-    }
-
-    /**
-     * Retrieves phase 3 name with fallback to default
-     */
-    fun getPhaseSilentAlias(defaultName: String = "Faza 3"): String {
-        return sharedPreferences.getString(PARAM_PHASE_SILENT_ALIAS, defaultName) ?: defaultName
-    }
-
-    /**
-     * Saves all phase names at once
-     */
-    fun setPhaseNames(phase1: String, phase2: String, phase3: String) {
-        sharedPreferences.edit {
-            putString(PARAM_PHASE_GATHERING_ALIAS, phase1.trim())
-            putString(PARAM_PHASE_CHOOSING_ALIAS, phase2.trim())
-            putString(PARAM_PHASE_SILENT_ALIAS, phase3.trim())
-        }
     }
 }

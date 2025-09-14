@@ -160,17 +160,6 @@ class SettingsActivity : CoreActivity() {
                 showAudioErrorMessage(getString(R.string.audio_file_error))
             }
         }
-
-        // Load phase names with default fallbacks
-        binding.etPhase1.setText(
-            appSettingsStorage.getPhaseGatheringAlias(getString(R.string.common_phase1_default_name))
-        )
-        binding.etPhase2.setText(
-            appSettingsStorage.getPhaseChoosingAlias(getString(R.string.common_phase2_default_name))
-        )
-        binding.etPhase3.setText(
-            appSettingsStorage.getPhaseSilentAlias(getString(R.string.common_phase3_default_name))
-        )
     }
 
     /**
@@ -267,24 +256,6 @@ class SettingsActivity : CoreActivity() {
                 showAudioErrorMessage(getString(R.string.audio_file_no_longer_accessible))
             }
         }
-
-        // Save phase names with defaults
-        val phase1 = binding.etPhase1.text?.toString()?.trim()
-            ?.takeIf { it.isNotEmpty() }
-            ?: getString(R.string.common_phase1_default_name)
-        binding.etPhase1.setText(phase1)
-
-        val phase2 = binding.etPhase2.text?.toString()?.trim()
-            ?.takeIf { it.isNotEmpty() }
-            ?: getString(R.string.common_phase2_default_name)
-        binding.etPhase2.setText(phase2)
-
-        val phase3 = binding.etPhase3.text?.toString()?.trim()
-            ?.takeIf { it.isNotEmpty() }
-            ?: getString(R.string.common_phase3_default_name)
-        binding.etPhase3.setText(phase3)
-
-        appSettingsStorage.setPhaseNames(phase1, phase2, phase3)
 
         showShortToast(R.string.common_info_changes_saved)
 

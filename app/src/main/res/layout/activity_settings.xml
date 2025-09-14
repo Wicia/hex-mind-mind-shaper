@@ -142,94 +142,94 @@
 
             </androidx.cardview.widget.CardView>
 
+            <!-- TODO: Keep this feature or remove it -->
             <!-- Phase Names Setting Card -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="3dp">
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginBottom="16dp"-->
+<!--                app:cardBackgroundColor="@android:color/white"-->
+<!--                app:cardCornerRadius="12dp"-->
+<!--                app:cardElevation="3dp">-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:padding="16dp">-->
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
-                        android:text="@string/settings_pPhase_names_header"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginBottom="4dp"-->
+<!--                        android:text="@string/settings_phases_header"-->
+<!--                        android:textColor="@android:color/black"-->
+<!--                        android:textSize="16sp"-->
+<!--                        android:textStyle="bold" />-->
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:text="@string/settings_pPhase_names_hint"
-                        android:textColor="#666666"
-                        android:textSize="14sp" />
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginBottom="16dp"-->
+<!--                        android:text="@string/settings_phases_tooltip"-->
+<!--                        android:textColor="#666666"-->
+<!--                        android:textSize="14sp" />-->
 
-                    <!-- Phase 1 Input -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        app:boxStrokeColor="#FFAF7A"
-                        app:hintTextColor="#FF8C42">
+<!--                    <com.google.android.material.textfield.TextInputLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginBottom="12dp"-->
+<!--                        app:boxStrokeColor="#FFAF7A"-->
+<!--                        app:hintTextColor="#FF8C42">-->
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etPhase1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/common_phase1_default_name"
-                            android:inputType="text"
-                            android:maxLines="1" />
+<!--                        <com.google.android.material.textfield.TextInputEditText-->
+<!--                            android:id="@+id/etPhase1"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:hint="@string/common_phase1_default_name"-->
+<!--                            android:inputType="text"-->
+<!--                            android:maxLines="1" />-->
 
-                    </com.google.android.material.textfield.TextInputLayout>
+<!--                    </com.google.android.material.textfield.TextInputLayout>-->
 
-                    <!-- Phase 2 Input -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        app:boxStrokeColor="#FFAF7A"
-                        app:hintTextColor="#FF8C42">
+<!--                    &lt;!&ndash; Phase 2 Input &ndash;&gt;-->
+<!--                    <com.google.android.material.textfield.TextInputLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginBottom="12dp"-->
+<!--                        app:boxStrokeColor="#FFAF7A"-->
+<!--                        app:hintTextColor="#FF8C42">-->
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etPhase2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/common_phase2_default_name"
-                            android:inputType="text"
-                            android:maxLines="1" />
+<!--                        <com.google.android.material.textfield.TextInputEditText-->
+<!--                            android:id="@+id/etPhase2"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:hint="@string/common_phase2_default_name"-->
+<!--                            android:inputType="text"-->
+<!--                            android:maxLines="1" />-->
 
-                    </com.google.android.material.textfield.TextInputLayout>
+<!--                    </com.google.android.material.textfield.TextInputLayout>-->
 
-                    <!-- Phase 3 Input -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:boxStrokeColor="#FFAF7A"
-                        app:hintTextColor="#FF8C42">
+<!--                    &lt;!&ndash; Phase 3 Input &ndash;&gt;-->
+<!--                    <com.google.android.material.textfield.TextInputLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        app:boxStrokeColor="#FFAF7A"-->
+<!--                        app:hintTextColor="#FF8C42">-->
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etPhase3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/common_phase3_default_name"
-                            android:inputType="text"
-                            android:maxLines="1" />
+<!--                        <com.google.android.material.textfield.TextInputEditText-->
+<!--                            android:id="@+id/etPhase3"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:hint="@string/common_phase3_default_name"-->
+<!--                            android:inputType="text"-->
+<!--                            android:maxLines="1" />-->
 
-                    </com.google.android.material.textfield.TextInputLayout>
+<!--                    </com.google.android.material.textfield.TextInputLayout>-->
 
-                </LinearLayout>
+<!--                </LinearLayout>-->
 
-            </androidx.cardview.widget.CardView>
+<!--            </androidx.cardview.widget.CardView>-->
 
             <!-- Domains Setting Card -->
             <androidx.cardview.widget.CardView
