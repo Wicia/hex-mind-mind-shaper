@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "pl.hexmind.fastnote"
+    namespace = "pl.hexmind.mindshaper"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "pl.hexmind.fastnote"
+        applicationId = "pl.hexmind.mindshaper"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
