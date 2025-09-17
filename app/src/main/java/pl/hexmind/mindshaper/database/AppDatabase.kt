@@ -25,6 +25,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun domainDAO(): DomainDAO
 
     companion object {
-        const val DB_VERSION = 11
+        const val DB_VERSION = 13
     }
 }

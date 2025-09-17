@@ -1,18 +1,18 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 11,
-    "identityHash": "b95f11ddf7494106ce06395aa9ee14c8",
+    "version": 13,
+    "identityHash": "75a4778884e3c0ccbf704c85cf86f7a1",
     "entities": [
       {
         "tableName": "THOUGHTS",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `domain_id` INTEGER, `thread` TEXT, `essence` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `priority` INTEGER NOT NULL, `rich_text` TEXT, FOREIGN KEY(`domain_id`) REFERENCES `DOMAINS`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `domain_id` INTEGER, `thread` TEXT, `essence` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `priority` INTEGER NOT NULL, `rich_text` TEXT, FOREIGN KEY(`domain_id`) REFERENCES `DOMAINS`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "domainId",
@@ -84,7 +84,7 @@
       },
       {
         "tableName": "DOMAINS",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `assets_icon_id` INTEGER NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `assets_icon_id` INTEGER NOT NULL, `name` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -106,7 +106,7 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
+          "autoGenerate": true,
           "columnNames": [
             "id"
           ]
@@ -118,7 +118,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b95f11ddf7494106ce06395aa9ee14c8')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '75a4778884e3c0ccbf704c85cf86f7a1')"
     ]
   }
 }

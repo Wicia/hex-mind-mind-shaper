@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.ui.carousel
+package pl.hexmind.mindshaper.activities.carousel
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.common.toLocalDateString
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
+import java.time.Instant
 
 /**
  * Adapter for thought carousel with smooth animations and automatic updates via LiveData
@@ -32,12 +34,9 @@ class ThoughtCarouselAdapter : ListAdapter<ThoughtDTO, ThoughtCarouselAdapter.Th
     class ThoughtViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val tvThread: TextView = itemView.findViewById(R.id.tv_thought_thread)
-
         private val tvEssence: TextView = itemView.findViewById(R.id.tv_thought_essence)
-
         private val tvCreatedAt: TextView = itemView.findViewById(R.id.tv_created_at)
-
-        private val ivIcon: ImageView = itemView.findViewById(R.id.iv_domain_icon)
+        private val ivDomainIcon: ImageView = itemView.findViewById(R.id.iv_domain_icon)
 
         /**
          * Bind thought data to view components with null safety
@@ -53,8 +52,8 @@ class ThoughtCarouselAdapter : ListAdapter<ThoughtDTO, ThoughtCarouselAdapter.Th
             }
 
             tvEssence.text = thought.essence
-            tvCreatedAt.text = thought.createdAt.toString()
-            //ivIcon.setImageResource(-1) // TODO
+            tvCreatedAt.text = thought.createdAt?.toLocalDateString()
+            //ivDomainIcon.setImageResource() // TODO
         }
     }
 

@@ -2,138 +2,138 @@ package pl.hexmind.mindshaper.activities.capture
 
 import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
+import android.widget.FrameLayout
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.common.validation.ValidationResult
-import pl.hexmind.mindshaper.activities.capture.handlers.TextInputHandler
+import pl.hexmind.mindshaper.activities.capture.handlers.NoteInputHandler
+import pl.hexmind.mindshaper.activities.capture.handlers.ThoughtValidator
 import pl.hexmind.mindshaper.activities.capture.handlers.VoiceRecordingHandler
-import pl.hexmind.mindshaper.activities.capture.models.CapturedThought
-import pl.hexmind.mindshaper.activities.capture.models.ThoughtValidator
 import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
-import pl.hexmind.mindshaper.activities.capture.ui.CaptureViewManager
+import pl.hexmind.mindshaper.activities.capture.ui.NoteCaptureView
+import pl.hexmind.mindshaper.activities.capture.ui.VoiceCaptureView
 import pl.hexmind.mindshaper.activities.main.CoreActivity
+import pl.hexmind.mindshaper.common.validation.ValidationResult
+import pl.hexmind.mindshaper.services.ThoughtsService
+import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import javax.inject.Inject
 
-// Main capturing activity
 @AndroidEntryPoint
 class ThoughtsCaptureActivity : CoreActivity() {
 
-    companion object {
-        const val INPUT_TYPE = "input_type"
+    companion object Params{
+        const val P_INIT_THOUGHT_TYPE = "P_EXTRA_INIT_THOUGHT_TYPE"
     }
 
     @Inject
     lateinit var thoughtValidator: ThoughtValidator
+    @Inject
+    lateinit var thoughtsService: ThoughtsService
 
-    private lateinit var viewManager: CaptureViewManager
-
-    // Handlers
-    private lateinit var textInputHandler: TextInputHandler
-    private lateinit var voiceRecordingHandler: VoiceRecordingHandler
-    // TODO
-    // Future handlers
-    // private lateinit var photoCaptureHandler: PhotoCaptureHandler
-    // private lateinit var drawingHandler: DrawingHandler
-
-    private var currentCapturedThought = CapturedThought()
+    private var currentThoughtDTO = ThoughtDTO()
     private var currentInputType = InitialThoughtType.UNKNOWN
+
+    private lateinit var flContainerFeatures: FrameLayout
+    private lateinit var btnSave: MaterialButton
+    private lateinit var etEssence : TextInputEditText
+
+    private lateinit var tvEssenceWordsInfo : TextView
+
+    private var noteCaptureView: NoteCaptureView? = null
+    private var noteInputHandler: NoteInputHandler? = null
+
+    private var voiceCaptureView: VoiceCaptureView? = null
+    private var voiceHandler: VoiceRecordingHandler? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_thought_capture)
+        tvEssenceWordsInfo = findViewById(R.id.tv_essence_words_info)
+        etEssence = findViewById(R.id.et_essence)
+
+        flContainerFeatures = findViewById(R.id.fl_container_features)
+        btnSave = findViewById(R.id.btn_save)
+
         initializeFromIntent()
-        initializeComponents()
         setupMode()
         setupListeners()
     }
 
     private fun initializeFromIntent() {
         currentInputType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(INPUT_TYPE, InitialThoughtType::class.java)
+            intent.getParcelableExtra(P_INIT_THOUGHT_TYPE, InitialThoughtType::class.java)
         } else {
             @Suppress("DEPRECATION")
-            intent.getParcelableExtra(INPUT_TYPE)
+            intent.getParcelableExtra(P_INIT_THOUGHT_TYPE)
         } ?: InitialThoughtType.UNKNOWN
     }
 
-    private fun initializeComponents() {
-        viewManager = CaptureViewManager(this)
-        viewManager.initializeViews()
-
-        textInputHandler = TextInputHandler(viewManager)
-        voiceRecordingHandler = VoiceRecordingHandler(this, viewManager)
-
-        // Set up data change listeners
-        textInputHandler.setOnDataChangedListener { data ->
-            currentCapturedThought = currentCapturedThought.copy(
-                essence = data.essence,
-                richText = data.richText
-            )
-        }
-
-        voiceRecordingHandler.setOnDataChangedListener { data ->
-            currentCapturedThought = currentCapturedThought.copy(
-                audioFile = data.audioFile
-            )
-        }
-    }
-
     private fun setupMode() {
-        viewManager.setupModeVisibility(currentInputType)
-
+        flContainerFeatures.removeAllViews()
         when (currentInputType) {
             InitialThoughtType.NOTE -> {
-                textInputHandler.setupRichTextEditor()
+                noteCaptureView = NoteCaptureView(this)
+                flContainerFeatures.addView(noteCaptureView)
+                noteInputHandler = NoteInputHandler(noteCaptureView!!, thoughtValidator).apply {
+                    setOnDataChangedListener { currentThoughtDTO = it }
+                }
             }
             InitialThoughtType.VOICE -> {
-                voiceRecordingHandler.requestPermission()
+                voiceCaptureView = VoiceCaptureView(this)
+                flContainerFeatures.addView(voiceCaptureView)
+                voiceHandler = VoiceRecordingHandler(this, voiceCaptureView!!).apply {
+                    setupListeners()
+                    setOnDataChangedListener { currentThoughtDTO = it }
+                }
             }
-            InitialThoughtType.PHOTO -> {
-                // photoCaptureHandler.requestPermission()
-            }
-            InitialThoughtType.DRAWING -> {
-                // drawingHandler.setupDrawingCanvas()
-            }
-            InitialThoughtType.UNKNOWN -> {
-                // TODO: co wtedy?
-            }
+            else -> { /* TODO: next modes */ }
         }
     }
 
     private fun setupListeners() {
-        textInputHandler.setupTextWatcher()
-        voiceRecordingHandler.setupListeners()
-        viewManager.btnSave.setOnClickListener { saveThought() }
+        btnSave.setOnClickListener {
+            lifecycleScope.launch { saveThought() }
+        }
+        etEssence.doAfterTextChanged {
+            updateEssenceInfo()
+        }
     }
 
-    private fun saveThought() {
-        // Merge current data from all handlers
-        val finalData = currentCapturedThought.copy(
-            essence = textInputHandler.getCurrentData().essence,
-            richText = textInputHandler.getCurrentData().richText,
-            audioFile = voiceRecordingHandler.getCurrentData().audioFile,
-            initialThoughtType = currentInputType
+    fun updateEssenceInfo() {
+        val text = etEssence.text.toString().trim()
+        when (val validationResult = thoughtValidator.validateEssence(text)){
+            is ValidationResult.Error -> {
+                tvEssenceWordsInfo.text = validationResult.message
+                tvEssenceWordsInfo.setTextColor(ContextCompat.getColor(this, R.color.error_red))
+            }
+            is ValidationResult.Valid -> {
+                tvEssenceWordsInfo.text = validationResult.message
+                tvEssenceWordsInfo.setTextColor(ContextCompat.getColor(this, R.color.success_green))
+            }
+        }
+    }
+
+    private suspend fun saveThought() {
+        val finalData = currentThoughtDTO.copy(
+            essence = etEssence.text?.toString().orEmpty(),
+            richText = noteCaptureView?.getRichText()
         )
 
-        val validationResult = thoughtValidator.validate(finalData)
-        when(validationResult){
-            is ValidationResult.Error -> return
-            is ValidationResult.Valid -> performSaving()
+        val validationResult = thoughtValidator.validateDTO(finalData)
+        when (validationResult) {
+            is ValidationResult.Error -> handleValidationError(validationResult)
+            is ValidationResult.Valid -> thoughtsService.addThought(finalData)
         }
 
         finish()
-    }
+    }}
 
-    private fun performSaving(){
-        // TODO: Save to DB
-        Toast.makeText(this, getString(R.string.capture_main_state_saved), Toast.LENGTH_SHORT).show()
+    private fun handleValidationError(result : ValidationResult){
+        // TODO: HERE
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        voiceRecordingHandler.cleanup()
-        // Future: photoCaptureHandler.cleanup()
-        // Future: drawingHandler.cleanup()
-    }
-}

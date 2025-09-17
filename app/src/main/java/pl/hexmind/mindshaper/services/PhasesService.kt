@@ -9,6 +9,7 @@ class PhasesService @Inject constructor(
     private val appStorage : AppSettingsStorage
 ){
 
+    // TODO: probably need to change LocalDate -> Instant (must be common)
     fun saveAppLaunchTime(){
         val today: LocalDate = LocalDate.now()
         appStorage.setAppLaunchDate(today)

@@ -4,15 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.main.CoreActivity
 import pl.hexmind.mindshaper.activities.main.MainActivity
 import pl.hexmind.mindshaper.services.ThoughtsService
-import pl.hexmind.mindshaper.ui.carousel.ThoughtCarouselAdapter
 import javax.inject.Inject
 import kotlin.math.abs
 
@@ -28,24 +25,7 @@ class ThoughtCarouselActivity : CoreActivity(), GestureDetector.OnGestureListene
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: ThoughtCarouselAdapter
 
-    // Additional panel of the bottom
-    private lateinit var ivPhaseInfoIcon : ImageView
-    private lateinit var tvPhaseInfoHeader : TextView
-    private lateinit var tvPhaseInfoThoughtsCaptured : TextView
-    private lateinit var tvPhaseInfoNextPhase : TextView
-
     private lateinit var gestureDetector: GestureDetector
-
-    internal val phaseToResourceMap = mapOf(
-        ThoughtProcessingPhaseName.GATHERING to R.drawable.ic_phase_gathering,
-        ThoughtProcessingPhaseName.CHOOSING to R.drawable.ic_phase_choosing,
-        ThoughtProcessingPhaseName.SILENT to R.drawable.ic_phase_silent,
-    )
-    internal val phaseToHeaderStringMap = mapOf(
-        ThoughtProcessingPhaseName.GATHERING to R.string.common_phase1_name,
-        ThoughtProcessingPhaseName.CHOOSING to R.string.common_phase2_name,
-        ThoughtProcessingPhaseName.SILENT to R.string.common_phase3_name,
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,26 +42,6 @@ class ThoughtCarouselActivity : CoreActivity(), GestureDetector.OnGestureListene
      */
     private fun initializeViews() {
         viewPager = findViewById(R.id.vp_thoughts)
-        tvPhaseInfoThoughtsCaptured = findViewById(R.id.tv_phase_info_gathered_thoughts)
-        setupPhasePanel()
-    }
-
-    private fun setupPhasePanel(){
-        val currentPhase : ThoughtProcessingPhase = getCurrentPhase()
-
-        ivPhaseInfoIcon = findViewById(R.id.iv_phase_info_icon)
-        val resourceIconId = phaseToResourceMap[currentPhase.currentPhaseName] ?: -1
-        ivPhaseInfoIcon.setImageResource(resourceIconId)
-
-        tvPhaseInfoHeader = findViewById(R.id.tv_phase_info_header)
-        val phaseDisplayName : String = getString(phaseToHeaderStringMap[currentPhase.currentPhaseName] ?: -1)
-        tvPhaseInfoHeader.text = phaseDisplayName
-
-        // Next phase launch
-        tvPhaseInfoNextPhase = findViewById(R.id.tv_phase_info_next_phase)
-        val phaseNextDisplayName : String = getString(phaseToHeaderStringMap[currentPhase.getNextPhaseName()] ?: -1)
-        val resourceNextPhaseId = getString(R.string.carousel_phase_next_state_for, phaseNextDisplayName, currentPhase.minRemaining.toString())
-        tvPhaseInfoNextPhase.text = resourceNextPhaseId
     }
 
     /**

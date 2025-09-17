@@ -1,9 +1,10 @@
-package pl.hexmind.mindshaper.activities.capture.models
+package pl.hexmind.mindshaper.activities.capture.handlers
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.validation.ValidationResult
+import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,11 +15,11 @@ class ThoughtValidator @Inject constructor(
 
     companion object {
 
-        const val ESSENCE_MAX_WORDS: Int = 10
+        const val ESSENCE_MAX_WORDS: Int = 16
     }
 
-    fun validate(input: CapturedThought): ValidationResult {
-        val essenceValidationResult = validateEssence(input.essence)
+    fun validateDTO(input: ThoughtDTO): ValidationResult {
+        val essenceValidationResult = validateEssence(input.essence.toString())
         // TODO: tu beda jeszcze inne walidacje :)
         return  essenceValidationResult
     }
@@ -28,7 +29,7 @@ class ThoughtValidator @Inject constructor(
             return ValidationResult.Error(context.getString(R.string.capture_essence_error_empty))
         }
 
-        val wordCount = essenceText.trim().split("\\s+".toRegex()).size
+        val wordCount = essenceText.trim().split("\\s+".toRegex()).size // TODO: Skip all 1 and 2 chars words (make a copy -> remove -> regex -> validate)
 
         return when {
             wordCount > ESSENCE_MAX_WORDS -> {
@@ -39,7 +40,7 @@ class ThoughtValidator @Inject constructor(
             }
             else -> {
                 val remaining = ESSENCE_MAX_WORDS - wordCount
-                val info = "•".repeat(remaining)
+                val info = "●".repeat(remaining)
                 ValidationResult.Valid(context.getString(R.string.capture_essence_state_remaining, info))
             }
         }

@@ -1,13 +1,14 @@
 package pl.hexmind.mindshaper.services.dto
 
-import java.util.Date
+import java.time.Instant
 
 data class ThoughtDTO(
-    val id : Int? = null,
-    val domainIconId : Int? = null,
-    val thread : String? = "",
-    val essence : String,
-    val createdAt: Date
+    var essence : String? = "",
+    var createdAt: Instant? = Instant.now(),
+    var id : Int? = null,
+    var domainIconId : Int? = null,
+    var thread : String? = "",
+    var richText: String? = ""
 ){
     // * For proper DiffUtil comparison
     override fun equals(other: Any?): Boolean {
@@ -18,7 +19,8 @@ data class ThoughtDTO(
                 createdAt == other.createdAt &&
                 domainIconId == other.domainIconId &&
                 thread == other.thread &&
-                essence == other.essence
+                essence == other.essence &&
+                richText == other.richText
     }
 
     // * For proper DiffUtil comparison
@@ -28,6 +30,7 @@ data class ThoughtDTO(
         result = 31 * result + (thread?.hashCode() ?: 0)
         result = 31 * result + essence.hashCode()
         result = 31 * result + createdAt.hashCode()
+        result = 31 * result + richText.hashCode()
         return result
     }
 }

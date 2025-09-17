@@ -85,7 +85,7 @@ class MainActivity : CoreActivity(), GestureDetector.OnGestureListener {
         fabNoteType.setOnClickListener {
             closeMenu()
             val intent = Intent(this, ThoughtsCaptureActivity::class.java)
-            intent.putExtra(ThoughtsCaptureActivity.INPUT_TYPE, InitialThoughtType.NOTE as Parcelable)
+            intent.putExtra(ThoughtsCaptureActivity.Params.P_INIT_THOUGHT_TYPE, InitialThoughtType.NOTE as Parcelable)
             startActivity(intent)
         }
 
@@ -93,7 +93,7 @@ class MainActivity : CoreActivity(), GestureDetector.OnGestureListener {
         fabVoiceType.setOnClickListener {
             closeMenu()
             val intent = Intent(this, ThoughtsCaptureActivity::class.java)
-            intent.putExtra(ThoughtsCaptureActivity.INPUT_TYPE, InitialThoughtType.VOICE as Parcelable)
+            intent.putExtra(ThoughtsCaptureActivity.Params.P_INIT_THOUGHT_TYPE, InitialThoughtType.VOICE as Parcelable)
             startActivity(intent)
         }
 
@@ -101,7 +101,7 @@ class MainActivity : CoreActivity(), GestureDetector.OnGestureListener {
         fabDrawingType.setOnClickListener {
             closeMenu()
             val intent = Intent(this, ThoughtsCaptureActivity::class.java)
-            intent.putExtra(ThoughtsCaptureActivity.INPUT_TYPE, InitialThoughtType.DRAWING as Parcelable)
+            intent.putExtra(ThoughtsCaptureActivity.Params.P_INIT_THOUGHT_TYPE, InitialThoughtType.DRAWING as Parcelable)
             startActivity(intent)
         }
 
@@ -109,7 +109,7 @@ class MainActivity : CoreActivity(), GestureDetector.OnGestureListener {
         fabPhotoType.setOnClickListener {
             closeMenu()
             val intent = Intent(this, ThoughtsCaptureActivity::class.java)
-            intent.putExtra(ThoughtsCaptureActivity.INPUT_TYPE, InitialThoughtType.PHOTO as Parcelable)
+            intent.putExtra(ThoughtsCaptureActivity.P_INIT_THOUGHT_TYPE, InitialThoughtType.PHOTO as Parcelable)
             startActivity(intent)
         }
     }

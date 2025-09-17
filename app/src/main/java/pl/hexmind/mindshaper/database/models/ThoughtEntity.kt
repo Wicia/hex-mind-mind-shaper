@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.Index
+import java.time.Instant
 
 import java.util.Date
 
@@ -23,7 +24,7 @@ import java.util.Date
 data class ThoughtEntity(
 
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: Int? = null,
 
     @ColumnInfo(name = "domain_id")
     val domainId: Int?,
@@ -35,8 +36,11 @@ data class ThoughtEntity(
     val essence: String,
 
     @ColumnInfo(name = "created_at")
-    val createdAt: Date = Date(),
+    val createdAt: Instant = Instant.now(),
 
     @ColumnInfo(name = "priority")
-    val priority: Int = 3
+    val priority: Int = 3,
+
+    @ColumnInfo(name = "rich_text")
+    val richText: String? = null,
 )

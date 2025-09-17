@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="16dp">
+
+    <TextView
+        style="@style/TextView_Header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/capture_voice_header"
+        android:layout_marginBottom="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="12dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_record_new"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:text="@string/capture_voice_record_new"
+            android:backgroundTint="@color/button_primary"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_thought_type_sound"
+            app:iconGravity="textStart"
+            app:iconSize="32dp"
+            app:iconTint="@color/button_icon_primary" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_record_stop_play"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:text="@string/capture_voice_record_stop"
+            android:backgroundTint="@color/button_primary_stateful"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_stop_circle"
+            app:iconGravity="textStart"
+            app:iconSize="32dp"
+            app:iconTint="@color/button_icon_primary_stateful" />
+    </LinearLayout>
+
+    <TextView
+        style="@style/TextView_Info"
+        android:id="@+id/tv_recording_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/capture_voice_tooltip"
+        android:gravity="center"
+        android:layout_marginBottom="24dp" />
+</LinearLayout>
