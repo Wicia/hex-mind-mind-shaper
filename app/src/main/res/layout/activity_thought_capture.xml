@@ -28,6 +28,20 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="24dp" />
 
+        <FrameLayout
+            android:id="@+id/fl_container_features"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/textView"
+            style="@style/SeparatorOrDecorator"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="@string/common_char_separator" />
+
         <!-- Short Thought Section (Always visible) -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -57,11 +71,6 @@
             android:text="@string/capture_essence_state_initial"
             android:gravity="end"
             android:layout_marginBottom="24dp" />
-
-        <FrameLayout
-            android:id="@+id/fl_container_features"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 
         <!-- Save Button -->
         <com.google.android.material.button.MaterialButton

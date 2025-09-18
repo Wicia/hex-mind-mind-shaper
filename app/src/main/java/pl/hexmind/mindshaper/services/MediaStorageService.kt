@@ -81,7 +81,7 @@ class MediaStorageService @Inject constructor(
                     }
 
                 } catch (e: Exception) {
-                    context.getString(R.string.unknown_audio_file)
+                    context.getString(R.string.files_audio_error_unknown_file)
                 }
             }
             "file" -> {
@@ -91,10 +91,10 @@ class MediaStorageService @Inject constructor(
                 if (folderPath.isNotEmpty() && fileName.isNotEmpty()) {
                     "$fileName\n${context.getString(R.string.in_folder)}: $folderPath"
                 } else {
-                    fileName.ifEmpty { context.getString(R.string.unknown_file) }
+                    fileName.ifEmpty { context.getString(R.string.files_error_unknown_file) }
                 }
             }
-            else -> context.getString(R.string.unknown_audio_file)
+            else -> context.getString(R.string.files_audio_error_unknown_file)
         }
     }
 

@@ -123,7 +123,7 @@ class SettingsActivity : CoreActivity() {
         findViewById<TextView>(R.id.tv_domains_state_loading_info)?.let { errorView ->
             errorView.text = message
             errorView.visibility = View.VISIBLE
-            errorView.setTextColor(ContextCompat.getColor(this, R.color.error_red))
+            errorView.setTextColor(ContextCompat.getColor(this, R.color.validation_error))
         }
     }
 
@@ -153,11 +153,11 @@ class SettingsActivity : CoreActivity() {
                 } else {
                     // URI is no longer accessible, clear it
                     clearAudioSelection()
-                    showAudioErrorMessage(getString(R.string.audio_file_no_longer_accessible))
+                    showAudioErrorMessage(getString(R.string.files_audio_error_file_not_accessible))
                 }
             } catch (e: Exception) {
                 clearAudioSelection()
-                showAudioErrorMessage(getString(R.string.audio_file_error))
+                showAudioErrorMessage(getString(R.string.file_audio_error_reading_file))
             }
         }
     }
@@ -167,7 +167,7 @@ class SettingsActivity : CoreActivity() {
      */
     private fun clearAudioSelection() {
         selectedAudioUri = null
-        binding.tvSelectedFile.text = getString(R.string.no_audio_file_selected)
+        binding.tvSelectedFile.text = getString(R.string.files_audio_error_no_file_selected)
         appSettingsStorage.clearWelcomeAudio()
     }
 
@@ -176,7 +176,7 @@ class SettingsActivity : CoreActivity() {
      */
     private fun showAudioErrorMessage(message: String) {
         binding.tvSelectedFile.text = message
-        binding.tvSelectedFile.setTextColor(getColor(R.color.error_red))
+        binding.tvSelectedFile.setTextColor(getColor(R.color.validation_error))
     }
 
     /**
@@ -194,7 +194,7 @@ class SettingsActivity : CoreActivity() {
         try {
             audioPickerLauncher.launch(intent)
         } catch (e: Exception) {
-            showShortToast(R.string.cannot_open_file_picker)
+            showShortToast(R.string.files_error_cannot_open_file_picker)
         }
     }
 
@@ -213,7 +213,7 @@ class SettingsActivity : CoreActivity() {
             updateAudioFileDisplay(uri)
 
             val fileName = mediaStorageService.getSimpleFileName(uri)
-            showShortToast(R.string.file_selected, fileName)
+            showShortToast(R.string.files_info_selected, fileName)
 
             // Reset text color to default - TODO: Use custom color from colors.xml
             binding.tvSelectedFile.setTextColor(getColor(R.color.text_secondary))
@@ -222,10 +222,10 @@ class SettingsActivity : CoreActivity() {
             // Fallback: still save the URI but warn about potential access issues
             selectedAudioUri = uri
             updateAudioFileDisplay(uri)
-            showShortToast(R.string.file_selected_temp_access)
+            showShortToast(R.string.files_info_selected_temp_access)
         } catch (e: Exception) {
-            showAudioErrorMessage(getString(R.string.audio_file_error))
-            showShortToast(R.string.error_selecting_file)
+            showAudioErrorMessage(getString(R.string.file_audio_error_reading_file))
+            showShortToast(R.string.files_error_selecting_file)
         }
     }
 
@@ -253,7 +253,7 @@ class SettingsActivity : CoreActivity() {
                 appSettingsStorage.setWelcomeAudioUri(uri)
             } else {
                 appSettingsStorage.clearWelcomeAudio()
-                showAudioErrorMessage(getString(R.string.audio_file_no_longer_accessible))
+                showAudioErrorMessage(getString(R.string.files_audio_error_file_not_accessible))
             }
         }
 

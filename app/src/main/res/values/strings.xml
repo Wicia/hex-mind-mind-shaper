@@ -7,6 +7,8 @@
     <!-- CORE / COMMON -->
     <!-- ====================================== -->
 
+    <string name="common_char_separator"> ⏟ </string>
+
     <string name="app_name">FastNote</string>
 
     <!-- SAVE AND LOAD -->
@@ -21,15 +23,15 @@
     <string name="common_permission_audio_message_rationale">Uprawnienie do audio jest potrzebne do nagrywania notatek głosowych</string>
 
     <!-- FILES -->
-    <string name="audio_file_no_longer_accessible">Plik audio nie jest już dostępny</string>
-    <string name="audio_file_error">Błąd odczytu pliku audio</string>
-    <string name="no_audio_file_selected">Nie wybrano pliku audio</string>
-    <string name="cannot_open_file_picker">Nie można otworzyć selektora plików</string>
-    <string name="file_selected">Wybrano plik: %1$s</string>
-    <string name="file_selected_temp_access">Plik wybrany - dostęp może być tymczasowy</string>
-    <string name="error_selecting_file">Błąd podczas wyboru pliku</string>
-    <string name="unknown_audio_file">Nieznany plik audio</string>
-    <string name="unknown_file">Nieznany plik</string>
+    <string name="files_audio_error_file_not_accessible">Plik audio nie jest już dostępny</string>
+    <string name="file_audio_error_reading_file">Błąd odczytu pliku audio</string>
+    <string name="files_audio_error_no_file_selected">Nie wybrano pliku audio</string>
+    <string name="files_error_cannot_open_file_picker">Nie można otworzyć selektora plików</string>
+    <string name="files_info_selected">Wybrano plik: %1$s</string>
+    <string name="files_info_selected_temp_access">Plik wybrany - dostęp może być tymczasowy</string>
+    <string name="files_error_selecting_file">Błąd podczas wyboru pliku</string>
+    <string name="files_audio_error_unknown_file">Nieznany plik audio</string>
+    <string name="files_error_unknown_file">Nieznany plik</string>
     <string name="in_folder">w folderze</string>
 
     <!-- TODO: Keep this feature or remove it -->
@@ -68,7 +70,7 @@
     <string name="capture_main_state_saved">Myśl została pomyślnie uchwycona...</string>
 
     <!-- Common: Essence -->
-    <string name="capture_essence_tooltip">Uchwyć esencję w max. %1$s słowach</string>
+    <string name="capture_essence_tooltip">* Uchwyć esencję w max. %1$s słowach</string>
     <string name="capture_essence_state_initial">Czekam na słowa</string>
     <string name="capture_essence_state_remaining">Pozostało Ci %1$s słów</string>
     <string name="capture_essence_state_no_words_left">Wykorzystano wszystkie słowa</string>
@@ -76,11 +78,9 @@
     <string name="capture_essence_error_too_long">Twoja esencja przekracza %1$s słów...</string>
 
     <!-- Type: Rich Text Note -->
-    <string name="capture_note_label">Szczegółowe notatki</string>
     <string name="capture_note_hint">Pisz, niech palce płoną :)</string>
 
     <!-- Type: Voice Recording -->
-    <string name="capture_voice_header">Nagranie głosowe</string>
     <string name="capture_voice_tooltip">Gotowy do nagrywania</string>
     <string name="capture_voice_record_new">Nagrywaj nowy</string>
     <string name="capture_voice_record_stop">Zatrzymaj</string>

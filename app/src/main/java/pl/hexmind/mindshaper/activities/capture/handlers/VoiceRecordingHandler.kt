@@ -54,7 +54,7 @@ class VoiceRecordingHandler(
             start()
         }
         isRecording = true
-        voiceView.updateStatus("Nagrywanie...", R.color.error_red)
+        voiceView.updateStatus("Nagrywanie...", R.color.validation_error)
         voiceView.updateButtons(isRecording, isPlaying, audioFile != null)
     }
 
@@ -65,7 +65,7 @@ class VoiceRecordingHandler(
         }
         recorder = null
         isRecording = false
-        voiceView.updateStatus("Nagranie zapisane", R.color.success_green)
+        voiceView.updateStatus("Nagranie zapisane", R.color.validation_success)
         voiceView.updateButtons(isRecording, isPlaying, audioFile != null)
         notifyDataChanged()
     }
@@ -79,7 +79,7 @@ class VoiceRecordingHandler(
                 setOnCompletionListener { stopPlaying() }
             }
             isPlaying = true
-            voiceView.updateStatus("Odtwarzanie...", R.color.success_green)
+            voiceView.updateStatus("Odtwarzanie...", R.color.validation_success)
             voiceView.updateButtons(isRecording, isPlaying, audioFile != null)
         }
     }
@@ -88,7 +88,7 @@ class VoiceRecordingHandler(
         player?.release()
         player = null
         isPlaying = false
-        voiceView.updateStatus("Gotowy", R.color.success_green)
+        voiceView.updateStatus("Gotowy", R.color.validation_success)
         voiceView.updateButtons(isRecording, isPlaying, audioFile != null)
     }
 

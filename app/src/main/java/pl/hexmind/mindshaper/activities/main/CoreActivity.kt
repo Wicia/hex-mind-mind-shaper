@@ -15,10 +15,6 @@ open class CoreActivity() : AppCompatActivity() {
     @Inject
     lateinit var phasesService: PhasesService
 
-    fun getCurrentPhase() : ThoughtProcessingPhase{
-        return ThoughtProcessingPhase(ThoughtProcessingPhaseName.CHOOSING, 10)
-    }
-
     fun showShortToast(stringId : Int, param : String? = ""){
         Toast.makeText(this, getString(stringId, param), Toast.LENGTH_SHORT).show()
     }

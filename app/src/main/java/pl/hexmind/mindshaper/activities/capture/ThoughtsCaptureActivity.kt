@@ -63,6 +63,7 @@ class ThoughtsCaptureActivity : CoreActivity() {
         initializeFromIntent()
         setupMode()
         setupListeners()
+        setupUI()
     }
 
     private fun initializeFromIntent() {
@@ -105,16 +106,20 @@ class ThoughtsCaptureActivity : CoreActivity() {
         }
     }
 
+    fun setupUI(){
+        etEssence.hint = this.getString(R.string.capture_essence_tooltip, 16)
+    }
+
     fun updateEssenceInfo() {
         val text = etEssence.text.toString().trim()
         when (val validationResult = thoughtValidator.validateEssence(text)){
             is ValidationResult.Error -> {
                 tvEssenceWordsInfo.text = validationResult.message
-                tvEssenceWordsInfo.setTextColor(ContextCompat.getColor(this, R.color.error_red))
+                tvEssenceWordsInfo.setTextColor(ContextCompat.getColor(this, R.color.validation_error))
             }
             is ValidationResult.Valid -> {
                 tvEssenceWordsInfo.text = validationResult.message
-                tvEssenceWordsInfo.setTextColor(ContextCompat.getColor(this, R.color.success_green))
+                tvEssenceWordsInfo.setTextColor(ContextCompat.getColor(this, R.color.validation_success))
             }
         }
     }
@@ -127,13 +132,10 @@ class ThoughtsCaptureActivity : CoreActivity() {
 
         val validationResult = thoughtValidator.validateDTO(finalData)
         when (validationResult) {
-            is ValidationResult.Error -> handleValidationError(validationResult)
-            is ValidationResult.Valid -> thoughtsService.addThought(finalData)
+            is ValidationResult.Error -> { }
+            is ValidationResult.Valid -> {
+                thoughtsService.addThought(finalData)
+                finish()
+            }
         }
-
-        finish()
     }}
-
-    private fun handleValidationError(result : ValidationResult){
-        // TODO: HERE
-    }

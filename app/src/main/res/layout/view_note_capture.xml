@@ -10,7 +10,6 @@
         style="@style/TextView_Header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/capture_note_label"
         android:layout_marginBottom="8dp" />
 
     <com.google.android.material.textfield.TextInputLayout

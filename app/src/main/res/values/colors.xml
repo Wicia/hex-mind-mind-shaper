@@ -24,8 +24,8 @@
     <!-- ====================================== -->
 
     <!-- Success, error, warning states -->
-    <color name="success_green">#388E3C</color>
-    <color name="error_red">#D32F2F</color>
+    <color name="validation_success">@color/_gray_mid</color>
+    <color name="validation_error">#480808</color>
     <color name="info_blue">#1976D2</color>
 
     <!-- ====================================== -->
