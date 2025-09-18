@@ -9,7 +9,7 @@
 
     <string name="common_char_separator"> ⏟ </string>
 
-    <string name="app_name">FastNote</string>
+    <string name="app_name">MindShaper</string>
 
     <!-- SAVE AND LOAD -->
     <string name="common_btn_save">Zapisz</string>

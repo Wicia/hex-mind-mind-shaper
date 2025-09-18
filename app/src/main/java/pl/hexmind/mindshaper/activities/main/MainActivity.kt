@@ -67,7 +67,7 @@ class MainActivity : CoreActivity(), GestureDetector.OnGestureListener {
     }
 
     private fun setupGreetingsTextView(){
-        tvHeaderGreetings = findViewById(R.id.tv_greetings)
+        tvHeaderGreetings = findViewById(R.id.tv_greetings_display)
         val currentGreetingsText = tvHeaderGreetings.text.toString()
         var newGreetingsText : String
         do {

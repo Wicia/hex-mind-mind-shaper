@@ -6,7 +6,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Main FAB -->
+    <ImageView
+        android:id="@+id/iv_header_icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="24dp"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+        app:srcCompat="@drawable/ic_activity_main_header" />
+
+    <TextView
+        android:id="@+id/tv_greetings_display"
+        style="@style/TextView_Header"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="top|center"
+        android:text="@string/main_greetings_header_default" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:contentDescription="@string/common_placeholder_accessibility_content_desc"
         android:id="@+id/fab_new_thought"
@@ -68,17 +87,5 @@
         android:tint="@color/button_primary"
         app:fabSize="normal"
         app:elevation="6dp" />
-
-    <TextView
-        android:id="@+id/tv_greetings"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        style="@style/TextView_Header"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:text="@string/main_greetings_header_default" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

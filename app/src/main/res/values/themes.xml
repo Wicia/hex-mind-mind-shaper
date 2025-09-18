@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme for light mode -->
-    <style name="Theme.FastNote" parent="Theme.Material3.Light">
+    <style name="Theme.MindShaper" parent="Theme.Material3.Light">
 
         <!-- Primary color -->
         <item name="colorPrimary">@color/app_primary</item>
@@ -42,20 +42,20 @@
     </style>
 
     <!-- Theme for carousel activity without action bar -->
-    <style name="Theme.FastNote.NoActionBar" parent="Theme.FastNote">
+    <style name="Theme.MindShaper.NoActionBar" parent="Theme.MindShaper">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowFullscreen">false</item>
     </style>
 
     <!-- Theme for capture activity with immersive feel -->
-    <style name="Theme.FastNote.Capture" parent="Theme.FastNote">
+    <style name="Theme.MindShaper.Capture" parent="Theme.MindShaper">
         <item name="android:windowBackground">@color/_orange_extra_light</item>
         <item name="colorSurface">@color/_white</item>
     </style>
 
     <!-- Theme for details activity -->
-    <style name="Theme.FastNote.Details" parent="Theme.FastNote">
+    <style name="Theme.MindShaper.Details" parent="Theme.MindShaper">
         <item name="android:windowBackground">@color/_white</item>
         <item name="colorSurface">@color/_orange_extra_light</item>
     </style>
