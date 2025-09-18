@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.common
+package pl.hexmind.mindshaper.common.formatting
 
 import java.time.Instant
 import java.time.ZoneId

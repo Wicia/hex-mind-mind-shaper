@@ -9,9 +9,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.common.toLocalDateString
+import pl.hexmind.mindshaper.common.formatting.toLocalDateString
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
-import java.time.Instant
 
 /**
  * Adapter for thought carousel with smooth animations and automatic updates via LiveData

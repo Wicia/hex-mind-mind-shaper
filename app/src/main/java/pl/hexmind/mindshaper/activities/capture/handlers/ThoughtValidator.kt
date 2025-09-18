@@ -3,6 +3,7 @@ package pl.hexmind.mindshaper.activities.capture.handlers
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.common.regex.cleanText
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import javax.inject.Inject
@@ -29,7 +30,8 @@ class ThoughtValidator @Inject constructor(
             return ValidationResult.Error(context.getString(R.string.capture_essence_error_empty))
         }
 
-        val wordCount = essenceText.trim().split("\\s+".toRegex()).size // TODO: Skip all 1 and 2 chars words (make a copy -> remove -> regex -> validate)
+        val clearedText = essenceText.cleanText(essenceText)
+        val wordCount = clearedText.trim().split("\\s+".toRegex()).size
 
         return when {
             wordCount > ESSENCE_MAX_WORDS -> {
@@ -40,8 +42,7 @@ class ThoughtValidator @Inject constructor(
             }
             else -> {
                 val remaining = ESSENCE_MAX_WORDS - wordCount
-                val info = "●".repeat(remaining)
-                ValidationResult.Valid(context.getString(R.string.capture_essence_state_remaining, info))
+                ValidationResult.Valid(context.getString(R.string.capture_essence_state_remaining, remaining))
             }
         }
     }
