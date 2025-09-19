@@ -53,8 +53,8 @@
     <!-- ====================================== -->
 
     <!-- INPUT CONTROLS -->
-    <color name="input_background">@color/_orange_extra_light</color>
-    <color name="input_stroke">@color/_orange_mid</color>
+    <color name="input_background">@color/_white</color>
+    <color name="input_stroke">@color/app_background</color>
     <color name="input_focused">@color/_orange_dark</color>
 
     <!-- BUTTONS -->

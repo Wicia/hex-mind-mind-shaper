@@ -43,6 +43,8 @@ class ThoughtsCaptureActivity : CoreActivity() {
     private lateinit var btnSave: MaterialButton
     private lateinit var etEssence : TextInputEditText
 
+    private lateinit var etThread : TextInputEditText
+
     private lateinit var tvEssenceWordsInfo : TextView
 
     private var noteCaptureView: NoteCaptureView? = null
@@ -56,6 +58,7 @@ class ThoughtsCaptureActivity : CoreActivity() {
         setContentView(R.layout.activity_thought_capture)
         tvEssenceWordsInfo = findViewById(R.id.tv_essence_words_info)
         etEssence = findViewById(R.id.et_essence)
+        etThread = findViewById(R.id.et_thread)
 
         flContainerFeatures = findViewById(R.id.fl_container_features)
         btnSave = findViewById(R.id.btn_save)
@@ -127,6 +130,7 @@ class ThoughtsCaptureActivity : CoreActivity() {
     private suspend fun saveThought() {
         val finalData = currentThoughtDTO.copy(
             essence = etEssence.text?.toString().orEmpty(),
+            thread = etThread.text?.toString().orEmpty(),
             richText = noteCaptureView?.getRichText()
         )
 

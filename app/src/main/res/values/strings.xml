@@ -77,6 +77,8 @@
     <string name="capture_essence_error_empty">Podaj esencję...</string>
     <string name="capture_essence_error_too_long">Twoja esencja przekracza %1$s słów...</string>
 
+    <string name="capture_thread_tooltip"># Wątek"</string>
+
     <!-- Type: Rich Text Note -->
     <string name="capture_note_hint">Pisz, niech palce płoną :)</string>
 
