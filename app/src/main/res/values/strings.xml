@@ -27,7 +27,7 @@
     <string name="file_audio_error_reading_file">Błąd odczytu pliku audio</string>
     <string name="files_audio_error_no_file_selected">Nie wybrano pliku audio</string>
     <string name="files_error_cannot_open_file_picker">Nie można otworzyć selektora plików</string>
-    <string name="files_info_selected">Wybrano plik: %1$s</string>
+    <string name="files_info_selected">Wybrano plik: %s</string>
     <string name="files_info_selected_temp_access">Plik wybrany - dostęp może być tymczasowy</string>
     <string name="files_error_selecting_file">Błąd podczas wyboru pliku</string>
     <string name="files_audio_error_unknown_file">Nieznany plik audio</string>
@@ -68,19 +68,22 @@
     <!-- Core -->
     <string name="capture_main_label">Chwytaj myśl...</string>
     <string name="capture_main_state_saved">Myśl została pomyślnie uchwycona...</string>
+    <string name="capture_input_fields_error_empty">Notatka i Esencja są puste</string>
 
     <!-- Common: Essence -->
-    <string name="capture_essence_tooltip">* Uchwyć esencję w max. %1$s słowach</string>
+    <string name="capture_essence_tooltip">Uchwyć esencję w max. %d słowach</string>
     <string name="capture_essence_state_initial">Czekam na słowa</string>
-    <string name="capture_essence_state_remaining">Pozostało Ci %1$s słów</string>
+    <string name="capture_essence_state_remaining">Pozostało Ci %d słów</string>
     <string name="capture_essence_state_no_words_left">Wykorzystano wszystkie słowa</string>
     <string name="capture_essence_error_empty">Podaj esencję...</string>
-    <string name="capture_essence_error_too_long">Twoja esencja przekracza %1$s słów...</string>
+    <string name="capture_essence_error_too_long">Twoja esencja przekracza %d słów...</string>
 
-    <string name="capture_thread_tooltip"># Wątek"</string>
+    <!-- Thread -->
+    <string name="capture_thread_tooltip">Wątek</string>
+    <string name="capture_thread_error_words_exceeded">Wątek nie może przekroczyć %d słów...</string>
 
     <!-- Type: Rich Text Note -->
-    <string name="capture_note_hint">Pisz, niech palce płoną :)</string>
+    <string name="capture_note_hint">* Pisz, niech palce płoną :)</string>
 
     <!-- Type: Voice Recording -->
     <string name="capture_voice_tooltip">Gotowy do nagrywania</string>
@@ -104,6 +107,7 @@
     <!-- ACTIVITY: THOUGHTS PREVIEW / CAROUSEL  -->
     <!-- ====================================== -->
 
+    <!-- TODO: Remove? -->
     <string name="carousel_phase_next_state_for">%1$s za %2$s minut</string>
     <string name="carousel_thought_thread_empty">...</string>
 
@@ -124,7 +128,7 @@
     <string name="settings_pGreeting_sound_hint">Dźwięk odtwarzany przy pierwszym uruchomieniu dnia</string>
     <string name="settings_pGreeting_choose_sound_file">Wybierz plik dźwiękowy</string>
     <string name="settings_pGreeting_state_no_file">Nie wybrano pliku</string>
-    <string name="settings_pGreeting_state_file_name">Wybrano: %1$s</string>
+    <string name="settings_pGreeting_state_file_name">Wybrano: %s</string>
 
     <!-- Phase Names Setting -->
     <string name="settings_pPhase_names_header">Nazwy Faz</string>

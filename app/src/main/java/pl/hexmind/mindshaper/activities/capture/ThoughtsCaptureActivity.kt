@@ -2,10 +2,12 @@ package pl.hexmind.mindshaper.activities.capture
 
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -19,6 +21,7 @@ import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
 import pl.hexmind.mindshaper.activities.capture.ui.NoteCaptureView
 import pl.hexmind.mindshaper.activities.capture.ui.VoiceCaptureView
 import pl.hexmind.mindshaper.activities.main.CoreActivity
+import pl.hexmind.mindshaper.common.regex.convertToWords
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
@@ -106,25 +109,21 @@ class ThoughtsCaptureActivity : CoreActivity() {
         }
         etEssence.doAfterTextChanged {
             updateEssenceInfo()
+        } // TODO: Move to validator part of this logic
+        etThread.doAfterTextChanged { editable ->
+            editable?.let {
+                val words = it.toString().convertToWords()
+                if (words.size > ThoughtValidator.THREAD_MAX_WORDS) {
+                    val limited = words.take(ThoughtValidator.THREAD_MAX_WORDS).joinToString(" ")
+                    etThread.setText(limited)
+                    etThread.setSelection(limited.length)
+                }
+            }
         }
     }
 
     fun setupUI(){
         etEssence.hint = this.getString(R.string.capture_essence_tooltip, 16)
-    }
-
-    fun updateEssenceInfo() {
-        val text = etEssence.text.toString().trim()
-        when (val validationResult = thoughtValidator.validateEssence(text)){
-            is ValidationResult.Error -> {
-                tvEssenceWordsInfo.text = validationResult.message
-                tvEssenceWordsInfo.setTextColor(ContextCompat.getColor(this, R.color.validation_error))
-            }
-            is ValidationResult.Valid -> {
-                tvEssenceWordsInfo.text = validationResult.message
-                tvEssenceWordsInfo.setTextColor(ContextCompat.getColor(this, R.color.validation_success))
-            }
-        }
     }
 
     private suspend fun saveThought() {
@@ -142,4 +141,19 @@ class ThoughtsCaptureActivity : CoreActivity() {
                 finish()
             }
         }
-    }}
+    }
+
+    fun updateEssenceInfo() {
+        val text = etEssence.text.toString()
+        when (val validationResult = thoughtValidator.validateEssence(text)){
+            is ValidationResult.Error -> {
+                tvEssenceWordsInfo.text = validationResult.message
+                tvEssenceWordsInfo.setTextColor(ContextCompat.getColor(this, R.color.validation_error))
+            }
+            is ValidationResult.Valid -> {
+                tvEssenceWordsInfo.text = validationResult.message
+                tvEssenceWordsInfo.setTextColor(ContextCompat.getColor(this, R.color.validation_success))
+            }
+        }
+    }
+}

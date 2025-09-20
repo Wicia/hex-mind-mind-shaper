@@ -29,6 +29,49 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="24dp" />
 
+        <!-- DYNAMIC CONTENT - NOTES / AUDIO etc. -->
+        <FrameLayout
+            android:id="@+id/fl_container_features"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <!-- THREAD -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                android:id="@+id/iv_icon_signs"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/ic_thread" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_thread"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="140dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:boxStrokeColor="#FFAF7A"
+                app:hintTextColor="#FF8C42"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_thread"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_edit_text"
+                    android:hint="@string/capture_thread_tooltip"
+                    android:inputType="text"
+                    android:padding="12dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
         <!-- ESSENCE -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -50,6 +93,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- ESSENCE: Words info -->
         <TextView
             android:id="@+id/tv_essence_words_info"
             style="@style/TextView_Info"
@@ -58,55 +102,6 @@
             android:text="@string/capture_essence_state_initial"
             android:gravity="end"
             android:layout_marginBottom="24dp" />
-
-        <!-- THREAD + ICON CENTERED -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/iv_icon_signs"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="12dp"
-                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                app:srcCompat="@drawable/ic_thread"
-                app:layout_constraintEnd_toStartOf="@id/til_thread"
-                app:layout_constraintTop_toTopOf="@id/til_thread"
-                app:layout_constraintBottom_toBottomOf="@id/til_thread" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_thread"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="120dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                app:boxStrokeColor="#FFAF7A"
-                app:hintTextColor="#FF8C42"
-                app:hintEnabled="false"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_thread"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/shape_edit_text"
-                    android:hint="@string/capture_thread_tooltip"
-                    android:inputType="text"
-                    android:padding="12dp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!-- Save Button -->
-
-        <FrameLayout
-            android:id="@+id/fl_container_features"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_save"
