@@ -19,3 +19,7 @@ fun String.convertToWords(): List<String> {
 fun String.getWordsCount() : Int {
     return this.trim().split("\\s+".toRegex()).size
 }
+
+fun String.cutIntoSentences() : List<String> {
+    return this.split(Regex("(?<=[.!?])\\s+|\n+"))
+}

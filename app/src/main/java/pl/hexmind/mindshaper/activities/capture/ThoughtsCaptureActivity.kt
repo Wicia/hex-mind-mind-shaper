@@ -22,6 +22,7 @@ import pl.hexmind.mindshaper.activities.capture.ui.NoteCaptureView
 import pl.hexmind.mindshaper.activities.capture.ui.VoiceCaptureView
 import pl.hexmind.mindshaper.activities.main.CoreActivity
 import pl.hexmind.mindshaper.common.regex.convertToWords
+import pl.hexmind.mindshaper.common.regex.cutIntoSentences
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
@@ -127,6 +128,8 @@ class ThoughtsCaptureActivity : CoreActivity() {
     }
 
     private suspend fun saveThought() {
+        launchSmartInsert()
+
         val finalData = currentThoughtDTO.copy(
             essence = etEssence.text?.toString().orEmpty(),
             thread = etThread.text?.toString().orEmpty(),
@@ -140,6 +143,24 @@ class ThoughtsCaptureActivity : CoreActivity() {
                 thoughtsService.addThought(finalData)
                 finish()
             }
+        }
+    }
+
+    fun launchSmartInsert(){
+        val noteRawInput = noteCaptureView?.getRichText().orEmpty()
+        val sentencesList = noteRawInput.cutIntoSentences()
+
+        if(sentencesList.size == 1 && etThread.text.toString().isEmpty() && etEssence.text.toString().isEmpty()){
+            etEssence.text = Editable.Factory.getInstance().newEditable(sentencesList[0])
+        }
+        if(sentencesList.size == 2 && etThread.text.toString().isEmpty() && etEssence.text.toString().isEmpty()){
+            etThread.text = Editable.Factory.getInstance().newEditable(sentencesList[0])
+            etEssence.text = Editable.Factory.getInstance().newEditable(sentencesList[1])
+        }
+        else if (sentencesList.size == 3 && etThread.text.toString().isEmpty() && etEssence.text.toString().isEmpty()){
+            etThread.text = Editable.Factory.getInstance().newEditable(sentencesList[0])
+            etEssence.text = Editable.Factory.getInstance().newEditable(sentencesList[1])
+            noteCaptureView?.updateRichText(sentencesList[2])
         }
     }
 

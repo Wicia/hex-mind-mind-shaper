@@ -1,6 +1,7 @@
 package pl.hexmind.mindshaper.activities.capture.ui
 
 import android.content.Context
+import android.text.Editable
 import android.util.AttributeSet
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -20,4 +21,8 @@ class NoteCaptureView @JvmOverloads constructor(
     }
 
     fun getRichText(): String = etRichText.text.toString()
+
+    fun updateRichText(value : String) {
+        etRichText.text = Editable.Factory.getInstance().newEditable(value)
+    }
 }
