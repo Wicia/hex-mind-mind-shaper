@@ -3,6 +3,7 @@ package pl.hexmind.mindshaper.activities.carousel
 /**
  * Storing data of current thoughts processing phase
  */
+// TODO: To be removed or not?
 data class ThoughtProcessingPhase(
     val currentPhaseName: ThoughtProcessingPhaseName,
     var minRemaining: Int

@@ -54,33 +54,7 @@ class ThoughtCarouselActivity : CoreActivity(), GestureDetector.OnGestureListene
         viewPager.offscreenPageLimit = 3
 
         // Custom page transformer for 3D carousel effect
-        viewPager.setPageTransformer { page, position ->
-            when {
-                position < -1 -> {
-                    page.alpha = 0f
-                }
-                position <= 1 -> {
-                    page.alpha = 1f
-                    page.translationX = 0f
-                    page.scaleX = 1f
-                    page.scaleY = 1f
-
-                    // 3D rotation effect
-                    page.rotationY = position * -30f
-
-                    // Depth effect
-                    val scaleFactor = 0.85f + (1 - abs(position)) * 0.15f
-                    page.scaleX = scaleFactor
-                    page.scaleY = scaleFactor
-
-                    // Fade effect for side pages
-                    page.alpha = 0.5f + (1 - abs(position)) * 0.5f
-                }
-                else -> {
-                    page.alpha = 0f
-                }
-            }
-        }
+        viewPager.setPageTransformer { page, position -> ThoughtCardPageTransformer() }
 
         // Smooth page change callback
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {

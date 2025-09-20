@@ -15,17 +15,6 @@
         android:layout_gravity="center"
         android:padding="24dp">
 
-        <!-- THREAD -->
-        <TextView
-            android:id="@+id/tv_thought_thread"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:textAlignment="center"
-            android:layout_marginBottom="18dp" />
-
         <!-- ESSENCE -->
         <TextView
             android:id="@+id/tv_thought_essence"
@@ -40,7 +29,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_marginBottom="12dp">
 
             <!-- EXTRAS: DOMAIN ICON -->
             <ImageView
@@ -53,20 +43,29 @@
 
             <View
                 android:id="@+id/v_decorator"
-                android:layout_width="2dp"
-                android:layout_height="24dp"
+                android:layout_width="1dp"
+                android:layout_height="18dp"
                 android:background="@android:color/darker_gray"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp" />
 
-            <!-- EXTRAS: CREATED DATE -->
+            <!-- THREAD -->
             <TextView
-                android:id="@+id/tv_created_at"
+                android:id="@+id/tv_thought_thread"
                 style="@style/TextView_Extras"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textAlignment="center" />
 
         </LinearLayout>
+
+        <!-- EXTRAS: CREATED DATE -->
+        <TextView
+            android:id="@+id/tv_created_at"
+            style="@style/TextView_Extras"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
