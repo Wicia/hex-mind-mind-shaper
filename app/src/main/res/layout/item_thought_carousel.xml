@@ -21,7 +21,7 @@
             style="@style/TextView_Body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="18dp"
+            android:layout_marginBottom="24dp"
             android:textAlignment="center" />
 
         <LinearLayout

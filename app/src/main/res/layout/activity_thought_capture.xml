@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_edit_text"
                     android:hint="@string/capture_thread_tooltip"
-                    android:inputType="text"
+                    android:inputType="textCapSentences"
                     android:padding="12dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -88,7 +88,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/shape_edit_text"
                 android:hint="@string/capture_essence_tooltip"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textCapSentences"
                 android:minLines="2"
                 android:padding="12dp" />
 
