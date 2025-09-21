@@ -4,6 +4,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
 
+// TODO: Is it needed?
 @Singleton
 class PhasesService @Inject constructor(
     private val appStorage : AppSettingsStorage
