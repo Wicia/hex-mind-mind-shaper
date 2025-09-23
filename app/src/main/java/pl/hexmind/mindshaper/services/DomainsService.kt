@@ -8,16 +8,15 @@ import javax.inject.Singleton
 
 @Singleton
 class DomainsService @Inject constructor(
-    private val repository : DomainRepository,
-    private val mapper : DomainMapper
+    private val repository : DomainRepository
 ){
     suspend fun updateDomain(dto : DomainDTO){
-        val entity = mapper.toEntity(dto)
+        val entity = DomainMapper.INSTANCE.dtoToEntity(dto)
         repository.updateDomain(entity)
     }
 
     suspend fun getAllDomains() : List<DomainDTO>{
         val domains = repository.getAllDomains()
-        return mapper.toDTOList(domains)
+        return DomainMapper.INSTANCE.entityListToDtoList(domains)
     }
 }

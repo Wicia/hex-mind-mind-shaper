@@ -1,30 +1,28 @@
 package pl.hexmind.mindshaper.services.mappers
 
+import org.mapstruct.Mapper
+import org.mapstruct.Mapping
+import org.mapstruct.factory.Mappers
 import pl.hexmind.mindshaper.database.models.DomainEntity
 import pl.hexmind.mindshaper.services.dto.DomainDTO
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class DomainMapper @Inject constructor(){
+@Mapper
+interface DomainMapper {
 
-    fun toEntity(dto: DomainDTO): DomainEntity =
-        DomainEntity(
-            id = dto.id,
-            assetsIconId = dto.assetImageId,
-            name = dto.name
-        )
+    companion object {
+        // ! To solve problems with injecting mapper using Hilt
+        val INSTANCE: DomainMapper = Mappers.getMapper(DomainMapper::class.java)
+    }
 
-    fun toDTO(entity: DomainEntity): DomainDTO =
-        DomainDTO(
-            id = entity.id,
-            name = entity.name,
-            assetImageId = entity.assetsIconId
-        )
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "assetsIconId", target = "iconId")
+    fun entityToDTO(entity : DomainEntity) : DomainDTO
 
-    fun toEntityList(dtos: List<DomainDTO>): List<DomainEntity> =
-        dtos.map { toEntity(it) }
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "iconId", target = "assetsIconId")
+    fun dtoToEntity(dto : DomainDTO) : DomainEntity
 
-    fun toDTOList(entities: List<DomainEntity>): List<DomainDTO> =
-        entities.map { toDTO(it) }
+    fun entityListToDtoList(entities: List<DomainEntity>): List<DomainDTO>
 }

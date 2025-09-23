@@ -24,6 +24,7 @@ import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.databinding.ActivitySettingsBinding
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.DomainsService
+import pl.hexmind.mindshaper.services.IconsService
 import pl.hexmind.mindshaper.services.MediaStorageService
 import pl.hexmind.mindshaper.services.dto.DomainDTO
 import javax.inject.Inject
@@ -38,13 +39,13 @@ class SettingsActivity : CoreActivity() {
     lateinit var domainService : DomainsService
 
     @Inject
+    lateinit var iconsService : IconsService
+
+    @Inject
     lateinit var appSettingsStorage: AppSettingsStorage
 
     @Inject
     lateinit var mediaStorageService : MediaStorageService
-
-    @Inject
-    lateinit var domainIconsLoader : DomainIconLoader
 
     @Inject
     lateinit var domainValidator: DomainValidator
@@ -104,7 +105,7 @@ class SettingsActivity : CoreActivity() {
                     ivDomainName.text = domainDTO.name
 
                     val ivDomainIcon = buttonView.findViewById<ImageView>(R.id.iv_domain_icon)
-                    ivDomainIcon.setImageDrawable(domainIconsLoader.loadIcon(domainDTO.assetImageId))
+                    ivDomainIcon.setImageDrawable(iconsService.getDrawableIcon(domainDTO.iconId))
 
                     buttonView.setOnClickListener {
                         onDomainButtonClick(domainIndex, domainDTO)
@@ -288,8 +289,8 @@ class SettingsActivity : CoreActivity() {
                 loadingIndicator.visibility = View.VISIBLE
                 recyclerView.visibility = View.GONE
 
-                val availableIcons = domainIconsLoader.getAvailableIcons()
-                val iconsMap = domainIconsLoader.loadIconsBatch(availableIcons)
+                val availableIcons = iconsService.getAvailableIconsIds()
+                val iconsMap = iconsService.loadIconsBatch(availableIcons)
 
                 loadingIndicator.visibility = View.GONE
                 recyclerView.visibility = View.VISIBLE
@@ -297,11 +298,11 @@ class SettingsActivity : CoreActivity() {
                 val adapter = IconPickerAdapter(
                     icons = availableIcons,
                     iconsMap = iconsMap,
-                    selectedIconNumber = currentDomainDTO.assetImageId
+                    selectedIconNumber = currentDomainDTO.iconId
                 )
                 { selectedIconNumber ->
                     val updatedName = etDomainName.text.toString()
-                    val updatedDTO = DomainDTO(id = currentDomainDTO.id, name = updatedName, assetImageId = selectedIconNumber)
+                    val updatedDTO = DomainDTO(id = currentDomainDTO.id, name = updatedName, iconId = selectedIconNumber)
                     val validationResult = domainValidator.validate(updatedDTO)
                     when(validationResult){
                         is ValidationResult.Valid -> {
@@ -316,7 +317,8 @@ class SettingsActivity : CoreActivity() {
 
                 recyclerView.adapter = adapter
 
-            } catch (e: Exception) {
+            }
+            catch (e: Exception) {
                 loadingIndicator.visibility = View.GONE
             }
         }
@@ -335,7 +337,7 @@ class SettingsActivity : CoreActivity() {
                 val buttonView = gridLayout.getChildAt(buttonIndex)
 
                 val ivDomainIcon = buttonView.findViewById<ImageView>(R.id.iv_domain_icon)
-                val drawable = domainIconsLoader.loadIcon(updatedDomainDTO.assetImageId)
+                val drawable = iconsService.getDrawableIcon(updatedDomainDTO.iconId)
                 ivDomainIcon.setImageDrawable(drawable)
 
                 val tvDomainName = buttonView.findViewById<TextView>(R.id.tv_domain_name)

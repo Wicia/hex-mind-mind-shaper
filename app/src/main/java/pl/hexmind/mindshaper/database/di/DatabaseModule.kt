@@ -9,10 +9,13 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import pl.hexmind.mindshaper.database.AppDatabase
 import pl.hexmind.mindshaper.database.repositories.DomainDAO
+import pl.hexmind.mindshaper.database.repositories.IconDAO
 import pl.hexmind.mindshaper.database.repositories.ThoughtsDAO
 import javax.inject.Singleton
 
-// Module providing database and DAO instances
+/**
+ * Module providing database and DAO instances
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
@@ -24,8 +27,8 @@ object DatabaseModule {
             context.applicationContext,
             AppDatabase::class.java,
             "app_database"
-        )
-            .fallbackToDestructiveMigration()
+            )
+            .fallbackToDestructiveMigration() // !!! TODO: !!! DISABLE ON PROD :)
             .build()
     }
 
@@ -37,5 +40,10 @@ object DatabaseModule {
     @Provides
     fun provideDomainDao(database: AppDatabase): DomainDAO {
         return database.domainDAO()
+    }
+
+    @Provides
+    fun provideIconDao(database: AppDatabase): IconDAO {
+        return database.iconDAO()
     }
 }

@@ -1,18 +1,18 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 11,
-    "identityHash": "35c89502a2aa28637426b03001264e48",
+    "version": 1,
+    "identityHash": "7403e4e2803990652f33773325b0a8d9",
     "entities": [
       {
         "tableName": "THOUGHTS",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `domain_id` INTEGER, `thread` TEXT, `essence` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `priority` INTEGER NOT NULL, FOREIGN KEY(`domain_id`) REFERENCES `DOMAINS`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `domain_id` INTEGER, `thread` TEXT, `essence` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `priority` INTEGER NOT NULL, `rich_text` TEXT, FOREIGN KEY(`domain_id`) REFERENCES `DOMAINS`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "domainId",
@@ -43,6 +43,12 @@
             "columnName": "priority",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "richText",
+            "columnName": "rich_text",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -78,7 +84,7 @@
       },
       {
         "tableName": "DOMAINS",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `assets_icon_id` INTEGER NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `assets_icon_id` INTEGER, `name` TEXT NOT NULL, FOREIGN KEY(`assets_icon_id`) REFERENCES `ICONS`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
         "fields": [
           {
             "fieldPath": "id",
@@ -90,7 +96,7 @@
             "fieldPath": "assetsIconId",
             "columnName": "assets_icon_id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "name",
@@ -100,7 +106,55 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_DOMAINS_assets_icon_id",
+            "unique": false,
+            "columnNames": [
+              "assets_icon_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_DOMAINS_assets_icon_id` ON `${TABLE_NAME}` (`assets_icon_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "ICONS",
+            "onDelete": "SET NULL",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "assets_icon_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "ICONS",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `icon_data` BLOB NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "iconData",
+            "columnName": "icon_data",
+            "affinity": "BLOB",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
           "columnNames": [
             "id"
           ]
@@ -112,7 +166,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '35c89502a2aa28637426b03001264e48')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7403e4e2803990652f33773325b0a8d9')"
     ]
   }
 }

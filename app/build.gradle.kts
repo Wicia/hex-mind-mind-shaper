@@ -135,4 +135,6 @@ dependencies {
     // Mappings and DTO
     implementation(libs.mapstruct)
     kapt(libs.mapstruct.processor) // ! using kapt to generate MapStruct mappers
+
+    implementation("com.caverock:androidsvg-aar:1.4")
 }
