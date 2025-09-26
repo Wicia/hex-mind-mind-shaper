@@ -16,7 +16,7 @@ import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.activities.main.CoreActivity
+import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.main.MainActivity
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.databinding.ActivitySettingsBinding

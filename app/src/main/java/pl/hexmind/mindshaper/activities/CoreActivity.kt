@@ -1,9 +1,7 @@
-package pl.hexmind.mindshaper.activities.main
+package pl.hexmind.mindshaper.activities
 
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import pl.hexmind.mindshaper.activities.carousel.ThoughtProcessingPhase
-import pl.hexmind.mindshaper.activities.carousel.ThoughtProcessingPhaseName
 import pl.hexmind.mindshaper.services.PhasesService
 import javax.inject.Inject
 

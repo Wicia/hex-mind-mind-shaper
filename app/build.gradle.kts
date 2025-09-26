@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     id("org.jetbrains.kotlin.kapt") // ! Only for MapStruct
+    id("kotlin-parcelize")
 }
 
 android {

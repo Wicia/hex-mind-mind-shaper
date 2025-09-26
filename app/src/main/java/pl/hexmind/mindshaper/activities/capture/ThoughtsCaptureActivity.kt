@@ -7,20 +7,19 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.handlers.NoteInputHandler
 import pl.hexmind.mindshaper.activities.capture.handlers.ThoughtValidator
 import pl.hexmind.mindshaper.activities.capture.handlers.VoiceRecordingHandler
 import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
 import pl.hexmind.mindshaper.activities.capture.ui.NoteCaptureView
 import pl.hexmind.mindshaper.activities.capture.ui.VoiceCaptureView
-import pl.hexmind.mindshaper.activities.main.CoreActivity
 import pl.hexmind.mindshaper.common.regex.convertToWords
 import pl.hexmind.mindshaper.common.regex.cutIntoSentences
 import pl.hexmind.mindshaper.common.validation.ValidationResult
@@ -67,13 +66,13 @@ class ThoughtsCaptureActivity : CoreActivity() {
         flContainerFeatures = findViewById(R.id.fl_container_features)
         btnSave = findViewById(R.id.btn_save)
 
-        initializeFromIntent()
+        saveExtrasFromIntent()
         setupMode()
         setupListeners()
         setupUI()
     }
 
-    private fun initializeFromIntent() {
+    private fun saveExtrasFromIntent() {
         currentInputType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(P_INIT_THOUGHT_TYPE, InitialThoughtType::class.java)
         } else {
@@ -133,7 +132,7 @@ class ThoughtsCaptureActivity : CoreActivity() {
         val finalData = currentThoughtDTO.copy(
             essence = etEssence.text?.toString().orEmpty(),
             thread = etThread.text?.toString().orEmpty(),
-            richText = noteCaptureView?.getRichText()
+            richText = noteCaptureView?.getRichText() ?: ""
         )
 
         val validationResult = thoughtValidator.validateDTO(finalData)

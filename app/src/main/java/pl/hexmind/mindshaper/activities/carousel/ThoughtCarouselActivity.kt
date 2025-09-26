@@ -7,7 +7,8 @@ import android.view.MotionEvent
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.activities.main.CoreActivity
+import pl.hexmind.mindshaper.activities.details.ThoughtDetailsActivity
+import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.main.MainActivity
 import pl.hexmind.mindshaper.services.ThoughtsService
 import javax.inject.Inject

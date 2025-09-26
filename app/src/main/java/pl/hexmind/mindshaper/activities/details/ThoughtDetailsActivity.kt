@@ -1,12 +1,14 @@
 package pl.hexmind.mindshaper.activities.details
 
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.activities.main.CoreActivity
+import pl.hexmind.mindshaper.activities.CoreActivity
+import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 
 class ThoughtDetailsActivity : CoreActivity() {
 
@@ -18,10 +20,17 @@ class ThoughtDetailsActivity : CoreActivity() {
     private lateinit var noteButton: Button
     private lateinit var photoButton: Button
 
+    companion object PARAMS {
+        const val P_SELECTED_THOUGHT_ID = "P_SELECTED_THOUGHT_ID"
+    }
+
+    private var dtoWithDetails : ThoughtDTO? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_thought_details)
 
+        saveExtrasFromIntent()
         initializeViews()
         setupProgressBar()
         setupButtons()
@@ -38,6 +47,15 @@ class ThoughtDetailsActivity : CoreActivity() {
         drawingButton = findViewById(R.id.drawingButton)
         noteButton = findViewById(R.id.noteButton)
         photoButton = findViewById(R.id.photoButton)
+    }
+
+    private fun saveExtrasFromIntent() {
+        dtoWithDetails = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(P_SELECTED_THOUGHT_ID, ThoughtDTO::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getParcelableExtra(P_SELECTED_THOUGHT_ID) as? ThoughtDTO
+        }
     }
 
     private fun setupProgressBar() {
