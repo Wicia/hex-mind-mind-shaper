@@ -68,6 +68,7 @@
 
     <!-- CARD VIEWS -->
     <color name="card_view_background">@color/_orange_light</color>
+    <color name="card_background">@color/_white</color>
 
     <!-- SEPARATOR / DIVIDERS -->
     <color name="separator_background">@color/_orange_dark</color>

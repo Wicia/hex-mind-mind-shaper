@@ -3,11 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/app_background"
     android:orientation="horizontal">
 
     <!-- Custom Toolbar -->
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,15 +18,23 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Section Header -->
+            <!-- Header -->
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                app:srcCompat="@drawable/ic_settings" />
+
             <TextView
+                style="@style/TextView_Header_Activity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="@string/settings_your_personalization"
-                android:textColor="#FF8C42"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:text="@string/settings_header"
+                android:gravity="center"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="24dp" />
 
             <!-- App Name Setting Card -->
             <androidx.cardview.widget.CardView
@@ -45,21 +52,20 @@
                     android:padding="16dp">
 
                     <TextView
+                        style="@style/TextView_Header"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
-                        android:text="@string/settings_pYour_name_header"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:text="@string/settings_name_header"
+                        />
 
                     <TextView
+                        style="@style/TextView_Info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:text="@string/settings_pYour_name_hint"
-                        android:textColor="#666666"
-                        android:textSize="14sp" />
+                        android:text="@string/settings_name_hint"
+                        />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
@@ -68,11 +74,12 @@
                         app:hintTextColor="#FF8C42">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etYourName"
+                            android:id="@+id/et_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text"
-                            android:maxLines="1" />
+                            android:maxLines="1"
+                            />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,21 +103,20 @@
                     android:padding="16dp">
 
                     <TextView
+                        style="@style/TextView_Header"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
-                        android:text="@string/settings_pGreeting_sound_header"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:text="@string/settings_greeting_sound_header"
+                        />
 
                     <TextView
+                        style="@style/TextView_Info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:text="@string/settings_pGreeting_sound_hint"
-                        android:textColor="#666666"
-                        android:textSize="14sp" />
+                        android:text="@string/settings_greeting_sound_hint"
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -119,117 +125,29 @@
                         android:orientation="vertical">
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnSelectAudio"
+                            android:id="@+id/btn_select_audio"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/settings_pGreeting_choose_sound_file"
+                            android:text="@string/settings_greeting_choose_sound_file"
                             android:textColor="@android:color/black"
                             app:backgroundTint="#FFAF7A"
-                            app:cornerRadius="8dp" />
+                            app:cornerRadius="8dp"
+                            />
 
                         <TextView
                             android:id="@+id/tvSelectedFile"
+                            style="@style/TextView_Info"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:text="@string/settings_pGreeting_state_no_file"
-                            android:textColor="#666666"
-                            android:textSize="14sp" />
+                            android:text="@string/settings_greeting_state_no_file"
+                            />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
-
-            <!-- TODO: Keep this feature or remove it -->
-            <!-- Phase Names Setting Card -->
-<!--            <androidx.cardview.widget.CardView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginBottom="16dp"-->
-<!--                app:cardBackgroundColor="@android:color/white"-->
-<!--                app:cardCornerRadius="12dp"-->
-<!--                app:cardElevation="3dp">-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:orientation="vertical"-->
-<!--                    android:padding="16dp">-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginBottom="4dp"-->
-<!--                        android:text="@string/settings_phases_header"-->
-<!--                        android:textColor="@android:color/black"-->
-<!--                        android:textSize="16sp"-->
-<!--                        android:textStyle="bold" />-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginBottom="16dp"-->
-<!--                        android:text="@string/settings_phases_tooltip"-->
-<!--                        android:textColor="#666666"-->
-<!--                        android:textSize="14sp" />-->
-
-<!--                    <com.google.android.material.textfield.TextInputLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginBottom="12dp"-->
-<!--                        app:boxStrokeColor="#FFAF7A"-->
-<!--                        app:hintTextColor="#FF8C42">-->
-
-<!--                        <com.google.android.material.textfield.TextInputEditText-->
-<!--                            android:id="@+id/etPhase1"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:hint="@string/common_phase1_default_name"-->
-<!--                            android:inputType="text"-->
-<!--                            android:maxLines="1" />-->
-
-<!--                    </com.google.android.material.textfield.TextInputLayout>-->
-
-<!--                    &lt;!&ndash; Phase 2 Input &ndash;&gt;-->
-<!--                    <com.google.android.material.textfield.TextInputLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginBottom="12dp"-->
-<!--                        app:boxStrokeColor="#FFAF7A"-->
-<!--                        app:hintTextColor="#FF8C42">-->
-
-<!--                        <com.google.android.material.textfield.TextInputEditText-->
-<!--                            android:id="@+id/etPhase2"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:hint="@string/common_phase2_default_name"-->
-<!--                            android:inputType="text"-->
-<!--                            android:maxLines="1" />-->
-
-<!--                    </com.google.android.material.textfield.TextInputLayout>-->
-
-<!--                    &lt;!&ndash; Phase 3 Input &ndash;&gt;-->
-<!--                    <com.google.android.material.textfield.TextInputLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        app:boxStrokeColor="#FFAF7A"-->
-<!--                        app:hintTextColor="#FF8C42">-->
-
-<!--                        <com.google.android.material.textfield.TextInputEditText-->
-<!--                            android:id="@+id/etPhase3"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:hint="@string/common_phase3_default_name"-->
-<!--                            android:inputType="text"-->
-<!--                            android:maxLines="1" />-->
-
-<!--                    </com.google.android.material.textfield.TextInputLayout>-->
-
-<!--                </LinearLayout>-->
-
-<!--            </androidx.cardview.widget.CardView>-->
 
             <!-- Domains Setting Card -->
             <androidx.cardview.widget.CardView
@@ -247,42 +165,31 @@
                     android:padding="16dp">
 
                     <TextView
+                        style="@style/TextView_Header"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
                         android:text="@string/settings_domains_header"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        />
 
                     <TextView
+                        style="@style/TextView_Info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:text="@string/settings_domains_hint"
-                        android:textColor="#666666"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/tv_domains_state_loading_info"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:textColor="#666666"
-                        android:visibility="gone"
-                        android:textSize="14sp" />
+                        />
 
                     <!-- Grid of domain buttons (4 rows x 2 columns) -->
                     <GridLayout
-                        android:id="@+id/domains_grid_layout"
+                        android:id="@+id/gl_domains"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:alignmentMode="alignBounds"
                         android:columnCount="2"
                         android:columnOrderPreserved="false"
-                        android:rowCount="4">
-
-                    </GridLayout>
+                        android:rowCount="4"
+                        />
 
                 </LinearLayout>
 
@@ -290,7 +197,7 @@
 
             <!-- Save Button -->
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSaveSettings"
+                android:id="@+id/btn_save_settings"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="16dp"
@@ -306,3 +213,92 @@
     </ScrollView>
 
 </LinearLayout>
+
+    <!-- TODO: Keep this feature or remove it -->
+    <!-- Phase Names Setting Card -->
+    <!--            <androidx.cardview.widget.CardView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginBottom="16dp"-->
+    <!--                app:cardBackgroundColor="@android:color/white"-->
+    <!--                app:cardCornerRadius="12dp"-->
+    <!--                app:cardElevation="3dp">-->
+
+    <!--                <LinearLayout-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="wrap_content"-->
+    <!--                    android:orientation="vertical"-->
+    <!--                    android:padding="16dp">-->
+
+    <!--                    <TextView-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_marginBottom="4dp"-->
+    <!--                        android:text="@string/settings_phases_header"-->
+    <!--                        android:textColor="@android:color/black"-->
+    <!--                        android:textSize="16sp"-->
+    <!--                        android:textStyle="bold" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_marginBottom="16dp"-->
+    <!--                        android:text="@string/settings_phases_tooltip"-->
+    <!--                        android:textColor="#666666"-->
+    <!--                        android:textSize="14sp" />-->
+
+    <!--                    <com.google.android.material.textfield.TextInputLayout-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_marginBottom="12dp"-->
+    <!--                        app:boxStrokeColor="#FFAF7A"-->
+    <!--                        app:hintTextColor="#FF8C42">-->
+
+    <!--                        <com.google.android.material.textfield.TextInputEditText-->
+    <!--                            android:id="@+id/etPhase1"-->
+    <!--                            android:layout_width="match_parent"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:hint="@string/common_phase1_default_name"-->
+    <!--                            android:inputType="text"-->
+    <!--                            android:maxLines="1" />-->
+
+    <!--                    </com.google.android.material.textfield.TextInputLayout>-->
+
+    <!--                    &lt;!&ndash; Phase 2 Input &ndash;&gt;-->
+    <!--                    <com.google.android.material.textfield.TextInputLayout-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_marginBottom="12dp"-->
+    <!--                        app:boxStrokeColor="#FFAF7A"-->
+    <!--                        app:hintTextColor="#FF8C42">-->
+
+    <!--                        <com.google.android.material.textfield.TextInputEditText-->
+    <!--                            android:id="@+id/etPhase2"-->
+    <!--                            android:layout_width="match_parent"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:hint="@string/common_phase2_default_name"-->
+    <!--                            android:inputType="text"-->
+    <!--                            android:maxLines="1" />-->
+
+    <!--                    </com.google.android.material.textfield.TextInputLayout>-->
+
+    <!--                    &lt;!&ndash; Phase 3 Input &ndash;&gt;-->
+    <!--                    <com.google.android.material.textfield.TextInputLayout-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        app:boxStrokeColor="#FFAF7A"-->
+    <!--                        app:hintTextColor="#FF8C42">-->
+
+    <!--                        <com.google.android.material.textfield.TextInputEditText-->
+    <!--                            android:id="@+id/etPhase3"-->
+    <!--                            android:layout_width="match_parent"-->
+    <!--                            android:layout_height="wrap_content"-->
+    <!--                            android:hint="@string/common_phase3_default_name"-->
+    <!--                            android:inputType="text"-->
+    <!--                            android:maxLines="1" />-->
+
+    <!--                    </com.google.android.material.textfield.TextInputLayout>-->
+
+    <!--                </LinearLayout>-->
+
+    <!--            </androidx.cardview.widget.CardView>-->

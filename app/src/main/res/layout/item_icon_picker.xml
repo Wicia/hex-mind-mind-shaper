@@ -13,7 +13,6 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_gravity="center"
-        android:scaleType="centerInside"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
 
     <!-- Selection indicator -->

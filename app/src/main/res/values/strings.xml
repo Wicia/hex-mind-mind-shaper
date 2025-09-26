@@ -117,32 +117,29 @@
     <!-- ACTIVITY: SETTINGS -->
     <!-- ====================================== -->
 
-    <string name="settings_your_personalization">Twoja Personalizacja</string>
+    <!-- Header -->
+    <string name="settings_header">Ustawienia</string>
 
     <!-- Your Name Setting -->
-    <string name="settings_pYour_name_header">Jak brzmi Twoje prawdziwe imię?</string>
-    <string name="settings_pYour_name_hint">Jak mi nie powiesz to będę zwracać się jak niżej :)</string>
+    <string name="settings_name_header">✓ Twoje prawdziwe imie?</string>
+    <string name="settings_name_hint">Jak mi nie powiesz to będę zwracać się jak niżej :)</string>
 
     <!-- Greeting Sound Setting -->
-    <string name="settings_pGreeting_sound_header">Powitanie</string>
-    <string name="settings_pGreeting_sound_hint">Dźwięk odtwarzany przy pierwszym uruchomieniu dnia</string>
-    <string name="settings_pGreeting_choose_sound_file">Wybierz plik dźwiękowy</string>
-    <string name="settings_pGreeting_state_no_file">Nie wybrano pliku</string>
-    <string name="settings_pGreeting_state_file_name">Wybrano: %s</string>
-
-    <!-- Phase Names Setting -->
-    <string name="settings_pPhase_names_header">Nazwy Faz</string>
-    <string name="settings_pPhase_names_hint">Dostosuj nazwy faz pracy z myślami</string>
+    <string name="settings_greeting_sound_header">✓ Powitanie</string>
+    <string name="settings_greeting_sound_hint">Dźwięk odtwarzany przy pierwszym uruchomieniu dnia</string>
+    <string name="settings_greeting_choose_sound_file">Wybierz plik dźwiękowy</string>
+    <string name="settings_greeting_state_no_file">Nie wybrano pliku</string>
+    <string name="settings_greeting_state_file_name">Wybrano: %s</string>
 
     <!-- Domains -->
-    <string name="settings_domains_header">Nazwy Dziedzin</string>
-    <string name="settings_domains_hint">Tutaj możesz zmienić nazwę oraz ikonkę dziedziny</string>
+    <string name="settings_domains_header">✓ Nazwy domen</string>
+    <string name="settings_domains_hint">Tutaj możesz zmienić nazwę oraz ikonkę domeny</string>
 
     <string name="settings_domains_loading_error">Błąd podczas ładowania ikon domen</string>
 
-    <string name="settings_domains_domain_name">Twoja nazwa dla Dziedziny</string>
-    <string name="settings_domains_error_name_empty">Nazwa dziedziny nie może być pusta</string>
-    <string name="settings_domains_error_name_too_long">Nazwa dziedziny nie może przekraczać %s znaków</string>
+    <string name="settings_domains_domain_name">Twoja nazwa dla domeny</string>
+    <string name="settings_domains_error_name_empty">Nazwa domeny nie może być pusta</string>
+    <string name="settings_domains_error_name_too_long">Nazwa domeny nie może przekraczać %s znaków</string>
 
     <string-array name="settings_domains_default_names_list">
         <item>Rozwój, Praca i Biznes</item>

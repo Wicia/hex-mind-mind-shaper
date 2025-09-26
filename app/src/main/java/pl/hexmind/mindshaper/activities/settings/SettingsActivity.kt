@@ -7,10 +7,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.GridLayout
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -88,7 +86,7 @@ class SettingsActivity : CoreActivity() {
             saveSettings()
         }
 
-        val gridLayout = findViewById<GridLayout>(R.id.domains_grid_layout)
+        val gridLayout = findViewById<GridLayout>(R.id.gl_domains)
         initDomainButtons(gridLayout)
     }
 
@@ -115,16 +113,8 @@ class SettingsActivity : CoreActivity() {
                 }
 
             } catch (e: Exception) {
-                showErrorMessage(getString(R.string.settings_domains_loading_error))
+                // TODO: ad UI control + handle error using: R.string.settings_domains_loading_error))
             }
-        }
-    }
-
-    private fun showErrorMessage(message: String) {
-        findViewById<TextView>(R.id.tv_domains_state_loading_info)?.let { errorView ->
-            errorView.text = message
-            errorView.visibility = View.VISIBLE
-            errorView.setTextColor(ContextCompat.getColor(this, R.color.validation_error))
         }
     }
 
@@ -141,7 +131,7 @@ class SettingsActivity : CoreActivity() {
     private fun loadSavedSettings() {
         // Load app name
         val appName = appSettingsStorage.getYourName()
-        binding.etYourName.setText(appName)
+        binding.etName.setText(appName)
 
         // Load audio file info with error handling
         val audioUri = appSettingsStorage.getWelcomeAudioUri()
@@ -243,7 +233,7 @@ class SettingsActivity : CoreActivity() {
      */
     private fun saveSettings() {
         // Save app name
-        val appName = binding.etYourName.text?.toString()?.trim()
+        val appName = binding.etName.text?.toString()?.trim()
             ?.takeIf { it.isNotEmpty() }
             ?: getString(R.string.main_greetings_header_default)
         appSettingsStorage.setYourName(appName)
@@ -270,7 +260,6 @@ class SettingsActivity : CoreActivity() {
     private fun showIconPickerDialog(currentDomainDTO: DomainDTO, onDTOUpdated: (DomainDTO) -> Unit) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_domain_edit, null)
         val recyclerView = dialogView.findViewById<RecyclerView>(R.id.icons_recycler)
-        val loadingIndicator = dialogView.findViewById<ProgressBar>(R.id.loading_icons)
         val etDomainName = dialogView.findViewById<TextInputEditText>(R.id.et_domain_name)
         val tvDomainNameValidationInfo = dialogView.findViewById<TextView>(R.id.tv_domain_name_validation_info)
 
@@ -286,13 +275,11 @@ class SettingsActivity : CoreActivity() {
 
         lifecycleScope.launch {
             try {
-                loadingIndicator.visibility = View.VISIBLE
                 recyclerView.visibility = View.GONE
 
                 val availableIcons = iconsService.getAvailableIconsIds()
                 val iconsMap = iconsService.loadIconsBatch(availableIcons)
 
-                loadingIndicator.visibility = View.GONE
                 recyclerView.visibility = View.VISIBLE
 
                 val adapter = IconPickerAdapter(
@@ -319,7 +306,7 @@ class SettingsActivity : CoreActivity() {
 
             }
             catch (e: Exception) {
-                loadingIndicator.visibility = View.GONE
+                // TODO: Handling exception is needed?
             }
         }
 
@@ -332,7 +319,7 @@ class SettingsActivity : CoreActivity() {
     private fun updateDomainButton(buttonIndex: Int, updatedDomainDTO : DomainDTO) {
         lifecycleScope.launch {
             // Find the button in GridLayout and update its icon
-            val gridLayout = findViewById<GridLayout>(R.id.domains_grid_layout)
+            val gridLayout = findViewById<GridLayout>(R.id.gl_domains)
             if (buttonIndex < gridLayout.childCount) {
                 val buttonView = gridLayout.getChildAt(buttonIndex)
 
