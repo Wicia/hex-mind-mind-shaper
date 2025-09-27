@@ -94,7 +94,7 @@ class ThoughtCarouselAdapter
             distanceX: Float,
             distanceY: Float
         ): Boolean {
-            TODO("Not yet implemented")
+            return false
         }
 
         override fun onLongPress(e: MotionEvent) {

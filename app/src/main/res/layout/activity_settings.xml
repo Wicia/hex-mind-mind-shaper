@@ -52,7 +52,7 @@
                     android:padding="16dp">
 
                     <TextView
-                        style="@style/TextView_Header"
+                        style="@style/TextView_Header_Section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
@@ -60,7 +60,7 @@
                         />
 
                     <TextView
-                        style="@style/TextView_Info"
+                        style="@style/TextView_Info_Success"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
@@ -103,7 +103,7 @@
                     android:padding="16dp">
 
                     <TextView
-                        style="@style/TextView_Header"
+                        style="@style/TextView_Header_Section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
@@ -111,7 +111,7 @@
                         />
 
                     <TextView
-                        style="@style/TextView_Info"
+                        style="@style/TextView_Info_Success"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
@@ -136,7 +136,7 @@
 
                         <TextView
                             android:id="@+id/tvSelectedFile"
-                            style="@style/TextView_Info"
+                            style="@style/TextView_Info_Success"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
@@ -165,7 +165,7 @@
                     android:padding="16dp">
 
                     <TextView
-                        style="@style/TextView_Header"
+                        style="@style/TextView_Header_Section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
@@ -173,7 +173,7 @@
                         />
 
                     <TextView
-                        style="@style/TextView_Info"
+                        style="@style/TextView_Info_Success"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"

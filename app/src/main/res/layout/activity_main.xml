@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/tv_greetings_display"
-        style="@style/TextView_Header"
+        style="@style/TextView_Header_Section"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="64dp"
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_thought_type_note"
+        android:src="@drawable/ic_thought_type_rich_text"
         app:backgroundTint="@color/button_primary"
         app:fabSize="normal"
         app:elevation="6dp" />
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_thought_type_sound"
+        android:src="@drawable/ic_thought_type_recording"
         app:backgroundTint="@color/button_primary"
         app:fabSize="normal"
         app:elevation="6dp" />

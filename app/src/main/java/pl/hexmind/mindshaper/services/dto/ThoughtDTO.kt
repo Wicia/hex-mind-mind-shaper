@@ -9,10 +9,10 @@ import java.time.Instant
 @Parcelize
 @TypeParceler<Instant?, InstantParceler>
 data class ThoughtDTO(
-    var essence : String = "",
-    var createdAt: Instant? = Instant.now(),
     var id : Int? = null,
+    var createdAt: Instant? = Instant.now(),
     var domainIconId : Int? = null,
     var thread : String = "",
+    var essence : String = "",
     var richText: String = ""
 ) : Parcelable

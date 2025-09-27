@@ -5,8 +5,8 @@ import android.os.Parcelable
 
 enum class InitialThoughtType : Parcelable {
     UNKNOWN,
-    NOTE,
-    VOICE,
+    RICH_TEXT,
+    RECORDING,
     PHOTO,
     DRAWING;
 

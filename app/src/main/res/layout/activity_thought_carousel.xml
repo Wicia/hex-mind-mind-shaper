@@ -82,7 +82,7 @@
 
             <TextView
                 android:id="@+id/tv_phase_info_header"
-                style="@style/TextView_Header"
+                style="@style/TextView_Header_Section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center" />
@@ -99,14 +99,14 @@
 
             <TextView
                 android:id="@+id/tv_phase_info_gathered_thoughts"
-                style="@style/TextView_Body"
+                style="@style/TextView_Body_Highlighted"
                 android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tv_phase_info_next_phase"
-                style="@style/TextView_Body"
+                style="@style/TextView_Body_Highlighted"
                 android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

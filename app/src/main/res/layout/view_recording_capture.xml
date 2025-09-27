@@ -7,7 +7,7 @@
     android:paddingBottom="16dp">
 
     <TextView
-        style="@style/TextView_Header"
+        style="@style/TextView_Header_Section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp" />
@@ -28,7 +28,7 @@
             android:text="@string/capture_voice_record_new"
             android:backgroundTint="@color/button_primary"
             app:cornerRadius="8dp"
-            app:icon="@drawable/ic_thought_type_sound"
+            app:icon="@drawable/ic_thought_type_recording"
             app:iconGravity="textStart"
             app:iconSize="32dp"
             app:iconTint="@color/button_icon_primary" />
@@ -49,7 +49,7 @@
     </LinearLayout>
 
     <TextView
-        style="@style/TextView_Info"
+        style="@style/TextView_Info_Success"
         android:id="@+id/tv_recording_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

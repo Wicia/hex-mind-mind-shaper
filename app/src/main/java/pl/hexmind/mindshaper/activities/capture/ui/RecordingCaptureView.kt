@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import pl.hexmind.mindshaper.R
 
-class VoiceCaptureView @JvmOverloads constructor(
+class RecordingCaptureView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : LinearLayout(context, attrs) {
@@ -18,7 +18,7 @@ class VoiceCaptureView @JvmOverloads constructor(
     private val tvRecordingStatus: TextView
 
     init {
-        inflate(context, R.layout.view_voice_capture, this)
+        inflate(context, R.layout.view_recording_capture, this)
         orientation = VERTICAL
 
         btnRecordNew = findViewById(R.id.btn_record_new)

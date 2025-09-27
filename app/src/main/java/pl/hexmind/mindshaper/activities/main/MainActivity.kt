@@ -86,7 +86,7 @@ class MainActivity : CoreActivity(), GestureDetector.OnGestureListener {
         fabNoteType.setOnClickListener {
             closeMenu()
             val intent = Intent(this, ThoughtsCaptureActivity::class.java)
-            intent.putExtra(ThoughtsCaptureActivity.Params.P_INIT_THOUGHT_TYPE, InitialThoughtType.NOTE as Parcelable)
+            intent.putExtra(ThoughtsCaptureActivity.Params.P_INIT_THOUGHT_TYPE, InitialThoughtType.RICH_TEXT as Parcelable)
             startActivity(intent)
         }
 
@@ -94,7 +94,7 @@ class MainActivity : CoreActivity(), GestureDetector.OnGestureListener {
         fabVoiceType.setOnClickListener {
             closeMenu()
             val intent = Intent(this, ThoughtsCaptureActivity::class.java)
-            intent.putExtra(ThoughtsCaptureActivity.Params.P_INIT_THOUGHT_TYPE, InitialThoughtType.VOICE as Parcelable)
+            intent.putExtra(ThoughtsCaptureActivity.Params.P_INIT_THOUGHT_TYPE, InitialThoughtType.RECORDING as Parcelable)
             startActivity(intent)
         }
 

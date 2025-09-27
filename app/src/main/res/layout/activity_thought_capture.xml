@@ -97,7 +97,7 @@
         <!-- ESSENCE: Words info -->
         <TextView
             android:id="@+id/tv_essence_words_info"
-            style="@style/TextView_Info"
+            style="@style/TextView_Info_Success"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/capture_essence_state_initial"

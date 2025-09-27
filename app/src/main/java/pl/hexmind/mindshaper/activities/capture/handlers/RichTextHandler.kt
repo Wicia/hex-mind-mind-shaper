@@ -1,18 +1,18 @@
 package pl.hexmind.mindshaper.activities.capture.handlers
 
 
-import pl.hexmind.mindshaper.activities.capture.ui.NoteCaptureView
+import pl.hexmind.mindshaper.activities.capture.ui.RichTextCaptureView
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 
-class NoteInputHandler(
-    private val noteCaptureView: NoteCaptureView,
+class RichTextHandler(
+    private val richTextCaptureView: RichTextCaptureView,
     private val validator: ThoughtValidator
 ) {
 
     private var onDataChangedListener: ((ThoughtDTO) -> Unit)? = null
 
     fun getCurrentData(): ThoughtDTO {
-        val richText = noteCaptureView.getRichText().trim()
+        val richText = richTextCaptureView.getRichText().trim()
         return ThoughtDTO(
             richText = richText
         )

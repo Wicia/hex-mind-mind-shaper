@@ -8,13 +8,13 @@ import android.media.MediaRecorder
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.activities.capture.ui.VoiceCaptureView
+import pl.hexmind.mindshaper.activities.capture.ui.RecordingCaptureView
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import java.io.File
 
-class VoiceRecordingHandler(
+class RecordingHandler(
     private val activity: Activity,
-    private val voiceView: VoiceCaptureView
+    private val voiceView: RecordingCaptureView
 ) {
 
     private var recorder: MediaRecorder? = null

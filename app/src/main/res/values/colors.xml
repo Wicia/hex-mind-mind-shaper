@@ -60,6 +60,7 @@
     <!-- BUTTONS -->
     <color name="button_primary">@color/_orange_mid</color>
     <color name="button_secondary">@color/_orange_light</color>
+    <color name="button_icon_placeholder">@color/_orange_mid</color>
     <color name="button_disabled">@color/_gray_mid</color>
 
     <!-- BUTTON ICONS -->

@@ -14,12 +14,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
-import pl.hexmind.mindshaper.activities.capture.handlers.NoteInputHandler
+import pl.hexmind.mindshaper.activities.capture.handlers.RichTextHandler
 import pl.hexmind.mindshaper.activities.capture.handlers.ThoughtValidator
-import pl.hexmind.mindshaper.activities.capture.handlers.VoiceRecordingHandler
+import pl.hexmind.mindshaper.activities.capture.handlers.RecordingHandler
 import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
-import pl.hexmind.mindshaper.activities.capture.ui.NoteCaptureView
-import pl.hexmind.mindshaper.activities.capture.ui.VoiceCaptureView
+import pl.hexmind.mindshaper.activities.capture.ui.RichTextCaptureView
+import pl.hexmind.mindshaper.activities.capture.ui.RecordingCaptureView
 import pl.hexmind.mindshaper.common.regex.convertToWords
 import pl.hexmind.mindshaper.common.regex.cutIntoSentences
 import pl.hexmind.mindshaper.common.validation.ValidationResult
@@ -50,11 +50,11 @@ class ThoughtsCaptureActivity : CoreActivity() {
 
     private lateinit var tvEssenceWordsInfo : TextView
 
-    private var noteCaptureView: NoteCaptureView? = null
-    private var noteInputHandler: NoteInputHandler? = null
+    private var richTextCaptureView: RichTextCaptureView? = null
+    private var richTextHandler: RichTextHandler? = null
 
-    private var voiceCaptureView: VoiceCaptureView? = null
-    private var voiceHandler: VoiceRecordingHandler? = null
+    private var recordingCaptureView: RecordingCaptureView? = null
+    private var voiceHandler: RecordingHandler? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,17 +84,17 @@ class ThoughtsCaptureActivity : CoreActivity() {
     private fun setupMode() {
         flContainerFeatures.removeAllViews()
         when (currentInputType) {
-            InitialThoughtType.NOTE -> {
-                noteCaptureView = NoteCaptureView(this)
-                flContainerFeatures.addView(noteCaptureView)
-                noteInputHandler = NoteInputHandler(noteCaptureView!!, thoughtValidator).apply {
+            InitialThoughtType.RICH_TEXT -> {
+                richTextCaptureView = RichTextCaptureView(this)
+                flContainerFeatures.addView(richTextCaptureView)
+                richTextHandler = RichTextHandler(richTextCaptureView!!, thoughtValidator).apply {
                     setOnDataChangedListener { currentThoughtDTO = it }
                 }
             }
-            InitialThoughtType.VOICE -> {
-                voiceCaptureView = VoiceCaptureView(this)
-                flContainerFeatures.addView(voiceCaptureView)
-                voiceHandler = VoiceRecordingHandler(this, voiceCaptureView!!).apply {
+            InitialThoughtType.RECORDING -> {
+                recordingCaptureView = RecordingCaptureView(this)
+                flContainerFeatures.addView(recordingCaptureView)
+                voiceHandler = RecordingHandler(this, recordingCaptureView!!).apply {
                     setupListeners()
                     setOnDataChangedListener { currentThoughtDTO = it }
                 }
@@ -132,7 +132,7 @@ class ThoughtsCaptureActivity : CoreActivity() {
         val finalData = currentThoughtDTO.copy(
             essence = etEssence.text?.toString().orEmpty(),
             thread = etThread.text?.toString().orEmpty(),
-            richText = noteCaptureView?.getRichText() ?: ""
+            richText = richTextCaptureView?.getRichText() ?: ""
         )
 
         val validationResult = thoughtValidator.validateDTO(finalData)
@@ -146,7 +146,7 @@ class ThoughtsCaptureActivity : CoreActivity() {
     }
 
     fun launchSmartInsert(){
-        val noteRawInput = noteCaptureView?.getRichText().orEmpty()
+        val noteRawInput = richTextCaptureView?.getRichText().orEmpty()
         val sentencesList = noteRawInput.cutIntoSentences()
 
         if(sentencesList.size == 1 && etThread.text.toString().isEmpty() && etEssence.text.toString().isEmpty()){
@@ -159,7 +159,7 @@ class ThoughtsCaptureActivity : CoreActivity() {
         else if (sentencesList.size == 3 && etThread.text.toString().isEmpty() && etEssence.text.toString().isEmpty()){
             etThread.text = Editable.Factory.getInstance().newEditable(sentencesList[0])
             etEssence.text = Editable.Factory.getInstance().newEditable(sentencesList[1])
-            noteCaptureView?.updateRichText(sentencesList[2])
+            richTextCaptureView?.updateRichText(sentencesList[2])
         }
     }
 

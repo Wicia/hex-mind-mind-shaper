@@ -7,7 +7,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import pl.hexmind.mindshaper.R
 
-class NoteCaptureView @JvmOverloads constructor(
+class RichTextCaptureView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : LinearLayout(context, attrs) {
@@ -15,7 +15,7 @@ class NoteCaptureView @JvmOverloads constructor(
     private val etRichText: EditText
 
     init {
-        inflate(context, R.layout.view_note_capture, this)
+        inflate(context, R.layout.view_rich_text_capture, this)
         orientation = VERTICAL
         etRichText = findViewById(R.id.et_rich_notes)
     }

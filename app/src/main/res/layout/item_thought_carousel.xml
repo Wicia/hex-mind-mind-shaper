@@ -18,7 +18,7 @@
         <!-- ESSENCE -->
         <TextView
             android:id="@+id/tv_thought_essence"
-            style="@style/TextView_Body"
+            style="@style/TextView_Body_Highlighted"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
@@ -52,7 +52,7 @@
             <!-- THREAD -->
             <TextView
                 android:id="@+id/tv_thought_thread"
-                style="@style/TextView_Extras"
+                style="@style/TextView_Info_Extras"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center" />
@@ -62,7 +62,7 @@
         <!-- EXTRAS: CREATED DATE -->
         <TextView
             android:id="@+id/tv_created_at"
-            style="@style/TextView_Extras"
+            style="@style/TextView_Info_Extras"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
