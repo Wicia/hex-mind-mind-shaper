@@ -86,11 +86,12 @@ class SettingsActivity : CoreActivity() {
             saveSettings()
         }
 
-        val gridLayout = findViewById<GridLayout>(R.id.gl_domains)
-        initDomainButtons(gridLayout)
+        // Domains icons
+        initDomainButtons()
     }
 
-    private fun initDomainButtons(gridLayout: GridLayout) {
+    private fun initDomainButtons() {
+        val gridLayout = findViewById<GridLayout>(R.id.gl_domains)
         lifecycleScope.launch {
             val titles = domainService.getAllDomains()
 
@@ -113,7 +114,7 @@ class SettingsActivity : CoreActivity() {
                 }
 
             } catch (e: Exception) {
-                // TODO: ad UI control + handle error using: R.string.settings_domains_loading_error))
+                // TODO: add UI control + handle error using: R.string.settings_domains_loading_error))
             }
         }
     }
@@ -130,8 +131,8 @@ class SettingsActivity : CoreActivity() {
      */
     private fun loadSavedSettings() {
         // Load app name
-        val appName = appSettingsStorage.getYourName()
-        binding.etName.setText(appName)
+        val yourName = appSettingsStorage.getYourName()
+        binding.etYourName.setText(yourName)
 
         // Load audio file info with error handling
         val audioUri = appSettingsStorage.getWelcomeAudioUri()
@@ -233,10 +234,10 @@ class SettingsActivity : CoreActivity() {
      */
     private fun saveSettings() {
         // Save app name
-        val appName = binding.etName.text?.toString()?.trim()
+        val yourName = binding.etYourName.text?.toString()?.trim()
             ?.takeIf { it.isNotEmpty() }
-            ?: getString(R.string.main_greetings_header_default)
-        appSettingsStorage.setYourName(appName)
+            ?: getString(R.string.settings_your_name_default)
+        appSettingsStorage.setYourName(yourName)
 
         // Save audio file path only if accessible
         selectedAudioUri?.let { uri ->

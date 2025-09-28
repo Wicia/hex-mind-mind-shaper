@@ -34,13 +34,6 @@
     <string name="files_error_unknown_file">Nieznany plik</string>
     <string name="in_folder">w folderze</string>
 
-    <!-- TODO: Keep this feature or remove it -->
-    <!-- DOMAIN of THOUGHTS ETC. -->
-    <string name="common_phase_prefix">Faza %s</string>
-    <string name="common_phase1_name">Zbierania</string>
-    <string name="common_phase2_name">Wybierania</string>
-    <string name="common_phase3_name">Odpoczynku</string>
-
     <!-- PLACEHOLDERS AND TODO: To be replaced later -->
     <string name="common_placeholder_accessibility_content_desc">PLACEHOLDER</string>
     <string name="common_activity_tile_placeholder">PLACEHOLDER</string>
@@ -49,17 +42,17 @@
     <array name="common_greetings_values_list">
         <item>Witaj %s</item>
         <item>Cześć %s</item>
-        <item>Jak może być jeszcze lepiej %s?</item>
-        <item>%s, co dobrego dzisiaj przyszło do Ciebie?</item>
+        <item>%s, jak może być jeszcze lepiej?</item>
+        <item>%s, co dobrego przyszło dzisiaj do Ciebie?</item>
         <item>Jak się czujesz %s?</item>
-        <item>Co chodzi Ci dzisiaj po głowie %s?</item>
+        <item>%s, Co chodzi Ci dzisiaj po głowie?</item>
     </array>
 
     <!-- ====================================== -->
     <!-- ACTIVITY: MAIN -->
     <!-- ====================================== -->
 
-    <string name="main_greetings_header_default">Cześć Człowiek!</string>
+    <string name="main_greetings_header_default">Cześć!</string>
 
     <!-- ====================================== -->
     <!-- ACTIVITY: CAPTURE THOUGHT -->
@@ -70,7 +63,7 @@
     <string name="capture_main_state_saved">Myśl została pomyślnie uchwycona...</string>
     <string name="capture_input_fields_error_empty">Notatka i Esencja są puste</string>
 
-    <!-- Common: Essence -->
+    <!-- Essence (common) -->
     <string name="capture_essence_tooltip">Uchwyć esencję w max. %d słowach</string>
     <string name="capture_essence_state_initial">Czekam na słowa</string>
     <string name="capture_essence_state_remaining">Pozostało Ci %d słów</string>
@@ -78,7 +71,7 @@
     <string name="capture_essence_error_empty">Podaj esencję...</string>
     <string name="capture_essence_error_too_long">Twoja esencja przekracza %d słów...</string>
 
-    <!-- Thread -->
+    <!-- Thread (common) -->
     <string name="capture_thread_tooltip">Wątek</string>
     <string name="capture_thread_error_words_exceeded">Wątek nie może przekroczyć %d słów...</string>
 
@@ -107,8 +100,6 @@
     <!-- ACTIVITY: THOUGHTS PREVIEW / CAROUSEL  -->
     <!-- ====================================== -->
 
-    <!-- TODO: Remove? -->
-    <string name="carousel_phase_next_state_for">%1$s za %2$s minut</string>
     <string name="carousel_thought_thread_empty">...</string>
 
     <string name="_carousel_info_icon_description">Ikona informacji</string>
@@ -121,8 +112,8 @@
     <string name="settings_header">Ustawienia</string>
 
     <!-- Your Name Setting -->
-    <string name="settings_name_header"># Twoje prawdziwe imię?</string>
-    <string name="settings_name_hint">Mogę mówić do Ciebie tak:</string>
+    <string name="settings_your_name_header"># Twoje prawdziwe imię?</string>
+    <string name="settings_your_name_default">Bezimienn(y/a)</string>
 
     <!-- Greeting Sound Setting -->
     <string name="settings_greeting_sound_header"># Powitanie</string>
@@ -142,16 +133,16 @@
     <string name="settings_domains_error_name_too_long">Nazwa domeny nie może przekraczać %s znaków</string>
 
     <string-array name="settings_domains_default_names_list">
-        <item>Rozwój, Praca i Biznes</item>
+        <item>Rozwój, Praca, Biznes</item>
         <item>Finanse, Wolność, Niezależność</item>
-        <item>Ciało, Zdrowie i Energia</item>
-        <item>Umysł, Wyobraźnia i Logika</item>
-        <item>Emocje, Serce i Miłość</item>
-        <item>Dusza, Życie i Śmierć</item>
-        <item>Pasja, Twórczość i Piękno</item>
-        <item>Hobby, Zabawa i Odpoczynek</item>
-        <item>Rodzina, Relacje i Związki</item>
-        <item>Przyroda, Otoczenie i Środowisko</item>
+        <item>Ciało, Zdrowie, Energia</item>
+        <item>Umysł, Wyobraźnia, Logika</item>
+        <item>Emocje, Serce, Miłość</item>
+        <item>Dusza, Życie, Śmierć</item>
+        <item>Pasja, Twórczość, Piękno</item>
+        <item>Hobby, Zabawa, Odpoczynek</item>
+        <item>Rodzina, Relacje, Związki</item>
+        <item>Przyroda, Otoczenie, Środowisko</item>
 
     </string-array>
 
