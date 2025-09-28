@@ -121,18 +121,18 @@
     <string name="settings_header">Ustawienia</string>
 
     <!-- Your Name Setting -->
-    <string name="settings_name_header">✓ Twoje prawdziwe imie?</string>
-    <string name="settings_name_hint">Jak mi nie powiesz to będę zwracać się jak niżej :)</string>
+    <string name="settings_name_header"># Twoje prawdziwe imię?</string>
+    <string name="settings_name_hint">Mogę mówić do Ciebie tak:</string>
 
     <!-- Greeting Sound Setting -->
-    <string name="settings_greeting_sound_header">✓ Powitanie</string>
+    <string name="settings_greeting_sound_header"># Powitanie</string>
     <string name="settings_greeting_sound_hint">Dźwięk odtwarzany przy pierwszym uruchomieniu dnia</string>
     <string name="settings_greeting_choose_sound_file">Wybierz plik dźwiękowy</string>
     <string name="settings_greeting_state_no_file">Nie wybrano pliku</string>
     <string name="settings_greeting_state_file_name">Wybrano: %s</string>
 
     <!-- Domains -->
-    <string name="settings_domains_header">✓ Nazwy domen</string>
+    <string name="settings_domains_header"># Nazwy domen</string>
     <string name="settings_domains_hint">Tutaj możesz zmienić nazwę oraz ikonkę domeny</string>
 
     <string name="settings_domains_loading_error">Błąd podczas ładowania ikon domen</string>

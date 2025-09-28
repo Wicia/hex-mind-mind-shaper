@@ -48,6 +48,7 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center_vertical"
+                app:tint="@color/_gray_light"
                 app:srcCompat="@drawable/ic_thread" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -102,6 +103,8 @@
             android:layout_height="wrap_content"
             android:text="@string/capture_essence_state_initial"
             android:gravity="end"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="24dp" />
 
         <com.google.android.material.button.MaterialButton

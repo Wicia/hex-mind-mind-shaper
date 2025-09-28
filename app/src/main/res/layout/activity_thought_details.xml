@@ -36,7 +36,7 @@
             app:cornerRadius="8dp"
             app:icon="@drawable/ic_domain_none"
             app:iconGravity="textStart"
-            app:iconSize="64dp"
+            app:iconSize="48dp"
             app:iconTint="@color/button_icon_placeholder" />
 
         <TextView
@@ -63,7 +63,7 @@
             app:cornerRadius="8dp"
             app:icon="@drawable/ic_thread"
             app:iconGravity="textStart"
-            app:iconSize="64dp"
+            app:iconSize="48dp"
             app:iconTint="@color/button_icon_placeholder" />
 
 
@@ -99,7 +99,7 @@
             app:cornerRadius="8dp"
             app:icon="@drawable/ic_thought_type_rich_text"
             app:iconGravity="textStart"
-            app:iconSize="64dp"
+            app:iconSize="48dp"
             app:iconTint="@color/button_icon_placeholder" />
 
         <com.google.android.material.button.MaterialButton
@@ -113,7 +113,7 @@
             app:cornerRadius="8dp"
             app:icon="@drawable/ic_thought_type_drawing"
             app:iconGravity="textStart"
-            app:iconSize="64dp"
+            app:iconSize="48dp"
             app:iconTint="@color/button_icon_placeholder" />
     </LinearLayout>
 
@@ -129,7 +129,7 @@
         app:cornerRadius="8dp"
         app:icon="@drawable/ic_thought_type_recording"
         app:iconGravity="textStart"
-        app:iconSize="64dp"
+        app:iconSize="48dp"
         app:iconTint="@color/button_icon_placeholder" />
 
     <!-- PHOTO -->
@@ -143,7 +143,7 @@
         app:cornerRadius="8dp"
         app:icon="@drawable/ic_thought_type_photo"
         app:iconGravity="textStart"
-        app:iconSize="64dp"
+        app:iconSize="48dp"
         app:iconTint="@color/button_icon_placeholder" />
 
 </LinearLayout>
