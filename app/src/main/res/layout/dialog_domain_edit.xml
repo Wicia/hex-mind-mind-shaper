@@ -34,9 +34,9 @@
         android:layout_marginBottom="12dp"
         android:text="" />
 
-    <!-- Icons grid with optimal height for 3 columns -->
+    <!-- Icons list - to be placed here via code -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/icons_recycler"
+        android:id="@+id/rv_icons_list"
         android:layout_width="match_parent"
         android:layout_height="280dp"
         android:visibility="gone"

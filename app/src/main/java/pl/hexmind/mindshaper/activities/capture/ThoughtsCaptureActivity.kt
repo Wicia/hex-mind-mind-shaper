@@ -145,6 +145,7 @@ class ThoughtsCaptureActivity : CoreActivity() {
         }
     }
 
+    // TODO: Smart insert OR Fast note name for my system?
     fun launchSmartInsert(){
         val noteRawInput = richTextCaptureView?.getRichText().orEmpty()
         val sentencesList = noteRawInput.cutIntoSentences()

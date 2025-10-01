@@ -5,9 +5,9 @@
     android:layout_margin="4dp"
     android:clickable="true"
     android:focusable="true"
-    android:background="?android:attr/selectableItemBackground">
+    android:background="@color/app_background">
 
-    <!-- Bigger icon for 3-column layout -->
+    <!-- Icon -->
     <ImageView
         android:id="@+id/iv_icon"
         android:layout_width="56dp"
@@ -15,9 +15,9 @@
         android:layout_gravity="center"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
 
-    <!-- Selection indicator -->
+    <!-- Selector -->
     <View
-        android:id="@+id/v_selection_indicator"
+        android:id="@+id/v_selector"
         android:layout_width="10dp"
         android:layout_height="10dp"
         android:layout_gravity="top|end"

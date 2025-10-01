@@ -256,11 +256,11 @@ class SettingsActivity : CoreActivity() {
     }
 
     /**
-     * Show icon picker dialog with 3 columns and vertical scrolling
+     * Show icon picker dialog with 4 columns and vertical scrolling
      */
     private fun showIconPickerDialog(currentDomainDTO: DomainDTO, onDTOUpdated: (DomainDTO) -> Unit) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_domain_edit, null)
-        val recyclerView = dialogView.findViewById<RecyclerView>(R.id.icons_recycler)
+        val rvIconsList = dialogView.findViewById<RecyclerView>(R.id.rv_icons_list)
         val etDomainName = dialogView.findViewById<TextInputEditText>(R.id.et_domain_name)
         val tvDomainNameValidationInfo = dialogView.findViewById<TextView>(R.id.tv_domain_name_validation_info)
 
@@ -271,20 +271,20 @@ class SettingsActivity : CoreActivity() {
             .setNegativeButton(getString(R.string.common_btn_cancel), null)
             .create()
 
-        // Fixed 3 columns with vertical scrolling
-        recyclerView.layoutManager = GridLayoutManager(this, 3)
+        // Fixed 4-columns + vertical scrolling
+        rvIconsList.layoutManager = GridLayoutManager(this, 4)
 
         lifecycleScope.launch {
             try {
-                recyclerView.visibility = View.GONE
+                rvIconsList.visibility = View.GONE
 
-                val availableIcons = iconsService.getAvailableIconsIds()
-                val iconsMap = iconsService.loadIconsBatch(availableIcons)
+                val availableIconsIds = iconsService.getAvailableIconsIds()
+                val iconsMap = iconsService.loadIconsBatch(availableIconsIds)
 
-                recyclerView.visibility = View.VISIBLE
+                rvIconsList.visibility = View.VISIBLE
 
                 val adapter = IconPickerAdapter(
-                    icons = availableIcons,
+                    iconsIds = availableIconsIds,
                     iconsMap = iconsMap,
                     selectedIconNumber = currentDomainDTO.iconId
                 )
@@ -303,7 +303,7 @@ class SettingsActivity : CoreActivity() {
                     }
                 }
 
-                recyclerView.adapter = adapter
+                rvIconsList.adapter = adapter
 
             }
             catch (e: Exception) {
@@ -320,13 +320,13 @@ class SettingsActivity : CoreActivity() {
     private fun updateDomainButton(buttonIndex: Int, updatedDomainDTO : DomainDTO) {
         lifecycleScope.launch {
             // Find the button in GridLayout and update its icon
-            val gridLayout = findViewById<GridLayout>(R.id.gl_domains)
-            if (buttonIndex < gridLayout.childCount) {
-                val buttonView = gridLayout.getChildAt(buttonIndex)
+            val glDomains = findViewById<GridLayout>(R.id.gl_domains)
+            if (buttonIndex < glDomains.childCount) {
+                val buttonView = glDomains.getChildAt(buttonIndex)
 
                 val ivDomainIcon = buttonView.findViewById<ImageView>(R.id.iv_domain_icon)
-                val drawable = iconsService.getDrawableIcon(updatedDomainDTO.iconId)
-                ivDomainIcon.setImageDrawable(drawable)
+                val iconDrawable = iconsService.getDrawableIcon(updatedDomainDTO.iconId)
+                ivDomainIcon.setImageDrawable(iconDrawable)
 
                 val tvDomainName = buttonView.findViewById<TextView>(R.id.tv_domain_name)
                 tvDomainName.text = updatedDomainDTO.name

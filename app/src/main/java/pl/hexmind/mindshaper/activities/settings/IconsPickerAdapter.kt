@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.mindshaper.R
 
 /**
- * Adapter for displaying icons in 3-column picker dialog with scrolling
+ * Adapter for displaying icons in 4-column picker dialog with scrolling
  */
 class IconPickerAdapter(
-    private val icons: List<Int>,
+    private val iconsIds: List<Int>,
     private val iconsMap: Map<Int, Drawable>,
     private var selectedIconNumber: Int,
     private val onIconClick: (Int) -> Unit
@@ -27,26 +27,27 @@ class IconPickerAdapter(
     }
 
     override fun onBindViewHolder(holder: IconViewHolder, position: Int) {
-        val iconNumber = icons[position]
+        // ! Database icon id = position on the grid
+        val iconNumber = iconsIds[position]
         holder.bind(iconNumber, iconsMap[iconNumber], iconNumber == selectedIconNumber)
     }
 
-    override fun getItemCount(): Int = icons.size
+    override fun getItemCount(): Int = iconsIds.size
 
     inner class IconViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val iconView: ImageView = itemView.findViewById(R.id.iv_icon)
-        private val selectionIndicator: View = itemView.findViewById(R.id.v_selection_indicator)
+        private val ivIcon: ImageView = itemView.findViewById(R.id.iv_icon)
+        private val vSelector: View = itemView.findViewById(R.id.v_selector)
 
         fun bind(iconNumber: Int, drawable: Drawable?, isSelected: Boolean) {
             // Set icon with fallback
             if (drawable != null) {
-                iconView.setImageDrawable(drawable)
+                ivIcon.setImageDrawable(drawable)
             } else {
-                iconView.setImageResource(R.drawable.ic_domain_default)
+                ivIcon.setImageResource(R.drawable.ic_domain_default)
             }
 
             // Show/hide selection indicator
-            selectionIndicator.visibility = if (isSelected) View.VISIBLE else View.GONE
+            vSelector.visibility = if (isSelected) View.VISIBLE else View.GONE
 
             // Background color for selected / ripple for others
             if (isSelected) {
@@ -67,7 +68,7 @@ class IconPickerAdapter(
             itemView.setOnClickListener {
                 val oldSelected = selectedIconNumber
                 selectedIconNumber = iconNumber
-                notifyItemChanged(icons.indexOf(oldSelected))
+                notifyItemChanged(iconsIds.indexOf(oldSelected))
                 notifyItemChanged(adapterPosition)
                 onIconClick(iconNumber)
             }
