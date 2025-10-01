@@ -12,7 +12,7 @@
         android:id="@+id/tv_essence"
         style="@style/TextView_Body_Highlighted"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="100dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/shape_button"
         android:gravity="center_vertical"
@@ -30,7 +30,7 @@
             android:id="@+id/btn_icon_domain"
             style="@style/App.MaterialButton.Flat"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="60dp"
             android:layout_weight="0.2"
             app:backgroundTint="@color/button_secondary"
             app:cornerRadius="8dp"
@@ -56,7 +56,7 @@
             android:id="@+id/btn_thread_placeholder"
             style="@style/App.MaterialButton.Flat"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="60dp"
             android:layout_weight="0.5"
             android:layout_marginStart="8dp"
             app:backgroundTint="@color/button_secondary"
@@ -66,84 +66,31 @@
             app:iconSize="48dp"
             app:iconTint="@color/button_icon_placeholder" />
 
-
     </LinearLayout>
 
-    <!-- NOTE + DRAWING -->
-    <LinearLayout
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:baselineAligned="false"
-        android:orientation="horizontal">
+        android:layout_height="60dp"
+        android:layout_marginTop="32dp"
+        android:background="@android:color/transparent"
+        app:tabBackground="@drawable/tab_background_selector"
+        app:tabIndicator="@drawable/tab_bubble_indicator"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorGravity="center"
+        app:tabIndicatorHeight="60dp"
+        app:tabMode="fixed"
+        app:tabGravity="fill"
+        app:tabIconTint="@color/tab_icon_tint"
+        app:tabRippleColor="@color/_orange_light"
+        app:tabPaddingStart="8dp"
+        app:tabPaddingEnd="8dp"/>
 
-        <TextView
-            android:id="@+id/tv_rich_text"
-            style="@style/TextView_Body_Standard"
-            android:layout_width="0dp"
-            android:layout_height="240dp"
-            android:layout_weight="0.5"
-            android:background="@drawable/shape_button"
-            android:gravity="center_vertical"
-            android:visibility="gone"
-            android:padding="24dp"
-            />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_rich_text_placeholder"
-            style="@style/App.MaterialButton.Flat"
-            android:layout_width="0dp"
-            android:layout_height="240dp"
-            android:layout_weight="0.5"
-            app:backgroundTint="@color/button_secondary"
-            app:cornerRadius="8dp"
-            app:icon="@drawable/ic_thought_type_rich_text"
-            app:iconGravity="textStart"
-            app:iconSize="48dp"
-            app:iconTint="@color/button_icon_placeholder" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_drawing_placeholder"
-            style="@style/App.MaterialButton.Flat"
-            android:layout_width="0dp"
-            android:layout_height="240dp"
-            android:layout_marginStart="8dp"
-            android:layout_weight="0.5"
-            app:backgroundTint="@color/button_secondary"
-            app:cornerRadius="8dp"
-            app:icon="@drawable/ic_thought_type_drawing"
-            app:iconGravity="textStart"
-            app:iconSize="48dp"
-            app:iconTint="@color/button_icon_placeholder" />
-    </LinearLayout>
-
-    <!-- SOUND RECORDING -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_recording_placeholder"
-        style="@style/App.MaterialButton.Flat"
+    <!-- ViewPager2 for content switching -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginBottom="8dp"
-        android:textSize="16sp"
-        app:backgroundTint="@color/button_secondary"
-        app:cornerRadius="8dp"
-        app:icon="@drawable/ic_thought_type_recording"
-        app:iconGravity="textStart"
-        app:iconSize="48dp"
-        app:iconTint="@color/button_icon_placeholder" />
-
-    <!-- PHOTO -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_photo_placeholder"
-        style="@style/App.MaterialButton.Flat"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:textSize="16sp"
-        app:backgroundTint="@color/button_secondary"
-        app:cornerRadius="8dp"
-        app:icon="@drawable/ic_thought_type_photo"
-        app:iconGravity="textStart"
-        app:iconSize="48dp"
-        app:iconTint="@color/button_icon_placeholder" />
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
 </LinearLayout>

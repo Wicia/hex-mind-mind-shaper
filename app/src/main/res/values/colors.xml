@@ -67,6 +67,11 @@
     <color name="button_icon_primary">@color/_orange_light</color>
     <color name="button_icon_disabled">@color/_gray_light</color>
 
+    <!-- TABS -->
+    <color name="tab_active_selected">@color/_orange_mid</color>
+    <color name="tab_active_not_selected">@color/_orange_light</color>
+    <color name="tab_not_used">@color/_gray_light</color>
+
     <!-- CARD VIEWS -->
     <color name="card_view_background">@color/_orange_light</color>
     <color name="card_background">@color/_white</color>

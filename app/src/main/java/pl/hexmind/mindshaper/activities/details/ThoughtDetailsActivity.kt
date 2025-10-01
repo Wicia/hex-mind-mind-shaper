@@ -2,30 +2,17 @@ package pl.hexmind.mindshaper.activities.details
 
 import android.os.Build
 import android.os.Bundle
-import android.widget.Button
-import android.view.View
-import android.widget.TextView
-import android.widget.Toast
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
+import pl.hexmind.mindshaper.databinding.ActivityThoughtDetailsBinding
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
+import timber.log.Timber
 
 class ThoughtDetailsActivity : CoreActivity() {
 
-    private lateinit var tvEssence: TextView
-
-    private lateinit var tvThread: TextView
-    private lateinit var btnThreadPlaceholder: Button
-
-    private lateinit var btnRecordingPlaceholder: Button
-
-    private lateinit var btnDrawingPlaceholder: Button
-
-    private lateinit var btnRichTextPlaceholder: Button
-
-    private lateinit var btnPhotoPlaceholder: Button
-
-    private lateinit var tvRichText : TextView
+    private lateinit var binding: ActivityThoughtDetailsBinding
 
     // Displayed details data
     private var dtoWithDetails : ThoughtDTO? = null
@@ -36,30 +23,12 @@ class ThoughtDetailsActivity : CoreActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_thought_details)
+        binding = ActivityThoughtDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         saveExtrasFromIntent()
-        initializeViews()
-        fillWithDetails()
-    }
-
-    private fun initializeViews() {
-        // Header/Title
-        tvEssence = findViewById(R.id.tv_essence)
-
-        // Extras/metadata
-        btnThreadPlaceholder = findViewById(R.id.btn_thread_placeholder)
-        tvThread = findViewById(R.id.tv_thread)
-
-        // "Main" fields
-        btnRecordingPlaceholder = findViewById(R.id.btn_recording_placeholder)
-
-        btnDrawingPlaceholder = findViewById(R.id.btn_drawing_placeholder)
-
-        btnRichTextPlaceholder = findViewById(R.id.btn_rich_text_placeholder)
-        tvRichText = findViewById(R.id.tv_rich_text)
-
-        btnPhotoPlaceholder = findViewById(R.id.btn_photo_placeholder)
+        setupViewPager()
+        setupTabLayout()
     }
 
     private fun saveExtrasFromIntent() {
@@ -71,27 +40,74 @@ class ThoughtDetailsActivity : CoreActivity() {
         }
     }
 
-    private fun fillWithDetails(){
-        tvEssence.text = dtoWithDetails?.essence
+    /**
+     * Initializes ViewPager2 with content pages adapter
+     */
+    private fun setupViewPager() {
+        binding.viewPager.adapter = ContentPagerAdapter()
+    }
 
-        if(dtoWithDetails?.richText.isNullOrBlank()){
-            btnRichTextPlaceholder.visibility = View.VISIBLE
-            tvRichText.visibility = View.GONE
-        }
-        else{
-            btnRichTextPlaceholder.visibility = View.GONE
-            tvRichText.visibility = View.VISIBLE
-            tvRichText.text = dtoWithDetails?.richText
+    /**
+     * Configures TabLayout with custom bubble indicator and icons
+     */
+    private fun setupTabLayout() {
+        val tabIcons = listOf(
+            R.drawable.tab_icon_rich_text_selector,
+            R.drawable.tab_icon_drawing_selector,
+            R.drawable.tab_icon_recording_selector,
+            R.drawable.tab_icon_photo_selector
+        )
+
+        // Connect TabLayout with ViewPager2
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            tab.setIcon(tabIcons[position])
+        }.attach()
+
+        // TODO: Apply custom bubble indicator styling
+        applyBubbleIndicator()
+    }
+
+    /**
+     * Applies custom bubble indicator with 10% size increase
+     */
+    private fun applyBubbleIndicator() {
+        val tabLayout = binding.tabLayout
+
+        for (i in 0 until tabLayout.tabCount) {
+            val tab = tabLayout.getTabAt(i)
+            tab?.view?.apply {
+                // Scale up selected tab by 10%
+                scaleX = if (i == 0) 1.1f else 1.0f
+                scaleY = if (i == 0) 1.1f else 1.0f
+            }
         }
 
-        if(dtoWithDetails?.thread.isNullOrBlank()){
-            btnThreadPlaceholder.visibility = View.VISIBLE
-            tvThread.visibility = View.GONE
-        }
-        else{
-            btnThreadPlaceholder.visibility = View.GONE
-            tvThread.visibility = View.VISIBLE
-            tvThread.text = dtoWithDetails?.thread
-        }
+        // Listen for tab selection to animate bubble
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.view?.apply {
+                    animate()
+                        .scaleX(1.1f)
+                        .scaleY(1.1f)
+                        .setDuration(200)
+                        .start()
+                }
+                Timber.d("Tab selected: ${tab?.position}")
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                tab?.view?.apply {
+                    animate()
+                        .scaleX(1.0f)
+                        .scaleY(1.0f)
+                        .setDuration(200)
+                        .start()
+                }
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                // Do nothing on reselect
+            }
+        })
     }
 }

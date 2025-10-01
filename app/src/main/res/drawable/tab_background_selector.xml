@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Active tab - transparent because indicator (bubble) handles it -->
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent"/>
+        </shape>
+    </item>
+
+    <!-- Inactive tabs - subtle rounded background -->
+    <item android:drawable="@drawable/tab_background_inactive"/>
+</selector>

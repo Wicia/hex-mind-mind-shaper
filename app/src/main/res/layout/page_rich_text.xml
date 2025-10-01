@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_rich_text"
+        style="@style/TextView_Body_Standard"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/shape_button"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        android:padding="24dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_rich_text_placeholder"
+        style="@style/App.MaterialButton.Flat"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:backgroundTint="@color/button_secondary"
+        app:cornerRadius="8dp"
+        app:icon="@drawable/ic_thought_type_rich_text"
+        app:iconGravity="textStart"
+        app:iconSize="48dp"
+        app:iconTint="@color/button_icon_placeholder" />
+
+</FrameLayout>
