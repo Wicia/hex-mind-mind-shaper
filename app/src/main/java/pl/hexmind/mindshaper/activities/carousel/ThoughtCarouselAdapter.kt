@@ -11,21 +11,24 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.details.ThoughtDetailsActivity
 import pl.hexmind.mindshaper.common.formatting.toLocalDateString
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
+import timber.log.Timber
 
 /**
  * Adapter for thought carousel with smooth animations and automatic updates via LiveData
  */
-class ThoughtCarouselAdapter
-    : ListAdapter<ThoughtDTO, ThoughtCarouselAdapter.ThoughtViewHolder>(ThoughtDiffCallback()) {
+class ThoughtCarouselAdapter(
+    private val onDeleteThought: (ThoughtDTO) -> Unit // TODO: Added callback for deletion
+) : ListAdapter<ThoughtDTO, ThoughtCarouselAdapter.ThoughtViewHolder>(ThoughtDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThoughtViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_thought_carousel, parent, false)
-        return ThoughtViewHolder(view)
+        return ThoughtViewHolder(view, onDeleteThought)
     }
 
     override fun onBindViewHolder(holder: ThoughtViewHolder, position: Int) {
@@ -35,7 +38,10 @@ class ThoughtCarouselAdapter
     /**
      * ViewHolder for individual thought items with optimized binding logic
      */
-    class ThoughtViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+    class ThoughtViewHolder(
+        itemView: View,
+        private val onDeleteThought: (ThoughtDTO) -> Unit
+    ) : RecyclerView.ViewHolder(itemView),
         GestureDetector.OnGestureListener,
         GestureDetector.OnDoubleTapListener {
 
@@ -66,7 +72,8 @@ class ThoughtCarouselAdapter
                 }
             }
 
-            tvEssence.text = thought.essence
+            // TODO: display essence or (if blank) other fields?
+            tvEssence.text = thought.richText
             tvCreatedAt.text = thought.createdAt?.toLocalDateString()
 
             if(thought.thread.isBlank()){
@@ -97,8 +104,15 @@ class ThoughtCarouselAdapter
             return false
         }
 
+        /**
+         * Handles long press gesture
+         */
         override fun onLongPress(e: MotionEvent) {
-            TODO("Not yet implemented")
+            viewedThoughtDTO?.let { thought ->
+                showDeleteConfirmationDialog(thought)
+            } ?: run {
+                Timber.w("Long press detected but no thought data available")
+            }
         }
 
         override fun onFling(
@@ -127,6 +141,22 @@ class ThoughtCarouselAdapter
 
         override fun onDoubleTapEvent(e: MotionEvent): Boolean {
             TODO("Not yet implemented")
+        }
+
+        private fun showDeleteConfirmationDialog(thought: ThoughtDTO) {
+            MaterialAlertDialogBuilder(itemView.context)
+                .setTitle(itemView.context.getString(R.string.common_deletion_dialog_title))
+                .setMessage(itemView.context.getString(R.string.common_deletion_dialog_message, "myśl", thought.essence))
+                .setPositiveButton(itemView.context.getString(R.string.common_deletion_dialog_yes)) { dialog, _ ->
+                    onDeleteThought(thought)
+                    Timber.d("Thought deleted: ${thought.id}")
+                    dialog.dismiss()
+                }
+                .setNegativeButton(itemView.context.getString(R.string.common_deletion_dialog_no)) { dialog, _ ->
+                    Timber.d("Deletion cancelled")
+                    dialog.dismiss()
+                }
+                .show()
         }
     }
 

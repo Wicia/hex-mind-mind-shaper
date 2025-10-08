@@ -7,10 +7,11 @@
 
     <!-- ORANGE: Main orange color for the app theme -->
     <color name="_orange_extra_light">#FFF4E6</color>
-    <color name="_orange_light">#FFCDA0</color>
-    <color name="_orange_mid">#FFAF7A</color>
-    <color name="_orange_dark">#FF8C42</color>
-    <color name="_orange_extra_dark">#E6793A</color>
+    <color name="_orange_extra_soft">#FFE7CF</color>
+    <color name="_orange_light">#FFD9B8</color>
+    <color name="_orange_medium">#FFC28A</color>
+    <color name="_orange_mid">#FFA95C</color>
+    <color name="_orange_dark">#FF8F3E</color>
 
     <!-- NEUTRAL: Grayscale for text and backgrounds -->
     <color name="_white">#FFFFFF</color>
@@ -32,7 +33,7 @@
     <!--    APP THEME MAPPINGS -->
     <!-- ====================================== -->
 
-    <color name="app_primary">@color/_orange_extra_dark</color>
+    <color name="app_primary">@color/_orange_dark</color>
     <color name="app_primary_variant">@color/_orange_dark</color>
     <color name="app_secondary">@color/_orange_mid</color>
     <color name="app_secondary_variant">@color/_orange_light</color>
@@ -60,11 +61,12 @@
     <!-- BUTTONS -->
     <color name="button_primary">@color/_orange_mid</color>
     <color name="button_secondary">@color/_orange_light</color>
-    <color name="button_icon_placeholder">@color/_orange_mid</color>
+    <color name="button_not_used">@color/_orange_extra_soft</color>
     <color name="button_disabled">@color/_gray_mid</color>
 
     <!-- BUTTON ICONS -->
     <color name="button_icon_primary">@color/_orange_light</color>
+    <color name="button_icon_not_used">@color/_orange_light</color>
     <color name="button_icon_disabled">@color/_gray_light</color>
 
     <!-- CARD VIEWS -->

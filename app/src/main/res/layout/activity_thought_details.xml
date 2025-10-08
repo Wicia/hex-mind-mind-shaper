@@ -12,7 +12,7 @@
         android:id="@+id/tv_essence"
         style="@style/TextView_Body_Highlighted"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="95dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/shape_button"
         android:gravity="center_vertical"
@@ -26,19 +26,20 @@
         android:layout_marginBottom="8dp"
         android:orientation="horizontal">
 
+        <!-- DOMAIN -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_icon_domain"
-            style="@style/App.MaterialButton.Flat"
+            style="@style/App.MaterialButton.Flat.NotUsed"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="60dp"
             android:layout_weight="0.2"
-            app:backgroundTint="@color/button_secondary"
             app:cornerRadius="8dp"
             app:icon="@drawable/ic_domain_none"
             app:iconGravity="textStart"
             app:iconSize="48dp"
-            app:iconTint="@color/button_icon_placeholder" />
+            />
 
+        <!-- THREAD: With content -->
         <TextView
             android:id="@+id/tv_thread"
             style="@style/TextView_Body_Standard"
@@ -52,98 +53,116 @@
             android:padding="24dp"
             />
 
+        <!-- THREAD: Empty / To be specified -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_thread_placeholder"
-            style="@style/App.MaterialButton.Flat"
+            style="@style/App.MaterialButton.Flat.NotUsed"
             android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_weight="0.5"
+            android:layout_height="60dp"
             android:layout_marginStart="8dp"
-            app:backgroundTint="@color/button_secondary"
+            android:layout_weight="0.5"
             app:cornerRadius="8dp"
             app:icon="@drawable/ic_thread"
             app:iconGravity="textStart"
-            app:iconSize="48dp"
-            app:iconTint="@color/button_icon_placeholder" />
-
+            app:iconSize="48dp" />
 
     </LinearLayout>
 
-    <!-- NOTE + DRAWING -->
-    <LinearLayout
+    <!-- =============================== -->
+    <!-- THOUGHT REPRESENTATIONS SECTION -->
+    <!-- =============================== -->
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:baselineAligned="false"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_marginTop="24dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:id="@+id/tv_rich_text"
-            style="@style/TextView_Body_Standard"
-            android:layout_width="0dp"
-            android:layout_height="240dp"
-            android:layout_weight="0.5"
-            android:background="@drawable/shape_button"
-            android:gravity="center_vertical"
-            android:visibility="gone"
-            android:padding="24dp"
-            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_rich_text_placeholder"
-            style="@style/App.MaterialButton.Flat"
-            android:layout_width="0dp"
-            android:layout_height="240dp"
-            android:layout_weight="0.5"
-            app:backgroundTint="@color/button_secondary"
-            app:cornerRadius="8dp"
-            app:icon="@drawable/ic_thought_type_rich_text"
-            app:iconGravity="textStart"
-            app:iconSize="48dp"
-            app:iconTint="@color/button_icon_placeholder" />
+            <!-- RICH TEXT NOTE -->
+            <TextView
+                android:id="@+id/tv_rich_text"
+                style="@style/TextView_Body_Standard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/shape_button"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                android:layout_marginEnd="32dp"
+                android:padding="24dp"
+                />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_drawing_placeholder"
-            style="@style/App.MaterialButton.Flat"
-            android:layout_width="0dp"
-            android:layout_height="240dp"
-            android:layout_marginStart="8dp"
-            android:layout_weight="0.5"
-            app:backgroundTint="@color/button_secondary"
-            app:cornerRadius="8dp"
-            app:icon="@drawable/ic_thought_type_drawing"
-            app:iconGravity="textStart"
-            app:iconSize="48dp"
-            app:iconTint="@color/button_icon_placeholder" />
-    </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_rich_text_placeholder"
+                style="@style/App.MaterialButton.Flat.NotUsed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="120dp"
+                android:layout_marginBottom="8dp"
+                android:padding="24dp"
+                android:layout_marginEnd="32dp"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_thought_type_rich_text"
+                app:iconGravity="textStart"
+                app:iconSize="48dp"
+                />
 
-    <!-- SOUND RECORDING -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_recording_placeholder"
-        style="@style/App.MaterialButton.Flat"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginBottom="8dp"
-        android:textSize="16sp"
-        app:backgroundTint="@color/button_secondary"
-        app:cornerRadius="8dp"
-        app:icon="@drawable/ic_thought_type_recording"
-        app:iconGravity="textStart"
-        app:iconSize="48dp"
-        app:iconTint="@color/button_icon_placeholder" />
+            <!-- DRAWING -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_drawing_placeholder"
+                style="@style/App.MaterialButton.Flat.NotUsed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="120dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginBottom="8dp"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_thought_type_drawing"
+                app:iconGravity="textStart"
+                app:iconSize="48dp"
+                />
 
-    <!-- PHOTO -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_photo_placeholder"
-        style="@style/App.MaterialButton.Flat"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:textSize="16sp"
-        app:backgroundTint="@color/button_secondary"
-        app:cornerRadius="8dp"
-        app:icon="@drawable/ic_thought_type_photo"
-        app:iconGravity="textStart"
-        app:iconSize="48dp"
-        app:iconTint="@color/button_icon_placeholder" />
+            <!-- SOUND RECORDING -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_recording_placeholder"
+                style="@style/App.MaterialButton.Flat.NotUsed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="120dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="32dp"
+                android:textSize="16sp"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_thought_type_recording"
+                app:iconGravity="textStart"
+                app:iconSize="48dp"
+                />
+
+            <!-- PHOTO -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_photo_placeholder"
+                style="@style/App.MaterialButton.Flat.NotUsed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="120dp"
+                android:textSize="16sp"
+                android:layout_marginStart="32dp"
+                android:layout_marginBottom="8dp"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_thought_type_photo"
+                app:iconGravity="textStart"
+                app:iconSize="48dp"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

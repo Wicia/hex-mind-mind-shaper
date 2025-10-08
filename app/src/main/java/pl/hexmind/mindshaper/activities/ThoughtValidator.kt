@@ -1,11 +1,11 @@
-package pl.hexmind.mindshaper.activities.capture.handlers
+package pl.hexmind.mindshaper.activities
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.regex.convertToWords
-import pl.hexmind.mindshaper.common.regex.removeWordsConnectors
 import pl.hexmind.mindshaper.common.regex.getWordsCount
+import pl.hexmind.mindshaper.common.regex.removeWordsConnectors
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import javax.inject.Inject
@@ -30,7 +30,7 @@ class ThoughtValidator @Inject constructor(
 
     fun validateEssence(essenceText : String) : ValidationResult {
         if (essenceText.trim().isEmpty()) {
-            return ValidationResult.Error(context.getString(R.string.capture_essence_error_empty))
+            return ValidationResult.Valid()
         }
 
         val clearedText = essenceText.removeWordsConnectors()
@@ -48,5 +48,23 @@ class ThoughtValidator @Inject constructor(
                 ValidationResult.Valid(context.getString(R.string.capture_essence_state_remaining, remaining))
             }
         }
+    }
+
+    fun validateThread(threadString: String) : ValidationResult {
+        val words = threadString.convertToWords()
+        return if (words.size > THREAD_MAX_WORDS) {
+            ValidationResult.Error(context.getString(R.string.capture_thread_error_words_exceeded))
+        } else{
+            ValidationResult.Valid()
+        }
+    }
+
+    fun getEssenceDefaultTooltip() : String{
+        return context.getString(R.string.capture_essence_tooltip, ESSENCE_MAX_WORDS)
+    }
+
+    fun limitToMaxWords(threadString: String): String {
+        val words = threadString.convertToWords()
+        return words.take(THREAD_MAX_WORDS).joinToString(" ")
     }
 }

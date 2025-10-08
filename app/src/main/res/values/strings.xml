@@ -71,7 +71,7 @@
 
     <!-- Essence (common) -->
     <string name="capture_essence_tooltip">Uchwyć esencję w max. %d słowach</string>
-    <string name="capture_essence_state_initial">Czekam na słowa</string>
+    <string name="capture_essence_state_initial">Zzzz...</string>
     <string name="capture_essence_state_remaining">Pozostało Ci %d słów</string>
     <string name="capture_essence_state_no_words_left">Wykorzystano wszystkie słowa</string>
     <string name="capture_essence_error_empty">Podaj esencję...</string>

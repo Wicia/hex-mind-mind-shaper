@@ -4,13 +4,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.details.ThoughtDetailsActivity
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.main.MainActivity
 import pl.hexmind.mindshaper.services.ThoughtsService
+import pl.hexmind.mindshaper.services.dto.ThoughtDTO
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.abs
 
@@ -49,7 +53,9 @@ class ThoughtCarouselActivity : CoreActivity(), GestureDetector.OnGestureListene
      * Setup carousel with custom page transformer for 3D effect
      */
     private fun setupCarousel() {
-        adapter = ThoughtCarouselAdapter()
+        adapter = ThoughtCarouselAdapter { thoughtToDelete ->
+            deleteThought(thoughtToDelete)
+        }
         viewPager.adapter = adapter
         viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         viewPager.offscreenPageLimit = 3
@@ -60,6 +66,15 @@ class ThoughtCarouselActivity : CoreActivity(), GestureDetector.OnGestureListene
         // Smooth page change callback
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
         })
+    }
+
+    private fun deleteThought(thought: ThoughtDTO) {
+        lifecycleScope.launch {
+            Timber.d("Deleting thought: ${thought.id}")
+            thoughtsService.deleteThought(thought)
+            // Optional: Show toast confirmation
+            showShortToast(R.string.common_deletion_dialog_confirmation, "Myśl")
+        }
     }
 
     /**

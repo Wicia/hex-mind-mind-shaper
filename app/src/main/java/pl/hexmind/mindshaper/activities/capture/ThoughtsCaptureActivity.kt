@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.handlers.RichTextHandler
-import pl.hexmind.mindshaper.activities.capture.handlers.ThoughtValidator
+import pl.hexmind.mindshaper.activities.ThoughtValidator
 import pl.hexmind.mindshaper.activities.capture.handlers.RecordingHandler
 import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
 import pl.hexmind.mindshaper.activities.capture.ui.RichTextCaptureView
@@ -109,11 +109,13 @@ class ThoughtsCaptureActivity : CoreActivity() {
         }
         etEssence.doAfterTextChanged {
             updateEssenceInfo()
-        } // TODO: Move to validator part of this logic
+        }
+
+        // TODO: Rethink it and fix => there is a small bug below :)
         etThread.doAfterTextChanged { editable ->
             editable?.let {
                 val words = it.toString().convertToWords()
-                if (words.size > ThoughtValidator.THREAD_MAX_WORDS) {
+                if (thoughtValidator.validateThread(it.toString()) is ValidationResult.Error) {
                     val limited = words.take(ThoughtValidator.THREAD_MAX_WORDS).joinToString(" ")
                     etThread.setText(limited)
                     etThread.setSelection(limited.length)
@@ -123,12 +125,10 @@ class ThoughtsCaptureActivity : CoreActivity() {
     }
 
     fun setupUI(){
-        etEssence.hint = this.getString(R.string.capture_essence_tooltip, 16)
+        etEssence.hint = thoughtValidator.getEssenceDefaultTooltip()
     }
 
     private suspend fun saveThought() {
-        launchSmartInsert()
-
         val finalData = currentThoughtDTO.copy(
             essence = etEssence.text?.toString().orEmpty(),
             thread = etThread.text?.toString().orEmpty(),
@@ -142,25 +142,6 @@ class ThoughtsCaptureActivity : CoreActivity() {
                 thoughtsService.addThought(finalData)
                 finish()
             }
-        }
-    }
-
-    // TODO: Smart insert OR Fast note name for my system?
-    fun launchSmartInsert(){
-        val noteRawInput = richTextCaptureView?.getRichText().orEmpty()
-        val sentencesList = noteRawInput.cutIntoSentences()
-
-        if(sentencesList.size == 1 && etThread.text.toString().isEmpty() && etEssence.text.toString().isEmpty()){
-            etEssence.text = Editable.Factory.getInstance().newEditable(sentencesList[0])
-        }
-        if(sentencesList.size == 2 && etThread.text.toString().isEmpty() && etEssence.text.toString().isEmpty()){
-            etThread.text = Editable.Factory.getInstance().newEditable(sentencesList[0])
-            etEssence.text = Editable.Factory.getInstance().newEditable(sentencesList[1])
-        }
-        else if (sentencesList.size == 3 && etThread.text.toString().isEmpty() && etEssence.text.toString().isEmpty()){
-            etThread.text = Editable.Factory.getInstance().newEditable(sentencesList[0])
-            etEssence.text = Editable.Factory.getInstance().newEditable(sentencesList[1])
-            richTextCaptureView?.updateRichText(sentencesList[2])
         }
     }
 

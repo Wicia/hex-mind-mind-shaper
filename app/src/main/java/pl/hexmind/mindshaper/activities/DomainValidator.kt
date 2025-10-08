@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.activities.settings
+package pl.hexmind.mindshaper.activities
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext

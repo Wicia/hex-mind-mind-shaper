@@ -1,6 +1,7 @@
 package pl.hexmind.mindshaper.activities.capture.handlers
 
 
+import pl.hexmind.mindshaper.activities.ThoughtValidator
 import pl.hexmind.mindshaper.activities.capture.ui.RichTextCaptureView
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 
