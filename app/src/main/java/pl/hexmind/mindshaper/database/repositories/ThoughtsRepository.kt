@@ -48,8 +48,8 @@ class ThoughtsRepository @Inject constructor (
     /**
      * Delete thought from database
      */
-    suspend fun deleteThought(thought: ThoughtEntity) {
-        thoughtsDAO.delete(thought)
+    suspend fun deleteThoughtById(id: Int) {
+        thoughtsDAO.deleteById(id)
     }
 
     /**

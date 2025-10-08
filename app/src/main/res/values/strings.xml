@@ -48,6 +48,12 @@
         <item>%s, Co chodzi Ci dzisiaj po głowie?</item>
     </array>
 
+    <string name="common_deletion_dialog_title">Uwaga!</string>
+    <string name="common_deletion_dialog_message">Czy na pewno chcesz usunąć %1$s: \"%2$s\"?</string>
+    <string name="common_deletion_dialog_yes">Tak</string>
+    <string name="common_deletion_dialog_no">Nie</string>
+    <string name="common_deletion_dialog_confirmation">%1$s usunięto</string>
+
     <!-- ====================================== -->
     <!-- ACTIVITY: MAIN -->
     <!-- ====================================== -->
@@ -101,8 +107,6 @@
     <!-- ====================================== -->
 
     <string name="carousel_thought_thread_empty">...</string>
-
-    <string name="_carousel_info_icon_description">Ikona informacji</string>
 
     <!-- ====================================== -->
     <!-- ACTIVITY: SETTINGS -->
