@@ -71,11 +71,24 @@
     </style>
 
     <style name="App.MaterialButton.Flat.NotUsed" parent="Widget.MaterialComponents.Button">
+        <!-- Min constraints -->
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+
+        <!-- Insets -->
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="android:insetLeft">0dp</item>
         <item name="android:insetRight">0dp</item>
-        <item name="android:padding">0dp</item>
+
+        <!-- Padding -->
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="iconPadding">0dp</item>
+
+        <!-- Colors -->
         <item name="iconTint">@color/button_icon_not_used</item>
         <item name="backgroundTint">@color/button_not_used</item>
     </style>

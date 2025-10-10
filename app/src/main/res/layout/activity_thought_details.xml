@@ -16,15 +16,15 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/shape_button"
         android:gravity="center_vertical"
-        android:padding="24dp" />
+        android:padding="20dp" />
 
     <!-- DOMAIN + THREAD -->
     <LinearLayout
         android:id="@+id/ll_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:baselineAligned="false">
 
         <!-- DOMAIN -->
         <com.google.android.material.button.MaterialButton
@@ -32,7 +32,8 @@
             style="@style/App.MaterialButton.Flat.NotUsed"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:layout_weight="0.2"
+            android:layout_weight="0.25"
+            android:layout_marginStart="16dp"
             app:cornerRadius="8dp"
             app:icon="@drawable/ic_domain_none"
             app:iconGravity="textStart"
@@ -42,25 +43,27 @@
         <!-- THREAD: With content -->
         <TextView
             android:id="@+id/tv_thread"
-            style="@style/TextView_Body_Standard"
+            style="@style/TextView_Info_Extras"
+            android:layout_gravity="top"
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_marginStart="8dp"
-            android:layout_weight="0.5"
+            android:layout_weight="0.75"
             android:background="@drawable/shape_button"
             android:gravity="center_vertical"
             android:visibility="gone"
-            android:padding="24dp"
+            android:padding="20dp"
             />
 
         <!-- THREAD: Empty / To be specified -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_thread_placeholder"
             style="@style/App.MaterialButton.Flat.NotUsed"
+            android:layout_gravity="top"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:layout_marginStart="8dp"
-            android:layout_weight="0.5"
+            android:layout_weight="0.75"
             app:cornerRadius="8dp"
             app:icon="@drawable/ic_thread"
             app:iconGravity="textStart"
@@ -96,7 +99,7 @@
                 android:gravity="center_vertical"
                 android:visibility="gone"
                 android:layout_marginEnd="32dp"
-                android:padding="24dp"
+                android:padding="20dp"
                 />
 
             <com.google.android.material.button.MaterialButton
@@ -106,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="120dp"
                 android:layout_marginBottom="8dp"
-                android:padding="24dp"
+                android:padding="20dp"
                 android:layout_marginEnd="32dp"
                 app:cornerRadius="8dp"
                 app:icon="@drawable/ic_thought_type_rich_text"

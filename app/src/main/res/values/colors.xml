@@ -46,6 +46,8 @@
 
     <color name="text_primary">@color/_gray_dark</color>
     <color name="text_secondary">@color/_gray_mid</color>
+    <color name="text_secondary_darkmode">@color/_gray_light</color>
+
     <color name="text_on_primary">@color/_white</color>
     <color name="text_on_secondary">@color/_white</color>
 
