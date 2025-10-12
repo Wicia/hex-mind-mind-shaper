@@ -2,7 +2,6 @@ package pl.hexmind.mindshaper.activities.capture
 
 import android.os.Build
 import android.os.Bundle
-import android.text.Editable
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -21,7 +20,6 @@ import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
 import pl.hexmind.mindshaper.activities.capture.ui.RichTextCaptureView
 import pl.hexmind.mindshaper.activities.capture.ui.RecordingCaptureView
 import pl.hexmind.mindshaper.common.regex.convertToWords
-import pl.hexmind.mindshaper.common.regex.cutIntoSentences
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO

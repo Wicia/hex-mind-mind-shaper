@@ -64,7 +64,7 @@ class ThoughtCarouselAdapter(
             setViewOnTouchListener()
 
             when {
-                thought.thread.isBlank() -> {
+                thought.thread.isNullOrBlank() -> {
                     tvThread.text = itemView.context.getString(R.string.carousel_thought_thread_empty)
                 }
                 else -> {
@@ -76,7 +76,7 @@ class ThoughtCarouselAdapter(
             tvEssence.text = thought.richText
             tvCreatedAt.text = thought.createdAt?.toLocalDateString()
 
-            if(thought.thread.isBlank()){
+            if(thought.thread.isNullOrBlank()){
                 ivDomainIcon.setImageResource(R.drawable.ic_domain_none)
             }
         }

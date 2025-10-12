@@ -23,17 +23,25 @@ class ThoughtValidator @Inject constructor(
     }
 
     fun validateDTO(input: ThoughtDTO): ValidationResult {
-        val essenceValidationResult = validateEssence(input.essence.toString())
-        // TODO: tu beda jeszcze inne walidacje :)
-        return  essenceValidationResult
+        var result = validateEssence(input.essence)
+        if(result is ValidationResult.Error){
+            return result
+        }
+        result = validateThread(input.thread)
+        if(result is ValidationResult.Error){
+            return result
+        }
+
+        return  result
     }
 
-    fun validateEssence(essenceText : String) : ValidationResult {
-        if (essenceText.trim().isEmpty()) {
+    fun validateEssence(essenceText : String?) : ValidationResult {
+        val text = essenceText?.trim().orEmpty()
+        if (text.isEmpty()) {
             return ValidationResult.Valid()
         }
 
-        val clearedText = essenceText.removeWordsConnectors()
+        val clearedText = text.removeWordsConnectors()
         val wordCount = clearedText.getWordsCount()
 
         return when {
@@ -50,8 +58,14 @@ class ThoughtValidator @Inject constructor(
         }
     }
 
-    fun validateThread(threadString: String) : ValidationResult {
-        val words = threadString.convertToWords()
+    fun validateThread(threadString: String?) : ValidationResult {
+        val thread = threadString?.trim().orEmpty()
+        if (thread.isEmpty()) {
+            return ValidationResult.Valid()
+        }
+
+        val words = thread.convertToWords()
+
         return if (words.size > THREAD_MAX_WORDS) {
             ValidationResult.Error(context.getString(R.string.capture_thread_error_words_exceeded))
         } else{
@@ -61,10 +75,5 @@ class ThoughtValidator @Inject constructor(
 
     fun getEssenceDefaultTooltip() : String{
         return context.getString(R.string.capture_essence_tooltip, ESSENCE_MAX_WORDS)
-    }
-
-    fun limitToMaxWords(threadString: String): String {
-        val words = threadString.convertToWords()
-        return words.take(THREAD_MAX_WORDS).joinToString(" ")
     }
 }

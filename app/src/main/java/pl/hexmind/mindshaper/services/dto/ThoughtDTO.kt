@@ -12,7 +12,7 @@ data class ThoughtDTO(
     var id : Int? = null,
     var createdAt: Instant? = Instant.now(),
     var domainIconId : Int? = null,
-    var thread : String = "",
-    var essence : String = "",
-    var richText: String = ""
+    var thread : String? = "",
+    var essence : String? = "",
+    var richText: String? = ""
 ) : Parcelable

@@ -2,33 +2,29 @@ package pl.hexmind.mindshaper.activities.details
 
 import android.os.Build
 import android.os.Bundle
-import android.widget.Button
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
-import pl.hexmind.mindshaper.R
+import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import pl.hexmind.mindshaper.activities.CommonTextEditDialog
 import pl.hexmind.mindshaper.activities.CoreActivity
+import pl.hexmind.mindshaper.databinding.ActivityThoughtDetailsBinding
+import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ThoughtDetailsActivity : CoreActivity() {
 
-    private lateinit var tvEssence: TextView
+    @Inject
+    lateinit var service : ThoughtsService
 
-    private lateinit var tvThread: TextView
-    private lateinit var btnThreadPlaceholder: Button
-
-    private lateinit var btnRecordingPlaceholder: Button
-
-    private lateinit var btnDrawingPlaceholder: Button
-
-    private lateinit var btnRichTextPlaceholder: Button
-
-    private lateinit var btnPhotoPlaceholder: Button
-
-    private lateinit var tvRichText : TextView
+    private lateinit var binding: ActivityThoughtDetailsBinding
 
     // Displayed details data
     private var dtoWithDetails : ThoughtDTO? = null
+
 
     companion object PARAMS {
         const val P_SELECTED_THOUGHT_ID = "P_SELECTED_THOUGHT_ID"
@@ -36,30 +32,54 @@ class ThoughtDetailsActivity : CoreActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_thought_details)
+        binding = ActivityThoughtDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         saveExtrasFromIntent()
-        initializeViews()
+        initializeListeners()
         fillWithDetails()
     }
 
-    private fun initializeViews() {
-        // Header/Title
-        tvEssence = findViewById(R.id.tv_essence)
+    private fun initializeListeners(){
+        binding.tvRichText.setOnClickListener {
+            showEditTextDialog(binding.tvRichText)
+        }
+        binding.tvThread.setOnClickListener {
+            showEditTextDialog(binding.tvThread)
+        }
+        binding.tvEssence.setOnClickListener {
+            showEditTextDialog(binding.tvEssence)
+        }
+        // Save settings button
+        binding.btnSave.setOnClickListener {
+            saveThought()
+        }
+    }
 
-        // Extras/metadata
-        btnThreadPlaceholder = findViewById(R.id.btn_thread_placeholder)
-        tvThread = findViewById(R.id.tv_thread)
+    fun saveThought(){
+        val dto = dtoWithDetails ?: return
 
-        // "Main" fields
-        btnRecordingPlaceholder = findViewById(R.id.btn_recording_placeholder)
+        dto.thread = binding.tvThread.text.toString()
+        dto.essence = binding.tvEssence.text.toString()
+        dto.richText = binding.tvRichText.text.toString()
 
-        btnDrawingPlaceholder = findViewById(R.id.btn_drawing_placeholder)
+        lifecycleScope.launch {
+            service.updateThought(dto)
+        }
+    }
 
-        btnRichTextPlaceholder = findViewById(R.id.btn_rich_text_placeholder)
-        tvRichText = findViewById(R.id.tv_rich_text)
-
-        btnPhotoPlaceholder = findViewById(R.id.btn_photo_placeholder)
+    /**
+     * Shows dialog for editing essence with validation
+     */
+    private fun showEditTextDialog(textViewToBind : TextView) {
+        CommonTextEditDialog(
+            context = this,
+            textInput = textViewToBind.text.toString(),
+            onSave = { newText ->
+                // Update UI
+                textViewToBind.text = newText
+            }
+        ).show()
     }
 
     private fun saveExtrasFromIntent() {
@@ -72,26 +92,26 @@ class ThoughtDetailsActivity : CoreActivity() {
     }
 
     private fun fillWithDetails(){
-        tvEssence.text = dtoWithDetails?.essence
+        binding.tvEssence.text = dtoWithDetails?.essence
 
         if(dtoWithDetails?.richText.isNullOrBlank()){
-            btnRichTextPlaceholder.visibility = View.VISIBLE
-            tvRichText.visibility = View.GONE
+            binding.btnRichTextPlaceholder.visibility = View.VISIBLE
+            binding.tvRichText.visibility = View.GONE
         }
         else{
-            btnRichTextPlaceholder.visibility = View.GONE
-            tvRichText.visibility = View.VISIBLE
-            tvRichText.text = dtoWithDetails?.richText
+            binding.btnRichTextPlaceholder.visibility = View.GONE
+            binding.tvRichText.visibility = View.VISIBLE
+            binding.tvRichText.text = dtoWithDetails?.richText
         }
 
         if(dtoWithDetails?.thread.isNullOrBlank()){
-            btnThreadPlaceholder.visibility = View.VISIBLE
-            tvThread.visibility = View.GONE
+            binding.btnThreadPlaceholder.visibility = View.VISIBLE
+            binding.tvThread.visibility = View.GONE
         }
         else{
-            btnThreadPlaceholder.visibility = View.GONE
-            tvThread.visibility = View.VISIBLE
-            tvThread.text = dtoWithDetails?.thread
+            binding.btnThreadPlaceholder.visibility = View.GONE
+            binding.tvThread.visibility = View.VISIBLE
+            binding.tvThread.text = dtoWithDetails?.thread
         }
     }
 }

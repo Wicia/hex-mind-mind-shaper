@@ -36,4 +36,9 @@ class ThoughtsService @Inject constructor(
     suspend fun deleteThought(thought: ThoughtDTO){
         repository.deleteThoughtById(thought.id ?: throw IllegalArgumentException("Thought ID cannot be null"))
     }
+
+    suspend fun updateThought(thought: ThoughtDTO){
+        val entity = ThoughtsMapper.INSTANCE.dtoToEntity(thought)
+        repository.updateThought(entity)
+    }
 }
