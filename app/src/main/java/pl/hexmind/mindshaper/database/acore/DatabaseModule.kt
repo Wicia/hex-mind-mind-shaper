@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.database.di
+package pl.hexmind.mindshaper.database.acore
 
 import android.content.Context
 import androidx.room.Room
@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import pl.hexmind.mindshaper.database.AppDatabase
+import pl.hexmind.mindshaper.database.Migrations
 import pl.hexmind.mindshaper.database.repositories.DomainDAO
 import pl.hexmind.mindshaper.database.repositories.IconDAO
 import pl.hexmind.mindshaper.database.repositories.ThoughtsDAO
@@ -28,7 +29,8 @@ object DatabaseModule {
             AppDatabase::class.java,
             "app_database"
             )
-            .fallbackToDestructiveMigration() // !!! TODO: !!! DISABLE ON PROD :)
+            .addMigrations(Migrations.MIGRATION_1_2)
+            //.fallbackToDestructiveMigration() // !!! TODO: !!! DISABLE ON PROD :)
             .build()
     }
 

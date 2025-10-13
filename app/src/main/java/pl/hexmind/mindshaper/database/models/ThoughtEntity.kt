@@ -32,14 +32,8 @@ data class ThoughtEntity(
     @ColumnInfo(name = "thread")
     val thread: String? = null,
 
-    @ColumnInfo(name = "essence")
-    val essence: String,
-
     @ColumnInfo(name = "created_at")
     val createdAt: Instant = Instant.now(),
-
-    @ColumnInfo(name = "priority")
-    val priority: Int = 3,
 
     @ColumnInfo(name = "rich_text")
     val richText: String? = null,

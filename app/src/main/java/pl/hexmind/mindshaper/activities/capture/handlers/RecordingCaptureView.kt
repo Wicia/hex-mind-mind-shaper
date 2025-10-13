@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.activities.capture.ui
+package pl.hexmind.mindshaper.activities.capture.handlers
 
 import android.content.Context
 import android.util.AttributeSet

@@ -4,18 +4,16 @@
     <!-- [module/feature] / [component/screen] -> label -> [element] -->
 
     <!-- ====================================== -->
-    <!-- CORE / COMMON -->
+    <!--    CORE / COMMON -->
     <!-- ====================================== -->
-
-    <string name="common_char_separator"> ⏟ </string>
 
     <string name="app_name">MindShaper</string>
 
     <!-- SAVE AND LOAD -->
     <string name="common_btn_save">Zapisz</string>
+    <string name="common_btn_cancel">Anuluj</string>
     <string name="common_info_save_changes">Zapisz zmiany</string>
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
-    <string name="common_btn_cancel">Anuluj</string>
 
     <!-- PERMISSIONS: Voice Recording -->
     <string name="common_permission_audio_error_required">Uprawnienie do nagrywania audio jest wymagane dla notatek głosowych</string>
@@ -32,12 +30,12 @@
     <string name="files_error_selecting_file">Błąd podczas wyboru pliku</string>
     <string name="files_audio_error_unknown_file">Nieznany plik audio</string>
     <string name="files_error_unknown_file">Nieznany plik</string>
+
+    <!-- FOLDERS -->
     <string name="in_folder">w folderze</string>
 
-    <!-- PLACEHOLDERS AND TODO: To be replaced later -->
+    <!-- PLACEHOLDERS (TODO: To be replaced later) -->
     <string name="common_placeholder_accessibility_content_desc">PLACEHOLDER</string>
-    <string name="common_activity_tile_placeholder">PLACEHOLDER</string>
-    <string name="common_domain_name_placeholder">Nieznana dziedzina!</string>
 
     <array name="common_greetings_values_list">
         <item>Witaj %s</item>
@@ -48,20 +46,24 @@
         <item>%s, Co chodzi Ci dzisiaj po głowie?</item>
     </array>
 
+    <!-- DIALOGS -->
     <string name="common_deletion_dialog_title">Uwaga!</string>
-    <string name="common_deletion_dialog_message">Czy na pewno chcesz usunąć %1$s: \"%2$s\"?</string>
+    <string name="common_deletion_dialog_message">Czy na pewno chcesz usunąć %s?</string>
     <string name="common_deletion_dialog_yes">Tak</string>
     <string name="common_deletion_dialog_no">Nie</string>
-    <string name="common_deletion_dialog_confirmation">%1$s usunięto</string>
+    <string name="common_deletion_dialog_confirmation">%s usunięto</string>
+
+    <!-- VALIDATION -->
+    <string name="common_validation_info_initial">Zzzz...</string>
 
     <!-- ====================================== -->
-    <!-- ACTIVITY: MAIN -->
+    <!--    ACTIVITY: MAIN -->
     <!-- ====================================== -->
 
     <string name="main_greetings_header_default">Cześć!</string>
 
     <!-- ====================================== -->
-    <!-- ACTIVITY: CAPTURE THOUGHT -->
+    <!--    ACTIVITY: CAPTURE THOUGHT -->
     <!-- ====================================== -->
 
     <!-- Core -->
@@ -69,20 +71,13 @@
     <string name="capture_main_state_saved">Myśl została pomyślnie uchwycona...</string>
     <string name="capture_input_fields_error_empty">Notatka i Esencja są puste</string>
 
-    <!-- Essence (common) -->
-    <string name="capture_essence_tooltip">Uchwyć esencję w max. %d słowach</string>
-    <string name="capture_essence_state_initial">Zzzz...</string>
-    <string name="capture_essence_state_remaining">Pozostało Ci %d słów</string>
-    <string name="capture_essence_state_no_words_left">Wykorzystano wszystkie słowa</string>
-    <string name="capture_essence_error_empty">Podaj esencję...</string>
-    <string name="capture_essence_error_too_long">Twoja esencja przekracza %d słów...</string>
-
     <!-- Thread (common) -->
     <string name="capture_thread_tooltip">Wątek</string>
     <string name="capture_thread_error_words_exceeded">Wątek nie może przekroczyć %d słów...</string>
 
-    <!-- Type: Rich Text Note -->
-    <string name="capture_note_hint">* Pisz, niech palce płoną :)</string>
+    <!-- Type: Rich Text (Note) -->
+    <string name="capture_rich_text_hint">* Pisz, niech palce płoną :)</string>
+    <string name="capture_rich_text_error_note_empty">Ekhm... To wyżej nie może być puste</string>
 
     <!-- Type: Voice Recording -->
     <string name="capture_voice_tooltip">Gotowy do nagrywania</string>
@@ -103,13 +98,13 @@
     <string name="thought_type_icon">Ikona typu myśli</string>
 
     <!-- ====================================== -->
-    <!-- ACTIVITY: THOUGHTS PREVIEW / CAROUSEL  -->
+    <!--    ACTIVITY: THOUGHTS PREVIEW / CAROUSEL  -->
     <!-- ====================================== -->
 
     <string name="carousel_thought_thread_empty">...</string>
 
     <!-- ====================================== -->
-    <!-- ACTIVITY: SETTINGS -->
+    <!--    ACTIVITY: SETTINGS -->
     <!-- ====================================== -->
 
     <!-- Header -->

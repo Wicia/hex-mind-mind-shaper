@@ -1,29 +1,33 @@
 package pl.hexmind.mindshaper.activities.capture.handlers
 
-
+import androidx.core.widget.doAfterTextChanged
+import pl.hexmind.mindshaper.activities.ThoughtCaptureHandler
 import pl.hexmind.mindshaper.activities.ThoughtValidator
-import pl.hexmind.mindshaper.activities.capture.ui.RichTextCaptureView
+import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 
 class RichTextHandler(
-    private val richTextCaptureView: RichTextCaptureView,
+    private val view: RichTextCaptureView,
     private val validator: ThoughtValidator
-) {
+) : ThoughtCaptureHandler {
 
-    private var onDataChangedListener: ((ThoughtDTO) -> Unit)? = null
-
-    fun getCurrentData(): ThoughtDTO {
-        val richText = richTextCaptureView.getRichText().trim()
-        return ThoughtDTO(
-            richText = richText
-        )
+    fun setupListeners() {
+        view.etRichText.doAfterTextChanged { editable ->
+            editable?.let {
+                val result : ValidationResult = validator.validateRichText(view.etRichText.text.toString())
+                view.updateValidationInfo(result)
+            }
+        }
     }
 
-    fun setOnDataChangedListener(listener: (ThoughtDTO) -> Unit) {
-        onDataChangedListener = listener
+    override fun performValidation() : ValidationResult {
+        val result : ValidationResult = validator.validateRichText(view.etRichText.text.toString())
+        view.updateValidationInfo(result)
+        return result
     }
 
-    private fun notifyDataChanged() {
-        onDataChangedListener?.invoke(getCurrentData())
+    override fun getUpdatedDTO(dto : ThoughtDTO): ThoughtDTO {
+        dto.richText = view.etRichText.text.toString()
+        return dto
     }
 }

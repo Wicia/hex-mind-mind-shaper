@@ -8,14 +8,15 @@ import android.media.MediaRecorder
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.activities.capture.ui.RecordingCaptureView
+import pl.hexmind.mindshaper.activities.ThoughtCaptureHandler
+import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import java.io.File
 
 class RecordingHandler(
     private val activity: Activity,
-    private val voiceView: RecordingCaptureView
-) {
+    private val view: RecordingCaptureView
+) : ThoughtCaptureHandler {
 
     private var recorder: MediaRecorder? = null
     private var player: MediaPlayer? = null
@@ -23,11 +24,9 @@ class RecordingHandler(
     private var isRecording = false
     private var isPlaying = false
 
-    private var onDataChangedListener: ((ThoughtDTO) -> Unit)? = null
-
     fun setupListeners() {
-        voiceView.btnRecordNew.setOnClickListener { startRecording() }
-        voiceView.btnRecordStopPlay.setOnClickListener {
+        view.btnRecordNew.setOnClickListener { startRecording() }
+        view.btnRecordStopPlay.setOnClickListener {
             when {
                 isRecording -> stopRecording()
                 isPlaying -> stopPlaying()
@@ -54,8 +53,9 @@ class RecordingHandler(
             start()
         }
         isRecording = true
-        voiceView.updateStatus("Nagrywanie...", R.color.validation_error)
-        voiceView.updateButtons(isRecording, isPlaying, audioFile != null)
+        val string = view.context.getString(R.string.capture_voice_status_recording)
+        view.updateStatus(string, R.color.validation_error)
+        view.updateButtons(isRecording, isPlaying, audioFile != null)
     }
 
     private fun stopRecording() {
@@ -65,9 +65,10 @@ class RecordingHandler(
         }
         recorder = null
         isRecording = false
-        voiceView.updateStatus("Nagranie zapisane", R.color.validation_success)
-        voiceView.updateButtons(isRecording, isPlaying, audioFile != null)
-        notifyDataChanged()
+        val string = view.context.getString(R.string.capture_voice_status_recording_saved)
+        view.updateStatus(string, R.color.validation_success)
+        view.updateButtons(isRecording, isPlaying, audioFile != null)
+        //notifyDataChanged()
     }
 
     private fun startPlaying() {
@@ -79,8 +80,9 @@ class RecordingHandler(
                 setOnCompletionListener { stopPlaying() }
             }
             isPlaying = true
-            voiceView.updateStatus("Odtwarzanie...", R.color.validation_success)
-            voiceView.updateButtons(isRecording, isPlaying, audioFile != null)
+            val string = view.context.getString(R.string.capture_voice_status_recording_playing)
+            view.updateStatus(string, R.color.validation_success)
+            view.updateButtons(isRecording, isPlaying, audioFile != null)
         }
     }
 
@@ -88,26 +90,15 @@ class RecordingHandler(
         player?.release()
         player = null
         isPlaying = false
-        voiceView.updateStatus("Gotowy", R.color.validation_success)
-        voiceView.updateButtons(isRecording, isPlaying, audioFile != null)
+        view.updateStatus("???", R.color.validation_success)
+        view.updateButtons(isRecording, isPlaying, audioFile != null)
     }
 
-    fun getCurrentData(): ThoughtDTO {
-        return ThoughtDTO() // TODO: Initialization
+    override fun performValidation(): ValidationResult {
+        TODO("Not yet implemented")
     }
 
-    fun setOnDataChangedListener(listener: (ThoughtDTO) -> Unit) {
-        onDataChangedListener = listener
-    }
-
-    private fun notifyDataChanged() {
-        onDataChangedListener?.invoke(getCurrentData())
-    }
-
-    fun cleanup() {
-        recorder?.release()
-        recorder = null
-        player?.release()
-        player = null
+    override fun getUpdatedDTO(dto: ThoughtDTO): ThoughtDTO {
+        TODO("Not yet implemented")
     }
 }

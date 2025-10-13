@@ -46,9 +46,10 @@ class ThoughtCarouselAdapter(
         GestureDetector.OnDoubleTapListener {
 
         private val tvThread: TextView = itemView.findViewById(R.id.tv_thought_thread)
-        private val tvEssence: TextView = itemView.findViewById(R.id.tv_thought_essence)
         private val tvCreatedAt: TextView = itemView.findViewById(R.id.tv_created_at)
         private val ivDomainIcon: ImageView = itemView.findViewById(R.id.iv_domain_icon)
+
+        private val tvRichText: TextView = itemView.findViewById(R.id.tv_rich_text)
 
         private var viewedThoughtDTO : ThoughtDTO? = null
 
@@ -63,6 +64,9 @@ class ThoughtCarouselAdapter(
             viewedThoughtDTO = thought
             setViewOnTouchListener()
 
+            //TODO: Extend by checking thought initial type
+            tvRichText.text = thought.richText
+
             when {
                 thought.thread.isNullOrBlank() -> {
                     tvThread.text = itemView.context.getString(R.string.carousel_thought_thread_empty)
@@ -72,8 +76,6 @@ class ThoughtCarouselAdapter(
                 }
             }
 
-            // TODO: display essence or (if blank) other fields?
-            tvEssence.text = thought.richText
             tvCreatedAt.text = thought.createdAt?.toLocalDateString()
 
             if(thought.thread.isNullOrBlank()){
@@ -146,7 +148,7 @@ class ThoughtCarouselAdapter(
         private fun showDeleteConfirmationDialog(thought: ThoughtDTO) {
             MaterialAlertDialogBuilder(itemView.context)
                 .setTitle(itemView.context.getString(R.string.common_deletion_dialog_title))
-                .setMessage(itemView.context.getString(R.string.common_deletion_dialog_message, "myśl", thought.essence))
+                .setMessage(itemView.context.getString(R.string.common_deletion_dialog_message, "myśl"))
                 .setPositiveButton(itemView.context.getString(R.string.common_deletion_dialog_yes)) { dialog, _ ->
                     onDeleteThought(thought)
                     Timber.d("Thought deleted: ${thought.id}")

@@ -131,19 +131,4 @@ class CommonTextEditDialog(
             imm.showSoftInput(etInput, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
         }, 100)
     }
-
-    /**
-     * Dismisses the dialog
-     */
-    fun dismiss() {
-        dialog.dismiss()
-    }
-
-    /**
-     * Data class for validation results
-     */
-    data class ValidationResult(
-        val isValid: Boolean,
-        val message: String = ""
-    )
 }

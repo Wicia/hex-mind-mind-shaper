@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "pl.hexmind.mindshaper"
-        minSdk = 26
+        minSdk = 30
         targetSdk = 35
         versionCode = 2
         versionName = "MVP_1_0"

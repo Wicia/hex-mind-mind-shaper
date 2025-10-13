@@ -17,7 +17,7 @@
 
         <!-- ESSENCE -->
         <TextView
-            android:id="@+id/tv_thought_essence"
+            android:id="@+id/tv_rich_text"
             style="@style/TextView_Body_Highlighted"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -4,6 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.TypeParceler
 import pl.hexmind.mindshaper.activities.InstantParceler
+import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
 import java.time.Instant
 
 @Parcelize
@@ -13,6 +14,6 @@ data class ThoughtDTO(
     var createdAt: Instant? = Instant.now(),
     var domainIconId : Int? = null,
     var thread : String? = "",
-    var essence : String? = "",
-    var richText: String? = ""
+    var richText: String? = "",
+    var initialThoughtType: InitialThoughtType = InitialThoughtType.UNKNOWN
 ) : Parcelable

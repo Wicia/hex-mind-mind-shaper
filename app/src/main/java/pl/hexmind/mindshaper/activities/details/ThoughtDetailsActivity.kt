@@ -1,5 +1,6 @@
 package pl.hexmind.mindshaper.activities.details
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -9,6 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.activities.CommonTextEditDialog
 import pl.hexmind.mindshaper.activities.CoreActivity
+import pl.hexmind.mindshaper.activities.main.MainActivity
 import pl.hexmind.mindshaper.databinding.ActivityThoughtDetailsBinding
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
@@ -47,9 +49,6 @@ class ThoughtDetailsActivity : CoreActivity() {
         binding.tvThread.setOnClickListener {
             showEditTextDialog(binding.tvThread)
         }
-        binding.tvEssence.setOnClickListener {
-            showEditTextDialog(binding.tvEssence)
-        }
         // Save settings button
         binding.btnSave.setOnClickListener {
             saveThought()
@@ -60,16 +59,18 @@ class ThoughtDetailsActivity : CoreActivity() {
         val dto = dtoWithDetails ?: return
 
         dto.thread = binding.tvThread.text.toString()
-        dto.essence = binding.tvEssence.text.toString()
         dto.richText = binding.tvRichText.text.toString()
 
         lifecycleScope.launch {
             service.updateThought(dto)
         }
+
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 
     /**
-     * Shows dialog for editing essence with validation
+     * Shows common dialog for editing text fields with validation
      */
     private fun showEditTextDialog(textViewToBind : TextView) {
         CommonTextEditDialog(
@@ -92,8 +93,6 @@ class ThoughtDetailsActivity : CoreActivity() {
     }
 
     private fun fillWithDetails(){
-        binding.tvEssence.text = dtoWithDetails?.essence
-
         if(dtoWithDetails?.richText.isNullOrBlank()){
             binding.btnRichTextPlaceholder.visibility = View.VISIBLE
             binding.tvRichText.visibility = View.GONE

@@ -19,17 +19,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- ESSENCE -->
-            <TextView
-                android:id="@+id/tv_essence"
-                style="@style/TextView_Body_Highlighted"
-                android:layout_width="match_parent"
-                android:layout_height="95dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/shape_button"
-                android:gravity="center_vertical"
-                android:padding="20dp" />
-
             <!-- DOMAIN + THREAD -->
             <LinearLayout
                 android:id="@+id/ll_header"

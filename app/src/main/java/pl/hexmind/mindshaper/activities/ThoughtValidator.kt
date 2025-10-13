@@ -3,6 +3,7 @@ package pl.hexmind.mindshaper.activities
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
 import pl.hexmind.mindshaper.common.regex.convertToWords
 import pl.hexmind.mindshaper.common.regex.getWordsCount
 import pl.hexmind.mindshaper.common.regex.removeWordsConnectors
@@ -17,13 +18,11 @@ class ThoughtValidator @Inject constructor(
 ) {
 
     companion object {
-
-        const val ESSENCE_MAX_WORDS : Int = 16
         const val THREAD_MAX_WORDS : Int = 3
     }
 
     fun validateDTO(input: ThoughtDTO): ValidationResult {
-        var result = validateEssence(input.essence)
+        var result = performThoughtTypeValidation(input)
         if(result is ValidationResult.Error){
             return result
         }
@@ -35,26 +34,33 @@ class ThoughtValidator @Inject constructor(
         return  result
     }
 
-    fun validateEssence(essenceText : String?) : ValidationResult {
-        val text = essenceText?.trim().orEmpty()
-        if (text.isEmpty()) {
-            return ValidationResult.Valid()
+    fun performThoughtTypeValidation(input: ThoughtDTO) : ValidationResult{
+        return when(input.initialThoughtType){
+            InitialThoughtType.RICH_TEXT -> {
+                validateRichText(input.richText)
+            }
+
+            InitialThoughtType.UNKNOWN -> {
+                TODO()
+            }
+            InitialThoughtType.RECORDING -> {
+                TODO()
+            }
+            InitialThoughtType.PHOTO -> {
+                TODO()
+            }
+            InitialThoughtType.DRAWING -> {
+                TODO()
+            }
         }
+    }
 
-        val clearedText = text.removeWordsConnectors()
-        val wordCount = clearedText.getWordsCount()
-
-        return when {
-            wordCount > ESSENCE_MAX_WORDS -> {
-                ValidationResult.Error(context.getString(R.string.capture_essence_error_too_long, ESSENCE_MAX_WORDS))
-            }
-            wordCount == ESSENCE_MAX_WORDS -> {
-                ValidationResult.Valid(context.getString(R.string.capture_essence_state_no_words_left))
-            }
-            else -> {
-                val remaining = ESSENCE_MAX_WORDS - wordCount
-                ValidationResult.Valid(context.getString(R.string.capture_essence_state_remaining, remaining))
-            }
+    fun validateRichText(richText : String?) : ValidationResult {
+        return if(richText.isNullOrBlank()){
+            ValidationResult.Error(context.getString(R.string.capture_rich_text_error_note_empty))
+        }
+        else{
+            ValidationResult.Valid()
         }
     }
 
@@ -71,9 +77,5 @@ class ThoughtValidator @Inject constructor(
         } else{
             ValidationResult.Valid()
         }
-    }
-
-    fun getEssenceDefaultTooltip() : String{
-        return context.getString(R.string.capture_essence_tooltip, ESSENCE_MAX_WORDS)
     }
 }

@@ -23,8 +23,19 @@
             android:inputType="textMultiLine"
             android:gravity="top"
             android:padding="12dp"
-            android:hint="@string/capture_note_hint"
+            android:hint="@string/capture_rich_text_hint"
             android:background="@drawable/shape_edit_text"/>
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tv_validation_info"
+        style="@style/TextView_Info_Success"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/common_validation_info_initial"
+        android:gravity="end"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp" />
 
 </LinearLayout>
