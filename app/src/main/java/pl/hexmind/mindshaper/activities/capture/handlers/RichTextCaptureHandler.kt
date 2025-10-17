@@ -6,7 +6,7 @@ import pl.hexmind.mindshaper.activities.ThoughtValidator
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 
-class RichTextHandler(
+class RichTextCaptureHandler(
     private val view: RichTextCaptureView,
     private val validator: ThoughtValidator
 ) : ThoughtCaptureHandler {

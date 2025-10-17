@@ -52,6 +52,7 @@
     <string name="common_deletion_dialog_yes">Tak</string>
     <string name="common_deletion_dialog_no">Nie</string>
     <string name="common_deletion_dialog_confirmation">%s usunięto</string>
+    <string name="common_list_dialog_title">Wybierz coś sobie...</string>
 
     <!-- VALIDATION -->
     <string name="common_validation_info_initial">Zzzz...</string>

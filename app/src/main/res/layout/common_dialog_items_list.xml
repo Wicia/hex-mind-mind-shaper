@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tv_dialog_title"
+        style="@style/DialogTile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/common_list_dialog_title"
+        android:gravity="center" />
+
+    <!-- RecyclerView with icons -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_icons_list"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="1"
+        android:scrollbars="vertical" />
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/common_btn_cancel"
+            android:layout_marginEnd="8dp"
+            style="?android:attr/buttonBarButtonStyle" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -12,9 +12,9 @@ import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.ThoughtCaptureHandler
-import pl.hexmind.mindshaper.activities.capture.handlers.RichTextHandler
+import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureHandler
 import pl.hexmind.mindshaper.activities.ThoughtValidator
-import pl.hexmind.mindshaper.activities.capture.handlers.RecordingHandler
+import pl.hexmind.mindshaper.activities.capture.handlers.RecordingCaptureHandler
 import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
 import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureView
 import pl.hexmind.mindshaper.activities.capture.handlers.RecordingCaptureView
@@ -44,7 +44,7 @@ class ThoughtsCaptureActivity : CoreActivity() {
 
     private lateinit var etThread : TextInputEditText
 
-    // HANDLERS for specific input type
+    // HANDLER for specific input/thought type
     private lateinit var thoughtCaptureHandler: ThoughtCaptureHandler
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,14 +77,14 @@ class ThoughtsCaptureActivity : CoreActivity() {
             InitialThoughtType.RICH_TEXT -> {
                 val richTextCaptureView = RichTextCaptureView(this)
                 flContainerFeatures.addView(richTextCaptureView)
-                thoughtCaptureHandler = RichTextHandler(richTextCaptureView!!, thoughtValidator).apply {
+                thoughtCaptureHandler = RichTextCaptureHandler(richTextCaptureView, thoughtValidator).apply {
                     setupListeners()
                 }
             }
             InitialThoughtType.RECORDING -> {
                 val recordingCaptureView = RecordingCaptureView(this)
                 flContainerFeatures.addView(recordingCaptureView)
-                thoughtCaptureHandler = RecordingHandler(this, recordingCaptureView!!).apply {
+                thoughtCaptureHandler = RecordingCaptureHandler(this, recordingCaptureView).apply {
                     setupListeners()
                 }
             }

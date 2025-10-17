@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- TEXT VIEW -->
+    <!-- === TEXT VIEW === -->
     <style name="TextView_Header_Activity">
         <item name="android:fontFamily">@font/alegreya_regular</item>
         <item name="android:textSize">28sp</item>
@@ -46,7 +46,7 @@
         <item name="android:textColor">@color/validation_error</item>
     </style>
 
-    <!-- EDIT TEXT -->
+    <!-- === EDIT TEXT === -->
     <style name="EditText_Hint">
         <item name="android:fontFamily">@font/montserrat_regular</item>
         <item name="android:textSize">14sp</item>
@@ -61,6 +61,7 @@
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
+    <!-- === BUTTONS === -->
     <!-- To remove default padding for Material Button-->
     <style name="App.MaterialButton.Flat" parent="Widget.MaterialComponents.Button">
         <item name="android:insetTop">0dp</item>
@@ -91,6 +92,20 @@
         <!-- Colors -->
         <item name="iconTint">@color/button_icon_not_used</item>
         <item name="backgroundTint">@color/button_not_used</item>
+    </style>
+
+    <style name="DialogTile">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:layout_marginBottom">24dp</item>
+    </style>
+
+    <style name="DialogItemText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:padding">12dp</item>
     </style>
 
 </resources>

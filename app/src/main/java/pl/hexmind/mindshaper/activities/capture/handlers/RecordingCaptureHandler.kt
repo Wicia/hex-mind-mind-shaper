@@ -13,7 +13,7 @@ import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import java.io.File
 
-class RecordingHandler(
+class RecordingCaptureHandler(
     private val activity: Activity,
     private val view: RecordingCaptureView
 ) : ThoughtCaptureHandler {
@@ -68,7 +68,6 @@ class RecordingHandler(
         val string = view.context.getString(R.string.capture_voice_status_recording_saved)
         view.updateStatus(string, R.color.validation_success)
         view.updateButtons(isRecording, isPlaying, audioFile != null)
-        //notifyDataChanged()
     }
 
     private fun startPlaying() {
