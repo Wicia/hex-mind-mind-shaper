@@ -12,8 +12,8 @@ import pl.hexmind.mindshaper.R
 
 class CommonItemsListDialog private constructor(
     private val context: Context,
-    private val icons: List<CommonListItemsDialogAdapter>,
-    private val onIconSelected: (CommonListItemsDialogAdapter) -> Unit,
+    private val icons: List<CommonItemsListDialogAdapter>,
+    private val onIconSelected: (CommonItemsListDialogAdapter) -> Unit,
     private val dimAmount: Float,
     private val marginDp: Int
 ) {
@@ -68,14 +68,14 @@ class CommonItemsListDialog private constructor(
     }
 
     class Builder(private val context: Context) {
-        private var icons: List<CommonListItemsDialogAdapter> = emptyList()
-        private var onIconSelected: (CommonListItemsDialogAdapter) -> Unit = {}
+        private var icons: List<CommonItemsListDialogAdapter> = emptyList()
+        private var onIconSelected: (CommonItemsListDialogAdapter) -> Unit = {}
         private var dimAmount: Float = 0.9f
         private var marginDp: Int = 48
 
-        fun setIcons(icons: List<CommonListItemsDialogAdapter>) = apply { this.icons = icons }
+        fun setIcons(icons: List<CommonItemsListDialogAdapter>) = apply { this.icons = icons }
 
-        fun setOnIconSelected(callback: (CommonListItemsDialogAdapter) -> Unit) = apply {
+        fun setOnIconSelected(callback: (CommonItemsListDialogAdapter) -> Unit) = apply {
             this.onIconSelected = callback
         }
 

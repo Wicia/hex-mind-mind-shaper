@@ -9,15 +9,15 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.mindshaper.R
 
-data class CommonListItemsDialogAdapter(
+data class CommonItemsListDialogAdapter(
     val drawable: Drawable,
     val label: String,
     val isSelected: Boolean = false
 )
 
 class DialogIconsListAdapter(
-    private val icons: List<CommonListItemsDialogAdapter>,
-    private val onIconClick: (CommonListItemsDialogAdapter) -> Unit
+    private val icons: List<CommonItemsListDialogAdapter>,
+    private val onIconClick: (CommonItemsListDialogAdapter) -> Unit
 ) : RecyclerView.Adapter<DialogIconsListAdapter.IconViewHolder>() {
 
     private var selectedPosition = -1
@@ -28,9 +28,9 @@ class DialogIconsListAdapter(
         val tvLabel: TextView = itemView.findViewById(R.id.tv_icon_label)
         val vSelector: View = itemView.findViewById(R.id.v_selector)
 
-        fun bind(commonListItemsDialogAdapter: CommonListItemsDialogAdapter, position: Int) {
-            ivIcon.setImageDrawable(commonListItemsDialogAdapter.drawable)
-            tvLabel.text = commonListItemsDialogAdapter.label
+        fun bind(commonItemsListDialogAdapter: CommonItemsListDialogAdapter, position: Int) {
+            ivIcon.setImageDrawable(commonItemsListDialogAdapter.drawable)
+            tvLabel.text = commonItemsListDialogAdapter.label
 
             // Show or hide selector for specific element
             vSelector.visibility = if (position == selectedPosition) View.VISIBLE else View.GONE
@@ -45,7 +45,7 @@ class DialogIconsListAdapter(
                 notifyItemChanged(selectedPosition)
 
                 // Callback
-                onIconClick(commonListItemsDialogAdapter)
+                onIconClick(commonItemsListDialogAdapter)
             }
         }
     }
