@@ -5,8 +5,10 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import pl.hexmind.mindshaper.database.models.DomainEntity
+import pl.hexmind.mindshaper.database.models.DomainWithIcon
 
 @Dao
 interface DomainDAO {
@@ -15,7 +17,11 @@ interface DomainDAO {
     suspend fun getAllDomains(): List<DomainEntity>
 
     @Query("SELECT * FROM domains WHERE id = :id")
-    suspend fun getDomainById(id: Long): DomainEntity?
+    suspend fun getDomainById(id: Int): DomainEntity?
+
+    @Transaction
+    @Query("SELECT * FROM DOMAINS")
+    suspend fun getAllDomainsWithIcons(): List<DomainWithIcon>
 
     @Query("SELECT id FROM domains")
     suspend fun getUsedDomainIds(): List<Int>

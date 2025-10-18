@@ -18,12 +18,14 @@ interface ThoughtsMapper {
     @Mapping(source = "createdAt", target = "createdAt")
     @Mapping(source = "thread", target = "thread")
     @Mapping(source = "richText", target = "richText")
+    @Mapping(source = "domainId", target = "domainId")
     fun entityToDTO(entity : ThoughtEntity) : ThoughtDTO
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "createdAt", target = "createdAt")
     @Mapping(source = "thread", target = "thread")
     @Mapping(source = "richText", target = "richText")
+    @Mapping(source = "domainId", target = "domainId")
     fun dtoToEntity(dto : ThoughtDTO) : ThoughtEntity
 
     fun entityListToDtoList(entities: List<ThoughtEntity>): List<ThoughtDTO>

@@ -10,10 +10,10 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.mindshaper.R
 
-class CommonItemsListDialog private constructor(
+class DomainsListDialog private constructor(
     private val context: Context,
-    private val icons: List<CommonItemsListDialogAdapter>,
-    private val onIconSelected: (CommonItemsListDialogAdapter) -> Unit,
+    private val icons: List<DomainsListItem>,
+    private val onIconSelected: (DomainsListItem) -> Unit,
     private val dimAmount: Float,
     private val marginDp: Int
 ) {
@@ -22,7 +22,7 @@ class CommonItemsListDialog private constructor(
 
     fun show() {
         dialog = Dialog(context).apply {
-            setContentView(R.layout.common_list_item)
+            setContentView(R.layout.common_dialog_items_list)
             setupRecyclerView()
             setupButtons()
             setupWindow()
@@ -37,7 +37,7 @@ class CommonItemsListDialog private constructor(
 
     private fun Dialog.setupRecyclerView() {
         val recyclerView = findViewById<RecyclerView>(R.id.rv_icons_list)
-        val adapter = DialogIconsListAdapter(icons) { selectedIcon ->
+        val adapter = DialogDomainsListAdapter(icons) { selectedIcon ->
             onIconSelected(selectedIcon)
             dismiss()
         }
@@ -68,14 +68,14 @@ class CommonItemsListDialog private constructor(
     }
 
     class Builder(private val context: Context) {
-        private var icons: List<CommonItemsListDialogAdapter> = emptyList()
-        private var onIconSelected: (CommonItemsListDialogAdapter) -> Unit = {}
+        private var icons: List<DomainsListItem> = emptyList()
+        private var onIconSelected: (DomainsListItem) -> Unit = {}
         private var dimAmount: Float = 0.9f
         private var marginDp: Int = 48
 
-        fun setIcons(icons: List<CommonItemsListDialogAdapter>) = apply { this.icons = icons }
+        fun setIcons(icons: List<DomainsListItem>) = apply { this.icons = icons }
 
-        fun setOnIconSelected(callback: (CommonItemsListDialogAdapter) -> Unit) = apply {
+        fun setOnIconSelected(callback: (DomainsListItem) -> Unit) = apply {
             this.onIconSelected = callback
         }
 
@@ -83,12 +83,12 @@ class CommonItemsListDialog private constructor(
 
         fun setMargin(marginDp: Int) = apply { this.marginDp = marginDp }
 
-        fun build(): CommonItemsListDialog {
+        fun build(): DomainsListDialog {
             require(icons.isNotEmpty()) { "Icons list cannot be empty" }
-            return CommonItemsListDialog(context, icons, onIconSelected, dimAmount, marginDp)
+            return DomainsListDialog(context, icons, onIconSelected, dimAmount, marginDp)
         }
 
-        fun show(): CommonItemsListDialog {
+        fun show(): DomainsListDialog {
             return build().apply { show() }
         }
     }

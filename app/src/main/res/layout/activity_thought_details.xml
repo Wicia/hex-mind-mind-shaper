@@ -30,7 +30,7 @@
 
                 <!-- DOMAIN -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_icon_domain"
+                    android:id="@+id/btn_domain_icon_placeholder"
                     style="@style/App.MaterialButton.Flat.NotUsed"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
@@ -40,6 +40,18 @@
                     app:icon="@drawable/ic_domain_none"
                     app:iconGravity="textStart"
                     app:iconSize="48dp"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_domain_icon"
+                    style="@style/App.MaterialButton.Flat.NotUsed"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="0.25"
+                    android:layout_marginStart="16dp"
+                    app:cornerRadius="8dp"
+                    app:iconGravity="textStart"
+                    android:visibility="gone"
                     />
 
                 <!-- THREAD: With content -->

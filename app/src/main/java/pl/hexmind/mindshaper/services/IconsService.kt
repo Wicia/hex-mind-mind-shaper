@@ -84,7 +84,7 @@ class IconsService @Inject constructor(
         return getDefaultIcon()
     }
 
-    private fun bytesToDrawable(iconData: ByteArray): Drawable? {
+    fun bytesToDrawable(iconData: ByteArray): Drawable? {
         try {
             val svg = SVG.getFromInputStream(ByteArrayInputStream(iconData))
             val picture = svg.renderToPicture()

@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.activities
+package pl.hexmind.mindshaper.services.validators
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext

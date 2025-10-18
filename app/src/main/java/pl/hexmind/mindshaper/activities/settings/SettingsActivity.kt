@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
-import pl.hexmind.mindshaper.activities.DomainValidator
+import pl.hexmind.mindshaper.services.validators.DomainValidator
 import pl.hexmind.mindshaper.activities.main.MainActivity
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.databinding.ActivitySettingsBinding

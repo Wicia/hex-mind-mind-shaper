@@ -1,6 +1,7 @@
 package pl.hexmind.mindshaper.database.repositories
 
 import pl.hexmind.mindshaper.database.models.DomainEntity
+import pl.hexmind.mindshaper.database.models.DomainWithIcon
 import pl.hexmind.mindshaper.database.models.IconEntity
 import timber.log.Timber
 import javax.inject.Inject
@@ -14,20 +15,16 @@ class DomainRepository @Inject constructor(
         return domainDAO.getAllDomains()
     }
 
-    suspend fun getDomainById(id: Long): DomainEntity? {
+    suspend fun getDomainById(id: Int): DomainEntity? {
         return domainDAO.getDomainById(id)
     }
 
-    suspend fun insertDomain(domain: DomainEntity) {
-        domainDAO.insertDomain(domain)
+    suspend fun getAllDomainsWithIcons(): List<DomainWithIcon> {
+        return domainDAO.getAllDomainsWithIcons()
     }
 
     suspend fun updateDomain(domain: DomainEntity) {
         domainDAO.updateDomain(domain)
-    }
-
-    suspend fun deleteDomain(domain: DomainEntity) {
-        domainDAO.deleteDomain(domain)
     }
 
     suspend fun seedDomains(domains: List<DomainEntity>) {

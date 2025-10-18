@@ -1,12 +1,10 @@
-package pl.hexmind.mindshaper.activities
+package pl.hexmind.mindshaper.services.validators
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
 import pl.hexmind.mindshaper.common.regex.convertToWords
-import pl.hexmind.mindshaper.common.regex.getWordsCount
-import pl.hexmind.mindshaper.common.regex.removeWordsConnectors
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import javax.inject.Inject

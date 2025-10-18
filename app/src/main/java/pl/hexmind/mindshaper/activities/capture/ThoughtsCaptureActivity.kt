@@ -13,7 +13,7 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.ThoughtCaptureHandler
 import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureHandler
-import pl.hexmind.mindshaper.activities.ThoughtValidator
+import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import pl.hexmind.mindshaper.activities.capture.handlers.RecordingCaptureHandler
 import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
 import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureView
