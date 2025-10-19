@@ -2,7 +2,7 @@ package pl.hexmind.mindshaper
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
-import pl.hexmind.mindshaper.database.DatabaseInitializer
+import pl.hexmind.mindshaper.database.initialization.DatabaseInitializer
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

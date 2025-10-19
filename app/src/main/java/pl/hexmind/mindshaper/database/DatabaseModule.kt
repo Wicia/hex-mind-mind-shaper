@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.database.acore
+package pl.hexmind.mindshaper.database
 
 import android.content.Context
 import androidx.room.Room
@@ -7,8 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import pl.hexmind.mindshaper.database.AppDatabase
-import pl.hexmind.mindshaper.database.Migrations
+import pl.hexmind.mindshaper.database.initialization.Migrations
 import pl.hexmind.mindshaper.database.repositories.DomainDAO
 import pl.hexmind.mindshaper.database.repositories.IconDAO
 import pl.hexmind.mindshaper.database.repositories.ThoughtsDAO

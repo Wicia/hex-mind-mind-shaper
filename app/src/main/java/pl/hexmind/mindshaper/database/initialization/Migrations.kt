@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.database
+package pl.hexmind.mindshaper.database.initialization
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase

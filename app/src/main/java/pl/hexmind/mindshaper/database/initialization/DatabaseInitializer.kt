@@ -1,6 +1,7 @@
-package pl.hexmind.mindshaper.database
+package pl.hexmind.mindshaper.database.initialization
 
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.database.AppDatabase
 import pl.hexmind.mindshaper.database.models.DomainEntity
 import pl.hexmind.mindshaper.database.models.IconEntity
 import pl.hexmind.mindshaper.database.repositories.DomainRepository
@@ -23,7 +24,7 @@ class DatabaseInitializer @Inject constructor(
 
     suspend fun initializeIfNeeded() {
         val storedDBVersion = storage.getCurrentDBVersion()
-        val loadedDBVersion = AppDatabase.DB_VERSION
+        val loadedDBVersion = AppDatabase.Companion.DB_VERSION
 
         if (storedDBVersion != loadedDBVersion) {
             storage.setCurrentDBVersion(loadedDBVersion)
@@ -54,10 +55,10 @@ class DatabaseInitializer @Inject constructor(
         try {
             val iconsList = createIconsList()
             iconRepository.seedIcons(iconsList)
-            Timber.i("Database seeded with ${iconsList.size} icons")
+            Timber.Forest.i("Database seeded with ${iconsList.size} icons")
         }
         catch (e: Exception) {
-            Timber.e(e, "Failed to seed icons")
+            Timber.Forest.e(e, "Failed to seed icons")
         }
     }
 
@@ -99,7 +100,7 @@ class DatabaseInitializer @Inject constructor(
                 )
             }
             catch (e: Exception) {
-                Timber.w(e, "Failed to load icon: $fileName")
+                Timber.Forest.w(e, "Failed to load icon: $fileName")
                 return mutableListOf()
             }
         }
