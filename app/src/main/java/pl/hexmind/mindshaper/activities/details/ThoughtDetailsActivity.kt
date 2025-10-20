@@ -181,11 +181,8 @@ class ThoughtDetailsActivity : CoreActivity() {
     }
 
     private fun getIcon(iconIdToFind : Int): Drawable {
-        val dp : Int = 48
         val defaultIcon = AppCompatResources.getDrawable(this, R.drawable.ic_domain_default)!!
-        val icon = this.domainsWithIcons.find { it.iconId == iconIdToFind }?.icon ?: defaultIcon
-        icon.setBounds(0, 0, dp.dpToPx(), dp.dpToPx())
-
+        val icon = this.domainsWithIcons.find { it.iconId == iconIdToFind }?.iconDrawable ?: defaultIcon
         return icon
     }
 }

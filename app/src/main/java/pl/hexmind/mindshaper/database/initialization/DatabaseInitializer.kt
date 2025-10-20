@@ -8,7 +8,6 @@ import pl.hexmind.mindshaper.database.repositories.DomainRepository
 import pl.hexmind.mindshaper.database.repositories.IconRepository
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import timber.log.Timber
-import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -62,47 +61,47 @@ class DatabaseInitializer @Inject constructor(
         }
     }
 
+    /**
+     * Creates list of IconEntity from drawable resources with "ic_domain" prefix
+     */
     private fun createIconsList(): List<IconEntity> {
         val iconsEntities = mutableListOf<IconEntity>()
-        val filesNames = getAvailableIconFiles()
-        iconsEntities.addAll(assetToByteData(filesNames))
+
+        try {
+            // Using reflection to retrieve all properties/fields from R.drawable
+            val drawableClass = R.drawable::class.java
+            val fields = drawableClass.fields
+
+            val iconFields = fields
+                .filter { it.name.startsWith("z_ic_domain") }
+                .sortedBy { it.name }
+
+            Timber.d("Found ${iconFields.size} icon resources with prefix 'ic_domain'")
+
+            iconFields.forEach { field ->
+                try {
+                    val drawableName = field.name
+                    val resId = field.getInt(null) // Getting Resource ID
+
+                    if (resId != 0) {
+                        iconsEntities.add(IconEntity(drawableName = drawableName))
+                        Timber.d("Added icon: $drawableName (resId: $resId)")
+                    } else {
+                        Timber.w("Invalid resource ID for: $drawableName")
+                    }
+                } catch (e: Exception) {
+                    Timber.w(e, "Failed to process drawable field: ${field.name}")
+                }
+            }
+
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to load drawable resources via reflection")
+        }
+
+        if (iconsEntities.isEmpty()) {
+            Timber.w("No icons found with prefix 'ic_domain' in drawable resources!")
+        }
 
         return iconsEntities
-    }
-
-    fun getAvailableIconFiles(): List<String> {
-        val context = storage.getApplicationContext()
-        try {
-            val files = context.assets.list("domains") ?: emptyArray()
-            val iconNumbers = files
-                .filter {
-                    it.startsWith("ic_domain_") && it.endsWith(".svg")
-                }
-                .sorted()
-
-            return iconNumbers
-        }
-        catch (e: IOException) {
-            return emptyList()
-        }
-    }
-
-    private fun assetToByteData(fileNames: List<String>): List<IconEntity> {
-        return fileNames.map { fileName ->
-            try {
-                val context = storage.getApplicationContext()
-                val inputStream = context.assets.open("domains/$fileName")
-                val iconData = inputStream.readBytes()
-                inputStream.close()
-
-                IconEntity(
-                    iconData = iconData
-                )
-            }
-            catch (e: Exception) {
-                Timber.Forest.w(e, "Failed to load icon: $fileName")
-                return mutableListOf()
-            }
-        }
     }
 }

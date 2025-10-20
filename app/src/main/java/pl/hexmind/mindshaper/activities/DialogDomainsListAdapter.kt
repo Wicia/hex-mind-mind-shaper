@@ -23,8 +23,8 @@ class DialogDomainsListAdapter(
         val vSelector: View = itemView.findViewById(R.id.v_selector)
 
         fun bind(itemList: DomainsListItem, position: Int) {
-            ivIcon.setImageDrawable(itemList.icon)
-            tvLabel.text = itemList.label
+            ivIcon.setImageDrawable(itemList.iconDrawable)
+            tvLabel.text = itemList.domainName
 
             // Show or hide selector for specific element
             vSelector.visibility = if (position == selectedPosition) View.VISIBLE else View.GONE
@@ -59,8 +59,8 @@ class DialogDomainsListAdapter(
 
 data class DomainsListItem(
     val domainId : Int,
+    val domainName: String,
     val iconId : Int,
-    val icon: Drawable,
-    val label: String,
+    val iconDrawable: Drawable,
     val isSelected: Boolean = false
 )

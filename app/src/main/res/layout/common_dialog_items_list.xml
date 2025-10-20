@@ -14,7 +14,7 @@
         android:text="@string/common_list_dialog_title"
         android:gravity="center" />
 
-    <!-- RecyclerView with icons -->
+    <!-- List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_icons_list"
         android:layout_width="match_parent"

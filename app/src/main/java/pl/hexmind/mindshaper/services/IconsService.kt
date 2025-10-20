@@ -2,14 +2,12 @@ package pl.hexmind.mindshaper.services
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.PictureDrawable
 import androidx.collection.LruCache
 import androidx.core.content.ContextCompat
-import com.caverock.androidsvg.SVG
+import androidx.core.content.res.ResourcesCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.database.repositories.IconRepository
 import timber.log.Timber
-import java.io.ByteArrayInputStream
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -56,7 +54,7 @@ class IconsService @Inject constructor(
 
             for (iconEntity in allIcons) {
                 iconEntity.id?.let { id ->
-                    val drawable = bytesToDrawable(iconEntity.iconData)
+                    val drawable = getDrawableByName(iconEntity.drawableName)
                     drawable?.let { iconCache.put(id, it) }
                 }
             }
@@ -73,7 +71,7 @@ class IconsService @Inject constructor(
         // Load from database if not cached
         val iconEntity = repository.getIconById(id)
         iconEntity?.let { entity ->
-            val drawable = bytesToDrawable(entity.iconData)
+            val drawable = getDrawableByName(entity.drawableName)
             drawable?.let {
                 iconCache.put(id, it)
                 return it
@@ -84,22 +82,29 @@ class IconsService @Inject constructor(
         return getDefaultIcon()
     }
 
-    fun bytesToDrawable(iconData: ByteArray): Drawable? {
-        try {
-            val svg = SVG.getFromInputStream(ByteArrayInputStream(iconData))
-            val picture = svg.renderToPicture()
-            val drawable = PictureDrawable(picture)
-            Timber.d("Successfully converted SVG to PictureDrawable")
-            return drawable
-        }
-        catch (e: Exception) {
-            Timber.e(e, "Failed to convert SVG bytes to drawable")
-            return null
-        }
-    }
-
     private fun getDefaultIcon(): Drawable {
         return ContextCompat.getDrawable(context, android.R.drawable.ic_menu_info_details)
             ?: throw IllegalStateException("Cannot load default icon")
+    }
+
+    fun getDrawableByName(drawableName: String): Drawable? {
+        return try {
+            val resId = context.resources.getIdentifier(
+                drawableName,
+                "drawable",
+                context.packageName
+            )
+
+            if (resId == 0) {
+                Timber.w("Drawable resource not found: $drawableName")
+                return null
+            }
+
+            return ResourcesCompat.getDrawable(context.resources, resId, context.theme)
+
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to load drawable: $drawableName")
+            null
+        }
     }
 }

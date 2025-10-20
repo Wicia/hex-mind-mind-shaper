@@ -1,5 +1,6 @@
 package pl.hexmind.mindshaper.activities.settings
 
+import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -42,6 +43,9 @@ class IconPickerAdapter(
             // Set icon with fallback
             if (drawable != null) {
                 ivIcon.setImageDrawable(drawable)
+                ivIcon.imageTintList = ColorStateList.valueOf(
+                    ContextCompat.getColor(itemView.context, R.color._black)
+                )
             } else {
                 ivIcon.setImageResource(R.drawable.ic_domain_default)
             }
