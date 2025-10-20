@@ -1,9 +1,10 @@
-package pl.hexmind.mindshaper.activities
+package pl.hexmind.mindshaper.common.ui
 
 import android.content.Context
 import android.graphics.Color.TRANSPARENT
 import android.view.LayoutInflater
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.textfield.TextInputEditText
@@ -127,8 +128,8 @@ class CommonTextEditDialog(
         // Request focus and show keyboard
         etInput.requestFocus()
         etInput.postDelayed({
-            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
-            imm.showSoftInput(etInput, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(etInput, InputMethodManager.SHOW_IMPLICIT)
         }, 100)
     }
 }

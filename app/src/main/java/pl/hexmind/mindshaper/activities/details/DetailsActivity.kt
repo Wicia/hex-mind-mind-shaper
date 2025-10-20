@@ -11,20 +11,19 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.activities.DomainsListDialog
-import pl.hexmind.mindshaper.activities.DomainsListItem
-import pl.hexmind.mindshaper.activities.CommonTextEditDialog
+import pl.hexmind.mindshaper.common.ui.CommonIconsListDialog
+import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
+import pl.hexmind.mindshaper.common.ui.CommonTextEditDialog
 import pl.hexmind.mindshaper.activities.CoreActivity
-import pl.hexmind.mindshaper.activities.main.MainActivity
-import pl.hexmind.mindshaper.common.drawable.dpToPx
-import pl.hexmind.mindshaper.databinding.ActivityThoughtDetailsBinding
+import pl.hexmind.mindshaper.activities.home.HomeActivity
+import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ThoughtDetailsActivity : CoreActivity() {
+class DetailsActivity : CoreActivity() {
 
     @Inject
     lateinit var thoughtsService : ThoughtsService
@@ -32,11 +31,11 @@ class ThoughtDetailsActivity : CoreActivity() {
     @Inject
     lateinit var domainsService: DomainsService
 
-    private lateinit var binding: ActivityThoughtDetailsBinding
+    private lateinit var binding: DetailsEditActivityBinding
 
     // State-related data
     private var thoughtDetails : ThoughtDTO? = null
-    private var domainsWithIcons: List<DomainsListItem> = emptyList()
+    private var domainsWithIcons: List<CommonIconsListItem> = emptyList()
 
     companion object PARAMS {
         const val P_SELECTED_THOUGHT_ID = "P_SELECTED_THOUGHT_ID"
@@ -44,7 +43,7 @@ class ThoughtDetailsActivity : CoreActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityThoughtDetailsBinding.inflate(layoutInflater)
+        binding = DetailsEditActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         loadThoughtFromIntent()
@@ -89,8 +88,8 @@ class ThoughtDetailsActivity : CoreActivity() {
         }
     }
 
-    private fun onDomainSelected(domain: DomainsListItem) {
-        thoughtDetails?.domainId = domain.domainId
+    private fun onDomainSelected(domain: CommonIconsListItem) {
+        thoughtDetails?.domainId = domain.labelSourceId
         lifecycleScope.launch {
             updateDomainUI()
         }
@@ -106,14 +105,14 @@ class ThoughtDetailsActivity : CoreActivity() {
             thoughtsService.updateThought(dto)
         }
 
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
     }
 
     private fun showDomainDialog() {
         if (domainsWithIcons.isEmpty()) return
 
-        DomainsListDialog.Builder(this)
+        CommonIconsListDialog.Builder(this)
             .setIcons(domainsWithIcons)
             .setOnIconSelected { selectedDomain ->
                 onDomainSelected(selectedDomain)
@@ -182,7 +181,7 @@ class ThoughtDetailsActivity : CoreActivity() {
 
     private fun getIcon(iconIdToFind : Int): Drawable {
         val defaultIcon = AppCompatResources.getDrawable(this, R.drawable.ic_domain_default)!!
-        val icon = this.domainsWithIcons.find { it.iconId == iconIdToFind }?.iconDrawable ?: defaultIcon
+        val icon = this.domainsWithIcons.find { it.iconSourceId == iconIdToFind }?.iconDrawable ?: defaultIcon
         return icon
     }
 }

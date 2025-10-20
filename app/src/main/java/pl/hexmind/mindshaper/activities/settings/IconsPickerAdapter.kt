@@ -23,7 +23,7 @@ class IconPickerAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IconViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.common_list_item, parent, false)
+            .inflate(R.layout.common_dialog_icons_list_item, parent, false)
         return IconViewHolder(view)
     }
 

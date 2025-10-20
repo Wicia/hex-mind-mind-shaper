@@ -9,9 +9,8 @@ import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.activities.details.ThoughtDetailsActivity
 import pl.hexmind.mindshaper.activities.CoreActivity
-import pl.hexmind.mindshaper.activities.main.MainActivity
+import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import timber.log.Timber
@@ -22,19 +21,19 @@ import kotlin.math.abs
  * Activity for browsing thoughts in an elegant carousel format with 3D animations
  */
 @AndroidEntryPoint
-class ThoughtCarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
+class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
 
     @Inject
     lateinit var thoughtsService : ThoughtsService
 
     private lateinit var viewPager: ViewPager2
-    private lateinit var adapter: ThoughtCarouselAdapter
+    private lateinit var adapter: CarouselAdapter
 
     private lateinit var gestureDetector: GestureDetector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_thought_carousel)
+        setContentView(R.layout.carousel_activity)
 
         initializeViews()
         setupCarousel()
@@ -53,7 +52,7 @@ class ThoughtCarouselActivity : CoreActivity(), GestureDetector.OnGestureListene
      * Setup carousel with custom page transformer for 3D effect
      */
     private fun setupCarousel() {
-        adapter = ThoughtCarouselAdapter { thoughtToDelete ->
+        adapter = CarouselAdapter { thoughtToDelete ->
             deleteThought(thoughtToDelete)
         }
         viewPager.adapter = adapter
@@ -132,7 +131,7 @@ class ThoughtCarouselActivity : CoreActivity(), GestureDetector.OnGestureListene
 
             if (diffY > 100) {
                 // Swipe DOWN
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
                 return true
             } else if (diffY < -100) {

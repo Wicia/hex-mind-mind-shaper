@@ -36,7 +36,7 @@
         android:theme="@style/Theme.MindShaper">
 
         <activity
-            android:name="pl.hexmind.mindshaper.activities.main.MainActivity"
+            android:name="pl.hexmind.mindshaper.activities.home.HomeActivity"
             android:exported="true"
             android:theme="@style/Theme.MindShaper.NoActionBar">
             <intent-filter>
@@ -46,28 +46,28 @@
         </activity>
 
         <activity
-            android:name="pl.hexmind.mindshaper.activities.details.ThoughtDetailsActivity"
+            android:name="pl.hexmind.mindshaper.activities.details.DetailsActivity"
             android:exported="false"
-            android:parentActivityName="pl.hexmind.mindshaper.activities.main.MainActivity"
+            android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity"
             android:theme="@style/Theme.MindShaper.NoActionBar" />
 
         <activity
-            android:name="pl.hexmind.mindshaper.activities.capture.ThoughtsCaptureActivity"
+            android:name="pl.hexmind.mindshaper.activities.capture.CaptureActivity"
             android:exported="false"
-            android:parentActivityName="pl.hexmind.mindshaper.activities.main.MainActivity"
+            android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity"
             android:theme="@style/Theme.MindShaper.NoActionBar" />
 
         <activity
-            android:name="pl.hexmind.mindshaper.activities.carousel.ThoughtCarouselActivity"
+            android:name="pl.hexmind.mindshaper.activities.carousel.CarouselActivity"
             android:exported="false"
-            android:parentActivityName="pl.hexmind.mindshaper.activities.main.MainActivity"
+            android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity"
             android:theme="@style/Theme.MindShaper.NoActionBar" />
 
         <activity
             android:name="pl.hexmind.mindshaper.activities.settings.SettingsActivity"
             android:exported="true"
             android:theme="@style/Theme.MindShaper.NoActionBar"
-            android:parentActivityName="pl.hexmind.mindshaper.activities.main.MainActivity"/>
+            android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity"/>
 
     </application>
 

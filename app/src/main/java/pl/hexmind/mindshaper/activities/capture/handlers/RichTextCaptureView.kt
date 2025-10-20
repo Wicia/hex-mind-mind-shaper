@@ -1,13 +1,11 @@
 package pl.hexmind.mindshaper.activities.capture.handlers
 
 import android.content.Context
-import android.text.Editable
 import android.util.AttributeSet
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.activities.CommonTextEditDialog
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 
 class RichTextCaptureView @JvmOverloads constructor(
@@ -20,7 +18,7 @@ class RichTextCaptureView @JvmOverloads constructor(
     private val tvValidationInfo : TextView
 
     init {
-        inflate(context, R.layout.view_rich_text_capture, this)
+        inflate(context, R.layout.capture_view_rich_text, this)
         orientation = VERTICAL
         etRichText = findViewById(R.id.et_rich_notes)
 

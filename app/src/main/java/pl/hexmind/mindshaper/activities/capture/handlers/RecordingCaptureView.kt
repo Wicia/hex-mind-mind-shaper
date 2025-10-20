@@ -18,7 +18,7 @@ class RecordingCaptureView @JvmOverloads constructor(
     private val tvRecordingStatus: TextView
 
     init {
-        inflate(context, R.layout.view_recording_capture, this)
+        inflate(context, R.layout.capture_view_recording, this)
         orientation = VERTICAL
 
         btnRecordNew = findViewById(R.id.btn_record_new)

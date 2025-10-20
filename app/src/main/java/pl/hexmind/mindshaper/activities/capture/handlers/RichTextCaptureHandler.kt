@@ -1,7 +1,7 @@
 package pl.hexmind.mindshaper.activities.capture.handlers
 
 import androidx.core.widget.doAfterTextChanged
-import pl.hexmind.mindshaper.activities.ThoughtCaptureHandler
+import pl.hexmind.mindshaper.activities.capture.ThoughtCaptureHandler
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO

@@ -18,7 +18,7 @@
         <!-- RICH TEXT -->
         <TextView
             android:id="@+id/tv_rich_text"
-            style="@style/TextView_Body_Highlighted"
+            style="@style/TextView_Body_Standard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"

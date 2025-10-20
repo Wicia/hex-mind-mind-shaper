@@ -18,9 +18,9 @@ import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.services.validators.DomainValidator
-import pl.hexmind.mindshaper.activities.main.MainActivity
+import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.common.validation.ValidationResult
-import pl.hexmind.mindshaper.databinding.ActivitySettingsBinding
+import pl.hexmind.mindshaper.databinding.SettingsActivityBinding
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.IconsService
@@ -49,7 +49,7 @@ class SettingsActivity : CoreActivity() {
     @Inject
     lateinit var domainValidator: DomainValidator
 
-    private lateinit var binding: ActivitySettingsBinding
+    private lateinit var binding: SettingsActivityBinding
 
     private var selectedAudioUri: Uri? = null
 
@@ -66,7 +66,7 @@ class SettingsActivity : CoreActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        binding = SettingsActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupUI()
@@ -99,7 +99,7 @@ class SettingsActivity : CoreActivity() {
             try {
                 // Create buttons with loaded icons
                 titles.forEachIndexed { domainIndex , domainDTO ->
-                    val buttonView = layoutInflater.inflate(R.layout.item_settings_domain, gridLayout, false)
+                    val buttonView = layoutInflater.inflate(R.layout.settings_domains_item, gridLayout, false)
 
                     val ivDomainName = buttonView.findViewById<TextView>(R.id.tv_domain_name)
                     ivDomainName.text = domainDTO.name
@@ -252,7 +252,7 @@ class SettingsActivity : CoreActivity() {
 
         showShortToast(R.string.common_info_changes_saved)
 
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
     }
 

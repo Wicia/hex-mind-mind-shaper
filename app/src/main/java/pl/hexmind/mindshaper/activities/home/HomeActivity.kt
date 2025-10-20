@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.activities.main
+package pl.hexmind.mindshaper.activities.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,9 +11,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
-import pl.hexmind.mindshaper.activities.capture.ThoughtsCaptureActivity
+import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
-import pl.hexmind.mindshaper.activities.carousel.ThoughtCarouselActivity
+import pl.hexmind.mindshaper.activities.carousel.CarouselActivity
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.GreetingsService
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
@@ -26,7 +26,7 @@ import kotlin.math.sin
  * Main activity handling FAB menu and swipe gestures for  access
  */
 @AndroidEntryPoint
-class MainActivity : CoreActivity(), GestureDetector.OnGestureListener {
+class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
 
     @Inject
     lateinit var appSettingsStorage: AppSettingsStorage
@@ -44,7 +44,7 @@ class MainActivity : CoreActivity(), GestureDetector.OnGestureListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.home_activity)
 
         initViews()
         setupClickListeners()
@@ -85,32 +85,32 @@ class MainActivity : CoreActivity(), GestureDetector.OnGestureListener {
         // RICH NOTES
         fabNoteType.setOnClickListener {
             closeMenu()
-            val intent = Intent(this, ThoughtsCaptureActivity::class.java)
-            intent.putExtra(ThoughtsCaptureActivity.Params.P_INIT_THOUGHT_TYPE, InitialThoughtType.RICH_TEXT as Parcelable)
+            val intent = Intent(this, CaptureActivity::class.java)
+            intent.putExtra(CaptureActivity.Params.P_INIT_THOUGHT_TYPE, InitialThoughtType.RICH_TEXT as Parcelable)
             startActivity(intent)
         }
 
         // VOICE RECORDING
         fabVoiceType.setOnClickListener {
             closeMenu()
-            val intent = Intent(this, ThoughtsCaptureActivity::class.java)
-            intent.putExtra(ThoughtsCaptureActivity.Params.P_INIT_THOUGHT_TYPE, InitialThoughtType.RECORDING as Parcelable)
+            val intent = Intent(this, CaptureActivity::class.java)
+            intent.putExtra(CaptureActivity.Params.P_INIT_THOUGHT_TYPE, InitialThoughtType.RECORDING as Parcelable)
             startActivity(intent)
         }
 
         // DRAWING
         fabDrawingType.setOnClickListener {
             closeMenu()
-            val intent = Intent(this, ThoughtsCaptureActivity::class.java)
-            intent.putExtra(ThoughtsCaptureActivity.Params.P_INIT_THOUGHT_TYPE, InitialThoughtType.DRAWING as Parcelable)
+            val intent = Intent(this, CaptureActivity::class.java)
+            intent.putExtra(CaptureActivity.Params.P_INIT_THOUGHT_TYPE, InitialThoughtType.DRAWING as Parcelable)
             startActivity(intent)
         }
 
         // PHOTO
         fabPhotoType.setOnClickListener {
             closeMenu()
-            val intent = Intent(this, ThoughtsCaptureActivity::class.java)
-            intent.putExtra(ThoughtsCaptureActivity.P_INIT_THOUGHT_TYPE, InitialThoughtType.PHOTO as Parcelable)
+            val intent = Intent(this, CaptureActivity::class.java)
+            intent.putExtra(CaptureActivity.P_INIT_THOUGHT_TYPE, InitialThoughtType.PHOTO as Parcelable)
             startActivity(intent)
         }
     }
@@ -164,7 +164,7 @@ class MainActivity : CoreActivity(), GestureDetector.OnGestureListener {
                 return true
             } else if (diffY < -100) {
                 // Swipe up -> close menu if open (example action)
-                val intent = Intent(this, ThoughtCarouselActivity::class.java)
+                val intent = Intent(this, CarouselActivity::class.java)
                 startActivity(intent)
                 return true
             }

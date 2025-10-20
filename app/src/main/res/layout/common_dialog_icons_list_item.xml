@@ -7,7 +7,7 @@
     android:focusable="true"
     android:layout_marginBottom="4dp"
     android:orientation="horizontal"
-    android:background="@drawable/domain_button_selector">
+    android:background="@drawable/shape_button">
 
     <!-- Icon -->
     <ImageView

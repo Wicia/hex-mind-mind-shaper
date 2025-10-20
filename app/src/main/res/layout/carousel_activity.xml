@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_background"
-    tools:context=".activities.carousel.ThoughtCarouselActivity">
+    tools:context=".activities.carousel.CarouselActivity">
 
     <ImageView
         android:id="@+id/iv_header_image"
@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center"
-            android:background="@color/_orange_extra_light"
+            android:background="@color/_orange_light"
             android:padding="16dp">
 
             <!-- Icon above header -->
@@ -99,14 +99,14 @@
 
             <TextView
                 android:id="@+id/tv_phase_info_gathered_thoughts"
-                style="@style/TextView_Body_Highlighted"
+                style="@style/TextView_Body_Standard"
                 android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tv_phase_info_next_phase"
-                style="@style/TextView_Body_Highlighted"
+                style="@style/TextView_Body_Standard"
                 android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

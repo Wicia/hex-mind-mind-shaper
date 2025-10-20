@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.activities
+package pl.hexmind.mindshaper.common.ui
 
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
@@ -9,10 +9,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.mindshaper.R
 
-class DialogDomainsListAdapter(
-    private val icons: List<DomainsListItem>,
-    private val onIconClick: (DomainsListItem) -> Unit
-) : RecyclerView.Adapter<DialogDomainsListAdapter.IconViewHolder>() {
+class CommonIconsListAdapter(
+    private val icons: List<CommonIconsListItem>,
+    private val onIconClick: (CommonIconsListItem) -> Unit
+) : RecyclerView.Adapter<CommonIconsListAdapter.IconViewHolder>() {
 
     private var selectedPosition = -1
 
@@ -22,9 +22,9 @@ class DialogDomainsListAdapter(
         val tvLabel: TextView = itemView.findViewById(R.id.tv_icon_label)
         val vSelector: View = itemView.findViewById(R.id.v_selector)
 
-        fun bind(itemList: DomainsListItem, position: Int) {
+        fun bind(itemList: CommonIconsListItem, position: Int) {
             ivIcon.setImageDrawable(itemList.iconDrawable)
-            tvLabel.text = itemList.domainName
+            tvLabel.text = itemList.labelText
 
             // Show or hide selector for specific element
             vSelector.visibility = if (position == selectedPosition) View.VISIBLE else View.GONE
@@ -46,7 +46,7 @@ class DialogDomainsListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IconViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.common_list_item, parent, false)
+            .inflate(R.layout.common_dialog_icons_list_item, parent, false)
         return IconViewHolder(view)
     }
 
@@ -57,10 +57,10 @@ class DialogDomainsListAdapter(
     override fun getItemCount(): Int = icons.size
 }
 
-data class DomainsListItem(
-    val domainId : Int,
-    val domainName: String,
-    val iconId : Int,
+data class CommonIconsListItem(
+    val labelSourceId : Int,
+    val labelText: String,
+    val iconSourceId : Int,
     val iconDrawable: Drawable,
     val isSelected: Boolean = false
 )

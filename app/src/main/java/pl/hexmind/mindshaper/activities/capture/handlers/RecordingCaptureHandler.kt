@@ -8,7 +8,7 @@ import android.media.MediaRecorder
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.activities.ThoughtCaptureHandler
+import pl.hexmind.mindshaper.activities.capture.ThoughtCaptureHandler
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import java.io.File

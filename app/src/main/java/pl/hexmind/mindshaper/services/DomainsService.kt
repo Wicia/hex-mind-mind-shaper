@@ -1,6 +1,6 @@
 package pl.hexmind.mindshaper.services
 
-import pl.hexmind.mindshaper.activities.DomainsListItem
+import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.database.repositories.DomainRepository
 import pl.hexmind.mindshaper.services.dto.DomainDTO
 import pl.hexmind.mindshaper.services.mappers.DomainMapper
@@ -27,12 +27,12 @@ class DomainsService @Inject constructor(
         return domain.assetsIconId
     }
 
-    suspend fun getAllDomainWithIcons() : List<DomainsListItem> {
+    suspend fun getAllDomainWithIcons() : List<CommonIconsListItem> {
         val domainsWithIcons = domainRepository.getAllDomainsWithIcons()
         val map = domainsWithIcons.map { domainWithIcon ->
             val icon = iconsService.getDrawableByName(domainWithIcon.icon?.drawableName!!)
             val domainId = domainWithIcon.domain.id
-            DomainsListItem(domainId = domainId!!, iconId = domainWithIcon.icon.id!!, iconDrawable = icon!!, domainName = domainWithIcon.domain.name)
+            CommonIconsListItem(labelSourceId = domainId!!, iconSourceId = domainWithIcon.icon.id!!, iconDrawable = icon!!, labelText = domainWithIcon.domain.name)
         }
         return map
     }

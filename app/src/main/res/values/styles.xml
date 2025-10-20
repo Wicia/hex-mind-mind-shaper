@@ -16,18 +16,12 @@
         <item name="android:textColor">@color/text_primary</item>
     </style>
 
-    <style name="TextView_Body_Highlighted">
+    <style name="TextView_Body_Standard">
         <item name="android:fontFamily">@font/alegreya_regular</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:lineSpacingExtra">4dp</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
-        <item name="android:textColor">@color/text_primary</item>
-    </style>
-
-    <style name="TextView_Body_Standard">
-        <item name="android:textSize">16sp</item>
-        <item name="android:lineSpacingExtra">4dp</item>
         <item name="android:textColor">@color/text_primary</item>
     </style>
 

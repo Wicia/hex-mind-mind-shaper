@@ -11,7 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
-import pl.hexmind.mindshaper.activities.ThoughtCaptureHandler
+import pl.hexmind.mindshaper.activities.capture.ThoughtCaptureHandler
 import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureHandler
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import pl.hexmind.mindshaper.activities.capture.handlers.RecordingCaptureHandler
@@ -25,7 +25,7 @@ import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ThoughtsCaptureActivity : CoreActivity() {
+class CaptureActivity : CoreActivity() {
 
     companion object Params{
         const val P_INIT_THOUGHT_TYPE = "P_EXTRA_INIT_THOUGHT_TYPE"
@@ -49,7 +49,7 @@ class ThoughtsCaptureActivity : CoreActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_thought_capture)
+        setContentView(R.layout.capture_activity)
         initViews()
         saveExtrasFromIntent()
         setupListeners()

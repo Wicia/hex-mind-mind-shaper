@@ -6,10 +6,10 @@
     <!-- ====================================== -->
 
     <!-- ORANGE: Main orange color for the app theme -->
-    <color name="_orange_extra_light">#FFF4E6</color>
-    <color name="_orange_extra_soft">#FFDFBF</color>
-    <color name="_orange_light">#FFCA98</color>
-    <color name="_orange_medium">#FFB470</color>
+    <color name="_orange_light">#FFF4E6</color>
+    <color name="_orange_soft">#FFDFBF</color>
+    <color name="_orange_medium">#FFCA98</color>
+    <color name="_orange_grim">#FFB470</color>
     <color name="_orange_dark">#FF9F49</color>
 
     <!-- NEUTRAL: Grayscale for text and backgrounds -->
@@ -38,7 +38,7 @@
     <color name="app_secondary">@color/_orange_dark</color>
     <color name="app_secondary_variant">@color/_orange_dark</color>
 
-    <color name="app_background">@color/_orange_extra_light</color>
+    <color name="app_background">@color/_orange_light</color>
     <color name="app_surface">@color/_white</color>
 
     <!-- ====================================== -->
@@ -63,17 +63,17 @@
 
     <!-- BUTTONS -->
     <color name="button_primary">@color/_orange_dark</color>
-    <color name="button_secondary">@color/_orange_light</color>
-    <color name="button_not_used">@color/_orange_extra_soft</color>
+    <color name="button_secondary">@color/_orange_medium</color>
+    <color name="button_not_used">@color/_orange_soft</color>
     <color name="button_disabled">@color/_gray_mid</color>
 
     <!-- BUTTON ICONS -->
-    <color name="button_icon_primary">@color/_orange_light</color>
-    <color name="button_icon_not_used">@color/_orange_light</color>
+    <color name="button_icon_primary">@color/_orange_medium</color>
+    <color name="button_icon_not_used">@color/_orange_medium</color>
     <color name="button_icon_disabled">@color/_gray_light</color>
 
     <!-- CARD VIEWS -->
-    <color name="card_view_background">@color/_orange_light</color>
+    <color name="card_view_background">@color/_orange_medium</color>
     <color name="card_background">@color/_white</color>
 
     <!-- SEPARATOR / DIVIDERS -->

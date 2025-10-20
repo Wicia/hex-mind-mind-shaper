@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.activities
+package pl.hexmind.mindshaper.activities.capture
 
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO

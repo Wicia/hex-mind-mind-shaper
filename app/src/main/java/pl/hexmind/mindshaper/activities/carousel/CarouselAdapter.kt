@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.activities.details.ThoughtDetailsActivity
+import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.common.formatting.toLocalDateString
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import timber.log.Timber
@@ -21,13 +21,13 @@ import timber.log.Timber
 /**
  * Adapter for thought carousel with smooth animations and automatic updates via LiveData
  */
-class ThoughtCarouselAdapter(
+class CarouselAdapter(
     private val onDeleteThought: (ThoughtDTO) -> Unit // TODO: Added callback for deletion
-) : ListAdapter<ThoughtDTO, ThoughtCarouselAdapter.ThoughtViewHolder>(ThoughtDiffCallback()) {
+) : ListAdapter<ThoughtDTO, CarouselAdapter.ThoughtViewHolder>(ThoughtDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThoughtViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_thought_carousel, parent, false)
+            .inflate(R.layout.carousel_item, parent, false)
         return ThoughtViewHolder(view, onDeleteThought)
     }
 
@@ -127,8 +127,8 @@ class ThoughtCarouselAdapter(
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            val intent = Intent(itemView.context, ThoughtDetailsActivity::class.java)
-            intent.putExtra(ThoughtDetailsActivity.P_SELECTED_THOUGHT_ID, viewedThoughtDTO)
+            val intent = Intent(itemView.context, DetailsActivity::class.java)
+            intent.putExtra(DetailsActivity.P_SELECTED_THOUGHT_ID, viewedThoughtDTO)
             itemView.context.startActivity(intent)
             return true
         }
