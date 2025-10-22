@@ -119,7 +119,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/settings_greeting_choose_sound_file"
                             android:textColor="@android:color/black"
-                            app:backgroundTint="#FFAF7A"
+                            app:backgroundTint="@color/button_secondary"
                             app:cornerRadius="8dp" />
 
                         <TextView

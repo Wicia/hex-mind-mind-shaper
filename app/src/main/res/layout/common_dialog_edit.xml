@@ -18,7 +18,7 @@
             android:background="@drawable/shape_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textCapWords|textMultiLine"
+            android:inputType="textCapSentences|textMultiLine"
             android:maxLines="100"
             android:minLines="3"
             android:textColor="@color/text_primary"
@@ -34,6 +34,7 @@
         android:layout_marginBottom="12dp"
         android:textColor="@color/text_secondary_darkmode"
         android:layout_marginStart="16dp"
+        android:visibility="gone"
         />
 
 </LinearLayout>

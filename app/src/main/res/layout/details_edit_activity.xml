@@ -89,6 +89,15 @@
 
             </LinearLayout>
 
+            <View
+                android:id="@+id/tv_phase_info_separator"
+                android:background="@color/separator_background"
+                android:layout_width="48dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:layout_gravity="center" />
+
             <!-- =============================== -->
             <!-- THOUGHT REPRESENTATIONS SECTION -->
             <!-- =============================== -->
