@@ -2,6 +2,6 @@
 <!-- Color selector for Primary Buttons (Main) -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_enabled="true"  android:color="@color/button_primary" />
-    <item android:state_enabled="false" android:color="@color/button_disabled" />
+    <item android:state_enabled="false" android:color="@color/button_disabled_background" />
 
 </selector>

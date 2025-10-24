@@ -15,6 +15,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.common.formatting.toLocalDateString
+import pl.hexmind.mindshaper.common.ui.HexTextView
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import timber.log.Timber
 
@@ -49,7 +50,7 @@ class CarouselAdapter(
         private val tvCreatedAt: TextView = itemView.findViewById(R.id.tv_created_at)
         private val ivDomainIcon: ImageView = itemView.findViewById(R.id.iv_domain_icon)
 
-        private val tvRichText: TextView = itemView.findViewById(R.id.tv_rich_text)
+        private val tvRichText: HexTextView = itemView.findViewById(R.id.tv_rich_text)
 
         private var viewedThoughtDTO : ThoughtDTO? = null
 
@@ -65,7 +66,7 @@ class CarouselAdapter(
             setViewOnTouchListener()
 
             //TODO: Extend by checking thought initial type
-            tvRichText.text = thought.richText
+            tvRichText.originalText = thought.richText.orEmpty()
 
             when {
                 thought.thread.isNullOrBlank() -> {

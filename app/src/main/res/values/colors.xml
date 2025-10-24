@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- ====================================== -->
-    <!--    CORE PALETTE -->
-    <!-- ====================================== -->
+<!-- ====================================== -->
+<!--    CORE PALETTE -->
+<!-- ====================================== -->
 
     <!-- ORANGE: Main orange color for the app theme -->
     <color name="_orange_light">#FFF4E6</color>
@@ -19,18 +19,18 @@
     <color name="_gray_dark">#333333</color>
     <color name="_black">#000000</color>
 
-    <!-- ====================================== -->
-    <!--    SEMANTIC COLORS -->
-    <!-- ====================================== -->
+<!-- ====================================== -->
+<!--    SEMANTIC COLORS -->
+<!-- ====================================== -->
 
     <!-- Success, error, warning states -->
     <color name="validation_success">@color/_gray_mid</color>
     <color name="validation_error">#480808</color>
     <color name="info_blue">#1976D2</color>
 
-    <!-- ====================================== -->
-    <!--    APP THEME MAPPINGS -->
-    <!-- ====================================== -->
+<!-- ====================================== -->
+<!--    APP THEME MAPPINGS -->
+<!-- ====================================== -->
 
     <color name="app_primary">@color/_orange_dark</color>
     <color name="app_primary_variant">@color/_orange_dark</color>
@@ -41,10 +41,11 @@
     <color name="app_background">@color/_orange_light</color>
     <color name="app_surface">@color/_white</color>
 
-    <!-- ====================================== -->
-    <!--    TEXT COLORS -->
-    <!-- ====================================== -->
+<!-- ====================================== -->
+<!--    TEXT COLORS -->
+<!-- ====================================== -->
 
+    <!-- Content -->
     <color name="text_primary">@color/_gray_dark</color>
     <color name="text_secondary">@color/_gray_mid</color>
     <color name="text_secondary_darkmode">@color/_gray_light</color>
@@ -52,31 +53,48 @@
     <color name="text_on_primary">@color/_white</color>
     <color name="text_on_secondary">@color/_white</color>
 
-    <!-- ====================================== -->
-    <!--    WIDGET COLORS -->
-    <!-- ====================================== -->
+    <!-- Bullet points -->
+    <color name="text_bullet_point">@color/_gray_mid</color>
 
-    <!-- INPUT CONTROLS -->
+<!-- ====================================== -->
+<!--    WIDGET COLORS -->
+<!-- ====================================== -->
+
+    <!-- Input controls -->
     <color name="input_background">@color/_white</color>
     <color name="input_stroke">@color/app_background</color>
     <color name="input_focused">@color/_orange_dark</color>
 
-    <!-- BUTTONS -->
+<!-- ====================================== -->
+<!--    BUTTONS -->
+<!-- ====================================== -->
+
+    <!-- Background colors -->
     <color name="button_primary">@color/_orange_dark</color>
     <color name="button_secondary">@color/_orange_medium</color>
-    <color name="button_not_used">@color/_orange_soft</color>
-    <color name="button_disabled">@color/_gray_mid</color>
 
-    <!-- BUTTON ICONS -->
-    <color name="button_icon_primary">@color/_orange_medium</color>
-    <color name="button_icon_not_used">@color/_orange_medium</color>
-    <color name="button_icon_disabled">@color/_gray_light</color>
+    <!-- Background colors / States -->
+    <color name="button_not_used_background">@color/_orange_soft</color>
+    <color name="button_used_background">@color/_orange_medium</color>
+    <color name="button_disabled_background">@color/_gray_mid</color>
 
-    <!-- CARD VIEWS -->
+    <!-- Button icons -->
+    <color name="button_icon_fill">@color/_orange_medium</color>
+
+    <color name="button_icon_not_used_fill">@color/_orange_medium</color>
+    <color name="button_icon_used_fill">@color/_gray_mid</color>
+
+    <color name="button_icon_disabled_fill">@color/_gray_light</color>
+
+<!-- ====================================== -->
+<!--    CARD VIEWS -->
+<!-- ====================================== -->
+
+    <!-- Card views -->
     <color name="card_view_background">@color/_orange_medium</color>
     <color name="card_background">@color/_white</color>
 
-    <!-- SEPARATOR / DIVIDERS -->
+    <!-- Separator / dividers -->
     <color name="separator_background">@color/_orange_dark</color>
 
 </resources>

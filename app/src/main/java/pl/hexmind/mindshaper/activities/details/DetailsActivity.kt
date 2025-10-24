@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
@@ -74,10 +73,10 @@ class DetailsActivity : CoreActivity() {
                 saveThought()
             }
             tvRichText.setOnClickListener {
-                showEditTextDialog(binding.tvRichText)
+                showEditRichTextDialog()
             }
             tvThread.setOnClickListener {
-                showEditTextDialog(binding.tvThread)
+                showEditThreadDialog()
             }
             btnDomainIcon.setOnClickListener {
                 showDomainDialog()
@@ -99,7 +98,7 @@ class DetailsActivity : CoreActivity() {
         val dto = thoughtDetails ?: return
 
         dto.thread = binding.tvThread.text.toString()
-        dto.richText = binding.tvRichText.text.toString()
+        dto.richText = binding.tvRichText.originalText // Save raw text
 
         lifecycleScope.launch {
             thoughtsService.updateThought(dto)
@@ -120,12 +119,22 @@ class DetailsActivity : CoreActivity() {
             .show()
     }
 
-    private fun showEditTextDialog(textViewToBind : TextView) {
+    private fun showEditRichTextDialog() {
         CommonTextEditDialog(
             context = this,
-            textInput = textViewToBind.text.toString(),
+            textInput = binding.tvRichText.originalText, // Show raw text
             onSave = { newText ->
-                textViewToBind.text = newText
+                binding.tvRichText.originalText = newText // Show HTML-formatted text
+            }
+        ).show()
+    }
+
+    private fun showEditThreadDialog() {
+        CommonTextEditDialog(
+            context = this,
+            textInput = binding.tvThread.text.toString(),
+            onSave = { newText ->
+                binding.tvThread.text = newText
             }
         ).show()
     }
@@ -146,7 +155,7 @@ class DetailsActivity : CoreActivity() {
         else{
             binding.btnRichTextPlaceholder.visibility = View.GONE
             binding.tvRichText.visibility = View.VISIBLE
-            binding.tvRichText.text = details.richText
+            binding.tvRichText.originalText = details.richText.orEmpty()
         }
     }
 

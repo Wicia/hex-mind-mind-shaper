@@ -31,7 +31,7 @@
             app:icon="@drawable/ic_thought_type_recording"
             app:iconGravity="textStart"
             app:iconSize="32dp"
-            app:iconTint="@color/button_icon_primary" />
+            app:iconTint="@color/button_icon_fill" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_record_stop_play"
