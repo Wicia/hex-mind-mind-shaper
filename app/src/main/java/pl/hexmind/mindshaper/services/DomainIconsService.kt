@@ -6,13 +6,14 @@ import androidx.collection.LruCache
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
+import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.database.repositories.IconRepository
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class IconsService @Inject constructor(
+class DomainIconsService @Inject constructor(
     @ApplicationContext private val context: Context,
     private val repository: IconRepository
 ) {
@@ -83,7 +84,7 @@ class IconsService @Inject constructor(
     }
 
     private fun getDefaultIcon(): Drawable {
-        return ContextCompat.getDrawable(context, android.R.drawable.ic_menu_info_details)
+        return ContextCompat.getDrawable(context, R.drawable.ic_domain_none)
             ?: throw IllegalStateException("Cannot load default icon")
     }
 

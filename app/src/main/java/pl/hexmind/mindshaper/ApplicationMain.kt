@@ -7,7 +7,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import pl.hexmind.mindshaper.services.IconsService
+import pl.hexmind.mindshaper.services.DomainIconsService
 import pl.hexmind.mindshaper.services.PhasesService
 import timber.log.Timber
 
@@ -21,7 +21,7 @@ class ApplicationMain : Application() {
     lateinit var phasesService: PhasesService
 
     @Inject
-    lateinit var iconsService: IconsService
+    lateinit var domainIconsService: DomainIconsService
 
     override fun onCreate() {
         super.onCreate()
@@ -34,7 +34,7 @@ class ApplicationMain : Application() {
         // Initialize database on app startup
         CoroutineScope(Dispatchers.IO).launch {
             databaseInitializer.initializeIfNeeded()
-            iconsService.preloadAllIcons()
+            domainIconsService.preloadAllIcons()
         }
 
         phasesService.saveAppLaunchTime()

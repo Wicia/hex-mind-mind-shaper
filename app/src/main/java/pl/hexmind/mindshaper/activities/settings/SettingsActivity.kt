@@ -23,7 +23,7 @@ import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.databinding.SettingsActivityBinding
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.DomainsService
-import pl.hexmind.mindshaper.services.IconsService
+import pl.hexmind.mindshaper.services.DomainIconsService
 import pl.hexmind.mindshaper.services.MediaStorageService
 import pl.hexmind.mindshaper.services.dto.DomainDTO
 import javax.inject.Inject
@@ -38,7 +38,7 @@ class SettingsActivity : CoreActivity() {
     lateinit var domainService : DomainsService
 
     @Inject
-    lateinit var iconsService : IconsService
+    lateinit var domainIconsService : DomainIconsService
 
     @Inject
     lateinit var appSettingsStorage: AppSettingsStorage
@@ -105,7 +105,7 @@ class SettingsActivity : CoreActivity() {
                     ivDomainName.text = domainDTO.name
 
                     val ivDomainIcon = buttonView.findViewById<ImageView>(R.id.iv_domain_icon)
-                    ivDomainIcon.setImageDrawable(iconsService.getDrawableIcon(domainDTO.iconId))
+                    ivDomainIcon.setImageDrawable(domainIconsService.getDrawableIcon(domainDTO.iconId))
 
                     buttonView.setOnClickListener {
                         onDomainButtonClick(domainIndex, domainDTO)
@@ -279,8 +279,8 @@ class SettingsActivity : CoreActivity() {
             try {
                 rvIconsList.visibility = View.GONE
 
-                val availableIconsIds = iconsService.getAvailableIconsIds()
-                val iconsMap = iconsService.loadIconsBatch(availableIconsIds)
+                val availableIconsIds = domainIconsService.getAvailableIconsIds()
+                val iconsMap = domainIconsService.loadIconsBatch(availableIconsIds)
 
                 rvIconsList.visibility = View.VISIBLE
 
@@ -326,7 +326,7 @@ class SettingsActivity : CoreActivity() {
                 val buttonView = glDomains.getChildAt(buttonIndex)
 
                 val ivDomainIcon = buttonView.findViewById<ImageView>(R.id.iv_domain_icon)
-                val iconDrawable = iconsService.getDrawableIcon(updatedDomainDTO.iconId)
+                val iconDrawable = domainIconsService.getDrawableIcon(updatedDomainDTO.iconId)
                 ivDomainIcon.setImageDrawable(iconDrawable)
 
                 val tvDomainName = buttonView.findViewById<TextView>(R.id.tv_domain_name)

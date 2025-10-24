@@ -41,9 +41,6 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
         setupGestureDetector()
     }
 
-    /**
-     * Initialize all UI components
-     */
     private fun initializeViews() {
         viewPager = findViewById(R.id.vp_thoughts)
     }
@@ -69,10 +66,11 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
 
     private fun deleteThought(thought: ThoughtDTO) {
         lifecycleScope.launch {
-            Timber.d("Deleting thought: ${thought.id}")
-            thoughtsService.deleteThought(thought)
-            // Optional: Show toast confirmation
-            showShortToast(R.string.common_deletion_dialog_confirmation, "Myśl")
+            thought.id?.let { thoughtId ->
+                Timber.d("Deleting thought: $thoughtId")
+                thoughtsService.deleteThoughtById(thoughtId)
+                showShortToast(R.string.common_deletion_dialog_confirmation, "Myśl")
+            } ?: Timber.w("Cannot delete thought without ID")
         }
     }
 
