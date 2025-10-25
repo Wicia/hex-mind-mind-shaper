@@ -129,7 +129,7 @@ class CarouselAdapter(
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
             val intent = Intent(itemView.context, DetailsActivity::class.java)
-            intent.putExtra(DetailsActivity.P_SELECTED_THOUGHT_ID, viewedThoughtDTO)
+            intent.putExtra(DetailsActivity.P_SELECTED_THOUGHT_ID, viewedThoughtDTO?.id) //TODO: Handle null scenario
             itemView.context.startActivity(intent)
             return true
         }

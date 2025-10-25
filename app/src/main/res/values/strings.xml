@@ -57,15 +57,22 @@
     <!-- VALIDATION -->
     <string name="common_validation_info_initial">Zzzz...</string>
 
-    <!-- ====================================== -->
-    <!--    ACTIVITY: MAIN -->
-    <!-- ====================================== -->
+<!-- ====================================== -->
+<!--    ACTIVITY: HOME -->
+<!-- ====================================== -->
 
-    <string name="main_greetings_header_default">Cześć!</string>
+    <string name="home_greetings_header_default">Cześć!</string>
 
-    <!-- ====================================== -->
-    <!--    ACTIVITY: CAPTURE THOUGHT -->
-    <!-- ====================================== -->
+<!-- ====================================== -->
+<!--    ACTIVITY: DETAILS / EDIT -->
+<!-- ====================================== -->
+
+    <string name="details_edit_thought_invalid_id">Niepoprawne ID rekordu Myśli :/</string>
+    <string name="details_edit_thought_not_found">Nie znaleziono myśli :/</string>
+
+<!-- ====================================== -->
+<!--    ACTIVITY: CAPTURE THOUGHT -->
+<!-- ====================================== -->
 
     <!-- Core -->
     <string name="capture_main_label">Chwytaj myśl...</string>
@@ -98,15 +105,15 @@
     <string name="next_thought">Następna myśl</string>
     <string name="thought_type_icon">Ikona typu myśli</string>
 
-    <!-- ====================================== -->
-    <!--    ACTIVITY: THOUGHTS PREVIEW / CAROUSEL  -->
-    <!-- ====================================== -->
+<!-- ====================================== -->
+<!--    ACTIVITY: THOUGHTS PREVIEW / CAROUSEL  -->
+<!-- ====================================== -->
 
     <string name="carousel_thought_thread_empty">...</string>
 
-    <!-- ====================================== -->
-    <!--    ACTIVITY: SETTINGS -->
-    <!-- ====================================== -->
+<!-- ====================================== -->
+<!--    ACTIVITY: SETTINGS -->
+<!-- ====================================== -->
 
     <!-- Header -->
     <string name="settings_header">Ustawienia</string>

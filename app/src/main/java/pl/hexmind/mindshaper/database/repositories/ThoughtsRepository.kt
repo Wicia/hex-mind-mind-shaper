@@ -13,6 +13,10 @@ class ThoughtsRepository @Inject constructor (
         return thoughtsDAO.getById(id)
     }
 
+    fun getThoughtByIdLive(id: Long): LiveData<ThoughtEntity?> {
+        return thoughtsDAO.getThoughtByIdLive(id)
+    }
+
     fun getAllThoughts(): LiveData<List<ThoughtEntity>> {
         return thoughtsDAO.getAllThoughts()
     }

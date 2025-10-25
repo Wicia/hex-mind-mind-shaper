@@ -2,10 +2,13 @@ package pl.hexmind.mindshaper.services.mappers
 
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
+import org.mapstruct.factory.Mappers
 import pl.hexmind.mindshaper.database.models.ThoughtEntity
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
-import org.mapstruct.factory.Mappers
 
+/**
+ * ! Don't handle here LiveData mappings
+ */
 @Mapper
 interface ThoughtsMapper {
 

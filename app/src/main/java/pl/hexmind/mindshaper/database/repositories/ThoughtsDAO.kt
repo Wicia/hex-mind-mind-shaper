@@ -15,6 +15,9 @@ interface ThoughtsDAO {
     @Query("SELECT * FROM thoughts where id = :id")
     suspend fun getById(id : Long) : ThoughtEntity
 
+    @Query("SELECT * FROM thoughts WHERE id = :id")
+    fun getThoughtByIdLive(id: Long): LiveData<ThoughtEntity?>
+
     // Basic CRUD operations
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(thought: ThoughtEntity): Long
@@ -34,9 +37,6 @@ interface ThoughtsDAO {
     // Basic queries
     @Query("SELECT * FROM thoughts ORDER BY created_at DESC")
     fun getAllThoughts(): LiveData<List<ThoughtEntity>>
-
-    @Query("SELECT * FROM thoughts WHERE id = :id")
-    suspend fun getThoughtById(id: Int): ThoughtEntity?
 
     @Query("SELECT * FROM thoughts WHERE domain_id = :domainId")
     suspend fun getThoughtByDomainId(domainId: Int): ThoughtEntity?

@@ -22,6 +22,14 @@ class ThoughtsService @Inject constructor(
         return entityLiveDataToDtoLiveData(result)
     }
 
+    fun getThoughtByIdLive(id : Int): LiveData<ThoughtDTO?> {
+        require(id > 0) { "Thought ID must be positive" }
+        val entityLiveData = repository.getThoughtByIdLive(id.toLong())
+        return entityLiveData.map { entityThought ->
+            entityThought?.let { ThoughtsMapper.INSTANCE.entityToDTO(it) }
+        }
+    }
+
     private fun entityLiveDataToDtoLiveData(entities: LiveData<List<ThoughtEntity>>): LiveData<List<ThoughtDTO>> {
         return entities.map { list ->
             ThoughtsMapper.INSTANCE.entityListToDtoList(list)
@@ -38,6 +46,7 @@ class ThoughtsService @Inject constructor(
     }
 
     suspend fun deleteThoughtById(id: Int){
+        require(id > 0) { "Thought ID must be positive" }
         repository.deleteThoughtById(id)
     }
 

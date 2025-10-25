@@ -13,7 +13,12 @@ open class CoreActivity() : AppCompatActivity() {
     @Inject
     lateinit var phasesService: PhasesService
 
-    fun showShortToast(stringId : Int, param : String? = ""){
-        Toast.makeText(this, getString(stringId, param), Toast.LENGTH_SHORT).show()
+    fun showShortToast(stringResourceId : Int, param : String? = ""){
+        Toast.makeText(this, getString(stringResourceId, param), Toast.LENGTH_SHORT).show()
+    }
+
+    fun showErrorAndFinish(stringResourceId : Int) {
+        Toast.makeText(this, getString(stringResourceId), Toast.LENGTH_SHORT).show()
+        finish()
     }
 }

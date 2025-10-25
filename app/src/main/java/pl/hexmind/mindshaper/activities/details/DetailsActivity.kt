@@ -2,9 +2,9 @@ package pl.hexmind.mindshaper.activities.details
 
 import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,25 +16,13 @@ import pl.hexmind.mindshaper.common.ui.CommonTextEditDialog
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
-import pl.hexmind.mindshaper.services.DomainsService
-import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailsActivity : CoreActivity() {
 
-    @Inject
-    lateinit var thoughtsService : ThoughtsService
-
-    @Inject
-    lateinit var domainsService: DomainsService
-
+    private val viewModel: DetailsViewModel by viewModels()
     private lateinit var binding: DetailsEditActivityBinding
-
-    // State-related data
-    private var thoughtDetails : ThoughtDTO? = null
-    private var domainsWithIcons: List<CommonIconsListItem> = emptyList()
 
     companion object PARAMS {
         const val P_SELECTED_THOUGHT_ID = "P_SELECTED_THOUGHT_ID"
@@ -45,42 +33,54 @@ class DetailsActivity : CoreActivity() {
         binding = DetailsEditActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        loadThoughtFromIntent()
+        val thoughtId = intent.getIntExtra(P_SELECTED_THOUGHT_ID, -1)
+        if (thoughtId == -1) {
+            showErrorAndFinish(R.string.details_edit_thought_invalid_id)
+            return
+        }
+
         setupListeners()
+        setupObservers()
 
-        lifecycleScope.launch {
-            loadAllDomainsWithIcons()
-            updateUI()
+        viewModel.loadThought(thoughtId)
+        viewModel.loadDomains()
+    }
+
+    private fun setupObservers() {
+        // ! Observe changes in thoughtDetails & update UI if needed
+        viewModel.thoughtDetails.observe(this) { thought ->
+            if (thought != null) {
+                updateUI(thought)
+            }
+            else {
+                showErrorAndFinish(R.string.details_edit_thought_not_found)
+            }
         }
     }
 
-    private fun loadThoughtFromIntent() {
-        thoughtDetails = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(P_SELECTED_THOUGHT_ID, ThoughtDTO::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            intent.getParcelableExtra(P_SELECTED_THOUGHT_ID) as? ThoughtDTO
-        }
-    }
-
-    private suspend fun loadAllDomainsWithIcons(){
-        domainsWithIcons = domainsService.getAllDomainWithIcons()
-    }
-
-    private fun setupListeners(){
+    private fun setupListeners() {
         binding.apply {
             btnSave.setOnClickListener {
-                saveThought()
+                viewModel.saveThought()
+                navigateToHome()
             }
+
             tvRichText.setOnClickListener {
                 showEditRichTextDialog()
             }
+
             tvThread.setOnClickListener {
                 showEditThreadDialog()
             }
+
+            btnThreadPlaceholder.setOnClickListener {
+                showEditThreadDialog()
+            }
+
             btnDomainIcon.setOnClickListener {
                 showDomainDialog()
             }
+
             btnDomainIconPlaceholder.setOnClickListener {
                 showDomainDialog()
             }
@@ -88,31 +88,21 @@ class DetailsActivity : CoreActivity() {
     }
 
     private fun onDomainSelected(domain: CommonIconsListItem) {
-        thoughtDetails?.domainId = domain.labelSourceId
-        lifecycleScope.launch {
-            updateDomainUI()
-        }
+        viewModel.updateDomain(domain.labelSourceId)
     }
 
-    fun saveThought(){
-        val dto = thoughtDetails ?: return
-
-        dto.thread = binding.tvThread.text.toString()
-        dto.richText = binding.tvRichText.originalText // Save raw text
-
-        lifecycleScope.launch {
-            thoughtsService.updateThought(dto)
-        }
-
+    private fun navigateToHome() {
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     private fun showDomainDialog() {
-        if (domainsWithIcons.isEmpty()) return
+        val domains = viewModel.domainsWithIcons.value ?: emptyList()
+        if (domains.isEmpty()) return
 
         CommonIconsListDialog.Builder(this)
-            .setIcons(domainsWithIcons)
+            .setIcons(domains)
             .setOnIconSelected { selectedDomain ->
                 onDomainSelected(selectedDomain)
             }
@@ -120,77 +110,81 @@ class DetailsActivity : CoreActivity() {
     }
 
     private fun showEditRichTextDialog() {
+        val currentText = viewModel.thoughtDetails.value?.richText.orEmpty()
         CommonTextEditDialog(
             context = this,
-            textInput = binding.tvRichText.originalText, // Show raw text
+            textInput = currentText,
             onSave = { newText ->
-                binding.tvRichText.originalText = newText // Show HTML-formatted text
+                viewModel.updateRichText(newText)
             }
         ).show()
     }
 
     private fun showEditThreadDialog() {
+        val currentText = viewModel.thoughtDetails.value?.thread.orEmpty()
         CommonTextEditDialog(
             context = this,
-            textInput = binding.tvThread.text.toString(),
+            textInput = currentText,
             onSave = { newText ->
-                binding.tvThread.text = newText
+                viewModel.updateThread(newText)
             }
         ).show()
     }
 
-    private suspend fun updateUI() {
-        updateRichTextUI()
-        updateThreadUI()
-        updateDomainUI()
+    private fun updateUI(thought: ThoughtDTO) {
+        updateRichTextUI(thought)
+        updateThreadUI(thought)
+        lifecycleScope.launch {
+            updateDomainUI(thought)
+        }
     }
 
-    private fun updateRichTextUI(){
-        val details = thoughtDetails ?: return
-
-        if(details.richText.isNullOrBlank()){
+    private fun updateRichTextUI(thought: ThoughtDTO) {
+        if (thought.richText.isNullOrBlank()) {
             binding.btnRichTextPlaceholder.visibility = View.VISIBLE
             binding.tvRichText.visibility = View.GONE
         }
-        else{
+        else {
             binding.btnRichTextPlaceholder.visibility = View.GONE
             binding.tvRichText.visibility = View.VISIBLE
-            binding.tvRichText.originalText = details.richText.orEmpty()
+            binding.tvRichText.originalText = thought.richText.orEmpty()
         }
     }
 
-    private fun updateThreadUI(){
-        val details = thoughtDetails ?: return
-
-        if(details.thread.isNullOrBlank()){
+    private fun updateThreadUI(thought: ThoughtDTO) {
+        if (thought.thread.isNullOrBlank()) {
             binding.btnThreadPlaceholder.visibility = View.VISIBLE
             binding.tvThread.visibility = View.GONE
         }
-        else{
+        else {
             binding.btnThreadPlaceholder.visibility = View.GONE
             binding.tvThread.visibility = View.VISIBLE
-            binding.tvThread.text = details.thread
+            binding.tvThread.text = thought.thread
         }
     }
 
-    private suspend fun updateDomainUI(){
-        val details = thoughtDetails ?: return
-
-        if(details.domainId != null){
-            val iconId : Int? = domainsService.getIconIdForDomain(details.domainId!!)
-            binding.btnDomainIcon.visibility = View.VISIBLE
-            binding.btnDomainIcon.icon = getIcon(iconId!!)
-            binding.btnDomainIconPlaceholder.visibility = View.GONE
+    private suspend fun updateDomainUI(thought: ThoughtDTO) {
+        if (thought.domainId != null) {
+            val iconId = viewModel.getIconIdForDomain(thought.domainId!!)
+            if (iconId != null) {
+                binding.btnDomainIcon.visibility = View.VISIBLE
+                binding.btnDomainIcon.icon = getIcon(iconId)
+                binding.btnDomainIconPlaceholder.visibility = View.GONE
+            }
+            else {
+                binding.btnDomainIcon.visibility = View.GONE
+                binding.btnDomainIconPlaceholder.visibility = View.VISIBLE
+            }
         }
-        else{
+        else {
             binding.btnDomainIcon.visibility = View.GONE
             binding.btnDomainIconPlaceholder.visibility = View.VISIBLE
         }
     }
 
-    private fun getIcon(iconIdToFind : Int): Drawable {
+    private fun getIcon(iconIdToFind: Int): Drawable {
         val defaultIcon = AppCompatResources.getDrawable(this, R.drawable.ic_domain_default)!!
-        val icon = this.domainsWithIcons.find { it.iconSourceId == iconIdToFind }?.iconDrawable ?: defaultIcon
-        return icon
+        val domains = viewModel.domainsWithIcons.value ?: emptyList()
+        return domains.find { it.iconSourceId == iconIdToFind }?.iconDrawable ?: defaultIcon
     }
 }
