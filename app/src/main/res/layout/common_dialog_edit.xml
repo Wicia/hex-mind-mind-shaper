@@ -18,7 +18,7 @@
             android:background="@drawable/shape_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textCapSentences|textMultiLine"
+            android:inputType="textCapSentences|textMultiLine|textVisiblePassword"
             android:maxLines="100"
             android:minLines="3"
             android:textColor="@color/text_primary"
