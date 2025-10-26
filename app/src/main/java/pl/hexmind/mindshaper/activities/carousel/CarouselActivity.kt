@@ -2,10 +2,14 @@ package pl.hexmind.mindshaper.activities.carousel
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
@@ -14,7 +18,7 @@ import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import kotlin.math.abs
 
 /**
- * Activity for browsing thoughts in an elegant carousel format with 3D animations
+ * Activity for browsing thoughts in an elegant carousel format with 3D animations and search
  */
 @AndroidEntryPoint
 class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
@@ -23,8 +27,11 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
 
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: CarouselAdapter
-
     private lateinit var gestureDetector: GestureDetector
+
+    // Search UI components
+    private lateinit var tilSearch: TextInputLayout
+    private lateinit var etSearch: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +39,15 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
 
         initializeViews()
         setupCarousel()
+        setupSearchBar()
         setupReactiveDataObserver()
         setupGestureDetector()
     }
 
     private fun initializeViews() {
         viewPager = findViewById(R.id.vp_thoughts)
+        tilSearch = findViewById(R.id.til_search)
+        etSearch = findViewById(R.id.et_search)
     }
 
     /**
@@ -59,6 +69,29 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
         })
     }
 
+    /**
+     * Setup real-time search bar with TextWatcher
+     */
+    private fun setupSearchBar() {
+        // ! TextWatcher for real-time search
+        etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Update search query in ViewModel on every text change
+                viewModel.updateSearchQuery(s?.toString() ?: "")
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        // Listener for X icon
+        tilSearch.setEndIconOnClickListener {
+            etSearch.text?.clear()
+            viewModel.clearSearch()
+        }
+    }
+
     private fun deleteThought(thought: ThoughtDTO) {
         viewModel.deleteThought(thought)
         showShortToast(R.string.common_deletion_dialog_confirmation, "Myśl")
@@ -68,7 +101,7 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
      * Setup reactive data observer that automatically updates UI when database changes
      */
     private fun setupReactiveDataObserver() {
-        viewModel.allThoughts.observe(this) { thoughtsDTO ->
+        viewModel.filteredThoughts.observe(this) { thoughtsDTO ->
             // Submit to adapter - will automatically animate changes with DiffUtil
             adapter.submitList(thoughtsDTO)
         }
