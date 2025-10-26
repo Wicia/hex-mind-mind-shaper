@@ -4,17 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
-import androidx.lifecycle.lifecycleScope
+import androidx.activity.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
-import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
-import timber.log.Timber
-import javax.inject.Inject
 import kotlin.math.abs
 
 /**
@@ -23,8 +19,7 @@ import kotlin.math.abs
 @AndroidEntryPoint
 class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
 
-    @Inject
-    lateinit var thoughtsService : ThoughtsService
+    private val viewModel: CarouselViewModel by viewModels()
 
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: CarouselAdapter
@@ -65,21 +60,15 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
     }
 
     private fun deleteThought(thought: ThoughtDTO) {
-        lifecycleScope.launch {
-            thought.id?.let { thoughtId ->
-                Timber.d("Deleting thought: $thoughtId")
-                thoughtsService.deleteThoughtById(thoughtId)
-                showShortToast(R.string.common_deletion_dialog_confirmation, "Myśl")
-            } ?: Timber.w("Cannot delete thought without ID")
-        }
+        viewModel.deleteThought(thought)
+        showShortToast(R.string.common_deletion_dialog_confirmation, "Myśl")
     }
 
     /**
      * Setup reactive data observer that automatically updates UI when database changes
      */
     private fun setupReactiveDataObserver() {
-        // Observe LiveData - automatically updates when database changes (add/edit/delete)
-        thoughtsService.getAllThoughts().observe(this) { thoughtsDTO ->
+        viewModel.allThoughts.observe(this) { thoughtsDTO ->
             // Submit to adapter - will automatically animate changes with DiffUtil
             adapter.submitList(thoughtsDTO)
         }
