@@ -1,2 +1,2 @@
-# hex-mind-fast-note
-HexMind universe tool - FastNote 
+# Hello!
+HexMind universe tool - MindShaper

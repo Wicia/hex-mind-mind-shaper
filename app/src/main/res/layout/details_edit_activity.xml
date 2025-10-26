@@ -90,7 +90,7 @@
             </LinearLayout>
 
             <View
-                android:id="@+id/tv_phase_info_separator"
+                android:id="@+id/tv_separator"
                 android:background="@color/separator_background"
                 android:layout_width="48dp"
                 android:layout_height="1dp"

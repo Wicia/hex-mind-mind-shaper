@@ -47,7 +47,7 @@ class IconPickerAdapter(
                     ContextCompat.getColor(itemView.context, R.color._black)
                 )
             } else {
-                ivIcon.setImageResource(R.drawable.ic_domain_default)
+                ivIcon.setImageResource(R.drawable.ic_domain_none)
             }
 
             // Show/hide selection indicator

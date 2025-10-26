@@ -12,7 +12,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Service class for managing FastNote application settings and preferences
+ * Service class for managing application settings and preferences
  */
 @Singleton
 class AppSettingsStorage @Inject constructor(

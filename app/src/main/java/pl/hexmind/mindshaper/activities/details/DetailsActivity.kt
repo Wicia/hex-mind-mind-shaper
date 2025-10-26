@@ -65,8 +65,11 @@ class DetailsActivity : CoreActivity() {
                 navigateToHome()
             }
 
-            tvRichText.setOnClickListener {
-                showEditRichTextDialog()
+            tvRichText.apply{
+                propagateClickEventsToParent = false
+                setOnClickListener {
+                    showEditRichTextDialog()
+                }
             }
 
             tvThread.setOnClickListener {
@@ -183,7 +186,7 @@ class DetailsActivity : CoreActivity() {
     }
 
     private fun getIcon(iconIdToFind: Int): Drawable {
-        val defaultIcon = AppCompatResources.getDrawable(this, R.drawable.ic_domain_default)!!
+        val defaultIcon = AppCompatResources.getDrawable(this, R.drawable.ic_domain_none)!!
         val domains = viewModel.domainsWithIcons.value ?: emptyList()
         return domains.find { it.iconSourceId == iconIdToFind }?.iconDrawable ?: defaultIcon
     }

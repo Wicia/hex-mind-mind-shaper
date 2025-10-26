@@ -17,8 +17,9 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven { url = uri("https://artifactory.appodeal.com/appodeal-public/") }
     }
 }
 
-rootProject.name = "FastNote"
+rootProject.name = "MindShaper"
 include(":app")

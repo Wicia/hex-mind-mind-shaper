@@ -111,6 +111,7 @@ dependencies {
     implementation(libs.androidx.viewpager2)
     implementation(libs.androidx.recyclerview)
     implementation(libs.speeddial)
+    implementation(libs.html.textview) // displaying HTML elements in TextViews
 
     // Permissions
     implementation(libs.dexter)
@@ -136,6 +137,4 @@ dependencies {
     // Mappings and DTO
     implementation(libs.mapstruct)
     kapt(libs.mapstruct.processor) // ! using kapt to generate MapStruct mappers
-
-    implementation("com.caverock:androidsvg-aar:1.4")
 }

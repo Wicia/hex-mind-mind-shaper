@@ -96,5 +96,6 @@
 
     <!-- Separator / dividers -->
     <color name="separator_background">@color/_orange_dark</color>
+    <color name="separator_card">@color/_orange_soft</color>
 
 </resources>
