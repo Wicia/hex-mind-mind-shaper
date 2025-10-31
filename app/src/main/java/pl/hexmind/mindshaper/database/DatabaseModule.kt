@@ -30,6 +30,7 @@ object DatabaseModule {
             )
             .addMigrations(Migrations.MIGRATION_1_2)
             .addMigrations(Migrations.MIGRATION_2_3)
+            .addMigrations(Migrations.MIGRATION_3_4)
             //.fallbackToDestructiveMigration() // !!! TODO: !!! DISABLE ON PROD :)
             .build()
     }

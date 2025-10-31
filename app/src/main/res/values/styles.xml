@@ -5,6 +5,7 @@
 <!--    TEXT VIEW -->
 <!-- ====================================== -->
 
+    <!-- Activity / Header -->
     <style name="TextView_Header_Activity">
         <item name="android:fontFamily">@font/alegreya_regular</item>
         <item name="android:textSize">28sp</item>
@@ -12,6 +13,7 @@
         <item name="android:textColor">@color/text_primary</item>
     </style>
 
+    <!-- Activity / Section -->
     <style name="TextView_Header_Section">
         <item name="android:fontFamily">@font/montserrat_regular</item>
         <item name="android:textSize">16sp</item>
@@ -19,13 +21,29 @@
         <item name="android:textColor">@color/text_primary</item>
     </style>
 
-    <style name="TextView_Body_Standard">
+    <!-- Activity / Text Standard -->
+    <style name="TextView_Standard">
         <item name="android:fontFamily">@font/alegreya_regular</item>
         <item name="android:textSize">18sp</item>
         <item name="android:lineSpacingExtra">1dp</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <!-- Activity / Text Standard / Thread -->
+    <style name="TextView_Standard_Thread">
+        <item name="android:fontFamily">@font/alegreya_regular</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <!-- Details -> Metadata (Project, Soul) -->
+    <style name="TextView_Metadata">
+        <item name="android:padding">12dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
     </style>
 
     <style name="TextView_Info_Extras">
@@ -82,6 +100,10 @@
 
         <!-- Corners -->
         <item name="cornerRadius">8dp</item>
+
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_secondary_darkmode</item>
     </style>
 
     <style name="HexContentButton.NotUsed" parent="Widget.MaterialComponents.Button">
@@ -100,6 +122,7 @@
         <item name="android:paddingRight">0dp</item>
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingBottom">0dp</item>
+        <item name="android:padding">12dp</item>
         <item name="iconPadding">0dp</item>
 
         <!-- Colors -->
@@ -108,6 +131,10 @@
 
         <!-- Corners -->
         <item name="cornerRadius">8dp</item>
+
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_secondary_darkmode</item>
     </style>
 
     <!-- ====================================== -->

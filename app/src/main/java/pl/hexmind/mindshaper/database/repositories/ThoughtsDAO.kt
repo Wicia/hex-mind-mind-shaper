@@ -36,7 +36,10 @@ interface ThoughtsDAO {
 
     // Basic queries
     @Query("SELECT * FROM thoughts ORDER BY created_at DESC")
-    fun getAllThoughts(): LiveData<List<ThoughtEntity>>
+    fun getAllThoughtsLive(): LiveData<List<ThoughtEntity>>
+
+    @Query("SELECT * FROM thoughts ORDER BY created_at DESC")
+    suspend fun getAllThoughts(): List<ThoughtEntity>
 
     @Query("SELECT * FROM thoughts WHERE domain_id = :domainId")
     suspend fun getThoughtByDomainId(domainId: Int): ThoughtEntity?

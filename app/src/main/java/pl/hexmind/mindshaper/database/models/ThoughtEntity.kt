@@ -37,4 +37,10 @@ data class ThoughtEntity(
 
     @ColumnInfo(name = "rich_text")
     val richText: String? = null,
+
+    @ColumnInfo(name = "soul_name")
+    val soulName: String? = null,
+
+    @ColumnInfo(name = "common_story")
+    val commonStory: String? = null
 )

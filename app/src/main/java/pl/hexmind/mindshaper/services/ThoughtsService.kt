@@ -18,7 +18,7 @@ class ThoughtsService @Inject constructor(
      * Get all thoughts (reactive/LiveData)
      */
     fun getAllThoughts(): LiveData<List<ThoughtDTO>> {
-        val result = repository.getAllThoughts()
+        val result = repository.getAllThoughtsLive()
         return entityLiveDataToDtoLiveData(result)
     }
 

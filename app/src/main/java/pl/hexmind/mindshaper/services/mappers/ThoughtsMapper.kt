@@ -22,6 +22,7 @@ interface ThoughtsMapper {
     @Mapping(source = "thread", target = "thread")
     @Mapping(source = "richText", target = "richText")
     @Mapping(source = "domainId", target = "domainId")
+    @Mapping(source = "commonStory", target = "project") // TODO: rename column
     fun entityToDTO(entity : ThoughtEntity) : ThoughtDTO
 
     @Mapping(source = "id", target = "id")
@@ -29,6 +30,7 @@ interface ThoughtsMapper {
     @Mapping(source = "thread", target = "thread")
     @Mapping(source = "richText", target = "richText")
     @Mapping(source = "domainId", target = "domainId")
+    @Mapping(source = "project", target = "commonStory")
     fun dtoToEntity(dto : ThoughtDTO) : ThoughtEntity
 
     fun entityListToDtoList(entities: List<ThoughtEntity>): List<ThoughtDTO>

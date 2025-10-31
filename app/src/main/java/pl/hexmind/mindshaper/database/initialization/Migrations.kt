@@ -65,5 +65,41 @@ class Migrations {
                 db.execSQL("ALTER TABLE ICONS_NEW RENAME TO ICONS")
             }
         }
+
+        /**
+         * Extending THOUGHTS table with new columns: SOUL_NAME (for storing persons refs) and
+         * COMMON_STORY (for storing common thread as two souls)
+         */
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("""
+                CREATE TABLE IF NOT EXISTS THOUGHTS_NEW (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    domain_id INTEGER,
+                    thread TEXT,
+                    created_at INTEGER NOT NULL,
+                    rich_text TEXT,
+                    soul_name TEXT,
+                    common_story TEXT,
+                    FOREIGN KEY(domain_id) REFERENCES DOMAINS(id) ON DELETE SET NULL
+                )
+            """)
+
+                db.execSQL("""
+                CREATE INDEX IF NOT EXISTS index_THOUGHTS_NEW_domain_id 
+                ON THOUGHTS_NEW(domain_id)
+            """)
+
+                db.execSQL("""
+                INSERT INTO THOUGHTS_NEW (id, domain_id, thread, created_at, rich_text, soul_name, common_story)
+                SELECT id, domain_id, thread, created_at, rich_text, NULL, NULL
+                FROM THOUGHTS
+            """)
+
+                db.execSQL("DROP TABLE THOUGHTS")
+
+                db.execSQL("ALTER TABLE THOUGHTS_NEW RENAME TO THOUGHTS")
+            }
+        }
     }
 }

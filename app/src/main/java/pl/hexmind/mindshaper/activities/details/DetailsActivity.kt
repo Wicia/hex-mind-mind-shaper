@@ -10,11 +10,11 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.activities.CoreActivity
+import pl.hexmind.mindshaper.activities.carousel.CarouselActivity
 import pl.hexmind.mindshaper.common.ui.CommonIconsListDialog
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.common.ui.CommonTextEditDialog
-import pl.hexmind.mindshaper.activities.CoreActivity
-import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 
@@ -62,7 +62,7 @@ class DetailsActivity : CoreActivity() {
         binding.apply {
             btnSave.setOnClickListener {
                 viewModel.saveThought()
-                navigateToHome()
+                navigateToCarousel()
             }
 
             tvRichText.apply{
@@ -87,6 +87,20 @@ class DetailsActivity : CoreActivity() {
             btnDomainIconPlaceholder.setOnClickListener {
                 showDomainDialog()
             }
+
+            btnSoulNamePlaceholder.setOnClickListener {
+                showEditSoulNameDialog()
+            }
+            tvSoulName.setOnClickListener {
+                showEditSoulNameDialog()
+            }
+
+            btnProjectPlaceholder.setOnClickListener {
+                showEditProjectDialog()
+            }
+            tvProject.setOnClickListener {
+                showEditProjectDialog()
+            }
         }
     }
 
@@ -94,8 +108,8 @@ class DetailsActivity : CoreActivity() {
         viewModel.updateDomain(domain.labelSourceId)
     }
 
-    private fun navigateToHome() {
-        val intent = Intent(this, HomeActivity::class.java)
+    private fun navigateToCarousel() {
+        val intent = Intent(this, CarouselActivity::class.java)
         startActivity(intent)
         finish()
     }
@@ -134,9 +148,33 @@ class DetailsActivity : CoreActivity() {
         ).show()
     }
 
+    private fun showEditSoulNameDialog() {
+        val currentText = viewModel.thoughtDetails.value?.soulName.orEmpty()
+        CommonTextEditDialog(
+            context = this,
+            textInput = currentText,
+            onSave = { newText ->
+                viewModel.updateSoulName(newText)
+            }
+        ).show()
+    }
+
+    private fun showEditProjectDialog() {
+        val currentText = viewModel.thoughtDetails.value?.project.orEmpty()
+        CommonTextEditDialog(
+            context = this,
+            textInput = currentText,
+            onSave = { newText ->
+                viewModel.updateProject(newText)
+            }
+        ).show()
+    }
+
     private fun updateUI(thought: ThoughtDTO) {
         updateRichTextUI(thought)
         updateThreadUI(thought)
+        updateSoulNameUI(thought)
+        updateProjectUI(thought)
         lifecycleScope.launch {
             updateDomainUI(thought)
         }
@@ -185,6 +223,29 @@ class DetailsActivity : CoreActivity() {
         }
     }
 
+    private fun updateSoulNameUI(thought: ThoughtDTO) {
+        if (thought.soulName.isNullOrBlank()) {
+            binding.btnSoulNamePlaceholder.visibility = View.VISIBLE
+            binding.tvSoulName.visibility = View.GONE
+        }
+        else {
+            binding.btnSoulNamePlaceholder.visibility = View.GONE
+            binding.tvSoulName.visibility = View.VISIBLE
+            binding.tvSoulName.text = thought.soulName
+        }
+    }
+
+    private fun updateProjectUI(thought: ThoughtDTO) {
+        if (thought.project.isNullOrBlank()) {
+            binding.btnProjectPlaceholder.visibility = View.VISIBLE
+            binding.tvProject.visibility = View.GONE
+        }
+        else {
+            binding.btnProjectPlaceholder.visibility = View.GONE
+            binding.tvProject.visibility = View.VISIBLE
+            binding.tvProject.text = thought.project
+        }
+    }
     private fun getIcon(iconIdToFind: Int): Drawable {
         val defaultIcon = AppCompatResources.getDrawable(this, R.drawable.ic_domain_none)!!
         val domains = viewModel.domainsWithIcons.value ?: emptyList()

@@ -80,7 +80,7 @@
     <string name="capture_input_fields_error_empty">Notatka i Esencja są puste</string>
 
     <!-- Thread (common) -->
-    <string name="capture_thread_tooltip">Wątek</string>
+    <string name="capture_hex_tags_tooltip">wątek @dusza #projekt</string>
     <string name="capture_thread_error_words_exceeded">Wątek nie może przekroczyć %d słów...</string>
 
     <!-- Type: Rich Text (Note) -->
@@ -139,17 +139,18 @@
     <string name="settings_domains_domain_name">Twoja nazwa dla domeny</string>
     <string name="settings_domains_error_name_empty">Nazwa domeny nie może być pusta</string>
     <string name="settings_domains_error_name_too_long">Nazwa domeny nie może przekraczać %s znaków</string>
+    <string name="common_btn_add">+</string>
 
     <string-array name="settings_domains_default_names_list">
         <item>Rozwój, Praca, Biznes</item>
-        <item>Finanse, Wolność, Niezależność</item>
+        <item>Finanse, Niezależność, Posiadanie</item>
         <item>Ciało, Zdrowie, Energia</item>
-        <item>Umysł, Wyobraźnia, Logika</item>
-        <item>Emocje, Serce, Miłość</item>
-        <item>Dusza, Życie, Śmierć</item>
+        <item>Percepcja, Wyobraźnia, Logika</item>
+        <item>Emocje, Dobro, Miłość</item>
+        <item>Dusza, Magia, Wszechświat</item>
         <item>Pasja, Twórczość, Piękno</item>
         <item>Hobby, Zabawa, Odpoczynek</item>
-        <item>Rodzina, Relacje, Związki</item>
+        <item>Relacje Bliskie &amp; Dalekie</item>
         <item>Przyroda, Otoczenie, Środowisko</item>
 
     </string-array>

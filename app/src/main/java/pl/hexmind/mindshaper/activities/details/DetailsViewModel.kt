@@ -67,6 +67,24 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
+    fun updateSoulName(soulName: String) {
+        viewModelScope.launch {
+            thoughtDetails.value?.let { thought ->
+                thought.soulName = soulName
+                thoughtsService.updateThought(thought)
+            }
+        }
+    }
+
+    fun updateProject(project: String) {
+        viewModelScope.launch {
+            thoughtDetails.value?.let { thought ->
+                thought.project = project
+                thoughtsService.updateThought(thought)
+            }
+        }
+    }
+
     fun saveThought() {
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->

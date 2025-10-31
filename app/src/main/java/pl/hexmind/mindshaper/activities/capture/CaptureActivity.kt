@@ -11,7 +11,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
-import pl.hexmind.mindshaper.activities.capture.ThoughtCaptureHandler
 import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureHandler
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import pl.hexmind.mindshaper.activities.capture.handlers.RecordingCaptureHandler
@@ -37,12 +36,11 @@ class CaptureActivity : CoreActivity() {
     @Inject
     lateinit var thoughtsService: ThoughtsService
 
-    private var thoughtToSaveDTO = ThoughtDTO() // TODO: Maybe remove this state-keeping var?
-
+    private var initialThoughtType : InitialThoughtType = InitialThoughtType.UNKNOWN
     private lateinit var flContainerFeatures: FrameLayout
     private lateinit var btnSave: MaterialButton
 
-    private lateinit var etThread : TextInputEditText
+    private lateinit var etHexTags : TextInputEditText
 
     // HANDLER for specific input/thought type
     private lateinit var thoughtCaptureHandler: ThoughtCaptureHandler
@@ -57,13 +55,13 @@ class CaptureActivity : CoreActivity() {
     }
 
     private fun initViews(){
-        etThread = findViewById(R.id.et_thread)
+        etHexTags = findViewById(R.id.et_hex_tags)
         flContainerFeatures = findViewById(R.id.fl_container_features)
         btnSave = findViewById(R.id.btn_save)
     }
 
     private fun saveExtrasFromIntent() {
-        thoughtToSaveDTO.initialThoughtType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        initialThoughtType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(P_INIT_THOUGHT_TYPE, InitialThoughtType::class.java)
         } else {
             @Suppress("DEPRECATION")
@@ -73,7 +71,7 @@ class CaptureActivity : CoreActivity() {
 
     private fun setupMode() {
         flContainerFeatures.removeAllViews()
-        when (thoughtToSaveDTO.initialThoughtType) {
+        when (initialThoughtType) {
             InitialThoughtType.RICH_TEXT -> {
                 val richTextCaptureView = RichTextCaptureView(this)
                 flContainerFeatures.addView(richTextCaptureView)
@@ -98,13 +96,13 @@ class CaptureActivity : CoreActivity() {
         }
 
         // TODO: Rethink it and fix => there is a small bug below :)
-        etThread.doAfterTextChanged { editable ->
+        etHexTags.doAfterTextChanged { editable ->
             editable?.let {
                 val words = it.toString().convertToWords()
                 if (thoughtValidator.validateThread(it.toString()) is ValidationResult.Error) {
                     val limited = words.take(ThoughtValidator.THREAD_MAX_WORDS).joinToString(" ")
-                    etThread.setText(limited)
-                    etThread.setSelection(limited.length)
+                    etHexTags.setText(limited)
+                    etHexTags.setSelection(limited.length)
                 }
             }
         }
@@ -115,12 +113,32 @@ class CaptureActivity : CoreActivity() {
         if(result is ValidationResult.Error){
             return
         }
-        var dtoToSave = thoughtToSaveDTO.copy(
-            thread = etThread.text?.toString().orEmpty(),
-        )
+        var dtoToSave = ThoughtDTO()
         dtoToSave = thoughtCaptureHandler.getUpdatedDTO(dtoToSave)
+        dtoToSave = updateDTOWithHexTags(dtoToSave)
 
         thoughtsService.addThought(dtoToSave)
         finish()
+    }
+
+    private fun updateDTOWithHexTags(dtoToUpdate : ThoughtDTO) : ThoughtDTO{
+        val input = etHexTags.text?.toString().orEmpty()
+
+        val soulNameRegex = Regex("@(\\S+)")
+        val storyRegex = Regex("#(\\S+)")
+
+        val soulName = soulNameRegex.find(input)?.groupValues?.get(1)
+        val project = storyRegex.find(input)?.groupValues?.get(1)
+
+        val thread = input
+            .replace(soulNameRegex, "")
+            .replace(storyRegex, "")
+            .trim()
+
+        dtoToUpdate.soulName = soulName
+        dtoToUpdate.project = project
+        dtoToUpdate.thread = thread
+
+        return dtoToUpdate
     }
 }

@@ -49,10 +49,9 @@
                 android:layout_height="32dp"
                 android:layout_gravity="center_vertical"
                 app:tint="@color/_gray_light"
-                app:srcCompat="@drawable/ic_thread" />
+                app:srcCompat="@drawable/ic_hex_tags_bookmark_heart_48px" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_thread"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="140dp"
@@ -63,11 +62,11 @@
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_thread"
+                    android:id="@+id/et_hex_tags"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_edit_text"
-                    android:hint="@string/capture_thread_tooltip"
+                    android:hint="@string/capture_hex_tags_tooltip"
                     android:inputType="textCapSentences"
                     android:padding="12dp" />
             </com.google.android.material.textfield.TextInputLayout>
