@@ -25,6 +25,9 @@ interface ThoughtsDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(thoughts: List<ThoughtEntity>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrReplace(icons: List<ThoughtEntity>)
+
     @Update
     suspend fun update(thought: ThoughtEntity)
 

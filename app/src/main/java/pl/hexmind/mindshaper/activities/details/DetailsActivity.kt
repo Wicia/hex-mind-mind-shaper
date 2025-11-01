@@ -88,10 +88,10 @@ class DetailsActivity : CoreActivity() {
                 showDomainDialog()
             }
 
-            btnSoulNamePlaceholder.setOnClickListener {
+            btnSoulMatePlaceholder.setOnClickListener {
                 showEditSoulNameDialog()
             }
-            tvSoulName.setOnClickListener {
+            tvSoulMate.setOnClickListener {
                 showEditSoulNameDialog()
             }
 
@@ -149,12 +149,12 @@ class DetailsActivity : CoreActivity() {
     }
 
     private fun showEditSoulNameDialog() {
-        val currentText = viewModel.thoughtDetails.value?.soulName.orEmpty()
+        val currentText = viewModel.thoughtDetails.value?.soulMate.orEmpty()
         CommonTextEditDialog(
             context = this,
             textInput = currentText,
             onSave = { newText ->
-                viewModel.updateSoulName(newText)
+                viewModel.updateSoulMate(newText)
             }
         ).show()
     }
@@ -224,14 +224,14 @@ class DetailsActivity : CoreActivity() {
     }
 
     private fun updateSoulNameUI(thought: ThoughtDTO) {
-        if (thought.soulName.isNullOrBlank()) {
-            binding.btnSoulNamePlaceholder.visibility = View.VISIBLE
-            binding.tvSoulName.visibility = View.GONE
+        if (thought.soulMate.isNullOrBlank()) {
+            binding.btnSoulMatePlaceholder.visibility = View.VISIBLE
+            binding.tvSoulMate.visibility = View.GONE
         }
         else {
-            binding.btnSoulNamePlaceholder.visibility = View.GONE
-            binding.tvSoulName.visibility = View.VISIBLE
-            binding.tvSoulName.text = thought.soulName
+            binding.btnSoulMatePlaceholder.visibility = View.GONE
+            binding.tvSoulMate.visibility = View.VISIBLE
+            binding.tvSoulMate.text = thought.soulMate
         }
     }
 

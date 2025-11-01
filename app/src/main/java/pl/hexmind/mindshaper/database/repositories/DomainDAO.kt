@@ -30,6 +30,9 @@ interface DomainDAO {
     suspend fun insertDomain(domain: DomainEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrReplace(icons: List<DomainEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(domains: List<DomainEntity>)
 
     @Update

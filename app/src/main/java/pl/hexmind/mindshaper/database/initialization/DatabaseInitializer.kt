@@ -18,7 +18,8 @@ import javax.inject.Singleton
 class DatabaseInitializer @Inject constructor(
     private val domainRepository: DomainRepository,
     private val iconRepository: IconRepository,
-    private val storage : AppSettingsStorage
+    private val storage : AppSettingsStorage,
+    private val snapshotManager: DataSnapshotManager // Needed when db is changing during dev
 ) {
 
     suspend fun initializeIfNeeded() {

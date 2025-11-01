@@ -124,18 +124,18 @@ class CaptureActivity : CoreActivity() {
     private fun updateDTOWithHexTags(dtoToUpdate : ThoughtDTO) : ThoughtDTO{
         val input = etHexTags.text?.toString().orEmpty()
 
-        val soulNameRegex = Regex("@(\\S+)")
-        val storyRegex = Regex("#(\\S+)")
+        val soulMateRegex = Regex("@(\\S+)")
+        val projectRegex = Regex("#(\\S+)")
 
-        val soulName = soulNameRegex.find(input)?.groupValues?.get(1)
-        val project = storyRegex.find(input)?.groupValues?.get(1)
+        val soulMate = soulMateRegex.find(input)?.groupValues?.get(1)
+        val project = projectRegex.find(input)?.groupValues?.get(1)
 
         val thread = input
-            .replace(soulNameRegex, "")
-            .replace(storyRegex, "")
+            .replace(soulMateRegex, "")
+            .replace(projectRegex, "")
             .trim()
 
-        dtoToUpdate.soulName = soulName
+        dtoToUpdate.soulMate = soulMate
         dtoToUpdate.project = project
         dtoToUpdate.thread = thread
 

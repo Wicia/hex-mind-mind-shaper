@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7403e4e2803990652f33773325b0a8d9",
+    "identityHash": "1f66c47304ef62fd4f3d6bc957f874d0",
     "entities": [
       {
         "tableName": "THOUGHTS",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `domain_id` INTEGER, `thread` TEXT, `essence` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `priority` INTEGER NOT NULL, `rich_text` TEXT, FOREIGN KEY(`domain_id`) REFERENCES `DOMAINS`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `domain_id` INTEGER, `thread` TEXT, `created_at` INTEGER NOT NULL, `rich_text` TEXT, `soul_mate` TEXT, `project` TEXT, FOREIGN KEY(`domain_id`) REFERENCES `DOMAINS`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
         "fields": [
           {
             "fieldPath": "id",
@@ -27,26 +27,26 @@
             "notNull": false
           },
           {
-            "fieldPath": "essence",
-            "columnName": "essence",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
             "fieldPath": "createdAt",
             "columnName": "created_at",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "priority",
-            "columnName": "priority",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
             "fieldPath": "richText",
             "columnName": "rich_text",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "soulMate",
+            "columnName": "soul_mate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "project",
+            "columnName": "project",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -138,7 +138,7 @@
       },
       {
         "tableName": "ICONS",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `icon_data` BLOB NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `drawable_name` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -147,9 +147,9 @@
             "notNull": false
           },
           {
-            "fieldPath": "iconData",
-            "columnName": "icon_data",
-            "affinity": "BLOB",
+            "fieldPath": "drawableName",
+            "columnName": "drawable_name",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -166,7 +166,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7403e4e2803990652f33773325b0a8d9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1f66c47304ef62fd4f3d6bc957f874d0')"
     ]
   }
 }

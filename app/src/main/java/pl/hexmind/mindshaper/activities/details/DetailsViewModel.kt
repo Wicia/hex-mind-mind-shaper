@@ -67,10 +67,10 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    fun updateSoulName(soulName: String) {
+    fun updateSoulMate(soulMate: String) {
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
-                thought.soulName = soulName
+                thought.soulMate = soulMate
                 thoughtsService.updateThought(thought)
             }
         }

@@ -14,13 +14,11 @@ interface DomainMapper {
         val INSTANCE: DomainMapper = Mappers.getMapper(DomainMapper::class.java)
     }
 
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "name", target = "name")
+    // Introduce here mapping only when more complex mapping mechanism is needed
     @Mapping(source = "assetsIconId", target = "iconId")
     fun entityToDTO(entity : DomainEntity) : DomainDTO
 
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "name", target = "name")
+    // Introduce here mapping only when more complex mapping mechanism is needed
     @Mapping(source = "iconId", target = "assetsIconId")
     fun dtoToEntity(dto : DomainDTO) : DomainEntity
 

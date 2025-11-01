@@ -84,7 +84,7 @@
 
             <!-- SOUL NAME: Empty -->
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_soul_name_placeholder"
+                android:id="@+id/btn_soul_mate_placeholder"
                 style="@style/HexContentButton.NotUsed"
                 android:text="@string/common_btn_add"
                 android:layout_width="120dp"
@@ -96,7 +96,7 @@
 
             <!-- SOUL NAME: With Content -->
             <TextView
-                android:id="@+id/tv_soul_name"
+                android:id="@+id/tv_soul_mate"
                 style="@style/TextView_Metadata"
                 android:layout_weight="50"
                 android:layout_width="0dp"

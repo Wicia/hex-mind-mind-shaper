@@ -40,6 +40,9 @@ composeBom = "2024.10.00"
 #  Database & Storage
 room = "2.6.1"
 
+# Serialization
+gson = "2.10.1"
+
 #  Preferences & External Libraries
 preference = "1.2.1"
 dexter = "6.2.3"
@@ -93,6 +96,9 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+
+# Serialization
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
 # Preferences
 androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preference" }

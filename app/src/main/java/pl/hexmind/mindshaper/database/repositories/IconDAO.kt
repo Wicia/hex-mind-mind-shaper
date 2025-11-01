@@ -23,6 +23,9 @@ interface IconDAO {
     suspend fun insertIcons(icons: List<IconEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrReplace(icons: List<IconEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertIcon(icon: IconEntity): Long
 
     @Query("DELETE FROM icons")

@@ -137,4 +137,7 @@ dependencies {
     // Mappings and DTO
     implementation(libs.mapstruct)
     kapt(libs.mapstruct.processor) // ! using kapt to generate MapStruct mappers
+
+    // Serialization
+    implementation(libs.gson)
 }

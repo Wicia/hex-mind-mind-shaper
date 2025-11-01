@@ -17,20 +17,10 @@ interface ThoughtsMapper {
         val INSTANCE: ThoughtsMapper = Mappers.getMapper(ThoughtsMapper::class.java)
     }
 
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "createdAt", target = "createdAt")
-    @Mapping(source = "thread", target = "thread")
-    @Mapping(source = "richText", target = "richText")
-    @Mapping(source = "domainId", target = "domainId")
-    @Mapping(source = "commonStory", target = "project") // TODO: rename column
+    // Introduce here mapping only when more complex mapping mechanism is needed
     fun entityToDTO(entity : ThoughtEntity) : ThoughtDTO
 
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "createdAt", target = "createdAt")
-    @Mapping(source = "thread", target = "thread")
-    @Mapping(source = "richText", target = "richText")
-    @Mapping(source = "domainId", target = "domainId")
-    @Mapping(source = "project", target = "commonStory")
+    // Introduce here mapping only when more complex mapping mechanism is needed
     fun dtoToEntity(dto : ThoughtDTO) : ThoughtEntity
 
     fun entityListToDtoList(entities: List<ThoughtEntity>): List<ThoughtDTO>

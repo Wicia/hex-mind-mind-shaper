@@ -13,9 +13,9 @@ data class ThoughtDTO(
     var id : Int? = null,
     var createdAt: Instant? = Instant.now(),
     var domainId : Int? = null,
-    var thread : String? = "",
-    var richText: String? = "",
-    var soulName: String? = null,
+    var thread : String? = null,
+    var richText: String? = null,
+    var soulMate: String? = null,
     var project: String? = null,
     var initialThoughtType: InitialThoughtType = InitialThoughtType.UNKNOWN
 ) : Parcelable
