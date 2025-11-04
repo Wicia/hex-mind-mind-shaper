@@ -110,7 +110,7 @@
 <!-- ====================================== -->
 
     <string name="carousel_thought_thread_empty">...</string>
-    <string name="carousel_search_thread_hint">Szukaj wątku...</string>
+    <string name="carousel_searchbar_hint">Szukaj @dobrejduszy / #projektu / wątku...</string>
 
 <!-- ====================================== -->
 <!--    ACTIVITY: SETTINGS -->

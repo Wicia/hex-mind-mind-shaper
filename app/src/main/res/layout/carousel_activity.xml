@@ -29,13 +29,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_header_image" />
 
-    <!-- TODO: Added search bar for filtering thoughts by thread -->
+    <!-- SEARCH BAR -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_search_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="2dp"
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
-                android:hint="@string/carousel_search_thread_hint"
+                android:hint="@string/carousel_searchbar_hint"
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>

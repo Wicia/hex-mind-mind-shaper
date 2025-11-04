@@ -17,6 +17,7 @@ import pl.hexmind.mindshaper.activities.capture.handlers.RecordingCaptureHandler
 import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
 import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureView
 import pl.hexmind.mindshaper.activities.capture.handlers.RecordingCaptureView
+import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.common.regex.convertToWords
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.ThoughtsService
@@ -123,21 +124,11 @@ class CaptureActivity : CoreActivity() {
 
     private fun updateDTOWithHexTags(dtoToUpdate : ThoughtDTO) : ThoughtDTO{
         val input = etHexTags.text?.toString().orEmpty()
+        val tags = HexTagsUtils.parseInput(input)
 
-        val soulMateRegex = Regex("@(\\S+)")
-        val projectRegex = Regex("#(\\S+)")
-
-        val soulMate = soulMateRegex.find(input)?.groupValues?.get(1)
-        val project = projectRegex.find(input)?.groupValues?.get(1)
-
-        val thread = input
-            .replace(soulMateRegex, "")
-            .replace(projectRegex, "")
-            .trim()
-
-        dtoToUpdate.soulMate = soulMate
-        dtoToUpdate.project = project
-        dtoToUpdate.thread = thread
+        dtoToUpdate.soulMate = tags.soulMate
+        dtoToUpdate.project = tags.project
+        dtoToUpdate.thread = tags.thread
 
         return dtoToUpdate
     }

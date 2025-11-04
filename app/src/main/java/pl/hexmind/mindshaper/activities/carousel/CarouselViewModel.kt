@@ -4,9 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import pl.hexmind.mindshaper.common.regex.HexTags
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import timber.log.Timber
@@ -23,24 +26,17 @@ class CarouselViewModel @Inject constructor(
     // All thoughts from database
     private val allThoughts: LiveData<List<ThoughtDTO>> = thoughtsService.getAllThoughts()
 
-    // Search query LiveData for real-time filtering
-    private val _searchQuery = MutableLiveData<String>("")
-    val searchQuery: LiveData<String> = _searchQuery
+    private val _searchQuery = MutableLiveData<HexTags>()
+    val searchQuery: LiveData<HexTags> = _searchQuery  // ! Leave it - maybe UI needs it
 
-    // Using MediatorLiveData for reactive filtering
-    val filteredThoughts: LiveData<List<ThoughtDTO>> = MediatorLiveData<List<ThoughtDTO>>().apply {
-        addSource(allThoughts) { thoughts ->
-            value = filterThoughts(thoughts, _searchQuery.value ?: "")
-        }
-        addSource(_searchQuery) { query ->
-            value = filterThoughts(allThoughts.value ?: emptyList(), query)
-        }
+    val filteredThoughts: LiveData<List<ThoughtDTO>> = _searchQuery.switchMap { query ->
+        allThoughts.map { thoughts -> filterThoughts(thoughts, query) }
     }
 
     /**
      * Update search query for real-time filtering
      */
-    fun updateSearchQuery(query: String) {
+    fun updateSearchQuery(query: HexTags) {
         _searchQuery.value = query
         Timber.d("Search query updated: $query")
     }
@@ -49,51 +45,26 @@ class CarouselViewModel @Inject constructor(
      * Clear search query and show all thoughts
      */
     fun clearSearch() {
-        _searchQuery.value = ""
+        _searchQuery.value = HexTags()
         Timber.d("Search cleared")
     }
 
-    /**
-     * Filter thoughts by thread with wildcard support (* -> .*)
-     */
-    private fun filterThoughts(thoughts: List<ThoughtDTO>, query: String): List<ThoughtDTO> {
-        // Empty query = show all thoughts
-        if (query.isBlank()) {
-            return thoughts
-        }
+    private fun filterThoughts(thoughts: List<ThoughtDTO>, query: HexTags): List<ThoughtDTO> {
+        if (query.areCriteriaEmpty()) return thoughts
 
-        return try {
-            val regexPattern = convertWildcardsToRegex(query)
-            val regex = Regex(regexPattern, RegexOption.IGNORE_CASE)
-
-            thoughts.filter { thought ->
-                thought.thread?.let { thread ->
-                    regex.containsMatchIn(thread)
-                } ?: false
-            }
-        } catch (e: Exception) {
-            // If regex fails (invalid pattern), fallback to simple contains
-            Timber.w(e, "Regex pattern failed, using simple contains")
-            thoughts.filter { thought ->
-                thought.thread?.contains(query, ignoreCase = true) ?: false
-            }
+        return thoughts.filter { thought ->
+            matchesCriteria(thought.thread, query.thread) &&
+            matchesCriteria(thought.soulMate, query.soulMate) &&
+            matchesCriteria(thought.project, query.project)
         }
     }
 
-    /**
-     * Convert user wildcards (*) to regex pattern with escaped special characters
-     */
-    private fun convertWildcardsToRegex(query: String): String {
-        // Split by asterisks to preserve them as wildcards
-        val parts = query.split("*")
+    private fun matchesCriteria(fieldValue: String?, searchQuery: String?): Boolean {
+        if (searchQuery.isNullOrBlank()) return true
+        if (fieldValue.isNullOrBlank()) return false
 
-        // Escape regex special characters in each part (except asterisks)
-        val escapedParts = parts.map { part ->
-            Regex.escape(part)
-        }
-
-        // Join with .* (regex wildcard)
-        return escapedParts.joinToString(".*")
+        // case insensitive match (contains)
+        return fieldValue.contains(searchQuery, ignoreCase = true)
     }
 
     fun deleteThought(thought: ThoughtDTO) {

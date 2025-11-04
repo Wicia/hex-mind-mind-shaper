@@ -14,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
+import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import kotlin.math.abs
 
@@ -42,6 +43,8 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
         setupSearchBar()
         setupReactiveDataObserver()
         setupGestureDetector()
+
+        viewModel.clearSearch()
     }
 
     private fun initializeViews() {
@@ -78,8 +81,9 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val hexTags = HexTagsUtils.parseInput(s?.toString() ?: "")
                 // Update search query in ViewModel on every text change
-                viewModel.updateSearchQuery(s?.toString() ?: "")
+                viewModel.updateSearchQuery(hexTags)
             }
 
             override fun afterTextChanged(s: Editable?) {}
