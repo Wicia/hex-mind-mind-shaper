@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import pl.hexmind.mindshaper.R
@@ -34,22 +35,22 @@ class RecordingCaptureView @JvmOverloads constructor(
     fun updateButtons(isRecording: Boolean, isPlaying: Boolean, hasRecording: Boolean) {
         when {
             isRecording -> {
-                btnRecordStopPlay.icon = ContextCompat.getDrawable(context, R.drawable.ic_stop_circle)
+                btnRecordStopPlay.icon = AppCompatResources.getDrawable(context, R.drawable.ic_stop_circle)
                 btnRecordStopPlay.text = context.getString(R.string.capture_voice_record_stop)
                 btnRecordStopPlay.isEnabled = true
             }
             isPlaying -> {
-                btnRecordStopPlay.icon = ContextCompat.getDrawable(context, R.drawable.ic_stop_circle)
+                btnRecordStopPlay.icon = AppCompatResources.getDrawable(context, R.drawable.ic_stop_circle)
                 btnRecordStopPlay.text = context.getString(R.string.capture_voice_record_stop)
                 btnRecordStopPlay.isEnabled = true
             }
             hasRecording -> {
-                btnRecordStopPlay.icon = ContextCompat.getDrawable(context, R.drawable.ic_recording_play)
+                btnRecordStopPlay.icon = AppCompatResources.getDrawable(context, R.drawable.ic_recording_play)
                 btnRecordStopPlay.text = context.getString(R.string.capture_voice_play)
                 btnRecordStopPlay.isEnabled = true
             }
             else -> {
-                btnRecordStopPlay.icon = ContextCompat.getDrawable(context, R.drawable.ic_recording_play)
+                btnRecordStopPlay.icon = AppCompatResources.getDrawable(context, R.drawable.ic_recording_play)
                 btnRecordStopPlay.text = context.getString(R.string.capture_voice_play)
                 btnRecordStopPlay.isEnabled = false
             }

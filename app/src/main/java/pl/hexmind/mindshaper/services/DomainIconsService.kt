@@ -2,6 +2,7 @@ package pl.hexmind.mindshaper.services
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.collection.LruCache
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -84,7 +85,7 @@ class DomainIconsService @Inject constructor(
     }
 
     private fun getDefaultIcon(): Drawable {
-        return ContextCompat.getDrawable(context, R.drawable.ic_domain_none)
+        return AppCompatResources.getDrawable(context, R.drawable.ic_domain_none)
             ?: throw IllegalStateException("Cannot load default icon")
     }
 
