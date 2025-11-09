@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="StepProgressBar">
+        <attr name="stepCount" format="integer" />
+        <attr name="currentStep" format="integer" />
+        <attr name="completedStateColor" format="color" />
+        <attr name="currentStateColor" format="color" />
+        <attr name="uncompletedStateColor" format="color" />
+        <attr name="lineHeight" format="dimension" />
+        <attr name="labelTextSize" format="dimension" />
+        <attr name="iconResourceId" format="reference" />
+        <attr name="iconSize" format="dimension"/>
+        <attr name="circleRadius" format="dimension" />
+    </declare-styleable>
+</resources>
