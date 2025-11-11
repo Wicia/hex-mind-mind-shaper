@@ -84,7 +84,7 @@
     <string name="capture_thread_error_words_exceeded">Wątek nie może przekroczyć %d słów...</string>
 
     <!-- Type: Rich Text (Note) -->
-    <string name="capture_rich_text_hint">* Pisz, niech palce płoną :)</string>
+    <string name="capture_rich_text_hint">Pisz, niech palce płoną :) \n\n * Jeżeli wpiszesz \"x tekst\" to po zapisie \"x\" zamieni się w bullet point </string>
     <string name="capture_rich_text_error_note_empty">Ekhm... To wyżej nie może być puste</string>
 
     <!-- Type: Voice Recording -->
