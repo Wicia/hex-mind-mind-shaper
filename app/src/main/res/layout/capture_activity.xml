@@ -18,7 +18,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="24dp"
             android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-            app:srcCompat="@drawable/ic_phase_gathering" />
+            app:srcCompat="@drawable/ic_catching_thought" />
 
         <TextView
             style="@style/TextView_Header_Activity"
@@ -49,7 +49,7 @@
                 android:layout_height="32dp"
                 android:layout_gravity="center_vertical"
                 app:tint="@color/_gray_light"
-                app:srcCompat="@drawable/ic_hex_tags_bookmark_heart_48px" />
+                app:srcCompat="@drawable/ic_hex_tags" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="wrap_content"

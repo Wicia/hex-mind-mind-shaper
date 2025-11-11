@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_phase_gathering"
+        android:src="@drawable/ic_catching_thought"
         app:backgroundTint="@color/button_primary"
         app:fabSize="normal"
         app:elevation="6dp" />

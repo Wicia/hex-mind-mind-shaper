@@ -19,142 +19,168 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- DOMAIN + THREAD -->
+            <!-- SOUL MATE -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="4dp"
+                android:gravity="center_vertical"
+                android:baselineAligned="false">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                    app:srcCompat="@drawable/ic_decorator_olive" />
+
+                <!-- SOUL NAME: Empty -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_soul_mate_placeholder"
+                    style="@style/HexContentButton.NotUsed"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:text="@string/common_btn_add"
+                    android:layout_marginEnd="16dp"
+                    app:icon="@drawable/ic_soul_mates_placeholder"
+                    app:iconGravity="start"
+                    app:iconSize="48dp" />
+
+                <!-- SOUL NAME: With Content -->
+                <TextView
+                    android:id="@+id/tv_soul_mate"
+                    style="@style/TextView_Metadata"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/shape_button"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="16dp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <!-- DOMAIN & PROJECT -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="4dp"
+                android:gravity="center_vertical"
+                android:baselineAligned="false">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_value"
+                    style="@style/HexContentButton.NotUsed"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="0.9"
+                    app:icon="@drawable/ic_value"
+                    app:iconSize="36dp"
+                    android:text="?" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_domain_icon_placeholder"
+                    style="@style/HexContentButton.NotUsed"
+                    android:layout_weight="0.9"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="8dp"
+                    app:icon="@drawable/ic_domain_none"
+                    app:iconGravity="start"
+                    app:iconSize="48dp" />
+
+                <!-- DOMAIN: With Content -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_domain_icon"
+                    style="@style/HexContentButton.Used"
+                    android:layout_weight="0.9"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="8dp"
+                    app:iconGravity="textStart"
+                    app:iconSize="48dp"
+                    android:visibility="gone" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_project_placeholder"
+                    style="@style/HexContentButton.NotUsed"
+                    android:layout_weight="2.2"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/common_btn_add"
+                    app:icon="@drawable/ic_project_placeholder"
+                    app:iconGravity="start"
+                    app:iconSize="48dp" />
+
+                <!-- PROJECT: With content -->
+                <TextView
+                    android:id="@+id/tv_project"
+                    style="@style/TextView_Metadata"
+                    android:layout_weight="2.2"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/shape_button"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="16dp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <!-- THREAD -->
             <LinearLayout
                 android:id="@+id/ll_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginBottom="8dp"
+                android:gravity="center_vertical"
                 android:baselineAligned="false">
 
                 <!-- * Decorator * -->
                 <ImageView
-                    android:layout_weight="15"
+                    android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                    android:layout_gravity="center_vertical|end"
+                    android:layout_gravity="center_vertical"
+                    android:scaleY="-1"
                     app:srcCompat="@drawable/ic_decorator_olive" />
 
                 <!-- THREAD: Empty -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_thread_placeholder"
                     style="@style/HexContentButton.NotUsed"
-                    android:text="@string/common_btn_add"
-                    android:layout_weight="65"
+                    android:layout_weight="3"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
-                    app:icon="@drawable/ic_thread"
+                    android:text="@string/common_btn_add"
+                    android:layout_marginEnd="16dp"
+                    app:icon="@drawable/ic_thread_placeholder"
                     app:iconGravity="start"
-                    app:iconSize="48dp"
-                    />
+                    app:iconSize="48dp" />
 
                 <!-- THREAD: With Content -->
                 <TextView
                     android:id="@+id/tv_thread"
                     style="@style/TextView_Standard_Thread"
-                    android:layout_weight="65"
+                    android:layout_weight="3"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
+                    android:layout_marginEnd="16dp"
                     android:background="@drawable/shape_button"
-                    android:gravity="center"
-                    android:visibility="gone"
-                    />
-
-                <!-- * Decorator * -->
-                <ImageView
-                    android:layout_weight="15"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                    android:layout_gravity="center_vertical|end"
-                    android:scaleX="-1"
-                    app:srcCompat="@drawable/ic_decorator_olive" />
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="16dp"
+                    android:visibility="gone" />
 
             </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="8dp"
-            android:gravity="center_horizontal"
-            android:baselineAligned="false">
-
-            <!-- SOUL NAME: Empty -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_soul_mate_placeholder"
-                style="@style/HexContentButton.NotUsed"
-                android:text="@string/common_btn_add"
-                android:layout_width="120dp"
-                android:layout_height="60dp"
-                app:icon="@drawable/ic_soul_handshake_48px"
-                app:iconGravity="start"
-                app:iconSize="48dp"
-                />
-
-            <!-- SOUL NAME: With Content -->
-            <TextView
-                android:id="@+id/tv_soul_mate"
-                style="@style/TextView_Metadata"
-                android:layout_weight="50"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:background="@drawable/shape_button"
-                android:gravity="center_vertical"
-                android:visibility="gone"
-                />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_project_placeholder"
-                style="@style/HexContentButton.NotUsed"
-                android:layout_width="120dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="8dp"
-                android:text="@string/common_btn_add"
-                app:icon="@drawable/ic_project_recenter_48px"
-                app:iconGravity="start"
-                app:iconSize="48dp" />
-
-            <!-- PROJECT: With content -->
-            <TextView
-                android:id="@+id/tv_project"
-                style="@style/TextView_Metadata"
-                android:layout_weight="50"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/shape_button"
-                android:gravity="center_vertical"
-                android:visibility="gone"
-                />
-
-            <!-- DOMAIN: Empty -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_domain_icon_placeholder"
-                style="@style/HexContentButton.NotUsed"
-                android:text="@string/common_btn_add"
-                android:layout_width="90dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="8dp"
-                app:icon="@drawable/ic_domain_none"
-                app:iconGravity="start"
-                app:iconSize="48dp" />
-
-            <!-- DOMAIN: With Content -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_domain_icon"
-                style="@style/HexContentButton.Used"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="8dp"
-                app:iconGravity="textStart"
-                app:iconSize="48dp"
-                android:visibility="gone"
-                />
-
-        </LinearLayout>
 
             <View
                 android:id="@+id/tv_separator"

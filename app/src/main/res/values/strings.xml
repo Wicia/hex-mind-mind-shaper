@@ -139,7 +139,7 @@
     <string name="settings_domains_domain_name">Twoja nazwa dla domeny</string>
     <string name="settings_domains_error_name_empty">Nazwa domeny nie może być pusta</string>
     <string name="settings_domains_error_name_too_long">Nazwa domeny nie może przekraczać %s znaków</string>
-    <string name="common_btn_add">+</string>
+    <string name="common_btn_add">\?</string>
 
     <string-array name="settings_domains_default_names_list">
         <item>Rozwój, Praca, Biznes</item>
