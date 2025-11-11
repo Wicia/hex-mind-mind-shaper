@@ -67,7 +67,9 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_edit_text"
                     android:hint="@string/capture_hex_tags_tooltip"
-                    android:inputType="textCapSentences"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:minLines="1"
+                    android:maxLines="2"
                     android:padding="12dp" />
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -139,7 +139,12 @@
     <string name="settings_domains_domain_name">Twoja nazwa dla domeny</string>
     <string name="settings_domains_error_name_empty">Nazwa domeny nie może być pusta</string>
     <string name="settings_domains_error_name_too_long">Nazwa domeny nie może przekraczać %s znaków</string>
+
     <string name="common_btn_add">\?</string>
+    <string name="common_hex_tag_project">Projekt</string>
+    <string name="common_hex_tag_soul_mates">Dobre dusze</string>
+    <string name="common_hex_tag_thread">Wątek</string>
+    <string name="common_hex_tag_domain">Domena</string>
 
     <string-array name="settings_domains_default_names_list">
         <item>Rozwój, Praca, Biznes</item>

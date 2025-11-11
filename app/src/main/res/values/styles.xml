@@ -142,10 +142,11 @@
     <!-- ====================================== -->
 
     <style name="DialogTile">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/alegreya_regular</item>
         <item name="android:textColor">@color/app_background</item>
-        <item name="android:layout_marginBottom">24dp</item>
+        <item name="android:layout_marginBottom">18dp</item>
     </style>
 
     <style name="DialogItemText">

@@ -13,34 +13,33 @@ import timber.log.Timber
 import androidx.core.graphics.drawable.toDrawable
 
 /**
- * Reusable dialog for text editing with validation and custom dimmed background
+ * Reusable dialog for text editing with custom dimmed background
  */
 class CommonTextEditDialog(
     private val context: Context,
     private val title: String? = "",
     private val textInput: String = "",
-    // private val validator: ((String) -> ValidationResult)? = null, //TODO: Add validation aspect + uncomment code below
     private val onSave: (String) -> Unit
 ) {
 
     private val dialogView = LayoutInflater.from(context).inflate(R.layout.common_dialog_edit, null)
     private val etInput: TextInputEditText = dialogView.findViewById(R.id.et_input)
-    private val tvValidationInfo: TextView = dialogView.findViewById(R.id.tv_validation_info)
+
+    private val tvHeader : TextView = dialogView.findViewById(R.id.tv_header)
     private val dialog: AlertDialog
 
     init {
         setupInitialValues()
         dialog = createDialog()
-        setupListeners()
     }
 
     /**
      * Sets initial text and hint in EditText
      */
     private fun setupInitialValues() {
+        tvHeader.text = title
         etInput.setText(textInput)
         etInput.setSelection(textInput.length)  // Cursor at end
-        //tvValidationInfo.text = ""
     }
 
     /**
@@ -48,7 +47,6 @@ class CommonTextEditDialog(
      */
     private fun createDialog(): AlertDialog {
         return AlertDialog.Builder(context)
-            .setTitle(title)
             .setView(dialogView)
             .setPositiveButton(context.getString(R.string.common_btn_save)) { _, _ ->
                 handleSave()
@@ -68,55 +66,11 @@ class CommonTextEditDialog(
     }
 
     /**
-     * Sets up real-time validation listener
-     */
-    private fun setupListeners() {
-        etInput.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                // validateInput()
-            }
-        }
-    }
-
-    /**
-     * Validates current input and displays validation message
-     */
-//    private fun validateInput(): Boolean {
-//        val text = etInput.text.toString()
-//
-//        validator?.let { validatorFn ->
-//            val result = validatorFn(text)
-//
-//            tvValidationInfo.text = result.message
-//            tvValidationInfo.setTextColor(
-//                if (result.isValid) {
-//                    context.getColor(R.color.validation_success)
-//                } else {
-//                    context.getColor(R.color.validation_error)
-//                }
-//            )
-//
-//            return result.isValid
-//        }
-//
-//        // No validator = always valid
-//        return true
-//    }
-
-    /**
-     * Handles save button click with validation
+     * Handles save button click
      */
     private fun handleSave() {
         val text = etInput.text.toString()
-
-        //if (validateInput()) {
-            onSave(text)
-            Timber.d("Dialog saved with text: $text")
-//        } else {
-//            Timber.w("Validation failed, cannot save")
-//            // Don't dismiss dialog - let user fix validation errors
-//            show()  // Re-show dialog
-//        }
+        onSave(text)
     }
 
     /**
@@ -124,7 +78,6 @@ class CommonTextEditDialog(
      */
     fun show() {
         dialog.show()
-
         // Request focus and show keyboard
         etInput.requestFocus()
         etInput.postDelayed({

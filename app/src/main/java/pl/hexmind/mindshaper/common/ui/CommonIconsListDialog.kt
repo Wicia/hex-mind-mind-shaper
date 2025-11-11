@@ -6,23 +6,26 @@ import android.graphics.Color.TRANSPARENT
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.TextView
 import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.mindshaper.R
 
 class CommonIconsListDialog private constructor(
     private val context: Context,
+    private val title: String?,
     private val icons: List<CommonIconsListItem>,
     private val onIconSelected: (CommonIconsListItem) -> Unit,
-    private val dimAmount: Float,
-    private val marginDp: Int
 ) {
+    private val dimAmount: Float = 0.9f
+    private val marginDp: Int = 48
 
     private var dialog: Dialog? = null
 
     fun show() {
         dialog = Dialog(context).apply {
             setContentView(R.layout.common_dialog_icons_list)
+            setupTitle()
             setupRecyclerView()
             setupButtons()
             setupWindow()
@@ -42,6 +45,10 @@ class CommonIconsListDialog private constructor(
             dismiss()
         }
         recyclerView.adapter = adapter
+    }
+
+    private fun Dialog.setupTitle() {
+        findViewById<TextView>(R.id.tv_dialog_title).text = (title)
     }
 
     private fun Dialog.setupButtons() {
@@ -68,24 +75,23 @@ class CommonIconsListDialog private constructor(
     }
 
     class Builder(private val context: Context) {
+
+        private var title : String = ""
         private var icons: List<CommonIconsListItem> = emptyList()
         private var onIconSelected: (CommonIconsListItem) -> Unit = {}
-        private var dimAmount: Float = 0.9f
-        private var marginDp: Int = 48
+
+        fun setTitle(title : String) = apply {
+            this.title = title
+        }
 
         fun setIcons(icons: List<CommonIconsListItem>) = apply { this.icons = icons }
 
         fun setOnIconSelected(callback: (CommonIconsListItem) -> Unit) = apply {
             this.onIconSelected = callback
         }
-
-        fun setDimAmount(amount: Float) = apply { this.dimAmount = amount }
-
-        fun setMargin(marginDp: Int) = apply { this.marginDp = marginDp }
-
         fun build(): CommonIconsListDialog {
             require(icons.isNotEmpty()) { "Icons list cannot be empty" }
-            return CommonIconsListDialog(context, icons, onIconSelected, dimAmount, marginDp)
+            return CommonIconsListDialog(context, title, icons, onIconSelected)
         }
 
         fun show(): CommonIconsListDialog {

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -119,6 +120,7 @@ class DetailsActivity : CoreActivity() {
         if (domains.isEmpty()) return
 
         CommonIconsListDialog.Builder(this)
+            .setTitle(this.getString(R.string.common_hex_tag_domain))
             .setIcons(domains)
             .setOnIconSelected { selectedDomain ->
                 onDomainSelected(selectedDomain)
@@ -142,6 +144,7 @@ class DetailsActivity : CoreActivity() {
         CommonTextEditDialog(
             context = this,
             textInput = currentText,
+            title = getString(R.string.common_hex_tag_thread),
             onSave = { newText ->
                 viewModel.updateThread(newText)
             }
@@ -153,6 +156,7 @@ class DetailsActivity : CoreActivity() {
         CommonTextEditDialog(
             context = this,
             textInput = currentText,
+            title = getString(R.string.common_hex_tag_soul_mates),
             onSave = { newText ->
                 viewModel.updateSoulMate(newText)
             }
@@ -164,6 +168,7 @@ class DetailsActivity : CoreActivity() {
         CommonTextEditDialog(
             context = this,
             textInput = currentText,
+            title = getString(R.string.common_hex_tag_project),
             onSave = { newText ->
                 viewModel.updateProject(newText)
             }
