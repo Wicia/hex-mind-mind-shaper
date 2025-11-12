@@ -18,13 +18,12 @@ import javax.inject.Singleton
 class DatabaseInitializer @Inject constructor(
     private val domainRepository: DomainRepository,
     private val iconRepository: IconRepository,
-    private val storage : AppSettingsStorage,
-    private val snapshotManager: DataSnapshotManager // Needed when db is changing during dev
+    private val storage : AppSettingsStorage
 ) {
 
     suspend fun initializeIfNeeded() {
         val storedDBVersion = storage.getCurrentDBVersion()
-        val loadedDBVersion = AppDatabase.Companion.DB_VERSION
+        val loadedDBVersion = AppDatabase.DB_VERSION
 
         if (storedDBVersion != loadedDBVersion) {
             storage.setCurrentDBVersion(loadedDBVersion)

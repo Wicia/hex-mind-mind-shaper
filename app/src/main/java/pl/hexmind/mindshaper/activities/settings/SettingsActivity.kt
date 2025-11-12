@@ -4,14 +4,17 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.view.View
 import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toFile
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -20,12 +23,14 @@ import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.services.validators.DomainValidator
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.common.validation.ValidationResult
+import pl.hexmind.mindshaper.database.initialization.DataSnapshotManager
 import pl.hexmind.mindshaper.databinding.SettingsActivityBinding
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.DomainIconsService
 import pl.hexmind.mindshaper.services.MediaStorageService
 import pl.hexmind.mindshaper.services.dto.DomainDTO
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -49,9 +54,13 @@ class SettingsActivity : CoreActivity() {
     @Inject
     lateinit var domainValidator: DomainValidator
 
+    @Inject
+    lateinit var dataSnapshotManager: DataSnapshotManager
+
     private lateinit var binding: SettingsActivityBinding
 
     private var selectedAudioUri: Uri? = null
+    private var selectedBackupUri: Uri? = null
 
     // Activity result launcher for audio file selection
     private val audioPickerLauncher = registerForActivityResult(
@@ -60,6 +69,17 @@ class SettingsActivity : CoreActivity() {
         if (result.resultCode == RESULT_OK) {
             result.data?.data?.let { uri ->
                 handleSelectedAudioFile(uri)
+            }
+        }
+    }
+
+    // Activity result launcher for backup file selection
+    private val backupPickerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            result.data?.data?.let { uri ->
+                handleSelectedBackupFile(uri)
             }
         }
     }
@@ -85,6 +105,16 @@ class SettingsActivity : CoreActivity() {
         // Save settings button
         binding.btnSaveSettings.setOnClickListener {
             saveSettings()
+        }
+
+        // Backup file selection
+        binding.btnSelectBackup.setOnClickListener {
+            selectBackupFile()
+        }
+
+        // Load backup button
+        binding.btnLoadBackup.setOnClickListener {
+            showSnapshotLoadingDialog()
         }
 
         // Domains icons
@@ -206,7 +236,7 @@ class SettingsActivity : CoreActivity() {
             updateAudioFileDisplay(uri)
 
             val fileName = mediaStorageService.getSimpleFileName(uri)
-            showShortToast(R.string.files_info_selected, fileName)
+            showShortToast(R.string.files_info_selected_name, fileName)
 
             // Reset text color to default - TODO: Use custom color from colors.xml
             binding.tvSelectedFile.setTextColor(getColor(R.color.text_secondary))
@@ -228,6 +258,121 @@ class SettingsActivity : CoreActivity() {
     private fun updateAudioFileDisplay(uri: Uri) {
         val fileInfo = mediaStorageService.getDetailedFileInfo(uri)
         binding.tvSelectedFile.text = fileInfo
+    }
+
+    /**
+     * Open file picker for backup JSON file selection in Downloads/mindshaper_backup folder
+     */
+    private fun selectBackupFile() {
+        try {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                type = "application/json"
+                addCategory(Intent.CATEGORY_OPENABLE)
+
+                // Set initial directory to Downloads/mindshaper_backup (API 26+)
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    val downloadsUri = Uri.parse("content://com.android.externalstorage.documents/document/primary:Download/mindshaper_backup")
+                    putExtra(android.provider.DocumentsContract.EXTRA_INITIAL_URI, downloadsUri)
+                }
+            }
+
+            backupPickerLauncher.launch(intent)
+        }
+        catch (e: Exception) {
+            showShortToast(R.string.files_error_cannot_open_file_picker)
+        }
+    }
+
+    /**
+     * Handle selected backup file
+     */
+    private fun handleSelectedBackupFile(uri: Uri) {
+        try {
+            // Verify if file is accessible
+            if (mediaStorageService.isUriAccessible(uri)) {
+                selectedBackupUri = uri
+                val fileName = getFileNameFromUri(uri)
+                binding.tvSelectedBackup.text = getString(R.string.settings_backup_state_file_selected, fileName)
+                binding.btnLoadBackup.isEnabled = true
+
+                // Reset text color to default
+                binding.tvSelectedBackup.setTextColor(getColor(R.color.text_secondary))
+            }
+            else {
+                showBackupErrorMessage(getString(R.string.files_audio_error_file_not_accessible))
+            }
+        }
+        catch (e: Exception) {
+            showBackupErrorMessage(getString(R.string.file_audio_error_reading_file))
+            showShortToast(R.string.files_error_selecting_file)
+        }
+    }
+
+    private fun showSnapshotLoadingDialog(){
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.common_deletion_dialog_title))
+            .setMessage(getString(R.string.settings_snapshot_restore_warning))
+            .setPositiveButton(getString(R.string.common_deletion_dialog_yes)) { dialog, _ ->
+                loadBackupFile()
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.common_deletion_dialog_no)) { dialog, _ ->
+                Timber.d("Snapshot loading cancelled")
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun loadBackupFile() {
+        selectedBackupUri?.let { uri ->
+            try {
+                lifecycleScope.launch {
+                    val fileName = getFileNameFromUri(uri)
+                    dataSnapshotManager.restoreSnapshot(fileName, this@SettingsActivity)
+                    showShortToast(R.string.settings_backup_loaded_success)
+                    // Reset after successful load
+                    clearBackupSelection()
+                }
+            }
+            catch (e: Exception) {
+                showBackupErrorMessage(getString(R.string.settings_backup_error_loading))
+                showShortToast(R.string.settings_backup_error_loading)
+            }
+        }
+    }
+
+    /**
+     * Clear backup selection and update UI
+     */
+    private fun clearBackupSelection() {
+        selectedBackupUri = null
+        binding.tvSelectedBackup.text = getString(R.string.settings_backup_state_no_file)
+        binding.btnLoadBackup.isEnabled = false
+        binding.tvSelectedBackup.setTextColor(getColor(R.color.text_secondary))
+    }
+
+    /**
+     * Show error message for backup file issues
+     */
+    private fun showBackupErrorMessage(message: String) {
+        binding.tvSelectedBackup.text = message
+        binding.tvSelectedBackup.setTextColor(getColor(R.color.validation_error))
+    }
+
+    /**
+     * Get file name from URI
+     */
+    private fun getFileNameFromUri(uri: Uri): String {
+        var fileName = "Unknown"
+        contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                if (nameIndex != -1) {
+                    fileName = cursor.getString(nameIndex)
+                }
+            }
+        }
+        return fileName
     }
 
     /**

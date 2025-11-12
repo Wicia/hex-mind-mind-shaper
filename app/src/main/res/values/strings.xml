@@ -25,11 +25,12 @@
     <string name="file_audio_error_reading_file">Błąd odczytu pliku audio</string>
     <string name="files_audio_error_no_file_selected">Nie wybrano pliku audio</string>
     <string name="files_error_cannot_open_file_picker">Nie można otworzyć selektora plików</string>
-    <string name="files_info_selected">Wybrano plik: %s</string>
+    <string name="files_info_selected_name">Wybrano plik: %s</string>
     <string name="files_info_selected_temp_access">Plik wybrany - dostęp może być tymczasowy</string>
     <string name="files_error_selecting_file">Błąd podczas wyboru pliku</string>
     <string name="files_audio_error_unknown_file">Nieznany plik audio</string>
     <string name="files_error_unknown_file">Nieznany plik</string>
+    <string name="files_state_no_file_selected">Nie wybrano pliku</string>
 
     <!-- FOLDERS -->
     <string name="in_folder">w folderze</string>
@@ -120,18 +121,18 @@
     <string name="settings_header">Ustawienia</string>
 
     <!-- Your Name Setting -->
-    <string name="settings_your_name_header"># Twoje prawdziwe imię?</string>
+    <string name="settings_your_name_header">Twoje prawdziwe imię?</string>
     <string name="settings_your_name_default">Bezimienn(y/a)</string>
 
     <!-- Greeting Sound Setting -->
-    <string name="settings_greeting_sound_header"># Powitanie</string>
+    <string name="settings_greeting_sound_header">Powitanie</string>
     <string name="settings_greeting_sound_hint">Dźwięk odtwarzany przy pierwszym uruchomieniu dnia</string>
     <string name="settings_greeting_choose_sound_file">Wybierz plik dźwiękowy</string>
     <string name="settings_greeting_state_no_file">Nie wybrano pliku</string>
     <string name="settings_greeting_state_file_name">Wybrano: %s</string>
 
     <!-- Domains -->
-    <string name="settings_domains_header"># Nazwy domen</string>
+    <string name="settings_domains_header">Nazwy domen</string>
     <string name="settings_domains_hint">Tutaj możesz zmienić nazwę oraz ikonkę domeny</string>
 
     <string name="settings_domains_loading_error">Błąd podczas ładowania ikon domen</string>
@@ -146,6 +147,8 @@
     <string name="common_hex_tag_thread">Wątek</string>
     <string name="common_hex_tag_domain">Domena</string>
 
+    <string name="settings_snapshot_restore_warning">Wszystkie obecne dane zostaną zastąpione danymi wczytanymi z wybranego pliku. Kontynuować?</string>
+
     <string-array name="settings_domains_default_names_list">
         <item>Rozwój, Praca, Biznes</item>
         <item>Finanse, Niezależność, Posiadanie</item>
@@ -159,5 +162,15 @@
         <item>Przyroda, Otoczenie, Środowisko</item>
 
     </string-array>
+
+    <!-- Backup Section -->
+    <string name="settings_backup_header">Backup</string>
+    <string name="settings_backup_hint">Wybierz plik kopii zapasowej z folderu Downloads/mind_shaper</string>
+    <string name="settings_backup_select">Wybierz</string>
+    <string name="settings_backup_load">Wczytaj</string>
+    <string name="settings_backup_state_no_file">Nie wybrano pliku</string>
+    <string name="settings_backup_state_file_selected">Wybrany plik: %1$s</string>
+    <string name="settings_backup_loaded_success">Backup wczytany pomyślnie</string>
+    <string name="settings_backup_error_loading">Błąd podczas wczytywania backupu</string>
 
 </resources>

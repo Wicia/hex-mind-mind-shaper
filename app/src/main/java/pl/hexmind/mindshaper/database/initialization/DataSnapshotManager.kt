@@ -81,18 +81,21 @@ class DataSnapshotManager @Inject constructor(
             database.withTransaction  {
                 // 1. Tables with no foreign keys
                 snapshot.domainIcons?.apply {
-                    database.iconDAO().insertOrReplace(snapshot.domainIcons)
+                    database.iconDAO().clearAll()
+                    database.iconDAO().insertOrReplace(this)
                     restoredCount++
                 }
 
                 // 2. Tables with foreign keys
                 snapshot.domains?.apply {
-                    database.domainDAO().insertOrReplace(snapshot.domains)
+                    database.domainDAO().clearAll()
+                    database.domainDAO().insertOrReplace(this)
                     restoredCount++
                 }
 
                 snapshot.thoughts?.apply {
-                    database.thoughtsDao().insertOrReplace(snapshot.thoughts)
+                    database.thoughtsDao().clearAll()
+                    database.thoughtsDao().insertOrReplace(this)
                     restoredCount++
                 }
             }

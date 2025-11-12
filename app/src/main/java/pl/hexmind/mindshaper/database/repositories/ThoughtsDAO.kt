@@ -46,4 +46,7 @@ interface ThoughtsDAO {
 
     @Query("SELECT * FROM thoughts WHERE domain_id = :domainId")
     suspend fun getThoughtByDomainId(domainId: Int): ThoughtEntity?
+
+    @Query("DELETE FROM thoughts")
+    suspend fun clearAll()
 }

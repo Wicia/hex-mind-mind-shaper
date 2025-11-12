@@ -7,6 +7,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import pl.hexmind.mindshaper.database.initialization.DataSnapshotManager
 import pl.hexmind.mindshaper.services.DomainIconsService
 import pl.hexmind.mindshaper.services.PhasesService
 import timber.log.Timber
@@ -23,6 +24,9 @@ class ApplicationMain : Application() {
     @Inject
     lateinit var domainIconsService: DomainIconsService
 
+    @Inject
+    lateinit var snapshotManager: DataSnapshotManager
+
     override fun onCreate() {
         super.onCreate()
 
@@ -35,6 +39,7 @@ class ApplicationMain : Application() {
         CoroutineScope(Dispatchers.IO).launch {
             databaseInitializer.initializeIfNeeded()
             domainIconsService.preloadAllIcons()
+            snapshotManager.createSnapshot() // For preventing data loss
         }
 
         phasesService.saveAppLaunchTime()
