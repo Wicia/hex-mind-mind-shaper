@@ -6,6 +6,7 @@ import android.net.Uri
 import androidx.core.content.edit
 import androidx.core.net.toUri
 import dagger.hilt.android.qualifiers.ApplicationContext
+import pl.hexmind.mindshaper.R
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -78,7 +79,8 @@ class AppSettingsStorage @Inject constructor(
      * Retrieves custom application name
      */
     fun getYourName(): String {
-        return sharedPreferences.getString(PARAM_YOUR_NAME, "") ?: ""
+        val defaultName = context.getString(R.string.settings_your_name_default)
+        return sharedPreferences.getString(PARAM_YOUR_NAME, defaultName) ?: defaultName
     }
 
     // === WELCOME AUDIO FILE ===
