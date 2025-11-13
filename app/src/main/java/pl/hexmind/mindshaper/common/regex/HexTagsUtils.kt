@@ -4,7 +4,7 @@ class HexTagsUtils {
 
     companion object {
         fun parseInput(input : String?) :  HexTags{
-            val input = input?.toString().orEmpty()
+            val input = input.orEmpty()
 
             val soulMateRegex = Regex("@(\\S+)")
             val projectRegex = Regex("#(\\S+)")
@@ -19,8 +19,6 @@ class HexTagsUtils {
 
             return  HexTags(thread = thread, soulMate = soulMate, project = project)
         }
-
-
     }
 }
 

@@ -82,7 +82,9 @@
 
     <!-- Thread (common) -->
     <string name="capture_hex_tags_tooltip">wątek @dusza #projekt</string>
-    <string name="capture_thread_error_words_exceeded">Wątek nie może przekroczyć %d słów...</string>
+    <string name="capture_thread_error_chars_exceeded">Wątek nie może przekroczyć %d znaków...</string>
+    <string name="capture_project_error_chars_exceeded">Projekt nie może przekroczyć %d znaków...</string>
+    <string name="capture_soul_mates_error_chars_exceeded">Imiona dobrych dusz nie mogą przekroczyć %d znaków...</string>
 
     <!-- Type: Rich Text (Note) -->
     <string name="capture_rich_text_hint">Pisz, niech palce płoną :) \n\n * Jeżeli wpiszesz \"x tekst\" to po zapisie \"x\" zamieni się w bullet point </string>

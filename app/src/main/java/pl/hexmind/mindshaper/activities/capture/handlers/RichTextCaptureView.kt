@@ -22,7 +22,7 @@ class RichTextCaptureView @JvmOverloads constructor(
         orientation = VERTICAL
         etRichText = findViewById(R.id.et_rich_notes)
 
-        tvValidationInfo = findViewById(R.id.tv_validation_info)
+        tvValidationInfo = findViewById(R.id.tv_hex_tags_validation_info)
     }
 
     fun updateValidationInfo(result : ValidationResult){

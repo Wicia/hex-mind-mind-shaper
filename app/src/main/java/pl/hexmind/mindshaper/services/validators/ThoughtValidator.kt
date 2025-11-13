@@ -3,10 +3,9 @@ package pl.hexmind.mindshaper.services.validators
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
 import pl.hexmind.mindshaper.common.regex.convertToWords
+import pl.hexmind.mindshaper.common.validation.ValidatedProperty
 import pl.hexmind.mindshaper.common.validation.ValidationResult
-import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,63 +15,70 @@ class ThoughtValidator @Inject constructor(
 ) {
 
     companion object {
-        const val THREAD_MAX_WORDS : Int = 3
+        const val THREAD_MAX_CHARS: Int = 24
+        const val PROJECT_MAX_CHARS: Int = 24
+        const val SOUL_MATES_MAX_CHARS: Int = 24
     }
 
-    fun validateDTO(input: ThoughtDTO): ValidationResult {
-        var result = performThoughtTypeValidation(input)
-        if(result is ValidationResult.Error){
-            return result
+    fun validateRichText(richText: String?): ValidationResult {
+        return if (richText.isNullOrBlank()) {
+            ValidationResult.Error(
+                context.getString(R.string.capture_rich_text_error_note_empty),
+                ValidatedProperty.T_RICH_TEXT
+            )
         }
-        result = validateThread(input.thread)
-        if(result is ValidationResult.Error){
-            return result
-        }
-
-        return  result
-    }
-
-    fun performThoughtTypeValidation(input: ThoughtDTO) : ValidationResult{
-        return when(input.initialThoughtType){
-            InitialThoughtType.RICH_TEXT -> {
-                validateRichText(input.richText)
-            }
-
-            InitialThoughtType.UNKNOWN -> {
-                TODO()
-            }
-            InitialThoughtType.RECORDING -> {
-                TODO()
-            }
-            InitialThoughtType.PHOTO -> {
-                TODO()
-            }
-            InitialThoughtType.DRAWING -> {
-                TODO()
-            }
-        }
-    }
-
-    fun validateRichText(richText : String?) : ValidationResult {
-        return if(richText.isNullOrBlank()){
-            ValidationResult.Error(context.getString(R.string.capture_rich_text_error_note_empty))
-        }
-        else{
+        else {
             ValidationResult.Valid()
         }
     }
 
-    fun validateThread(threadString: String?) : ValidationResult {
+    fun validateThread(threadString: String?): ValidationResult {
         val thread = threadString?.trim().orEmpty()
         if (thread.isEmpty()) {
             return ValidationResult.Valid()
         }
 
-        val words = thread.convertToWords()
+        return if (thread.length > THREAD_MAX_CHARS) {
+            ValidationResult.Error(
+                context.getString(R.string.capture_thread_error_chars_exceeded),
+                ValidatedProperty.T_THREAD
+            )
+        }
+        else {
+            ValidationResult.Valid()
+        }
+    }
 
-        return if (words.size > THREAD_MAX_WORDS) {
-            ValidationResult.Error(context.getString(R.string.capture_thread_error_words_exceeded))
-        } else{
+    fun validateProject(projectString: String?): ValidationResult {
+        val project = projectString?.trim().orEmpty()
+        if (project.isEmpty()) {
+            return ValidationResult.Valid()
+        }
+
+        return if (project.length > PROJECT_MAX_CHARS) {
+            ValidationResult.Error(
+                context.getString(R.string.capture_project_error_chars_exceeded),
+                ValidatedProperty.T_PROJECT
+            )
+        }
+        else {
+            ValidationResult.Valid()
+        }
+    }
+
+    fun validateSoulMates(soulMatesString: String?): ValidationResult {
+        val soulMates = soulMatesString?.trim().orEmpty()
+        if (soulMates.isEmpty()) {
+            return ValidationResult.Valid()
+        }
+
+        return if (soulMates.length > SOUL_MATES_MAX_CHARS) {
+            ValidationResult.Error(
+                context.getString(R.string.capture_soul_mates_error_chars_exceeded),
+                ValidatedProperty.T_SOUL_MATES
+            )
+        }
+        else {
             ValidationResult.Valid()
         }
     }

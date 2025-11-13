@@ -11,11 +11,13 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.capture.ThoughtCaptureHandler
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
+import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import java.io.File
 
 class RecordingCaptureHandler(
     private val activity: Activity,
-    private val view: RecordingCaptureView
+    private val view: RecordingCaptureView,
+    override val validator: ThoughtValidator
 ) : ThoughtCaptureHandler {
 
     private var recorder: MediaRecorder? = null
@@ -93,7 +95,7 @@ class RecordingCaptureHandler(
         view.updateButtons(isRecording, isPlaying, audioFile != null)
     }
 
-    override fun performValidation(): ValidationResult {
+    override fun performTypeSpecificValidation(dto: ThoughtDTO): ValidationResult {
         TODO("Not yet implemented")
     }
 

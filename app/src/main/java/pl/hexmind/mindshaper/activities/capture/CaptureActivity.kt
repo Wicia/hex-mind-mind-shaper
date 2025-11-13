@@ -2,8 +2,9 @@ package pl.hexmind.mindshaper.activities.capture
 
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.FrameLayout
-import androidx.core.widget.doAfterTextChanged
+import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -11,17 +12,17 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
-import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureHandler
-import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import pl.hexmind.mindshaper.activities.capture.handlers.RecordingCaptureHandler
-import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
-import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureView
 import pl.hexmind.mindshaper.activities.capture.handlers.RecordingCaptureView
+import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureHandler
+import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureView
+import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
-import pl.hexmind.mindshaper.common.regex.convertToWords
+import pl.hexmind.mindshaper.common.validation.ValidatedProperty
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
+import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -40,8 +41,9 @@ class CaptureActivity : CoreActivity() {
     private var initialThoughtType : InitialThoughtType = InitialThoughtType.UNKNOWN
     private lateinit var flContainerFeatures: FrameLayout
     private lateinit var btnSave: MaterialButton
-
     private lateinit var etHexTags : TextInputEditText
+
+    private lateinit var tvHexTagsValidationInfo : TextView
 
     // HANDLER for specific input/thought type
     private lateinit var thoughtCaptureHandler: ThoughtCaptureHandler
@@ -59,6 +61,7 @@ class CaptureActivity : CoreActivity() {
         etHexTags = findViewById(R.id.et_hex_tags)
         flContainerFeatures = findViewById(R.id.fl_container_features)
         btnSave = findViewById(R.id.btn_save)
+        tvHexTagsValidationInfo = findViewById(R.id.tv_hex_tags_validation_info)
     }
 
     private fun saveExtrasFromIntent() {
@@ -83,7 +86,7 @@ class CaptureActivity : CoreActivity() {
             InitialThoughtType.RECORDING -> {
                 val recordingCaptureView = RecordingCaptureView(this)
                 flContainerFeatures.addView(recordingCaptureView)
-                thoughtCaptureHandler = RecordingCaptureHandler(this, recordingCaptureView).apply {
+                thoughtCaptureHandler = RecordingCaptureHandler(this, recordingCaptureView, thoughtValidator).apply {
                     setupListeners()
                 }
             }
@@ -97,29 +100,60 @@ class CaptureActivity : CoreActivity() {
         }
 
         // TODO: Rethink it and fix => there is a small bug below :)
-        etHexTags.doAfterTextChanged { editable ->
-            editable?.let {
-                val words = it.toString().convertToWords()
-                if (thoughtValidator.validateThread(it.toString()) is ValidationResult.Error) {
-                    val limited = words.take(ThoughtValidator.THREAD_MAX_WORDS).joinToString(" ")
-                    etHexTags.setText(limited)
-                    etHexTags.setSelection(limited.length)
-                }
-            }
-        }
+        // ! info: code below prevents adding more than 3 separate words in input field
+//        etHexTags.doAfterTextChanged { editable ->
+//            editable?.let {
+//                val words = it.toString().convertToWords()
+//                if (thoughtValidator.validateThread(it.toString()) is ValidationResult.Error) {
+//                    val limited = words.take(ThoughtValidator.THREAD_MAX_WORDS).joinToString(" ")
+//                    etHexTags.setText(limited)
+//                    etHexTags.setSelection(limited.length)
+//                }
+//            }
+//        }
     }
 
     private suspend fun saveThought() {
-        val result = thoughtCaptureHandler.performValidation()
-        if(result is ValidationResult.Error){
-            return
-        }
-        var dtoToSave = ThoughtDTO()
-        dtoToSave = thoughtCaptureHandler.getUpdatedDTO(dtoToSave)
-        dtoToSave = updateDTOWithHexTags(dtoToSave)
+        resetValidationUI()
+        val dto = ThoughtDTO()
+        val updatedDto = thoughtCaptureHandler.getUpdatedDTO(dto)
+        val dtoToSave = updateDTOWithHexTags(updatedDto)
 
-        thoughtsService.addThought(dtoToSave)
-        finish()
+        val validationResult = thoughtCaptureHandler.performValidation(dtoToSave)
+        updateUIWithValidationResult(validationResult)
+        if (validationResult is ValidationResult.Valid){
+            thoughtsService.addThought(dtoToSave)
+            finish()
+        }
+    }
+
+    private fun resetValidationUI(){
+        tvHexTagsValidationInfo.visibility = View.GONE
+        tvHexTagsValidationInfo.text = null
+    }
+
+    private fun updateUIWithValidationResult(result : ValidationResult){
+        if (result is ValidationResult.Error){
+            val validatedProperty = result.refProperty
+            if (validatedProperty == ValidatedProperty.T_THREAD) {
+                tvHexTagsValidationInfo.visibility = View.VISIBLE
+                tvHexTagsValidationInfo.text = result.message
+            }
+            else if (validatedProperty == ValidatedProperty.T_PROJECT) {
+                tvHexTagsValidationInfo.visibility = View.VISIBLE
+                tvHexTagsValidationInfo.text = result.message
+            }
+            else if (validatedProperty == ValidatedProperty.T_SOUL_MATES) {
+                tvHexTagsValidationInfo.visibility = View.VISIBLE
+                tvHexTagsValidationInfo.text = result.message
+            }
+            else if (validatedProperty == ValidatedProperty.T_RICH_TEXT) {
+                // Skipping - already RichText has real time validation }
+            }
+        }
+        else{
+            tvHexTagsValidationInfo.visibility = View.GONE
+        }
     }
 
     private fun updateDTOWithHexTags(dtoToUpdate : ThoughtDTO) : ThoughtDTO{

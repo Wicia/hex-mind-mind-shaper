@@ -28,7 +28,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/tv_validation_info"
+        android:id="@+id/tv_hex_tags_validation_info"
         style="@style/TextView_Info_Success"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
