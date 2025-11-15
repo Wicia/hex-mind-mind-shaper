@@ -115,6 +115,16 @@
     <string name="carousel_thought_thread_empty">...</string>
     <string name="carousel_searchbar_hint">Szukaj @dobrejduszy / #projektu / wątku...</string>
 
+    <!-- Sort Properties -->
+    <string name="sort_property_created_at">Data utworzenia</string>
+    <string name="sort_property_thread">Wątek</string>
+    <string name="sort_property_text">Tekst</string>
+    <string name="sort_property_soul_mate">Dobra dusza</string>
+    <string name="sort_property_project">Projekt</string>
+
+    <!-- Sort Directions -->
+    <string name="sort_direction_description">Kierunek sortowania</string>
+
 <!-- ====================================== -->
 <!--    ACTIVITY: SETTINGS -->
 <!-- ====================================== -->

@@ -8,14 +8,17 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
+import pl.hexmind.mindshaper.common.SortConfig
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
+import timber.log.Timber
 import kotlin.math.abs
 
 /**
@@ -33,6 +36,7 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
     // Search UI components
     private lateinit var tilSearch: TextInputLayout
     private lateinit var etSearch: TextInputEditText
+    private lateinit var btnSort: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +45,7 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
         initializeViews()
         setupCarousel()
         setupSearchBar()
+        setupSortButton()
         setupReactiveDataObserver()
         setupGestureDetector()
 
@@ -51,6 +56,7 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
         viewPager = findViewById(R.id.vp_thoughts)
         tilSearch = findViewById(R.id.til_search)
         etSearch = findViewById(R.id.et_search)
+        btnSort = findViewById(R.id.btn_sort)
     }
 
     /**
@@ -96,6 +102,28 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
         }
     }
 
+    /**
+     * Setup sort button to show sorting dialog
+     */
+    private fun setupSortButton() {
+        btnSort.setOnClickListener {
+            showSortDialog()
+        }
+    }
+
+    /**
+     * Show sorting dialog with current configuration
+     */
+    private fun showSortDialog() {
+        val currentConfig = viewModel.sortConfig.value ?: SortConfig()
+
+        val dialog = SortDialogFragment(currentConfig) { newConfig ->
+            viewModel.updateSortConfig(newConfig)
+        }
+
+        dialog.show(supportFragmentManager, SortDialogFragment.TAG)
+    }
+
     private fun deleteThought(thought: ThoughtDTO) {
         viewModel.deleteThought(thought)
         showShortToast(R.string.common_deletion_dialog_confirmation, "Myśl")
@@ -109,6 +137,36 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
             // Submit to adapter - will automatically animate changes with DiffUtil
             adapter.submitList(thoughtsDTO)
         }
+
+        // Observe sort config changes to reset ViewPager position with animation
+        viewModel.sortConfig.observe(this) { sortConfig ->
+            animateListRefresh(sortConfig)
+        }
+    }
+
+    /**
+     * Animate ViewPager refresh with fade and scale effect
+     */
+    private fun animateListRefresh(sortConfig: SortConfig) {
+        // Fade out and scale down
+        viewPager.animate()
+            .alpha(0.3f)
+            .scaleX(0.95f)
+            .scaleY(0.95f)
+            .setDuration(150)
+            .withEndAction {
+                // Reset to first item
+                viewPager.setCurrentItem(0, false)
+
+                // Fade in and scale up
+                viewPager.animate()
+                    .alpha(1f)
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(200)
+                    .start()
+            }
+            .start()
     }
 
     // Initialize gesture detector for swipe down recognition

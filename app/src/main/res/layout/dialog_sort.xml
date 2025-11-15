@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="24dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="@color/app_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <!-- PROPERTY SELECTION BUTTONS -->
+        <!-- ! Property buttons will be added programmatically -->
+        <LinearLayout
+            android:id="@+id/container_sort_properties"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="8dp">
+        </LinearLayout>
+
+        <!-- SORT DIRECTION TOGGLE -->
+        <!-- TODO: Make this below section with sorting props - to support visual mapping for user -->
+        <LinearLayout
+            android:id="@+id/container_direction"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            >
+
+            <!-- TODO: Remove or use it -->
+            <TextView
+                android:id="@+id/tv_sort_direction_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textSize="12sp"
+                android:visibility="gone"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/btn_sort_direction"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/sort_direction_description"
+                android:src="@drawable/ic_sort_descending"
+                app:tint="@color/_orange_dark" />
+
+            <!-- TODO: Remove or use it -->
+            <TextView
+                android:id="@+id/tv_sort_direction_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textSize="12sp"
+                android:visibility="gone"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
