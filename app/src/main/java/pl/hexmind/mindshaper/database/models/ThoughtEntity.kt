@@ -42,5 +42,8 @@ data class ThoughtEntity(
     val soulMate: String? = null,
 
     @ColumnInfo(name = "project")
-    val project: String? = null
+    val project: String? = null,
+
+    @ColumnInfo(name = "value")
+    val value : Int = 1
 )

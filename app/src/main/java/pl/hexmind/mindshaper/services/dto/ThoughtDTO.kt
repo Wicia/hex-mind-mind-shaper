@@ -17,5 +17,6 @@ data class ThoughtDTO(
     var richText: String? = null,
     var soulMate: String? = null,
     var project: String? = null,
+    var value: Int = 1,
     var initialThoughtType: InitialThoughtType = InitialThoughtType.UNKNOWN
 ) : Parcelable

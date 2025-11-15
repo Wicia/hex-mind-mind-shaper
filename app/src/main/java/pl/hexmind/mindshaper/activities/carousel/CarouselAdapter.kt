@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
@@ -52,6 +53,8 @@ class CarouselAdapter(
 
         private val tvRichText: HexTextView = itemView.findViewById(R.id.tv_rich_text)
 
+        private val btnValue: MaterialButton = itemView.findViewById(R.id.btn_value)
+
         private var viewedThoughtDTO : ThoughtDTO? = null
 
         private val gestureDetector = GestureDetector(itemView.context, this).apply {
@@ -82,6 +85,8 @@ class CarouselAdapter(
             if(thought.thread.isNullOrBlank()){
                 ivDomainIcon.setImageResource(R.drawable.ic_domain_none)
             }
+
+            btnValue.text = thought.value.toString()
         }
 
         fun setViewOnTouchListener(){

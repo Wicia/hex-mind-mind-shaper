@@ -7,6 +7,7 @@ import pl.hexmind.mindshaper.R
  * Properties available for sorting thoughts
  */
 enum class SortProperty(@StringRes val displayNameRes: Int, val type : SortPropertyType) {
+    VALUE(R.string.sort_property_value, SortPropertyType.NUMBER),
     CREATED_AT(R.string.sort_property_created_at, SortPropertyType.DATE),
     THREAD(R.string.sort_property_thread, SortPropertyType.TEXT),
     SOUL_MATE(R.string.sort_property_soul_mate, SortPropertyType.TEXT),

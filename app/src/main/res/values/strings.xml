@@ -121,6 +121,7 @@
     <string name="sort_property_text">Tekst</string>
     <string name="sort_property_soul_mate">Dobra dusza</string>
     <string name="sort_property_project">Projekt</string>
+    <string name="sort_property_value">Wartość</string>
 
     <!-- Sort Directions -->
     <string name="sort_direction_description">Kierunek sortowania</string>

@@ -28,14 +28,18 @@
                 android:gravity="center_vertical"
                 android:baselineAligned="false">
 
+                <!-- * Decorator / Increase Button * -->
                 <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_weight="1"
+                    android:id="@+id/btnValueIncrease"
+                    android:layout_weight="0.9"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                    android:tint="@color/_orange_dark"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:tint="@color/button_primary"
                     app:srcCompat="@drawable/ic_decorator_olive" />
 
                 <!-- SOUL NAME: Empty -->
@@ -75,15 +79,21 @@
                 android:gravity="center_vertical"
                 android:baselineAligned="false">
 
+                <!-- Clickable button with text -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_value"
-                    style="@style/HexContentButton.NotUsed"
+                    android:id="@+id/btnValue"
+                    android:layout_weight="0.75"
+                    style="@style/HexContentButton.Used"
                     android:layout_width="0dp"
-                    android:layout_height="70dp"
-                    android:layout_weight="0.9"
-                    app:icon="@drawable/ic_value"
-                    app:iconSize="36dp"
-                    android:text="?" />
+                    android:layout_height="72dp"
+                    android:layout_gravity="right"
+                    android:background="@drawable/shape_hexagon"
+                    android:backgroundTint="@null"
+                    android:letterSpacing="-0.1"
+                    android:text="10"
+                    android:textColor="@color/text_on_primary"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_domain_icon_placeholder"
@@ -145,15 +155,19 @@
                 android:gravity="center_vertical"
                 android:baselineAligned="false">
 
-                <!-- * Decorator * -->
+                <!-- * Decorator / Decrease Button * -->
                 <ImageView
-                    android:layout_weight="1"
+                    android:id="@+id/btnValueDecrease"
+                    android:layout_weight="0.9"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:contentDescription="@string/common_placeholder_accessibility_content_desc"
                     android:layout_gravity="center_vertical"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:scaleY="-1"
-                    android:tint="@color/_orange_dark"
+                    android:tint="@color/button_primary"
                     app:srcCompat="@drawable/ic_decorator_olive" />
 
                 <!-- THREAD: Empty -->

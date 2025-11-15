@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1f66c47304ef62fd4f3d6bc957f874d0",
+    "identityHash": "59d78845c3847dca7fcb00ea4946809d",
     "entities": [
       {
         "tableName": "THOUGHTS",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `domain_id` INTEGER, `thread` TEXT, `created_at` INTEGER NOT NULL, `rich_text` TEXT, `soul_mate` TEXT, `project` TEXT, FOREIGN KEY(`domain_id`) REFERENCES `DOMAINS`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `domain_id` INTEGER, `thread` TEXT, `created_at` INTEGER NOT NULL, `rich_text` TEXT, `soul_mate` TEXT, `project` TEXT, `value` INTEGER NOT NULL, FOREIGN KEY(`domain_id`) REFERENCES `DOMAINS`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
         "fields": [
           {
             "fieldPath": "id",
@@ -49,6 +49,12 @@
             "columnName": "project",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -166,7 +172,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1f66c47304ef62fd4f3d6bc957f874d0')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '59d78845c3847dca7fcb00ea4946809d')"
     ]
   }
 }

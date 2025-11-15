@@ -11,6 +11,7 @@ import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,6 +29,11 @@ class DetailsViewModel @Inject constructor(
 
     private val _domainsWithIcons = MutableLiveData<List<CommonIconsListItem>>(emptyList())
     val domainsWithIcons: LiveData<List<CommonIconsListItem>> = _domainsWithIcons
+
+    companion object {
+        const val MIN_VALUE = 1
+        const val MAX_VALUE = 10
+    }
 
     fun loadThought(id: Int) {
         _thoughtId.value = id
@@ -80,6 +86,36 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
                 thought.project = project
+                thoughtsService.updateThought(thought)
+            }
+        }
+    }
+
+    /**
+     * Increase value by 1 (max 10)
+     */
+    fun increaseValue() {
+        updateValue(1)
+    }
+
+    /**
+     * Decrease value by 1 (min 1)
+     */
+    fun decreaseValue() {
+        updateValue(-1)
+    }
+
+    /**
+     * Update value with bounds checking (1-10)
+     * @param delta +1 for increase, -1 for decrease
+     */
+    fun updateValue(delta: Int) {
+        viewModelScope.launch {
+            thoughtDetails.value?.let { thought ->
+                val currentValue = thought.value
+                val newValue = (currentValue + delta).coerceIn(MIN_VALUE, MAX_VALUE)
+
+                thought.value = newValue
                 thoughtsService.updateThought(thought)
             }
         }

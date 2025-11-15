@@ -116,6 +116,7 @@ class CarouselViewModel @Inject constructor(
             SortProperty.THREAD -> compareBy(nullsLast()) { it.thread?.lowercase() }
             SortProperty.SOUL_MATE -> compareBy(nullsLast()) { it.soulMate?.lowercase() }
             SortProperty.PROJECT -> compareBy(nullsLast()) { it.project?.lowercase() }
+            SortProperty.VALUE -> compareBy(nullsLast()) { it.value }
         }
 
         val sorted = when (config.direction) {

@@ -1,6 +1,7 @@
 package pl.hexmind.mindshaper.activities.details
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
@@ -102,6 +103,18 @@ class DetailsActivity : CoreActivity() {
             tvProject.setOnClickListener {
                 showEditProjectDialog()
             }
+
+            // Value increase/decrease buttons
+            btnValueIncrease.setOnClickListener {
+                viewModel.increaseValue()
+            }
+            btnValueDecrease.setOnClickListener {
+                viewModel.decreaseValue()
+            }
+            btnValue.setOnClickListener {
+                // Optional: show dialog to set value directly
+                showEditValueDialog()
+            }
         }
     }
 
@@ -175,11 +188,31 @@ class DetailsActivity : CoreActivity() {
         ).show()
     }
 
+    private fun showEditValueDialog() {
+        // TODO: To be handled later - version 2.0
+//        val currentValue = viewModel.thoughtDetails.value?.value ?: 1
+//
+//        // Simple dialog with buttons 1-10
+//        val values = (1..10).toList()
+//        val items = values.map { it.toString() }.toTypedArray()
+//
+//        androidx.appcompat.app.AlertDialog.Builder(this)
+//            .setTitle("Wybierz wartość")
+//            .setItems(items) { dialog, which ->
+//                val newValue = values[which]
+//                viewModel.updateValue(newValue - currentValue)
+//                dialog.dismiss()
+//            }
+//            .setNegativeButton("Anuluj", null)
+//            .show()
+    }
+
     private fun updateUI(thought: ThoughtDTO) {
         updateRichTextUI(thought)
         updateThreadUI(thought)
         updateSoulNameUI(thought)
         updateProjectUI(thought)
+        updateValueUI(thought)
         lifecycleScope.launch {
             updateDomainUI(thought)
         }
@@ -251,6 +284,42 @@ class DetailsActivity : CoreActivity() {
             binding.tvProject.text = thought.project
         }
     }
+
+    /**
+     * Update value button UI with current value
+     */
+    private fun updateValueUI(thought: ThoughtDTO) {
+        val value = thought.value
+
+        // Set text to display value
+        binding.btnValue.text = value.toString()
+
+        // Enable/disable buttons based on bounds
+        binding.btnValueIncrease.isEnabled = value < DetailsViewModel.MAX_VALUE
+        binding.btnValueDecrease.isEnabled = value > DetailsViewModel.MIN_VALUE
+
+        if(!binding.btnValueIncrease.isEnabled){
+            binding.btnValueIncrease.imageTintList  = ColorStateList.valueOf(
+                ContextCompat.getColor(this, R.color.button_disabled_background)
+            )
+        }
+        else{
+            binding.btnValueIncrease.imageTintList  = ColorStateList.valueOf(
+                ContextCompat.getColor(this, R.color.button_primary)
+            )
+        }
+        if(!binding.btnValueDecrease.isEnabled){
+            binding.btnValueDecrease.imageTintList  = ColorStateList.valueOf(
+                ContextCompat.getColor(this, R.color.button_disabled_background)
+            )
+        }
+        else{
+            binding.btnValueDecrease.imageTintList  = ColorStateList.valueOf(
+                ContextCompat.getColor(this, R.color.button_primary)
+            )
+        }
+    }
+
     private fun getIcon(iconIdToFind: Int): Drawable {
         val defaultIcon = AppCompatResources.getDrawable(this, R.drawable.ic_domain_none)!!
         val domains = viewModel.domainsWithIcons.value ?: emptyList()
