@@ -67,9 +67,9 @@
                 android:contentDescription="@string/common_placeholder_accessibility_content_desc"
                 android:src="@drawable/ic_domain_none" />
 
-            <!-- THREAD -->
+            <!-- METADATA -->
             <TextView
-                android:id="@+id/tv_thought_thread"
+                android:id="@+id/tv_though_metadata"
                 style="@style/TextView_Metadata_Secondary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

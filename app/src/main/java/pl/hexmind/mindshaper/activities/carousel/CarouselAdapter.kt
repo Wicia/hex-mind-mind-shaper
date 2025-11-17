@@ -47,7 +47,7 @@ class CarouselAdapter(
         GestureDetector.OnGestureListener,
         GestureDetector.OnDoubleTapListener {
 
-        private val tvThread: TextView = itemView.findViewById(R.id.tv_thought_thread)
+        private val tvMetadata: TextView = itemView.findViewById(R.id.tv_though_metadata)
         private val tvCreatedAt: TextView = itemView.findViewById(R.id.tv_created_at)
         private val ivDomainIcon: ImageView = itemView.findViewById(R.id.iv_domain_icon)
 
@@ -71,20 +71,20 @@ class CarouselAdapter(
             //TODO: Extend by checking thought initial type
             tvRichText.originalText = thought.richText.orEmpty()
 
-            when {
-                thought.thread.isNullOrBlank() -> {
-                    tvThread.text = itemView.context.getString(R.string.carousel_thought_thread_empty)
-                }
-                else -> {
-                    tvThread.text = thought.thread
-                }
+            if(thought.thread.isNullOrBlank() && thought.project.isNullOrBlank()){
+                tvMetadata.text = itemView.context.getString(R.string.carousel_thought_thread_empty)
+            }
+            else if(thought.thread.isNullOrBlank() && !thought.project.isNullOrBlank()){
+                tvMetadata.text = thought.project
+            }
+            else{
+                tvMetadata.text = thought.thread
             }
 
             tvCreatedAt.text = thought.createdAt?.toLocalDateString()
 
-            if(thought.thread.isNullOrBlank()){
-                ivDomainIcon.setImageResource(R.drawable.ic_domain_none)
-            }
+            // TODO: Load icons = refactoring :)
+            ivDomainIcon.setImageResource(R.drawable.ic_domain_none)
 
             btnValue.text = thought.value.toString()
         }
