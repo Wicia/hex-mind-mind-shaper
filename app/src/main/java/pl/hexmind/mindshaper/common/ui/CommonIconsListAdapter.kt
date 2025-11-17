@@ -58,9 +58,13 @@ class CommonIconsListAdapter(
 }
 
 data class CommonIconsListItem(
-    val labelSourceId : Int,
-    val labelText: String,
-    val iconSourceId : Int,
+    // Icon
     val iconDrawable: Drawable,
+    val iconEntityId : Int? = null, // Can be e.g. domain ID
+
+    // Text under icon
+    val labelText: String,
+    val labelEntityId : Int? = null,
+
     val isSelected: Boolean = false
 )

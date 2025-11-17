@@ -84,7 +84,7 @@ class DomainIconsService @Inject constructor(
         return getDefaultIcon()
     }
 
-    private fun getDefaultIcon(): Drawable {
+    fun getDefaultIcon(): Drawable {
         return AppCompatResources.getDrawable(context, R.drawable.ic_domain_none)
             ?: throw IllegalStateException("Cannot load default icon")
     }

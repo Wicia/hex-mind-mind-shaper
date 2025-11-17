@@ -119,7 +119,9 @@ class DetailsActivity : CoreActivity() {
     }
 
     private fun onDomainSelected(domain: CommonIconsListItem) {
-        viewModel.updateDomain(domain.labelSourceId)
+        domain.labelEntityId?.let {
+            viewModel.updateDomain(domainId = it)
+        }
     }
 
     private fun navigateToCarousel() {
@@ -323,6 +325,6 @@ class DetailsActivity : CoreActivity() {
     private fun getIcon(iconIdToFind: Int): Drawable {
         val defaultIcon = AppCompatResources.getDrawable(this, R.drawable.ic_domain_none)!!
         val domains = viewModel.domainsWithIcons.value ?: emptyList()
-        return domains.find { it.iconSourceId == iconIdToFind }?.iconDrawable ?: defaultIcon
+        return domains.find { it.iconEntityId == iconIdToFind }?.iconDrawable ?: defaultIcon
     }
 }
