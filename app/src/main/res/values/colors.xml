@@ -82,7 +82,7 @@
     <color name="button_icon_fill">@color/_orange_medium</color>
 
     <color name="button_icon_not_used_fill">@color/_orange_medium</color>
-    <color name="button_icon_used_fill">@color/_gray_mid</color>
+    <color name="button_icon_used_fill">@color/_orange_soft</color>
 
     <color name="button_icon_disabled_fill">@color/_gray_light</color>
 
