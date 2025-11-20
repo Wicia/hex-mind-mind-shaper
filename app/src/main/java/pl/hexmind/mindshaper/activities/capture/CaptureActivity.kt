@@ -7,6 +7,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -40,7 +41,7 @@ class CaptureActivity : CoreActivity() {
 
     private var initialThoughtType : InitialThoughtType = InitialThoughtType.UNKNOWN
     private lateinit var flContainerFeatures: FrameLayout
-    private lateinit var btnSave: MaterialButton
+    private lateinit var btnSave: FloatingActionButton
     private lateinit var etHexTags : TextInputEditText
 
     private lateinit var tvHexTagsValidationInfo : TextView

@@ -1,101 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     android:background="@color/app_background">
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Header -->
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="24dp"
-            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-            app:srcCompat="@drawable/ic_catching_thought" />
-
-        <TextView
-            style="@style/TextView_Header_Activity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/capture_main_label"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="24dp" />
-
-        <!-- DYNAMIC CONTENT - NOTES / AUDIO etc. -->
-        <FrameLayout
-            android:id="@+id/fl_container_features"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <!-- HEX TAGS -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+            android:orientation="vertical">
 
+            <!-- Header -->
             <ImageView
-                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                android:id="@+id/iv_icon_signs"
                 android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center_vertical"
-                app:tint="@color/_gray_light"
-                app:srcCompat="@drawable/ic_hex_tags" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minWidth="140dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                app:boxStrokeColor="#FFAF7A"
-                app:hintTextColor="#FF8C42"
-                app:hintEnabled="false">
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                app:srcCompat="@drawable/ic_catching_thought" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_hex_tags"
+            <TextView
+                style="@style/TextView_Header_Activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:text="@string/capture_main_label" />
+
+            <!-- DYNAMIC CONTENT - NOTES / AUDIO etc. -->
+            <FrameLayout
+                android:id="@+id/fl_container_features"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- HEX TAGS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_icon_hex_tags"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                    app:srcCompat="@drawable/ic_hex_tags"
+                    app:tint="@color/_gray_light" />
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_edit_text"
-                    android:hint="@string/capture_hex_tags_tooltip"
-                    android:inputType="textCapSentences|textMultiLine"
-                    android:minLines="1"
-                    android:maxLines="2"
-                    android:padding="12dp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginEnd="8dp"
+                    android:minWidth="140dp"
+                    app:boxStrokeColor="#FFAF7A"
+                    app:hintEnabled="false"
+                    app:hintTextColor="#FF8C42">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_hex_tags"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_edit_text"
+                        android:hint="@string/capture_hex_tags_tooltip"
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:maxLines="2"
+                        android:minLines="1"
+                        android:padding="12dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_hex_tags_validation_info"
+                style="@style/TextView_Info_Success"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp"
+                android:gravity="start"
+                android:text="@string/common_validation_info_initial" />
 
         </LinearLayout>
+    </ScrollView>
 
-        <TextView
-            android:id="@+id/tv_hex_tags_validation_info"
-            style="@style/TextView_Info_Success"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/common_validation_info_initial"
-            android:gravity="start"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="52dp"
-            android:layout_marginBottom="24dp" />
+    <!-- SAVE (hiding on scrolling) -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+        android:src="@drawable/ic_save"
+        app:backgroundTint="@color/button_primary"
+        app:fabSize="normal"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+        app:maxImageSize="32dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text='@string/common_btn_save'
-            android:padding="16dp"
-            android:layout_marginTop="24dp"
-            android:backgroundTint="@color/button_primary"
-            app:cornerRadius="8dp"/>
-
-    </LinearLayout>
-
-</ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
