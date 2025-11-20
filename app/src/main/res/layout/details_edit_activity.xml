@@ -30,8 +30,8 @@
 
                 <!-- * Decorator / Increase Button * -->
                 <ImageView
-                    android:id="@+id/btnValueIncrease"
-                    android:layout_weight="0.9"
+                    android:id="@+id/btn_value_increase"
+                    android:layout_weight="0.8"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
@@ -39,7 +39,8 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:clickable="true"
                     android:focusable="true"
-                    android:tint="@color/button_primary"
+                    android:scaleX="-1"
+                    android:tint="@color/button_secondary"
                     app:srcCompat="@drawable/ic_decorator_olive"
                     />
 
@@ -49,12 +50,12 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_soul_mate_placeholder"
                     style="@style/MetadataContentButton.NotUsed"
-                    android:layout_weight="2.8"
+                    android:layout_weight="3"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:text="@string/common_btn_add"
                     android:layout_marginEnd="18dp"
-                    app:icon="@drawable/ic_soul_mates_placeholder"
+                    app:icon="@drawable/ic_metadata_soul_mates"
                     app:iconSize="40dp"
                     />
 
@@ -62,12 +63,12 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/tv_soul_mate"
                     style="@style/MetadataContentButton.Used"
-                    android:layout_weight="2.8"
+                    android:layout_weight="3"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginEnd="18dp"
                     android:visibility="gone"
-                    app:icon="@drawable/ic_soul_mates_placeholder"
+                    app:icon="@drawable/ic_metadata_soul_mates"
                     app:iconSize="40dp"
                     />
 
@@ -82,27 +83,24 @@
                 android:gravity="center_vertical"
                 android:baselineAligned="false">
 
-                <!-- Clickable button with text -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnValue"
-                    android:layout_weight="0.75"
+                <pl.hexmind.mindshaper.common.ui.ValueBar
+                    android:id="@+id/vb_thought_value"
+                    android:layout_weight="0.9"
                     android:layout_width="0dp"
-                    android:layout_height="72dp"
-                    android:layout_gravity="right"
-                    android:background="@drawable/shape_hexagon"
-                    android:backgroundTint="@null"
-                    android:letterSpacing="-0.1"
-                    android:text="10"
-                    android:textColor="@color/text_on_primary"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
+                    android:layout_height="70dp"
+                    app:radius="50dp"
+                    app:minDotRadius="5dp"
+                    app:maxDotRadius="10dp"
+                    app:dotBackgroundColor="#E0E0E0"
+                    app:dotProgressColor="@color/_orange_grim"
+                    app:dotTextColor="@color/black"
                     />
 
                 <!-- Domain: EMPTY -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_domain_icon_placeholder"
                     style="@style/MetadataContentButton.NotUsed"
-                    android:layout_weight="0.9"
+                    android:layout_weight="0.75"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginStart="8dp"
@@ -115,7 +113,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_domain_icon"
                     style="@style/MetadataContentButton.Used"
-                    android:layout_weight="0.9"
+                    android:layout_weight="0.75"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_marginStart="8dp"
@@ -128,12 +126,12 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_project_placeholder"
                     style="@style/MetadataContentButton.NotUsed"
-                    android:layout_weight="2.2"
+                    android:layout_weight="3"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="8dp"
                     android:text="@string/common_btn_add"
-                    app:icon="@drawable/ic_project_placeholder"
+                    app:icon="@drawable/ic_metadata_project"
                     app:iconSize="40dp"
                     />
 
@@ -141,11 +139,11 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/tv_project"
                     style="@style/MetadataContentButton.Used"
-                    android:layout_weight="2.2"
+                    android:layout_weight="3"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="8dp"
-                    app:icon="@drawable/ic_project_placeholder"
+                    app:icon="@drawable/ic_metadata_project"
                     app:iconSize="40dp"
                     android:visibility="gone"
                     />
@@ -165,7 +163,7 @@
                 <!-- * Decorator / Decrease Button * -->
                 <ImageView
                     android:id="@+id/btn_value_decrease"
-                    android:layout_weight="0.9"
+                    android:layout_weight="0.8"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:contentDescription="@string/common_placeholder_accessibility_content_desc"
@@ -174,32 +172,35 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:scaleY="-1"
-                    android:tint="@color/button_primary"
+                    android:scaleX="-1"
+                    android:tint="@color/button_secondary"
                     app:srcCompat="@drawable/ic_decorator_olive"
                     />
 
                 <!-- thread: EMPTY -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_thread_placeholder"
-                    style="@style/MetadataContentButton.NotUsed"
-                    android:layout_weight="2.8"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:text="@string/common_btn_add"
-                    android:layout_marginEnd="18dp"
-                    app:icon="@drawable/ic_thread_placeholder"
-                    app:iconSize="40dp"
-                    />
 
                 <!-- thread: CONTENT -->
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_thread_placeholder"
+                    style="@style/MetadataContentButton.NotUsed"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="18dp"
+                    android:layout_weight="3"
+                    android:text="@string/common_btn_add"
+                    app:icon="@drawable/ic_metadata_thread"
+                    app:iconSize="40dp" />
+
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/tv_thread"
                     style="@style/MetadataContentButton.Used"
-                    android:layout_weight="2.8"
+                    android:layout_weight="3"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_marginEnd="18dp"
                     android:background="@drawable/shape_button"
+                    app:icon="@drawable/ic_metadata_thread"
+                    app:iconSize="40dp"
                     android:visibility="gone" />
 
             </LinearLayout>

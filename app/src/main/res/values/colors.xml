@@ -79,8 +79,6 @@
     <color name="button_disabled_background">@color/_gray_mid</color>
 
     <!-- Button icons -->
-    <color name="button_icon_fill">@color/_orange_medium</color>
-
     <color name="button_icon_not_used_fill">@color/_orange_medium</color>
     <color name="button_icon_used_fill">@color/_orange_soft</color>
 

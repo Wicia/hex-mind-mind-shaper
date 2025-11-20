@@ -11,13 +11,14 @@ import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
-import timber.log.Timber
+import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
     private val thoughtsService: ThoughtsService,
-    private val domainsService: DomainsService
+    private val domainsService: DomainsService,
+    private val validator : ThoughtValidator
 ) : ViewModel() {
 
     private val _thoughtId = MutableLiveData<Int>()
@@ -29,11 +30,6 @@ class DetailsViewModel @Inject constructor(
 
     private val _domainsWithIcons = MutableLiveData<List<CommonIconsListItem>>(emptyList())
     val domainsWithIcons: LiveData<List<CommonIconsListItem>> = _domainsWithIcons
-
-    companion object {
-        const val MIN_VALUE = 1
-        const val MAX_VALUE = 10
-    }
 
     fun loadThought(id: Int) {
         _thoughtId.value = id
@@ -112,13 +108,22 @@ class DetailsViewModel @Inject constructor(
     fun updateValue(delta: Int) {
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
-                val currentValue = thought.value
-                val newValue = (currentValue + delta).coerceIn(MIN_VALUE, MAX_VALUE)
-
-                thought.value = newValue
+                thought.value = validator.getValidThoughtValue(thought.value + delta)
                 thoughtsService.updateThought(thought)
             }
         }
+    }
+
+    fun canIncreaseValue(): Boolean {
+        return thoughtDetails.value?.let {
+            validator.canIncreaseValue(it.value)
+        } ?: false
+    }
+
+    fun canDecreaseValue(): Boolean {
+        return thoughtDetails.value?.let {
+            validator.canDecreaseValue(it.value)
+        } ?: false
     }
 
     fun saveThought() {

@@ -156,6 +156,7 @@
         <item name="android:paddingRight">0dp</item>
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingBottom">0dp</item>
+        <item name="android:padding">8dp</item>
 
         <!-- Background -->
         <item name="backgroundTint">@color/button_used_background</item>
@@ -166,7 +167,7 @@
         <item name="iconGravity">end</item>
 
         <!-- Corners -->
-        <item name="cornerRadius">8dp</item>
+        <item name="cornerRadius">12dp</item>
 
         <!-- Texts -->
         <item name="android:textSize">16sp</item>
@@ -194,7 +195,7 @@
         <item name="android:paddingRight">0dp</item>
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingBottom">0dp</item>
-        <item name="android:padding">12dp</item>
+        <item name="android:padding">8dp</item>
 
         <!-- Background -->
         <item name="backgroundTint">@color/button_not_used_background</item>
@@ -205,7 +206,7 @@
         <item name="iconGravity">end</item>
 
         <!-- Corners -->
-        <item name="cornerRadius">8dp</item>
+        <item name="cornerRadius">12dp</item>
 
         <!-- Texts -->
         <item name="android:textSize">16sp</item>

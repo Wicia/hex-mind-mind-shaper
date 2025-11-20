@@ -18,6 +18,9 @@ class ThoughtValidator @Inject constructor(
         const val THREAD_MAX_CHARS: Int = 24
         const val PROJECT_MAX_CHARS: Int = 24
         const val SOUL_MATES_MAX_CHARS: Int = 24
+
+        const val THOUGHT_VALUE_MIN: Int = 1
+        const val THOUGHT_VALUE_MAX: Int = 10
     }
 
     fun validateRichText(richText: String?): ValidationResult {
@@ -81,5 +84,17 @@ class ThoughtValidator @Inject constructor(
         else {
             ValidationResult.Valid()
         }
+    }
+
+    fun getValidThoughtValue(newPotentialValue : Int) : Int {
+        return newPotentialValue.coerceIn(THOUGHT_VALUE_MIN, THOUGHT_VALUE_MAX)
+    }
+
+    fun canIncreaseValue(currentValue: Int): Boolean {
+        return currentValue < THOUGHT_VALUE_MAX
+    }
+
+    fun canDecreaseValue(currentValue: Int): Boolean {
+        return currentValue > THOUGHT_VALUE_MIN
     }
 }

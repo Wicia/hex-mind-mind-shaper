@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ValueBar">
+        <attr name="radius" format="dimension" />
+        <attr name="level" format="integer" />
+        <attr name="maxLevel" format="integer" />
+        <attr name="minDotRadius" format="dimension" />
+        <attr name="maxDotRadius" format="dimension" />
+        <attr name="dotBackgroundColor" format="color" />
+        <attr name="dotProgressColor" format="color" />
+        <attr name="dotTextColor" format="color" />
+        <attr name="showLevelText" format="boolean" />
+    </declare-styleable>
+</resources>

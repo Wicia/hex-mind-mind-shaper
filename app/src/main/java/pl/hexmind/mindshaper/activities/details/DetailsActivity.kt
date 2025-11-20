@@ -19,6 +19,7 @@ import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.common.ui.CommonTextEditDialog
 import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
+import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 
 @AndroidEntryPoint
 class DetailsActivity : CoreActivity() {
@@ -41,6 +42,7 @@ class DetailsActivity : CoreActivity() {
             return
         }
 
+        setupUI()
         setupListeners()
         setupObservers()
 
@@ -111,10 +113,15 @@ class DetailsActivity : CoreActivity() {
             btnValueDecrease.setOnClickListener {
                 viewModel.decreaseValue()
             }
-            btnValue.setOnClickListener {
-                // Optional: show dialog to set value directly
-                showEditValueDialog()
+            vbThoughtValue.setOnClickListener {
+                viewModel.increaseValue()
             }
+        }
+    }
+
+    private fun setupUI(){
+        binding.vbThoughtValue.apply {
+            maxLevel = ThoughtValidator.THOUGHT_VALUE_MAX
         }
     }
 
@@ -188,25 +195,6 @@ class DetailsActivity : CoreActivity() {
                 viewModel.updateProject(newText)
             }
         ).show()
-    }
-
-    private fun showEditValueDialog() {
-        // TODO: To be handled later - version 2.0
-//        val currentValue = viewModel.thoughtDetails.value?.value ?: 1
-//
-//        // Simple dialog with buttons 1-10
-//        val values = (1..10).toList()
-//        val items = values.map { it.toString() }.toTypedArray()
-//
-//        androidx.appcompat.app.AlertDialog.Builder(this)
-//            .setTitle("Wybierz wartość")
-//            .setItems(items) { dialog, which ->
-//                val newValue = values[which]
-//                viewModel.updateValue(newValue - currentValue)
-//                dialog.dismiss()
-//            }
-//            .setNegativeButton("Anuluj", null)
-//            .show()
     }
 
     private fun updateUI(thought: ThoughtDTO) {
@@ -291,14 +279,12 @@ class DetailsActivity : CoreActivity() {
      * Update value button UI with current value
      */
     private fun updateValueUI(thought: ThoughtDTO) {
-        val value = thought.value
-
         // Set text to display value
-        binding.btnValue.text = value.toString()
+        binding.vbThoughtValue.currentLevel = thought.value
 
         // Enable/disable buttons based on bounds
-        binding.btnValueIncrease.isEnabled = value < DetailsViewModel.MAX_VALUE
-        binding.btnValueDecrease.isEnabled = value > DetailsViewModel.MIN_VALUE
+        binding.btnValueIncrease.isEnabled = viewModel.canIncreaseValue()
+        binding.btnValueDecrease.isEnabled = viewModel.canDecreaseValue()
 
         if(!binding.btnValueIncrease.isEnabled){
             binding.btnValueIncrease.imageTintList  = ColorStateList.valueOf(
