@@ -30,7 +30,7 @@ class SortDialogFragment(
     private var selectedDirection: SortDirection = currentConfig.direction
 
     private lateinit var containerProperties: LinearLayout
-    private lateinit var btnSortDirection: ImageButton
+    private lateinit var btnSortDirection: MaterialButton
     private lateinit var tvSortDirectionFrom: TextView
     private lateinit var tvSortDirectionTo: TextView
 
@@ -47,8 +47,6 @@ class SortDialogFragment(
 
         containerProperties = view.findViewById(R.id.container_sort_properties)
         btnSortDirection = view.findViewById(R.id.btn_sort_direction)
-        tvSortDirectionFrom = view.findViewById(R.id.tv_sort_direction_from)
-        tvSortDirectionTo = view.findViewById(R.id.tv_sort_direction_to)
 
         setupPropertyButtons()
         setupDirectionButton()
@@ -105,27 +103,8 @@ class SortDialogFragment(
     }
 
     private fun updateDirectionButton() {
-        btnSortDirection.setImageResource(selectedDirection.iconRes)
-        if(selectedProperty.type == SortPropertyType.DATE){
-            if(selectedDirection == SortDirection.ASCENDING){
-                tvSortDirectionFrom.text = "przeszłe"
-                tvSortDirectionTo.text = "przyszłe"
-            }
-            else {
-                tvSortDirectionFrom.text = "przyszłe"
-                tvSortDirectionTo.text = "przeszłe"
-            }
-        }
-        if(selectedProperty.type == SortPropertyType.TEXT){
-            if(selectedDirection == SortDirection.ASCENDING){
-                tvSortDirectionFrom.text = "A"
-                tvSortDirectionTo.text = "Z"
-            }
-            else {
-                tvSortDirectionFrom.text = "Z"
-                tvSortDirectionTo.text = "A"
-            }
-        }
+        val resId = selectedDirection.getLabelResByFieldType(selectedProperty.type)
+        btnSortDirection.text = requireContext().getString(resId)
     }
 
     private fun updateButtonStyle(button: MaterialButton, isSelected: Boolean) {

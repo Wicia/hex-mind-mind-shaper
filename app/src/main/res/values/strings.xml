@@ -131,6 +131,15 @@
     <string name="sort_property_project">Projekt</string>
     <string name="sort_property_value">Wartość</string>
 
+    <string name="sort_text_desc_label">Z->A</string>
+    <string name="sort_text_asc_label">A->Z</string>
+
+    <string name="sort_number_desc_label">9->0</string>
+    <string name="sort_number_asc_label">0->9</string>
+
+    <string name="sort_date_desc_label">&lt;-🕓</string>
+    <string name="sort_date_asc_label">🕓-></string>
+
     <!-- Sort Directions -->
     <string name="sort_direction_description">Kierunek sortowania</string>
 

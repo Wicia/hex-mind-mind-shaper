@@ -27,14 +27,44 @@ enum class SortPropertyType{
 /**
  * Sort direction - ascending or descending
  */
-enum class SortDirection(val iconRes: Int) {
-    ASCENDING(R.drawable.ic_sort_ascending),
-    DESCENDING(R.drawable.ic_sort_descending);
+enum class SortDirection(val iconRes: Int, // TODO - probably to be removed + ic_sort_asc & desc
+                         val resSortLabelText: Int,
+                         val resSortLabelNumber: Int,
+                         val resSortLabelDate: Int) {
+    ASCENDING(
+        R.drawable.ic_sort_ascending,
+        R.string.sort_text_asc_label,
+        R.string.sort_number_asc_label,
+        R.string.sort_date_asc_label
+
+    ),
+    DESCENDING(
+        R.drawable.ic_sort_descending,
+        R.string.sort_text_desc_label,
+        R.string.sort_number_desc_label,
+        R.string.sort_date_desc_label
+    );
 
     fun toggle(): SortDirection {
         return when (this) {
             ASCENDING -> DESCENDING
             DESCENDING -> ASCENDING
+        }
+    }
+
+    fun getLabelResByFieldType(fieldType : SortPropertyType) : Int{
+        return when (fieldType) {
+            SortPropertyType.TEXT -> {
+                this.resSortLabelText
+            }
+
+            SortPropertyType.NUMBER -> {
+                this.resSortLabelNumber
+            }
+
+            SortPropertyType.DATE -> {
+                this.resSortLabelDate
+            }
         }
     }
 }

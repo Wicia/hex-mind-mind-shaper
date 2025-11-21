@@ -141,6 +141,7 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
         // Observe sort config changes to reset ViewPager position with animation
         viewModel.sortConfig.observe(this) { sortConfig ->
             animateListRefresh(sortConfig)
+            btnSort.text = getString(sortConfig.property.displayNameRes) + "  " + getString(sortConfig.direction.getLabelResByFieldType(sortConfig.property.type))
         }
     }
 

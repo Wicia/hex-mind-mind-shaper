@@ -26,7 +26,6 @@
         </LinearLayout>
 
         <!-- SORT DIRECTION TOGGLE -->
-        <!-- TODO: Make this below section with sorting props - to support visual mapping for user -->
         <LinearLayout
             android:id="@+id/container_direction"
             android:layout_width="wrap_content"
@@ -37,34 +36,16 @@
             android:layout_marginEnd="8dp"
             >
 
-            <!-- TODO: Remove or use it -->
-            <TextView
-                android:id="@+id/tv_sort_direction_from"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textSize="12sp"
-                android:visibility="gone"
-                android:textStyle="bold" />
-
-            <ImageButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_sort_direction"
-                android:layout_width="48dp"
+                android:layout_width="56dp"
                 android:layout_height="48dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/sort_direction_description"
-                android:src="@drawable/ic_sort_descending"
-                app:tint="@color/_orange_dark" />
-
-            <!-- TODO: Remove or use it -->
-            <TextView
-                android:id="@+id/tv_sort_direction_to"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textSize="12sp"
-                android:visibility="gone"
-                android:textStyle="bold" />
+                android:textColor="@color/_gray_dark"
+                android:textSize="14sp"
+                android:padding="0dp"
+                android:backgroundTint="@color/button_secondary"
+                />
 
         </LinearLayout>
 
