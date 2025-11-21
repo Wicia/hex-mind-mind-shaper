@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,17 +20,17 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_value"
             style="@style/HexContentButton.NotUsed"
-            android:layout_width="44dp"
+            android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/shape_hexagon"
+            android:background="@drawable/shape_circle"
             android:backgroundTint="@null"
             android:letterSpacing="-0.1"
             android:textColor="@color/text_secondary"
             android:textSize="18sp"
             android:text="\?"
             android:textAlignment="center"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="24dp"
             android:textStyle="bold" />
 
         <!-- RICH TEXT -->

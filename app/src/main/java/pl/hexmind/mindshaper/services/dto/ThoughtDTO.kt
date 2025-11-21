@@ -11,7 +11,7 @@ import java.time.Instant
 @TypeParceler<Instant?, InstantParceler>
 data class ThoughtDTO(
     var id : Int? = null,
-    var createdAt: Instant? = Instant.now(),
+    var createdAt: Instant = Instant.now(),
     var domainId : Int? = null,
     var thread : String? = null,
     var richText: String? = null,

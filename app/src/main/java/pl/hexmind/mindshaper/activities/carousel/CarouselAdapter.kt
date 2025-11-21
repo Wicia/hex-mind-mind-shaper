@@ -71,6 +71,17 @@ class CarouselAdapter(
             //TODO: Extend by checking thought initial type
             tvRichText.originalText = thought.richText.orEmpty()
 
+            fillMetadataUI(thought)
+
+            tvCreatedAt.text = thought.createdAt.toLocalDateString()
+
+            // TODO: Load icons = refactoring :)
+            ivDomainIcon.setImageResource(R.drawable.ic_domain_none)
+
+            btnValue.text = thought.value.toString()
+        }
+
+        fun fillMetadataUI(thought: ThoughtDTO){
             if(thought.thread.isNullOrBlank() && thought.project.isNullOrBlank()){
                 tvMetadata.text = itemView.context.getString(R.string.carousel_thought_thread_empty)
             }
@@ -80,13 +91,6 @@ class CarouselAdapter(
             else{
                 tvMetadata.text = thought.thread
             }
-
-            tvCreatedAt.text = thought.createdAt?.toLocalDateString()
-
-            // TODO: Load icons = refactoring :)
-            ivDomainIcon.setImageResource(R.drawable.ic_domain_none)
-
-            btnValue.text = thought.value.toString()
         }
 
         fun setViewOnTouchListener(){

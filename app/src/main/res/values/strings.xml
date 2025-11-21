@@ -9,11 +9,19 @@
 
     <string name="app_name">MindShaper</string>
 
-    <!-- SAVE AND LOAD -->
+    <!-- BUTTONS + ACTIONS -->
     <string name="common_btn_save">Zapisz</string>
     <string name="common_btn_cancel">Anuluj</string>
+    <string name="common_btn_add">\?</string>
+
     <string name="common_info_save_changes">Zapisz zmiany</string>
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
+
+    <!-- HEX TAGS / METADATA -->
+    <string name="common_hex_tag_project">Projekt</string>
+    <string name="common_hex_tag_soul_mates">Dobre dusze</string>
+    <string name="common_hex_tag_thread">Wątek</string>
+    <string name="common_hex_tag_domain">Domena</string>
 
     <!-- PERMISSIONS: Voice Recording -->
     <string name="common_permission_audio_error_required">Uprawnienie do nagrywania audio jest wymagane dla notatek głosowych</string>
@@ -153,12 +161,6 @@
     <string name="settings_domains_domain_name">Twoja nazwa dla domeny</string>
     <string name="settings_domains_error_name_empty">Nazwa domeny nie może być pusta</string>
     <string name="settings_domains_error_name_too_long">Nazwa domeny nie może przekraczać %s znaków</string>
-
-    <string name="common_btn_add">\?</string>
-    <string name="common_hex_tag_project">Projekt</string>
-    <string name="common_hex_tag_soul_mates">Dobre dusze</string>
-    <string name="common_hex_tag_thread">Wątek</string>
-    <string name="common_hex_tag_domain">Domena</string>
 
     <string name="settings_snapshot_restore_warning">Wszystkie obecne dane zostaną zastąpione danymi wczytanymi z wybranego pliku. Kontynuować?</string>
 
