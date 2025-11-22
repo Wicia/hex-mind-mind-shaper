@@ -66,6 +66,8 @@
     <!-- VALIDATION -->
     <string name="common_validation_info_initial">Zzzz...</string>
 
+    <string name="common_object_type_thought">Myśl</string>
+
 <!-- ====================================== -->
 <!--    ACTIVITY: HOME -->
 <!-- ====================================== -->

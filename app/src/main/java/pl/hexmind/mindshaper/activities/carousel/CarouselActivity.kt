@@ -9,13 +9,16 @@ import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
+import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.common.SortConfig
+import pl.hexmind.mindshaper.common.regex.HexTags
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import timber.log.Timber
@@ -44,12 +47,10 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
 
         initializeViews()
         setupCarousel()
-        setupSearchBar()
+        setupRealTimeSearchBar()
         setupSortButton()
         setupReactiveDataObserver()
         setupGestureDetector()
-
-        viewModel.clearSearch()
     }
 
     private fun initializeViews() {
@@ -59,29 +60,31 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
         btnSort = findViewById(R.id.btn_sort)
     }
 
-    /**
-     * Setup carousel with custom page transformer for 3D effect
-     */
     private fun setupCarousel() {
-        adapter = CarouselAdapter { thoughtToDelete ->
-            deleteThought(thoughtToDelete)
-        }
+        adapter = CarouselAdapter(
+            onDeleteThought = { thoughtToDelete ->
+                showDeleteConfirmationDialog(thoughtToDelete)
+            },
+            onThoughtTap = { thoughtTap ->
+                val intent = Intent(this, DetailsActivity::class.java)
+                intent.putExtra(DetailsActivity.P_SELECTED_THOUGHT_ID, thoughtTap.id ?: -1)
+                startActivity(intent)
+            }
+        )
+
         viewPager.adapter = adapter
         viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         viewPager.offscreenPageLimit = 3
 
         // Custom page transformer for 3D carousel effect
-        viewPager.setPageTransformer { page, position -> ThoughtCardPageTransformer() }
+        viewPager.setPageTransformer { _, _ -> ThoughtCardPageTransformer() }
 
         // Smooth page change callback
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
         })
     }
 
-    /**
-     * Setup real-time search bar with TextWatcher
-     */
-    private fun setupSearchBar() {
+    private fun setupRealTimeSearchBar() {
         // ! TextWatcher for real-time search
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -102,18 +105,12 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
         }
     }
 
-    /**
-     * Setup sort button to show sorting dialog
-     */
     private fun setupSortButton() {
         btnSort.setOnClickListener {
             showSortDialog()
         }
     }
 
-    /**
-     * Show sorting dialog with current configuration
-     */
     private fun showSortDialog() {
         val currentConfig = viewModel.sortConfig.value ?: SortConfig()
 
@@ -124,9 +121,28 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
         dialog.show(supportFragmentManager, SortDialogFragment.TAG)
     }
 
+    private fun showDeleteConfirmationDialog(thought: ThoughtDTO) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.common_deletion_dialog_title))
+            .setMessage(getString(R.string.common_deletion_dialog_message, "myśl"))
+            .setPositiveButton(getString(R.string.common_deletion_dialog_yes)) { dialog, _ ->
+                deleteThought(thought)
+                Timber.d("Thought deleted: ${thought.id}")
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.common_deletion_dialog_no)) { dialog, _ ->
+                Timber.d("Deletion cancelled")
+                dialog.dismiss()
+            }
+            .show()
+    }
+
     private fun deleteThought(thought: ThoughtDTO) {
         viewModel.deleteThought(thought)
-        showShortToast(R.string.common_deletion_dialog_confirmation, "Myśl")
+        showShortToast(
+            R.string.common_deletion_dialog_confirmation,
+            this.getString(R.string.common_object_type_thought)
+        )
     }
 
     /**
@@ -138,17 +154,20 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
             adapter.submitList(thoughtsDTO)
         }
 
-        // Observe sort config changes to reset ViewPager position with animation
         viewModel.sortConfig.observe(this) { sortConfig ->
-            animateListRefresh(sortConfig)
-            btnSort.text = getString(sortConfig.property.displayNameRes) + "  " + getString(sortConfig.direction.getLabelResByFieldType(sortConfig.property.type))
+            if (viewPager.currentItem != 0) {
+                animateListRefresh()
+            }
+            btnSort.text = getString(sortConfig.property.displayNameRes)
+                .plus("  ")
+                .plus(getString(sortConfig.direction.getLabelResByFieldType(sortConfig.property.type)))
         }
     }
 
     /**
      * Animate ViewPager refresh with fade and scale effect
      */
-    private fun animateListRefresh(sortConfig: SortConfig) {
+    private fun animateListRefresh() {
         // Fade out and scale down
         viewPager.animate()
             .alpha(0.3f)

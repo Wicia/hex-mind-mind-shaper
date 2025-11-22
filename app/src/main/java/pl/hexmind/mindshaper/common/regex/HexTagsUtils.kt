@@ -1,5 +1,8 @@
 package pl.hexmind.mindshaper.common.regex
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 class HexTagsUtils {
 
     companion object {
@@ -22,11 +25,12 @@ class HexTagsUtils {
     }
 }
 
+@Parcelize
 data class HexTags (
     val thread : String? = null,
     val soulMate: String? = null,
     val project: String? = null
-){
+) : Parcelable {
     fun areCriteriaEmpty() : Boolean{
         return thread.isNullOrBlank() && soulMate.isNullOrBlank() && project.isNullOrBlank()
     }

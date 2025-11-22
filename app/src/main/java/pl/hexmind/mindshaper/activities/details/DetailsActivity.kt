@@ -132,9 +132,7 @@ class DetailsActivity : CoreActivity() {
     }
 
     private fun navigateToCarousel() {
-        val intent = Intent(this, CarouselActivity::class.java)
-        startActivity(intent)
-        finish()
+        finish() // ! Don't create new Carousel Instance as sort + search params will vanish
     }
 
     private fun showDomainDialog() {

@@ -87,22 +87,16 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Increase value by 1 (max 10)
-     */
     fun increaseValue() {
         updateValue(1)
     }
 
-    /**
-     * Decrease value by 1 (min 1)
-     */
     fun decreaseValue() {
         updateValue(-1)
     }
 
     /**
-     * Update value with bounds checking (1-10)
+     * Update value with bounds checking
      * @param delta +1 for increase, -1 for decrease
      */
     fun updateValue(delta: Int) {

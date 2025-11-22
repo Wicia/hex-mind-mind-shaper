@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.button.MaterialButton
@@ -15,7 +13,6 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.SortConfig
 import pl.hexmind.mindshaper.common.SortDirection
 import pl.hexmind.mindshaper.common.SortProperty
-import pl.hexmind.mindshaper.common.SortPropertyType
 
 /**
  * Dialog for selecting sort property and direction
@@ -29,10 +26,8 @@ class SortDialogFragment(
     private var selectedProperty: SortProperty = currentConfig.property
     private var selectedDirection: SortDirection = currentConfig.direction
 
-    private lateinit var containerProperties: LinearLayout
+    private lateinit var llSortProperties: LinearLayout
     private lateinit var btnSortDirection: MaterialButton
-    private lateinit var tvSortDirectionFrom: TextView
-    private lateinit var tvSortDirectionTo: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +40,7 @@ class SortDialogFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        containerProperties = view.findViewById(R.id.container_sort_properties)
+        llSortProperties = view.findViewById(R.id.ll_sort_properties)
         btnSortDirection = view.findViewById(R.id.btn_sort_direction)
 
         setupPropertyButtons()
@@ -60,11 +55,11 @@ class SortDialogFragment(
     }
 
     private fun setupPropertyButtons() {
-        containerProperties.removeAllViews()
+        llSortProperties.removeAllViews()
 
         SortProperty.entries.forEach { property ->
-            val button = createPropertyButton(property)
-            containerProperties.addView(button)
+            val btnSortProperty = createPropertyButton(property)
+            llSortProperties.addView(btnSortProperty)
         }
     }
 

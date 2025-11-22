@@ -3,6 +3,7 @@ package pl.hexmind.mindshaper.activities.carousel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,16 +22,17 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class CarouselViewModel @Inject constructor(
-    private val thoughtsService: ThoughtsService
+    private val thoughtsService: ThoughtsService,
+    private val savedStateHandle: SavedStateHandle // ! To keep search + sort configs when returning from other activities to carousel
 ) : ViewModel() {
 
     // All thoughts from database
     private val allThoughts: LiveData<List<ThoughtDTO>> = thoughtsService.getAllThoughts()
 
-    private val _searchQuery = MutableLiveData<HexTags>()
+    private val _searchQuery = savedStateHandle.getLiveData("search_query", HexTags())
     val searchQuery: LiveData<HexTags> = _searchQuery
 
-    private val _sortConfig = MutableLiveData(SortConfig())
+    private val _sortConfig = savedStateHandle.getLiveData("sort_config", SortConfig())
     val sortConfig: LiveData<SortConfig> = _sortConfig
 
     // Combine search and sort using MediatorLiveData
@@ -71,24 +73,18 @@ class CarouselViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Update search query for real-time filtering
-     */
     fun updateSearchQuery(query: HexTags) {
+        savedStateHandle["search_query"] = query
         _searchQuery.value = query
     }
 
-    /**
-     * Update sort configuration
-     */
     fun updateSortConfig(config: SortConfig) {
+        savedStateHandle["sort_config"] = config
         _sortConfig.value = config
     }
 
-    /**
-     * Clear search query and show all thoughts
-     */
     fun clearSearch() {
+        savedStateHandle["search_query"] = HexTags()
         _searchQuery.value = HexTags()
     }
 

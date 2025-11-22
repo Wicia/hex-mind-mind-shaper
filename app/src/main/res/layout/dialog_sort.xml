@@ -17,7 +17,7 @@
         <!-- PROPERTY SELECTION BUTTONS -->
         <!-- ! Property buttons will be added programmatically -->
         <LinearLayout
-            android:id="@+id/container_sort_properties"
+            android:id="@+id/ll_sort_properties"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

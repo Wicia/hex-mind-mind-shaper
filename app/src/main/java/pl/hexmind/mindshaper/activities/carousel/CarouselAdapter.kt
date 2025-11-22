@@ -24,13 +24,14 @@ import timber.log.Timber
  * Adapter for thought carousel with smooth animations and automatic updates via LiveData
  */
 class CarouselAdapter(
-    private val onDeleteThought: (ThoughtDTO) -> Unit // TODO: Added callback for deletion
+    private val onDeleteThought: (ThoughtDTO) -> Unit,
+    private val onThoughtTap: (ThoughtDTO) -> Unit
 ) : ListAdapter<ThoughtDTO, CarouselAdapter.ThoughtViewHolder>(ThoughtDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThoughtViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.carousel_item, parent, false)
-        return ThoughtViewHolder(view, onDeleteThought)
+        return ThoughtViewHolder(view, onDeleteThought, onThoughtTap)
     }
 
     override fun onBindViewHolder(holder: ThoughtViewHolder, position: Int) {
@@ -42,7 +43,8 @@ class CarouselAdapter(
      */
     class ThoughtViewHolder(
         itemView: View,
-        private val onDeleteThought: (ThoughtDTO) -> Unit
+        private val onDeleteThought: (ThoughtDTO) -> Unit,
+        private val onThoughtTap: (ThoughtDTO) -> Unit
     ) : RecyclerView.ViewHolder(itemView),
         GestureDetector.OnGestureListener,
         GestureDetector.OnDoubleTapListener {
@@ -121,7 +123,7 @@ class CarouselAdapter(
          */
         override fun onLongPress(e: MotionEvent) {
             viewedThoughtDTO?.let { thought ->
-                showDeleteConfirmationDialog(thought)
+                onDeleteThought(thought)
             } ?: run {
                 Timber.w("Long press detected but no thought data available")
             }
@@ -137,9 +139,9 @@ class CarouselAdapter(
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
-            val intent = Intent(itemView.context, DetailsActivity::class.java)
-            intent.putExtra(DetailsActivity.P_SELECTED_THOUGHT_ID, viewedThoughtDTO?.id) //TODO: Handle null scenario
-            itemView.context.startActivity(intent)
+            viewedThoughtDTO?.let { thought ->
+                onThoughtTap(thought)
+            }
             return true
         }
 
@@ -153,22 +155,6 @@ class CarouselAdapter(
 
         override fun onDoubleTapEvent(e: MotionEvent): Boolean {
             TODO("Not yet implemented")
-        }
-
-        private fun showDeleteConfirmationDialog(thought: ThoughtDTO) {
-            MaterialAlertDialogBuilder(itemView.context)
-                .setTitle(itemView.context.getString(R.string.common_deletion_dialog_title))
-                .setMessage(itemView.context.getString(R.string.common_deletion_dialog_message, "myśl"))
-                .setPositiveButton(itemView.context.getString(R.string.common_deletion_dialog_yes)) { dialog, _ ->
-                    onDeleteThought(thought)
-                    Timber.d("Thought deleted: ${thought.id}")
-                    dialog.dismiss()
-                }
-                .setNegativeButton(itemView.context.getString(R.string.common_deletion_dialog_no)) { dialog, _ ->
-                    Timber.d("Deletion cancelled")
-                    dialog.dismiss()
-                }
-                .show()
         }
     }
 
