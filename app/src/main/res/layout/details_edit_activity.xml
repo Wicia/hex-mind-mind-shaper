@@ -44,8 +44,6 @@
                     app:srcCompat="@drawable/ic_decorator_olive"
                     />
 
-                ikony
-
                 <!-- SOUL NAME: Empty -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_soul_mate_placeholder"
@@ -56,7 +54,7 @@
                     android:text="@string/common_btn_add"
                     android:layout_marginEnd="18dp"
                     app:icon="@drawable/ic_metadata_soul_mates"
-                    app:iconSize="40dp"
+                    app:iconSize="36dp"
                     />
 
                 <!-- SOUL NAME: With Content -->
@@ -69,7 +67,7 @@
                     android:layout_marginEnd="18dp"
                     android:visibility="gone"
                     app:icon="@drawable/ic_metadata_soul_mates"
-                    app:iconSize="40dp"
+                    app:iconSize="36dp"
                     />
 
             </LinearLayout>
@@ -132,7 +130,7 @@
                     android:layout_marginStart="8dp"
                     android:text="@string/common_btn_add"
                     app:icon="@drawable/ic_metadata_project"
-                    app:iconSize="40dp"
+                    app:iconSize="36dp"
                     />
 
                 <!-- project: CONTENT -->
@@ -144,7 +142,7 @@
                     android:layout_height="50dp"
                     android:layout_marginStart="8dp"
                     app:icon="@drawable/ic_metadata_project"
-                    app:iconSize="40dp"
+                    app:iconSize="36dp"
                     android:visibility="gone"
                     />
 
@@ -189,7 +187,7 @@
                     android:layout_weight="3"
                     android:text="@string/common_btn_add"
                     app:icon="@drawable/ic_metadata_thread"
-                    app:iconSize="40dp" />
+                    app:iconSize="36dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/tv_thread"
@@ -200,7 +198,7 @@
                     android:layout_marginEnd="18dp"
                     android:background="@drawable/shape_button"
                     app:icon="@drawable/ic_metadata_thread"
-                    app:iconSize="40dp"
+                    app:iconSize="36dp"
                     android:visibility="gone" />
 
             </LinearLayout>
@@ -241,11 +239,10 @@
                 <!-- rich text (note) : EMPTY -->
                 <pl.hexmind.mindshaper.common.ui.HexTextView
                     android:id="@+id/tv_rich_text"
-                    style="@style/TextView_Standard"
+                    style="@style/HexContentButton.Used"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_button"
-                    android:gravity="center_vertical"
                     android:visibility="gone"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"

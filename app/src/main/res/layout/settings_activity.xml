@@ -21,10 +21,7 @@
 
             <!-- Header -->
             <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="24dp"
+                style="@style/ImageView_Header_Activity"
                 android:contentDescription="@string/common_placeholder_accessibility_content_desc"
                 app:srcCompat="@drawable/ic_settings" />
 
@@ -87,10 +84,12 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="3dp">
 
+                <!-- TODO: remove visibility = gone when it will be ready -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:visibility="gone"
                     android:padding="16dp">
 
                     <TextView
@@ -156,7 +155,6 @@
                         style="@style/TextView_Header_Section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
                         android:text="@string/settings_domains_header" />
 
                     <TextView
@@ -199,7 +197,6 @@
                         style="@style/TextView_Header_Section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
                         android:text="@string/settings_backup_header" />
 
                     <TextView

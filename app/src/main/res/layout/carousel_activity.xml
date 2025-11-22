@@ -9,10 +9,8 @@
 
     <ImageView
         android:id="@+id/iv_header_image"
+        style="@style/ImageView_Header_Activity"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="24dp"
         app:srcCompat="@drawable/ic_activity_header_carousel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +69,7 @@
     <!-- SORT BUTTON -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_sort"
-        style="@style/HexContentButton.Used"
+        style="@style/ActionButton"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
@@ -80,10 +78,6 @@
         app:iconPadding="4dp"
         app:iconGravity="textStart"
         app:iconTint="@color/button_icon_secondary_fill"
-        android:textStyle="normal"
-        android:textColor="@color/text_secondary"
-        android:textSize="16sp"
-        android:letterSpacing="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cv_search_bar"

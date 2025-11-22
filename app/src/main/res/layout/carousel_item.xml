@@ -36,10 +36,10 @@
         <!-- RICH TEXT -->
         <pl.hexmind.mindshaper.common.ui.HexTextView
             android:id="@+id/tv_rich_text"
-            style="@style/TextView_Standard"
+            style="@style/HexContentButton.Used"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="16dp"
             android:maxLines="7" />
 
         <View
