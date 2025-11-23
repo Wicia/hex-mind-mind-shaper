@@ -31,8 +31,8 @@
         <item name="colorOnError">@color/validation_error</item>
 
         <!-- Status bar and navigation -->
-        <item name="android:statusBarColor">@color/app_primary</item>
-        <item name="android:navigationBarColor">@color/app_primary</item>
+        <item name="android:statusBarColor">@color/graphite_dark</item>
+        <item name="android:navigationBarColor">@color/graphite_dark</item>
 
         <!-- Force android to always load common theme (no dark/light) -->
         <item name="android:windowLightStatusBar">true</item>

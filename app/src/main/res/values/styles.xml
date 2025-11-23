@@ -177,6 +177,7 @@
         <item name="cornerRadius">12dp</item>
 
         <!-- Texts -->
+        <item name="android:lineSpacingExtra">-1dp</item>
         <item name="android:textSize">15sp</item>
         <item name="android:letterSpacing">0.0</item>
         <item name="android:textStyle">normal</item>
@@ -227,7 +228,7 @@
 
     <!--=== Additional buttons ===-->
 
-    <style name="ActionButton" parent="Widget.MaterialComponents.Button">
+    <style name="ListActionButton" parent="Widget.MaterialComponents.Button">
         <!-- Min constraints -->
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
@@ -242,7 +243,7 @@
         <item name="android:padding">12dp</item>
 
         <!-- Background -->
-        <item name="backgroundTint">@color/button_used_background</item>
+        <item name="backgroundTint">@color/button_list_action</item>
 
         <!-- Icons -->
         <item name="iconTint">@color/button_icon_used_fill</item>

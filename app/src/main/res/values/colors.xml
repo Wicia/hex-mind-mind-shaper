@@ -19,6 +19,12 @@
     <color name="_gray_light">#999999</color>
     <color name="_black">#000000</color>
 
+    <color name="graphite_dark">#FF2F2C2A</color>
+    <color name="graphite_medium">#FF48433F</color>
+    <color name="graphite_light">#FF625A54</color>
+
+    <color name="beige_on_graphite">#FFF6EFE8</color>
+
 <!-- ====================================== -->
 <!--    SEMANTIC COLORS -->
 <!-- ====================================== -->
@@ -72,6 +78,7 @@
     <!-- Background colors -->
     <color name="button_primary">@color/_orange_dark</color>
     <color name="button_secondary">@color/_orange_medium</color>
+    <color name="button_list_action">@color/beige_on_graphite</color>
 
     <!-- Background colors / States -->
     <color name="button_not_used_background">@color/_orange_soft</color>
@@ -79,7 +86,7 @@
     <color name="button_disabled_background">@color/_gray_mid</color>
 
     <!-- Button icons -->
-    <color name="button_icon_not_used_fill">@color/_orange_medium</color>
+    <color name="button_icon_not_used_fill">@color/_orange_light</color>
     <color name="button_icon_used_fill">@color/_orange_soft</color>
 
     <color name="button_icon_disabled_fill">@color/_gray_light</color>
@@ -94,7 +101,7 @@
     <color name="card_background">@color/_white</color>
 
     <!-- Separator / dividers -->
-    <color name="separator_background">@color/_orange_dark</color>
+    <color name="separator_background">@color/_orange_medium</color>
     <color name="separator_card">@color/_orange_soft</color>
 
 </resources>
