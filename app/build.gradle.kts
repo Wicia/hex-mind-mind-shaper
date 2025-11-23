@@ -1,3 +1,6 @@
+import java.text.SimpleDateFormat
+import java.util.Date
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -41,6 +44,15 @@ android {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-DEBUG"
             isDebuggable = true
+        }
+        applicationVariants.all {
+            outputs.all {
+                if (this is com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+                    val date = dateFormat.format(Date())
+                    outputFileName = "MindShaper-v${versionCode}-${date}.apk"
+                }
+            }
         }
     }
 
