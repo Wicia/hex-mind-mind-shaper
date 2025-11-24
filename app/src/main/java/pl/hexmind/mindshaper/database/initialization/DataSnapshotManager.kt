@@ -55,7 +55,7 @@ class DataSnapshotManager @Inject constructor(
             val backupDir = getBackupDirectory()
             backupDir.mkdirs()
 
-            val timestamp = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault())
+            val timestamp = SimpleDateFormat("yyyy-MM-dd_HH'H'", Locale.getDefault())
                 .format(Date())
             val snapshotFile = File(backupDir, "snapshot_v${snapshot.version}_$timestamp.json")
 
@@ -107,21 +107,6 @@ class DataSnapshotManager @Inject constructor(
         }
     }
 
-    fun listSnapshots(): List<SnapshotInfo> {
-        val backupDir = getBackupDirectory()
-        return backupDir.listFiles()
-            ?.filter { it.extension == "json" }
-            ?.sortedByDescending { it.lastModified() }
-            ?.map { file ->
-                SnapshotInfo(
-                    file = file,
-                    name = file.name,
-                    size = file.length(),
-                    date = Date(file.lastModified())
-                )
-            } ?: emptyList()
-    }
-
     private fun getBackupDirectory(): File {
         return File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
@@ -154,11 +139,4 @@ data class DatabaseSnapshot(
     val thoughts: List<ThoughtEntity>?,
     val domains: List<DomainEntity>?,
     val domainIcons: List<IconEntity>?,
-)
-
-data class SnapshotInfo(
-    val file: File,
-    val name: String,
-    val size: Long,
-    val date: Date
 )
