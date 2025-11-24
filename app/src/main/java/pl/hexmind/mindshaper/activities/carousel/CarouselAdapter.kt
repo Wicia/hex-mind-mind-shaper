@@ -1,6 +1,5 @@
 package pl.hexmind.mindshaper.activities.carousel
 
-import android.content.Intent
 import android.view.GestureDetector
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -11,13 +10,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.common.formatting.toLocalDateString
 import pl.hexmind.mindshaper.common.ui.HexTextView
+import pl.hexmind.mindshaper.common.ui.ValueBar
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
+import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import timber.log.Timber
 
 /**
@@ -55,7 +53,7 @@ class CarouselAdapter(
 
         private val tvRichText: HexTextView = itemView.findViewById(R.id.tv_rich_text)
 
-        private val btnValue: MaterialButton = itemView.findViewById(R.id.btn_value)
+        private val vbThoughtValue: ValueBar = itemView.findViewById(R.id.vb_thought_value)
 
         private var viewedThoughtDTO : ThoughtDTO? = null
 
@@ -80,7 +78,8 @@ class CarouselAdapter(
             // TODO: Load icons = refactoring :)
             ivDomainIcon.setImageResource(R.drawable.ic_domain_none)
 
-            btnValue.text = thought.value.toString()
+            vbThoughtValue.maxLevel = ThoughtValidator.THOUGHT_VALUE_MAX
+            vbThoughtValue.currentLevel = thought.value
         }
 
         fun fillMetadataUI(thought: ThoughtDTO){
