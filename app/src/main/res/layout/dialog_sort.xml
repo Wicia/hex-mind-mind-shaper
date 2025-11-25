@@ -18,9 +18,9 @@
         <!-- ! Property buttons will be added programmatically -->
         <LinearLayout
             android:id="@+id/ll_sort_properties"
+            android:layout_weight="1.5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="vertical"
             android:layout_marginStart="8dp">
         </LinearLayout>
@@ -28,7 +28,8 @@
         <!-- SORT DIRECTION TOGGLE -->
         <LinearLayout
             android:id="@+id/container_direction"
-            android:layout_width="wrap_content"
+            android:layout_weight="0.85"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
@@ -36,15 +37,40 @@
             android:layout_marginEnd="8dp"
             >
 
+            <!-- * Decorator / Decrease Button * -->
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_vertical"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                android:scaleX="-1"
+                android:scaleY="1"
+                app:srcCompat="@drawable/ic_decorator_olive"
+                app:tint="#A29D96" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_sort_direction"
-                android:layout_width="56dp"
-                android:layout_height="48dp"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
                 android:contentDescription="@string/sort_direction_description"
                 android:textColor="@color/_gray_dark"
                 android:textSize="14sp"
                 android:padding="0dp"
                 android:backgroundTint="@color/button_secondary"
+                />
+
+            <!-- * Decorator / Decrease Button * -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                android:layout_gravity="center_vertical"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleY="-1"
+                android:scaleX="-1"
+                app:srcCompat="@drawable/ic_decorator_olive"
+                app:tint="#A29D96"
                 />
 
         </LinearLayout>
