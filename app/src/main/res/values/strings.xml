@@ -126,9 +126,8 @@
     <string name="carousel_searchbar_hint">Szukaj @dobrejduszy / #projektu / wątku...</string>
 
     <!-- Sort Properties -->
-    <string name="sort_property_created_at">Data utworzenia</string>
+    <string name="sort_property_created_at">Wiek myśli</string>
     <string name="sort_property_thread">Wątek</string>
-    <string name="sort_property_text">Tekst</string>
     <string name="sort_property_soul_mate">Dobra dusza</string>
     <string name="sort_property_project">Projekt</string>
     <string name="sort_property_value">Wartość</string>
@@ -136,11 +135,11 @@
     <string name="sort_text_desc_label">Z->A</string>
     <string name="sort_text_asc_label">A->Z</string>
 
-    <string name="sort_number_desc_label">9->0</string>
-    <string name="sort_number_asc_label">0->9</string>
+    <string name="sort_value_desc_label">Od POTĘŻNYCH</string>
+    <string name="sort_value_asc_label">Od drobnych</string>
 
-    <string name="sort_date_desc_label">&lt;-🕓</string>
-    <string name="sort_date_asc_label">🕓-></string>
+    <string name="sort_date_desc_label">Od młodszych</string>
+    <string name="sort_date_asc_label">Od starszych</string>
 
     <!-- Sort Directions -->
     <string name="sort_direction_description">Kierunek sortowania</string>

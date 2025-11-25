@@ -44,13 +44,13 @@ enum class SortDirection(val resSortLabelText: Int,
                          val resSortLabelDate: Int) : Parcelable {
     ASCENDING(
         R.string.sort_text_asc_label,
-        R.string.sort_number_asc_label,
+        R.string.sort_value_asc_label,
         R.string.sort_date_asc_label
 
     ),
     DESCENDING(
         R.string.sort_text_desc_label,
-        R.string.sort_number_desc_label,
+        R.string.sort_value_desc_label,
         R.string.sort_date_desc_label
     );
 
