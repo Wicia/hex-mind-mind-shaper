@@ -18,7 +18,6 @@ import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.common.SortConfig
-import pl.hexmind.mindshaper.common.regex.HexTags
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import timber.log.Timber
@@ -155,11 +154,9 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
         }
 
         viewModel.sortConfig.observe(this) { sortConfig ->
-            if (viewPager.currentItem != 0) {
-                animateListRefresh()
-            }
+            performListRefresh()
             btnSort.text = getString(sortConfig.property.displayNameRes)
-                .plus("  ")
+                .plus(": ")
                 .plus(getString(sortConfig.direction.getLabelResByFieldType(sortConfig.property.type)))
         }
     }
@@ -167,7 +164,7 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
     /**
      * Animate ViewPager refresh with fade and scale effect
      */
-    private fun animateListRefresh() {
+    private fun performListRefresh() {
         // Fade out and scale down
         viewPager.animate()
             .alpha(0.3f)
