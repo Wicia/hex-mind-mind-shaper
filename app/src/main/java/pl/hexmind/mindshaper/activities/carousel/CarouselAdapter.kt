@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.RenderProcessGoneDetail
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.activities.ThoughtGrowthStage
 import pl.hexmind.mindshaper.common.formatting.toLocalDateString
 import pl.hexmind.mindshaper.common.ui.HexTextView
 import pl.hexmind.mindshaper.common.ui.ValueBar
@@ -71,26 +73,34 @@ class CarouselAdapter(
             //TODO: Extend by checking thought initial type
             tvRichText.originalText = thought.richText.orEmpty()
 
-            fillMetadataUI(thought)
+            tvMetadata.text = "\\ " + getFormattedMetadataUI(thought) + " /"
 
-            tvCreatedAt.text = thought.createdAt.toLocalDateString()
+            val ageLevel = ThoughtGrowthStage.newThoughtGrowthStage(thought.createdAt)
+            val levelIcon = ageLevel.level.icon
+            val levelName = itemView.context.getString(ageLevel.level.labelResourceId)
+            val afeInDays = ageLevel.ageInDays.toString()
+
+            tvCreatedAt.text = itemView.context.getString(
+                R.string.common_thought_age_pattern, levelIcon, levelName, afeInDays
+            )
 
             // TODO: Load icons = refactoring :)
-            ivDomainIcon.setImageResource(R.drawable.ic_domain_none)
+            // ivDomainIcon.setImageResource(R.drawable.ic_domain_none)
+            ivDomainIcon.visibility = View.GONE
 
             vbThoughtValue.maxLevel = ThoughtValidator.THOUGHT_VALUE_MAX
             vbThoughtValue.currentLevel = thought.value
         }
 
-        fun fillMetadataUI(thought: ThoughtDTO){
+        fun getFormattedMetadataUI(thought: ThoughtDTO) : String{
             if(thought.thread.isNullOrBlank() && thought.project.isNullOrBlank()){
-                tvMetadata.text = itemView.context.getString(R.string.carousel_thought_thread_empty)
+                return itemView.context.getString(R.string.carousel_thought_thread_empty)
             }
             else if(thought.thread.isNullOrBlank() && !thought.project.isNullOrBlank()){
-                tvMetadata.text = thought.project
+                return thought.project.orEmpty()
             }
             else{
-                tvMetadata.text = thought.thread
+                return thought.thread.orEmpty()
             }
         }
 

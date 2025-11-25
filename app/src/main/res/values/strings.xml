@@ -198,4 +198,11 @@
     <string name="settings_backup_loaded_success">Backup wczytany pomyślnie</string>
     <string name="settings_backup_error_loading">Błąd podczas wczytywania backupu</string>
 
+    <string name="common_thought_age_pattern">%1$s %2$s (%3$s dni)</string>
+    <string name="common_thought_age_level_1">Kiełek</string>
+    <string name="common_thought_age_level_2">Pąk</string>
+    <string name="common_thought_age_level_3">Sadzonka</string>
+    <string name="common_thought_age_level_4">Młode drzewko</string>
+    <string name="common_thought_age_level_5">Stare Drzewo</string>
+
 </resources>
