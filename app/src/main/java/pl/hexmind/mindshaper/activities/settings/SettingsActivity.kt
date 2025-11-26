@@ -97,6 +97,8 @@ class SettingsActivity : CoreActivity() {
      * Initialize UI components and click listeners
      */
     private fun setupUI() {
+        setupHeader(R.drawable.ic_settings, R.string.settings_header)
+
         // Audio file selection
         binding.btnSelectAudio.setOnClickListener {
             selectAudioFile()

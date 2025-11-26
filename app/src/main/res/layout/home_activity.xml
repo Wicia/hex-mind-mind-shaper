@@ -6,25 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/iv_header_icon"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="24dp"
-        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-        app:srcCompat="@drawable/ic_activity_main_header" />
-
-    <TextView
-        android:id="@+id/tv_greetings_display"
-        style="@style/TextView_Header_Section"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:gravity="top|center"
-        android:text="@string/home_greetings_header_default" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Header -->
+        <include layout="@layout/common_header" />
+
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:contentDescription="@string/common_placeholder_accessibility_content_desc"

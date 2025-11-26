@@ -5,9 +5,9 @@ import pl.hexmind.mindshaper.R
 
 object GreetingsService {
 
-    fun getGreetingsString(context : Context, yourName : String) : String{
-        val greetingsList = context.resources.getStringArray(R.array.common_greetings_values_list)
+    fun getGreetingsString(context : Context) : String{
+        val greetingsList = context.resources.getStringArray(R.array.home_greetings_values_list)
         val randomGreetingTemplate = greetingsList.random()
-        return String.format(randomGreetingTemplate, yourName)
+        return randomGreetingTemplate
     }
 }
