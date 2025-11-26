@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.GestureDetector
 import android.view.MotionEvent
+import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -52,13 +53,14 @@ class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
     }
 
     private fun initViews() {
+        setupHeader(R.drawable.ic_activity_main_header, R.string.common_foobar)
         fabNewThought = findViewById(R.id.fab_new_thought)
         fabNoteType = findViewById(R.id.fab_note_type)
         fabVoiceType = findViewById(R.id.fab_voice_type)
         fabDrawingType = findViewById(R.id.fab_drawing_type)
         fabPhotoType = findViewById(R.id.fab_photo_type)
 
-        setupGreetingsTextView()
+        setupHeaderWithGreetings()
 
         // Initially hide all menu buttons
         listOf(fabNoteType, fabVoiceType, fabDrawingType, fabPhotoType).forEach { fab ->
@@ -67,14 +69,17 @@ class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
         }
     }
 
-    private fun setupGreetingsTextView(){
-        tvHeaderGreetings = findViewById(R.id.tv_greetings_display)
+    private fun setupHeaderWithGreetings(){
+        tvHeaderGreetings = findViewById(R.id.tv_header_title)
         val currentGreetingsText = tvHeaderGreetings.text.toString()
         var newGreetingsText : String
         do {
-            newGreetingsText = GreetingsService.getGreetingsString(this, appSettingsStorage.getYourName())
+            newGreetingsText = GreetingsService.getGreetingsString(this)
         } while (currentGreetingsText == newGreetingsText)
         tvHeaderGreetings.text = newGreetingsText
+
+        findViewById<TextView>(R.id.tv_header_subtitle).visibility = View.VISIBLE
+        findViewById<TextView>(R.id.tv_header_subtitle).text = appSettingsStorage.getYourName()
     }
 
     private fun setupClickListeners() {

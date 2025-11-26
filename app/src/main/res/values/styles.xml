@@ -5,12 +5,19 @@
 <!--    TEXT VIEW -->
 <!-- ====================================== -->
 
-    <!-- Activity / Header -->
+    <!-- Activity / Headers -->
     <style name="TextView_Header_Activity">
         <item name="android:fontFamily">@font/alegreya_regular</item>
         <item name="android:textSize">28sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="TextView_SubHeader_Activity">
+        <item name="android:fontFamily">@font/alegreya_regular</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/_orange_medium</item>
     </style>
 
     <!-- Activity / Section -->

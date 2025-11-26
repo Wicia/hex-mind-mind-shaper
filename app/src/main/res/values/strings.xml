@@ -9,6 +9,8 @@
 
     <string name="app_name">MindShaper</string>
 
+    <string name="common_foobar">""</string>
+
     <!-- BUTTONS + ACTIONS -->
     <string name="common_btn_save">Zapisz</string>
     <string name="common_btn_cancel">Anuluj</string>
@@ -46,15 +48,6 @@
     <!-- PLACEHOLDERS (TODO: To be replaced later) -->
     <string name="common_placeholder_accessibility_content_desc">PLACEHOLDER</string>
 
-    <array name="common_greetings_values_list">
-        <item>Witaj %s</item>
-        <item>Cześć %s</item>
-        <item>%s, jak może być jeszcze lepiej?</item>
-        <item>%s, co dobrego przyszło dzisiaj do Ciebie?</item>
-        <item>Jak się czujesz %s?</item>
-        <item>%s, Co chodzi Ci dzisiaj po głowie?</item>
-    </array>
-
     <!-- DIALOGS -->
     <string name="common_deletion_dialog_title">Uwaga!</string>
     <string name="common_deletion_dialog_message">Czy na pewno chcesz usunąć %s?</string>
@@ -72,7 +65,18 @@
 <!--    ACTIVITY: HOME -->
 <!-- ====================================== -->
 
-    <string name="home_greetings_header_default">Cześć!</string>
+    <array name="home_greetings_values_list">
+        <item>Witaj! :)</item>
+        <item>Cześć! :)</item>
+        <item>Serwus! :)</item>
+        <item>Elo! :)</item>
+        <item>Hejka! :)</item>
+        <item>Yo! :)</item>
+        <item>No jak tam!? :)</item>
+        <!--        <item>%s, jak może być jeszcze lepiej?</item>-->
+        <!--        <item>%s, co dobrego przyszło dzisiaj do Ciebie?</item>-->
+        <!--        <item>%s, Co chodzi Ci dzisiaj nie mogło wyjść z głowy?</item>-->
+    </array>
 
 <!-- ====================================== -->
 <!--    ACTIVITY: DETAILS / EDIT -->

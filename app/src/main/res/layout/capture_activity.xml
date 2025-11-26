@@ -18,22 +18,7 @@
             android:orientation="vertical">
 
             <!-- Header -->
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="24dp"
-                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                app:srcCompat="@drawable/ic_catching_thought" />
-
-            <TextView
-                style="@style/TextView_Header_Activity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="24dp"
-                android:gravity="center"
-                android:text="@string/capture_main_label" />
+            <include layout="@layout/common_header" />
 
             <!-- DYNAMIC CONTENT - NOTES / AUDIO etc. -->
             <FrameLayout

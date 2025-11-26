@@ -63,6 +63,7 @@ class CaptureActivity : CoreActivity() {
         flContainerFeatures = findViewById(R.id.fl_container_features)
         btnSave = findViewById(R.id.btn_save)
         tvHexTagsValidationInfo = findViewById(R.id.tv_hex_tags_validation_info)
+        setupHeader(R.drawable.ic_catching_thought, R.string.capture_main_label)
     }
 
     private fun saveExtrasFromIntent() {
