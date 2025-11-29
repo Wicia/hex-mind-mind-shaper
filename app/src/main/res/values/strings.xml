@@ -66,16 +66,14 @@
 <!-- ====================================== -->
 
     <array name="home_greetings_values_list">
-        <item>Witaj! :)</item>
-        <item>Cześć! :)</item>
-        <item>Serwus! :)</item>
-        <item>Elo! :)</item>
-        <item>Hejka! :)</item>
-        <item>Yo! :)</item>
-        <item>No jak tam!? :)</item>
-        <!--        <item>%s, jak może być jeszcze lepiej?</item>-->
-        <!--        <item>%s, co dobrego przyszło dzisiaj do Ciebie?</item>-->
-        <!--        <item>%s, Co chodzi Ci dzisiaj nie mogło wyjść z głowy?</item>-->
+        <item>Witaj</item>
+        <item>Cześć</item>
+        <item>Serwus</item>
+        <item>Elo</item>
+        <item>Dobrego dnia</item>
+        <item>Hejka</item>
+        <item>Yoł</item>
+        <item>No jak tam</item>
     </array>
 
 <!-- ====================================== -->
@@ -106,16 +104,23 @@
 
     <!-- Type: Voice Recording -->
     <string name="capture_voice_tooltip">Gotowy do nagrywania</string>
-    <string name="capture_voice_record_new">Nagrywaj nowy</string>
-    <string name="capture_voice_record_stop">Zatrzymaj</string>
-    <string name="capture_voice_play">Odsłuchaj</string>
 
     <string name="capture_voice_error_recording_failed">Nagrywanie nie powiodło się: %s</string>
     <string name="capture_voice_error_no_recording">Brak nagrania do odtworzenia</string>
-
-    <string name="capture_voice_status_recording">Nagrywanie...</string>
     <string name="capture_voice_status_recording_saved">Nagranie zapisane</string>
-    <string name="capture_voice_status_recording_playing">Odtwarzanie...</string>
+
+    <!-- Status messages -->
+    <string name="capture_voice_status_max_duration_reached">Osiągnięto maksymalny czas nagrania (3 min)</string>
+    <string name="capture_voice_status_existing_recording">Masz już zapisane nagranie</string>
+
+    <!-- Error messages -->
+    <string name="capture_voice_error_recording">Błąd podczas nagrywania</string>
+    <string name="capture_voice_error_playback">Błąd podczas odtwarzania</string>
+    <string name="capture_voice_error_saving">Błąd podczas zapisywania do bazy</string>
+
+    <!-- Validation -->
+    <string name="validation_recording_missing">Brak nagrania</string>
+    <string name="validation_recording_empty">Nagranie jest puste</string>
 
     <string name="thoughts_carousel_title">Moje Myśli</string>
     <string name="previous_thought">Poprzednia myśl</string>

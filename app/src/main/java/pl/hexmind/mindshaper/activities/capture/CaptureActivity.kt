@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +28,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class CaptureActivity : CoreActivity() {
 
-    companion object Params{
+    companion object Params {
         const val P_INIT_THOUGHT_TYPE = "P_EXTRA_INIT_THOUGHT_TYPE"
     }
 
@@ -39,15 +38,17 @@ class CaptureActivity : CoreActivity() {
     @Inject
     lateinit var thoughtsService: ThoughtsService
 
-    private var initialThoughtType : InitialThoughtType = InitialThoughtType.UNKNOWN
+    private var initialThoughtType: InitialThoughtType = InitialThoughtType.UNKNOWN
     private lateinit var flContainerFeatures: FrameLayout
     private lateinit var btnSave: FloatingActionButton
-    private lateinit var etHexTags : TextInputEditText
-
-    private lateinit var tvHexTagsValidationInfo : TextView
+    private lateinit var etHexTags: TextInputEditText
+    private lateinit var tvHexTagsValidationInfo: TextView
 
     // HANDLER for specific input/thought type
     private lateinit var thoughtCaptureHandler: ThoughtCaptureHandler
+
+    // Recording handler reference (for audio saving)
+    private var recordingHandler: RecordingCaptureHandler? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +59,7 @@ class CaptureActivity : CoreActivity() {
         setupMode()
     }
 
-    private fun initViews(){
+    private fun initViews() {
         etHexTags = findViewById(R.id.et_hex_tags)
         flContainerFeatures = findViewById(R.id.fl_container_features)
         btnSave = findViewById(R.id.btn_save)
@@ -84,15 +85,23 @@ class CaptureActivity : CoreActivity() {
                 thoughtCaptureHandler = RichTextCaptureHandler(richTextCaptureView, thoughtValidator).apply {
                     setupListeners()
                 }
+                recordingHandler = null
             }
             InitialThoughtType.RECORDING -> {
                 val recordingCaptureView = RecordingCaptureView(this)
                 flContainerFeatures.addView(recordingCaptureView)
-                thoughtCaptureHandler = RecordingCaptureHandler(this, recordingCaptureView, thoughtValidator).apply {
+                val handler = RecordingCaptureHandler(
+                    activity = this,
+                    view = recordingCaptureView,
+                    validator = thoughtValidator
+                ).apply {
                     setupListeners()
                 }
+                thoughtCaptureHandler = handler
+                recordingHandler = handler
             }
-            else -> { /* TODO: next modes */ }
+            else -> { /* TODO: next modes */
+            }
         }
     }
 
@@ -123,42 +132,47 @@ class CaptureActivity : CoreActivity() {
 
         val validationResult = thoughtCaptureHandler.performValidation(dtoToSave)
         updateUIWithValidationResult(validationResult)
-        if (validationResult is ValidationResult.Valid){
-            thoughtsService.addThought(dtoToSave)
-            finish()
+
+        if (validationResult is ValidationResult.Valid) {
+            // Zapisz myśl
+            when (initialThoughtType) {
+                InitialThoughtType.RECORDING -> {
+                    // saveThoughtWithAudio(dtoToSave)
+                }
+                else -> {
+                    thoughtsService.addThought(dtoToSave)
+                    finish()
+                }
+            }
         }
     }
 
-    private fun resetValidationUI(){
+    private fun resetValidationUI() {
         tvHexTagsValidationInfo.visibility = View.GONE
         tvHexTagsValidationInfo.text = null
     }
 
-    private fun updateUIWithValidationResult(result : ValidationResult){
-        if (result is ValidationResult.Error){
+    private fun updateUIWithValidationResult(result: ValidationResult) {
+        if (result is ValidationResult.Error) {
             val validatedProperty = result.refProperty
             if (validatedProperty == ValidatedProperty.T_THREAD) {
                 tvHexTagsValidationInfo.visibility = View.VISIBLE
                 tvHexTagsValidationInfo.text = result.message
-            }
-            else if (validatedProperty == ValidatedProperty.T_PROJECT) {
+            } else if (validatedProperty == ValidatedProperty.T_PROJECT) {
                 tvHexTagsValidationInfo.visibility = View.VISIBLE
                 tvHexTagsValidationInfo.text = result.message
-            }
-            else if (validatedProperty == ValidatedProperty.T_SOUL_MATES) {
+            } else if (validatedProperty == ValidatedProperty.T_SOUL_MATES) {
                 tvHexTagsValidationInfo.visibility = View.VISIBLE
                 tvHexTagsValidationInfo.text = result.message
+            } else if (validatedProperty == ValidatedProperty.T_RICH_TEXT) {
+                // Skipping - already RichText has real time validation
             }
-            else if (validatedProperty == ValidatedProperty.T_RICH_TEXT) {
-                // Skipping - already RichText has real time validation }
-            }
-        }
-        else{
+        } else {
             tvHexTagsValidationInfo.visibility = View.GONE
         }
     }
 
-    private fun updateDTOWithHexTags(dtoToUpdate : ThoughtDTO) : ThoughtDTO{
+    private fun updateDTOWithHexTags(dtoToUpdate: ThoughtDTO): ThoughtDTO {
         val input = etHexTags.text?.toString().orEmpty()
         val tags = HexTagsUtils.parseInput(input)
 
@@ -167,5 +181,11 @@ class CaptureActivity : CoreActivity() {
         dtoToUpdate.thread = tags.thread
 
         return dtoToUpdate
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Perform clean-up of recording handler resources
+        recordingHandler?.cleanup()
     }
 }
