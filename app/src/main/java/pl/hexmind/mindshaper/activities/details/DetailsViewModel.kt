@@ -12,6 +12,7 @@ import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -130,5 +131,31 @@ class DetailsViewModel @Inject constructor(
 
     suspend fun getIconIdForDomain(domainId: Int): Int? {
         return domainsService.getIconIdForDomain(domainId)
+    }
+
+    /**
+     * Exporting file from DB to temp file & prepares amplitudes
+     */
+    fun loadAudioForPlayback(
+        thoughtId: Int,
+        onAudioReady: (File) -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                val audioData = thoughtsService.getAudioData(thoughtId)
+
+                if (audioData == null || audioData.isEmpty()) {
+                    return@launch
+                }
+
+                // Creating .temp file for playing
+                val tempFile = File.createTempFile("playback_", ".m4a")
+                tempFile.writeBytes(audioData)
+                onAudioReady(tempFile)
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 }

@@ -2,12 +2,14 @@ package pl.hexmind.mindshaper.database.repositories
 
 import androidx.lifecycle.LiveData
 import pl.hexmind.mindshaper.database.models.ThoughtEntity
+import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class ThoughtsRepository @Inject constructor (
-    private val thoughtsDAO: ThoughtsDAO) {
+    private val thoughtsDAO: ThoughtsDAO
+) {
 
     suspend fun getThoughtById(id: Long): ThoughtEntity? {
         return thoughtsDAO.getById(id)
@@ -35,5 +37,26 @@ class ThoughtsRepository @Inject constructor (
 
     suspend fun deleteThoughtById(id: Int) {
         thoughtsDAO.deleteById(id)
+    }
+
+    /**
+     * Save audio from file to database
+     * Automatically deletes temp file after saving
+     */
+    suspend fun saveAudioFromFile(thoughtId: Long, audioFile: File, durationMs: Long) {
+        if (!audioFile.exists()) {
+            throw IllegalArgumentException("Audio file does not exist")
+        }
+
+        val audioBytes = audioFile.readBytes()
+        thoughtsDAO.updateAudio(thoughtId, audioBytes, durationMs)
+        audioFile.delete()
+    }
+
+    /**
+     * Get audio data for thought
+     */
+    suspend fun getAudioData(thoughtId: Long): ByteArray? {
+        return thoughtsDAO.getAudioData(thoughtId)
     }
 }

@@ -22,11 +22,9 @@ class DatabaseInitializer @Inject constructor(
 ) {
 
     suspend fun initializeIfNeeded() {
-        val storedDBVersion = storage.getCurrentDBVersion()
-        val loadedDBVersion = AppDatabase.DB_VERSION
-
-        if (storedDBVersion != loadedDBVersion) {
-            storage.setCurrentDBVersion(loadedDBVersion)
+        // only during first app launch perform db setup/seeding
+        if (storage.getCurrentDBVersion() == -1) { // TODO
+            storage.setCurrentDBVersion(AppDatabase.DB_VERSION)
             seedIcons()
             seedDomains()
         }

@@ -138,6 +138,7 @@ class RecordingCaptureHandler(
                 @Suppress("DEPRECATION")
                 MediaRecorder()
             }.apply {
+                // temp file .m4a (128kbps, 44.1kHz AAC)
                 setAudioSource(MediaRecorder.AudioSource.MIC)
                 setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
                 setOutputFile(tempAudioFile!!.absolutePath)

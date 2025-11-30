@@ -48,12 +48,6 @@ class AppSettingsStorage @Inject constructor(
         sharedPreferences.edit { putStringSet(PARAM_APP_LAUNCH_DATES, launches) }
     }
 
-    fun getAppLaunchDates(): Set<LocalDate>? {
-        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-        val launches = sharedPreferences.getStringSet(PARAM_APP_LAUNCH_DATES, emptySet()) ?: emptySet()
-        return launches.map { LocalDate.parse(it, formatter) }.toSet()
-    }
-
     fun setCurrentDBVersion(currentDBVersion: Int) {
         sharedPreferences.edit {
             putInt(PARAM_DB_CURRENT_VERSION, currentDBVersion)

@@ -201,6 +201,7 @@ class DetailsActivity : CoreActivity() {
         updateSoulNameUI(thought)
         updateProjectUI(thought)
         updateValueUI(thought)
+        updateAudioUI(thought)
         lifecycleScope.launch {
             updateDomainUI(thought)
         }
@@ -273,6 +274,22 @@ class DetailsActivity : CoreActivity() {
         }
     }
 
+    private fun updateAudioUI(thought: ThoughtDTO) {
+        if (thought.hasAudio) {
+            binding.btnRecordingPlaceholder.visibility = View.GONE
+            binding.recordingPlayback.visibility = View.VISIBLE
+
+            lifecycleScope.launch {
+                viewModel.loadAudioForPlayback(thought.id ?: return@launch) { audioFile ->
+                    binding.recordingPlayback.loadAudio(audioFile)
+                }
+            }
+        } else {
+            binding.btnRecordingPlaceholder.visibility = View.VISIBLE
+            binding.recordingPlayback.visibility = View.GONE
+        }
+    }
+
     /**
      * Update value button UI with current value
      */
@@ -310,5 +327,11 @@ class DetailsActivity : CoreActivity() {
         val defaultIcon = AppCompatResources.getDrawable(this, R.drawable.ic_domain_none)!!
         val domains = viewModel.domainsWithIcons.value ?: emptyList()
         return domains.find { it.iconEntityId == iconIdToFind }?.iconDrawable ?: defaultIcon
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // DODANE - cleanup playera
+        binding.recordingPlayback.cleanup()
     }
 }

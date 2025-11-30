@@ -10,5 +10,6 @@ enum class ValidatedProperty {
     T_THREAD,
     T_PROJECT,
     T_SOUL_MATES,
-    T_RICH_TEXT
+    T_RICH_TEXT,
+    T_AUDIO
 }

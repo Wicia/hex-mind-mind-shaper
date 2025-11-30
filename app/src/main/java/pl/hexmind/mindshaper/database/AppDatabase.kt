@@ -31,6 +31,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun iconDAO(): IconDAO
 
     companion object {
-        const val DB_VERSION = 1 // ! Keep same DB version for changing DB schema
+        const val DB_VERSION = 2
     }
 }

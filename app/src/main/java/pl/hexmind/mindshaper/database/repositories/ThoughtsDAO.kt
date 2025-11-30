@@ -49,4 +49,10 @@ interface ThoughtsDAO {
 
     @Query("DELETE FROM thoughts")
     suspend fun clearAll()
+
+    @Query("SELECT audio_data FROM thoughts WHERE id = :id")
+    suspend fun getAudioData(id: Long): ByteArray?
+
+    @Query("UPDATE thoughts SET audio_data = :audioData, audio_duration_ms = :durationMs WHERE id = :id")
+    suspend fun updateAudio(id: Long, audioData: ByteArray?, durationMs: Long?)
 }

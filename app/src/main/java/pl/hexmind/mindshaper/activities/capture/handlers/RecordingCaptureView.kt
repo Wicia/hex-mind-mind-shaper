@@ -9,11 +9,13 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.common.audio.AudioVisualizerView
 
-class RecordingCaptureView @JvmOverloads constructor(
+open class RecordingCaptureView @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet? = null
-) : LinearLayout(context, attrs) {
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : LinearLayout(context, attrs, defStyleAttr) {
 
     val btnRecordNew: MaterialButton
     val btnRecordStopPlay: MaterialButton

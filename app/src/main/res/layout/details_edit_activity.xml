@@ -283,7 +283,13 @@
                     app:iconSize="40dp"
                     />
 
-                <!-- Place here code for media player -->
+                <!-- Media player for audio -->
+                <pl.hexmind.mindshaper.activities.capture.handlers.RecordingPlaybackView
+                    android:id="@+id/recording_playback"
+                    style="@style/RecordingPlaybackView_UsedWithTint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible" />
 
                 <!-- photo : CONTENT -->
                 <com.google.android.material.button.MaterialButton

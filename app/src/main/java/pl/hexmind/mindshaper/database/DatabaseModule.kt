@@ -28,7 +28,8 @@ object DatabaseModule {
             AppDatabase::class.java,
             "app_database"
             )
-            .fallbackToDestructiveMigration() // !!! TODO: !!! DISABLE ON PROD :)
+            .addMigrations(Migrations.MIGRATION_1_TO_2)
+            //.fallbackToDestructiveMigration()
             .build()
     }
 

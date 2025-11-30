@@ -134,16 +134,34 @@ class CaptureActivity : CoreActivity() {
         updateUIWithValidationResult(validationResult)
 
         if (validationResult is ValidationResult.Valid) {
-            // Zapisz myśl
             when (initialThoughtType) {
                 InitialThoughtType.RECORDING -> {
-                    // saveThoughtWithAudio(dtoToSave)
+                    saveThoughtWithAudio(dtoToSave)
                 }
                 else -> {
                     thoughtsService.addThought(dtoToSave)
                     finish()
                 }
             }
+        }
+    }
+
+    private suspend fun saveThoughtWithAudio(dto: ThoughtDTO) {
+        val audioFile = recordingHandler?.getTempAudioFile()
+
+        if (audioFile == null || !audioFile.exists()) {
+            throw IllegalArgumentException("Plik audio nie istnieje")
+        }
+
+        try {
+            dto.audioDurationMs = audioFile.length()
+            thoughtsService.addThoughtWithAudio(dto, audioFile)
+            finish()
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+            tvHexTagsValidationInfo.visibility = View.VISIBLE
+            tvHexTagsValidationInfo.text = getString(R.string.capture_voice_error_saving)
         }
     }
 
@@ -166,6 +184,10 @@ class CaptureActivity : CoreActivity() {
                 tvHexTagsValidationInfo.text = result.message
             } else if (validatedProperty == ValidatedProperty.T_RICH_TEXT) {
                 // Skipping - already RichText has real time validation
+            }
+            else if (validatedProperty == ValidatedProperty.T_AUDIO) {
+                tvHexTagsValidationInfo.visibility = View.VISIBLE
+                tvHexTagsValidationInfo.text = result.message
             }
         } else {
             tvHexTagsValidationInfo.visibility = View.GONE
