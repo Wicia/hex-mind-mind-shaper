@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <TextView
         style="@style/TextView_Header_Section"
@@ -24,7 +25,9 @@
             android:gravity="top"
             android:padding="12dp"
             android:hint="@string/capture_rich_text_hint"
-            android:background="@drawable/shape_edit_text"/>
+            android:background="@drawable/shape_edit_text"
+            android:scrollbars="vertical"
+            android:overScrollMode="always"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView

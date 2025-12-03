@@ -1,7 +1,9 @@
 package pl.hexmind.mindshaper.activities.capture.handlers
 
 import android.content.Context
+import android.text.method.ScrollingMovementMethod
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -21,6 +23,19 @@ class RichTextCaptureView @JvmOverloads constructor(
         inflate(context, R.layout.capture_view_rich_text, this)
         orientation = VERTICAL
         etRichText = findViewById(R.id.et_rich_notes)
+        etRichText.movementMethod = ScrollingMovementMethod.getInstance()
+
+        // ! Block swiping on parent view/activity = enables scrolling on this view
+        etRichText.setOnTouchListener { view, event ->
+            view.parent.requestDisallowInterceptTouchEvent(true)
+
+            when (event.action and MotionEvent.ACTION_MASK) {
+                MotionEvent.ACTION_UP -> {
+                    view.parent.requestDisallowInterceptTouchEvent(false)
+                }
+            }
+            false
+        }
 
         tvValidationInfo = findViewById(R.id.tv_hex_tags_validation_info)
     }
