@@ -99,7 +99,7 @@
     <string name="capture_soul_mates_error_chars_exceeded">Imiona dobrych dusz nie mogą przekroczyć %d znaków...</string>
 
     <!-- Type: Rich Text (Note) -->
-    <string name="capture_rich_text_hint">Pisz, niech palce płoną :) \n\n * Jeżeli wpiszesz \"x tekst\" to po zapisie \"x\" zamieni się w bullet point </string>
+    <string name="capture_rich_text_hint">\?\n\n\nJeżeli wpiszesz:\n\tx to jest myśl od kropki\nto po zapisie zobaczysz:\n\t• to jest myśl od kropki :)</string>
     <string name="capture_rich_text_error_note_empty">Ekhm... To wyżej nie może być puste</string>
 
     <!-- Type: Voice Recording -->
