@@ -11,4 +11,10 @@
         <attr name="dotTextColor" format="color" />
         <attr name="showLevelText" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="AudioRecordingView">
+        <attr name="recordingMode" format="enum">
+            <enum name="recordPlayback" value="0" />
+            <enum name="playbackOnly" value="1" />
+        </attr>
+    </declare-styleable>
 </resources>

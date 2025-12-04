@@ -8,6 +8,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import pl.hexmind.mindshaper.database.models.ThoughtEntity
+import pl.hexmind.mindshaper.database.models.ThoughtMetadataUpdate
 
 @Dao
 interface ThoughtsDAO {
@@ -49,4 +50,16 @@ interface ThoughtsDAO {
 
     @Query("DELETE FROM thoughts")
     suspend fun clearAll()
+
+    @Update(entity = ThoughtEntity::class)
+    suspend fun updateMetadata(metadata: ThoughtMetadataUpdate)
+
+    @Query("UPDATE THOUGHTS SET rich_text = :richText WHERE id = :thoughtId")
+    suspend fun updateRichText(thoughtId: Int, richText: String?)
+
+    @Query("SELECT audio_data FROM thoughts WHERE id = :id")
+    suspend fun getAudioData(id: Long): ByteArray?
+
+    @Query("UPDATE thoughts SET audio_data = :audioData, audio_duration_ms = :durationMs WHERE id = :id")
+    suspend fun updateAudio(id: Long, audioData: ByteArray?, durationMs: Long?)
 }

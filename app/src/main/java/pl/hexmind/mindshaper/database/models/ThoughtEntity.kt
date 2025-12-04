@@ -7,8 +7,6 @@ import androidx.room.PrimaryKey
 import androidx.room.Index
 import java.time.Instant
 
-import java.util.Date
-
 @Entity(
     tableName = "THOUGHTS",
     foreignKeys = [
@@ -35,9 +33,6 @@ data class ThoughtEntity(
     @ColumnInfo(name = "created_at")
     val createdAt: Instant = Instant.now(),
 
-    @ColumnInfo(name = "rich_text")
-    val richText: String? = null,
-
     @ColumnInfo(name = "soul_mate")
     val soulMate: String? = null,
 
@@ -45,5 +40,56 @@ data class ThoughtEntity(
     val project: String? = null,
 
     @ColumnInfo(name = "value")
-    val value : Int = 1
-)
+    val value: Int = 1,
+
+    // === Thought Content ===
+
+    @ColumnInfo(name = "rich_text")
+    val richText: String? = null,
+
+    @ColumnInfo(name = "audio_data", typeAffinity = ColumnInfo.BLOB)
+    val audioData: ByteArray? = null,
+
+    @ColumnInfo(name = "audio_duration_ms")
+    val audioDurationMs: Long? = null
+
+) {
+    // ! Needed for ByteArray in data class
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as ThoughtEntity
+
+        if (id != other.id) return false
+        if (domainId != other.domainId) return false
+        if (thread != other.thread) return false
+        if (createdAt != other.createdAt) return false
+        if (richText != other.richText) return false
+        if (soulMate != other.soulMate) return false
+        if (project != other.project) return false
+        if (value != other.value) return false
+        if (audioData != null) {
+            if (other.audioData == null) return false
+            if (!audioData.contentEquals(other.audioData)) return false
+        } else if (other.audioData != null) return false
+        if (audioDurationMs != other.audioDurationMs) return false
+
+        return true
+    }
+
+    // ! Needed for ByteArray in data class
+    override fun hashCode(): Int {
+        var result = id ?: 0
+        result = 31 * result + (domainId ?: 0)
+        result = 31 * result + (thread?.hashCode() ?: 0)
+        result = 31 * result + createdAt.hashCode()
+        result = 31 * result + (richText?.hashCode() ?: 0)
+        result = 31 * result + (soulMate?.hashCode() ?: 0)
+        result = 31 * result + (project?.hashCode() ?: 0)
+        result = 31 * result + value
+        result = 31 * result + (audioData?.contentHashCode() ?: 0)
+        result = 31 * result + (audioDurationMs?.hashCode() ?: 0)
+        return result
+    }
+}

@@ -103,6 +103,7 @@
     <string name="capture_rich_text_error_note_empty">Ekhm... To wyżej nie może być puste</string>
 
     <!-- Type: Voice Recording -->
+    <string name="capture_voice_recording_tooltip">Nagrywam...</string>
     <string name="capture_voice_tooltip">Gotowy do nagrywania</string>
 
     <string name="capture_voice_error_recording_failed">Nagrywanie nie powiodło się: %s</string>

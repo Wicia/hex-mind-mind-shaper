@@ -7,11 +7,13 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import pl.hexmind.mindshaper.activities.capture.handlers.Recording
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,7 +48,7 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
                 thought.domainId = domainId
-                thoughtsService.updateThought(thought)
+                thoughtsService.updateThoughtMetadata(thought)
             }
         }
     }
@@ -55,16 +57,7 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
                 thought.thread = thread
-                thoughtsService.updateThought(thought)
-            }
-        }
-    }
-
-    fun updateRichText(richText: String) {
-        viewModelScope.launch {
-            thoughtDetails.value?.let { thought ->
-                thought.richText = richText
-                thoughtsService.updateThought(thought)
+                thoughtsService.updateThoughtMetadata(thought)
             }
         }
     }
@@ -73,7 +66,7 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
                 thought.soulMate = soulMate
-                thoughtsService.updateThought(thought)
+                thoughtsService.updateThoughtMetadata(thought)
             }
         }
     }
@@ -82,7 +75,7 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
                 thought.project = project
-                thoughtsService.updateThought(thought)
+                thoughtsService.updateThoughtMetadata(thought)
             }
         }
     }
@@ -103,7 +96,7 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
                 thought.value = validator.getValidThoughtValue(thought.value + delta)
-                thoughtsService.updateThought(thought)
+                thoughtsService.updateThoughtMetadata(thought)
             }
         }
     }
@@ -120,10 +113,65 @@ class DetailsViewModel @Inject constructor(
         } ?: false
     }
 
-    fun saveThought() {
+    fun saveThought(recording: Recording) {
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
-                thoughtsService.updateThought(thought)
+                val thoughtId = thought.id ?: throw IllegalStateException("Thought ID cannot be null")
+
+                thoughtsService.updateThoughtMetadata(thought)
+                thoughtsService.updateThoughtRichText(thoughtId, thought.richText)
+
+                // Occasional audio update (if exists)
+                if (thought.hasAudio && recording.fileExists()) {
+                    thoughtsService.updateThoughtRecording(
+                        thoughtId.toLong(),
+                        recording.file!!,
+                        recording.duration!!
+                    )
+                }
+            }
+        }
+    }
+
+    fun updateRichText(richText: String) {
+        viewModelScope.launch {
+            thoughtDetails.value?.id?.let { id ->
+                thoughtsService.updateThoughtRichText(id, richText)
+            }
+        }
+    }
+
+    // TODO: To be used later -> when "edit dialog" in details activity will be implemented
+    fun updateRecording(audioFile: File, duration: Long) {
+        viewModelScope.launch {
+            thoughtDetails.value?.id?.let { id ->
+                thoughtsService.updateThoughtRecording(id.toLong(), audioFile, duration)
+            }
+        }
+    }
+
+    /**
+     * Exporting file from DB to temp file & prepares amplitudes
+     */
+    fun loadAudioForPlayback(
+        thoughtId: Int,
+        onAudioReady: (File) -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                val audioData = thoughtsService.getAudioData(thoughtId)
+
+                if (audioData == null || audioData.isEmpty()) {
+                    return@launch
+                }
+
+                // Creating .temp file for playing
+                val tempFile = File.createTempFile("playback_", ".m4a")
+                tempFile.writeBytes(audioData)
+                onAudioReady(tempFile)
+
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }

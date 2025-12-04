@@ -12,8 +12,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
+import pl.hexmind.mindshaper.activities.capture.handlers.AudioRecordingView
 import pl.hexmind.mindshaper.activities.capture.handlers.RecordingCaptureHandler
-import pl.hexmind.mindshaper.activities.capture.handlers.RecordingCaptureView
 import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureHandler
 import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureView
 import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
@@ -23,13 +23,16 @@ import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
+import timber.log.Timber
+import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CaptureActivity : CoreActivity() {
+class CaptureActivity : CoreActivity(), AudioRecordingView.RecordingCallback {
 
     companion object Params {
         const val P_INIT_THOUGHT_TYPE = "P_EXTRA_INIT_THOUGHT_TYPE"
+        private const val TAG = "CaptureActivity"
     }
 
     @Inject
@@ -49,6 +52,9 @@ class CaptureActivity : CoreActivity() {
 
     // Recording handler reference (for audio saving)
     private var recordingHandler: RecordingCaptureHandler? = null
+
+    // Recording view reference (for direct access to recording functionality)
+    private var audioRecordingView: AudioRecordingView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,19 +92,23 @@ class CaptureActivity : CoreActivity() {
                     setupListeners()
                 }
                 recordingHandler = null
+                audioRecordingView = null
             }
             InitialThoughtType.RECORDING -> {
-                val recordingCaptureView = RecordingCaptureView(this)
-                flContainerFeatures.addView(recordingCaptureView)
+                val captureRecordingView = AudioRecordingView(this)
+                captureRecordingView.setMode(AudioRecordingView.Mode.RECORD_PLAYBACK)
+                captureRecordingView.setRecordingCallback(this) // Set activity as callback
+                flContainerFeatures.addView(captureRecordingView)
+
                 val handler = RecordingCaptureHandler(
                     activity = this,
-                    view = recordingCaptureView,
+                    view = captureRecordingView,
                     validator = thoughtValidator
-                ).apply {
-                    setupListeners()
-                }
+                )
+
                 thoughtCaptureHandler = handler
                 recordingHandler = handler
+                audioRecordingView = captureRecordingView
             }
             else -> { /* TODO: next modes */
             }
@@ -124,6 +134,55 @@ class CaptureActivity : CoreActivity() {
 //        }
     }
 
+    // ===========================================
+    // AudioRecordingView.RecordingCallback Implementation
+    // ===========================================
+
+    override fun onRecordingStarted() {
+        // Optional: Update UI or perform actions when recording starts
+        resetValidationUI()
+    }
+
+    override fun onRecordingStopped(file: File, durationMs: Long) {
+        // Optional: Update UI or perform actions when recording stops
+    }
+
+    override fun onRecordingError(error: String) {
+        Timber.tag(TAG).e("Recording error: $error")
+        tvHexTagsValidationInfo.visibility = View.VISIBLE
+        tvHexTagsValidationInfo.text = getString(R.string.capture_voice_error_recording)
+    }
+
+    override fun onPlaybackStarted() {
+
+    }
+
+    override fun onPlaybackStopped() {
+
+    }
+
+    override fun onPermissionRequired() {
+        Timber.tag(TAG).d("Permission required - will be handled by RecordingCaptureHandler")
+        // Permission handling is done by RecordingCaptureHandler
+    }
+
+    // ===========================================
+    // Permissions Handling
+    // ===========================================
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        recordingHandler?.onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    // ===========================================
+    //      Save Thought Logic
+    // ===========================================
+
     private suspend fun saveThought() {
         resetValidationUI()
         val dto = ThoughtDTO()
@@ -134,16 +193,59 @@ class CaptureActivity : CoreActivity() {
         updateUIWithValidationResult(validationResult)
 
         if (validationResult is ValidationResult.Valid) {
-            // Zapisz myśl
             when (initialThoughtType) {
                 InitialThoughtType.RECORDING -> {
-                    // saveThoughtWithAudio(dtoToSave)
+                    saveThoughtWithAudio(dtoToSave)
                 }
                 else -> {
                     thoughtsService.addThought(dtoToSave)
                     finish()
                 }
             }
+        }
+    }
+
+    private suspend fun saveThoughtWithAudio(dto: ThoughtDTO) {
+        val recording = recordingHandler?.getCurrentRecording()
+
+        if (recording == null || !recording.fileExists()) {
+            Timber.tag(TAG).e("Audio file does not exist")
+            tvHexTagsValidationInfo.visibility = View.VISIBLE
+            tvHexTagsValidationInfo.text = getString(R.string.validation_recording_missing)
+            return
+        }
+
+        try {
+            // Get actual audio duration from MediaPlayer if possible
+            val durationMs = getDurationFromFile(recording.file!!)
+            dto.audioDurationMs = durationMs
+
+            thoughtsService.addThoughtWithAudio(dto, recording.file)
+            finish()
+        }
+        catch (e: Exception) {
+            Timber.tag(TAG).e(e, "Error saving thought with audio")
+            tvHexTagsValidationInfo.visibility = View.VISIBLE
+            tvHexTagsValidationInfo.text = getString(R.string.capture_voice_error_saving)
+        }
+    }
+
+    /**
+     * Get audio duration from file using MediaPlayer
+     */
+    private fun getDurationFromFile(file: File): Long {
+        return try {
+            android.media.MediaPlayer().apply {
+                setDataSource(file.absolutePath)
+                prepare()
+            }.let { player ->
+                val duration = player.duration.toLong()
+                player.release()
+                duration
+            }
+        } catch (e: Exception) {
+            Timber.tag(TAG).e(e, "Error getting duration from file, using file size as fallback")
+            file.length() // Fallback to file size
         }
     }
 
@@ -155,17 +257,20 @@ class CaptureActivity : CoreActivity() {
     private fun updateUIWithValidationResult(result: ValidationResult) {
         if (result is ValidationResult.Error) {
             val validatedProperty = result.refProperty
-            if (validatedProperty == ValidatedProperty.T_THREAD) {
-                tvHexTagsValidationInfo.visibility = View.VISIBLE
-                tvHexTagsValidationInfo.text = result.message
-            } else if (validatedProperty == ValidatedProperty.T_PROJECT) {
-                tvHexTagsValidationInfo.visibility = View.VISIBLE
-                tvHexTagsValidationInfo.text = result.message
-            } else if (validatedProperty == ValidatedProperty.T_SOUL_MATES) {
-                tvHexTagsValidationInfo.visibility = View.VISIBLE
-                tvHexTagsValidationInfo.text = result.message
-            } else if (validatedProperty == ValidatedProperty.T_RICH_TEXT) {
-                // Skipping - already RichText has real time validation
+            when (validatedProperty) {
+                ValidatedProperty.T_THREAD,
+                ValidatedProperty.T_PROJECT,
+                ValidatedProperty.T_SOUL_MATES,
+                ValidatedProperty.T_AUDIO -> {
+                    tvHexTagsValidationInfo.visibility = View.VISIBLE
+                    tvHexTagsValidationInfo.text = result.message
+                }
+                ValidatedProperty.T_RICH_TEXT -> {
+                    // Skipping - RichText has real-time validation
+                }
+                else -> {
+                    // Handle other validation properties if needed
+                }
             }
         } else {
             tvHexTagsValidationInfo.visibility = View.GONE
@@ -186,6 +291,7 @@ class CaptureActivity : CoreActivity() {
     override fun onDestroy() {
         super.onDestroy()
         // Perform clean-up of recording handler resources
-        recordingHandler?.cleanup()
+        recordingHandler?.cleanupResources()
+        // AudioRecordingView will clean up automatically in onDetachedFromWindow
     }
 }
