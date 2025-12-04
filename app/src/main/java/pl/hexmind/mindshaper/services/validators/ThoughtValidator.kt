@@ -21,6 +21,8 @@ class ThoughtValidator @Inject constructor(
 
         const val THOUGHT_VALUE_MIN: Int = 1
         const val THOUGHT_VALUE_MAX: Int = 6
+
+        const val VOICE_RECORDING_MAX_DURATION_MS = 180_000L
     }
 
     fun validateRichText(richText: String?): ValidationResult {

@@ -3,6 +3,7 @@ package pl.hexmind.mindshaper.services
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import pl.hexmind.mindshaper.database.models.ThoughtEntity
+import pl.hexmind.mindshaper.database.models.ThoughtMetadataUpdate
 import pl.hexmind.mindshaper.database.repositories.ThoughtsRepository
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.mappers.ThoughtsMapper
@@ -24,7 +25,6 @@ class ThoughtsService @Inject constructor(
     }
 
     fun getThoughtByIdLive(id: Int): LiveData<ThoughtDTO?> {
-        require(id > 0) { "Thought ID must be positive" }
         val entityLiveData = repository.getThoughtByIdLive(id.toLong())
         return entityLiveData.map { entityThought ->
             entityThought?.let { ThoughtsMapper.INSTANCE.entityToDTO(it) }
@@ -42,12 +42,7 @@ class ThoughtsService @Inject constructor(
         repository.insertThought(entity)
     }
 
-    suspend fun deleteThought(thought: ThoughtDTO) {
-        repository.deleteThoughtById(thought.id ?: throw IllegalArgumentException("Thought ID cannot be null"))
-    }
-
     suspend fun deleteThoughtById(id: Int) {
-        require(id > 0) { "Thought ID must be positive" }
         repository.deleteThoughtById(id)
     }
 
@@ -56,8 +51,27 @@ class ThoughtsService @Inject constructor(
         repository.updateThought(entity)
     }
 
+    // === Sophisticated methods for updating specific part of thought (rich text, recording...)
+
+    suspend fun updateThoughtMetadata(thought: ThoughtDTO) {
+        val metadata = ThoughtMetadataUpdate(
+            id = thought.id!!,
+            domainId = thought.domainId,
+            thread = thought.thread,
+            soulMate = thought.soulMate,
+            project = thought.project,
+            value = thought.value
+        )
+        repository.updateThoughtMetadata(metadata)
+    }
+
+    suspend fun updateThoughtRichText(thoughtId: Int, richText: String?) {
+        repository.updateRichText(thoughtId, richText)
+    }
+
     /**
-     * Save thought with audio recording
+     * Save thought with audio recording.
+     * Audio file is passed as separate object instead of byte data/array in DTO
      * @param dto ThoughtDTO with thought data
      * @param audioFile Temporary file with audio recording
      * @return ID of saved thought
@@ -66,22 +80,20 @@ class ThoughtsService @Inject constructor(
         val entity = ThoughtsMapper.INSTANCE.dtoToEntity(dto)
         val thoughtId = repository.insertThought(entity)
 
-        if (audioFile.exists() && audioFile.length() > 0) {
-            repository.saveAudioFromFile(
-                thoughtId = thoughtId,
-                audioFile = audioFile,
-                durationMs = dto.duration ?: 0L
-            )
-        }
+        updateThoughtRecording(thoughtId, audioFile, dto.duration ?: 0L)
 
         return thoughtId
     }
 
-    /**
-     * Get audio data for thought
-     */
+    suspend fun updateThoughtRecording(thoughtId : Long, audioFile: File, duration : Long) {
+        repository.saveAudioFromFile(
+            thoughtId = thoughtId,
+            audioFile = audioFile,
+            durationMs = duration
+        )
+    }
+
     suspend fun getAudioData(thoughtId: Int): ByteArray? {
-        require(thoughtId > 0) { "Thought ID must be positive" }
         return repository.getAudioData(thoughtId.toLong())
     }
 }

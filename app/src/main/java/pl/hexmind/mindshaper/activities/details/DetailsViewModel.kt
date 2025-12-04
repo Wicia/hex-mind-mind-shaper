@@ -7,6 +7,7 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import pl.hexmind.mindshaper.activities.capture.handlers.Recording
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.ThoughtsService
@@ -47,7 +48,7 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
                 thought.domainId = domainId
-                thoughtsService.updateThought(thought)
+                thoughtsService.updateThoughtMetadata(thought)
             }
         }
     }
@@ -56,16 +57,7 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
                 thought.thread = thread
-                thoughtsService.updateThought(thought)
-            }
-        }
-    }
-
-    fun updateRichText(richText: String) {
-        viewModelScope.launch {
-            thoughtDetails.value?.let { thought ->
-                thought.richText = richText
-                thoughtsService.updateThought(thought)
+                thoughtsService.updateThoughtMetadata(thought)
             }
         }
     }
@@ -74,7 +66,7 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
                 thought.soulMate = soulMate
-                thoughtsService.updateThought(thought)
+                thoughtsService.updateThoughtMetadata(thought)
             }
         }
     }
@@ -83,7 +75,7 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
                 thought.project = project
-                thoughtsService.updateThought(thought)
+                thoughtsService.updateThoughtMetadata(thought)
             }
         }
     }
@@ -104,7 +96,7 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
                 thought.value = validator.getValidThoughtValue(thought.value + delta)
-                thoughtsService.updateThought(thought)
+                thoughtsService.updateThoughtMetadata(thought)
             }
         }
     }
@@ -121,16 +113,41 @@ class DetailsViewModel @Inject constructor(
         } ?: false
     }
 
-    fun saveThought() {
+    fun saveThought(recording: Recording) {
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
-                thoughtsService.updateThought(thought)
+                val thoughtId = thought.id ?: throw IllegalStateException("Thought ID cannot be null")
+
+                thoughtsService.updateThoughtMetadata(thought)
+                thoughtsService.updateThoughtRichText(thoughtId, thought.richText)
+
+                // Occasional audio update (if exists)
+                if (thought.hasAudio && recording.fileExists()) {
+                    thoughtsService.updateThoughtRecording(
+                        thoughtId.toLong(),
+                        recording.file!!,
+                        recording.duration!!
+                    )
+                }
             }
         }
     }
 
-    suspend fun getIconIdForDomain(domainId: Int): Int? {
-        return domainsService.getIconIdForDomain(domainId)
+    fun updateRichText(richText: String) {
+        viewModelScope.launch {
+            thoughtDetails.value?.id?.let { id ->
+                thoughtsService.updateThoughtRichText(id, richText)
+            }
+        }
+    }
+
+    // TODO: To be used later -> when "edit dialog" in details activity will be implemented
+    fun updateRecording(audioFile: File, duration: Long) {
+        viewModelScope.launch {
+            thoughtDetails.value?.id?.let { id ->
+                thoughtsService.updateThoughtRecording(id.toLong(), audioFile, duration)
+            }
+        }
     }
 
     /**
@@ -157,5 +174,9 @@ class DetailsViewModel @Inject constructor(
                 e.printStackTrace()
             }
         }
+    }
+
+    suspend fun getIconIdForDomain(domainId: Int): Int? {
+        return domainsService.getIconIdForDomain(domainId)
     }
 }

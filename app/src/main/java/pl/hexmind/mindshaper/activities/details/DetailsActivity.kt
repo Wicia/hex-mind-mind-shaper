@@ -1,6 +1,5 @@
 package pl.hexmind.mindshaper.activities.details
 
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -13,13 +12,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
-import pl.hexmind.mindshaper.activities.carousel.CarouselActivity
 import pl.hexmind.mindshaper.common.ui.CommonIconsListDialog
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.common.ui.CommonTextEditDialog
 import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
+import java.io.File
 
 @AndroidEntryPoint
 class DetailsActivity : CoreActivity() {
@@ -65,33 +64,41 @@ class DetailsActivity : CoreActivity() {
     private fun setupListeners() {
         binding.apply {
             btnSave.setOnClickListener {
-                viewModel.saveThought()
+                val recording = binding.recordingPlayback.getCurrentRecording()
+                viewModel.saveThought(recording)
                 navigateToCarousel()
             }
 
+            // RICH TEXT
             tvRichText.apply{
                 propagateClickEventsToParent = false
                 setOnClickListener {
                     showEditRichTextDialog()
                 }
             }
+            btnRichTextPlaceholder.apply{
+                setOnClickListener {
+                    showEditRichTextDialog()
+                }
+            }
 
+            // THREAD
             tvThread.setOnClickListener {
                 showEditThreadDialog()
             }
-
             btnThreadPlaceholder.setOnClickListener {
                 showEditThreadDialog()
             }
 
+            // DOMAIN
             btnDomainIcon.setOnClickListener {
                 showDomainDialog()
             }
-
             btnDomainIconPlaceholder.setOnClickListener {
                 showDomainDialog()
             }
 
+            // SOUL MATE
             btnSoulMatePlaceholder.setOnClickListener {
                 showEditSoulNameDialog()
             }
@@ -99,6 +106,7 @@ class DetailsActivity : CoreActivity() {
                 showEditSoulNameDialog()
             }
 
+            // PROJECT
             btnProjectPlaceholder.setOnClickListener {
                 showEditProjectDialog()
             }
@@ -106,7 +114,7 @@ class DetailsActivity : CoreActivity() {
                 showEditProjectDialog()
             }
 
-            // Value increase/decrease buttons
+            // VALUE - Increase / Decrease
             btnValueIncrease.setOnClickListener {
                 viewModel.increaseValue()
             }
@@ -281,7 +289,7 @@ class DetailsActivity : CoreActivity() {
 
             lifecycleScope.launch {
                 viewModel.loadAudioForPlayback(thought.id ?: return@launch) { audioFile ->
-                    binding.recordingPlayback.loadAudio(audioFile)
+                    binding.recordingPlayback.loadAudioForPlayback(audioFile)
                 }
             }
         } else {
@@ -331,7 +339,7 @@ class DetailsActivity : CoreActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        // DODANE - cleanup playera
-        binding.recordingPlayback.cleanup()
+        // Resources management
+        binding.recordingPlayback.cleanupResources()
     }
 }

@@ -6,105 +6,110 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        style="@style/TextView_Header_Section"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Audio visualization -->
-    <pl.hexmind.mindshaper.common.audio.AudioVisualizerView
-        android:id="@+id/audio_visualizer"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginBottom="16dp"
-        android:visibility="gone" />
-
     <LinearLayout
-        android:id="@+id/ll_timer_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/tv_timer_sec_lasts"
+            android:layout_weight="0.15"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="end"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/_gray_light" />
+
+        <!-- Audio visualization -->
+        <pl.hexmind.mindshaper.common.audio.AudioVisualizerView
+            android:id="@+id/audio_visualizer"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:minHeight="80dp"
+            />
+
+        <TextView
+            style="@style/TextView_Info_Success"
+            android:id="@+id/tv_info"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:minHeight="80dp"
+            android:text="@string/capture_voice_tooltip"
+            android:gravity="center"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_timer_sec_remains"
+            android:layout_weight="0.15"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="start"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/_gray_light" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
 
         <!-- Skip backward 5s -->
         <com.google.android.material.button.MaterialButton
             style="@style/ListActionButton"
             android:id="@+id/btn_skip_backward"
-            android:layout_width="0dp"
-            android:layout_weight="0.25"
+            android:minWidth="48dp"
+            android:layout_width="48dp"
             android:layout_height="48dp"
             android:text="-5s"
-            android:textSize="18sp"
+            android:textSize="14sp"
+            android:layout_marginEnd="32dp"
             android:textAlignment="center"
+            app:cornerRadius="24dp"
             />
-
-        <!-- Timer text -->
-        <TextView
-            android:id="@+id/tv_recording_timer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.65"
-            android:text="00:00 / 03:00"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:textColor="@color/text_primary" />
 
         <!-- Skip forward 5s -->
         <com.google.android.material.button.MaterialButton
-            style="@style/ListActionButton"
-            android:id="@+id/btn_skip_forward"
-            android:layout_width="0dp"
-            android:layout_weight="0.25"
-            android:layout_height="48dp"
-            android:text="+5s"
-            android:textSize="18sp"
-            android:textAlignment="center"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="12dp">
-
-        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_record_new"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_weight="1"
-            android:layout_marginEnd="4dp"
-            android:backgroundTint="@color/button_primary"
-            app:cornerRadius="8dp"
+            style="@style/MainActionButton"
+            android:minWidth="64dp"
+            android:layout_width="64dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
             app:icon="@drawable/ic_thought_type_recording"
-            app:iconGravity="textStart"
-            app:iconSize="32dp"
-            app:iconTint="@color/button_icon_used_fill" />
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_record_stop_play"
-            android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_weight="1"
-            android:layout_marginStart="12dp"
-            android:backgroundTint="@color/button_primary_stateful"
-            app:cornerRadius="8dp"
+            style="@style/MainActionButton"
+            android:minWidth="64dp"
+            android:layout_width="64dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
             app:icon="@drawable/ic_stop_circle"
-            app:iconGravity="textStart"
-            app:iconSize="32dp"
-            app:iconTint="@color/button_icon_primary_stateful" />
-    </LinearLayout>
+            />
 
-    <TextView
-        style="@style/TextView_Info_Success"
-        android:id="@+id/tv_recording_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/capture_voice_tooltip"
-        android:gravity="center"
-        android:layout_marginBottom="24dp" />
+        <com.google.android.material.button.MaterialButton
+            style="@style/ListActionButton"
+            android:id="@+id/btn_skip_forward"
+            android:minWidth="48dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:text="-5s"
+            android:textSize="14sp"
+            android:layout_marginStart="32dp"
+            android:textAlignment="center"
+            app:cornerRadius="24dp"
+            />
+    </LinearLayout>
 </LinearLayout>

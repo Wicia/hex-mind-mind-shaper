@@ -19,9 +19,7 @@ interface ThoughtsMapper {
     }
 
     @Mapping(target = "hasAudio", expression = "java(entity.getAudioData() != null)")
-    @Mapping(target = "audioSizeBytes", expression = "java(entity.getAudioData() != null ? (long)entity.getAudioData().length : null)")
-    @Mapping(target = "audioData", ignore = true) // ! not mapping ByteArray -> (too big)
-    @Mapping(target = "tempAudioFilePath", ignore = true)
+    @Mapping(target = "tempAudioFilePath", ignore = true) // Only used during recording
     fun entityToDTO(entity: ThoughtEntity): ThoughtDTO
 
     @Mapping(target = "audioData", ignore = true)

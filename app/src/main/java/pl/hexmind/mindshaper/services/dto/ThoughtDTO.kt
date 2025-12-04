@@ -10,30 +10,29 @@ import java.time.Instant
 @Parcelize
 @TypeParceler<Instant?, InstantParceler>
 data class ThoughtDTO(
+
     var id: Int? = null,
     var createdAt: Instant = Instant.now(),
     var domainId: Int? = null,
+
     var thread: String? = null,
-    var richText: String? = null,
     var soulMate: String? = null,
     var project: String? = null,
     var value: Int = 1,
+
+    // TODO: save it in DB as "Main Content Type" (drawing, recording, text, image)
     var initialThoughtType: InitialThoughtType = InitialThoughtType.UNKNOWN,
 
-    // ! Transient = not saved in Parcel (ByteArrays is too big)
-    @Transient
-    var audioData: ByteArray? = null,
+    // RICH TEXT
+    var richText: String? = null,
 
+    // RECORDING
+    // only light data here (like metadata & no byte arrays)
     var audioDurationMs: Long? = null,
-
-    // Helper field to avoid storing ByteArray in DTO
     var hasAudio: Boolean = false,
-
-    var audioSizeBytes: Long? = null,
-
-    // ! Used during recording
     @Transient
-    var tempAudioFilePath: String? = null
+    var tempAudioFilePath: String? = null // ! Used during recording
+
 ) : Parcelable {
 
     val duration: Long?
@@ -55,13 +54,8 @@ data class ThoughtDTO(
         if (project != other.project) return false
         if (value != other.value) return false
         if (initialThoughtType != other.initialThoughtType) return false
-        if (audioData != null) {
-            if (other.audioData == null) return false
-            if (!audioData.contentEquals(other.audioData)) return false
-        } else if (other.audioData != null) return false
         if (audioDurationMs != other.audioDurationMs) return false
         if (hasAudio != other.hasAudio) return false
-        if (audioSizeBytes != other.audioSizeBytes) return false
         if (tempAudioFilePath != other.tempAudioFilePath) return false
 
         return true
@@ -77,10 +71,8 @@ data class ThoughtDTO(
         result = 31 * result + (project?.hashCode() ?: 0)
         result = 31 * result + value
         result = 31 * result + initialThoughtType.hashCode()
-        result = 31 * result + (audioData?.contentHashCode() ?: 0)
         result = 31 * result + (audioDurationMs?.hashCode() ?: 0)
         result = 31 * result + hasAudio.hashCode()
-        result = 31 * result + (audioSizeBytes?.hashCode() ?: 0)
         result = 31 * result + (tempAudioFilePath?.hashCode() ?: 0)
         return result
     }

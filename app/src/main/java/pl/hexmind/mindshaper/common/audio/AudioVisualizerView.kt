@@ -38,9 +38,17 @@ class AudioVisualizerView @JvmOverloads constructor(
         paintUnplayed.strokeCap = Paint.Cap.ROUND
     }
 
-    fun addAmplitude(amplitude: Int) {
-        val normalizedAmplitude = amplitude.toFloat() / 32767f // Normalize to 0-1
+    fun addRawAmplitude(rawAmplitude: Int) {
+        val normalizedAmplitude = rawAmplitude.toFloat() / 32767f
         amplitudes.add(normalizedAmplitude)
+
+        if (!isRecordingMode) {
+            invalidate()
+        }
+    }
+
+    fun addNormalizedAmplitude(amplitude: Float) {
+        amplitudes.add(amplitude.coerceIn(0f, 1f))
 
         if (!isRecordingMode) {
             invalidate()
@@ -119,7 +127,6 @@ class AudioVisualizerView @JvmOverloads constructor(
             val startIdx = (i * samplingRatio).toInt()
             val endIdx = min(((i + 1) * samplingRatio).toInt(), source.size)
 
-            // Weź średnią z grupy sampli
             val average = source.subList(startIdx, endIdx).average().toFloat()
             result.add(average)
         }

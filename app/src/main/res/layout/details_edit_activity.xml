@@ -284,11 +284,13 @@
                     />
 
                 <!-- Media player for audio -->
-                <pl.hexmind.mindshaper.activities.capture.handlers.RecordingPlaybackView
+                <pl.hexmind.mindshaper.activities.capture.handlers.AudioRecordingView
                     android:id="@+id/recording_playback"
                     style="@style/RecordingPlaybackView_UsedWithTint"
+                    app:recordingMode="playbackOnly"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="200dp"
                     android:visibility="visible" />
 
                 <!-- photo : CONTENT -->

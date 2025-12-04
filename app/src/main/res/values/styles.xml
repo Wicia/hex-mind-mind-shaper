@@ -240,9 +240,84 @@
         <item name="android:orientation">vertical</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
+        <item name="cornerRadius">8dp</item>
     </style>
 
     <!--=== Additional buttons ===-->
+
+    <style name="MainActionButton" parent="Widget.MaterialComponents.Button">
+        <!-- Min constraints -->
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+
+        <!-- Insets -->
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+
+        <!-- Padding -->
+        <item name="android:padding">12dp</item>
+
+        <!-- Background -->
+        <item name="backgroundTint">@color/button_primary_stateful</item>
+
+        <!-- Icons -->
+        <item name="iconTint">@color/button_icon_used_fill</item>
+        <item name="iconSize">28dp</item>
+        <item name="iconPadding">0dp</item>
+        <item name="iconGravity">textTop</item>
+
+        <!-- Corners -->
+        <item name="cornerRadius">8dp</item>
+
+        <!-- Texts -->
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.0</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="AlternativeActionButton" parent="Widget.MaterialComponents.Button">
+        <!-- Min constraints -->
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+
+        <!-- Insets -->
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+
+        <!-- Padding -->
+        <item name="android:padding">12dp</item>
+
+        <!-- Background -->
+        <item name="backgroundTint">@color/button_primary_stateful</item>
+
+        <!-- Icons -->
+        <item name="iconTint">@color/button_icon_used_fill</item>
+        <item name="iconSize">36dp</item>
+        <item name="iconPadding">0dp</item>
+        <item name="iconGravity">top</item>
+
+        <!-- Corners -->
+        <item name="cornerRadius">8dp</item>
+
+        <!-- Texts -->
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.0</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="textAllCaps">false</item>
+    </style>
 
     <style name="ListActionButton" parent="Widget.MaterialComponents.Button">
         <!-- Min constraints -->
@@ -263,6 +338,7 @@
 
         <!-- Icons -->
         <item name="iconTint">@color/button_icon_used_fill</item>
+        <item name="iconSize">32dp</item>
         <item name="iconPadding">0dp</item>
         <item name="iconGravity">textStart</item>
 

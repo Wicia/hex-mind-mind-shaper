@@ -33,9 +33,6 @@ data class ThoughtEntity(
     @ColumnInfo(name = "created_at")
     val createdAt: Instant = Instant.now(),
 
-    @ColumnInfo(name = "rich_text")
-    val richText: String? = null,
-
     @ColumnInfo(name = "soul_mate")
     val soulMate: String? = null,
 
@@ -44,6 +41,11 @@ data class ThoughtEntity(
 
     @ColumnInfo(name = "value")
     val value: Int = 1,
+
+    // === Thought Content ===
+
+    @ColumnInfo(name = "rich_text")
+    val richText: String? = null,
 
     @ColumnInfo(name = "audio_data", typeAffinity = ColumnInfo.BLOB)
     val audioData: ByteArray? = null,
