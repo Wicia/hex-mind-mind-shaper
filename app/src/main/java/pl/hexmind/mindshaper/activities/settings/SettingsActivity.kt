@@ -10,7 +10,6 @@ import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toFile
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -44,9 +43,6 @@ class SettingsActivity : CoreActivity() {
 
     @Inject
     lateinit var domainIconsService : DomainIconsService
-
-    @Inject
-    lateinit var appSettingsStorage: AppSettingsStorage
 
     @Inject
     lateinit var mediaStorageService : MediaStorageService
@@ -97,7 +93,7 @@ class SettingsActivity : CoreActivity() {
      * Initialize UI components and click listeners
      */
     private fun setupUI() {
-        setupHeader(R.drawable.ic_settings, R.string.settings_header)
+        setupHeader(R.drawable.ic_header_settings, R.string.settings_header)
 
         // Audio file selection
         binding.btnSelectAudio.setOnClickListener {

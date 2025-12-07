@@ -57,7 +57,7 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
         tilSearch = findViewById(R.id.til_search)
         etSearch = findViewById(R.id.et_search)
         btnSort = findViewById(R.id.btn_sort)
-        setupHeader(R.drawable.ic_activity_header_carousel, R.string.thoughts_carousel_title)
+        setupHeader(R.drawable.ic_header_carousel, R.string.thoughts_carousel_title)
     }
 
     private fun setupCarousel() {

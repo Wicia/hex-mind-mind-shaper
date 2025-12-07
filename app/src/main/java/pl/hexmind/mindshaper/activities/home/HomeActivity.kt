@@ -15,10 +15,8 @@ import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
 import pl.hexmind.mindshaper.activities.carousel.CarouselActivity
-import pl.hexmind.mindshaper.services.AppSettingsStorage
-import pl.hexmind.mindshaper.services.GreetingsService
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
-import javax.inject.Inject
+import pl.hexmind.mindshaper.services.GreetingsService
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
@@ -28,9 +26,6 @@ import kotlin.math.sin
  */
 @AndroidEntryPoint
 class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
-
-    @Inject
-    lateinit var appSettingsStorage: AppSettingsStorage
 
     private lateinit var fabNewThought: FloatingActionButton
     private lateinit var fabNoteType: FloatingActionButton
@@ -53,7 +48,7 @@ class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
     }
 
     private fun initViews() {
-        setupHeader(R.drawable.ic_activity_main_header, R.string.common_foobar)
+        setupHeader(R.drawable.ic_header_home, R.string.common_foobar)
         fabNewThought = findViewById(R.id.fab_new_thought)
         fabNoteType = findViewById(R.id.fab_note_type)
         fabVoiceType = findViewById(R.id.fab_voice_type)

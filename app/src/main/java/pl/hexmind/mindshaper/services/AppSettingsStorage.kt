@@ -30,10 +30,12 @@ class AppSettingsStorage @Inject constructor(
         // Main app settings
         private const val PARAM_YOUR_NAME = "param_your_name"
         private const val PARAM_WELCOME_AUDIO_FILE = "param_greeting_audio_path"
-
         private const val PARAM_DB_CURRENT_VERSION = "param_db_current_version"
-
         private const val PARAM_APP_LAUNCH_DATES = "param_app_launch_dates"
+
+        // Navigation bar settings
+        private const val PARAM_NAV_SELECTED_INDEX = "param_nav_selected_index"
+        private const val PARAM_NAV_IS_EXPANDED = "param_nav_is_expanded"
     }
 
     fun getApplicationContext() : Context {
@@ -118,5 +120,17 @@ class AppSettingsStorage @Inject constructor(
      */
     fun clearWelcomeAudio() {
         setWelcomeAudioUri(null)
+    }
+
+    // === NAVIGATION BAR STATE ===
+
+    fun setNavigationExpanded(isExpanded: Boolean) {
+        sharedPreferences.edit {
+            putBoolean(PARAM_NAV_IS_EXPANDED, isExpanded)
+        }
+    }
+
+    fun isNavigationExpanded(): Boolean {
+        return sharedPreferences.getBoolean(PARAM_NAV_IS_EXPANDED, false)
     }
 }
