@@ -10,6 +10,13 @@ plugins {
     id("kotlin-parcelize")
 }
 
+// Run Unit Tests in every build configuration
+tasks.whenTaskAdded {
+    if (name.startsWith("assemble")) {
+        dependsOn("testDebugUnitTest")
+    }
+}
+
 android {
     namespace = "pl.hexmind.mindshaper"
     compileSdk = 35
@@ -55,7 +62,6 @@ android {
             }
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

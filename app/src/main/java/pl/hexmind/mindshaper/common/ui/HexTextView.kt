@@ -30,10 +30,8 @@ class HexTextView @JvmOverloads constructor(
             applyClickBehavior()
         }
 
-    private val bulletPointsListOpeningChar = "X "
-
     private fun updateFormattedText() {
-        val html = convertToHtml(originalText)
+        val html = HtmlConverter.convertToHtml(originalText)
         setHtml(html)
         applyClickBehavior()
     }
@@ -46,41 +44,5 @@ class HexTextView @JvmOverloads constructor(
         movementMethod = null
         isClickable = !propagateClickEventsToParent
         isFocusable = !propagateClickEventsToParent
-    }
-
-    private fun convertToHtml(text: String): String {
-        if (text.isEmpty()) return ""
-
-        val lines = text.split("\n")
-        val result = StringBuilder()
-        var inList = false
-
-        for (line in lines) {
-            val trimmed = line.trim()
-
-            if (trimmed.startsWith(bulletPointsListOpeningChar, ignoreCase = true)) {
-                if (!inList) {
-                    result.append("<ul>")
-                    inList = true
-                }
-                result.append("<li>")
-                    .append(trimmed.substring(2))
-                    .append("</li>")
-            } else {
-                if (inList) {
-                    result.append("</ul>")
-                    inList = false
-                }
-                if (trimmed.isNotEmpty()) {
-                    result.append(trimmed).append("<br>")
-                }
-            }
-        }
-
-        if (inList) {
-            result.append("</ul>")
-        }
-
-        return result.toString()
     }
 }
