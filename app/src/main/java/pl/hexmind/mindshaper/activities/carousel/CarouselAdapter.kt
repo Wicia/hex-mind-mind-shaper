@@ -11,27 +11,33 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Visibility
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtGrowthStage
+import pl.hexmind.mindshaper.activities.capture.handlers.AudioRecordingView
+import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType
+import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType.*
 import pl.hexmind.mindshaper.common.formatting.toLocalDateString
 import pl.hexmind.mindshaper.common.ui.HexTextView
 import pl.hexmind.mindshaper.common.ui.ValueBar
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import timber.log.Timber
+import java.io.File
 
 /**
  * Adapter for thought carousel with smooth animations and automatic updates via LiveData
  */
 class CarouselAdapter(
     private val onDeleteThought: (ThoughtDTO) -> Unit,
-    private val onThoughtTap: (ThoughtDTO) -> Unit
+    private val onThoughtTap: (ThoughtDTO) -> Unit,
+    private val onLoadAudio: (thoughtId: Int, onReady: (File) -> Unit) -> Unit
 ) : ListAdapter<ThoughtDTO, CarouselAdapter.ThoughtViewHolder>(ThoughtDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThoughtViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.carousel_item, parent, false)
-        return ThoughtViewHolder(view, onDeleteThought, onThoughtTap)
+        return ThoughtViewHolder(view, onDeleteThought, onThoughtTap, onLoadAudio)
     }
 
     override fun onBindViewHolder(holder: ThoughtViewHolder, position: Int) {
@@ -44,16 +50,21 @@ class CarouselAdapter(
     class ThoughtViewHolder(
         itemView: View,
         private val onDeleteThought: (ThoughtDTO) -> Unit,
-        private val onThoughtTap: (ThoughtDTO) -> Unit
+        private val onThoughtTap: (ThoughtDTO) -> Unit,
+        private val onLoadAudio: (thoughtId: Int, onReady: (File) -> Unit) -> Unit
     ) : RecyclerView.ViewHolder(itemView),
         GestureDetector.OnGestureListener,
         GestureDetector.OnDoubleTapListener {
+
+        private var currentAudioFile: File? = null
 
         private val tvMetadata: TextView = itemView.findViewById(R.id.tv_though_metadata)
         private val tvCreatedAt: TextView = itemView.findViewById(R.id.tv_created_at)
         private val ivDomainIcon: ImageView = itemView.findViewById(R.id.iv_domain_icon)
 
         private val tvRichText: HexTextView = itemView.findViewById(R.id.tv_rich_text)
+
+        private val audioView : AudioRecordingView = itemView.findViewById(R.id.arv_playback)
 
         private val vbThoughtValue: ValueBar = itemView.findViewById(R.id.vb_thought_value)
 
@@ -70,8 +81,26 @@ class CarouselAdapter(
             viewedThoughtDTO = thought
             setViewOnTouchListener()
 
-            //TODO: Extend by checking thought initial type
-            tvRichText.originalText = thought.richText.orEmpty()
+            when (thought.mainContentType) {
+                RECORDING -> {
+                    audioView.visibility = View.VISIBLE
+                    audioView.setMode(AudioRecordingView.Mode.PLAYBACK_ONLY)
+
+                    thought.id?.let { thoughtId ->
+                        onLoadAudio(thoughtId) { audioFile ->
+                            currentAudioFile = audioFile
+                            audioView.loadAudioForPlayback(audioFile)
+                        }
+                    }
+                }
+                RICH_TEXT -> {
+                    tvRichText.visibility = View.VISIBLE
+                    tvRichText.originalText = thought.richText.orEmpty()
+                }
+                UNKNOWN -> { /* TODO */ }
+                PHOTO -> { /* TODO */ }
+                DRAWING -> { /* TODO */ }
+            }
 
             tvMetadata.text = "\\ " + getFormattedMetadataUI(thought) + " /"
 

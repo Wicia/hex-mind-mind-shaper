@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
-import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
+import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType
 import pl.hexmind.mindshaper.activities.carousel.CarouselActivity
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
 import pl.hexmind.mindshaper.services.GreetingsService
@@ -86,7 +86,7 @@ class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
         fabNoteType.setOnClickListener {
             closeMenu()
             val intent = Intent(this, CaptureActivity::class.java)
-            intent.putExtra(CaptureActivity.Params.P_INIT_THOUGHT_TYPE, InitialThoughtType.RICH_TEXT as Parcelable)
+            intent.putExtra(CaptureActivity.Params.P_INIT_THOUGHT_TYPE, ThoughtMainContentType.RICH_TEXT as Parcelable)
             startActivity(intent)
         }
 
@@ -94,7 +94,7 @@ class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
         fabVoiceType.setOnClickListener {
             closeMenu()
             val intent = Intent(this, CaptureActivity::class.java)
-            intent.putExtra(CaptureActivity.Params.P_INIT_THOUGHT_TYPE, InitialThoughtType.RECORDING as Parcelable)
+            intent.putExtra(CaptureActivity.Params.P_INIT_THOUGHT_TYPE, ThoughtMainContentType.RECORDING as Parcelable)
             startActivity(intent)
         }
 
@@ -102,7 +102,7 @@ class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
         fabDrawingType.setOnClickListener {
             closeMenu()
             val intent = Intent(this, CaptureActivity::class.java)
-            intent.putExtra(CaptureActivity.Params.P_INIT_THOUGHT_TYPE, InitialThoughtType.DRAWING as Parcelable)
+            intent.putExtra(CaptureActivity.Params.P_INIT_THOUGHT_TYPE, ThoughtMainContentType.DRAWING as Parcelable)
             startActivity(intent)
         }
 
@@ -110,7 +110,7 @@ class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
         fabPhotoType.setOnClickListener {
             closeMenu()
             val intent = Intent(this, CaptureActivity::class.java)
-            intent.putExtra(CaptureActivity.P_INIT_THOUGHT_TYPE, InitialThoughtType.PHOTO as Parcelable)
+            intent.putExtra(CaptureActivity.P_INIT_THOUGHT_TYPE, ThoughtMainContentType.PHOTO as Parcelable)
             startActivity(intent)
         }
     }

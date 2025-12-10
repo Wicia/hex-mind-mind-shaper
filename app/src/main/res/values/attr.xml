@@ -16,5 +16,6 @@
             <enum name="recordPlayback" value="0" />
             <enum name="playbackOnly" value="1" />
         </attr>
+        <attr name="compact" format="boolean"/>
     </declare-styleable>
 </resources>

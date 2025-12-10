@@ -2,6 +2,7 @@ package pl.hexmind.mindshaper.activities.capture.handlers
 
 import androidx.core.widget.doAfterTextChanged
 import pl.hexmind.mindshaper.activities.capture.ThoughtCaptureHandler
+import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
@@ -21,6 +22,7 @@ class RichTextCaptureHandler(
     }
 
     override fun getUpdatedDTO(dto: ThoughtDTO): ThoughtDTO {
+        dto.mainContentType = ThoughtMainContentType.RICH_TEXT
         dto.richText = view.etRichText.text.toString()
         return dto
     }

@@ -37,7 +37,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:maxLines="7" />
+            android:maxLines="7"
+            android:visibility="gone"/>
+
+        <!-- Simple voice recording playback -->
+        <pl.hexmind.mindshaper.activities.capture.handlers.AudioRecordingView
+            android:id="@+id/arv_playback"
+            app:recordingMode="playbackOnly"
+            app:compact="true"
+            style="@style/RecordingPlaybackView_UsedWithTint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="200dp"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone" />
 
         <View
             android:id="@+id/tv_separator"

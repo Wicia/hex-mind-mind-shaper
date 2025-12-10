@@ -16,7 +16,7 @@ import pl.hexmind.mindshaper.activities.capture.handlers.AudioRecordingView
 import pl.hexmind.mindshaper.activities.capture.handlers.RecordingCaptureHandler
 import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureHandler
 import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureView
-import pl.hexmind.mindshaper.activities.capture.models.InitialThoughtType
+import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.common.validation.ValidatedProperty
 import pl.hexmind.mindshaper.common.validation.ValidationResult
@@ -41,7 +41,7 @@ class CaptureActivity : CoreActivity(), AudioRecordingView.RecordingCallback {
     @Inject
     lateinit var thoughtsService: ThoughtsService
 
-    private var initialThoughtType: InitialThoughtType = InitialThoughtType.UNKNOWN
+    private var thoughtMainContentType: ThoughtMainContentType = ThoughtMainContentType.UNKNOWN
     private lateinit var flContainerFeatures: FrameLayout
     private lateinit var btnSave: FloatingActionButton
     private lateinit var etHexTags: TextInputEditText
@@ -74,18 +74,18 @@ class CaptureActivity : CoreActivity(), AudioRecordingView.RecordingCallback {
     }
 
     private fun saveExtrasFromIntent() {
-        initialThoughtType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(P_INIT_THOUGHT_TYPE, InitialThoughtType::class.java)
+        thoughtMainContentType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(P_INIT_THOUGHT_TYPE, ThoughtMainContentType::class.java)
         } else {
             @Suppress("DEPRECATION")
             intent.getParcelableExtra(P_INIT_THOUGHT_TYPE)
-        } ?: InitialThoughtType.UNKNOWN
+        } ?: ThoughtMainContentType.UNKNOWN
     }
 
     private fun setupMode() {
         flContainerFeatures.removeAllViews()
-        when (initialThoughtType) {
-            InitialThoughtType.RICH_TEXT -> {
+        when (thoughtMainContentType) {
+            ThoughtMainContentType.RICH_TEXT -> {
                 val richTextCaptureView = RichTextCaptureView(this)
                 flContainerFeatures.addView(richTextCaptureView)
                 thoughtCaptureHandler = RichTextCaptureHandler(richTextCaptureView, thoughtValidator).apply {
@@ -94,7 +94,7 @@ class CaptureActivity : CoreActivity(), AudioRecordingView.RecordingCallback {
                 recordingHandler = null
                 audioRecordingView = null
             }
-            InitialThoughtType.RECORDING -> {
+            ThoughtMainContentType.RECORDING -> {
                 val captureRecordingView = AudioRecordingView(this)
                 captureRecordingView.setMode(AudioRecordingView.Mode.RECORD_PLAYBACK)
                 captureRecordingView.setRecordingCallback(this) // Set activity as callback
@@ -193,8 +193,8 @@ class CaptureActivity : CoreActivity(), AudioRecordingView.RecordingCallback {
         updateUIWithValidationResult(validationResult)
 
         if (validationResult is ValidationResult.Valid) {
-            when (initialThoughtType) {
-                InitialThoughtType.RECORDING -> {
+            when (thoughtMainContentType) {
+                ThoughtMainContentType.RECORDING -> {
                     saveThoughtWithAudio(dtoToSave)
                 }
                 else -> {

@@ -1,6 +1,7 @@
 package pl.hexmind.mindshaper.database.mappers
 
 import androidx.room.TypeConverter
+import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType
 import java.time.Instant
 import java.util.Date
 
@@ -23,4 +24,14 @@ class CommonTypesConverters {
     @TypeConverter
     fun toInstant(value: Long?): Instant? =
         value?.let { Instant.ofEpochMilli(it) }
+
+    @TypeConverter
+    fun fromThoughtMainContentType(value: ThoughtMainContentType): String {
+        return value.dbCode
+    }
+
+    @TypeConverter
+    fun toThoughtMainContentType(value: String): ThoughtMainContentType {
+        return ThoughtMainContentType.fromDbCode(value)
+    }
 }

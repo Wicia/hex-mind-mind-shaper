@@ -23,5 +23,22 @@ class Migrations {
                 )
             }
         }
+
+        val MIGRATION_2_TO_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "ALTER TABLE thoughts ADD COLUMN main_content_type TEXT NOT NULL DEFAULT 'U'"
+                )
+
+                db.execSQL("""
+                    UPDATE THOUGHTS 
+                    SET main_content_type = CASE
+                        WHEN audio_data IS NOT NULL THEN 'R'
+                        WHEN rich_text IS NOT NULL AND rich_text != '' THEN 'T'
+                        ELSE 'U'
+                    END
+                """)
+            }
+        }
     }
 }

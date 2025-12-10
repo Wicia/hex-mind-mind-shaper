@@ -69,6 +69,9 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
                 val intent = Intent(this, DetailsActivity::class.java)
                 intent.putExtra(DetailsActivity.P_SELECTED_THOUGHT_ID, thoughtTap.id ?: -1)
                 startActivity(intent)
+            },
+            onLoadAudio = { thoughtId, onReady ->
+                viewModel.loadAudioForPlayback(thoughtId, onReady)
             }
         )
 

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.capture.ThoughtCaptureHandler
+import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
@@ -91,10 +92,8 @@ class RecordingCaptureHandler(
     }
 
     override fun getUpdatedDTO(dto: ThoughtDTO): ThoughtDTO {
-        // Return DTO with recording file path or other metadata if needed
-        return dto.copy(
-            // Add recording-specific fields here if needed
-        )
+        dto.mainContentType = ThoughtMainContentType.RECORDING
+        return dto
     }
 
     // ===========================================

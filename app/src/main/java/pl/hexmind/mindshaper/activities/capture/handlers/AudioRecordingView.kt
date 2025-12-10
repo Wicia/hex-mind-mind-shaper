@@ -93,10 +93,11 @@ class AudioRecordingView @JvmOverloads constructor(
 
     private var mode: Mode = Mode.RECORD_PLAYBACK
     private var state: State = State.WAITING
+    private var compact : Boolean = false
     private var callback: RecordingCallback? = null
 
     init {
-        inflate(context, R.layout.capture_view_recording, this)
+        inflate(context, R.layout.common_view_recording_playback, this)
         orientation = VERTICAL
 
         // Initialize UI components
@@ -115,6 +116,7 @@ class AudioRecordingView @JvmOverloads constructor(
                 val modeValue = getInt(R.styleable.AudioRecordingView_recordingMode, 0)
                 mode = if (modeValue == 1) Mode.PLAYBACK_ONLY else Mode.RECORD_PLAYBACK
                 setupUIForMode()
+                compact = getBoolean(R.styleable.AudioRecordingView_compact, false)
             }
         }
 
@@ -126,10 +128,16 @@ class AudioRecordingView @JvmOverloads constructor(
         when (mode) {
             Mode.RECORD_PLAYBACK -> {
                 btnRecordNew.visibility = VISIBLE
+                findViewById<TextView>(R.id.tv_buttons_separator).visibility = VISIBLE
             }
             Mode.PLAYBACK_ONLY -> {
                 btnRecordNew.visibility = GONE
+                findViewById<TextView>(R.id.tv_buttons_separator).visibility = GONE
             }
+        }
+        if(compact){
+            tvTimerSecLasts.visibility = GONE
+            tvTimerSecRemains.visibility = GONE
         }
     }
 
@@ -509,17 +517,20 @@ class AudioRecordingView @JvmOverloads constructor(
         when (state) {
             State.PLAYING -> {
                 val currentSeconds = currentMs / 1000
+
                 val totalSeconds = totalMs / 1000
+                val totalMinutes = totalSeconds / 60
+                val totalSecs = totalSeconds % 60
 
                 val currentMinutes = currentSeconds / 60
                 val currentSecs = currentSeconds % 60
 
-                val remainingSeconds = totalSeconds - currentSeconds
-                val remainingMinutes = remainingSeconds / 60
-                val remainingSecs = remainingSeconds % 60
+                //val remainingSeconds = totalSeconds - currentSeconds
+                //val remainingMinutes = remainingSeconds / 60
+                //val remainingSecs = remainingSeconds % 60
 
                 tvTimerSecLasts.text = String.format("%02d:%02d |", currentMinutes, currentSecs)
-                tvTimerSecRemains.text = String.format("| %02d:%02d", remainingMinutes, remainingSecs)
+                tvTimerSecRemains.text = String.format("| %02d:%02d", totalMinutes, totalSecs)
             }
 
             State.RECORDING -> {

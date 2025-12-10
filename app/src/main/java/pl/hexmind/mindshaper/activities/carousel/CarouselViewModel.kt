@@ -15,6 +15,7 @@ import pl.hexmind.mindshaper.common.regex.HexTags
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import timber.log.Timber
+import java.io.File
 import javax.inject.Inject
 
 /**
@@ -130,6 +131,34 @@ class CarouselViewModel @Inject constructor(
                 thoughtsService.deleteThoughtById(thoughtId)
             } ?: run {
                 Timber.w("Cannot delete thought without ID")
+            }
+        }
+    }
+
+    // TODO: there is same function in DetailsViewModel :)
+    fun loadAudioForPlayback(
+        thoughtId: Int,
+        onAudioReady: (File) -> Unit,
+        onError: () -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            try {
+                val audioData = thoughtsService.getAudioData(thoughtId)
+
+                if (audioData == null || audioData.isEmpty()) {
+                    Timber.w("No audio data for thought $thoughtId")
+                    onError()
+                    return@launch
+                }
+
+                // Creating temp file for playing
+                val tempFile = File.createTempFile("carousel_playback_", ".m4a")
+                tempFile.writeBytes(audioData)
+                onAudioReady(tempFile)
+
+            } catch (e: Exception) {
+                Timber.e(e, "Error loading audio for thought $thoughtId")
+                onError()
             }
         }
     }
