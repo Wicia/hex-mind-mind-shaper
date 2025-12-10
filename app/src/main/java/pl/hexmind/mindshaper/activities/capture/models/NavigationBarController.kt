@@ -37,8 +37,8 @@ class NavigationBarController(
 
     init {
         val context = navigationBar.context
-        selectedColor = context.getColor(R.color._orange_dark)
-        unselectedColor = context.getColor(R.color._orange_medium)
+        selectedColor = context.getColor(R.color._orange_5_dark)
+        unselectedColor = context.getColor(R.color._orange_3_mid)
 
         setupNavButtons()
         setupToggleButton()

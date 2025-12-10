@@ -40,9 +40,8 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:scaleX="-1"
-                    android:tint="@color/button_secondary"
                     app:srcCompat="@drawable/ic_decorator_olive"
-                    />
+                    app:tint="@color/button_secondary" />
 
                 <!-- SOUL MATE(S): n/a -->
                 <com.google.android.material.button.MaterialButton
@@ -90,7 +89,7 @@
                     app:minDotRadius="5dp"
                     app:maxDotRadius="10dp"
                     app:dotBackgroundColor="#E0E0E0"
-                    app:dotProgressColor="@color/_orange_grim"
+                    app:dotProgressColor="@color/_orange_4_grim"
                     app:dotTextColor="@color/black"
                     />
 
@@ -171,9 +170,8 @@
                     android:focusable="true"
                     android:scaleY="-1"
                     android:scaleX="-1"
-                    android:tint="@color/button_secondary"
                     app:srcCompat="@drawable/ic_decorator_olive"
-                    />
+                    app:tint="@color/button_secondary" />
 
                 <!-- THREAD: n/a -->
                 <com.google.android.material.button.MaterialButton
@@ -269,7 +267,7 @@
                 <pl.hexmind.mindshaper.activities.capture.handlers.AudioRecordingView
                     android:id="@+id/recording_playback"
                     style="@style/RecordingPlaybackView_UsedWithTint"
-                    app:recordingMode="playbackOnly"
+                    app:recordingMode="recordPlayback"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="200dp"

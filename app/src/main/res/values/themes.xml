@@ -6,19 +6,19 @@
         <!-- Primary color -->
         <item name="colorPrimary">@color/app_primary</item>
         <item name="colorOnPrimary">@color/text_on_primary</item>
-        <item name="colorPrimaryContainer">@color/_orange_medium</item>
+        <item name="colorPrimaryContainer">@color/_orange_3_mid</item>
         <item name="colorOnPrimaryContainer">@color/text_primary</item>
 
         <!-- Secondary color -->
         <item name="colorSecondary">@color/app_secondary</item>
         <item name="colorOnSecondary">@color/_white</item>
-        <item name="colorSecondaryContainer">@color/_orange_light</item>
+        <item name="colorSecondaryContainer">@color/_orange_1_light</item>
         <item name="colorOnSecondaryContainer">@color/text_primary</item>
 
         <!-- Surface color -->
         <item name="colorSurface">@color/app_surface</item>
         <item name="colorOnSurface">@color/text_primary</item>
-        <item name="colorSurfaceVariant">@color/_orange_light</item>
+        <item name="colorSurfaceVariant">@color/_orange_1_light</item>
         <item name="colorOnSurfaceVariant">@color/text_secondary</item>
 
         <!-- Background color -->
@@ -50,14 +50,14 @@
 
     <!-- Theme for capture activity with immersive feel -->
     <style name="Theme.MindShaper.Capture" parent="Theme.MindShaper">
-        <item name="android:windowBackground">@color/_orange_light</item>
+        <item name="android:windowBackground">@color/_orange_1_light</item>
         <item name="colorSurface">@color/_white</item>
     </style>
 
     <!-- Theme for details activity -->
     <style name="Theme.MindShaper.Details" parent="Theme.MindShaper">
         <item name="android:windowBackground">@color/_white</item>
-        <item name="colorSurface">@color/_orange_light</item>
+        <item name="colorSurface">@color/_orange_1_light</item>
     </style>
 
 </resources>

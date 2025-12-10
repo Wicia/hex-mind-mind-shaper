@@ -24,8 +24,8 @@
             app:radius="50dp"
             app:minDotRadius="5dp"
             app:maxDotRadius="10dp"
-            app:dotBackgroundColor="@color/_orange_soft"
-            app:dotProgressColor="@color/_orange_grim"
+            app:dotBackgroundColor="@color/_orange_2_soft"
+            app:dotProgressColor="@color/_orange_4_grim"
             app:dotTextColor="@color/black"
             android:layout_gravity="center"
             />

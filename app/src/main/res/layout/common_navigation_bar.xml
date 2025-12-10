@@ -27,8 +27,8 @@
         app:iconGravity="textStart"
         app:iconPadding="0dp"
         app:iconSize="28dp"
-        app:iconTint="@color/_orange_medium"
-        app:rippleColor="@color/_orange_medium"
+        app:iconTint="@color/_orange_3_mid"
+        app:rippleColor="@color/_orange_3_mid"
         app:backgroundTint="@null"/>
 
     <!-- Container for navigation buttons -->
@@ -59,12 +59,12 @@
             app:iconGravity="textStart"
             app:iconPadding="0dp"
             app:iconSize="28dp"
-            app:iconTint="@color/_orange_medium"
+            app:iconTint="@color/_orange_3_mid"
             app:cornerRadius="12dp"
             app:strokeWidth="0.5dp"
-            app:strokeColor="@color/_orange_soft"
+            app:strokeColor="@color/_orange_2_soft"
             app:backgroundTint="@color/app_background"
-            app:rippleColor="@color/_orange_medium"/>
+            app:rippleColor="@color/_orange_3_mid"/>
 
         <!-- Button 2: Carousel -->
         <com.google.android.material.button.MaterialButton
@@ -84,12 +84,12 @@
             app:iconGravity="textStart"
             app:iconPadding="0dp"
             app:iconSize="28dp"
-            app:iconTint="@color/_orange_medium"
+            app:iconTint="@color/_orange_3_mid"
             app:cornerRadius="12dp"
             app:strokeWidth="0.5dp"
-            app:strokeColor="@color/_orange_soft"
+            app:strokeColor="@color/_orange_2_soft"
             app:backgroundTint="@color/app_background"
-            app:rippleColor="@color/_orange_medium"/>
+            app:rippleColor="@color/_orange_3_mid"/>
 
         <!-- Button 3: Settings -->
         <com.google.android.material.button.MaterialButton
@@ -109,12 +109,12 @@
             app:iconGravity="textStart"
             app:iconPadding="0dp"
             app:iconSize="28dp"
-            app:iconTint="@color/_orange_medium"
+            app:iconTint="@color/_orange_3_mid"
             app:cornerRadius="12dp"
             app:strokeWidth="0.5dp"
-            app:strokeColor="@color/_orange_soft"
+            app:strokeColor="@color/_orange_2_soft"
             app:backgroundTint="@color/app_background"
-            app:rippleColor="@color/_orange_medium"/>
+            app:rippleColor="@color/_orange_3_mid"/>
 
     </LinearLayout>
 

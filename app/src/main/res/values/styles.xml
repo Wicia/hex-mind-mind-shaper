@@ -17,7 +17,7 @@
         <item name="android:fontFamily">@font/alegreya_regular</item>
         <item name="android:textSize">28sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/_orange_medium</item>
+        <item name="android:textColor">@color/_orange_3_mid</item>
     </style>
 
     <!-- Activity / Section -->
@@ -65,6 +65,12 @@
         <item name="android:textColor">@color/validation_error</item>
     </style>
 
+    <style name="TextView_Number_State">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
 <!-- ====================================== -->
 <!--    EDIT TEXT                           -->
 <!-- ====================================== -->
@@ -76,7 +82,7 @@
     </style>
 
 <!-- ====================================== -->
-<!--    BUTTONS                             -->
+<!--   CONTENT FIELDS / CONTENT "BUTTONS"   -->
 <!-- ====================================== -->
 
     <!--=== Thought CONTENT ===-->
@@ -241,7 +247,11 @@
         <item name="cornerRadius">8dp</item>
     </style>
 
-    <!--=== Additional buttons ===-->
+<!-- ====================================== -->
+<!--    ACTION / OPERATIONAL BUTTONS        -->
+<!-- ====================================== -->
+
+    <!--=== Main ===-->
 
     <style name="MainActionButton" parent="Widget.MaterialComponents.Button">
         <!-- Min constraints -->
@@ -258,10 +268,10 @@
         <item name="android:padding">12dp</item>
 
         <!-- Background -->
-        <item name="backgroundTint">@color/button_primary_stateful</item>
+        <item name="backgroundTint">@color/button_primary_stateful_background</item>
 
         <!-- Icons -->
-        <item name="iconTint">@color/button_icon_used_fill</item>
+        <item name="iconTint">@color/button_primary_stateful_icon</item>
         <item name="iconSize">28dp</item>
         <item name="iconPadding">0dp</item>
         <item name="iconGravity">textTop</item>
@@ -280,6 +290,8 @@
         <item name="textAllCaps">false</item>
     </style>
 
+    <!--=== Alternative ===-->
+
     <style name="AlternativeActionButton" parent="Widget.MaterialComponents.Button">
         <!-- Min constraints -->
         <item name="android:minHeight">0dp</item>
@@ -295,7 +307,7 @@
         <item name="android:padding">12dp</item>
 
         <!-- Background -->
-        <item name="backgroundTint">@color/button_primary_stateful</item>
+        <item name="backgroundTint">@color/button_primary_stateful_background</item>
 
         <!-- Icons -->
         <item name="iconTint">@color/button_icon_used_fill</item>
@@ -382,12 +394,12 @@
         <item name="android:layout_height">32dp</item>
         <item name="android:layout_marginTop">24dp</item>
         <item name="android:layout_gravity">center</item>
-        <item name="tint">@color/_orange_medium</item>
+        <item name="tint">@color/_orange_3_mid</item>
     </style>
 
     <!-- Icons -->
     <style name="ImageView_Icon">
-        <item name="tint">@color/_gray_mid</item>
+        <item name="tint">@color/_gray_3_mid</item>
     </style>
 
     <!-- Standard keyboard buttons -->

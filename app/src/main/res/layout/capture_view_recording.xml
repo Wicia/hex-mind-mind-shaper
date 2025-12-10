@@ -15,14 +15,13 @@
 
         <TextView
             android:id="@+id/tv_timer_sec_lasts"
+            style="@style/TextView_Number_State"
             android:layout_weight="0.15"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
             android:gravity="end"
-            android:layout_marginEnd="8dp"
-            android:textColor="@color/_gray_light" />
+            android:layout_marginEnd="4dp"
+            />
 
         <!-- Audio visualization -->
         <pl.hexmind.mindshaper.common.audio.AudioVisualizerView
@@ -46,14 +45,12 @@
 
         <TextView
             android:id="@+id/tv_timer_sec_remains"
+            style="@style/TextView_Number_State"
             android:layout_weight="0.15"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
             android:gravity="start"
-            android:layout_marginStart="8dp"
-            android:textColor="@color/_gray_light" />
+            android:layout_marginStart="4dp" />
 
     </LinearLayout>
 
@@ -82,12 +79,24 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_record_new"
             style="@style/MainActionButton"
-            android:minWidth="64dp"
-            android:layout_width="64dp"
+            android:minWidth="52dp"
+            android:layout_width="52dp"
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"
-            app:icon="@drawable/ic_thought_type_recording"
+            app:iconGravity="start"
+            app:iconSize="36dp"
+            app:icon="@drawable/ic_recording_renew"
             />
+
+        <TextView
+            android:id="@+id/tv_separator"
+            android:minWidth="12dp"
+            android:layout_width="12dp"
+            android:layout_height="48dp"
+            android:text="/"
+            android:textColor="@color/_orange_2_soft"
+            android:textSize="32sp"
+            android:gravity="center" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_record_stop_play"
@@ -96,7 +105,7 @@
             android:layout_width="64dp"
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
-            app:icon="@drawable/ic_stop_circle"
+            app:icon="@drawable/ic_recording_stop"
             />
 
         <com.google.android.material.button.MaterialButton
@@ -105,7 +114,7 @@
             android:minWidth="48dp"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:text="-5s"
+            android:text="+5s"
             android:textSize="14sp"
             android:layout_marginStart="32dp"
             android:textAlignment="center"

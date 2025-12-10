@@ -146,40 +146,27 @@ class AudioRecordingView @JvmOverloads constructor(
         when {
             isRecording -> {
                 btnRecordNew.isEnabled = false
-                btnRecordNew.alpha = 0.5f
-                btnRecordNew.setBackgroundColor(ContextCompat.getColor(context, R.color.button_disabled_background))
 
                 btnRecordStopPlay.isEnabled = true
-                btnRecordStopPlay.alpha = 1f
-                btnRecordStopPlay.icon = AppCompatResources.getDrawable(context, R.drawable.ic_stop_circle)
-                btnRecordStopPlay.setBackgroundColor(ContextCompat.getColor(context, R.color.button_primary))
+                btnRecordStopPlay.icon = AppCompatResources.getDrawable(context, R.drawable.ic_recording_stop)
             }
             isPlaying -> {
                 btnRecordNew.isEnabled = false
-                btnRecordNew.alpha = 0.5f
 
                 btnRecordStopPlay.isEnabled = true
-                btnRecordStopPlay.alpha = 1f
-                btnRecordStopPlay.icon = AppCompatResources.getDrawable(context, R.drawable.ic_stop_circle)
-                btnRecordStopPlay.setBackgroundColor(ContextCompat.getColor(context, R.color.button_primary))
+                btnRecordStopPlay.icon = AppCompatResources.getDrawable(context, R.drawable.ic_recording_stop)
             }
             hasRecording -> {
                 btnRecordNew.isEnabled = true
-                btnRecordNew.alpha = 1f
-                btnRecordNew.setBackgroundColor(ContextCompat.getColor(context, R.color.button_primary))
 
                 btnRecordStopPlay.isEnabled = true
-                btnRecordStopPlay.alpha = 1f
                 btnRecordStopPlay.icon = AppCompatResources.getDrawable(context, R.drawable.ic_recording_play)
             }
             else -> {
                 btnRecordNew.isEnabled = true
-                btnRecordNew.alpha = 1f
 
                 btnRecordStopPlay.isEnabled = false
-                btnRecordStopPlay.alpha = 0.5f
                 btnRecordStopPlay.icon = AppCompatResources.getDrawable(context, R.drawable.ic_recording_play)
-                btnRecordStopPlay.setBackgroundColor(ContextCompat.getColor(context, R.color.button_disabled_background))
             }
         }
     }
@@ -531,8 +518,8 @@ class AudioRecordingView @JvmOverloads constructor(
                 val remainingMinutes = remainingSeconds / 60
                 val remainingSecs = remainingSeconds % 60
 
-                tvTimerSecLasts.text = String.format("%02d:%02d", currentMinutes, currentSecs)
-                tvTimerSecRemains.text = String.format("%02d:%02d", remainingMinutes, remainingSecs)
+                tvTimerSecLasts.text = String.format("%02d:%02d |", currentMinutes, currentSecs)
+                tvTimerSecRemains.text = String.format("| %02d:%02d", remainingMinutes, remainingSecs)
             }
 
             State.RECORDING -> {
@@ -546,8 +533,8 @@ class AudioRecordingView @JvmOverloads constructor(
                 val remainingMinutes = remainingSeconds / 60
                 val remainingSecs = remainingSeconds % 60
 
-                tvTimerSecLasts.text = String.format("%02d:%02d", currentMinutes, currentSecs)
-                tvTimerSecRemains.text = String.format("%02d:%02d", remainingMinutes, remainingSecs)
+                tvTimerSecLasts.text = String.format("%02d:%02d |", currentMinutes, currentSecs)
+                tvTimerSecRemains.text = String.format("| %02d:%02d", remainingMinutes, remainingSecs)
             }
 
             State.WAITING -> {
@@ -555,8 +542,8 @@ class AudioRecordingView @JvmOverloads constructor(
                 val totalMinutes = totalSeconds / 60
                 val totalSecs = totalSeconds % 60
 
-                tvTimerSecLasts.text = "00:00"
-                tvTimerSecRemains.text = String.format("%02d:%02d", totalMinutes, totalSecs)
+                tvTimerSecLasts.text = "00:00 |"
+                tvTimerSecRemains.text = String.format("| %02d:%02d", totalMinutes, totalSecs)
             }
         }
     }

@@ -22,18 +22,18 @@ class AudioVisualizerView @JvmOverloads constructor(
 
     private var playbackPosition = 0f
 
-    private var barWidth = 3f
+    private var barWidth = 4f
     private var barSpacing = 2f
 
     // Stan
     private var isRecordingMode = false
 
     init {
-        paintPlayed.color = ContextCompat.getColor(context, R.color._orange_grim)
+        paintPlayed.color = ContextCompat.getColor(context, R.color._orange_4_grim)
         paintPlayed.strokeWidth = barWidth
         paintPlayed.strokeCap = Paint.Cap.ROUND
 
-        paintUnplayed.color = ContextCompat.getColor(context, R.color._gray_mid)
+        paintUnplayed.color = ContextCompat.getColor(context, R.color._gray_3_mid)
         paintUnplayed.strokeWidth = barWidth
         paintUnplayed.strokeCap = Paint.Cap.ROUND
     }

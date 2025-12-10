@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:contentDescription="@string/sort_direction_description"
-                android:textColor="@color/_gray_dark"
+                android:textColor="@color/_gray_4_grim"
                 android:textSize="14sp"
                 android:padding="0dp"
                 android:backgroundTint="@color/button_secondary"

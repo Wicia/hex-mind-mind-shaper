@@ -41,7 +41,7 @@
                     android:layout_gravity="end"
                     android:contentDescription="@string/common_placeholder_accessibility_content_desc"
                     app:srcCompat="@drawable/ic_hex_tags"
-                    app:tint="@color/_gray_light" />
+                    app:tint="@color/_gray_2_soft" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="wrap_content"
