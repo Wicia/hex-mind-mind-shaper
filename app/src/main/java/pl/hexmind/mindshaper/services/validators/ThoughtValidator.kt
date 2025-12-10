@@ -20,7 +20,7 @@ class ThoughtValidator @Inject constructor(
         const val SOUL_MATES_MAX_CHARS: Int = 24
 
         const val THOUGHT_VALUE_MIN: Int = 1
-        const val THOUGHT_VALUE_MAX: Int = 6
+        const val THOUGHT_VALUE_MAX: Int = 10
 
         const val VOICE_RECORDING_MAX_DURATION_MS = 180_000L
     }
