@@ -46,7 +46,7 @@ class RichTextCaptureView @JvmOverloads constructor(
                 tvValidationInfo.text = result.message
             }
             is ValidationResult.Valid -> {
-                tvValidationInfo.text = context.getString(R.string.common_validation_info_initial)
+                tvValidationInfo.text = ""
             }
         }
     }

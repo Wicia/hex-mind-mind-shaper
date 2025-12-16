@@ -21,7 +21,7 @@
 
     <!-- HEX TAGS / METADATA -->
     <string name="common_hex_tag_project">Projekt</string>
-    <string name="common_hex_tag_soul_mates">Dobre dusze</string>
+    <string name="common_hex_tag_soul_mates">Człowiek lub inna dusza</string>
     <string name="common_hex_tag_thread">Wątek</string>
     <string name="common_hex_tag_domain">Domena</string>
 
@@ -57,8 +57,6 @@
     <string name="common_list_dialog_title">Wybierz coś sobie...</string>
 
     <!-- VALIDATION -->
-    <string name="common_validation_info_initial">¦</string>
-
     <string name="common_object_type_thought">Myśl</string>
 
 <!-- ====================================== -->
@@ -66,14 +64,16 @@
 <!-- ====================================== -->
 
     <array name="home_greetings_values_list">
-        <item>Witaj</item>
-        <item>Cześć</item>
-        <item>Serwus</item>
-        <item>Elo</item>
-        <item>Dobrego dnia</item>
-        <item>Hejka</item>
-        <item>Yoł</item>
-        <item>No jak tam</item>
+        <item>Dużo dobrego %s!</item>
+        <item>Witaj %s ;)</item>
+        <item>Cześć %s!</item>
+        <item>Serwus %s!</item>
+        <item>Elo %s :)</item>
+        <item>Dobrego dnia %s!</item>
+        <item>Hejka %s</item>
+        <item>Yoł %s</item>
+        <item>No jak tam %s?</item>
+        <item>Siema %s!</item>
     </array>
 
 <!-- ====================================== -->
@@ -93,10 +93,10 @@
     <string name="capture_input_fields_error_empty">Notatka i Esencja są puste</string>
 
     <!-- Thread (common) -->
-    <string name="capture_hex_tags_tooltip">wątek @dusza #projekt</string>
+    <string name="capture_hex_tags_tooltip">wątek @człowiek #projekt</string>
     <string name="capture_thread_error_chars_exceeded">Wątek nie może przekroczyć %d znaków...</string>
     <string name="capture_project_error_chars_exceeded">Projekt nie może przekroczyć %d znaków...</string>
-    <string name="capture_soul_mates_error_chars_exceeded">Imiona dobrych dusz nie mogą przekroczyć %d znaków...</string>
+    <string name="capture_soul_mates_error_chars_exceeded">Opis osób nie może przekroczyć %d znaków...</string>
 
     <!-- Type: Rich Text (Note) -->
     <string name="capture_rich_text_hint">\?\n\n\nJeżeli wpiszesz:\n\tx to jest myśl od kropki\nto po zapisie zobaczysz:\n\t• to jest myśl od kropki :)</string>
@@ -132,13 +132,13 @@
 <!--    ACTIVITY: THOUGHTS PREVIEW / CAROUSEL  -->
 <!-- ====================================== -->
 
-    <string name="carousel_thought_thread_empty">\?\?\?</string>
-    <string name="carousel_searchbar_hint">Szukaj @dobrejduszy / #projektu / wątku...</string>
+    <string name="carousel_thought_metadata_empty">\?\?\?</string>
+    <string name="carousel_searchbar_hint">Szukaj @człowieków / #projektu / wątku...</string>
 
     <!-- Sort Properties -->
     <string name="sort_property_created_at">Wiek myśli</string>
     <string name="sort_property_thread">Wątek</string>
-    <string name="sort_property_soul_mate">Dobra dusza</string>
+    <string name="sort_property_soul_mate">Człowiek</string>
     <string name="sort_property_project">Projekt</string>
     <string name="sort_property_value">Wartość</string>
 
@@ -208,7 +208,10 @@
     <string name="settings_backup_loaded_success">Backup wczytany pomyślnie</string>
     <string name="settings_backup_error_loading">Błąd podczas wczytywania backupu</string>
 
-    <string name="common_thought_age_pattern">%1$s %2$s (%3$s dni)</string>
+    <string name="common_thought_age_pattern">%1$s %2$s dni temu</string>
+    <string name="common_thought_age_0">"%s Dzisiaj"</string>
+    <string name="common_thought_age_1">%s Wczoraj</string>
+    <!-- TODO: Since 11.12.2025 levels names are skipped for minimalism -> delete list below? -->
     <string name="common_thought_age_level_1">Kiełek</string>
     <string name="common_thought_age_level_2">Pąk</string>
     <string name="common_thought_age_level_3">Sadzonka</string>

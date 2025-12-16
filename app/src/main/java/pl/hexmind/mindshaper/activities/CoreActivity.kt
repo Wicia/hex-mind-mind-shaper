@@ -1,7 +1,6 @@
 package pl.hexmind.mindshaper.activities
 
-import NavigationBarController
-import android.app.Activity
+import pl.hexmind.mindshaper.activities.capture.models.NavigationBarController
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle

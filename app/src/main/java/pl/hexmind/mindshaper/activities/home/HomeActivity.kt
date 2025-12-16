@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.GestureDetector
 import android.view.MotionEvent
-import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
@@ -16,6 +16,7 @@ import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType
 import pl.hexmind.mindshaper.activities.carousel.CarouselActivity
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
+import pl.hexmind.mindshaper.common.formatting.setColoredText
 import pl.hexmind.mindshaper.services.GreetingsService
 import kotlin.math.abs
 import kotlin.math.cos
@@ -28,10 +29,11 @@ import kotlin.math.sin
 class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
 
     private lateinit var fabNewThought: FloatingActionButton
-    private lateinit var fabNoteType: FloatingActionButton
-    private lateinit var fabVoiceType: FloatingActionButton
-    private lateinit var fabDrawingType: FloatingActionButton
-    private lateinit var fabPhotoType: FloatingActionButton
+    private lateinit var fabNewThoughtRichText: FloatingActionButton
+    private lateinit var fabNewThoughtRecording: FloatingActionButton
+
+    //private lateinit var fabDrawingType: FloatingActionButton
+    //private lateinit var fabPhotoType: FloatingActionButton
 
     private lateinit var tvHeaderGreetings : TextView
 
@@ -50,15 +52,15 @@ class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
     private fun initViews() {
         setupHeader(R.drawable.ic_header_home, R.string.common_foobar)
         fabNewThought = findViewById(R.id.fab_new_thought)
-        fabNoteType = findViewById(R.id.fab_note_type)
-        fabVoiceType = findViewById(R.id.fab_voice_type)
-        fabDrawingType = findViewById(R.id.fab_drawing_type)
-        fabPhotoType = findViewById(R.id.fab_photo_type)
+        fabNewThoughtRichText = findViewById(R.id.fab_rich_text_type)
+        fabNewThoughtRecording = findViewById(R.id.fab_voice_type)
+        //fabDrawingType = findViewById(R.id.fab_drawing_type)
+        //fabPhotoType = findViewById(R.id.fab_photo_type)
 
         setupHeaderWithGreetings()
 
         // Initially hide all menu buttons
-        listOf(fabNoteType, fabVoiceType, fabDrawingType, fabPhotoType).forEach { fab ->
+        listOf(fabNewThoughtRichText, fabNewThoughtRecording).forEach { fab ->
             fab.hide()
             fab.alpha = 0f
         }
@@ -69,12 +71,11 @@ class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
         val currentGreetingsText = tvHeaderGreetings.text.toString()
         var newGreetingsText : String
         do {
-            newGreetingsText = GreetingsService.getGreetingsString(this)
+            newGreetingsText = GreetingsService.getGreetingsString(this, appSettingsStorage.getYourName())
         } while (currentGreetingsText == newGreetingsText)
-        tvHeaderGreetings.text = newGreetingsText
 
-        findViewById<TextView>(R.id.tv_header_subtitle).visibility = View.VISIBLE
-        findViewById<TextView>(R.id.tv_header_subtitle).text = appSettingsStorage.getYourName()
+        tvHeaderGreetings.setColoredText(newGreetingsText, appSettingsStorage.getYourName(),
+            ContextCompat.getColor(this, R.color._orange_4_grim))
     }
 
     private fun setupClickListeners() {
@@ -83,7 +84,7 @@ class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
         }
 
         // RICH NOTES
-        fabNoteType.setOnClickListener {
+        fabNewThoughtRichText.setOnClickListener {
             closeMenu()
             val intent = Intent(this, CaptureActivity::class.java)
             intent.putExtra(CaptureActivity.Params.P_INIT_THOUGHT_TYPE, ThoughtMainContentType.RICH_TEXT as Parcelable)
@@ -91,28 +92,28 @@ class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
         }
 
         // VOICE RECORDING
-        fabVoiceType.setOnClickListener {
+        fabNewThoughtRecording.setOnClickListener {
             closeMenu()
             val intent = Intent(this, CaptureActivity::class.java)
             intent.putExtra(CaptureActivity.Params.P_INIT_THOUGHT_TYPE, ThoughtMainContentType.RECORDING as Parcelable)
             startActivity(intent)
         }
 
-        // DRAWING
-        fabDrawingType.setOnClickListener {
-            closeMenu()
-            val intent = Intent(this, CaptureActivity::class.java)
-            intent.putExtra(CaptureActivity.Params.P_INIT_THOUGHT_TYPE, ThoughtMainContentType.DRAWING as Parcelable)
-            startActivity(intent)
-        }
+        // TODO: DRAWING
+//        fabDrawingType.setOnClickListener {
+//            closeMenu()
+//            val intent = Intent(this, CaptureActivity::class.java)
+//            intent.putExtra(CaptureActivity.Params.P_INIT_THOUGHT_TYPE, ThoughtMainContentType.DRAWING as Parcelable)
+//            startActivity(intent)
+//        }
 
-        // PHOTO
-        fabPhotoType.setOnClickListener {
-            closeMenu()
-            val intent = Intent(this, CaptureActivity::class.java)
-            intent.putExtra(CaptureActivity.P_INIT_THOUGHT_TYPE, ThoughtMainContentType.PHOTO as Parcelable)
-            startActivity(intent)
-        }
+        // TODO: PHOTO
+//        fabPhotoType.setOnClickListener {
+//            closeMenu()
+//            val intent = Intent(this, CaptureActivity::class.java)
+//            intent.putExtra(CaptureActivity.P_INIT_THOUGHT_TYPE, ThoughtMainContentType.PHOTO as Parcelable)
+//            startActivity(intent)
+//        }
     }
 
     // Initialize gesture detector for swipe down recognition
@@ -192,7 +193,7 @@ class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
             .start()
 
         // Show and animate menu buttons - exactly between 90° and 180°
-        val fabs = listOf(fabNoteType, fabVoiceType, fabDrawingType, fabPhotoType)
+        val fabs = listOf(fabNewThoughtRichText, fabNewThoughtRecording)
 
         // Angles evenly distributed between 90° and 180°
         val angles = listOf(
@@ -233,7 +234,7 @@ class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
             .start()
 
         // Hide menu buttons
-        listOf(fabNoteType, fabVoiceType, fabDrawingType, fabPhotoType).forEach { fab ->
+        listOf(fabNewThoughtRichText, fabNewThoughtRecording).forEach { fab ->
             fab.animate()
                 .translationX(0f)
                 .translationY(0f)

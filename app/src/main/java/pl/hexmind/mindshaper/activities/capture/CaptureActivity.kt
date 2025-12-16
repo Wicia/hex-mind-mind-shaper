@@ -2,8 +2,8 @@ package pl.hexmind.mindshaper.activities.capture
 
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -95,9 +95,7 @@ class CaptureActivity : CoreActivity(), AudioRecordingView.RecordingCallback {
                 audioRecordingView = null
             }
             ThoughtMainContentType.RECORDING -> {
-                val captureRecordingView = AudioRecordingView(this)
-                captureRecordingView.setMode(AudioRecordingView.Mode.RECORD_PLAYBACK)
-                captureRecordingView.setRecordingCallback(this) // Set activity as callback
+                val captureRecordingView = createAudioRecordingView()
                 flContainerFeatures.addView(captureRecordingView)
 
                 val handler = RecordingCaptureHandler(
@@ -115,23 +113,25 @@ class CaptureActivity : CoreActivity(), AudioRecordingView.RecordingCallback {
         }
     }
 
+    private fun createAudioRecordingView() : AudioRecordingView{
+        val captureRecordingView = AudioRecordingView(this)
+        captureRecordingView.setMode(AudioRecordingView.Mode.RECORD_PLAYBACK)
+        captureRecordingView.setRecordingCallback(this)
+        val params = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            bottomMargin = (16 * resources.displayMetrics.density).toInt()
+        }
+        captureRecordingView.layoutParams = params
+
+        return captureRecordingView
+    }
+
     private fun setupListeners() {
         btnSave.setOnClickListener {
             lifecycleScope.launch { saveThought() }
         }
-
-        // TODO: Rethink it and fix => there is a small bug below :)
-        // ! info: code below prevents adding more than 3 separate words in input field
-//        etHexTags.doAfterTextChanged { editable ->
-//            editable?.let {
-//                val words = it.toString().convertToWords()
-//                if (thoughtValidator.validateThread(it.toString()) is ValidationResult.Error) {
-//                    val limited = words.take(ThoughtValidator.THREAD_MAX_WORDS).joinToString(" ")
-//                    etHexTags.setText(limited)
-//                    etHexTags.setSelection(limited.length)
-//                }
-//            }
-//        }
     }
 
     // ===========================================
@@ -149,7 +149,6 @@ class CaptureActivity : CoreActivity(), AudioRecordingView.RecordingCallback {
 
     override fun onRecordingError(error: String) {
         Timber.tag(TAG).e("Recording error: $error")
-        tvHexTagsValidationInfo.visibility = View.VISIBLE
         tvHexTagsValidationInfo.text = getString(R.string.capture_voice_error_recording)
     }
 
@@ -210,7 +209,6 @@ class CaptureActivity : CoreActivity(), AudioRecordingView.RecordingCallback {
 
         if (recording == null || !recording.fileExists()) {
             Timber.tag(TAG).e("Audio file does not exist")
-            tvHexTagsValidationInfo.visibility = View.VISIBLE
             tvHexTagsValidationInfo.text = getString(R.string.validation_recording_missing)
             return
         }
@@ -225,7 +223,6 @@ class CaptureActivity : CoreActivity(), AudioRecordingView.RecordingCallback {
         }
         catch (e: Exception) {
             Timber.tag(TAG).e(e, "Error saving thought with audio")
-            tvHexTagsValidationInfo.visibility = View.VISIBLE
             tvHexTagsValidationInfo.text = getString(R.string.capture_voice_error_saving)
         }
     }
@@ -250,8 +247,7 @@ class CaptureActivity : CoreActivity(), AudioRecordingView.RecordingCallback {
     }
 
     private fun resetValidationUI() {
-        tvHexTagsValidationInfo.visibility = View.GONE
-        tvHexTagsValidationInfo.text = null
+        tvHexTagsValidationInfo.text = ""
     }
 
     private fun updateUIWithValidationResult(result: ValidationResult) {
@@ -260,20 +256,22 @@ class CaptureActivity : CoreActivity(), AudioRecordingView.RecordingCallback {
             when (validatedProperty) {
                 ValidatedProperty.T_THREAD,
                 ValidatedProperty.T_PROJECT,
-                ValidatedProperty.T_SOUL_MATES,
-                ValidatedProperty.T_AUDIO -> {
-                    tvHexTagsValidationInfo.visibility = View.VISIBLE
+                ValidatedProperty.T_SOUL_MATES -> {
                     tvHexTagsValidationInfo.text = result.message
                 }
                 ValidatedProperty.T_RICH_TEXT -> {
                     // Skipping - RichText has real-time validation
                 }
+                ValidatedProperty.T_AUDIO -> {
+                    // TODO ???
+                }
                 else -> {
                     // Handle other validation properties if needed
                 }
             }
-        } else {
-            tvHexTagsValidationInfo.visibility = View.GONE
+        }
+        else { // VALID
+            // TODO display or do sth?
         }
     }
 

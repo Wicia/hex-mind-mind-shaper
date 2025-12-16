@@ -76,7 +76,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="24dp"
                 android:gravity="start"
-                android:text="@string/common_validation_info_initial" />
+                />
 
         </LinearLayout>
     </ScrollView>

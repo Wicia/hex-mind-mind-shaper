@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
 
     <TextView
         style="@style/TextView_Header_Section"
@@ -35,10 +34,9 @@
         style="@style/TextView_Info_Success"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/common_validation_info_initial"
         android:gravity="end"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="24dp" />
+        />
 
 </LinearLayout>

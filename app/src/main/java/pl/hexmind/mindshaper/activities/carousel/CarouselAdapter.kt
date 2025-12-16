@@ -5,19 +5,14 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.RenderProcessGoneDetail
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Visibility
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtGrowthStage
 import pl.hexmind.mindshaper.activities.capture.handlers.AudioRecordingView
-import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType
 import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType.*
-import pl.hexmind.mindshaper.common.formatting.toLocalDateString
 import pl.hexmind.mindshaper.common.ui.HexTextView
 import pl.hexmind.mindshaper.common.ui.ValueBar
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
@@ -60,7 +55,6 @@ class CarouselAdapter(
 
         private val tvMetadata: TextView = itemView.findViewById(R.id.tv_though_metadata)
         private val tvCreatedAt: TextView = itemView.findViewById(R.id.tv_created_at)
-        private val ivDomainIcon: ImageView = itemView.findViewById(R.id.iv_domain_icon)
 
         private val tvRichText: HexTextView = itemView.findViewById(R.id.tv_rich_text)
 
@@ -102,20 +96,24 @@ class CarouselAdapter(
                 DRAWING -> { /* TODO */ }
             }
 
-            tvMetadata.text = "\\ " + getFormattedMetadataUI(thought) + " /"
+            tvMetadata.text = "/ ".plus(getFormattedMetadataUI(thought))
 
             val ageLevel = ThoughtGrowthStage.newThoughtGrowthStage(thought.createdAt)
             val levelIcon = ageLevel.level.icon
-            val levelName = itemView.context.getString(ageLevel.level.labelResourceId)
-            val afeInDays = ageLevel.ageInDays.toString()
 
-            tvCreatedAt.text = itemView.context.getString(
-                R.string.common_thought_age_pattern, levelIcon, levelName, afeInDays
-            )
-
-            // TODO: Load icons = refactoring :)
-            // ivDomainIcon.setImageResource(R.drawable.ic_domain_none)
-            ivDomainIcon.visibility = View.GONE
+            when (ageLevel.ageInDays) {
+                0L -> { // Today
+                    tvCreatedAt.text = itemView.context.getString(R.string.common_thought_age_0, levelIcon)
+                }
+                1L -> { // Yesterday
+                    tvCreatedAt.text = itemView.context.getString(R.string.common_thought_age_1, levelIcon)
+                }
+                else -> {
+                    tvCreatedAt.text = itemView.context.getString(
+                        R.string.common_thought_age_pattern, levelIcon, ageLevel.ageInDays.toString()
+                    )
+                }
+            }
 
             vbThoughtValue.maxLevel = ThoughtValidator.THOUGHT_VALUE_MAX
             vbThoughtValue.currentLevel = thought.value
@@ -123,7 +121,7 @@ class CarouselAdapter(
 
         fun getFormattedMetadataUI(thought: ThoughtDTO) : String{
             if(thought.thread.isNullOrBlank() && thought.project.isNullOrBlank()){
-                return itemView.context.getString(R.string.carousel_thought_thread_empty)
+                return itemView.context.getString(R.string.carousel_thought_metadata_empty)
             }
             else if(thought.thread.isNullOrBlank() && !thought.project.isNullOrBlank()){
                 return thought.project.orEmpty()

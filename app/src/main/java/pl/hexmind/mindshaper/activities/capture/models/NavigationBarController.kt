@@ -1,3 +1,5 @@
+package pl.hexmind.mindshaper.activities.capture.models
+
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet

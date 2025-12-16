@@ -28,16 +28,17 @@
             app:dotProgressColor="@color/_orange_4_grim"
             app:dotTextColor="@color/black"
             android:layout_gravity="center"
+            android:layout_marginBottom="8dp"
             />
 
         <!-- RICH TEXT -->
         <pl.hexmind.mindshaper.common.ui.HexTextView
             android:id="@+id/tv_rich_text"
-            style="@style/HexContentButton.Used"
+            style="@style/HexTextViewDisplayed.Used"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:maxLines="7"
+            android:maxLines="6"
             android:visibility="gone"/>
 
         <!-- Simple voice recording playback -->
@@ -48,7 +49,6 @@
             style="@style/RecordingPlaybackView_UsedWithTint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="200dp"
             android:layout_marginBottom="16dp"
             android:visibility="gone" />
 
@@ -68,15 +68,6 @@
             android:layout_marginBottom="6dp"
             android:gravity="center"
             android:orientation="horizontal">
-
-            <!-- DOMAIN ICON -->
-            <ImageView
-                android:id="@+id/iv_domain_icon"
-                style="@style/ImageView_Icon"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                android:src="@drawable/ic_domain_none" />
 
             <!-- METADATA -->
             <TextView

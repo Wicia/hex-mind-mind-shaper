@@ -10,10 +10,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center"
+        android:layout_marginTop="24dp"
+        android:padding="24dp">
 
-        <!-- Header -->
-        <include layout="@layout/common_header" />
+        <ImageView
+            android:id="@+id/iv_header_icon"
+            style="@style/ImageView_Header_Activity"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+
+        <TextView
+            android:id="@+id/tv_header_title"
+            style="@style/TextView_Header_Activity"
+            android:textColor="@color/graphite_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
@@ -32,7 +46,7 @@
     <!-- Menu FABs -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-        android:id="@+id/fab_note_type"
+        android:id="@+id/fab_rich_text_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -54,29 +68,30 @@
         app:fabSize="normal"
         app:elevation="6dp" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-        android:id="@+id/fab_drawing_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_thought_type_drawing"
-        app:backgroundTint="@color/button_primary"
-        app:fabSize="normal"
-        app:elevation="6dp" />
+    <!-- TODO : To be uncommented then each of this funtion will be implemented -->
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:contentDescription="@string/common_placeholder_accessibility_content_desc"-->
+<!--        android:id="@+id/fab_drawing_type"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:src="@drawable/ic_thought_type_drawing"-->
+<!--        app:backgroundTint="@color/button_primary"-->
+<!--        app:fabSize="normal"-->
+<!--        app:elevation="6dp" />-->
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-        android:id="@+id/fab_photo_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_thought_type_photo"
-        app:backgroundTint="@color/button_primary"
-        android:tint="@color/button_primary"
-        app:fabSize="normal"
-        app:elevation="6dp" />
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:contentDescription="@string/common_placeholder_accessibility_content_desc"-->
+<!--        android:id="@+id/fab_photo_type"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:src="@drawable/ic_thought_type_photo"-->
+<!--        app:backgroundTint="@color/button_primary"-->
+<!--        android:tint="@color/button_primary"-->
+<!--        app:fabSize="normal"-->
+<!--        app:elevation="6dp" />-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

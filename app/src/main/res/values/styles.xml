@@ -8,16 +8,9 @@
     <!-- Activity / Headers -->
     <style name="TextView_Header_Activity">
         <item name="android:fontFamily">@font/alegreya_regular</item>
-        <item name="android:textSize">28sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/text_secondary</item>
-    </style>
-
-    <style name="TextView_SubHeader_Activity">
-        <item name="android:fontFamily">@font/alegreya_regular</item>
-        <item name="android:textSize">28sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/_orange_3_mid</item>
+        <item name="android:textColor">@color/_gray_3_mid</item>
     </style>
 
     <!-- Activity / Section -->
@@ -87,7 +80,7 @@
 
     <!--=== Thought CONTENT ===-->
 
-    <style name="HexContentButton.Used" parent="Widget.MaterialComponents.Button">
+    <style name="HexTextViewDisplayed.Used" parent="Widget.MaterialComponents.Button">
         <!-- Min constraints -->
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
@@ -392,7 +385,6 @@
     <style name="ImageView_Header_Activity">
         <item name="android:layout_width">32dp</item>
         <item name="android:layout_height">32dp</item>
-        <item name="android:layout_marginTop">24dp</item>
         <item name="android:layout_gravity">center</item>
         <item name="tint">@color/_orange_3_mid</item>
     </style>
