@@ -128,11 +128,9 @@ class AudioRecordingView @JvmOverloads constructor(
         when (mode) {
             Mode.RECORD_PLAYBACK -> {
                 btnRecordNew.visibility = VISIBLE
-                findViewById<TextView>(R.id.tv_buttons_separator).visibility = VISIBLE
             }
             Mode.PLAYBACK_ONLY -> {
                 btnRecordNew.visibility = GONE
-                findViewById<TextView>(R.id.tv_buttons_separator).visibility = GONE
             }
         }
         if(compact){

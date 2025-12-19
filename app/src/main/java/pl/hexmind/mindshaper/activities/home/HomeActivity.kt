@@ -75,7 +75,7 @@ class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
         } while (currentGreetingsText == newGreetingsText)
 
         tvHeaderGreetings.setColoredText(newGreetingsText, appSettingsStorage.getYourName(),
-            ContextCompat.getColor(this, R.color._orange_4_grim))
+            ContextCompat.getColor(this, R.color._orange_lvl_3))
     }
 
     private fun setupClickListeners() {

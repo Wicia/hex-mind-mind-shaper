@@ -39,7 +39,7 @@
         android:layout_gravity="center"
         android:layout_margin="16dp"
         android:src="@drawable/ic_catching_thought"
-        app:backgroundTint="@color/button_primary"
+        app:backgroundTint="@color/button_primary_enabled_background"
         app:fabSize="normal"
         app:elevation="6dp" />
 
@@ -52,7 +52,7 @@
         android:layout_gravity="center"
         android:layout_margin="16dp"
         android:src="@drawable/ic_thought_type_rich_text"
-        app:backgroundTint="@color/button_primary"
+        app:backgroundTint="@color/button_primary_enabled_background"
         app:fabSize="normal"
         app:elevation="6dp" />
 
@@ -64,7 +64,7 @@
         android:layout_gravity="center"
         android:layout_margin="16dp"
         android:src="@drawable/ic_thought_type_recording"
-        app:backgroundTint="@color/button_primary"
+        app:backgroundTint="@color/button_primary_enabled_background"
         app:fabSize="normal"
         app:elevation="6dp" />
 

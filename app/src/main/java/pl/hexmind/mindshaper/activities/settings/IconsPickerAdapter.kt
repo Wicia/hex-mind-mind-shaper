@@ -56,7 +56,7 @@ class IconPickerAdapter(
             // Background color for selected / ripple for others
             if (isSelected) {
                 itemView.setBackgroundColor(
-                    ContextCompat.getColor(itemView.context, R.color.button_primary)
+                    ContextCompat.getColor(itemView.context, R.color.button_primary_enabled_background)
                 )
             } else {
                 val outValue = TypedValue()

@@ -162,7 +162,7 @@
     <string name="settings_header">Ustawienia</string>
 
     <!-- Your Name Setting -->
-    <string name="settings_your_name_header">Twoje prawdziwe imię?</string>
+    <string name="settings_your_name_header">Twoje Prawdziwe Imię?</string>
     <string name="settings_your_name_default">Bezimienn(y/a)</string>
 
     <!-- Greeting Sound Setting -->
@@ -173,7 +173,7 @@
     <string name="settings_greeting_state_file_name">Wybrano: %s</string>
 
     <!-- Domains -->
-    <string name="settings_domains_header">Nazwy domen</string>
+    <string name="settings_domains_header">Nazwy Domen</string>
     <string name="settings_domains_hint">Tutaj możesz zmienić nazwę oraz ikonkę domeny</string>
 
     <string name="settings_domains_loading_error">Błąd podczas ładowania ikon domen</string>
@@ -199,7 +199,7 @@
     </string-array>
 
     <!-- Backup Section -->
-    <string name="settings_backup_header">Backup</string>
+    <string name="settings_backup_header">Wczytaj Backup</string>
     <string name="settings_backup_hint">Wybierz plik kopii zapasowej z folderu Downloads/mind_shaper</string>
     <string name="settings_backup_select">Wybierz</string>
     <string name="settings_backup_load">Wczytaj</string>

@@ -18,7 +18,6 @@ import pl.hexmind.mindshaper.common.ui.CommonTextEditDialog
 import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
-import java.io.File
 
 @AndroidEntryPoint
 class DetailsActivity : CoreActivity() {
@@ -311,22 +310,22 @@ class DetailsActivity : CoreActivity() {
 
         if(!binding.btnValueIncrease.isEnabled){
             binding.btnValueIncrease.imageTintList  = ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.button_disabled_background)
+                ContextCompat.getColor(this, R.color.button_secondary_disabled_background)
             )
         }
-        else{
+        else{ // disabled
             binding.btnValueIncrease.imageTintList  = ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.button_primary)
+                ContextCompat.getColor(this, R.color.button_secondary_enabled_background)
             )
         }
         if(!binding.btnValueDecrease.isEnabled){
             binding.btnValueDecrease.imageTintList  = ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.button_disabled_background)
+                ContextCompat.getColor(this, R.color.button_secondary_disabled_background)
             )
         }
-        else{
+        else{ // disabled
             binding.btnValueDecrease.imageTintList  = ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.button_primary)
+                ContextCompat.getColor(this, R.color.button_secondary_enabled_background)
             )
         }
     }

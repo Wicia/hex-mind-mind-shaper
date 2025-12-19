@@ -104,11 +104,11 @@ class SortDialogFragment(
 
     private fun updateButtonStyle(button: MaterialButton, isSelected: Boolean) {
         if (isSelected) {
-            button.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.button_used_background))
+            button.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.button_content_used_background))
             button.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_primary))
         }
         else {
-            button.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.button_not_used_background))
+            button.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.button_content_not_used_background))
             button.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_secondary))
         }
     }

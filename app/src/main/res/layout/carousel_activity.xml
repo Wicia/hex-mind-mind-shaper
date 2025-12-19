@@ -59,15 +59,11 @@
     <!-- SORT BUTTON -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_sort"
-        style="@style/ListActionButton"
+        style="@style/AuxiliaryActionButton"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
         app:icon="@drawable/ic_sorting"
-        app:iconSize="24dp"
-        app:iconPadding="4dp"
-        app:iconGravity="textStart"
-        app:iconTint="@color/button_icon_secondary_fill"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cv_search_bar"

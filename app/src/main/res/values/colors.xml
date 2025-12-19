@@ -6,21 +6,20 @@
 <!-- ====================================== -->
 
     <!-- ORANGE: Main orange color for the app theme -->
-    <!-- 1..5 numbers -> color intensity -->
-    <color name="_orange_1_light">#FFF4E6</color>   <!-- background, cards -->
-    <color name="_orange_2_soft">#FFDFBF</color>
-    <color name="_orange_3_mid">#FFCA98</color>
-    <color name="_orange_4_grim">#FFB470</color>
-    <color name="_orange_5_dark">#FF9F49</color>
+    <!-- 0..3 -> color intensity -->
+    <color name="_orange_lvl_0">#FFF4E6</color>     <!-- APP BACKGROUND (neutral orange) -->
+    <color name="_orange_lvl_1">#FFE1C8</color>     <!-- TERTIARY: list actions + other -->
+    <color name="_orange_lvl_2">#EDFFCA98</color>     <!-- SECONDARY: activity secondary actions -->
+    <color name="_orange_lvl_3">#FF9F49</color>     <!-- PRIMARY: fab buttons & activity main action -->
 
     <!-- NEUTRAL: Grayscale for text and backgrounds -->
     <color name="_white">#FFFFFF</color>
 
-    <color name="_gray_1_lightest">#F5F5F5</color>   <!-- background, cards -->
-    <color name="_gray_2_soft">#E8E8E8</color>       <!-- subtle borders -->
-    <color name="_gray_3_mid">#BDBDBD</color>        <!-- inactive icons -->
-    <color name="_gray_4_grim">#757575</color>       <!-- secondary text -->
-    <color name="_gray_5_darker">#424242</color>     <!-- primary text -->
+    <color name="_gray_lvl_1">#F5F5F5</color>        <!-- background, cards -->
+    <color name="_gray_lvl_2">#E8E8E8</color>       <!-- subtle borders -->
+    <color name="_gray_lvl_3">#BDBDBD</color>        <!-- inactive icons -->
+    <color name="_gray_lvl_4">#757575</color>       <!-- secondary text -->
+    <color name="_gray_lvl_5">#424242</color>     <!-- primary text -->
 
     <color name="_black">#000000</color>
 
@@ -34,7 +33,7 @@
 <!-- ====================================== -->
 
     <!-- Success, error, warning states -->
-    <color name="validation_success">@color/_gray_3_mid</color>
+    <color name="validation_success">@color/_gray_lvl_3</color>
     <color name="validation_error">#480808</color>
     <color name="info_blue">#1976D2</color>
 
@@ -42,13 +41,13 @@
 <!--    APP THEME MAPPINGS -->
 <!-- ====================================== -->
 
-    <color name="app_primary">@color/_orange_5_dark</color>
-    <color name="app_primary_variant">@color/_orange_5_dark</color>
+    <color name="app_primary">@color/_orange_lvl_3</color>
+    <color name="app_primary_variant">@color/_orange_lvl_3</color>
 
-    <color name="app_secondary">@color/_orange_5_dark</color>
-    <color name="app_secondary_variant">@color/_orange_5_dark</color>
+    <color name="app_secondary">@color/_orange_lvl_3</color>
+    <color name="app_secondary_variant">@color/_orange_lvl_3</color>
 
-    <color name="app_background">@color/_orange_1_light</color>
+    <color name="app_background">@color/_orange_lvl_0</color>
     <color name="app_surface">@color/_white</color>
 
 <!-- ====================================== -->
@@ -64,7 +63,7 @@
     <color name="text_on_secondary">@color/_white</color>
 
     <!-- Bullet points -->
-    <color name="text_bullet_point">@color/_gray_3_mid</color>
+    <color name="text_bullet_point">@color/_gray_lvl_3</color>
 
 <!-- ====================================== -->
 <!--    WIDGET COLORS -->
@@ -73,40 +72,56 @@
     <!-- Input controls -->
     <color name="input_background">@color/_white</color>
     <color name="input_stroke">@color/app_background</color>
-    <color name="input_focused">@color/_orange_5_dark</color>
+    <color name="input_focused">@color/_orange_lvl_3</color>
 
 <!-- ====================================== -->
-<!--    BUTTONS -->
+<!--    ACTION BUTTONS -->
 <!-- ====================================== -->
 
-    <!-- Background colors -->
-    <color name="button_primary">@color/_orange_5_dark</color>
+    <!-- Primary -->
+    <color name="button_primary_enabled_background">@color/_orange_lvl_3</color>
+    <color name="button_primary_enabled_icon">@color/_orange_lvl_2</color>
 
-    <!-- Background colors / States -->
-    <color name="button_not_used_background">@color/_orange_2_soft</color>
-    <color name="button_used_background">@color/_orange_3_mid</color>
-    <color name="button_disabled_background">@color/_gray_3_mid</color>
+    <color name="button_primary_disabled_background">@color/_gray_lvl_3</color>
+    <color name="button_primary_disabled_icon">@color/_gray_lvl_2</color>
 
-    <!-- Button icons -->
-    <color name="button_icon_not_used_fill">@color/_orange_1_light</color>
-    <color name="button_icon_used_fill">@color/_orange_2_soft</color>
-    <color name="button_icon_disabled_fill">@color/_gray_2_soft</color>
+    <!-- Secondary -->
+    <color name="button_secondary_enabled_background">@color/_orange_lvl_2</color>
+    <color name="button_secondary_enabled_icon">@color/_gray_lvl_2</color>
 
-    <color name="button_secondary">@color/_orange_3_mid</color>
+    <color name="button_secondary_disabled_background">@color/_gray_lvl_3</color>
+    <color name="button_secondary_disabled_icon">@color/_gray_lvl_1</color>
 
-    <color name="button_icon_secondary_fill">@color/_gray_2_soft</color>
-    <color name="button_list_action">@color/graphite_beige</color>
+    <!--  Auxiliary (no disabled state) -->
+    <color name="button_auxiliary_background">@color/_orange_lvl_1</color>
+    <color name="button_auxiliary_icon">@color/_gray_lvl_3</color>
+
+<!-- ====================================== -->
+<!--    CONTENT BUTTONS -->
+<!-- ====================================== -->
+
+    <color name="button_content_not_used_background">@color/_orange_lvl_1</color>
+    <color name="button_content_not_used_icon">@color/_orange_lvl_0</color>
+
+    <color name="button_content_used_background">@color/_orange_lvl_1</color>
+    <color name="button_content_used_icon">@color/_orange_lvl_0</color>
 
 <!-- ====================================== -->
 <!--    CARD VIEWS -->
 <!-- ====================================== -->
 
     <!-- Card views -->
-    <color name="card_view_background">@color/_orange_3_mid</color>
-    <color name="card_background">@color/_white</color>
+    <color name="hex_card_background">@color/_orange_lvl_2</color>
 
     <!-- Separator / dividers -->
-    <color name="separator_background">@color/_orange_3_mid</color>
-    <color name="separator_card">@color/_orange_2_soft</color>
+    <color name="separator_background">@color/_orange_lvl_2</color>
+    <color name="separator_card">@color/_orange_lvl_0</color>
+
+<!-- ====================================== -->
+<!--    LIST ITEMS -->
+<!-- ====================================== -->
+
+    <color name="list_icons_item_background">@color/_orange_lvl_1</color>
+
 
 </resources>

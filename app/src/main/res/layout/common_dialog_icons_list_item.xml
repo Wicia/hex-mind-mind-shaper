@@ -7,7 +7,9 @@
     android:focusable="true"
     android:layout_marginBottom="4dp"
     android:orientation="horizontal"
-    android:background="@drawable/shape_button">
+    android:background="@drawable/shape_hex_content"
+    android:backgroundTint="@color/list_icons_item_background"
+    >
 
     <!-- Icon -->
     <ImageView
@@ -37,7 +39,6 @@
         android:layout_height="10dp"
         android:layout_gravity="top|end"
         android:layout_margin="6dp"
-        android:background="@drawable/shape_button"
         android:visibility="gone"
         />
 

@@ -10,7 +10,7 @@
         <item name="android:fontFamily">@font/alegreya_regular</item>
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/_gray_3_mid</item>
+        <item name="android:textColor">@color/_gray_lvl_3</item>
     </style>
 
     <!-- Activity / Section -->
@@ -75,7 +75,7 @@
     </style>
 
 <!-- ====================================== -->
-<!--   CONTENT FIELDS / CONTENT "BUTTONS"   -->
+<!--   CONTENT BUTTONS  -->
 <!-- ====================================== -->
 
     <!--=== Thought CONTENT ===-->
@@ -95,10 +95,11 @@
         <item name="android:padding">12dp</item>
 
         <!-- Background -->
-        <item name="backgroundTint">@color/button_used_background</item>
+        <item name="android:background">@drawable/shape_hex_content</item>
+        <item name="android:backgroundTint">@color/button_content_used_background</item>
 
         <!-- Icons -->
-        <item name="iconTint">@color/button_icon_used_fill</item>
+        <item name="iconTint">@color/button_content_used_icon</item>
         <item name="iconPadding">0dp</item>
         <item name="iconGravity">textStart</item>
 
@@ -131,10 +132,12 @@
         <item name="android:padding">12dp</item>
 
         <!-- Background -->
-        <item name="backgroundTint">@color/button_not_used_background</item>
+        <item name="backgroundTint">@color/button_content_not_used_background</item>
+        <item name="android:background">@drawable/shape_hex_content</item>
+        <item name="android:backgroundTint">@color/button_content_not_used_background</item>
 
         <!-- Icons -->
-        <item name="iconTint">@color/button_icon_not_used_fill</item>
+        <item name="iconTint">@color/button_content_not_used_icon</item>
         <item name="iconPadding">0dp</item>
         <item name="iconGravity">textStart</item>
 
@@ -172,10 +175,12 @@
         <item name="android:padding">8dp</item>
 
         <!-- Background -->
-        <item name="backgroundTint">@color/button_used_background</item>
+        <item name="backgroundTint">@color/button_content_used_background</item>
+        <item name="android:background">@drawable/shape_hex_content</item>
+        <item name="android:backgroundTint">@color/button_content_used_background</item>
 
         <!-- Icons -->
-        <item name="iconTint">@color/button_icon_used_fill</item>
+        <item name="iconTint">@color/button_content_used_icon</item>
         <item name="iconPadding">0dp</item>
         <item name="iconGravity">end</item>
 
@@ -212,10 +217,12 @@
         <item name="android:padding">8dp</item>
 
         <!-- Background -->
-        <item name="backgroundTint">@color/button_not_used_background</item>
+        <item name="backgroundTint">@color/button_content_not_used_background</item>
+        <item name="android:background">@drawable/shape_hex_content</item>
+        <item name="android:backgroundTint">@color/button_content_not_used_background</item>
 
         <!-- Icons -->
-        <item name="iconTint">@color/button_icon_not_used_fill</item>
+        <item name="iconTint">@color/button_content_not_used_icon</item>
         <item name="iconPadding">0dp</item>
         <item name="iconGravity">end</item>
 
@@ -234,10 +241,10 @@
 
     <style name="RecordingPlaybackView_UsedWithTint">
         <item name="android:padding">12dp</item>
-        <item name="android:background">@drawable/shape_button</item>
-        <item name="android:backgroundTint">@color/button_used_background</item>
+        <item name="android:background">@drawable/shape_hex_content</item>
+        <item name="android:backgroundTint">@color/button_content_used_background</item>
         <item name="android:orientation">vertical</item>
-        <item name="cornerRadius">8dp</item>
+        <item name="cornerRadius">12dp</item>
     </style>
 
 <!-- ====================================== -->
@@ -246,7 +253,7 @@
 
     <!--=== Main ===-->
 
-    <style name="MainActionButton" parent="Widget.MaterialComponents.Button">
+    <style name="PrimaryActionButton" parent="Widget.MaterialComponents.Button">
         <!-- Min constraints -->
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
@@ -285,7 +292,7 @@
 
     <!--=== Alternative ===-->
 
-    <style name="AlternativeActionButton" parent="Widget.MaterialComponents.Button">
+    <style name="SecondaryActionButton" parent="Widget.MaterialComponents.Button">
         <!-- Min constraints -->
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
@@ -300,10 +307,10 @@
         <item name="android:padding">12dp</item>
 
         <!-- Background -->
-        <item name="backgroundTint">@color/button_primary_stateful_background</item>
+        <item name="backgroundTint">@color/button_secondary_stateful_background</item>
 
         <!-- Icons -->
-        <item name="iconTint">@color/button_icon_used_fill</item>
+        <item name="iconTint">@color/button_secondary_stateful_icon</item>
         <item name="iconSize">36dp</item>
         <item name="iconPadding">0dp</item>
         <item name="iconGravity">top</item>
@@ -322,7 +329,7 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="ListActionButton" parent="Widget.MaterialComponents.Button">
+    <style name="AuxiliaryActionButton" parent="Widget.MaterialComponents.Button">
         <!-- Min constraints -->
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
@@ -337,12 +344,12 @@
         <item name="android:padding">12dp</item>
 
         <!-- Background -->
-        <item name="backgroundTint">@color/button_list_action</item>
+        <item name="backgroundTint">@color/button_auxiliary_background</item>
 
         <!-- Icons -->
-        <item name="iconTint">@color/button_icon_used_fill</item>
+        <item name="iconTint">@color/button_auxiliary_icon</item>
         <item name="iconSize">32dp</item>
-        <item name="iconPadding">0dp</item>
+        <item name="iconPadding">4dp</item>
         <item name="iconGravity">textStart</item>
 
         <!-- Corners -->
@@ -386,12 +393,12 @@
         <item name="android:layout_width">32dp</item>
         <item name="android:layout_height">32dp</item>
         <item name="android:layout_gravity">center</item>
-        <item name="tint">@color/_orange_3_mid</item>
+        <item name="tint">@color/_orange_lvl_1</item>
     </style>
 
     <!-- Icons -->
     <style name="ImageView_Icon">
-        <item name="tint">@color/_gray_3_mid</item>
+        <item name="tint">@color/_gray_lvl_3</item>
     </style>
 
     <!-- Standard keyboard buttons -->
@@ -422,6 +429,22 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">0dp</item>
+    </style>
+
+<!-- ====================================== -->
+<!--    PROGRESS BARS / INDICATORS          -->
+<!-- ====================================== -->
+
+    <style name="ValueBar">
+        <!-- Radius -->
+        <item name="radius">50dp</item>
+        <item name="minDotRadius">5dp</item>
+        <item name="maxDotRadius">10dp</item>
+
+        <!-- Colors -->
+        <item name="dotBackgroundColor">@color/_gray_lvl_3</item>
+        <item name="dotProgressColor">@color/_orange_lvl_3</item>
+        <item name="dotTextColor">@color/black</item>
     </style>
 
 </resources>

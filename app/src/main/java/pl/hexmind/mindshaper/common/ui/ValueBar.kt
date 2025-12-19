@@ -56,21 +56,21 @@ class ValueBar @JvmOverloads constructor(
             invalidate()
         }
 
-    var dotBackgroundColor: Int = "#E0E0E0".toColorInt()
+    var dotBackgroundColor: Int = R.color._orange_lvl_2
         set(value) {
             field = value
             backgroundPaint.color = value
             invalidate()
         }
 
-    var dotProgressColor: Int = "#00BCD4".toColorInt()
+    var dotProgressColor: Int = R.color._black
         set(value) {
             field = value
             progressPaint.color = value
             invalidate()
         }
 
-    var dotTextColor: Int = "#607D8B".toColorInt()
+    var dotTextColor: Int = R.color.graphite_light
         set(value) {
             field = value
             textPaint.color = value

@@ -24,7 +24,7 @@
             <!-- Header -->
             <include layout="@layout/common_header" />
 
-            <!-- App Name Setting Card -->
+            <!-- Card - NAME -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Greeting Sound Setting Card -->
+            <!-- Card - GREETING MUSIC -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -108,7 +108,6 @@
                             android:layout_height="wrap_content"
                             android:text="@string/settings_greeting_choose_sound_file"
                             android:textColor="@android:color/black"
-                            app:backgroundTint="@color/button_secondary"
                             app:cornerRadius="8dp" />
 
                         <TextView
@@ -126,7 +125,7 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Domains Setting Card -->
+            <!-- Card - DOMAINS -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -168,7 +167,7 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Backup Setting Card -->
+            <!-- Card: BACKUP LOADING -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -204,26 +203,24 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_select_backup"
+                            style="@style/SecondaryActionButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginEnd="8dp"
                             android:text="@string/settings_backup_select"
-                            android:textColor="@android:color/black"
-                            app:backgroundTint="@color/button_secondary"
-                            app:cornerRadius="8dp" />
+                             />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_load_backup"
+                            style="@style/SecondaryActionButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="8dp"
                             android:text="@string/settings_backup_load"
-                            android:textColor="@android:color/white"
                             android:enabled="false"
-                            app:backgroundTint="@color/button_primary"
-                            app:cornerRadius="8dp" />
+                            />
 
                     </LinearLayout>
 
@@ -251,7 +248,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_save"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-        app:backgroundTint="@color/button_primary"
+        app:backgroundTint="@color/button_primary_enabled_background"
         app:fabSize="normal"
         app:maxImageSize="32dp"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />

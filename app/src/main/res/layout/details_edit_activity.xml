@@ -41,7 +41,8 @@
                     android:focusable="true"
                     android:scaleX="-1"
                     app:srcCompat="@drawable/ic_decorator_olive"
-                    app:tint="@color/button_secondary" />
+                    app:tint="@color/button_secondary_enabled_background"
+                    />
 
                 <!-- SOUL MATE(S): n/a -->
                 <com.google.android.material.button.MaterialButton
@@ -82,15 +83,10 @@
 
                 <pl.hexmind.mindshaper.common.ui.ValueBar
                     android:id="@+id/vb_thought_value"
+                    style="@style/ValueBar"
                     android:layout_weight="0.9"
                     android:layout_width="0dp"
                     android:layout_height="70dp"
-                    app:radius="50dp"
-                    app:minDotRadius="5dp"
-                    app:maxDotRadius="10dp"
-                    app:dotBackgroundColor="#E0E0E0"
-                    app:dotProgressColor="@color/_orange_4_grim"
-                    app:dotTextColor="@color/black"
                     />
 
                 <!-- DOMAIN: n/a -->
@@ -171,7 +167,8 @@
                     android:scaleY="-1"
                     android:scaleX="-1"
                     app:srcCompat="@drawable/ic_decorator_olive"
-                    app:tint="@color/button_secondary" />
+                    app:tint="@color/button_secondary_enabled_background"
+                    />
 
                 <!-- THREAD: n/a -->
                 <com.google.android.material.button.MaterialButton
@@ -193,7 +190,6 @@
                     android:layout_width="0dp"
                     android:layout_height="52dp"
                     android:layout_marginEnd="18dp"
-                    android:background="@drawable/shape_button"
                     app:icon="@drawable/ic_metadata_thread"
                     app:iconSize="36dp"
                     android:visibility="gone" />
@@ -239,7 +235,6 @@
                     style="@style/HexTextViewDisplayed.Used"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_button"
                     android:layout_marginStart="0dp"
                     android:layout_marginEnd="0dp"
                     android:layout_marginBottom="8dp"
@@ -326,7 +321,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_save"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-        app:backgroundTint="@color/button_primary"
+        app:backgroundTint="@color/button_primary_enabled_background"
         app:fabSize="normal"
         app:maxImageSize="32dp"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />

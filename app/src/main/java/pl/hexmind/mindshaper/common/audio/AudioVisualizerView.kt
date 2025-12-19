@@ -29,11 +29,11 @@ class AudioVisualizerView @JvmOverloads constructor(
     private var isRecordingMode = false
 
     init {
-        paintPlayed.color = ContextCompat.getColor(context, R.color._orange_4_grim)
+        paintPlayed.color = ContextCompat.getColor(context, R.color._orange_lvl_3)
         paintPlayed.strokeWidth = barWidth
         paintPlayed.strokeCap = Paint.Cap.ROUND
 
-        paintUnplayed.color = ContextCompat.getColor(context, R.color._gray_3_mid)
+        paintUnplayed.color = ContextCompat.getColor(context, R.color._gray_lvl_3)
         paintUnplayed.strokeWidth = barWidth
         paintUnplayed.strokeCap = Paint.Cap.ROUND
     }

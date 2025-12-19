@@ -7,7 +7,7 @@
     android:layout_margin="8dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="8dp"
-    app:cardBackgroundColor="@color/card_view_background">
+    app:cardBackgroundColor="@color/hex_card_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,14 +19,10 @@
         <!-- VALUE -->
         <pl.hexmind.mindshaper.common.ui.ValueBar
             android:id="@+id/vb_thought_value"
+            style="@style/ValueBar"
+            android:layout_weight="0.9"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            app:radius="50dp"
-            app:minDotRadius="5dp"
-            app:maxDotRadius="10dp"
-            app:dotBackgroundColor="@color/_orange_2_soft"
-            app:dotProgressColor="@color/_orange_4_grim"
-            app:dotTextColor="@color/black"
             android:layout_gravity="center"
             android:layout_marginBottom="8dp"
             />
@@ -39,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:maxLines="6"
+            android:backgroundTint="@color/hex_card_background"
             android:visibility="gone"/>
 
         <!-- Simple voice recording playback -->
@@ -47,6 +44,7 @@
             app:recordingMode="playbackOnly"
             app:compact="true"
             style="@style/RecordingPlaybackView_UsedWithTint"
+            android:background="@null"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"

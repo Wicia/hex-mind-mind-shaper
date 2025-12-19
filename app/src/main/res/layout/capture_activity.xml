@@ -42,7 +42,7 @@
                     android:layout_gravity="end"
                     android:contentDescription="@string/common_placeholder_accessibility_content_desc"
                     app:srcCompat="@drawable/ic_hex_tags"
-                    app:tint="@color/_gray_2_soft" />
+                    app:tint="@color/_gray_lvl_2" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="wrap_content"
@@ -90,7 +90,7 @@
         android:layout_margin="16dp"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc"
         android:src="@drawable/ic_save"
-        app:backgroundTint="@color/button_primary"
+        app:backgroundTint="@color/button_primary_enabled_background"
         app:fabSize="normal"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:maxImageSize="32dp" />
