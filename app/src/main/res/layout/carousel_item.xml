@@ -16,7 +16,7 @@
         android:layout_gravity="center"
         android:padding="24dp">
 
-        <!-- VALUE -->
+        <!-- VALUE BAR -->
         <pl.hexmind.mindshaper.common.ui.ValueBar
             android:id="@+id/vb_thought_value"
             style="@style/ValueBar"
@@ -24,7 +24,7 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="12dp"
             />
 
         <!-- RICH TEXT -->
@@ -50,22 +50,14 @@
             android:layout_marginBottom="16dp"
             android:visibility="gone" />
 
-        <View
-            android:id="@+id/tv_separator"
-            android:background="@color/separator_card"
-            android:layout_width="32dp"
-            android:layout_height="1dp"
-            android:layout_marginBottom="16dp"
-            android:layout_gravity="center" />
-
         <!-- EXTRAS -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="18dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="6dp"
+            android:layout_marginBottom="12dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <!-- METADATA -->
             <TextView
@@ -73,19 +65,18 @@
                 style="@style/TextView_Metadata_Secondary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:layout_marginBottom="2dp"/>
+
+            <!-- CREATED DATE -->
+            <TextView
+                android:id="@+id/tv_created_at"
+                style="@style/TextView_Metadata_Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
 
         </LinearLayout>
-
-        <!-- CREATED DATE -->
-        <TextView
-            android:id="@+id/tv_created_at"
-            style="@style/TextView_Metadata_Secondary"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

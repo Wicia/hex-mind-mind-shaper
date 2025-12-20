@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.activity.viewModels
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -19,6 +20,8 @@ import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.common.SortConfig
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
+import pl.hexmind.mindshaper.common.ui.CommonIconsListDialog
+import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import timber.log.Timber
 import kotlin.math.abs
@@ -39,6 +42,7 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
     private lateinit var tilSearch: TextInputLayout
     private lateinit var etSearch: TextInputEditText
     private lateinit var btnSort: MaterialButton
+    private lateinit var btnFilter: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +52,11 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
         setupCarousel()
         setupRealTimeSearchBar()
         setupSortButton()
+        setupFilterButton()
         setupReactiveDataObserver()
         setupGestureDetector()
+
+        viewModel.loadDomains()
     }
 
     private fun initializeViews() {
@@ -57,6 +64,7 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
         tilSearch = findViewById(R.id.til_search)
         etSearch = findViewById(R.id.et_search)
         btnSort = findViewById(R.id.btn_sort)
+        btnFilter = findViewById(R.id.btn_filter)
         setupHeader(R.drawable.ic_header_carousel, R.string.thoughts_carousel_title)
     }
 
@@ -111,6 +119,60 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
     private fun setupSortButton() {
         btnSort.setOnClickListener {
             showSortDialog()
+        }
+    }
+
+    private fun setupFilterButton() {
+        btnFilter.setOnClickListener {
+            showFilterDialog()
+        }
+
+        // Update filter button text when domain changes
+        viewModel.selectedDomainId.observe(this) { domainId ->
+            updateFilterButtonText(domainId)
+        }
+    }
+
+    private fun showFilterDialog() {
+        val domains = viewModel.domainsWithIcons.value ?: emptyList()
+        if (domains.isEmpty()) return
+
+        // Add "All domains" option at the beginning
+        val allDomainsOption = CommonIconsListItem(
+            iconEntityId = null,
+            iconDrawable = AppCompatResources.getDrawable(this, R.drawable.ic_domain_none)!!,
+            labelText = getString(R.string.carousel_filter_all_domains),
+            labelEntityId = null,
+            highlightItem = true
+        )
+
+        val domainsWithAll = listOf(allDomainsOption) + domains
+
+        CommonIconsListDialog.Builder(this)
+            .setTitle(getString(R.string.carousel_filter_dialog_title))
+            .setIcons(domainsWithAll)
+            .setOnIconSelected { selectedDomain ->
+                onDomainFilterSelected(selectedDomain)
+            }
+            .show()
+    }
+
+    private fun onDomainFilterSelected(domain: CommonIconsListItem) {
+        if (domain.labelEntityId == null) {
+            // "All domains" selected - clear filter
+            viewModel.clearDomainFilter()
+        } else {
+            // Specific domain selected
+            viewModel.updateSelectedDomain(domain.labelEntityId)
+        }
+    }
+
+    private fun updateFilterButtonText(domainId: Int?) {
+        btnFilter.text = if (domainId == null) {
+            getString(R.string.carousel_filter_button_none)
+        }
+        else {
+            "(1)" // TODO: to be replaced with filter counter
         }
     }
 

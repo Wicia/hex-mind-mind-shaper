@@ -2,10 +2,13 @@ package pl.hexmind.mindshaper.activities.carousel
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.ContextThemeWrapper
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.compose.ui.text.style.TextAlign
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.button.MaterialButton
@@ -64,8 +67,10 @@ class SortDialogFragment(
     }
 
     private fun createPropertyButton(property: SortProperty): MaterialButton {
-        return MaterialButton(requireContext()).apply {
+        val themedContext = ContextThemeWrapper(requireContext(), R.style.SecondaryActionButton)
+        return MaterialButton(themedContext).apply {
             text = getString(property.displayNameRes)
+            gravity = Gravity.END
 
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -74,13 +79,11 @@ class SortDialogFragment(
                 setMargins(0, 8, 0, 8)
             }
 
-            // Set style based on selection
             updateButtonStyle(this, property == selectedProperty)
 
             setOnClickListener {
                 selectedProperty = property
-                val config = SortConfig(selectedProperty, selectedDirection)
-                onSortSelected(config)
+                onSortSelected(SortConfig(selectedProperty, selectedDirection))
                 dismiss()
             }
         }

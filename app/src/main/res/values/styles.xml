@@ -10,7 +10,7 @@
         <item name="android:fontFamily">@font/alegreya_regular</item>
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/_gray_lvl_3</item>
+        <item name="android:textColor">@color/_gray_lvl_2</item>
     </style>
 
     <!-- Activity / Section -->
@@ -319,7 +319,7 @@
         <item name="cornerRadius">8dp</item>
 
         <!-- Texts -->
-        <item name="android:textAlignment">textStart</item>
+        <item name="android:textAlignment">center</item>
         <item name="android:textSize">14sp</item>
         <item name="android:letterSpacing">0.0</item>
         <item name="android:textStyle">normal</item>
@@ -379,7 +379,8 @@
     </style>
 
     <style name="DialogItemText">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
         <item name="android:textColor">@color/text_secondary</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:padding">12dp</item>
@@ -393,7 +394,7 @@
         <item name="android:layout_width">32dp</item>
         <item name="android:layout_height">32dp</item>
         <item name="android:layout_gravity">center</item>
-        <item name="tint">@color/_orange_lvl_1</item>
+        <item name="tint">@color/_gray_lvl_2</item>
     </style>
 
     <!-- Icons -->
@@ -442,7 +443,7 @@
         <item name="maxDotRadius">10dp</item>
 
         <!-- Colors -->
-        <item name="dotBackgroundColor">@color/_gray_lvl_3</item>
+        <item name="dotBackgroundColor">@color/_orange_lvl_1</item>
         <item name="dotProgressColor">@color/_orange_lvl_3</item>
         <item name="dotTextColor">@color/black</item>
     </style>

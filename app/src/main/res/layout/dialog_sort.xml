@@ -12,14 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:padding="16dp">
 
         <!-- PROPERTY SELECTION BUTTONS -->
         <!-- ! Property buttons will be added programmatically -->
         <LinearLayout
             android:id="@+id/ll_sort_properties"
-            android:layout_weight="1.5"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginStart="8dp">
@@ -28,9 +28,8 @@
         <!-- SORT DIRECTION TOGGLE -->
         <LinearLayout
             android:id="@+id/container_direction"
-            android:layout_weight="0.85"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
             android:layout_marginStart="16dp"
@@ -39,37 +38,39 @@
 
             <!-- * Decorator / Decrease Button * -->
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:layout_gravity="center_vertical"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginBottom="8dp"
                 android:contentDescription="@string/common_placeholder_accessibility_content_desc"
                 android:scaleX="-1"
                 android:scaleY="1"
                 app:srcCompat="@drawable/ic_decorator_olive"
-                app:tint="#A29D96" />
+                app:tint="@color/separator_leaf"
+                />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_sort_direction"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:contentDescription="@string/sort_direction_description"
-                android:textColor="@color/_gray_lvl_4"
-                android:textSize="14sp"
-                android:padding="0dp"
-                />
+                style="@style/AuxiliaryActionButton"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="textStart"
+                android:background="@drawable/shape_hex_content"
+                android:contentDescription="@string/sort_direction_description" />
 
             <!-- * Decorator / Decrease Button * -->
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:contentDescription="@string/common_placeholder_accessibility_content_desc"
                 android:layout_gravity="center_vertical"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleY="-1"
                 android:scaleX="-1"
+                android:layout_marginTop="8dp"
                 app:srcCompat="@drawable/ic_decorator_olive"
-                app:tint="#A29D96"
+                app:tint="@color/separator_leaf"
                 />
 
         </LinearLayout>

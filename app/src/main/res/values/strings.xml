@@ -59,9 +59,9 @@
     <!-- VALIDATION -->
     <string name="common_object_type_thought">Myśl</string>
 
-<!-- ====================================== -->
-<!--    ACTIVITY: HOME -->
-<!-- ====================================== -->
+    <!-- ====================================== -->
+    <!--    ACTIVITY: HOME -->
+    <!-- ====================================== -->
 
     <array name="home_greetings_values_list">
         <item>Dużo dobrego %s!</item>
@@ -76,16 +76,16 @@
         <item>Siema %s!</item>
     </array>
 
-<!-- ====================================== -->
-<!--    ACTIVITY: DETAILS / EDIT -->
-<!-- ====================================== -->
+    <!-- ====================================== -->
+    <!--    ACTIVITY: DETAILS / EDIT -->
+    <!-- ====================================== -->
 
     <string name="details_edit_thought_invalid_id">Niepoprawne ID rekordu Myśli :/</string>
     <string name="details_edit_thought_not_found">Nie znaleziono myśli :/</string>
 
-<!-- ====================================== -->
-<!--    ACTIVITY: CAPTURE THOUGHT -->
-<!-- ====================================== -->
+    <!-- ====================================== -->
+    <!--    ACTIVITY: CAPTURE THOUGHT -->
+    <!-- ====================================== -->
 
     <!-- Core -->
     <string name="capture_main_label">Chwytaj myśl...</string>
@@ -128,15 +128,20 @@
     <string name="next_thought">Następna myśl</string>
     <string name="thought_type_icon">Ikona typu myśli</string>
 
-<!-- ====================================== -->
-<!--    ACTIVITY: THOUGHTS PREVIEW / CAROUSEL  -->
-<!-- ====================================== -->
+    <!-- ====================================== -->
+    <!--    ACTIVITY: THOUGHTS PREVIEW / CAROUSEL  -->
+    <!-- ====================================== -->
 
     <string name="carousel_thought_metadata_empty">\?\?\?</string>
     <string name="carousel_searchbar_hint">Szukaj @człowieków / #projektu / wątku...</string>
 
+    <!-- Filter -->
+    <string name="carousel_filter_dialog_title">Filtruj</string>
+    <string name="carousel_filter_all_domains">* Wszystkie domeny</string>
+    <string name="carousel_filter_button_none">-</string>
+
     <!-- Sort Properties -->
-    <string name="sort_property_created_at">Wiek myśli</string>
+    <string name="sort_property_created_at">Wiek</string>
     <string name="sort_property_thread">Wątek</string>
     <string name="sort_property_soul_mate">Człowiek</string>
     <string name="sort_property_project">Projekt</string>
@@ -145,7 +150,7 @@
     <string name="sort_text_desc_label">Z->A</string>
     <string name="sort_text_asc_label">A->Z</string>
 
-    <string name="sort_value_desc_label">Od POTĘŻNYCH</string>
+    <string name="sort_value_desc_label">Od Potężnych</string>
     <string name="sort_value_asc_label">Od drobnych</string>
 
     <string name="sort_date_desc_label">Od młodszych</string>
@@ -154,9 +159,9 @@
     <!-- Sort Directions -->
     <string name="sort_direction_description">Kierunek sortowania</string>
 
-<!-- ====================================== -->
-<!--    ACTIVITY: SETTINGS -->
-<!-- ====================================== -->
+    <!-- ====================================== -->
+    <!--    ACTIVITY: SETTINGS -->
+    <!-- ====================================== -->
 
     <!-- Header -->
     <string name="settings_header">Ustawienia</string>

@@ -9,17 +9,16 @@
     <!-- 0..3 -> color intensity -->
     <color name="_orange_lvl_0">#FFF4E6</color>     <!-- APP BACKGROUND (neutral orange) -->
     <color name="_orange_lvl_1">#FFE1C8</color>     <!-- TERTIARY: list actions + other -->
-    <color name="_orange_lvl_2">#EDFFCA98</color>     <!-- SECONDARY: activity secondary actions -->
+    <color name="_orange_lvl_2">#EDFFCA98</color>   <!-- SECONDARY: activity secondary actions -->
     <color name="_orange_lvl_3">#FF9F49</color>     <!-- PRIMARY: fab buttons & activity main action -->
 
     <!-- NEUTRAL: Grayscale for text and backgrounds -->
     <color name="_white">#FFFFFF</color>
 
-    <color name="_gray_lvl_1">#F5F5F5</color>        <!-- background, cards -->
-    <color name="_gray_lvl_2">#E8E8E8</color>       <!-- subtle borders -->
-    <color name="_gray_lvl_3">#BDBDBD</color>        <!-- inactive icons -->
-    <color name="_gray_lvl_4">#757575</color>       <!-- secondary text -->
-    <color name="_gray_lvl_5">#424242</color>     <!-- primary text -->
+    <color name="_gray_lvl_1">#EEEEEE</color>        <!-- background, cards -->
+    <color name="_gray_lvl_2">#BDBDBD</color>        <!-- subtle borders, inactive elements -->
+    <color name="_gray_lvl_3">#757575</color>        <!-- secondary text, icons -->
+    <color name="_gray_lvl_4">#424242</color>        <!-- primary text -->
 
     <color name="_black">#000000</color>
 
@@ -87,14 +86,14 @@
 
     <!-- Secondary -->
     <color name="button_secondary_enabled_background">@color/_orange_lvl_2</color>
-    <color name="button_secondary_enabled_icon">@color/_gray_lvl_2</color>
+    <color name="button_secondary_enabled_icon">@color/_gray_lvl_1</color>
 
-    <color name="button_secondary_disabled_background">@color/_gray_lvl_3</color>
-    <color name="button_secondary_disabled_icon">@color/_gray_lvl_1</color>
+    <color name="button_secondary_disabled_background">@color/_gray_lvl_2</color>
+    <color name="button_secondary_disabled_icon">@color/_gray_lvl_2</color>
 
     <!--  Auxiliary (no disabled state) -->
     <color name="button_auxiliary_background">@color/_orange_lvl_1</color>
-    <color name="button_auxiliary_icon">@color/_gray_lvl_3</color>
+    <color name="button_auxiliary_icon">@color/_gray_lvl_2</color>
 
 <!-- ====================================== -->
 <!--    CONTENT BUTTONS -->
@@ -113,15 +112,21 @@
     <!-- Card views -->
     <color name="hex_card_background">@color/_orange_lvl_2</color>
 
-    <!-- Separator / dividers -->
-    <color name="separator_background">@color/_orange_lvl_2</color>
-    <color name="separator_card">@color/_orange_lvl_0</color>
-
 <!-- ====================================== -->
 <!--    LIST ITEMS -->
 <!-- ====================================== -->
 
     <color name="list_icons_item_background">@color/_orange_lvl_1</color>
 
+<!-- ====================================== -->
+<!--    DECORATORS -->
+<!-- ====================================== -->
+
+    <!-- Separator / dividers -->
+    <color name="separator_background">@color/_orange_lvl_2</color>
+    <color name="separator_card">@color/_orange_lvl_0</color>
+
+    <!-- Leafs -->
+    <color name="separator_leaf">@color/_gray_lvl_2</color>
 
 </resources>

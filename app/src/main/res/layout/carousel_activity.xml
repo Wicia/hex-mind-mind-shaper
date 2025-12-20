@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_background"
-    tools:context=".activities.carousel.CarouselActivity">
+    tools:context=".activities.carousel.CarouselActivity"
+    android:padding="16dp">
 
     <include
         android:id="@+id/header"
@@ -13,6 +14,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,9 +24,7 @@
         android:id="@+id/cv_search_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="24dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="2dp"
         app:strokeWidth="0dp"
@@ -56,6 +56,23 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <!-- FILTER BUTTON -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_filter"
+        style="@style/AuxiliaryActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/carousel_filter_button_none"
+        app:icon="@drawable/ic_filter"
+        app:layout_constraintEnd_toStartOf="@+id/btn_sort"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cv_search_bar"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+        />
+
     <!-- SORT BUTTON -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_sort"
@@ -65,7 +82,7 @@
         android:layout_marginTop="8dp"
         app:icon="@drawable/ic_sorting"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_filter"
         app:layout_constraintTop_toBottomOf="@+id/cv_search_bar"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc"
         />
@@ -80,7 +97,6 @@
         android:layout_marginBottom="32dp"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

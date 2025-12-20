@@ -9,7 +9,7 @@
     android:orientation="horizontal"
     android:background="@drawable/shape_hex_content"
     android:backgroundTint="@color/list_icons_item_background"
-    >
+    android:padding="0dp">
 
     <!-- Icon -->
     <ImageView
@@ -28,8 +28,8 @@
         android:id="@+id/tv_icon_label"
         style="@style/DialogItemText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxLines="3"
+        android:layout_height="40dp"
+        android:maxLines="1"
         />
 
     <!-- Selector -->

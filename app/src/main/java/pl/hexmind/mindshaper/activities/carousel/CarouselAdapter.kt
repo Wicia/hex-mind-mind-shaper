@@ -96,8 +96,28 @@ class CarouselAdapter(
                 DRAWING -> { /* TODO */ }
             }
 
-            tvMetadata.text = "/ ".plus(getFormattedMetadataUI(thought))
+            updateMetadataUI(thought)
+            uptateCreatedAtUI(thought)
 
+            vbThoughtValue.maxLevel = ThoughtValidator.THOUGHT_VALUE_MAX
+            vbThoughtValue.currentLevel = thought.value
+        }
+
+        fun updateMetadataUI(thought: ThoughtDTO) {
+            val value : String = if(thought.thread.isNullOrBlank() && thought.project.isNullOrBlank()){
+                itemView.context.getString(R.string.carousel_thought_metadata_empty)
+            }
+            else if(thought.thread.isNullOrBlank() && !thought.project.isNullOrBlank()){
+                thought.project.orEmpty()
+            }
+            else{
+                thought.thread.orEmpty()
+            }
+
+            tvMetadata.text = "/ ".plus(value)
+        }
+
+        fun uptateCreatedAtUI(thought: ThoughtDTO){
             val ageLevel = ThoughtGrowthStage.newThoughtGrowthStage(thought.createdAt)
             val levelIcon = ageLevel.level.icon
 
@@ -113,21 +133,6 @@ class CarouselAdapter(
                         R.string.common_thought_age_pattern, levelIcon, ageLevel.ageInDays.toString()
                     )
                 }
-            }
-
-            vbThoughtValue.maxLevel = ThoughtValidator.THOUGHT_VALUE_MAX
-            vbThoughtValue.currentLevel = thought.value
-        }
-
-        fun getFormattedMetadataUI(thought: ThoughtDTO) : String{
-            if(thought.thread.isNullOrBlank() && thought.project.isNullOrBlank()){
-                return itemView.context.getString(R.string.carousel_thought_metadata_empty)
-            }
-            else if(thought.thread.isNullOrBlank() && !thought.project.isNullOrBlank()){
-                return thought.project.orEmpty()
-            }
-            else{
-                return thought.thread.orEmpty()
             }
         }
 

@@ -1,5 +1,6 @@
 package pl.hexmind.mindshaper.common.ui
 
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,9 @@ class CommonIconsListAdapter(
         fun bind(itemList: CommonIconsListItem, position: Int) {
             ivIcon.setImageDrawable(itemList.iconDrawable)
             tvLabel.text = itemList.labelText
+            if(itemList.highlightItem){
+                tvLabel.setTypeface(null, Typeface.BOLD)
+            }
 
             // Show or hide selector for specific element
             vSelector.visibility = if (position == selectedPosition) View.VISIBLE else View.GONE
@@ -66,5 +70,7 @@ data class CommonIconsListItem(
     val labelText: String,
     val labelEntityId : Int? = null,
 
-    val isSelected: Boolean = false
+    val isSelected: Boolean = false,
+
+    val highlightItem : Boolean = false
 )

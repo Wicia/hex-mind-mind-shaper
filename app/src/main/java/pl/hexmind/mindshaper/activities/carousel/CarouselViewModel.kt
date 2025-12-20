@@ -12,6 +12,8 @@ import pl.hexmind.mindshaper.common.SortConfig
 import pl.hexmind.mindshaper.common.SortDirection
 import pl.hexmind.mindshaper.common.SortProperty
 import pl.hexmind.mindshaper.common.regex.HexTags
+import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
+import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import timber.log.Timber
@@ -24,6 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CarouselViewModel @Inject constructor(
     private val thoughtsService: ThoughtsService,
+    private val domainsService: DomainsService,
     private val savedStateHandle: SavedStateHandle // ! To keep search + sort configs when returning from other activities to carousel
 ) : ViewModel() {
 
@@ -31,16 +34,22 @@ class CarouselViewModel @Inject constructor(
     private val allThoughts: LiveData<List<ThoughtDTO>> = thoughtsService.getAllThoughts()
 
     private val _searchQuery = savedStateHandle.getLiveData("search_query", HexTags())
-    val searchQuery: LiveData<HexTags> = _searchQuery
 
     private val _sortConfig = savedStateHandle.getLiveData("sort_config", SortConfig())
     val sortConfig: LiveData<SortConfig> = _sortConfig
+
+    private val _selectedDomainId = savedStateHandle.getLiveData<Int?>("selected_domain_id", null)
+    val selectedDomainId: LiveData<Int?> = _selectedDomainId
+
+    private val _domainsWithIcons = MutableLiveData<List<CommonIconsListItem>>(emptyList())
+    val domainsWithIcons: LiveData<List<CommonIconsListItem>> = _domainsWithIcons
 
     // Combine search and sort using MediatorLiveData
     val filteredThoughts: MediatorLiveData<List<ThoughtDTO>> = MediatorLiveData<List<ThoughtDTO>>().apply {
         var currentThoughts: List<ThoughtDTO>? = null
         var currentQuery: HexTags? = null
         var currentSort: SortConfig? = null
+        var currentDomainId: Int? = null
 
         fun update() {
             val thoughts = currentThoughts
@@ -51,8 +60,9 @@ class CarouselViewModel @Inject constructor(
 
             val query = currentQuery ?: HexTags()
             val sort = currentSort ?: SortConfig()
+            val domainId = currentDomainId
 
-            val filtered = filterThoughts(thoughts, query)
+            val filtered = filterThoughts(thoughts, query, domainId)
             val sorted = sortThoughts(filtered, sort)
 
             value = sorted
@@ -72,6 +82,11 @@ class CarouselViewModel @Inject constructor(
             currentSort = sort
             update()
         }
+
+        addSource(_selectedDomainId) { domainId ->
+            currentDomainId = domainId
+            update()
+        }
     }
 
     fun updateSearchQuery(query: HexTags) {
@@ -89,14 +104,41 @@ class CarouselViewModel @Inject constructor(
         _searchQuery.value = HexTags()
     }
 
-    private fun filterThoughts(thoughts: List<ThoughtDTO>, query: HexTags): List<ThoughtDTO> {
-        if (query.areCriteriaEmpty()) return thoughts
-
-        return thoughts.filter { thought ->
-            matchesCriteria(thought.thread, query.thread) &&
-            matchesCriteria(thought.soulMate, query.soulMate) &&
-            matchesCriteria(thought.project, query.project)
+    fun loadDomains() {
+        viewModelScope.launch {
+            val domains = domainsService.getAllDomainWithIcons()
+            _domainsWithIcons.value = domains
         }
+    }
+
+    fun updateSelectedDomain(domainId: Int?) {
+        savedStateHandle["selected_domain_id"] = domainId
+        _selectedDomainId.value = domainId
+    }
+
+    fun clearDomainFilter() {
+        savedStateHandle["selected_domain_id"] = null
+        _selectedDomainId.value = null
+    }
+
+    private fun filterThoughts(thoughts: List<ThoughtDTO>, query: HexTags, domainId: Int?): List<ThoughtDTO> {
+        var filtered = thoughts
+
+        // Filter by domain if selected
+        if (domainId != null) {
+            filtered = filtered.filter { it.domainId == domainId }
+        }
+
+        // Filter by search query
+        if (!query.areCriteriaEmpty()) {
+            filtered = filtered.filter { thought ->
+                matchesCriteria(thought.thread, query.thread) &&
+                matchesCriteria(thought.soulMate, query.soulMate) &&
+                matchesCriteria(thought.project, query.project)
+            }
+        }
+
+        return filtered
     }
 
     private fun matchesCriteria(fieldValue: String?, searchQuery: String?): Boolean {

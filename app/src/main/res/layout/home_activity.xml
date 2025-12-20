@@ -14,13 +14,46 @@
         android:layout_marginTop="24dp"
         android:padding="24dp">
 
-        <ImageView
-            android:id="@+id/iv_header_icon"
-            style="@style/ImageView_Header_Activity"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginBottom="16dp"
-            android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="18dp">
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                android:layout_gravity="center_vertical"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleY="1"
+                android:scaleX="1"
+                app:srcCompat="@drawable/ic_decorator_olive"
+                app:tint="@color/separator_leaf"
+                />
+
+            <ImageView
+                android:id="@+id/iv_header_icon"
+                style="@style/ImageView_Header_Activity"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_margin="8dp"
+                android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                android:layout_gravity="center_vertical"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleY="1"
+                android:scaleX="-1"
+                app:srcCompat="@drawable/ic_decorator_olive"
+                app:tint="@color/separator_leaf"
+                />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_header_title"
