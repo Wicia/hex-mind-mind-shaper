@@ -100,7 +100,7 @@ class AudioVisualizerView @JvmOverloads constructor(
             val x = i * totalBarWidth + barWidth / 2
             val amplitude = sampledAmplitudes[i]
 
-            val barHeight = amplitude * (height / 2f) * 7.2f
+            val barHeight = amplitude * (height / 2f) * 14.0f
 
             val paint = if (i < playedBarsCount) paintPlayed else paintUnplayed
 

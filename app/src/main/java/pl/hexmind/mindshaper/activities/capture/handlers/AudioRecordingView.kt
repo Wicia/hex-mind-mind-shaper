@@ -386,9 +386,18 @@ class AudioRecordingView @JvmOverloads constructor(
             val duration = currentRecordingDuration
             callback?.onRecordingStopped(audioFile!!, duration)
 
-            // Load visualization for playback
-            audioFile?.let { loadAudioVisualization(it) }
-
+            try {
+                val tempPlayer = MediaPlayer().apply {
+                    setDataSource(audioFile!!.absolutePath)
+                    prepare()
+                }
+                val durationMs = tempPlayer.duration.toLong()
+                tempPlayer.release()
+                updateTimer(0L, durationMs)
+            }
+            catch (e: Exception) {
+                Timber.tag(TAG).e(e, "Error preparing MediaPlayer")
+            }
         }
         else {
             showStatus(
