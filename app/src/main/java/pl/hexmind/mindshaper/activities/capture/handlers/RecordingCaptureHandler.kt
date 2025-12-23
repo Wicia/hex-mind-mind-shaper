@@ -27,7 +27,7 @@ class RecordingCaptureHandler(
 
     init {
         // Set mode to RECORD_PLAYBACK
-        view.setMode(AudioRecordingView.Mode.RECORD_PLAYBACK)
+        view.switchToRecordPlaybackMode()
 
         // Set callback to receive events from the view
         view.setRecordingCallback(this)

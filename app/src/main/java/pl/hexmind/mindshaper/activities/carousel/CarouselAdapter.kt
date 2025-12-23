@@ -78,7 +78,7 @@ class CarouselAdapter(
             when (thought.mainContentType) {
                 RECORDING -> {
                     audioView.visibility = View.VISIBLE
-                    audioView.setMode(AudioRecordingView.Mode.PLAYBACK_ONLY)
+                    audioView.switchToPlaybackOnlyMode()
 
                     thought.id?.let { thoughtId ->
                         onLoadAudio(thoughtId) { audioFile ->

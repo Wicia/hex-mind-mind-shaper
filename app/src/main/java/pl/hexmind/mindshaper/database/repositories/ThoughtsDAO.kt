@@ -62,4 +62,7 @@ interface ThoughtsDAO {
 
     @Query("UPDATE thoughts SET audio_data = :audioData, audio_duration_ms = :durationMs WHERE id = :id")
     suspend fun updateAudio(id: Long, audioData: ByteArray?, durationMs: Long?)
+
+    @Query("UPDATE thoughts SET audio_data = NULL, audio_duration_ms = NULL WHERE id = :id")
+    suspend fun deleteAudio(id: Long)
 }

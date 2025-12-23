@@ -62,4 +62,8 @@ class ThoughtsRepository @Inject constructor (
     suspend fun updateRichText(thoughtId: Int, richText: String?) {
         thoughtsDAO.updateRichText(thoughtId, richText)
     }
+
+    suspend fun deleteAudio(thoughtId: Long) {
+        thoughtsDAO.deleteAudio(thoughtId)
+    }
 }

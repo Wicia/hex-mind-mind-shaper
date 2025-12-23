@@ -63,22 +63,20 @@ class DetailsActivity : CoreActivity() {
     private fun setupListeners() {
         binding.apply {
             btnSave.setOnClickListener {
-                val recording = binding.recordingPlayback.getCurrentRecording()
+                val recording = binding.audioRecordingPlayback.getCurrentRecording()
                 viewModel.saveThought(recording)
                 navigateToCarousel()
             }
 
-            // RICH TEXT
-            tvRichText.apply{
-                propagateClickEventsToParent = false
-                setOnClickListener {
-                    showEditRichTextDialog()
-                }
+            // VALUE - Increase / Decrease
+            btnValueIncrease.setOnClickListener {
+                viewModel.increaseValue()
             }
-            btnRichTextPlaceholder.apply{
-                setOnClickListener {
-                    showEditRichTextDialog()
-                }
+            btnValueDecrease.setOnClickListener {
+                viewModel.decreaseValue()
+            }
+            vbThoughtValue.setOnClickListener {
+                viewModel.increaseValue()
             }
 
             // THREAD
@@ -113,15 +111,22 @@ class DetailsActivity : CoreActivity() {
                 showEditProjectDialog()
             }
 
-            // VALUE - Increase / Decrease
-            btnValueIncrease.setOnClickListener {
-                viewModel.increaseValue()
+            // RICH TEXT
+            tvRichText.apply{
+                propagateClickEventsToParent = false
+                setOnClickListener {
+                    showEditRichTextDialog()
+                }
             }
-            btnValueDecrease.setOnClickListener {
-                viewModel.decreaseValue()
+            btnRichTextPlaceholder.apply{
+                setOnClickListener {
+                    showEditRichTextDialog()
+                }
             }
-            vbThoughtValue.setOnClickListener {
-                viewModel.increaseValue()
+
+            // RECORDING
+            btnRecordingPlaceholder.setOnClickListener {
+                showRecordingWidget()
             }
         }
     }
@@ -200,6 +205,18 @@ class DetailsActivity : CoreActivity() {
                 viewModel.updateProject(newText)
             }
         ).show()
+    }
+
+    private fun showRecordingWidget() {
+        binding.btnRecordingPlaceholder.visibility = View.GONE
+        binding.audioRecordingPlayback.visibility = View.VISIBLE
+
+        binding.audioRecordingPlayback.switchToRecordPlaybackMode()
+        binding.audioRecordingPlayback.cleanupResources(cancelCoroutines = false)
+        binding.audioRecordingPlayback.showStatus(
+            getString(R.string.capture_voice_tooltip),
+            R.color.validation_success
+        )
     }
 
     private fun updateUI(thought: ThoughtDTO) {
@@ -284,16 +301,16 @@ class DetailsActivity : CoreActivity() {
     private fun updateAudioUI(thought: ThoughtDTO) {
         if (thought.hasAudio) {
             binding.btnRecordingPlaceholder.visibility = View.GONE
-            binding.recordingPlayback.visibility = View.VISIBLE
+            binding.audioRecordingPlayback.visibility = View.VISIBLE
 
             lifecycleScope.launch {
                 viewModel.loadAudioForPlayback(thought.id ?: return@launch) { audioFile ->
-                    binding.recordingPlayback.loadAudioForPlayback(audioFile)
+                    binding.audioRecordingPlayback.loadAudioForPlayback(audioFile)
                 }
             }
         } else {
             binding.btnRecordingPlaceholder.visibility = View.VISIBLE
-            binding.recordingPlayback.visibility = View.GONE
+            binding.audioRecordingPlayback.visibility = View.GONE
         }
     }
 
@@ -339,6 +356,6 @@ class DetailsActivity : CoreActivity() {
     override fun onDestroy() {
         super.onDestroy()
         // Resources management
-        binding.recordingPlayback.cleanupResources()
+        binding.audioRecordingPlayback.cleanupResources()
     }
 }

@@ -67,32 +67,28 @@
             android:minWidth="48dp"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:text="-5s"
-            android:textSize="14sp"
             android:layout_marginEnd="32dp"
-            android:textAlignment="center"
             app:cornerRadius="24dp"
+            app:strokeColor="@color/button_primary_stateful_icon"
+            app:strokeWidth="0.5dp"
+            android:text="-5s"
             />
 
         <!-- Skip forward 5s -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_record_new"
-            style="@style/PrimaryActionButton"
-            android:minWidth="52dp"
-            android:layout_width="52dp"
+            style="@style/SecondaryActionButton"
+            android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"
-            app:iconGravity="start"
-            app:iconSize="36dp"
-            app:icon="@drawable/ic_recording_renew"
+            app:icon="@drawable/ic_recording_record"
             />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_record_stop_play"
-            style="@style/PrimaryActionButton"
+            style="@style/SecondaryActionButton"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:minWidth="64dp"
             app:icon="@drawable/ic_recording_stop" />
 
         <com.google.android.material.button.MaterialButton
@@ -101,11 +97,11 @@
             android:minWidth="48dp"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:text="+5s"
-            android:textSize="14sp"
             android:layout_marginStart="32dp"
-            android:textAlignment="center"
             app:cornerRadius="24dp"
+            app:strokeColor="@color/button_primary_stateful_icon"
+            app:strokeWidth="0.5dp"
+            android:text="+5s"
             />
     </LinearLayout>
 </LinearLayout>

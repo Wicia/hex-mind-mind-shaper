@@ -115,20 +115,25 @@ class DetailsViewModel @Inject constructor(
 
     fun saveThought(recording: Recording) {
         viewModelScope.launch {
+            // TODO: refactor this and move such logic to services layer (or reduce layers count by 1)
             thoughtDetails.value?.let { thought ->
                 val thoughtId = thought.id ?: throw IllegalStateException("Thought ID cannot be null")
 
-                thoughtsService.updateThoughtMetadata(thought)
-                thoughtsService.updateThoughtRichText(thoughtId, thought.richText)
-
-                // Occasional audio update (if exists)
-                if (thought.hasAudio && recording.fileExists()) {
+                if (thought.hasAudio && !recording.fileExists()) {
+                    thoughtsService.deleteThoughtAudio(thoughtId)
+                    thought.audioDurationMs = null
+                }
+                else if (recording.fileExists()) {
                     thoughtsService.updateThoughtRecording(
                         thoughtId.toLong(),
                         recording.file!!,
                         recording.duration!!
                     )
+                    thought.audioDurationMs = recording.duration
                 }
+
+                thoughtsService.updateThoughtMetadata(thought)
+                thoughtsService.updateThoughtRichText(thoughtId, thought.richText)
             }
         }
     }
@@ -137,15 +142,6 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             thoughtDetails.value?.id?.let { id ->
                 thoughtsService.updateThoughtRichText(id, richText)
-            }
-        }
-    }
-
-    // TODO: To be used later -> when "edit dialog" in details activity will be implemented
-    fun updateRecording(audioFile: File, duration: Long) {
-        viewModelScope.launch {
-            thoughtDetails.value?.id?.let { id ->
-                thoughtsService.updateThoughtRecording(id.toLong(), audioFile, duration)
             }
         }
     }

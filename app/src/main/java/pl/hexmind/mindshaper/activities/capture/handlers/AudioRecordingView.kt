@@ -13,15 +13,22 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.core.content.withStyledAttributes
 import com.google.android.material.button.MaterialButton
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Runnable
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.audio.AudioAmplitudeExtractor
 import pl.hexmind.mindshaper.common.audio.AudioVisualizerView
+import pl.hexmind.mindshaper.common.ui.CommonActionsDialog
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import timber.log.Timber
 import java.io.File
-import androidx.core.content.withStyledAttributes
 
 /**
  * Universal audio recording and playback view
@@ -164,12 +171,14 @@ class AudioRecordingView @JvmOverloads constructor(
             }
             hasRecording -> {
                 btnRecordNew.isEnabled = true
+                btnRecordNew.icon = AppCompatResources.getDrawable(context, R.drawable.ic_recording_renew)
 
                 btnRecordStopPlay.isEnabled = true
                 btnRecordStopPlay.icon = AppCompatResources.getDrawable(context, R.drawable.ic_recording_play)
             }
             else -> {
                 btnRecordNew.isEnabled = true
+                btnRecordNew.icon = AppCompatResources.getDrawable(context, R.drawable.ic_recording_record)
 
                 btnRecordStopPlay.isEnabled = false
                 btnRecordStopPlay.icon = AppCompatResources.getDrawable(context, R.drawable.ic_recording_play)
@@ -227,7 +236,15 @@ class AudioRecordingView @JvmOverloads constructor(
         this.callback = callback
     }
 
-    fun setMode(newMode: Mode) {
+    fun switchToPlaybackOnlyMode(){
+        setMode(Mode.PLAYBACK_ONLY)
+    }
+
+    fun switchToRecordPlaybackMode(){
+        setMode(Mode.RECORD_PLAYBACK)
+    }
+
+    private fun setMode(newMode: Mode) {
         mode = newMode
         setupUIForMode()
     }
@@ -235,7 +252,12 @@ class AudioRecordingView @JvmOverloads constructor(
     private fun setupListeners() {
         btnRecordNew.setOnClickListener {
             if (mode == Mode.RECORD_PLAYBACK) {
-                startRecording()
+                if (audioFile?.exists() == true) {
+                    showRecordingOptionsDialog()
+                }
+                else { // there is no recording
+                    startRecording()
+                }
             }
         }
 
@@ -249,6 +271,23 @@ class AudioRecordingView @JvmOverloads constructor(
 
         btnSkipBackward.setOnClickListener { skipBackward() }
         btnSkipForward.setOnClickListener { skipForward() }
+    }
+
+    private fun showRecordingOptionsDialog() {
+        CommonActionsDialog.Builder(context)
+            .setQuestion("Co chcesz zrobić z nagraniem?")
+            .setCautionAction("Wywalić") {
+                deleteCurrentRecording()
+                showStatus(
+                    context.getString(R.string.capture_voice_tooltip),
+                    R.color.text_secondary
+                )
+            }
+            .setStandardAction("Nadpisać") {
+                deleteCurrentRecording()
+                startRecording()
+            }
+            .show()
     }
 
     // ===========================================
@@ -276,7 +315,8 @@ class AudioRecordingView @JvmOverloads constructor(
         try {
             recorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 MediaRecorder(context)
-            } else {
+            }
+            else {
                 @Suppress("DEPRECATION")
                 MediaRecorder()
             }.apply {
@@ -303,7 +343,8 @@ class AudioRecordingView @JvmOverloads constructor(
 
             callback?.onRecordingStarted()
 
-        } catch (e: Exception) {
+        }
+        catch (e: Exception) {
             Timber.tag(TAG).e(e, "Error starting recording")
             showStatus(
                 context.getString(R.string.capture_voice_error_recording),
@@ -323,9 +364,11 @@ class AudioRecordingView @JvmOverloads constructor(
                 stop()
                 release()
             }
-        } catch (e: Exception) {
+        }
+        catch (e: Exception) {
             Timber.tag(TAG).e(e, "Error stopping recording")
-        } finally {
+        }
+        finally {
             recorder = null
         }
 
@@ -346,7 +389,8 @@ class AudioRecordingView @JvmOverloads constructor(
             // Load visualization for playback
             audioFile?.let { loadAudioVisualization(it) }
 
-        } else {
+        }
+        else {
             showStatus(
                 context.getString(R.string.capture_voice_error_recording),
                 R.color.validation_error
@@ -642,6 +686,6 @@ data class Recording (
     val duration : Long? = 0L
 ){
     fun fileExists() : Boolean{
-        return file != null
+        return file?.exists() == true
     }
 }

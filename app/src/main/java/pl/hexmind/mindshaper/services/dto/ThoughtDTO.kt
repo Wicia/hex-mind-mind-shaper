@@ -22,20 +22,24 @@ data class ThoughtDTO(
 
     var mainContentType: ThoughtMainContentType = ThoughtMainContentType.UNKNOWN,
 
-    // RICH TEXT
+    // === RICH TEXT ===
     var richText: String? = null,
 
-    // RECORDING
+    // === RECORDING ===
+
     // only light data here (like metadata & no byte arrays)
     var audioDurationMs: Long? = null,
-    var hasAudio: Boolean = false,
+
     @Transient
-    var tempAudioFilePath: String? = null // ! Used during recording
+    var tempAudioFilePath: String? = null // ! Used ONLY during recording
 
 ) : Parcelable {
 
     val duration: Long?
         get() = audioDurationMs
+
+    val hasAudio : Boolean
+        get() = (audioDurationMs ?: 0) > 0
 
     // ! Needed for ByteArray in data class
     override fun equals(other: Any?): Boolean {
@@ -54,7 +58,6 @@ data class ThoughtDTO(
         if (value != other.value) return false
         if (mainContentType != other.mainContentType) return false
         if (audioDurationMs != other.audioDurationMs) return false
-        if (hasAudio != other.hasAudio) return false
         if (tempAudioFilePath != other.tempAudioFilePath) return false
 
         return true
@@ -71,7 +74,6 @@ data class ThoughtDTO(
         result = 31 * result + value
         result = 31 * result + mainContentType.hashCode()
         result = 31 * result + (audioDurationMs?.hashCode() ?: 0)
-        result = 31 * result + hasAudio.hashCode()
         result = 31 * result + (tempAudioFilePath?.hashCode() ?: 0)
         return result
     }

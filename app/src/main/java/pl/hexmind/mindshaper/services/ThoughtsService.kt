@@ -96,4 +96,8 @@ class ThoughtsService @Inject constructor(
     suspend fun getAudioData(thoughtId: Int): ByteArray? {
         return repository.getAudioData(thoughtId.toLong())
     }
+
+    suspend fun deleteThoughtAudio(thoughtId: Int) {
+        repository.deleteAudio(thoughtId.toLong())
+    }
 }

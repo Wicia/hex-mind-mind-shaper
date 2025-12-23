@@ -115,7 +115,7 @@ class CaptureActivity : CoreActivity(), AudioRecordingView.RecordingCallback {
 
     private fun createAudioRecordingView() : AudioRecordingView{
         val captureRecordingView = AudioRecordingView(this)
-        captureRecordingView.setMode(AudioRecordingView.Mode.RECORD_PLAYBACK)
+        captureRecordingView.switchToRecordPlaybackMode()
         captureRecordingView.setRecordingCallback(this)
         val params = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,

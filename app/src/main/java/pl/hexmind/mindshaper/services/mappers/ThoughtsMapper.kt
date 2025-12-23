@@ -18,7 +18,6 @@ interface ThoughtsMapper {
         val INSTANCE: ThoughtsMapper = Mappers.getMapper(ThoughtsMapper::class.java)
     }
 
-    @Mapping(target = "hasAudio", expression = "java(entity.getAudioData() != null)")
     @Mapping(target = "tempAudioFilePath", ignore = true) // Only used during recording
     fun entityToDTO(entity: ThoughtEntity): ThoughtDTO
 
