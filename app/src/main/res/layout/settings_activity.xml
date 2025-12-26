@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_background">
@@ -144,13 +145,46 @@
                         style="@style/TextView_Header_Section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="@string/settings_thoughts_value_header"
+                        />
+
+                    <TextView
+                        style="@style/TextView_Info_Success"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/settings_thoughts_value_action_info"
+                        />
+
+                    <RadioGroup
+                        android:id="@+id/rg_values_system"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <RadioButton
+                            android:id="@+id/rb_system_6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_thoughts_value_system_6" />
+
+                        <RadioButton
+                            android:id="@+id/rb_system_10"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_thoughts_value_system_10" />
+
+                    </RadioGroup>
+
+                    <TextView
+                        style="@style/TextView_Header_Section"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="@string/settings_domains_header" />
 
                     <TextView
                         style="@style/TextView_Info_Success"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
                         android:text="@string/settings_domains_hint" />
 
                     <!-- Grid of domain buttons (4 rows x 2 columns) -->
@@ -192,7 +226,6 @@
                         style="@style/TextView_Info_Success"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
                         android:text="@string/settings_backup_hint" />
 
                     <LinearLayout

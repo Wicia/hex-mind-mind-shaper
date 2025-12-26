@@ -8,6 +8,7 @@ import android.provider.OpenableColumns
 import android.view.View
 import android.widget.GridLayout
 import android.widget.ImageView
+import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
@@ -19,16 +20,16 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
-import pl.hexmind.mindshaper.services.validators.DomainValidator
 import pl.hexmind.mindshaper.activities.home.HomeActivity
+import pl.hexmind.mindshaper.common.ThoughtValueSystem
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.database.initialization.DataSnapshotManager
 import pl.hexmind.mindshaper.databinding.SettingsActivityBinding
-import pl.hexmind.mindshaper.services.AppSettingsStorage
-import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.DomainIconsService
+import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.MediaStorageService
 import pl.hexmind.mindshaper.services.dto.DomainDTO
+import pl.hexmind.mindshaper.services.validators.DomainValidator
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -115,8 +116,30 @@ class SettingsActivity : CoreActivity() {
             showSnapshotLoadingDialog()
         }
 
-        // Domains icons
+        initThoughtsValuesSystemConfig()
+
         initDomainButtons()
+    }
+
+    private fun initThoughtsValuesSystemConfig() {
+        val radioGroup = findViewById<RadioGroup>(R.id.rg_values_system)
+        val thoughtValueSystem = appSettingsStorage.getThoughtValueSystem()
+
+        when (thoughtValueSystem) {
+            ThoughtValueSystem.STANDARD_6 -> radioGroup.check(R.id.rb_system_6)
+            ThoughtValueSystem.STANDARD_10 -> radioGroup.check(R.id.rb_system_10)
+        }
+
+        radioGroup.setOnCheckedChangeListener { _, checkedButtonId ->
+            when (checkedButtonId) {
+                R.id.rb_system_6 -> {
+                    appSettingsStorage.setThoughtValueSystemId(ThoughtValueSystem.STANDARD_6)
+                }
+                R.id.rb_system_10 -> {
+                    appSettingsStorage.setThoughtValueSystemId(ThoughtValueSystem.STANDARD_10)
+                }
+            }
+        }
     }
 
     private fun initDomainButtons() {

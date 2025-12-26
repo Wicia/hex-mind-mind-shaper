@@ -18,12 +18,16 @@ import pl.hexmind.mindshaper.common.ui.CommonTextEditDialog
 import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailsActivity : CoreActivity() {
 
     private val viewModel: DetailsViewModel by viewModels()
     private lateinit var binding: DetailsEditActivityBinding
+
+    @Inject
+    lateinit var thoughtValidator: ThoughtValidator
 
     companion object PARAMS {
         const val P_SELECTED_THOUGHT_ID = "P_SELECTED_THOUGHT_ID"
@@ -133,7 +137,7 @@ class DetailsActivity : CoreActivity() {
 
     private fun setupUI(){
         binding.vbThoughtValue.apply {
-            maxLevel = ThoughtValidator.THOUGHT_VALUE_MAX
+            maxLevel = thoughtValidator.getThoughtValueMax()
         }
     }
 

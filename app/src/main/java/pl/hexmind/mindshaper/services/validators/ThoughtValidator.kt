@@ -3,26 +3,36 @@ package pl.hexmind.mindshaper.services.validators
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.common.regex.convertToWords
+import pl.hexmind.mindshaper.common.ThoughtValueSystem
 import pl.hexmind.mindshaper.common.validation.ValidatedProperty
 import pl.hexmind.mindshaper.common.validation.ValidationResult
+import pl.hexmind.mindshaper.services.AppSettingsStorage
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class ThoughtValidator @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext
+    private val context: Context,
+    private val appSettingsStorage: AppSettingsStorage
 ) {
-
     companion object {
         const val THREAD_MAX_CHARS: Int = 24
         const val PROJECT_MAX_CHARS: Int = 24
         const val SOUL_MATES_MAX_CHARS: Int = 24
 
-        const val THOUGHT_VALUE_MIN: Int = 1
-        const val THOUGHT_VALUE_MAX: Int = 6
-
         const val VOICE_RECORDING_MAX_DURATION_MS = 180_000L
+    }
+
+    private val valueSystem: ThoughtValueSystem
+        get() = appSettingsStorage.getThoughtValueSystem()
+
+    fun getThoughtValueMax(): Int {
+        return valueSystem.maxValue
+    }
+
+    fun getThoughtValueMin(): Int {
+        return valueSystem.minValue
     }
 
     fun validateRichText(richText: String?): ValidationResult {
@@ -89,14 +99,14 @@ class ThoughtValidator @Inject constructor(
     }
 
     fun getValidThoughtValue(newPotentialValue : Int) : Int {
-        return newPotentialValue.coerceIn(THOUGHT_VALUE_MIN, THOUGHT_VALUE_MAX)
+        return newPotentialValue.coerceIn(getThoughtValueMin(), getThoughtValueMax())
     }
 
     fun canIncreaseValue(currentValue: Int): Boolean {
-        return currentValue < THOUGHT_VALUE_MAX
+        return currentValue < getThoughtValueMax()
     }
 
     fun canDecreaseValue(currentValue: Int): Boolean {
-        return currentValue > THOUGHT_VALUE_MIN
+        return currentValue > getThoughtValueMin()
     }
 }

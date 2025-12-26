@@ -23,7 +23,9 @@ import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.common.ui.CommonIconsListDialog
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
+import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import timber.log.Timber
+import javax.inject.Inject
 import kotlin.math.abs
 
 /**
@@ -31,6 +33,9 @@ import kotlin.math.abs
  */
 @AndroidEntryPoint
 class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
+
+    @Inject
+    lateinit var thoughtValidator: ThoughtValidator
 
     private val viewModel: CarouselViewModel by viewModels()
 
@@ -70,6 +75,7 @@ class CarouselActivity : CoreActivity(), GestureDetector.OnGestureListener {
 
     private fun setupCarousel() {
         adapter = CarouselAdapter(
+            thoughtValidator,
             onDeleteThought = { thoughtToDelete ->
                 showDeleteConfirmationDialog(thoughtToDelete)
             },

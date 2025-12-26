@@ -7,6 +7,7 @@ import androidx.core.content.edit
 import androidx.core.net.toUri
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.common.ThoughtValueSystem
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -17,7 +18,8 @@ import javax.inject.Singleton
  */
 @Singleton
 class AppSettingsStorage @Inject constructor(
-    @ApplicationContext private val context : Context
+    @ApplicationContext
+    private val context : Context
 ) {
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
@@ -34,8 +36,9 @@ class AppSettingsStorage @Inject constructor(
         private const val PARAM_APP_LAUNCH_DATES = "param_app_launch_dates"
 
         // Navigation bar settings
-        private const val PARAM_NAV_SELECTED_INDEX = "param_nav_selected_index"
         private const val PARAM_NAV_IS_EXPANDED = "param_nav_is_expanded"
+
+        private const val PARAM_THOUGHTS_VALUES_SYSTEM = "param_thoughts_values_system"
     }
 
     fun getApplicationContext() : Context {
@@ -62,18 +65,12 @@ class AppSettingsStorage @Inject constructor(
 
     // === YOUR NAME ===
 
-    /**
-     * Saves custom application name
-     */
     fun setYourName(yourName: String) {
         sharedPreferences.edit {
             putString(PARAM_YOUR_NAME, yourName.trim())
         }
     }
 
-    /**
-     * Retrieves custom application name
-     */
     fun getYourName(): String {
         val defaultName = context.getString(R.string.settings_your_name_default)
         return sharedPreferences.getString(PARAM_YOUR_NAME, defaultName) ?: defaultName
@@ -81,9 +78,6 @@ class AppSettingsStorage @Inject constructor(
 
     // === WELCOME AUDIO FILE ===
 
-    /**
-     * Saves welcome audio file URI
-     */
     fun setWelcomeAudioUri(uri: Uri?) {
         sharedPreferences.edit {
             if (uri != null) {
@@ -94,9 +88,6 @@ class AppSettingsStorage @Inject constructor(
         }
     }
 
-    /**
-     * Retrieves welcome audio file URI
-     */
     fun getWelcomeAudioUri(): Uri? {
         val uriString = sharedPreferences.getString(PARAM_WELCOME_AUDIO_FILE, "")
         return if (uriString?.isNotEmpty() == true) {
@@ -108,16 +99,6 @@ class AppSettingsStorage @Inject constructor(
         } else null
     }
 
-    /**
-     * Checks if welcome audio is set
-     */
-    fun hasWelcomeAudio(): Boolean {
-        return getWelcomeAudioUri() != null
-    }
-
-    /**
-     * Removes welcome audio setting
-     */
     fun clearWelcomeAudio() {
         setWelcomeAudioUri(null)
     }
@@ -132,5 +113,18 @@ class AppSettingsStorage @Inject constructor(
 
     fun isNavigationExpanded(): Boolean {
         return sharedPreferences.getBoolean(PARAM_NAV_IS_EXPANDED, false)
+    }
+
+    // === THOUGHT VALUES SYSTEM ===
+
+    fun setThoughtValueSystemId(system : ThoughtValueSystem){
+        sharedPreferences.edit {
+            putString(PARAM_THOUGHTS_VALUES_SYSTEM, system.name)
+        }
+    }
+
+    fun getThoughtValueSystem() : ThoughtValueSystem {
+        val value = sharedPreferences.getString(PARAM_THOUGHTS_VALUES_SYSTEM, "")
+        return if(!value.isNullOrBlank()) ThoughtValueSystem.valueOf(value) else ThoughtValueSystem.STANDARD_10
     }
 }

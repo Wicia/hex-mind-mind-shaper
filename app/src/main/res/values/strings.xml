@@ -177,6 +177,11 @@
     <string name="settings_greeting_state_no_file">Nie wybrano pliku</string>
     <string name="settings_greeting_state_file_name">Wybrano: %s</string>
 
+    <string name="settings_thoughts_value_header">Skala wartości myśli</string>
+    <string name="settings_thoughts_value_action_info">Zmiana obecnego systemu będzie wymagała przeskalowania wartości</string>
+    <string name="settings_thoughts_value_system_10">od 1 do 10</string>
+    <string name="settings_thoughts_value_system_6">od 1 do 6</string>
+
     <!-- Domains -->
     <string name="settings_domains_header">Nazwy Domen</string>
     <string name="settings_domains_hint">Tutaj możesz zmienić nazwę oraz ikonkę domeny</string>

@@ -24,6 +24,7 @@ import java.io.File
  * Adapter for thought carousel with smooth animations and automatic updates via LiveData
  */
 class CarouselAdapter(
+    private val thoughtValidator: ThoughtValidator,
     private val onDeleteThought: (ThoughtDTO) -> Unit,
     private val onThoughtTap: (ThoughtDTO) -> Unit,
     private val onLoadAudio: (thoughtId: Int, onReady: (File) -> Unit) -> Unit
@@ -32,7 +33,7 @@ class CarouselAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThoughtViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.carousel_item, parent, false)
-        return ThoughtViewHolder(view, onDeleteThought, onThoughtTap, onLoadAudio)
+        return ThoughtViewHolder(view, thoughtValidator, onDeleteThought, onThoughtTap, onLoadAudio)
     }
 
     override fun onBindViewHolder(holder: ThoughtViewHolder, position: Int) {
@@ -44,6 +45,7 @@ class CarouselAdapter(
      */
     class ThoughtViewHolder(
         itemView: View,
+        private val thoughtValidator: ThoughtValidator,
         private val onDeleteThought: (ThoughtDTO) -> Unit,
         private val onThoughtTap: (ThoughtDTO) -> Unit,
         private val onLoadAudio: (thoughtId: Int, onReady: (File) -> Unit) -> Unit
@@ -91,15 +93,21 @@ class CarouselAdapter(
                     tvRichText.visibility = View.VISIBLE
                     tvRichText.originalText = thought.richText.orEmpty()
                 }
-                UNKNOWN -> { /* TODO */ }
-                PHOTO -> { /* TODO */ }
-                DRAWING -> { /* TODO */ }
+                PHOTO -> {
+                /* TODO */
+                }
+                DRAWING -> {
+                /* TODO */
+                }
+                UNKNOWN -> {
+                /* TODO */
+                }
             }
 
             updateMetadataUI(thought)
-            uptateCreatedAtUI(thought)
+            updateCreatedAtUI(thought)
 
-            vbThoughtValue.maxLevel = ThoughtValidator.THOUGHT_VALUE_MAX
+            vbThoughtValue.maxLevel = thoughtValidator.getThoughtValueMax()
             vbThoughtValue.currentLevel = thought.value
         }
 
@@ -117,7 +125,7 @@ class CarouselAdapter(
             tvMetadata.text = "/ ".plus(value)
         }
 
-        fun uptateCreatedAtUI(thought: ThoughtDTO){
+        fun updateCreatedAtUI(thought: ThoughtDTO){
             val ageLevel = ThoughtGrowthStage.newThoughtGrowthStage(thought.createdAt)
             val levelIcon = ageLevel.level.icon
 

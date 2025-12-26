@@ -18,9 +18,9 @@
         <item name="android:fontFamily">@font/montserrat_regular</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:layout_marginTop">16dp</item>
         <item name="android:layout_marginBottom">8dp</item>
-        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColor">@color/text_secondary</item>
     </style>
 
     <!-- Activity / Text Standard -->
@@ -60,6 +60,8 @@
     <style name="TextView_Info_Success">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/validation_success</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
     </style>
 
     <style name="TextView_Info_Error">
