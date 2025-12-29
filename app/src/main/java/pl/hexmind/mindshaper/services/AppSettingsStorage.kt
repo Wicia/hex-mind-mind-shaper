@@ -2,14 +2,10 @@ package pl.hexmind.mindshaper.services
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.Uri
 import androidx.core.content.edit
-import androidx.core.net.toUri
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ThoughtValueSystem
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,9 +27,7 @@ class AppSettingsStorage @Inject constructor(
 
         // Main app settings
         private const val PARAM_YOUR_NAME = "param_your_name"
-        private const val PARAM_WELCOME_AUDIO_FILE = "param_greeting_audio_path"
         private const val PARAM_DB_CURRENT_VERSION = "param_db_current_version"
-        private const val PARAM_APP_LAUNCH_DATES = "param_app_launch_dates"
 
         // Navigation bar settings
         private const val PARAM_NAV_IS_EXPANDED = "param_nav_is_expanded"
@@ -66,33 +60,6 @@ class AppSettingsStorage @Inject constructor(
     fun getYourName(): String {
         val defaultName = context.getString(R.string.settings_your_name_default)
         return sharedPreferences.getString(PARAM_YOUR_NAME, defaultName) ?: defaultName
-    }
-
-    // === WELCOME AUDIO FILE ===
-
-    fun setWelcomeAudioUri(uri: Uri?) {
-        sharedPreferences.edit {
-            if (uri != null) {
-                putString(PARAM_WELCOME_AUDIO_FILE, uri.toString())
-            } else {
-                remove(PARAM_WELCOME_AUDIO_FILE)
-            }
-        }
-    }
-
-    fun getWelcomeAudioUri(): Uri? {
-        val uriString = sharedPreferences.getString(PARAM_WELCOME_AUDIO_FILE, "")
-        return if (uriString?.isNotEmpty() == true) {
-            try {
-                uriString.toUri()
-            } catch (e: Exception) {
-                null
-            }
-        } else null
-    }
-
-    fun clearWelcomeAudio() {
-        setWelcomeAudioUri(null)
     }
 
     // === NAVIGATION BAR STATE ===

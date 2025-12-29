@@ -170,13 +170,6 @@
     <string name="settings_your_name_header">Twoje Prawdziwe Imię?</string>
     <string name="settings_your_name_default">Bezimienn(y/a)</string>
 
-    <!-- Greeting Sound Setting -->
-    <string name="settings_greeting_sound_header">Powitanie</string>
-    <string name="settings_greeting_sound_hint">Dźwięk odtwarzany przy pierwszym uruchomieniu dnia</string>
-    <string name="settings_greeting_choose_sound_file">Wybierz plik dźwiękowy</string>
-    <string name="settings_greeting_state_no_file">Nie wybrano pliku</string>
-    <string name="settings_greeting_state_file_name">Wybrano: %s</string>
-
     <string name="settings_thoughts_value_header">Skala wartości myśli</string>
     <string name="settings_thoughts_value_action_info">Zmiana obecnego systemu będzie wymagała przeskalowania wartości</string>
     <string name="settings_thoughts_value_system_10">od 1 do 10</string>

@@ -2,7 +2,6 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_background">
@@ -25,7 +24,6 @@
             <!-- Header -->
             <include layout="@layout/common_header" />
 
-            <!-- Card - NAME -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -66,67 +64,8 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Card - GREETING MUSIC -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="3dp">
+    <!--=== THOUGHTS ===-->
 
-                <!-- TODO: remove visibility = gone when it will be ready -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone"
-                    android:padding="16dp">
-
-                    <TextView
-                        style="@style/TextView_Header_Section"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
-                        android:text="@string/settings_greeting_sound_header" />
-
-                    <TextView
-                        style="@style/TextView_Info_Success"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        android:text="@string/settings_greeting_sound_hint" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_select_audio"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/settings_greeting_choose_sound_file"
-                            android:textColor="@android:color/black"
-                            app:cornerRadius="8dp" />
-
-                        <TextView
-                            android:id="@+id/tvSelectedFile"
-                            style="@style/TextView_Info_Success"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:text="@string/settings_greeting_state_no_file" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <!-- Card - DOMAINS -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -145,16 +84,14 @@
                         style="@style/TextView_Header_Section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/settings_thoughts_value_header"
-                        />
+                        android:text="@string/settings_thoughts_value_header" />
 
                     <TextView
                         style="@style/TextView_Info_Success"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:text="@string/settings_thoughts_value_action_info"
-                        />
+                        android:text="@string/settings_thoughts_value_action_info" />
 
                     <RadioGroup
                         android:id="@+id/rg_values_system"
@@ -201,7 +138,8 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Card: BACKUP LOADING -->
+    <!--=== BACKUP ===-->
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

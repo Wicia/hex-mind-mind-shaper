@@ -59,17 +59,6 @@ class SettingsActivity : CoreActivity() {
     private var selectedAudioUri: Uri? = null
     private var selectedBackupUri: Uri? = null
 
-    // Activity result launcher for audio file selection
-    private val audioPickerLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == RESULT_OK) {
-            result.data?.data?.let { uri ->
-                handleSelectedAudioFile(uri)
-            }
-        }
-    }
-
     // Activity result launcher for backup file selection
     private val backupPickerLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -95,11 +84,6 @@ class SettingsActivity : CoreActivity() {
      */
     private fun setupUI() {
         setupHeader(R.drawable.ic_header_settings, R.string.settings_header)
-
-        // Audio file selection
-        binding.btnSelectAudio.setOnClickListener {
-            selectAudioFile()
-        }
 
         // Save settings button
         binding.btnSaveSettings.setOnClickListener {
@@ -185,100 +169,6 @@ class SettingsActivity : CoreActivity() {
         // Load app name
         val yourName = appSettingsStorage.getYourName()
         binding.etYourName.setText(yourName)
-
-        // Load audio file info with error handling
-        val audioUri = appSettingsStorage.getWelcomeAudioUri()
-        if (audioUri != null) {
-            try {
-                // Test if URI is still accessible
-                if (mediaStorageService.isUriAccessible(audioUri)) {
-                    selectedAudioUri = audioUri
-                    updateAudioFileDisplay(audioUri)
-                } else {
-                    // URI is no longer accessible, clear it
-                    clearAudioSelection()
-                    showAudioErrorMessage(getString(R.string.files_audio_error_file_not_accessible))
-                }
-            } catch (e: Exception) {
-                clearAudioSelection()
-                showAudioErrorMessage(getString(R.string.file_audio_error_reading_file))
-            }
-        }
-    }
-
-    /**
-     * Clear audio selection and update UI
-     */
-    private fun clearAudioSelection() {
-        selectedAudioUri = null
-        binding.tvSelectedFile.text = getString(R.string.files_audio_error_no_file_selected)
-        appSettingsStorage.clearWelcomeAudio()
-    }
-
-    /**
-     * Show error message for audio file issues
-     */
-    private fun showAudioErrorMessage(message: String) {
-        binding.tvSelectedFile.text = message
-        binding.tvSelectedFile.setTextColor(getColor(R.color.validation_error))
-    }
-
-    /**
-     * Open file picker for audio selection using document picker for persistent access
-     */
-    private fun selectAudioFile() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            type = "audio/*"
-            addCategory(Intent.CATEGORY_OPENABLE)
-            // Request persistent access to the file
-            addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        }
-
-        try {
-            audioPickerLauncher.launch(intent)
-        } catch (e: Exception) {
-            showShortToast(R.string.files_error_cannot_open_file_picker)
-        }
-    }
-
-    /**
-     * Handle selected audio file and request persistent permissions
-     */
-    private fun handleSelectedAudioFile(uri: Uri) {
-        try {
-            // Request persistent permission to access the file
-            contentResolver.takePersistableUriPermission(
-                uri,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION
-            )
-
-            selectedAudioUri = uri
-            updateAudioFileDisplay(uri)
-
-            val fileName = mediaStorageService.getSimpleFileName(uri)
-            showShortToast(R.string.files_info_selected_name, fileName)
-
-            // Reset text color to default - TODO: Use custom color from colors.xml
-            binding.tvSelectedFile.setTextColor(getColor(R.color.text_secondary))
-
-        } catch (e: SecurityException) {
-            // Fallback: still save the URI but warn about potential access issues
-            selectedAudioUri = uri
-            updateAudioFileDisplay(uri)
-            showShortToast(R.string.files_info_selected_temp_access)
-        } catch (e: Exception) {
-            showAudioErrorMessage(getString(R.string.file_audio_error_reading_file))
-            showShortToast(R.string.files_error_selecting_file)
-        }
-    }
-
-    /**
-     * Update audio file display with filename, extension and folder
-     */
-    private fun updateAudioFileDisplay(uri: Uri) {
-        val fileInfo = mediaStorageService.getDetailedFileInfo(uri)
-        binding.tvSelectedFile.text = fileInfo
     }
 
     /**
@@ -405,16 +295,6 @@ class SettingsActivity : CoreActivity() {
             ?.takeIf { it.isNotEmpty() }
             ?: getString(R.string.settings_your_name_default)
         appSettingsStorage.setYourName(yourName)
-
-        // Save audio file path only if accessible
-        selectedAudioUri?.let { uri ->
-            if (mediaStorageService.isUriAccessible(uri)) {
-                appSettingsStorage.setWelcomeAudioUri(uri)
-            } else {
-                appSettingsStorage.clearWelcomeAudio()
-                showAudioErrorMessage(getString(R.string.files_audio_error_file_not_accessible))
-            }
-        }
 
         showShortToast(R.string.common_info_changes_saved)
 
