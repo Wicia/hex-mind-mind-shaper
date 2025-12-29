@@ -21,16 +21,12 @@ import pl.hexmind.mindshaper.activities.carousel.CarouselActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
 import pl.hexmind.mindshaper.services.AppSettingsStorage
-import pl.hexmind.mindshaper.services.PhasesService
 import javax.inject.Inject
 
 /**
  * Core activity with bottom navigation bar overlay
  */
 open class CoreActivity() : AppCompatActivity() {
-
-    @Inject
-    lateinit var phasesService: PhasesService
 
     @Inject
     lateinit var appSettingsStorage: AppSettingsStorage

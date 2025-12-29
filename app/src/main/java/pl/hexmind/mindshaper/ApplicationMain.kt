@@ -9,7 +9,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.database.initialization.DataSnapshotManager
 import pl.hexmind.mindshaper.services.DomainIconsService
-import pl.hexmind.mindshaper.services.PhasesService
 import timber.log.Timber
 
 @HiltAndroidApp
@@ -17,9 +16,6 @@ class ApplicationMain : Application() {
 
     @Inject
     lateinit var databaseInitializer: DatabaseInitializer
-
-    @Inject
-    lateinit var phasesService: PhasesService
 
     @Inject
     lateinit var domainIconsService: DomainIconsService
@@ -41,7 +37,5 @@ class ApplicationMain : Application() {
             domainIconsService.preloadAllIcons()
             snapshotManager.createSnapshot() // For preventing data loss
         }
-
-        phasesService.saveAppLaunchTime()
     }
 }
