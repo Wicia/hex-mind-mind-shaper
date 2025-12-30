@@ -21,6 +21,7 @@ import pl.hexmind.mindshaper.activities.carousel.CarouselActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
 import pl.hexmind.mindshaper.services.AppSettingsStorage
+import pl.hexmind.mindshaper.services.PermissionService
 import javax.inject.Inject
 
 /**
@@ -30,6 +31,9 @@ open class CoreActivity() : AppCompatActivity() {
 
     @Inject
     lateinit var appSettingsStorage: AppSettingsStorage
+
+    @Inject
+    lateinit var permissionsService: PermissionService
 
     private var navigationController: NavigationBarController? = null
     private var navigationBarView: View? = null

@@ -54,7 +54,13 @@
     <string name="common_deletion_dialog_yes">Tak</string>
     <string name="common_deletion_dialog_no">Nie</string>
     <string name="common_deletion_dialog_confirmation">%s usunięto</string>
+
     <string name="common_list_dialog_title">Wybierz coś sobie...</string>
+
+    <string name="common_thoughts_permissions_dialog_header">Żądanie uprawnień do zasobów Androida</string>
+    <string name="common_thoughts_permissions_dialog_message">
+        %s\n\n(i) Dwukrotna ich odmowa = ustawienie to zostanie zablokowane i będzie je można odblokować w ustawieniach systemowych Androida.
+    </string>
 
     <!-- VALIDATION -->
     <string name="common_object_type_thought">Myśl</string>
@@ -174,6 +180,11 @@
     <string name="settings_thoughts_value_action_info">Zmiana obecnego systemu będzie wymagała przeskalowania wartości</string>
     <string name="settings_thoughts_value_system_10">od 1 do 10</string>
     <string name="settings_thoughts_value_system_6">od 1 do 6</string>
+
+    <string name="settings_thoughts_permissions_section">Formy zapisu myśli</string>
+    <string name="settings_thoughts_permissions_voice_recording">Włącz zapis mysli w formie głosówek</string>
+    <string name="settings_thoughts_permissions_blockade">Uprawnienie zablokowane</string>
+    <string name="settings_thoughts_permissions_blockade_tooltip">Aby włączyć nagrywanie, przejdź do ustawień Androida i nadaj ręcznie uprawnienie do mikrofonu.</string>
 
     <!-- Domains -->
     <string name="settings_domains_header">Nazwy Domen</string>

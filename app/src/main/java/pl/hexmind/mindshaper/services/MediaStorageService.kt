@@ -146,4 +146,20 @@ class MediaStorageService @Inject constructor(
             else -> uri.lastPathSegment ?: "audio_file.mp3"
         }
     }
+
+    /**
+     * Get file name from URI
+     */
+    fun getFileNameFromUri(uri: Uri): String {
+        var fileName = "Unknown"
+        context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                if (nameIndex != -1) {
+                    fileName = cursor.getString(nameIndex)
+                }
+            }
+        }
+        return fileName
+    }
 }

@@ -33,6 +33,9 @@ class AppSettingsStorage @Inject constructor(
         private const val PARAM_NAV_IS_EXPANDED = "param_nav_is_expanded"
 
         private const val PARAM_THOUGHTS_VALUES_SYSTEM = "param_thoughts_values_system"
+
+        // Permissions
+        private const val PARAM_VOICE_RECORDING_ENABLED = "param_voice_recording_enabled"
     }
 
     fun getApplicationContext() : Context {
@@ -85,5 +88,15 @@ class AppSettingsStorage @Inject constructor(
     fun getThoughtValueSystem() : ThoughtValueSystem {
         val value = sharedPreferences.getString(PARAM_THOUGHTS_VALUES_SYSTEM, "")
         return if(!value.isNullOrBlank()) ThoughtValueSystem.valueOf(value) else ThoughtValueSystem.STANDARD_10
+    }
+
+    fun setVoiceRecordingEnabled(enabled: Boolean) {
+        sharedPreferences.edit {
+            putBoolean(PARAM_VOICE_RECORDING_ENABLED, enabled)
+        }
+    }
+
+    fun isVoiceRecordingEnabled(): Boolean {
+        return sharedPreferences.getBoolean(PARAM_VOICE_RECORDING_ENABLED, false)
     }
 }

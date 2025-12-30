@@ -1,10 +1,10 @@
 package pl.hexmind.mindshaper.activities.settings
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
 import android.view.View
 import android.widget.GridLayout
 import android.widget.ImageView
@@ -79,12 +79,23 @@ class SettingsActivity : CoreActivity() {
         loadSavedSettings()
     }
 
+    override fun onResume() {
+        super.onResume()
+        syncVoiceRecordingToogleWithPermissions()
+    }
+
     /**
      * Initialize UI components and click listeners
      */
     private fun setupUI() {
         setupHeader(R.drawable.ic_header_settings, R.string.settings_header)
 
+        setupListeners()
+        initThoughtsValuesSystemConfig()
+        initDomainButtons()
+    }
+
+    private fun setupListeners(){
         // Save settings button
         binding.btnSaveSettings.setOnClickListener {
             saveSettings()
@@ -100,9 +111,79 @@ class SettingsActivity : CoreActivity() {
             showSnapshotLoadingDialog()
         }
 
-        initThoughtsValuesSystemConfig()
+        setupVoiceRecordingPermissionToogle()
+    }
 
-        initDomainButtons()
+    private fun setupVoiceRecordingPermissionToogle() {
+        binding.toggleRecording.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                when {
+                    permissionsService.isRecordAudioGranted() -> {
+                        appSettingsStorage.setVoiceRecordingEnabled(true)
+                        binding.toggleRecording.isChecked = true
+                    }
+                    else -> {
+                        showPermissionExplanationDialog()
+                    }
+                }
+            }
+            else {
+                appSettingsStorage.setVoiceRecordingEnabled(false)
+            }
+        }
+
+        syncVoiceRecordingToogleWithPermissions()
+    }
+
+    private fun syncVoiceRecordingToogleWithPermissions() {
+        val hasPermission = permissionsService.isRecordAudioGranted()
+        val wantsRecording = appSettingsStorage.isVoiceRecordingEnabled()
+
+        binding.toggleRecording.isChecked = wantsRecording && hasPermission
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // Approved
+            appSettingsStorage.setVoiceRecordingEnabled(true)
+            binding.toggleRecording.isChecked = true
+        }
+        else {
+            // Denial
+            appSettingsStorage.setVoiceRecordingEnabled(false)
+            binding.toggleRecording.isChecked = false
+
+            // Handling permissions "blockade"
+            if (!shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)) {
+                showPermissionPermanentDenialDialog()
+            }
+        }
+    }
+
+    private fun showPermissionExplanationDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
+            .setMessage(getString(R.string.common_thoughts_permissions_dialog_message, "Aby móc nagrywać dźwięk, aplikacja potrzebuje dostępu do mikrofonu."))
+            .setPositiveButton("OK") { _, _ ->
+                requestPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+            }
+            .setNegativeButton("Nie teraz") { _, _ ->
+                binding.toggleRecording.isChecked = false
+            }
+            .setOnCancelListener {
+                binding.toggleRecording.isChecked = false
+            }
+            .show()
+    }
+
+    private fun showPermissionPermanentDenialDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.settings_thoughts_permissions_blockade))
+            .setMessage(getString(R.string.settings_thoughts_permissions_blockade_tooltip))
+            .setPositiveButton("OK") { _, _ -> }
+            .show()
     }
 
     private fun initThoughtsValuesSystemConfig() {
@@ -148,8 +229,8 @@ class SettingsActivity : CoreActivity() {
 
                     gridLayout.addView(buttonView)
                 }
-
-            } catch (e: Exception) {
+            }
+            catch (e: Exception) {
                 // TODO: add UI control + handle error using: R.string.settings_domains_loading_error))
             }
         }
@@ -202,7 +283,7 @@ class SettingsActivity : CoreActivity() {
             // Verify if file is accessible
             if (mediaStorageService.isUriAccessible(uri)) {
                 selectedBackupUri = uri
-                val fileName = getFileNameFromUri(uri)
+                val fileName = mediaStorageService.getFileNameFromUri(uri)
                 binding.tvSelectedBackup.text = getString(R.string.settings_backup_state_file_selected, fileName)
                 binding.btnLoadBackup.isEnabled = true
 
@@ -238,7 +319,7 @@ class SettingsActivity : CoreActivity() {
         selectedBackupUri?.let { uri ->
             try {
                 lifecycleScope.launch {
-                    val fileName = getFileNameFromUri(uri)
+                    val fileName = mediaStorageService.getFileNameFromUri(uri)
                     dataSnapshotManager.restoreSnapshot(fileName, this@SettingsActivity)
                     showShortToast(R.string.settings_backup_loaded_success)
                     // Reset after successful load
@@ -268,22 +349,6 @@ class SettingsActivity : CoreActivity() {
     private fun showBackupErrorMessage(message: String) {
         binding.tvSelectedBackup.text = message
         binding.tvSelectedBackup.setTextColor(getColor(R.color.validation_error))
-    }
-
-    /**
-     * Get file name from URI
-     */
-    private fun getFileNameFromUri(uri: Uri): String {
-        var fileName = "Unknown"
-        contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-            if (cursor.moveToFirst()) {
-                val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                if (nameIndex != -1) {
-                    fileName = cursor.getString(nameIndex)
-                }
-            }
-        }
-        return fileName
     }
 
     /**
