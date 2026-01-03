@@ -9,7 +9,7 @@
     android:padding="12dp"
     android:clipToPadding="false"
     android:clipChildren="false"
-    android:gravity="center_horizontal">
+    android:gravity="center_vertical">
 
     <!-- Navigation (toggle) button -->
     <com.google.android.material.button.MaterialButton
@@ -17,6 +17,7 @@
         style="@style/AuxiliaryActionButton"
         android:layout_width="42dp"
         android:layout_height="42dp"
+        android:layout_gravity="center_vertical"
         app:icon="@drawable/ic_nav_expand"
         />
 
@@ -26,6 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
         android:visibility="gone"
         android:clipChildren="false"
         android:clipToPadding="false">
@@ -37,9 +39,8 @@
             app:icon="@drawable/ic_header_home"
             android:layout_width="42dp"
             android:layout_height="42dp"
-            android:layout_gravity="center"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
-            app:iconGravity="top"
             />
 
         <!-- Button 2: Carousel -->
@@ -49,9 +50,8 @@
             app:icon="@drawable/ic_header_carousel"
             android:layout_width="42dp"
             android:layout_height="42dp"
-            android:layout_gravity="center"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="12dp"
-            app:iconGravity="top"
             />
 
         <!-- Button 3: Settings -->
@@ -61,9 +61,8 @@
             app:icon="@drawable/ic_header_settings"
             android:layout_width="42dp"
             android:layout_height="42dp"
-            android:layout_gravity="center"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="12dp"
-            app:iconGravity="top"
             />
 
     </LinearLayout>

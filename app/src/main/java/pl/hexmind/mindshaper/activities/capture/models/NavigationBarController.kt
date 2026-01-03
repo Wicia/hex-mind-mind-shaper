@@ -115,7 +115,7 @@ class NavigationBarController(
 
         currentAnimator = AnimatorSet().apply {
             playTogether(alphaAnimator, scaleXAnimator, scaleYAnimator)
-            duration = 300
+            duration = 500
 
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
@@ -143,7 +143,7 @@ class NavigationBarController(
 
         currentAnimator = AnimatorSet().apply {
             playTogether(alphaAnimator, scaleXAnimator, scaleYAnimator)
-            duration = 300
+            duration = 500
 
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
@@ -174,8 +174,7 @@ class NavigationBarController(
             val button = navigationBar.findViewById<MaterialButton>(navButton.id)
 
             button?.let {
-                if (i == index) {
-                    // Selected state
+                if (i == index) { // Selected state
                     it.iconTint = ColorStateList.valueOf(selectedColor)
 
                     if (animate) {
@@ -183,17 +182,17 @@ class NavigationBarController(
                             it,
                             "iconSize",
                             it.iconSize,
-                            navigationBar.context.dpToPx(32)
+                            navigationBar.context.dpToPx(36)
                         ).apply {
-                            duration = 200
+                            duration = 1500
                             start()
                         }
-                    } else {
+                    }
+                    else {
                         it.iconSize = navigationBar.context.dpToPx(32)
                     }
                 }
-                else {
-                    // Normal state
+                else { // Normal state
                     it.iconTint = ColorStateList.valueOf(unselectedColor)
 
                     if (animate) {
@@ -203,10 +202,11 @@ class NavigationBarController(
                             it.iconSize,
                             navigationBar.context.dpToPx(28)
                         ).apply {
-                            duration = 200
+                            duration = 1500
                             start()
                         }
-                    } else {
+                    }
+                    else {
                         it.iconSize = navigationBar.context.dpToPx(28)
                     }
                 }

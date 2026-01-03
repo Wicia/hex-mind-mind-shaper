@@ -539,7 +539,6 @@ class AudioRecordingView @JvmOverloads constructor(
             val currentPosition = it.currentPosition
             val newPosition = (currentPosition - SKIP_DURATION_MS).coerceAtLeast(0)
             it.seekTo(newPosition.toInt())
-            Timber.tag(TAG).d("Skipped backward to ${newPosition}ms")
         }
     }
 
@@ -549,7 +548,6 @@ class AudioRecordingView @JvmOverloads constructor(
             val duration = it.duration
             val newPosition = (currentPosition + SKIP_DURATION_MS).coerceAtMost(duration.toLong())
             it.seekTo(newPosition.toInt())
-            Timber.tag(TAG).d("Skipped forward to ${newPosition}ms")
         }
     }
 

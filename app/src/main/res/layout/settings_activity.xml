@@ -24,13 +24,9 @@
             <!-- Header -->
             <include layout="@layout/common_header" />
 
+            <!-- === YOUR NAME === -->
             <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="3dp">
+                style="@style/AppCardView">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -42,6 +38,7 @@
                         style="@style/TextView_Header_Section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:layout_marginBottom="4dp"
                         android:text="@string/settings_your_name_header" />
 
@@ -64,15 +61,9 @@
 
             </androidx.cardview.widget.CardView>
 
-    <!--=== THOUGHTS ===-->
-
+            <!-- === THOUGHTS === -->
             <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="3dp">
+                style="@style/AppCardView">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -84,13 +75,14 @@
                         style="@style/TextView_Header_Section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="@string/settings_thoughts_permissions_section" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/toggleRecording"
-                        android:text="@string/settings_thoughts_permissions_voice_recording"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_thoughts_permissions_voice_recording" />
 
                     <TextView
                         style="@style/TextView_Header_Section"
@@ -108,7 +100,7 @@
                     <RadioGroup
                         android:id="@+id/rg_values_system"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content">
 
                         <RadioButton
                             android:id="@+id/rb_system_6"
@@ -124,10 +116,25 @@
 
                     </RadioGroup>
 
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- === DOMAINS === -->
+            <androidx.cardview.widget.CardView
+                style="@style/AppCardView">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
                     <TextView
                         style="@style/TextView_Header_Section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="@string/settings_domains_header" />
 
                     <TextView
@@ -136,7 +143,6 @@
                         android:layout_height="wrap_content"
                         android:text="@string/settings_domains_hint" />
 
-                    <!-- Grid of domain buttons (4 rows x 2 columns) -->
                     <GridLayout
                         android:id="@+id/gl_domains"
                         android:layout_width="match_parent"
@@ -150,15 +156,9 @@
 
             </androidx.cardview.widget.CardView>
 
-    <!--=== BACKUP ===-->
-
+            <!-- === BACKUP === -->
             <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="3dp">
+                style="@style/AppCardView">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -170,6 +170,7 @@
                         style="@style/TextView_Header_Section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="@string/settings_backup_header" />
 
                     <TextView
@@ -191,8 +192,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginEnd="8dp"
-                            android:text="@string/settings_backup_select"
-                             />
+                            android:text="@string/settings_backup_select" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_load_backup"
@@ -201,9 +201,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="8dp"
-                            android:text="@string/settings_backup_load"
                             android:enabled="false"
-                            />
+                            android:text="@string/settings_backup_load" />
 
                     </LinearLayout>
 
@@ -222,7 +221,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- SAVE (hiding on scrolling) -->
+    <!-- SAVE -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_save_settings"
         android:layout_width="wrap_content"
