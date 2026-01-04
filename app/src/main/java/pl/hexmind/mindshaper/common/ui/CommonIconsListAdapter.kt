@@ -24,7 +24,7 @@ class CommonIconsListAdapter(
         val vSelector: View = itemView.findViewById(R.id.v_selector)
 
         fun bind(itemList: CommonIconsListItem, position: Int) {
-            ivIcon.setImageDrawable(itemList.iconDrawable)
+            ivIcon.setImageResource(itemList.iconResourceId)
             tvLabel.text = itemList.labelText
             if(itemList.highlightItem){
                 tvLabel.setTypeface(null, Typeface.BOLD)
@@ -63,7 +63,7 @@ class CommonIconsListAdapter(
 
 data class CommonIconsListItem(
     // Icon
-    val iconDrawable: Drawable,
+    val iconResourceId: Int, // Android drawable resource id
     val iconEntityId : Int? = null, // Can be e.g. domain ID
 
     // Text under icon

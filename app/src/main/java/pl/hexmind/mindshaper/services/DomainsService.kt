@@ -1,6 +1,6 @@
 package pl.hexmind.mindshaper.services
 
-import android.graphics.drawable.Drawable
+import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.database.repositories.DomainRepository
 import pl.hexmind.mindshaper.services.dto.DomainDTO
@@ -32,12 +32,12 @@ class DomainsService @Inject constructor(
         val domainsWithIcons = domainRepository.getAllDomainsWithIcons()
         val map = domainsWithIcons.map { domainWithIcon ->
             // Get specified or default domain icon
-            val iconDrawable: Drawable? = when {
+            val iconResourceId: Int = when {
                 domainWithIcon.icon != null -> {
-                    domainIconsService.getDrawableByName(domainWithIcon.icon.drawableName)
+                    domainIconsService.getResourceIdByName(domainWithIcon.icon.drawableName)
                 }
                 else -> {
-                    domainIconsService.getDefaultIcon()
+                    R.drawable.ic_domain_none
                 }
             }
             val iconId : Int? = when {
@@ -51,7 +51,7 @@ class DomainsService @Inject constructor(
 
             val domainId = domainWithIcon.domain.id
             CommonIconsListItem(
-                iconDrawable = iconDrawable!!,
+                iconResourceId = iconResourceId,
                 iconEntityId = iconId,
                 labelText = domainWithIcon.domain.name,
                 labelEntityId = domainId

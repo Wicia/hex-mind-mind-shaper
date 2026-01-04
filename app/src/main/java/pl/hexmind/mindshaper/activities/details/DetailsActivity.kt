@@ -264,7 +264,7 @@ class DetailsActivity : CoreActivity() {
             val iconId = viewModel.getIconIdForDomain(thought.domainId!!)
             if (iconId != null) {
                 binding.btnDomainIcon.visibility = View.VISIBLE
-                binding.btnDomainIcon.icon = getIcon(iconId)
+                binding.btnDomainIcon.setIconResource(getIconResourceId(iconId))
                 binding.btnDomainIconPlaceholder.visibility = View.GONE
             }
             else {
@@ -312,7 +312,8 @@ class DetailsActivity : CoreActivity() {
                     binding.audioRecordingPlayback.loadAudioForPlayback(audioFile)
                 }
             }
-        } else {
+        }
+        else {
             binding.btnRecordingPlaceholder.visibility = View.VISIBLE
             binding.audioRecordingPlayback.visibility = View.GONE
         }
@@ -351,10 +352,9 @@ class DetailsActivity : CoreActivity() {
         }
     }
 
-    private fun getIcon(iconIdToFind: Int): Drawable {
-        val defaultIcon = AppCompatResources.getDrawable(this, R.drawable.ic_domain_none)!!
+    private fun getIconResourceId(iconIdToFind: Int): Int {
         val domains = viewModel.domainsWithIcons.value ?: emptyList()
-        return domains.find { it.iconEntityId == iconIdToFind }?.iconDrawable ?: defaultIcon
+        return domains.find { it.iconEntityId == iconIdToFind }?.iconResourceId ?: R.drawable.ic_domain_none
     }
 
     override fun onDestroy() {

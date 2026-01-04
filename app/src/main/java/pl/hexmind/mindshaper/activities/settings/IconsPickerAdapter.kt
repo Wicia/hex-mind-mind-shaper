@@ -16,7 +16,7 @@ import pl.hexmind.mindshaper.R
  */
 class IconPickerAdapter(
     private val iconsIds: List<Int>,
-    private val iconsMap: Map<Int, Drawable>,
+    private val iconsMap: Map<Int, Int>,
     private var selectedIconNumber: Int,
     private val onIconClick: (Int) -> Unit
 ) : RecyclerView.Adapter<IconPickerAdapter.IconViewHolder>() {
@@ -39,14 +39,14 @@ class IconPickerAdapter(
         private val ivIcon: ImageView = itemView.findViewById(R.id.iv_icon)
         private val vSelector: View = itemView.findViewById(R.id.v_selector)
 
-        fun bind(iconNumber: Int, drawable: Drawable?, isSelected: Boolean) {
-            // Set icon with fallback
-            if (drawable != null) {
-                ivIcon.setImageDrawable(drawable)
+        fun bind(iconNumber: Int, resourceId: Int?, isSelected: Boolean) {
+            if (resourceId != null && resourceId != 0) {
+                ivIcon.setImageResource(resourceId)
                 ivIcon.imageTintList = ColorStateList.valueOf(
                     ContextCompat.getColor(itemView.context, R.color._black)
                 )
-            } else {
+            }
+            else {
                 ivIcon.setImageResource(R.drawable.ic_domain_none)
             }
 
@@ -58,7 +58,8 @@ class IconPickerAdapter(
                 itemView.setBackgroundColor(
                     ContextCompat.getColor(itemView.context, R.color.button_primary_enabled_background)
                 )
-            } else {
+            }
+            else {
                 val outValue = TypedValue()
                 itemView.context.theme.resolveAttribute(
                     android.R.attr.selectableItemBackground,
@@ -73,7 +74,7 @@ class IconPickerAdapter(
                 val oldSelected = selectedIconNumber
                 selectedIconNumber = iconNumber
                 notifyItemChanged(iconsIds.indexOf(oldSelected))
-                notifyItemChanged(adapterPosition)
+                notifyItemChanged(bindingAdapterPosition)
                 onIconClick(iconNumber)
             }
         }

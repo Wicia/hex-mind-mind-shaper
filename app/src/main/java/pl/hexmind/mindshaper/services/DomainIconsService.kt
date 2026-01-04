@@ -1,11 +1,6 @@
 package pl.hexmind.mindshaper.services
 
 import android.content.Context
-import android.graphics.drawable.Drawable
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.collection.LruCache
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.database.repositories.IconRepository
@@ -19,15 +14,15 @@ class DomainIconsService @Inject constructor(
     private val repository: IconRepository
 ) {
 
-    // ! Simple cache for 40 icons + buffer
-    private val iconCache = LruCache<Int, Drawable>(50)
+    // ! Simple cache for icons
+    private val iconCache = HashMap<Int, Int>() // iconId -> resourceId
 
     suspend fun getAvailableIconsIds(): List<Int> {
         return try {
-            if (iconCache.size() == 0) {
+            if (iconCache.isEmpty()) {
                 preloadAllIcons()
             }
-            return iconCache.snapshot().keys.toList()
+            iconCache.keys.toList()
         }
         catch (e: Exception) {
             Timber.e(e, "Failed to get available icon IDs")
@@ -38,12 +33,13 @@ class DomainIconsService @Inject constructor(
     /**
      * Batch load multiple icons for better performance
      */
-    fun loadIconsBatch(iconNumbers: List<Int>): Map<Int, Drawable> {
-        val results = mutableMapOf<Int, Drawable>()
+    fun loadIconsBatch(iconNumbers: List<Int>): Map<Int, Int> {
+        val results = mutableMapOf<Int, Int>()
         iconNumbers.forEach { number ->
-            results[number] = iconCache[number]!!
+            iconCache[number]?.let { resourceId ->
+                results[number] = resourceId
+            }
         }
-
         return results
     }
 
@@ -56,8 +52,10 @@ class DomainIconsService @Inject constructor(
 
             for (iconEntity in allIcons) {
                 iconEntity.id?.let { id ->
-                    val drawable = getDrawableByName(iconEntity.drawableName)
-                    drawable?.let { iconCache.put(id, it) }
+                    val resourceId = getResourceIdByName(iconEntity.drawableName)
+                    if (resourceId != 0) {
+                        iconCache[id] = resourceId
+                    }
                 }
             }
         }
@@ -66,30 +64,25 @@ class DomainIconsService @Inject constructor(
         }
     }
 
-    suspend fun getDrawableIcon(id: Int): Drawable {
+    suspend fun getIconResourceId(id: Int): Int {
         // Check cache first
         iconCache[id]?.let { return it }
 
         // Load from database if not cached
         val iconEntity = repository.getIconById(id)
         iconEntity?.let { entity ->
-            val drawable = getDrawableByName(entity.drawableName)
-            drawable?.let {
-                iconCache.put(id, it)
-                return it
+            val resourceId = getResourceIdByName(entity.drawableName)
+            if (resourceId != 0) {
+                iconCache[id] = resourceId
+                return resourceId
             }
         }
 
         // Return default if failed
-        return getDefaultIcon()
+        return R.drawable.ic_domain_none
     }
 
-    fun getDefaultIcon(): Drawable {
-        return AppCompatResources.getDrawable(context, R.drawable.ic_domain_none)
-            ?: throw IllegalStateException("Cannot load default icon")
-    }
-
-    fun getDrawableByName(drawableName: String): Drawable? {
+    fun getResourceIdByName(drawableName: String): Int {
         return try {
             val resId = context.resources.getIdentifier(
                 drawableName,
@@ -99,14 +92,12 @@ class DomainIconsService @Inject constructor(
 
             if (resId == 0) {
                 Timber.w("Drawable resource not found: $drawableName")
-                return null
             }
-
-            return ResourcesCompat.getDrawable(context.resources, resId, context.theme)
-
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to load drawable: $drawableName")
-            null
+            resId
+        }
+        catch (e: Exception) {
+            Timber.e(e, "Failed to get resource ID: $drawableName")
+            0
         }
     }
 }

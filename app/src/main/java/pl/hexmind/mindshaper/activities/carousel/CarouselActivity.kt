@@ -141,7 +141,7 @@ class CarouselActivity : CoreActivity() {
         // Add "All domains" option at the beginning
         val allDomainsOption = CommonIconsListItem(
             iconEntityId = null,
-            iconDrawable = AppCompatResources.getDrawable(this, R.drawable.ic_domain_none)!!,
+            iconResourceId = R.drawable.ic_domain_none,
             labelText = getString(R.string.carousel_filter_all_domains),
             labelEntityId = null,
             highlightItem = true

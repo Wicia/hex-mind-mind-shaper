@@ -221,7 +221,8 @@ class SettingsActivity : CoreActivity() {
                     ivDomainName.text = domainDTO.name
 
                     val ivDomainIcon = buttonView.findViewById<ImageView>(R.id.iv_domain_icon)
-                    ivDomainIcon.setImageDrawable(domainIconsService.getDrawableIcon(domainDTO.iconId))
+                    val resourceId = domainIconsService.getIconResourceId(domainDTO.iconId)
+                    ivDomainIcon.setImageResource(resourceId)
 
                     buttonView.setOnClickListener {
                         onDomainButtonClick(domainIndex, domainDTO)
@@ -437,8 +438,8 @@ class SettingsActivity : CoreActivity() {
                 val buttonView = glDomains.getChildAt(buttonIndex)
 
                 val ivDomainIcon = buttonView.findViewById<ImageView>(R.id.iv_domain_icon)
-                val iconDrawable = domainIconsService.getDrawableIcon(updatedDomainDTO.iconId)
-                ivDomainIcon.setImageDrawable(iconDrawable)
+                val resourceId = domainIconsService.getIconResourceId(updatedDomainDTO.iconId)
+                ivDomainIcon.setImageResource(resourceId)
 
                 val tvDomainName = buttonView.findViewById<TextView>(R.id.tv_domain_name)
                 tvDomainName.text = updatedDomainDTO.name
