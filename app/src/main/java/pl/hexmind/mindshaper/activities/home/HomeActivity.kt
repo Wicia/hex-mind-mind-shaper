@@ -3,8 +3,6 @@ package pl.hexmind.mindshaper.activities.home
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.GestureDetector
-import android.view.MotionEvent
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -14,11 +12,8 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType
-import pl.hexmind.mindshaper.activities.carousel.CarouselActivity
-import pl.hexmind.mindshaper.activities.settings.SettingsActivity
 import pl.hexmind.mindshaper.common.formatting.setColoredText
 import pl.hexmind.mindshaper.services.GreetingsService
-import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -26,7 +21,7 @@ import kotlin.math.sin
  * Main activity handling FAB menu and swipe gestures for  access
  */
 @AndroidEntryPoint
-class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
+class HomeActivity : CoreActivity() {
 
     private lateinit var fabNewThought: FloatingActionButton
     private lateinit var fabNewThoughtRichText: FloatingActionButton
@@ -36,8 +31,6 @@ class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
     //private lateinit var fabPhotoType: FloatingActionButton
 
     private lateinit var tvHeaderGreetings : TextView
-
-    private lateinit var gestureDetector: GestureDetector
     private var isMenuOpen = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +39,6 @@ class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
 
         initViews()
         setupClickListeners()
-        setupGestureDetector()
     }
 
     private fun initViews() {
@@ -114,64 +106,6 @@ class HomeActivity : CoreActivity(), GestureDetector.OnGestureListener {
 //            intent.putExtra(CaptureActivity.P_INIT_THOUGHT_TYPE, ThoughtMainContentType.PHOTO as Parcelable)
 //            startActivity(intent)
 //        }
-    }
-
-    // Initialize gesture detector for swipe down recognition
-    private fun setupGestureDetector() {
-        gestureDetector = GestureDetector(this, this)
-    }
-
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return gestureDetector.onTouchEvent(event!!) || super.onTouchEvent(event)
-    }
-
-    override fun onDown(e: MotionEvent): Boolean {
-        return true
-    }
-
-    override fun onShowPress(e: MotionEvent) {}
-
-    override fun onSingleTapUp(e: MotionEvent): Boolean {
-        return false
-    }
-
-    override fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
-        return false
-    }
-
-    override fun onLongPress(e: MotionEvent) {}
-
-    /**
-     * Detect swipe gestures
-     */
-    override fun onFling(
-        e1: MotionEvent?,
-        e2: MotionEvent,
-        velocityX: Float,
-        velocityY: Float
-    ): Boolean {
-        if (e1 == null) return false
-
-        val diffY = e2.y - e1.y
-        val diffX = e2.x - e1.x
-
-        // Vertical swipes have priority
-        if (abs(diffY) > abs(diffX) && abs(velocityY) > 100) {
-
-            if (diffY > 100) {
-                // Swipe down -> open Settings
-                val intent = Intent(this, SettingsActivity::class.java)
-                startActivity(intent)
-                return true
-            } else if (diffY < -100) {
-                // Swipe up -> close menu if open (example action)
-                val intent = Intent(this, CarouselActivity::class.java)
-                startActivity(intent)
-                return true
-            }
-        }
-
-        return false
     }
 
     private fun toggleMenu() {
