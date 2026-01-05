@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
@@ -352,6 +353,7 @@ class DetailsActivity : CoreActivity() {
         }
     }
 
+    @DrawableRes
     private fun getIconResourceId(iconIdToFind: Int): Int {
         val domains = viewModel.domainsWithIcons.value ?: emptyList()
         return domains.find { it.iconEntityId == iconIdToFind }?.iconResourceId ?: R.drawable.ic_domain_none

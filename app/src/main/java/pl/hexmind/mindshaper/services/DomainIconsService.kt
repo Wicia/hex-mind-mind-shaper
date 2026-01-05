@@ -1,6 +1,7 @@
 package pl.hexmind.mindshaper.services
 
 import android.content.Context
+import androidx.annotation.DrawableRes
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.database.repositories.IconRepository
@@ -52,7 +53,7 @@ class DomainIconsService @Inject constructor(
 
             for (iconEntity in allIcons) {
                 iconEntity.id?.let { id ->
-                    val resourceId = getResourceIdByName(iconEntity.drawableName)
+                    val resourceId = getDrawableResourceIdByName(iconEntity.drawableName)
                     if (resourceId != 0) {
                         iconCache[id] = resourceId
                     }
@@ -71,7 +72,7 @@ class DomainIconsService @Inject constructor(
         // Load from database if not cached
         val iconEntity = repository.getIconById(id)
         iconEntity?.let { entity ->
-            val resourceId = getResourceIdByName(entity.drawableName)
+            val resourceId = getDrawableResourceIdByName(entity.drawableName)
             if (resourceId != 0) {
                 iconCache[id] = resourceId
                 return resourceId
@@ -82,7 +83,8 @@ class DomainIconsService @Inject constructor(
         return R.drawable.ic_domain_none
     }
 
-    fun getResourceIdByName(drawableName: String): Int {
+    @DrawableRes
+    fun getDrawableResourceIdByName(drawableName: String): Int {
         return try {
             val resId = context.resources.getIdentifier(
                 drawableName,

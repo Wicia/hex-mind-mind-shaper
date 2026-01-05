@@ -1,12 +1,12 @@
 package pl.hexmind.mindshaper.activities.settings
 
 import android.content.res.ColorStateList
-import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.mindshaper.R
@@ -39,7 +39,7 @@ class IconPickerAdapter(
         private val ivIcon: ImageView = itemView.findViewById(R.id.iv_icon)
         private val vSelector: View = itemView.findViewById(R.id.v_selector)
 
-        fun bind(iconNumber: Int, resourceId: Int?, isSelected: Boolean) {
+        fun bind(iconNumber: Int, @DrawableRes resourceId: Int?, isSelected: Boolean) {
             if (resourceId != null && resourceId != 0) {
                 ivIcon.setImageResource(resourceId)
                 ivIcon.imageTintList = ColorStateList.valueOf(

@@ -34,7 +34,7 @@ class DomainsService @Inject constructor(
             // Get specified or default domain icon
             val iconResourceId: Int = when {
                 domainWithIcon.icon != null -> {
-                    domainIconsService.getResourceIdByName(domainWithIcon.icon.drawableName)
+                    domainIconsService.getDrawableResourceIdByName(domainWithIcon.icon.drawableName)
                 }
                 else -> {
                     R.drawable.ic_domain_none
