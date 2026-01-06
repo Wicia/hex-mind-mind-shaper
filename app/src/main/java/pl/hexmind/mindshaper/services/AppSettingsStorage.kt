@@ -99,4 +99,18 @@ class AppSettingsStorage @Inject constructor(
     fun isVoiceRecordingEnabled(): Boolean {
         return sharedPreferences.getBoolean(PARAM_VOICE_RECORDING_ENABLED, false)
     }
+
+    // ========================================
+    // === ONBOARDING METHODS ===
+    // ========================================
+
+    fun wasOnboardingTooltipShown(stepKey: String): Boolean {
+        return sharedPreferences.getBoolean(stepKey, false)
+    }
+
+    fun markOnboardingTooltipShown(stepKey: String) {
+        sharedPreferences.edit {
+            putBoolean(stepKey, true)
+        }
+    }
 }

@@ -32,7 +32,7 @@
         android:gravity="end">
 
         <Button
-            android:id="@+id/btn_cancel"
+            android:id="@+id/btn_dismiss"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/common_btn_cancel"

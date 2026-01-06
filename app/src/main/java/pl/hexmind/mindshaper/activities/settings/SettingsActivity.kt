@@ -22,6 +22,7 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.common.ThoughtValueSystem
+import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.database.initialization.DataSnapshotManager
 import pl.hexmind.mindshaper.databinding.SettingsActivityBinding
@@ -77,6 +78,12 @@ class SettingsActivity : CoreActivity() {
 
         setupUI()
         loadSavedSettings()
+
+        showTooltip(
+            titleResId = R.string.onb_dialog_header,
+            contentResId = R.string.settings_possibilities_tooltip_content,
+            stepToComplete = OnboardingProgressStep.SETTINGS_TOOLTIP_SHOWN
+        )
     }
 
     override fun onResume() {

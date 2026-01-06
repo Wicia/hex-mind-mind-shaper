@@ -20,6 +20,8 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.carousel.CarouselActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
+import pl.hexmind.mindshaper.common.onboarding.OnboardingManager
+import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.PermissionService
 import javax.inject.Inject
@@ -35,6 +37,9 @@ open class CoreActivity() : AppCompatActivity() {
     @Inject
     lateinit var permissionsService: PermissionService
 
+    @Inject
+    lateinit var onboardingManager : OnboardingManager
+
     private var navigationController: NavigationBarController? = null
     private var navigationBarView: View? = null
 
@@ -49,6 +54,10 @@ open class CoreActivity() : AppCompatActivity() {
         )
     }
 
+// -----------------------------------------
+//      CORE
+// -----------------------------------------
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -62,6 +71,25 @@ open class CoreActivity() : AppCompatActivity() {
         super.onResume()
         highlightCurrentScreen()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        navigationBarView?.let { navBar ->
+            (navBar.parent as? ViewGroup)?.removeView(navBar)
+        }
+        navigationBarView = null
+        navigationController?.cleanup()
+        navigationController = null
+    }
+
+    fun setupHeader(@DrawableRes iconRes: Int, @StringRes titleRes: Int) {
+        findViewById<ImageView>(R.id.iv_header_icon)?.setImageResource(iconRes)
+        findViewById<TextView>(R.id.tv_header_title)?.setText(titleRes)
+    }
+
+// -----------------------------------------
+//      NAVIGATION
+// -----------------------------------------
 
     /**
      * Adds navigation bar as an overlay at the bottom of the screen
@@ -95,7 +123,6 @@ open class CoreActivity() : AppCompatActivity() {
     private fun initializeNavigationController() {
         navigationBarView?.let { navBar ->
             navigationController = NavigationBarController(navBar, appSettingsStorage)
-
             navigationController?.setOnNavigationListener { index, label ->
                 when (index) {
                     0 -> navigateToHome()
@@ -116,13 +143,6 @@ open class CoreActivity() : AppCompatActivity() {
         if (index != null && index >= 0) {
             navigationController?.setSelectedButton(index)
         }
-    }
-
-    /**
-     * Hide/show navigation bar programmatically
-     */
-    protected fun setNavigationBarVisible(visible: Boolean) {
-        navigationBarView?.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     // Navigation methods
@@ -153,6 +173,24 @@ open class CoreActivity() : AppCompatActivity() {
         }
     }
 
+// -----------------------------------------
+//      DIALOGS & TOASTS
+// -----------------------------------------
+
+    fun showTooltip(@StringRes titleResId : Int,
+                    @StringRes contentResId : Int,
+                    @DrawableRes iconResId: Int? = null,
+                    stepToComplete : OnboardingProgressStep){
+
+        onboardingManager.showsSimpleTooltip(
+            this,
+            getString(titleResId),
+            getString(contentResId),
+            iconResId,
+            stepToComplete,
+        )
+    }
+
     fun showShortToast(stringResourceId : Int, param : String? = ""){
         Toast.makeText(this, getString(stringResourceId, param), Toast.LENGTH_SHORT).show()
     }
@@ -162,20 +200,9 @@ open class CoreActivity() : AppCompatActivity() {
         finish()
     }
 
-    fun setupHeader(@DrawableRes iconRes: Int, @StringRes titleRes: Int) {
-        findViewById<ImageView>(R.id.iv_header_icon)?.setImageResource(iconRes)
-        findViewById<TextView>(R.id.tv_header_title)?.setText(titleRes)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        navigationBarView?.let { navBar ->
-            (navBar.parent as? ViewGroup)?.removeView(navBar)
-        }
-        navigationBarView = null
-        navigationController?.cleanup()
-        navigationController = null
-    }
+// -----------------------------------------
+//      EXTRAS & EFFECTS
+// -----------------------------------------
 
     /**
      * Disables activity transition animations

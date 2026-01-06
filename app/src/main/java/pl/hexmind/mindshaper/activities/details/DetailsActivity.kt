@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
+import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.ui.CommonIconsListDialog
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.common.ui.CommonTextEditDialog
@@ -51,6 +52,12 @@ class DetailsActivity : CoreActivity() {
 
         viewModel.loadThought(thoughtId)
         viewModel.loadDomains()
+
+        showTooltip(
+            titleResId = R.string.onb_dialog_header,
+            contentResId = R.string.details_possibilities_tooltip_content,
+            stepToComplete = OnboardingProgressStep.DETAILS_TOOLTIP_SHOWN
+        )
     }
 
     private fun setupObservers() {

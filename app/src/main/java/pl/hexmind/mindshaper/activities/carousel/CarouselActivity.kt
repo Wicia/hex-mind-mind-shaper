@@ -17,6 +17,7 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.common.SortConfig
+import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.common.ui.CommonIconsListDialog
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
@@ -57,6 +58,12 @@ class CarouselActivity : CoreActivity() {
         setupReactiveDataObserver()
 
         viewModel.loadDomains()
+
+        showTooltip(
+            R.string.onb_dialog_header,
+            contentResId = R.string.carousel_possibilities_tooltip_content,
+            stepToComplete = OnboardingProgressStep.CAROUSEL_TOOLTIP_SHOWN
+        )
     }
 
     private fun initializeViews() {

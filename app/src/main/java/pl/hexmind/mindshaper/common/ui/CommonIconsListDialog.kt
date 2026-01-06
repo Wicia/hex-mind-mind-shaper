@@ -52,7 +52,7 @@ class CommonIconsListDialog private constructor(
     }
 
     private fun Dialog.setupButtons() {
-        findViewById<Button>(R.id.btn_cancel).setOnClickListener {
+        findViewById<Button>(R.id.btn_dismiss).setOnClickListener {
             dismiss()
         }
     }

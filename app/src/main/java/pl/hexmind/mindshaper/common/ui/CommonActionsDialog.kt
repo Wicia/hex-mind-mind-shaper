@@ -2,32 +2,37 @@ package pl.hexmind.mindshaper.common.ui
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.DrawableRes
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.hexmind.mindshaper.R
 
 /**
- * Reusable dialog with two action buttons (caution + standard) and cancel button
- *
- * Example usage:
- * ```
- * CommonActionsDialog.Builder(context)
- *     .setQuestion("Co chcesz zrobić z nagraniem?")
- *     .setCautionAction("Wywalić") { deleteRecording() }
- *     .setStandardAction("Nadpisać") { overwriteRecording() }
- *     .show()
- * ```
+ * Reusable dialog with two action buttons (caution + standard) and cancel/dismiss button
  */
 class CommonActionsDialog private constructor(
+    // core
     private val context: Context,
-    private val question: String,
-    private val cautionText: String?,
-    private val cautionAction: (() -> Unit)?,
-    private val standardText: String?,
-    private val standardAction: (() -> Unit)?,
-    private val cancelText: String,
-    private val onCancel: (() -> Unit)?
+
+    // header and content
+    private val title: String,
+    private val description: String?,
+    private val iconResId: Int?,
+
+    // actions = buttons
+    private val btnStandardText: String?,
+    private val btnStandardAction: (() -> Unit)?,
+
+    private val btnCautionText: String?,
+    private val btnCautionAction: (() -> Unit)?,
+
+    private val btnDismissText: String,
+    private val btnDismissAction: (() -> Unit)?
 ) {
 
     fun show() {
@@ -37,55 +42,89 @@ class CommonActionsDialog private constructor(
             .setView(dialogView)
             .create()
 
-        // Set question text
-        dialogView.findViewById<TextView>(R.id.tv_question).text = question
+        dialogView.findViewById<TextView>(R.id.tv_question).text = title
 
-        // Setup caution button
-        val btnCaution = dialogView.findViewById<MaterialButton>(R.id.btn_action_caution)
-        if (cautionText != null && cautionAction != null) {
-            btnCaution.text = cautionText
-            btnCaution.setOnClickListener {
-                cautionAction.invoke()
-                dialog.dismiss()
-            }
+        setupButtons(dialogView, dialog)
+
+        // Setup additional (not mandatory) dialog elements
+        if(description != null){
+            dialogView.findViewById<TextView>(R.id.tv_description).visibility = View.VISIBLE
+            dialogView.findViewById<TextView>(R.id.tv_description).text = description
         }
-        else {
-            btnCaution.visibility = android.view.View.GONE
+        else{
+            dialogView.findViewById<TextView>(R.id.tv_description).visibility = View.GONE
         }
 
-        // Setup standard button
-        val btnStandard = dialogView.findViewById<MaterialButton>(R.id.btn_action_standard)
-        if (standardText != null && standardAction != null) {
-            btnStandard.text = standardText
-            btnStandard.setOnClickListener {
-                standardAction.invoke()
-                dialog.dismiss()
-            }
+        if(iconResId != null){
+            dialogView.findViewById<ImageView>(R.id.iv_icon).visibility = View.VISIBLE
+            dialogView.findViewById<ImageView>(R.id.iv_icon).setImageDrawable(ResourcesCompat.getDrawable(context.resources, iconResId, context.theme))
         }
-        else {
-            btnStandard.visibility = android.view.View.GONE
+        else{
+            dialogView.findViewById<ImageView>(R.id.iv_icon).visibility = View.GONE
         }
-
-        // Setup cancel button
-        dialogView.findViewById<MaterialButton>(R.id.btn_cancel).apply {
-            text = cancelText
-            setOnClickListener {
-                onCancel?.invoke()
-                dialog.dismiss()
-            }
-        }
-
-        dialog.show()
 
         // Make dialog wider
         dialog.window?.setLayout(
             (context.resources.displayMetrics.widthPixels * 0.9).toInt(),
             android.view.ViewGroup.LayoutParams.WRAP_CONTENT
         )
+        dialog.show()
+    }
+
+    private fun setupButtons(dialogView : View, dialog : AlertDialog) {
+        // Setup caution button
+        val btnCaution = dialogView.findViewById<MaterialButton>(R.id.btn_action_caution)
+        if (btnCautionText != null && btnCautionAction != null) {
+            btnCaution.text = btnCautionText
+            btnCaution.setOnClickListener {
+                btnCautionAction.invoke()
+                dialog.dismiss()
+            }
+        }
+        else {
+            btnCaution.visibility = View.GONE
+        }
+
+        // Setup standard button
+        val btnStandard = dialogView.findViewById<MaterialButton>(R.id.btn_action_standard)
+        if (btnStandardText != null && btnStandardAction != null) {
+            btnStandard.text = btnStandardText
+            btnStandard.setOnClickListener {
+                btnStandardAction.invoke()
+                dialog.dismiss()
+            }
+        }
+        else {
+            btnStandard.visibility = View.GONE
+        }
+
+        // Setup cancel button
+        val btnDismiss = dialogView.findViewById<MaterialButton>(R.id.btn_dismiss)
+        btnDismiss.apply {
+            text = btnDismissText
+            setOnClickListener {
+                btnDismissAction?.invoke()
+                dialog.dismiss()
+            }
+        }
+
+        // Scenario with only 1 button / confirmation
+        if(btnDismissAction == null && btnCautionAction == null){
+            btnCaution.visibility = View.INVISIBLE
+            btnDismiss.visibility = View.GONE
+        }
+        else{
+            btnCaution.visibility = View.VISIBLE
+            btnDismiss.visibility = View.VISIBLE
+        }
     }
 
     class Builder(private val context: Context) {
-        private var question: String = ""
+        private var title: String = ""
+        private var description: String? = null
+
+        @DrawableRes
+        private var iconResId: Int? = null
         private var cautionText: String? = null
         private var cautionAction: (() -> Unit)? = null
         private var standardText: String? = null
@@ -93,11 +132,16 @@ class CommonActionsDialog private constructor(
         private var cancelText: String = "Anuluj"
         private var onCancel: (() -> Unit)? = null
 
-        /**
-         * Set the main question/title text
-         */
-        fun setQuestion(text: String) = apply {
-            this.question = text
+        fun setTitle(title: String) = apply {
+            this.title = title
+        }
+
+        fun setIconResId(@DrawableRes iconResId: Int?) = apply {
+            this.iconResId = iconResId
+        }
+
+        fun setDescription(description : String) = apply {
+            this.description = description
         }
 
         /**
@@ -138,39 +182,23 @@ class CommonActionsDialog private constructor(
          * Build and show the dialog
          */
         fun show() {
-            require(question.isNotEmpty()) { "Question text is required" }
+            require(title.isNotEmpty()) { "Question text is required" }
             require(cautionAction != null || standardAction != null) {
                 "At least one action (caution or standard) must be set"
             }
 
             CommonActionsDialog(
                 context = context,
-                question = question,
-                cautionText = cautionText,
-                cautionAction = cautionAction,
-                standardText = standardText,
-                standardAction = standardAction,
-                cancelText = cancelText,
-                onCancel = onCancel
+                title = title,
+                description = description,
+                iconResId = iconResId,
+                btnCautionText = cautionText,
+                btnCautionAction = cautionAction,
+                btnStandardText = standardText,
+                btnStandardAction = standardAction,
+                btnDismissText = cancelText,
+                btnDismissAction = onCancel
             ).show()
-        }
-
-        /**
-         * Build the dialog without showing it (useful for testing)
-         */
-        fun build(): CommonActionsDialog {
-            require(question.isNotEmpty()) { "Question text is required" }
-
-            return CommonActionsDialog(
-                context = context,
-                question = question,
-                cautionText = cautionText,
-                cautionAction = cautionAction,
-                standardText = standardText,
-                standardAction = standardAction,
-                cancelText = cancelText,
-                onCancel = onCancel
-            )
         }
     }
 }

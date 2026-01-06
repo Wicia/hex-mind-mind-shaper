@@ -65,6 +65,39 @@
     <!-- VALIDATION -->
     <string name="common_object_type_thought">Myśl</string>
 
+    <!-- ONBOARDING -->
+    <string name="onb_dialog_header">Wskazówka</string>
+    <string name="home_create_tooltip_content">
+        Poszukaj guziora z ikoną powyżej.\n
+        Dzięki niemu schwytasz myśl w formie tekstu lub głosówki
+    </string>
+    <string name="settings_possibilities_tooltip_content">
+        W tym kreatywnym miejscu skroisz aplikację pod siebie:\n
+        ↪ zdefiniujesz Domeny - swoje kategorie lub obszary myśli\n
+        ↪ określisz czy raz na jakiś czas zapisać w pamięci apki dane swoich myśli czy też nie…\n
+        Zapraszam Cię do radosnej zmiany ustawień i testów :)
+    </string>
+    <string name="carousel_possibilities_tooltip_content">
+        W tym ruchliwym miejscu przeglądniesz swoje myśli.\n
+        ↪ Pole - szukajka i filtrowanie działają na zasadzie wpisywania tekstu z symbolami np. #szukanyprojekt\n
+        ↪ Przytrzymując pomarańczowy kafelek z myślą możesz go usunąć\n
+        ↪ No i tapując palcem na niego wejdziesz w szczegóły…
+    </string>
+    <string name="details_possibilities_tooltip_content">
+        To miejsce to warsztat w którym rzeźbisz swoją myśl\n
+        ↪ Tapując na pomańczowe etykiety/pola zdefiniujesz lub zmienisz powiązany z myślą projekt, wątek lub osoby\n
+        ↪ Podbijesz lub obniżysz wartość myśli\n
+        ↪ No i możesz dodać dodatkowe formy zapisu myśli
+    </string>
+    <string name="creation_possibilities_tooltip_content">
+        Czas na schwytanie myśli w wybranej przez Ciebie postaci (początkowej)!\n\n
+        W polu z serduchem możesz szybko skojarzyć myśl z osobą, projektem lub wątkiem/tematem.\n
+        # Przykład:\n
+        1) wpisz w tym polu tekst:\n\n
+        Moja pierwsza myśl #projekt @ja\n\n
+        2) po zapisie przejdź do karuzeli (galerii) z myślami i zobacz co jest ustawione w szczegółach stworzonej myśli
+    </string>
+
     <!-- ====================================== -->
     <!--    ACTIVITY: HOME -->
     <!-- ====================================== -->
@@ -80,6 +113,7 @@
         <item>Yoł %s</item>
         <item>No jak tam %s?</item>
         <item>Siema %s!</item>
+        <item>Dobrze Cię widzieć %s ;)</item>
     </array>
 
     <!-- ====================================== -->
@@ -105,7 +139,7 @@
     <string name="capture_soul_mates_error_chars_exceeded">Opis osób nie może przekroczyć %d znaków...</string>
 
     <!-- Type: Rich Text (Note) -->
-    <string name="capture_rich_text_hint">\?\n\n\nJeżeli wpiszesz:\n\tx to jest myśl od kropki\nto po zapisie zobaczysz:\n\t• to jest myśl od kropki :)</string>
+    <string name="capture_rich_text_hint">\...\n\n\nJeżeli wpiszesz:\n\tx to jest myśl od kropki\nto po zapisie zobaczysz:\n\t• to jest myśl od kropki :)</string>
     <string name="capture_rich_text_error_note_empty">Ekhm... To wyżej nie może być puste</string>
 
     <!-- Type: Voice Recording -->
@@ -173,21 +207,21 @@
     <string name="settings_header">Ustawienia</string>
 
     <!-- Your Name Setting -->
-    <string name="settings_your_name_header">✦ Twoje Prawdziwe Imię?</string>
+    <string name="settings_your_name_header">◗ Twoje Prawdziwe Imię?</string>
     <string name="settings_your_name_default">Bezimienn(y/a)</string>
 
-    <string name="settings_thoughts_value_header">✦ Skala wartości myśli</string>
+    <string name="settings_thoughts_value_header">◗ Skala wartości myśli</string>
     <string name="settings_thoughts_value_action_info">Zmiana systemu może wymagać przeskalowania wartości</string>
     <string name="settings_thoughts_value_system_10">od 1 do 10</string>
     <string name="settings_thoughts_value_system_6">od 1 do 6</string>
 
-    <string name="settings_thoughts_permissions_section">✦ Formy zapisu myśli</string>
+    <string name="settings_thoughts_permissions_section">◗ Formy zapisu myśli</string>
     <string name="settings_thoughts_permissions_voice_recording">Zapis myśli w formie głosówek</string>
     <string name="settings_thoughts_permissions_blockade">Uprawnienie zablokowane</string>
     <string name="settings_thoughts_permissions_blockade_tooltip">Aby włączyć nagrywanie, przejdź do ustawień Androida i nadaj ręcznie uprawnienie do mikrofonu.</string>
 
     <!-- Domains -->
-    <string name="settings_domains_header">✦ Domeny</string>
+    <string name="settings_domains_header">◗ Domeny</string>
     <string name="settings_domains_hint">Tutaj możesz zdefiniować nazwy oraz ikonki domen</string>
 
     <string name="settings_domains_loading_error">Błąd podczas ładowania ikon domen</string>
@@ -213,7 +247,7 @@
     </string-array>
 
     <!-- Backup Section -->
-    <string name="settings_backup_header">✦ Backup</string>
+    <string name="settings_backup_header">◗ Kopia zapasowa twoich myśli</string>
     <string name="settings_backup_hint">Wybierz plik kopii zapasowej z folderu Downloads/mind_shaper</string>
     <string name="settings_backup_select">Wybierz</string>
     <string name="settings_backup_load">Wczytaj</string>
@@ -222,14 +256,15 @@
     <string name="settings_backup_loaded_success">Backup wczytany pomyślnie</string>
     <string name="settings_backup_error_loading">Błąd podczas wczytywania backupu</string>
 
+    <!-- Thought Age -->
     <string name="common_thought_age_pattern">%1$s %2$s dni temu</string>
     <string name="common_thought_age_0">"%s Dzisiaj"</string>
     <string name="common_thought_age_1">%s Wczoraj</string>
-    <!-- TODO: Since 11.12.2025 levels names are skipped for minimalism -> delete list below? -->
-    <string name="common_thought_age_level_1">Kiełek</string>
-    <string name="common_thought_age_level_2">Pąk</string>
-    <string name="common_thought_age_level_3">Sadzonka</string>
-    <string name="common_thought_age_level_4">Młode drzewko</string>
-    <string name="common_thought_age_level_5">Stare Drzewo</string>
+
+    <string name="common_thought_age_level_1_icon">🌱</string>
+    <string name="common_thought_age_level_2_icon">🌿</string>
+    <string name="common_thought_age_level_3_icon">🍀</string>
+    <string name="common_thought_age_level_4_icon">🌳</string>
+    <string name="common_thought_age_level_5_icon">🏝️</string>
 
 </resources>

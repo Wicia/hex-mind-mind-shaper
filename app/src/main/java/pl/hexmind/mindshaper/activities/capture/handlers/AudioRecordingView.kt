@@ -275,7 +275,7 @@ class AudioRecordingView @JvmOverloads constructor(
 
     private fun showRecordingOptionsDialog() {
         CommonActionsDialog.Builder(context)
-            .setQuestion("Co chcesz zrobić z nagraniem?")
+            .setTitle("Co chcesz zrobić z nagraniem?")
             .setCautionAction("Wywalić") {
                 deleteCurrentRecording()
                 showStatus(

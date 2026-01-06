@@ -127,7 +127,7 @@ class CarouselAdapter(
 
         fun updateCreatedAtUI(thought: ThoughtDTO){
             val ageLevel = ThoughtGrowthStage.newThoughtGrowthStage(thought.createdAt)
-            val levelIcon = ageLevel.level.icon
+            val levelIcon = itemView.context.getString(ageLevel.level.iconResId)
 
             when (ageLevel.ageInDays) {
                 0L -> { // Today

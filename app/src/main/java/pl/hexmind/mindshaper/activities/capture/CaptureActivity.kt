@@ -17,6 +17,7 @@ import pl.hexmind.mindshaper.activities.capture.handlers.RecordingCaptureHandler
 import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureHandler
 import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureView
 import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType
+import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.common.validation.ValidatedProperty
 import pl.hexmind.mindshaper.common.validation.ValidationResult
@@ -63,6 +64,12 @@ class CaptureActivity : CoreActivity(), AudioRecordingView.RecordingCallback {
         saveExtrasFromIntent()
         setupListeners()
         setupMode()
+
+        showTooltip(
+            titleResId = R.string.onb_dialog_header,
+            contentResId = R.string.creation_possibilities_tooltip_content,
+            stepToComplete = OnboardingProgressStep.CREATION_TOOLTIP_SHOWN
+        )
     }
 
     private fun initViews() {

@@ -13,6 +13,7 @@ import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType
 import pl.hexmind.mindshaper.common.formatting.setColoredText
+import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.services.GreetingsService
 import kotlin.math.cos
 import kotlin.math.sin
@@ -39,6 +40,13 @@ class HomeActivity : CoreActivity() {
 
         initViews()
         setupClickListeners()
+
+        showTooltip(
+            R.string.onb_dialog_header,
+            R.string.home_create_tooltip_content,
+            R.drawable.ic_catching_thought,
+            OnboardingProgressStep.HOME_TOOLTIP_SHOWN
+        )
     }
 
     private fun initViews() {
@@ -79,7 +87,7 @@ class HomeActivity : CoreActivity() {
         fabNewThoughtRichText.setOnClickListener {
             closeMenu()
             val intent = Intent(this, CaptureActivity::class.java)
-            intent.putExtra(CaptureActivity.Params.P_INIT_THOUGHT_TYPE, ThoughtMainContentType.RICH_TEXT as Parcelable)
+            intent.putExtra(CaptureActivity.P_INIT_THOUGHT_TYPE, ThoughtMainContentType.RICH_TEXT as Parcelable)
             startActivity(intent)
         }
 
@@ -87,7 +95,7 @@ class HomeActivity : CoreActivity() {
         fabNewThoughtRecording.setOnClickListener {
             closeMenu()
             val intent = Intent(this, CaptureActivity::class.java)
-            intent.putExtra(CaptureActivity.Params.P_INIT_THOUGHT_TYPE, ThoughtMainContentType.RECORDING as Parcelable)
+            intent.putExtra(CaptureActivity.P_INIT_THOUGHT_TYPE, ThoughtMainContentType.RECORDING as Parcelable)
             startActivity(intent)
         }
 
