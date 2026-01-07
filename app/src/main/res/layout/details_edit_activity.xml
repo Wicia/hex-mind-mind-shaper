@@ -226,7 +226,7 @@
                     android:layout_gravity="start"
                     app:icon="@drawable/ic_thought_type_rich_text"
                     app:iconGravity="textEnd"
-                    android:text="+"
+                    android:text="@string/common_operation_create_symbol"
                     app:iconSize="40dp"
                     />
 
@@ -256,7 +256,7 @@
                     android:layout_marginBottom="8dp"
                     app:icon="@drawable/ic_thought_type_recording"
                     app:iconGravity="textEnd"
-                    android:text="+"
+                    android:text="@string/common_operation_create_symbol"
                     app:iconSize="40dp"
                     />
 

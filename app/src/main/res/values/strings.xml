@@ -42,6 +42,8 @@
     <string name="files_error_unknown_file">Nieznany plik</string>
     <string name="files_state_no_file_selected">Nie wybrano pliku</string>
 
+    <string name="common_operation_create_symbol">+&#160;</string>
+
     <!-- FOLDERS -->
     <string name="in_folder">w folderze</string>
 
