@@ -128,7 +128,7 @@
 
     <style name="HexContentButton.NotUsed" parent="Widget.MaterialComponents.Button">
         <!-- Min constraints -->
-        <item name="android:minHeight">0dp</item>
+        <item name="android:minHeight">60dp</item>
         <item name="android:minWidth">0dp</item>
 
         <!-- Insets -->
@@ -139,6 +139,8 @@
 
         <!-- Padding -->
         <item name="android:padding">12dp</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
 
         <!-- Background -->
         <item name="backgroundTint">@color/button_content_not_used_background</item>
