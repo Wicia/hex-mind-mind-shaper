@@ -376,7 +376,7 @@
         <item name="android:textColor">@color/text_secondary</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:padding">12dp</item>
-        <item name="android:layout_marginBottom">24dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
         <item name="android:lineSpacingExtra">2dp</item>
     </style>
 

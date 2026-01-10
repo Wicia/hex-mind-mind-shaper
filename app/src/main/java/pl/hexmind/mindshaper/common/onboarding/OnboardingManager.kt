@@ -21,69 +21,38 @@ class OnboardingManager @Inject constructor(
 
         // HOME
         OnboardingProgressStep.HOME_TOOLTIP to listOf(
-            TooltipItemConfig(
-                textRes = R.string.home_catching_tooltips_1,
-                iconRes = R.drawable.ic_catching_thought
+            TooltipItemConfig(textRes = R.string.home_catching_button_tooltip, R.string.home_catching_button_title, iconRes = R.drawable.ic_catching_thought
             )
         ),
 
         // SETTINGS
         OnboardingProgressStep.SETTINGS_TOOLTIP to listOf(
-            TooltipItemConfig(
-                textRes = R.string.settings_possibilities_tooltips_1,
-            ),
-            TooltipItemConfig(
-                textRes = R.string.settings_possibilities_tooltips_2
-            ),
-            TooltipItemConfig(
-                textRes = R.string.settings_possibilities_tooltips_3
-            )
+            TooltipItemConfig(textRes = R.string.settings_entry_tooltip, titleRes =  R.string.settings_entry_title),
+            TooltipItemConfig(textRes = R.string.settings_domains_tooltip, titleRes =  R.string.settings_domains_title),
+            TooltipItemConfig(textRes = R.string.settings_backup_tooltip, titleRes =  R.string.settings_backup_title)
         ),
 
         // CAROUSEL
         OnboardingProgressStep.CAROUSEL_TOOLTIP to listOf(
-            TooltipItemConfig(
-                textRes = R.string.carousel_possibilities_tooltips_1,
-            ),
-            TooltipItemConfig(
-                textRes = R.string.carousel_possibilities_tooltips_2
-            ),
-            TooltipItemConfig(
-                textRes = R.string.carousel_possibilities_tooltips_3
-            ),
-            TooltipItemConfig(
-                textRes = R.string.carousel_possibilities_tooltips_4
-            )
+            TooltipItemConfig(textRes = R.string.carousel_entry_tooltip, titleRes = R.string.carousel_entry_title),
+            TooltipItemConfig(textRes = R.string.carousel_searching_tooltip, titleRes = R.string.carousel_searching_title),
+            TooltipItemConfig(textRes = R.string.carousel_deleting_tooltip, titleRes = R.string.carousel_deleting_title),
+            TooltipItemConfig(textRes = R.string.carousel_details_tooltip, titleRes = R.string.carousel_details_title)
         ),
 
         // DETAILS
         OnboardingProgressStep.DETAILS_TOOLTIP to listOf(
-            TooltipItemConfig(
-                textRes = R.string.details_possibilities_tooltips_1,
-            ),
-            TooltipItemConfig(
-                textRes = R.string.details_possibilities_tooltips_2
-            ),
-            TooltipItemConfig(
-                textRes = R.string.details_possibilities_tooltips_3,
-            ),
-            TooltipItemConfig(
-                textRes = R.string.details_possibilities_tooltips_4
-            )
+            TooltipItemConfig(textRes = R.string.details_entry_tooltip, titleRes = R.string.details_entry_title),
+            TooltipItemConfig(textRes = R.string.details_fields_tooltip, titleRes = R.string.details_fields_title),
+            TooltipItemConfig(textRes = R.string.details_value_tooltip, titleRes = R.string.details_value_title),
+            TooltipItemConfig(textRes = R.string.details_extra_forms_tooltip, titleRes = R.string.details_extra_forms_title)
         ),
 
         // CAPTURING THOUGHTS
         OnboardingProgressStep.CAPTURE_TOOLTIP to listOf(
-            TooltipItemConfig(
-                textRes = R.string.catching_possibilities_tooltips_1,
-            ),
-            TooltipItemConfig(
-                textRes = R.string.catching_possibilities_tooltips_2,
-                iconRes = R.drawable.ic_hex_tags
-            ),
-            TooltipItemConfig(
-                textRes = R.string.catching_possibilities_tooltips_3
-            )
+            TooltipItemConfig(textRes = R.string.capturing_entry_tooltip, R.string.capturing_entry_title),
+            TooltipItemConfig(textRes = R.string.capturing_metadata_tooltip, R.string.capturing_metadata_title, iconRes = R.drawable.ic_hex_tags),
+            TooltipItemConfig(textRes = R.string.catching_metadata_example_tooltip, R.string.catching_metadata_example_title)
         )
     )
 
@@ -95,20 +64,18 @@ class OnboardingManager @Inject constructor(
         val tooltipConfig = tooltipsConfig[step]
 
         val builder = DialogTooltips.Builder(context)
-            .setTitle("Jak korzystać z aplikacji?")
             .setOnDismissAction {
                 markTooltipShown(step)
             }
 
-        tooltipConfig?.forEach { entry ->
-            val icon = entry.iconRes?.let { ResourcesCompat.getDrawable(
-                context.resources,
-                entry.iconRes,
-                context.theme
+        tooltipConfig?.forEach { tooltipConfig ->
+            val title = context.getString(tooltipConfig.titleRes?: R.string.onb_dialog_header)
+            val icon = tooltipConfig.iconRes?.let {
+                ResourcesCompat.getDrawable(context.resources, tooltipConfig.iconRes, context.theme
             )}
-            val text = context.getString(entry.textRes)
+            val text = context.getString(tooltipConfig.textRes)
 
-            builder.addTooltip(text, icon)
+            builder.addTooltip( text, title, icon)
         }
 
         builder.show()
@@ -123,4 +90,8 @@ class OnboardingManager @Inject constructor(
     }
 }
 
-data class TooltipItemConfig(@StringRes val textRes: Int, @DrawableRes val iconRes: Int? = null )
+data class TooltipItemConfig(
+    @StringRes val textRes: Int,
+    @StringRes val titleRes : Int? = null,
+    @DrawableRes val iconRes: Int? = null
+)

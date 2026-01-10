@@ -19,8 +19,9 @@
 
     <ImageView
         android:id="@+id/iv_icon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc"
         app:srcCompat="@drawable/ic_catching_thought" />
@@ -56,12 +57,11 @@
             android:id="@+id/btn_action_next_tooltip"
             style="@style/SecondaryActionButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:layout_marginEnd="6dp"
+            android:layout_weight="1"
             android:text="Mów dalej..."
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_dismiss"

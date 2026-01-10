@@ -17,6 +17,7 @@ import pl.hexmind.mindshaper.R
  * Data class representing a single tooltip item in the dialog's carousel
  */
 data class TooltipItem(
+    val title : String? = null,
     val description: String,
     val icon: Drawable? = null
 )
@@ -27,7 +28,6 @@ data class TooltipItem(
  */
 class DialogTooltips private constructor(
     private val context: Context,
-    private val title: String,
     private val tooltips: List<TooltipItem>,
     private val onDismiss: (() -> Unit)?
 ) {
@@ -44,7 +44,7 @@ class DialogTooltips private constructor(
             .setCancelable(true)
             .create()
 
-        setupTitle()
+        updateTitle()
         setupDots()
         setupButtons()
         updateContent()
@@ -57,8 +57,9 @@ class DialogTooltips private constructor(
         dialog.show()
     }
 
-    private fun setupTitle() {
-        dialogView.findViewById<TextView>(R.id.tv_info_header).text = title
+    private fun updateTitle() {
+        val currentTooltip = tooltips[currentIndex]
+        dialogView.findViewById<TextView>(R.id.tv_info_header).text = currentTooltip.title
     }
 
     private fun setupDots() {
@@ -127,9 +128,15 @@ class DialogTooltips private constructor(
 
     private fun setupButtons() {
         // Next button
-        val btnNext = dialogView.findViewById<MaterialButton>(R.id.btn_action_next_tooltip)
-        btnNext.setOnClickListener {
-            goToNext()
+        if(tooltips.size == 1){ // Single tooltip scenario = no more to present
+            val btnNext = dialogView.findViewById<MaterialButton>(R.id.btn_action_next_tooltip)
+            btnNext.visibility = View.INVISIBLE
+        }
+        else{
+            val btnNext = dialogView.findViewById<MaterialButton>(R.id.btn_action_next_tooltip)
+            btnNext.setOnClickListener {
+                goToNext()
+            }
         }
 
         // Dismiss button
@@ -145,19 +152,15 @@ class DialogTooltips private constructor(
         currentIndex = (currentIndex + 1) % tooltips.size
         updateContent()
         updateDots()
+        updateTitle()
     }
 
     class Builder(private val context: Context) {
-        private var title: String = ""
         private var tooltips: MutableList<TooltipItem> = mutableListOf()
         private var onDismiss: (() -> Unit)? = null
 
-        fun setTitle(title: String) = apply {
-            this.title = title
-        }
-
-        fun addTooltip(description: String, icon: Drawable? = null) = apply {
-            tooltips.add(TooltipItem(description, icon))
+        fun addTooltip(description: String, title : String? = null, icon: Drawable? = null) = apply {
+            tooltips.add(TooltipItem(title = title, description = description, icon = icon))
         }
 
         fun setOnDismissAction(action: () -> Unit) = apply {
@@ -168,12 +171,10 @@ class DialogTooltips private constructor(
          * Build and show the dialog
          */
         fun show() {
-            require(title.isNotEmpty()) { "Title is required" }
             require(tooltips.isNotEmpty()) { "At least one tooltip is required" }
 
             DialogTooltips(
                 context = context,
-                title = title,
                 tooltips = tooltips,
                 onDismiss = onDismiss
             ).show()

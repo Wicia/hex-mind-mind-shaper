@@ -67,65 +67,71 @@
     <!-- VALIDATION -->
     <string name="common_object_type_thought">Myśl</string>
 
-    <!-- ONBOARDING -->
+    <!-- ONBOARDING & TOOLTIPS-->
     <string name="onb_dialog_header">Wskazówka</string>
 
-    <string name="home_catching_tooltips_1">
-        Poszukaj guziora z ikoną powyżej.\n
-        Dzięki niemu schwytasz myśl w formie tekstu lub głosówki
-    </string>
+    <!-- HOME -->
+    <string name="home_catching_button_title">Nowa myśl</string>
+    <string name="home_catching_button_tooltip">Guzior z taką ikoną rozpoczyna chwytanie myśli w formie tekstu lub głosówki</string>
 
-    <string name="settings_possibilities_tooltips_1">
-        W tym kreatywnym miejscu skroisz aplikację pod siebie!
-        Zapraszam Cię do radosnej zmiany ustawień i testów :)
-    </string>
-    <string name="settings_possibilities_tooltips_2">
-        zdefiniujesz Domeny - swoje kategorie lub obszary myśli
-    </string>
-    <string name="settings_possibilities_tooltips_3">
-        określisz czy raz na jakiś czas zapisać w pamięci apki dane swoich myśli czy też nie…
-    </string>
+    <!-- SETTINGS -->
+    <string name="settings_entry_title">Ustawienia</string>
+    <string name="settings_entry_tooltip">W tym kreatywnym miejscu skroisz aplikację pod siebie! Zapraszam Cię do radosnej zmiany ustawień i testów :)</string>
 
-    <string name="carousel_possibilities_tooltips_1">
-        W tym ruchliwym miejscu przeglądniesz swoje myśli.
-    </string>
-    <string name="carousel_possibilities_tooltips_2">
-        Pole - szukajka i filtrowanie działają na zasadzie wpisywania tekstu z symbolami\nnp. #gotowanie - wyszuka projekty o nazwie "gotowanie"
-    </string>
-    <string name="carousel_possibilities_tooltips_3">
-        Przytrzymując pomarańczowy kafelek z myślą możesz go usunąć
-    </string>
-    <string name="carousel_possibilities_tooltips_4">
-        No i tapując palcem na niego wejdziesz w szczegóły… (kto by pomyślał?)
-    </string>
+    <string name="settings_domains_title">Domeny</string>
+    <string name="settings_domains_tooltip">Zdefiniujesz tutaj \"Domeny\" - swoje kategorie lub szufladki dla myśli</string>
 
-    <string name="details_possibilities_tooltips_1">
-        To miejsce to warsztat w którym rzeźbisz swoją myśl
-    </string>
-    <string name="details_possibilities_tooltips_2">
-        Tapując na pomarańczowe etykiety/pola zdefiniujesz
-        lub zmienisz zapisaną w nich treść
-    </string>
-    <string name="details_possibilities_tooltips_3">
-        Dodatkowo podbijesz wartość myśli tapując na nią
-    </string>
-    <string name="details_possibilities_tooltips_4">
-        No i guziorami u dołu możesz dodać dodatkowe formy zapisu myśli
-    </string>
+    <string name="settings_backup_title">Kopia zapasowa</string>
+    <string name="settings_backup_tooltip">Określisz czy raz na jakiś czas zapisać w pamięci apki dane swoich myśli czy też nie…</string>
 
-    <string name="catching_possibilities_tooltips_1">
-        Czas na schwytanie swojej pierwszej myśli! :)
-    </string>
-    <string name="catching_possibilities_tooltips_2">
-        W polu z serduchem możesz szybko skojarzyć myśl z:
-        osobą, projektem lub wątkiem/tematem
-        (takie tagi lub metadane)
-    </string>
-    <string name="catching_possibilities_tooltips_3">
+    <!-- CAROUSEL -->
+    <string name="carousel_entry_title">Twoje myśli</string>
+    <string name="carousel_entry_tooltip">W tym ruchliwym miejscu przeglądniesz swoje myśli.</string>
+
+    <string name="carousel_searching_title">Wyszukiwanie myśli</string>
+    <string name="carousel_searching_tooltip"><![CDATA[
+        Wpisując do pola-szukajki znak specjalny + tekst możesz wyszukiwać myśli, np.:\n
+        ✓ #gotowanie - wyszuka myśli z projektem \"gotowanie\"\n
+        ✓ @Michał - wyszuka myśli z osobą \"Michał\"\n
+        ✓ wspomnienie - wyszuka myśli z etykietą \"wspomnienie\"\n
+    ]]></string>
+
+    <string name="carousel_deleting_title">Usuwanie myśli</string>
+    <string name="carousel_deleting_tooltip">Przytrzymując pomarańczowy kafelek z myślą możesz go usunąć</string>
+
+    <string name="carousel_details_title">Szczegóły myśli</string>
+    <string name="carousel_details_tooltip">No i tapując palcem na niego wejdziesz w szczegóły… (kto by pomyślał?)</string>
+
+    <!-- DETAILS -->
+    <string name="details_entry_title">Szczegóły myśli</string>
+    <string name="details_entry_tooltip">To miejsce to warsztat w którym rzeźbisz i rozwijasz swoją myśl</string>
+
+    <string name="details_fields_title">Edycja myśli</string>
+    <string name="details_fields_tooltip"> Tapując na pomarańczowe etykiety/pola zdefiniujesz lub zmienisz zapisaną w nich treść</string>
+
+    <string name="details_value_title">Zmiana wartości myśli</string>
+    <string name="details_value_tooltip">Dodatkowo podbijesz wartość myśli tapując na nią. Możesz także podbijać i obniżać wartość innym sposobem który przypomina coś... \"naturalnego\"</string>
+
+    <string name="details_extra_forms_title">Dodatkowe formy złapanej myśli</string>
+    <string name="details_extra_forms_tooltip">No i guziorami u dołu z symbolem [+] możesz dodać dodatkowe formy zapisu myśli</string>
+
+    <string name="capturing_entry_title">Łapanie myśli</string>
+    <string name="capturing_entry_tooltip">Czas na schwytanie swojej pierwszej myśli! :)</string>
+
+    <string name="capturing_metadata_title">Metadane/tagi do myśli</string>
+    <string name="capturing_metadata_tooltip"><![CDATA[
+        W polu z serduchem możesz szybko skojarzyć myśl z:\n
+        ✓ osobą (znak @)\n
+        ✓ projektem (znak #)\n
+        ✓ wątkiem/tematem (brak znaku)\n
+    ]]></string>
+
+    <string name="catching_metadata_example_title">Zróbmy szybki przykład!</string>
+    <string name="catching_metadata_example_tooltip"><![CDATA[
         Wpisz w polu z serduchem tekst:\n\n
-        sukces #aplikacja @ja\n\n
-        następnie zapisz i zobacz szczegóy nowej myśli
-    </string>
+            sukces  #aplikacja  @ja\n\n
+        następnie Zapisz i zobacz szczegóły nowo złapanej myśli
+    ]]></string>
 
     <!-- ====================================== -->
     <!--    ACTIVITY: HOME -->
