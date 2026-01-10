@@ -3,11 +3,9 @@ package pl.hexmind.mindshaper.common.ui
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.hexmind.mindshaper.R
@@ -15,14 +13,13 @@ import pl.hexmind.mindshaper.R
 /**
  * Reusable dialog with two action buttons (caution + standard) and cancel/dismiss button
  */
-class CommonActionsDialog private constructor(
+class DialogMultipleActions private constructor(
     // core
     private val context: Context,
 
     // header and content
     private val title: String,
     private val description: String?,
-    private val iconResId: Int?,
 
     // actions = buttons
     private val btnStandardText: String?,
@@ -36,13 +33,13 @@ class CommonActionsDialog private constructor(
 ) {
 
     fun show() {
-        val dialogView = LayoutInflater.from(context).inflate(R.layout.common_dialog_actions, null)
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_multiple_actions, null)
 
         val dialog = MaterialAlertDialogBuilder(context)
             .setView(dialogView)
             .create()
 
-        dialogView.findViewById<TextView>(R.id.tv_question).text = title
+        dialogView.findViewById<TextView>(R.id.tv_info_header).text = title
 
         setupButtons(dialogView, dialog)
 
@@ -53,14 +50,6 @@ class CommonActionsDialog private constructor(
         }
         else{
             dialogView.findViewById<TextView>(R.id.tv_description).visibility = View.GONE
-        }
-
-        if(iconResId != null){
-            dialogView.findViewById<ImageView>(R.id.iv_icon).visibility = View.VISIBLE
-            dialogView.findViewById<ImageView>(R.id.iv_icon).setImageDrawable(ResourcesCompat.getDrawable(context.resources, iconResId, context.theme))
-        }
-        else{
-            dialogView.findViewById<ImageView>(R.id.iv_icon).visibility = View.GONE
         }
 
         // Make dialog wider
@@ -187,11 +176,10 @@ class CommonActionsDialog private constructor(
                 "At least one action (caution or standard) must be set"
             }
 
-            CommonActionsDialog(
+            DialogMultipleActions(
                 context = context,
                 title = title,
                 description = description,
-                iconResId = iconResId,
                 btnCautionText = cautionText,
                 btnCautionAction = cautionAction,
                 btnStandardText = standardText,

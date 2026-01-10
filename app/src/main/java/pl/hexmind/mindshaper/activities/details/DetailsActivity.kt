@@ -53,10 +53,8 @@ class DetailsActivity : CoreActivity() {
         viewModel.loadThought(thoughtId)
         viewModel.loadDomains()
 
-        showTooltip(
-            titleResId = R.string.onb_dialog_header,
-            contentResId = R.string.details_possibilities_tooltip_content,
-            stepToComplete = OnboardingProgressStep.DETAILS_TOOLTIP_SHOWN
+        onboardingManager.showTooltipForStep(
+            OnboardingProgressStep.DETAILS_TOOLTIP, this
         )
     }
 

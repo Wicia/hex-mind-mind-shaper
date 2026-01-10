@@ -69,35 +69,62 @@
 
     <!-- ONBOARDING -->
     <string name="onb_dialog_header">Wskazówka</string>
-    <string name="home_create_tooltip_content">
+
+    <string name="home_catching_tooltips_1">
         Poszukaj guziora z ikoną powyżej.\n
         Dzięki niemu schwytasz myśl w formie tekstu lub głosówki
     </string>
-    <string name="settings_possibilities_tooltip_content">
-        W tym kreatywnym miejscu skroisz aplikację pod siebie:\n
-        ↪ zdefiniujesz Domeny - swoje kategorie lub obszary myśli\n
-        ↪ określisz czy raz na jakiś czas zapisać w pamięci apki dane swoich myśli czy też nie…\n
+
+    <string name="settings_possibilities_tooltips_1">
+        W tym kreatywnym miejscu skroisz aplikację pod siebie!
         Zapraszam Cię do radosnej zmiany ustawień i testów :)
     </string>
-    <string name="carousel_possibilities_tooltip_content">
-        W tym ruchliwym miejscu przeglądniesz swoje myśli.\n
-        ↪ Pole - szukajka i filtrowanie działają na zasadzie wpisywania tekstu z symbolami np. #szukanyprojekt\n
-        ↪ Przytrzymując pomarańczowy kafelek z myślą możesz go usunąć\n
-        ↪ No i tapując palcem na niego wejdziesz w szczegóły…
+    <string name="settings_possibilities_tooltips_2">
+        zdefiniujesz Domeny - swoje kategorie lub obszary myśli
     </string>
-    <string name="details_possibilities_tooltip_content">
-        To miejsce to warsztat w którym rzeźbisz swoją myśl\n
-        ↪ Tapując na pomańczowe etykiety/pola zdefiniujesz lub zmienisz powiązany z myślą projekt, wątek lub osoby\n
-        ↪ Podbijesz lub obniżysz wartość myśli\n
-        ↪ No i możesz dodać dodatkowe formy zapisu myśli
+    <string name="settings_possibilities_tooltips_3">
+        określisz czy raz na jakiś czas zapisać w pamięci apki dane swoich myśli czy też nie…
     </string>
-    <string name="creation_possibilities_tooltip_content">
-        Czas na schwytanie myśli w wybranej przez Ciebie postaci (początkowej)!\n\n
-        W polu z serduchem możesz szybko skojarzyć myśl z osobą, projektem lub wątkiem/tematem.\n
-        # Przykład:\n
-        1) wpisz w tym polu tekst:\n\n
-        Moja pierwsza myśl #projekt @ja\n\n
-        2) po zapisie przejdź do karuzeli (galerii) z myślami i zobacz co jest ustawione w szczegółach stworzonej myśli
+
+    <string name="carousel_possibilities_tooltips_1">
+        W tym ruchliwym miejscu przeglądniesz swoje myśli.
+    </string>
+    <string name="carousel_possibilities_tooltips_2">
+        Pole - szukajka i filtrowanie działają na zasadzie wpisywania tekstu z symbolami\nnp. #gotowanie - wyszuka projekty o nazwie "gotowanie"
+    </string>
+    <string name="carousel_possibilities_tooltips_3">
+        Przytrzymując pomarańczowy kafelek z myślą możesz go usunąć
+    </string>
+    <string name="carousel_possibilities_tooltips_4">
+        No i tapując palcem na niego wejdziesz w szczegóły… (kto by pomyślał?)
+    </string>
+
+    <string name="details_possibilities_tooltips_1">
+        To miejsce to warsztat w którym rzeźbisz swoją myśl
+    </string>
+    <string name="details_possibilities_tooltips_2">
+        Tapując na pomarańczowe etykiety/pola zdefiniujesz
+        lub zmienisz zapisaną w nich treść
+    </string>
+    <string name="details_possibilities_tooltips_3">
+        Dodatkowo podbijesz wartość myśli tapując na nią
+    </string>
+    <string name="details_possibilities_tooltips_4">
+        No i guziorami u dołu możesz dodać dodatkowe formy zapisu myśli
+    </string>
+
+    <string name="catching_possibilities_tooltips_1">
+        Czas na schwytanie swojej pierwszej myśli! :)
+    </string>
+    <string name="catching_possibilities_tooltips_2">
+        W polu z serduchem możesz szybko skojarzyć myśl z:
+        osobą, projektem lub wątkiem/tematem
+        (takie tagi lub metadane)
+    </string>
+    <string name="catching_possibilities_tooltips_3">
+        Wpisz w polu z serduchem tekst:\n\n
+        sukces #aplikacja @ja\n\n
+        następnie zapisz i zobacz szczegóy nowej myśli
     </string>
 
     <!-- ====================================== -->

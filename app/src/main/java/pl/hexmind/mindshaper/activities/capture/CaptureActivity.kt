@@ -65,10 +65,8 @@ class CaptureActivity : CoreActivity(), AudioRecordingView.RecordingCallback {
         setupListeners()
         setupMode()
 
-        showTooltip(
-            titleResId = R.string.onb_dialog_header,
-            contentResId = R.string.creation_possibilities_tooltip_content,
-            stepToComplete = OnboardingProgressStep.CREATION_TOOLTIP_SHOWN
+        onboardingManager.showTooltipForStep(
+            OnboardingProgressStep.CAPTURE_TOOLTIP, this
         )
     }
 

@@ -59,10 +59,8 @@ class CarouselActivity : CoreActivity() {
 
         viewModel.loadDomains()
 
-        showTooltip(
-            R.string.onb_dialog_header,
-            contentResId = R.string.carousel_possibilities_tooltip_content,
-            stepToComplete = OnboardingProgressStep.CAROUSEL_TOOLTIP_SHOWN
+        onboardingManager.showTooltipForStep(
+            OnboardingProgressStep.CAROUSEL_TOOLTIP, this
         )
     }
 

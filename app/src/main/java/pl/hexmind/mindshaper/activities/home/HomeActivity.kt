@@ -41,11 +41,8 @@ class HomeActivity : CoreActivity() {
         initViews()
         setupClickListeners()
 
-        showTooltip(
-            R.string.onb_dialog_header,
-            R.string.home_create_tooltip_content,
-            R.drawable.ic_catching_thought,
-            OnboardingProgressStep.HOME_TOOLTIP_SHOWN
+        onboardingManager.showTooltipForStep(
+            OnboardingProgressStep.HOME_TOOLTIP, this
         )
     }
 

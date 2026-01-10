@@ -79,10 +79,8 @@ class SettingsActivity : CoreActivity() {
         setupUI()
         loadSavedSettings()
 
-        showTooltip(
-            titleResId = R.string.onb_dialog_header,
-            contentResId = R.string.settings_possibilities_tooltip_content,
-            stepToComplete = OnboardingProgressStep.SETTINGS_TOOLTIP_SHOWN
+        onboardingManager.showTooltipForStep(
+            OnboardingProgressStep.SETTINGS_TOOLTIP, this
         )
     }
 

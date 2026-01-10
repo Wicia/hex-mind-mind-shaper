@@ -1,6 +1,5 @@
 package pl.hexmind.mindshaper.activities
 
-import pl.hexmind.mindshaper.activities.capture.models.NavigationBarController
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -17,11 +16,11 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.activities.capture.models.NavigationBarController
 import pl.hexmind.mindshaper.activities.carousel.CarouselActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingManager
-import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.PermissionService
 import javax.inject.Inject
@@ -176,20 +175,6 @@ open class CoreActivity() : AppCompatActivity() {
 // -----------------------------------------
 //      DIALOGS & TOASTS
 // -----------------------------------------
-
-    fun showTooltip(@StringRes titleResId : Int,
-                    @StringRes contentResId : Int,
-                    @DrawableRes iconResId: Int? = null,
-                    stepToComplete : OnboardingProgressStep){
-
-        onboardingManager.showsSimpleTooltip(
-            this,
-            getString(titleResId),
-            getString(contentResId),
-            iconResId,
-            stepToComplete,
-        )
-    }
 
     fun showShortToast(stringResourceId : Int, param : String? = ""){
         Toast.makeText(this, getString(stringResourceId, param), Toast.LENGTH_SHORT).show()

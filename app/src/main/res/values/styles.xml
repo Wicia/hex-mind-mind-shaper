@@ -360,8 +360,8 @@
         <item name="android:padding">12dp</item>
     </style>
 
-    <!-- Dialog Actions -->
-    <style name="CommonDialogActions_Header">
+    <!-- Dialogs -->
+    <style name="Dialog_Header">
         <item name="android:fontFamily">@font/montserrat_regular</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
@@ -370,7 +370,7 @@
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
-    <style name="CommonDialogActions_Text">
+    <style name="Dialog_Text">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/montserrat_regular</item>
         <item name="android:textColor">@color/text_secondary</item>

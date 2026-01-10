@@ -9,26 +9,17 @@
     android:clipToPadding="false">
 
     <TextView
-        android:id="@+id/tv_question"
-        style="@style/CommonDialogActions_Header"
+        android:id="@+id/tv_info_header"
+        style="@style/Dialog_Header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Tu idzie pierońsko ważny nagłówek"
         />
 
-    <ImageView
-        android:id="@+id/iv_icon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_catching_thought"
-        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-        android:layout_marginBottom="8dp"
-        />
-
     <TextView
         android:id="@+id/tv_description"
-        style="@style/CommonDialogActions_Text"
+        style="@style/Dialog_Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="A tu jakiś mądry tekst..."
