@@ -49,7 +49,8 @@ open class CoreActivity() : AppCompatActivity() {
         private val activityToIndex = mapOf(
             HomeActivity::class.java.simpleName to 0,
             CarouselActivity::class.java.simpleName to 1,
-            SettingsActivity::class.java.simpleName to 2
+            SettingsActivity::class.java.simpleName to 2,
+            "DetailsActivity" to 1 // Highlight Carousel icon when in Details
         )
     }
 
