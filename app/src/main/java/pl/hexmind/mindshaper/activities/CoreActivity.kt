@@ -53,12 +53,13 @@ open class CoreActivity() : AppCompatActivity() {
         )
     }
 
-// -----------------------------------------
+// -------------------------------------------------------------------------------------------------
 //      CORE
-// -----------------------------------------
+// -------------------------------------------------------------------------------------------------
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdgeDisplay()
     }
 
     override fun onContentChanged() {
@@ -86,17 +87,55 @@ open class CoreActivity() : AppCompatActivity() {
         findViewById<TextView>(R.id.tv_header_title)?.setText(titleRes)
     }
 
-// -----------------------------------------
+// -------------------------------------------------------------------------------------------------
 //      NAVIGATION
-// -----------------------------------------
+// -------------------------------------------------------------------------------------------------
+
+    /**
+     * Enables edge-to-edge display, allowing the app to draw in the system bars area.
+     *
+     * More: System bars remain on top (Z-axis) but the app can draw behind them.
+     * Use WindowInsets to add padding/margins and avoid content being obscured by system bars.
+     */
+    private fun enableEdgeToEdgeDisplay(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(false)
+        }
+        else {
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = (
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            )
+        }
+    }
 
     /**
      * Adds navigation bar as an overlay at the bottom of the screen
      */
     private fun addNavigationBarOverlay() {
-        val rootView = window.decorView.findViewById<ViewGroup>(android.R.id.content)
+        val contentView = window.decorView.findViewById<ViewGroup>(android.R.id.content)
+        val decorView = window.decorView as ViewGroup
 
-        if (rootView != null && navigationBarView == null) {
+        if (contentView != null && navigationBarView == null) {
+            // Apply window insets to main content (add padding for system bars)
+            // This ensures content is not hidden under system bars
+            ViewCompat.setOnApplyWindowInsetsListener(contentView) { view, insets ->
+                val systemBarsInsets = insets.getInsets(
+                    androidx.core.view.WindowInsetsCompat.Type.systemBars()
+                )
+
+                // Apply padding to activity's content to avoid being hidden by system bars
+                view.setPadding(
+                    systemBarsInsets.left,
+                    systemBarsInsets.top, // system status bar
+                    systemBarsInsets.right,
+                    systemBarsInsets.bottom // system navigation bar
+                )
+
+                // Don't consume insets - let navigation bar handle them too
+                insets
+            }
+
             navigationBarView = LayoutInflater.from(this)
                 .inflate(R.layout.common_navigation_bar, null, false)
 
@@ -110,7 +149,24 @@ open class CoreActivity() : AppCompatActivity() {
 
             ViewCompat.setElevation(navigationBarView!!, 8f)
 
-            rootView.addView(navigationBarView, params)
+            // Add navigation bar to decorView instead of contentView
+            // This way it's not affected by the content padding
+            decorView.addView(navigationBarView, params)
+
+            // Apply window insets to navigation bar
+            // This positions it directly above system navigation bar
+            ViewCompat.setOnApplyWindowInsetsListener(navigationBarView!!) { view, insets ->
+                val systemBarsInsets = insets.getInsets(
+                    androidx.core.view.WindowInsetsCompat.Type.systemBars()
+                )
+
+                val layoutParams = view.layoutParams as FrameLayout.LayoutParams
+                // No extra margin - position directly above system bar
+                layoutParams.bottomMargin = systemBarsInsets.bottom
+                view.layoutParams = layoutParams
+
+                insets
+            }
 
             initializeNavigationController()
         }
