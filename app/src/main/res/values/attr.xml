@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- To resolve problem with duplication (same attribute used in different widgets) -->
+    <attr name="compact" format="boolean" />
+
     <declare-styleable name="ValueBar">
         <attr name="radius" format="dimension" />
         <attr name="level" format="integer" />
@@ -11,11 +15,21 @@
         <attr name="dotTextColor" format="color" />
         <attr name="showLevelText" format="boolean" />
     </declare-styleable>
+
     <declare-styleable name="AudioRecordingView">
         <attr name="recordingMode" format="enum">
             <enum name="recordPlayback" value="0" />
             <enum name="playbackOnly" value="1" />
         </attr>
-        <attr name="compact" format="boolean"/>
+        <attr name="compact" />
     </declare-styleable>
+
+    <declare-styleable name="PhotoDisplayView">
+        <attr name="photoMode" format="enum">
+            <enum name="captureDisplay" value="0" />
+            <enum name="displayOnly" value="1" />
+        </attr>
+        <attr name="compact" />
+    </declare-styleable>
+
 </resources>

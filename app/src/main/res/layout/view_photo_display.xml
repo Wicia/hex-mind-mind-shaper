@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Photo Display Area -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp">
+
+        <!-- Photo thumbnail -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_photo"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+            android:visibility="gone"
+            app:shapeAppearanceOverlay="@style/RoundedCornerImageView" />
+
+        <!-- Info text -->
+        <TextView
+            android:id="@+id/tv_info"
+            style="@style/TextView_Info_Success"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="@string/photos_no_file"
+            android:gravity="center"
+            android:visibility="visible" />
+
+        <!-- Progress bar -->
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+    <!-- Action buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <!-- Camera button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_camera"
+            style="@style/SecondaryActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            app:icon="@drawable/ic_thought_type_photo"
+            app:iconGravity="textStart" />
+
+        <!-- Gallery button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_gallery"
+            style="@style/SecondaryActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            app:iconSize="32dp"
+            app:icon="@drawable/ic_photo_gallery"
+            app:iconGravity="textStart"/>
+
+        <!-- Delete button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_delete"
+            style="@style/SecondaryActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            app:icon="@drawable/ic_delete"
+            android:textColor="@color/validation_error"
+            android:visibility="gone"
+            app:iconGravity="textStart"/>
+
+    </LinearLayout>
+
+</LinearLayout>

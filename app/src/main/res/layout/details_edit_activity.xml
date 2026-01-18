@@ -225,7 +225,7 @@
                     app:icon="@drawable/ic_thought_type_rich_text"
                     app:iconGravity="textEnd"
                     android:text="@string/common_operation_create_symbol"
-                    app:iconSize="40dp"
+                    app:iconSize="36dp"
                     />
 
                 <!-- RICH TEXT : Note -->
@@ -253,7 +253,7 @@
                     app:icon="@drawable/ic_thought_type_recording"
                     app:iconGravity="textEnd"
                     android:text="@string/common_operation_create_symbol"
-                    app:iconSize="40dp"
+                    app:iconSize="36dp"
                     />
 
                 <!-- SOUND RECORDING : Media player for audio -->
@@ -268,41 +268,28 @@
                     android:visibility="gone" />
 
                 <!-- PHOTO : n/a -->
-<!--                <com.google.android.material.button.MaterialButton-->
-<!--                    android:id="@+id/btn_photo_placeholder"-->
-<!--                    style="@style/HexContentButton.NotUsed"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:minHeight="125dp"-->
-<!--                    android:textSize="16sp"-->
-<!--                    android:layout_marginStart="24dp"-->
-<!--                    android:layout_marginEnd="24dp"-->
-<!--                    android:layout_marginBottom="8dp"-->
-<!--                    app:icon="@drawable/ic_thought_type_photo"-->
-<!--                    app:iconGravity="textStart"-->
-<!--                    app:iconSize="40dp"-->
-<!--                    />-->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_photo_placeholder"
+                    style="@style/HexContentButton.NotUsed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/common_operation_create_symbol"
+                    app:icon="@drawable/ic_thought_type_photo"
+                    app:iconGravity="textEnd"
+                    app:iconSize="36dp" />
 
                 <!-- PHOTO : Content -->
-                <!-- TODO: Place here code for displayed photo -->
-
-                <!-- DRAWING : n/a -->
-<!--                <com.google.android.material.button.MaterialButton-->
-<!--                    android:id="@+id/btn_drawing_placeholder"-->
-<!--                    style="@style/HexContentButton.NotUsed"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:minHeight="125dp"-->
-<!--                    android:layout_marginStart="24dp"-->
-<!--                    android:layout_marginEnd="24dp"-->
-<!--                    android:layout_marginBottom="8dp"-->
-<!--                    app:icon="@drawable/ic_thought_type_drawing"-->
-<!--                    app:iconGravity="textStart"-->
-<!--                    app:iconSize="40dp"-->
-<!--                    />-->
-
-                <!-- DRAWING : Content -->
-                <!-- TODO: Place here code for displayed drawing -->
+                <pl.hexmind.mindshaper.common.ui.HexPhotoView
+                    android:id="@+id/photo_display_view"
+                    style="@style/PhotoDisplayView_UsedWithTint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"
+                    app:photoMode="captureDisplay"
+                    app:compact="false" />
 
             </LinearLayout>
 

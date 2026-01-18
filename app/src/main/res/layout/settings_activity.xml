@@ -84,6 +84,13 @@
                         android:layout_height="wrap_content"
                         android:text="@string/settings_thoughts_permissions_voice_recording" />
 
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_photo_feature"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_thoughts_permissions_photo"
+                        />
+
                     <TextView
                         style="@style/TextView_Header_Section"
                         android:layout_width="match_parent"

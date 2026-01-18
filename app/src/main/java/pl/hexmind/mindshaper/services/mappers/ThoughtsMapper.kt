@@ -19,10 +19,13 @@ interface ThoughtsMapper {
     }
 
     @Mapping(target = "tempAudioFilePath", ignore = true) // Only used during recording
+    @Mapping(target = "tempPhotoFilePath", ignore = true) // Only used during taking a photo
     fun entityToDTO(entity: ThoughtEntity): ThoughtDTO
 
     @Mapping(target = "audioData", ignore = true)
     @Mapping(target = "audioDurationMs", ignore = true)
+    @Mapping(target = "photoData", ignore = true)
+    @Mapping(target = "photoFileSize", ignore = true)
     fun dtoToEntity(dto: ThoughtDTO): ThoughtEntity
 
     fun entityListToDtoList(entities: List<ThoughtEntity>): List<ThoughtDTO>

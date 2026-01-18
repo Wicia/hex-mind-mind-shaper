@@ -258,6 +258,18 @@
         <item name="cornerRadius">12dp</item>
     </style>
 
+    <style name="PhotoDisplayView_UsedWithTint">
+        <item name="android:padding">12dp</item>
+        <item name="android:background">@drawable/shape_hex_content</item>
+        <item name="android:backgroundTint">@color/button_content_used_background</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="RoundedCornerImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
 <!-- ====================================== -->
 <!--    ACTION / OPERATIONAL BUTTONS        -->
 <!-- ====================================== -->
@@ -305,6 +317,7 @@
 
         <!-- Text alignment -->
         <item name="android:textAlignment">textStart</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <!--=== SECONDARY ===-->
@@ -321,6 +334,7 @@
 
         <!-- Text alignment -->
         <item name="android:textAlignment">center</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <!--=== AUXILIARY ===-->
@@ -337,6 +351,7 @@
 
         <!-- Text alignment -->
         <item name="android:textAlignment">center</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
 <!-- ====================================== -->

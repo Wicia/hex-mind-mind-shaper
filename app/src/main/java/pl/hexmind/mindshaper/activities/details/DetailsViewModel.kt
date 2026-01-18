@@ -1,12 +1,17 @@
 package pl.hexmind.mindshaper.activities.details
 
+import android.graphics.Bitmap
+import android.net.Uri
+import android.util.LruCache
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pl.hexmind.mindshaper.activities.capture.handlers.Recording
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.services.DomainsService
@@ -22,6 +27,8 @@ class DetailsViewModel @Inject constructor(
     private val domainsService: DomainsService,
     private val validator : ThoughtValidator
 ) : ViewModel() {
+
+    private val thumbnailCache = LruCache<Int, Bitmap>(50)
 
     private val _thoughtId = MutableLiveData<Int>()
 
@@ -172,7 +179,76 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
+    fun loadPhotoForDisplay(thoughtId: Int, onPhotoReady: (ByteArray) -> Unit) {
+        viewModelScope.launch {
+            val photoData = thoughtsService.getPhotoData(thoughtId)
+            if (photoData != null && photoData.isNotEmpty()) {
+                onPhotoReady(photoData)
+            }
+        }
+    }
+
     suspend fun getIconIdForDomain(domainId: Int): Int? {
         return domainsService.getIconIdForDomain(domainId)
+    }
+
+    fun deletePhoto() {
+        viewModelScope.launch {
+            thoughtDetails.value?.let { thought ->
+                val thoughtId = thought.id ?: return@let
+                thoughtsService.deleteThoughtPhoto(thoughtId)
+                thumbnailCache.remove(thoughtId)
+                loadThought(thoughtId)
+            }
+        }
+    }
+
+    // TODO: Use it also in Carousel
+    fun loadPhotoThumbnail(thoughtId: Int, onReady: (Bitmap) -> Unit) {
+        viewModelScope.launch {
+            // Check cache first
+            thumbnailCache.get(thoughtId)?.let {
+                onReady(it)
+                return@launch
+            }
+
+            // Load and generate thumbnail
+            val photoData = thoughtsService.getPhotoData(thoughtId)
+            if (photoData != null && photoData.isNotEmpty()) {
+                val thumbnail = withContext(Dispatchers.Default) {
+                    thoughtsService.createThumbnail(photoData)
+                }
+                thumbnail?.let {
+                    thumbnailCache.put(thoughtId, it)
+                    onReady(it)
+                }
+            }
+        }
+    }
+
+    fun createPhotoUri(): Uri {
+        return thoughtsService.createPhotoUri()
+    }
+
+    fun savePhotoFromUri(uri: Uri) {
+        viewModelScope.launch {
+            try {
+                val photoFile = thoughtsService.getFileFromUri(uri)
+                if (photoFile != null) {
+                    thoughtDetails.value?.let { thought ->
+                        val thoughtId = thought.id ?: return@let
+                        thoughtsService.updateThoughtPhoto(thoughtId.toLong(), photoFile)
+                        loadThought(thoughtId)
+                    }
+                }
+            } catch (e: Exception) {
+                // Error handled in Activity via HexPhotoView.showError
+            }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        thumbnailCache.evictAll()
     }
 }

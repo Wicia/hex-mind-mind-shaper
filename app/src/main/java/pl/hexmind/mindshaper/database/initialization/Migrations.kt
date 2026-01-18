@@ -40,5 +40,13 @@ class Migrations {
                 """)
             }
         }
+
+        val MIGRATION_3_TO_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // Add photo columns
+                db.execSQL("ALTER TABLE THOUGHTS ADD COLUMN photo_data BLOB DEFAULT NULL")
+                db.execSQL("ALTER TABLE THOUGHTS ADD COLUMN photo_file_size INTEGER DEFAULT NULL")
+            }
+        }
     }
 }

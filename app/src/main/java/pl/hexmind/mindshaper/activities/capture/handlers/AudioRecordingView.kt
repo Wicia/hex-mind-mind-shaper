@@ -104,7 +104,7 @@ class AudioRecordingView @JvmOverloads constructor(
     private var callback: RecordingCallback? = null
 
     init {
-        inflate(context, R.layout.common_view_recording_playback, this)
+        inflate(context, R.layout.view_recording_playback, this)
         orientation = VERTICAL
 
         // Initialize UI components
@@ -275,15 +275,15 @@ class AudioRecordingView @JvmOverloads constructor(
 
     private fun showRecordingOptionsDialog() {
         DialogMultipleActions.Builder(context)
-            .setTitle("Co chcesz zrobić z nagraniem?")
-            .setCautionAction("Wywalić") {
+            .setTitle("Co chcesz zrobić z nagraniem?") // TODO
+            .setCautionAction("Wywalić") { // TODO
                 deleteCurrentRecording()
                 showStatus(
                     context.getString(R.string.capture_voice_tooltip),
                     R.color.text_secondary
                 )
             }
-            .setStandardAction("Nadpisać") {
+            .setStandardAction("Nadpisać") { // TODO
                 deleteCurrentRecording()
                 startRecording()
             }

@@ -1,6 +1,5 @@
 package pl.hexmind.mindshaper.database
 
-import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -31,6 +30,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun iconDAO(): IconDAO
 
     companion object {
-        const val DB_VERSION = 3
+        const val DB_VERSION = 4
     }
 }

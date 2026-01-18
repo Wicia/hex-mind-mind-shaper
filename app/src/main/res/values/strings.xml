@@ -42,7 +42,14 @@
     <string name="files_error_unknown_file">Nieznany plik</string>
     <string name="files_state_no_file_selected">Nie wybrano pliku</string>
 
-    <string name="common_operation_create_symbol">+&#160;</string>
+    <string name="common_operation_create_symbol">&#160;+&#160;</string>
+    <string name="common_operation_smiling">&#160;\:)&#160;</string>
+    <string name="common_operation_upload">&#160;⬆&#160;</string>
+
+    <string name="photos_removing_header">Coś ważnego!</string>
+    <string name="photos_removing_file">Wywalić to zdjęcie?</string>
+    <string name="photos_no_file">Brakuje tutaj zdjęcia…</string>
+    <string name="photos_loading_error">Coś się wyburaczyło przy ładowaniu zdjęcia…</string>
 
     <!-- FOLDERS -->
     <string name="in_folder">w folderze</string>
@@ -54,7 +61,9 @@
     <string name="common_deletion_dialog_title">Uwaga!</string>
     <string name="common_deletion_dialog_message">Czy na pewno chcesz usunąć %s?</string>
     <string name="common_deletion_dialog_yes">Tak</string>
+    <string name="common_deletion_dialog_yes_2">Kasujemy</string>
     <string name="common_deletion_dialog_no">Nie</string>
+    <string name="common_deletion_dialog_no_2">Nie, zostaw...</string>
     <string name="common_deletion_dialog_confirmation">%s usunięto</string>
 
     <string name="common_list_dialog_title">Wybierz coś sobie...</string>
@@ -251,7 +260,8 @@
     <string name="settings_thoughts_value_system_6">od 1 do 6</string>
 
     <string name="settings_thoughts_permissions_section">◗ Formy zapisu myśli</string>
-    <string name="settings_thoughts_permissions_voice_recording">Zapis myśli w formie głosówek</string>
+    <string name="settings_thoughts_permissions_voice_recording">Włącz zapis w formie głosówek</string>
+    <string name="settings_thoughts_permissions_photo">Włącz zapis w formie zdjęć</string>
     <string name="settings_thoughts_permissions_blockade">Uprawnienie zablokowane</string>
     <string name="settings_thoughts_permissions_blockade_tooltip">Aby włączyć nagrywanie, przejdź do ustawień Androida i nadaj ręcznie uprawnienie do mikrofonu.</string>
 

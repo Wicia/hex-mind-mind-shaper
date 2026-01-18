@@ -55,8 +55,14 @@ data class ThoughtEntity(
     val audioData: ByteArray? = null,
 
     @ColumnInfo(name = "audio_duration_ms")
-    val audioDurationMs: Long? = null
+    val audioDurationMs: Long? = null,
 
+    // Image / photo
+    @ColumnInfo(name = "photo_data", typeAffinity = ColumnInfo.BLOB)
+    val photoData: ByteArray? = null,
+
+    @ColumnInfo(name = "photo_file_size")
+    val photoFileSize: Long? = null
 ) {
     // ! Needed for ByteArray in data class
     override fun equals(other: Any?): Boolean {

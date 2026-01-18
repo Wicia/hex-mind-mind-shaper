@@ -36,6 +36,8 @@ class AppSettingsStorage @Inject constructor(
 
         // Permissions
         private const val PARAM_VOICE_RECORDING_ENABLED = "param_voice_recording_enabled"
+
+        private const val PARAM_PHOTO_FEATURE_ENABLED = "photo_feature_enabled"
     }
 
     fun getApplicationContext() : Context {
@@ -112,5 +114,15 @@ class AppSettingsStorage @Inject constructor(
         sharedPreferences.edit {
             putBoolean(stepKey, true)
         }
+    }
+
+    fun isPhotoFeatureEnabled(): Boolean {
+        return sharedPreferences.getBoolean(PARAM_PHOTO_FEATURE_ENABLED, true)
+    }
+
+    fun setPhotoFeatureEnabled(enabled: Boolean) {
+        sharedPreferences.edit()
+            .putBoolean(PARAM_PHOTO_FEATURE_ENABLED, enabled)
+            .apply()
     }
 }

@@ -6,6 +6,7 @@ import org.sufficientlysecure.htmltextview.HtmlTextView
 
 /**
  * Custom TextView that automatically converts "X item" format to HTML bullet lists
+ * (without custom layout.xml)
  */
 class HexTextView @JvmOverloads constructor(
     context: Context,

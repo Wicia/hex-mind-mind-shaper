@@ -22,18 +22,29 @@ data class ThoughtDTO(
 
     var mainContentType: ThoughtMainContentType = ThoughtMainContentType.UNKNOWN,
 
-    // === RICH TEXT ===
+// ========= RICH TEXT =========
+
     var richText: String? = null,
 
-    // === RECORDING ===
+// ========= VOICE RECORDING =========
 
     // only light data here (like metadata & no byte arrays)
     var audioDurationMs: Long? = null,
 
     @Transient
-    var tempAudioFilePath: String? = null // ! Used ONLY during recording
+    var tempAudioFilePath: String? = null, // ! Used ONLY during recording
+
+// ========= PHOTO =========
+
+    var photoFileSize: Long? = null,
+
+    @Transient
+    var tempPhotoFilePath: String? = null
 
 ) : Parcelable {
+
+    val hasPhoto: Boolean
+        get() = (photoFileSize ?: 0) > 0
 
     val duration: Long?
         get() = audioDurationMs

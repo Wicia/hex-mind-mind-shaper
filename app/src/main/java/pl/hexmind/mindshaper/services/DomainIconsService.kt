@@ -11,7 +11,8 @@ import javax.inject.Singleton
 
 @Singleton
 class DomainIconsService @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @ApplicationContext
+    private val context: Context,
     private val repository: IconRepository
 ) {
 

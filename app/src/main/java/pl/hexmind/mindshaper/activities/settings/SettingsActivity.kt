@@ -87,6 +87,7 @@ class SettingsActivity : CoreActivity() {
     override fun onResume() {
         super.onResume()
         syncVoiceRecordingToogleWithPermissions()
+        syncPhotoToggleWithPermissions()  // Photo feature sync
     }
 
     /**
@@ -116,10 +117,13 @@ class SettingsActivity : CoreActivity() {
             showSnapshotLoadingDialog()
         }
 
-        setupVoiceRecordingPermissionToogle()
+        setupVoiceRecordingFeatureToggle()
+        setupPhotoFeatureToggle()
     }
 
-    private fun setupVoiceRecordingPermissionToogle() {
+    // ========== VOICE RECORDING FEATURE ==========
+
+    private fun setupVoiceRecordingFeatureToggle() {
         binding.toggleRecording.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 when {
@@ -171,10 +175,10 @@ class SettingsActivity : CoreActivity() {
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
             .setMessage(getString(R.string.common_thoughts_permissions_dialog_message, "Aby móc nagrywać dźwięk, aplikacja potrzebuje dostępu do mikrofonu."))
-            .setPositiveButton("OK") { _, _ ->
+            .setPositiveButton("OK") { _, _ -> // TODO
                 requestPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
             }
-            .setNegativeButton("Nie teraz") { _, _ ->
+            .setNegativeButton("Nie teraz") { _, _ -> // TODO
                 binding.toggleRecording.isChecked = false
             }
             .setOnCancelListener {
@@ -187,9 +191,98 @@ class SettingsActivity : CoreActivity() {
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.settings_thoughts_permissions_blockade))
             .setMessage(getString(R.string.settings_thoughts_permissions_blockade_tooltip))
-            .setPositiveButton("OK") { _, _ -> }
+            .setPositiveButton("OK") { _, _ -> } // TODO
             .show()
     }
+
+    // ========== PHOTO FEATURE ==========
+
+    private fun setupPhotoFeatureToggle() {
+        binding.switchPhotoFeature.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                when {
+                    permissionsService.isCameraGranted() -> {
+                        appSettingsStorage.setPhotoFeatureEnabled(true)
+                        binding.switchPhotoFeature.isChecked = true
+                    }
+                    else -> {
+                        showPhotoPermissionExplanationDialog()
+                    }
+                }
+            }
+            else {
+                appSettingsStorage.setPhotoFeatureEnabled(false)
+            }
+        }
+
+        syncPhotoToggleWithPermissions()
+    }
+
+    private fun syncPhotoToggleWithPermissions() {
+        val hasPermission = permissionsService.isCameraGranted()
+        val wantsPhoto = appSettingsStorage.isPhotoFeatureEnabled()
+
+        binding.switchPhotoFeature.isChecked = wantsPhoto && hasPermission
+    }
+
+    private val requestCameraPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // Approved
+            appSettingsStorage.setPhotoFeatureEnabled(true)
+            binding.switchPhotoFeature.isChecked = true
+        }
+        else {
+            // Denial
+            appSettingsStorage.setPhotoFeatureEnabled(false)
+            binding.switchPhotoFeature.isChecked = false
+
+            // Handling permissions "blockade"
+            if (!shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                showPhotoPermanentDenialDialog()
+            }
+        }
+    }
+
+    private fun showPhotoPermissionExplanationDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
+            .setMessage("Aby móc robić zdjęcia, aplikacja potrzebuje dostępu do kamery.") // TODO
+            .setPositiveButton("OK") { _, _ -> // TODO
+                requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+            }
+            .setNegativeButton("Nie teraz") { _, _ -> // TODO
+                binding.switchPhotoFeature.isChecked = false
+            }
+            .setOnCancelListener {
+                binding.switchPhotoFeature.isChecked = false
+            }
+            .show()
+    }
+
+    private fun showPhotoPermanentDenialDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Uprawnienie kamery") // TODO
+            .setMessage("Uprawnienie do kamery zostało trwale odrzucone. Możesz je włączyć w ustawieniach systemu.") // TODO
+            .setPositiveButton("Otwórz ustawienia") { _, _ -> // TODO
+                openAppSettings()
+            }
+            .setNegativeButton("Anuluj") { _, _ -> // TODO
+                binding.switchPhotoFeature.isChecked = false
+            }
+            .show()
+    }
+
+    private fun openAppSettings() {
+        val intent = Intent(
+            android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+            Uri.fromParts("package", packageName, null)
+        )
+        startActivity(intent)
+    }
+
+    // ========== THOUGHTS VALUES SYSTEM & DOMAINS ==========
 
     private fun initThoughtsValuesSystemConfig() {
         val radioGroup = findViewById<RadioGroup>(R.id.rg_values_system)

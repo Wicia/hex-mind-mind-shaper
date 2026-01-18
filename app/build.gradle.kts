@@ -158,4 +158,7 @@ dependencies {
 
     // Serialization
     implementation(libs.gson)
+
+    implementation("com.github.chrisbanes:PhotoView:2.3.0")
+    implementation("androidx.exifinterface:exifinterface:1.3.7")
 }

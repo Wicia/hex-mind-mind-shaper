@@ -34,6 +34,18 @@ class ThoughtsRepository @Inject constructor (
         thoughtsDAO.deleteById(id)
     }
 
+    suspend fun updateThoughtMetadata(metadata: ThoughtMetadataUpdate) {
+        thoughtsDAO.updateMetadata(metadata)
+    }
+
+// ========== RICH TEXT NOTES ==========
+
+    suspend fun updateRichText(thoughtId: Int, richText: String?) {
+        thoughtsDAO.updateRichText(thoughtId, richText)
+    }
+
+// ========== AUDIO RECORDINGS ==========
+
     /**
      * Save audio from file to database
      * Automatically deletes temp file after saving
@@ -55,15 +67,26 @@ class ThoughtsRepository @Inject constructor (
         return thoughtsDAO.getAudioData(thoughtId)
     }
 
-    suspend fun updateThoughtMetadata(metadata: ThoughtMetadataUpdate) {
-        thoughtsDAO.updateMetadata(metadata)
-    }
-
-    suspend fun updateRichText(thoughtId: Int, richText: String?) {
-        thoughtsDAO.updateRichText(thoughtId, richText)
-    }
-
     suspend fun deleteAudio(thoughtId: Long) {
         thoughtsDAO.deleteAudio(thoughtId)
+    }
+
+// ========== PHOTOS ==========
+
+    suspend fun savePhotoFromFile(thoughtId: Long, photoFile: File) {
+        require(photoFile.exists()) { "Photo file does not exist" }
+        require(photoFile.length() > 0) { "Photo file is empty" }
+
+        val photoBytes = photoFile.readBytes()
+        thoughtsDAO.updatePhoto(thoughtId, photoBytes, photoFile.length())
+        photoFile.delete()
+    }
+
+    suspend fun getPhotoData(thoughtId: Long): ByteArray? {
+        return thoughtsDAO.getPhotoData(thoughtId)
+    }
+
+    suspend fun deletePhoto(thoughtId: Long) {
+        thoughtsDAO.deletePhoto(thoughtId)
     }
 }

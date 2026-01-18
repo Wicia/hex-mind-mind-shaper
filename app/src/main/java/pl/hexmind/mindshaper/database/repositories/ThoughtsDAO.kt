@@ -54,8 +54,12 @@ interface ThoughtsDAO {
     @Update(entity = ThoughtEntity::class)
     suspend fun updateMetadata(metadata: ThoughtMetadataUpdate)
 
+// ========== RICH TEXT NOTES ==========
+
     @Query("UPDATE THOUGHTS SET rich_text = :richText WHERE id = :thoughtId")
     suspend fun updateRichText(thoughtId: Int, richText: String?)
+
+// ========== AUDIO RECORDINGS ==========
 
     @Query("SELECT audio_data FROM thoughts WHERE id = :id")
     suspend fun getAudioData(id: Long): ByteArray?
@@ -65,4 +69,15 @@ interface ThoughtsDAO {
 
     @Query("UPDATE thoughts SET audio_data = NULL, audio_duration_ms = NULL WHERE id = :id")
     suspend fun deleteAudio(id: Long)
+
+// ========== PHOTOS ==========
+
+    @Query("UPDATE THOUGHTS SET photo_data = :photoBytes, photo_file_size = :fileSize WHERE id = :thoughtId")
+    suspend fun updatePhoto(thoughtId: Long, photoBytes: ByteArray, fileSize: Long)
+
+    @Query("SELECT photo_data FROM THOUGHTS WHERE id = :thoughtId")
+    suspend fun getPhotoData(thoughtId: Long): ByteArray?
+
+    @Query("UPDATE THOUGHTS SET photo_data = NULL, photo_file_size = NULL WHERE id = :thoughtId")
+    suspend fun deletePhoto(thoughtId: Long)
 }

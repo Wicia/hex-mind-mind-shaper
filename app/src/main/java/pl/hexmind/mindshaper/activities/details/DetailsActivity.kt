@@ -1,12 +1,14 @@
 package pl.hexmind.mindshaper.activities.details
 
 import android.content.res.ColorStateList
-import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.DrawableRes
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,6 +19,8 @@ import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.ui.CommonIconsListDialog
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.common.ui.CommonTextEditDialog
+import pl.hexmind.mindshaper.common.ui.HexPhotoView
+import pl.hexmind.mindshaper.common.ui.PhotoFullscreenDialog
 import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
@@ -30,6 +34,22 @@ class DetailsActivity : CoreActivity() {
 
     @Inject
     lateinit var thoughtValidator: ThoughtValidator
+
+    private var currentPhotoUri: Uri? = null
+
+    private val takePhotoLauncher = registerForActivityResult(
+        ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success && currentPhotoUri != null) {
+            handlePhotoResult(currentPhotoUri!!)
+        }
+    }
+
+    private val pickPhotoLauncher = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        uri?.let { handlePhotoResult(it) }
+    }
 
     companion object PARAMS {
         const val P_SELECTED_THOUGHT_ID = "P_SELECTED_THOUGHT_ID"
@@ -138,6 +158,47 @@ class DetailsActivity : CoreActivity() {
             btnRecordingPlaceholder.setOnClickListener {
                 showRecordingWidget()
             }
+
+            btnPhotoPlaceholder.setOnClickListener {
+                showPhotoWidget()
+            }
+
+            photoDisplayView.setCallback(object : HexPhotoView.PhotoCallback {
+                override fun onCameraCaptureRequested() {
+                    takePhoto()
+                }
+
+                override fun onGalleryPickRequested() {
+                    pickFromGallery()
+                }
+
+                override fun onPhotoDeleted() {
+                    viewModel.deletePhoto()
+                }
+
+                override fun onPhotoClicked() {
+                    showFullscreenPhoto()
+                }
+
+                override fun onError(error: String) {
+                    Toast.makeText(this@DetailsActivity, error, Toast.LENGTH_SHORT).show() // TODO
+                }
+            })
+        }
+    }
+
+    private fun showFullscreenPhoto() {
+        val thought = viewModel.thoughtDetails.value ?: return
+        if (!thought.hasPhoto) return
+
+        lifecycleScope.launch {
+            try {
+                viewModel.loadPhotoForDisplay(thought.id ?: return@launch) { photoData ->
+                    PhotoFullscreenDialog(this@DetailsActivity, photoData).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@DetailsActivity, "Failed to load photo", Toast.LENGTH_SHORT).show() // TODO
+            }
         }
     }
 
@@ -145,6 +206,8 @@ class DetailsActivity : CoreActivity() {
         binding.vbThoughtValue.apply {
             maxLevel = thoughtValidator.getThoughtValueMax()
         }
+
+        updatePhotoFeatureVisibility()
     }
 
     private fun onDomainSelected(domain: CommonIconsListItem) {
@@ -229,6 +292,48 @@ class DetailsActivity : CoreActivity() {
         )
     }
 
+    private fun showPhotoWidget() {
+        binding.btnPhotoPlaceholder.visibility = View.GONE
+        binding.photoDisplayView.visibility = View.VISIBLE
+        binding.photoDisplayView.showStatus(
+            R.string.photos_no_file,
+            R.color.validation_success
+        )
+    }
+
+    private fun takePhoto() {
+        val photoUri = viewModel.createPhotoUri()
+        currentPhotoUri = photoUri
+        takePhotoLauncher.launch(photoUri)
+    }
+
+    private fun pickFromGallery() {
+        pickPhotoLauncher.launch(
+            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+        )
+    }
+
+    private fun handlePhotoResult(uri: Uri) {
+        lifecycleScope.launch {
+            try {
+                binding.photoDisplayView.showLoading()
+                viewModel.savePhotoFromUri(uri)
+            }
+            catch (e: Exception) {
+                binding.photoDisplayView.showError("Olaboga! Kod się wyburaczył :/") // TODO
+            }
+        }
+    }
+
+    private fun updatePhotoFeatureVisibility() {
+        val featureEnabled = appSettingsStorage.isPhotoFeatureEnabled()
+
+        if (!featureEnabled) {
+            binding.photoDisplayView.visibility = View.GONE
+            binding.btnPhotoPlaceholder.visibility = View.GONE
+        }
+    }
+
     private fun updateUI(thought: ThoughtDTO) {
         updateRichTextUI(thought)
         updateThreadUI(thought)
@@ -236,6 +341,7 @@ class DetailsActivity : CoreActivity() {
         updateProjectUI(thought)
         updateValueUI(thought)
         updateAudioUI(thought)
+        updatePhotoUI(thought)
         lifecycleScope.launch {
             updateDomainUI(thought)
         }
@@ -328,6 +434,31 @@ class DetailsActivity : CoreActivity() {
     /**
      * Update value button UI with current value
      */
+    private fun updatePhotoUI(thought: ThoughtDTO) {
+        val featureEnabled = appSettingsStorage.isPhotoFeatureEnabled()
+
+        if (!featureEnabled) {
+            binding.photoDisplayView.visibility = View.GONE
+            binding.btnPhotoPlaceholder.visibility = View.GONE
+            return
+        }
+
+        if (thought.hasPhoto) {
+            binding.btnPhotoPlaceholder.visibility = View.GONE
+            binding.photoDisplayView.visibility = View.VISIBLE
+
+            lifecycleScope.launch {
+                viewModel.loadPhotoForDisplay(thought.id ?: return@launch) { photoData ->
+                    binding.photoDisplayView.loadPhoto(photoData)
+                }
+            }
+        }
+        else {
+            binding.btnPhotoPlaceholder.visibility = View.VISIBLE
+            binding.photoDisplayView.visibility = View.GONE
+        }
+    }
+
     private fun updateValueUI(thought: ThoughtDTO) {
         // Set text to display value
         binding.vbThoughtValue.currentLevel = thought.value
