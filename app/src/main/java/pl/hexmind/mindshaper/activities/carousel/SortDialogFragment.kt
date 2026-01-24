@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.compose.ui.text.style.TextAlign
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.button.MaterialButton
@@ -46,7 +45,7 @@ class SortDialogFragment(
         llSortProperties = view.findViewById(R.id.ll_sort_properties)
         btnSortDirection = view.findViewById(R.id.btn_sort_direction)
 
-        setupPropertyButtons()
+        setupSortPropertyButtons()
         setupDirectionButton()
         updateDirectionButton()
     }
@@ -57,29 +56,33 @@ class SortDialogFragment(
         }
     }
 
-    private fun setupPropertyButtons() {
+    private fun setupSortPropertyButtons() {
         llSortProperties.removeAllViews()
 
         SortProperty.entries.forEach { property ->
-            val btnSortProperty = createPropertyButton(property)
+            val btnSortProperty = createSortPropertyButton(property)
             llSortProperties.addView(btnSortProperty)
         }
     }
 
-    private fun createPropertyButton(property: SortProperty): MaterialButton {
+    private fun createSortPropertyButton(property: SortProperty): MaterialButton {
         val themedContext = ContextThemeWrapper(requireContext(), R.style.SecondaryActionButton)
         return MaterialButton(themedContext).apply {
             text = getString(property.displayNameRes)
             gravity = Gravity.END
 
+            val isSelected = property == selectedProperty
+
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             ).apply {
-                setMargins(0, 8, 0, 8)
+                // Shift selected button to the right
+                val leftMargin = if (isSelected) 24 else 0
+                setMargins(leftMargin, 8, 0, 8)
             }
 
-            updateButtonStyle(this, property == selectedProperty)
+            updateButtonStyle(this, isSelected)
 
             setOnClickListener {
                 selectedProperty = property
@@ -103,16 +106,19 @@ class SortDialogFragment(
     private fun updateDirectionButton() {
         val resId = selectedDirection.getLabelResByFieldType(selectedProperty.type)
         btnSortDirection.text = requireContext().getString(resId)
+        btnSortDirection.setTypeface(btnSortDirection.typeface, android.graphics.Typeface.BOLD)
     }
 
     private fun updateButtonStyle(button: MaterialButton, isSelected: Boolean) {
         if (isSelected) {
             button.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.button_content_used_background))
             button.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_primary))
+            button.setTypeface(button.typeface, android.graphics.Typeface.BOLD)
         }
         else {
             button.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.button_content_not_used_background))
             button.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_secondary))
+            button.setTypeface(button.typeface, android.graphics.Typeface.NORMAL)
         }
     }
 
