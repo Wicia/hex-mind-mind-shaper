@@ -50,6 +50,17 @@
                 app:tint="@color/separator_leaf"
                 />
 
+            <TextView
+                android:id="@+id/tv_sort_order_info"
+                style="@style/TextView_Metadata_Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:textColor="@color/text_secondary"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="4dp"
+                android:text="@string/sort_info_prefix" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_sort_direction"
                 style="@style/AuxiliaryActionButton"

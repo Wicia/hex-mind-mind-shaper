@@ -52,7 +52,11 @@ class SortDialogFragment(
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
-            window?.setBackgroundDrawableResource(android.R.color.transparent)
+            window?.apply {
+                setBackgroundDrawableResource(android.R.color.transparent)
+                setDimAmount(0.9f)
+                addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            }
         }
     }
 
