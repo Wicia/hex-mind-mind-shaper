@@ -1,9 +1,10 @@
-package pl.hexmind.mindshaper.common.ui
+package pl.hexmind.mindshaper.common.ui.dialogs
 
 import android.app.Dialog
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ProgressBar
@@ -61,7 +62,7 @@ class PhotoFullscreenDialog(
 
                 if (bitmap != null) {
                     photoView.setImageBitmap(bitmap)
-                    progressBar.visibility = android.view.View.GONE
+                    progressBar.visibility = View.GONE
                 } else {
                     Timber.e("Failed to decode photo")
                     dismiss()

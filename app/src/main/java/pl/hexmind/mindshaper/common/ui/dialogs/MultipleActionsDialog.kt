@@ -1,8 +1,9 @@
-package pl.hexmind.mindshaper.common.ui
+package pl.hexmind.mindshaper.common.ui.dialogs
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AlertDialog
@@ -13,7 +14,7 @@ import pl.hexmind.mindshaper.R
 /**
  * Reusable dialog with two action buttons (caution + standard) and cancel/dismiss button
  */
-class DialogMultipleActions private constructor(
+class MultipleActionsDialog private constructor(
     // core
     private val context: Context,
 
@@ -55,7 +56,7 @@ class DialogMultipleActions private constructor(
         // Make dialog wider
         dialog.window?.setLayout(
             (context.resources.displayMetrics.widthPixels * 0.9).toInt(),
-            android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+            ViewGroup.LayoutParams.WRAP_CONTENT
         )
         dialog.show()
     }
@@ -176,7 +177,7 @@ class DialogMultipleActions private constructor(
                 "At least one action (caution or standard) must be set"
             }
 
-            DialogMultipleActions(
+            MultipleActionsDialog(
                 context = context,
                 title = title,
                 description = description,

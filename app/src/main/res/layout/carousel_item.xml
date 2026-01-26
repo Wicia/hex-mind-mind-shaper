@@ -24,6 +24,7 @@
             android:layout_height="70dp"
             android:layout_gravity="center"
             android:layout_marginBottom="12dp"
+            app:dotBackgroundColor="@color/app_background"
             />
 
         <!-- RICH TEXT -->

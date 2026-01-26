@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.common.ui
+package pl.hexmind.mindshaper.common.ui.dialogs
 
 import android.app.Dialog
 import android.content.Context
@@ -10,8 +10,10 @@ import android.widget.TextView
 import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.common.ui.CommonIconsListAdapter
+import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 
-class CommonIconsListDialog private constructor(
+class IconsListDialog private constructor(
     private val context: Context,
     private val title: String?,
     private val icons: List<CommonIconsListItem>,
@@ -24,7 +26,7 @@ class CommonIconsListDialog private constructor(
 
     fun show() {
         dialog = Dialog(context).apply {
-            setContentView(R.layout.common_dialog_icons_list)
+            setContentView(R.layout.dialog_icons_list)
             setupTitle()
             setupRecyclerView()
             setupButtons()
@@ -89,12 +91,12 @@ class CommonIconsListDialog private constructor(
         fun setOnIconSelected(callback: (CommonIconsListItem) -> Unit) = apply {
             this.onIconSelected = callback
         }
-        fun build(): CommonIconsListDialog {
+        fun build(): IconsListDialog {
             require(icons.isNotEmpty()) { "Icons list cannot be empty" }
-            return CommonIconsListDialog(context, title, icons, onIconSelected)
+            return IconsListDialog(context, title, icons, onIconSelected)
         }
 
-        fun show(): CommonIconsListDialog {
+        fun show(): IconsListDialog {
             return build().apply { show() }
         }
     }

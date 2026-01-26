@@ -16,11 +16,11 @@ import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
-import pl.hexmind.mindshaper.common.ui.CommonIconsListDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.IconsListDialog
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
-import pl.hexmind.mindshaper.common.ui.CommonTextEditDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
 import pl.hexmind.mindshaper.common.ui.HexPhotoView
-import pl.hexmind.mindshaper.common.ui.PhotoFullscreenDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.PhotoFullscreenDialog
 import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
@@ -224,7 +224,7 @@ class DetailsActivity : CoreActivity() {
         val domains = viewModel.domainsWithIcons.value ?: emptyList()
         if (domains.isEmpty()) return
 
-        CommonIconsListDialog.Builder(this)
+        IconsListDialog.Builder(this)
             .setTitle(this.getString(R.string.common_hex_tag_domain))
             .setIcons(domains)
             .setOnIconSelected { selectedDomain ->
@@ -235,7 +235,7 @@ class DetailsActivity : CoreActivity() {
 
     private fun showEditRichTextDialog() {
         val currentText = viewModel.thoughtDetails.value?.richText.orEmpty()
-        CommonTextEditDialog(
+        TextEditDialog(
             context = this,
             textInput = currentText,
             onSave = { newText ->
@@ -246,7 +246,7 @@ class DetailsActivity : CoreActivity() {
 
     private fun showEditThreadDialog() {
         val currentText = viewModel.thoughtDetails.value?.thread.orEmpty()
-        CommonTextEditDialog(
+        TextEditDialog(
             context = this,
             textInput = currentText,
             title = getString(R.string.common_hex_tag_thread),
@@ -258,7 +258,7 @@ class DetailsActivity : CoreActivity() {
 
     private fun showEditSoulNameDialog() {
         val currentText = viewModel.thoughtDetails.value?.soulMate.orEmpty()
-        CommonTextEditDialog(
+        TextEditDialog(
             context = this,
             textInput = currentText,
             title = getString(R.string.common_hex_tag_soul_mates),
@@ -270,7 +270,7 @@ class DetailsActivity : CoreActivity() {
 
     private fun showEditProjectDialog() {
         val currentText = viewModel.thoughtDetails.value?.project.orEmpty()
-        CommonTextEditDialog(
+        TextEditDialog(
             context = this,
             textInput = currentText,
             title = getString(R.string.common_hex_tag_project),

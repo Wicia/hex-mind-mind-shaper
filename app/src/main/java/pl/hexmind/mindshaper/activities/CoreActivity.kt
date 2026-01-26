@@ -138,7 +138,7 @@ open class CoreActivity() : AppCompatActivity() {
             }
 
             navigationBarView = LayoutInflater.from(this)
-                .inflate(R.layout.common_navigation_bar, null, false)
+                .inflate(R.layout.navigation_bar, null, false)
 
             val params = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,

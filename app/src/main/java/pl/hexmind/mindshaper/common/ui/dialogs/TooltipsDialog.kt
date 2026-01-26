@@ -1,9 +1,11 @@
-package pl.hexmind.mindshaper.common.ui
+package pl.hexmind.mindshaper.common.ui.dialogs
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -52,7 +54,7 @@ class DialogTooltips private constructor(
         // Make dialog wider
         dialog.window?.setLayout(
             (context.resources.displayMetrics.widthPixels * 0.9).toInt(),
-            android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+            ViewGroup.LayoutParams.WRAP_CONTENT
         )
         dialog.show()
     }
@@ -81,7 +83,7 @@ class DialogTooltips private constructor(
                     marginEnd = if (i < tooltips.size - 1) dotMargin else 0
                 }
                 setImageResource(R.drawable.shape_carousel_indicator)
-                imageTintList = android.content.res.ColorStateList.valueOf(
+                imageTintList = ColorStateList.valueOf(
                     ContextCompat.getColor(
                         context,
                         if (i == currentIndex) R.color._orange_lvl_2
@@ -98,7 +100,7 @@ class DialogTooltips private constructor(
 
         for (i in 0 until dotsContainer.childCount) {
             val dot = dotsContainer.getChildAt(i) as ImageView
-            dot.imageTintList = android.content.res.ColorStateList.valueOf(
+            dot.imageTintList = ColorStateList.valueOf(
                 ContextCompat.getColor(
                     context,
                     if (i == currentIndex) R.color._orange_lvl_2

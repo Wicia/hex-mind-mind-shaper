@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.common.ui
+package pl.hexmind.mindshaper.common.ui.dialogs
 
 import android.content.Context
 import android.graphics.Color.TRANSPARENT
@@ -9,20 +9,19 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.textfield.TextInputEditText
 import pl.hexmind.mindshaper.R
-import timber.log.Timber
 import androidx.core.graphics.drawable.toDrawable
 
 /**
  * Reusable dialog for text editing with custom dimmed background
  */
-class CommonTextEditDialog(
+class TextEditDialog(
     private val context: Context,
     private val title: String? = "",
     private val textInput: String = "",
     private val onSave: (String) -> Unit
 ) {
 
-    private val dialogView = LayoutInflater.from(context).inflate(R.layout.common_dialog_edit, null)
+    private val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_edit, null)
     private val etInput: TextInputEditText = dialogView.findViewById(R.id.et_input)
 
     private val tvHeader : TextView = dialogView.findViewById(R.id.tv_header)

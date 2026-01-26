@@ -4,9 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.GestureDetector
 import androidx.activity.viewModels
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -19,7 +17,7 @@ import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.common.SortConfig
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
-import pl.hexmind.mindshaper.common.ui.CommonIconsListDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.IconsListDialog
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
@@ -154,7 +152,7 @@ class CarouselActivity : CoreActivity() {
 
         val domainsWithAll = listOf(allDomainsOption) + domains
 
-        CommonIconsListDialog.Builder(this)
+        IconsListDialog.Builder(this)
             .setTitle(getString(R.string.carousel_filter_dialog_title))
             .setIcons(domainsWithAll)
             .setOnIconSelected { selectedDomain ->

@@ -5,7 +5,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.res.ResourcesCompat
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.common.ui.DialogTooltips
+import pl.hexmind.mindshaper.common.ui.dialogs.DialogTooltips
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import javax.inject.Inject
 import javax.inject.Singleton

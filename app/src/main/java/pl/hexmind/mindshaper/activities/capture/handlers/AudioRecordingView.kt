@@ -25,7 +25,7 @@ import kotlinx.coroutines.withContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.audio.AudioAmplitudeExtractor
 import pl.hexmind.mindshaper.common.audio.AudioVisualizerView
-import pl.hexmind.mindshaper.common.ui.DialogMultipleActions
+import pl.hexmind.mindshaper.common.ui.dialogs.MultipleActionsDialog
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import timber.log.Timber
 import java.io.File
@@ -274,7 +274,7 @@ class AudioRecordingView @JvmOverloads constructor(
     }
 
     private fun showRecordingOptionsDialog() {
-        DialogMultipleActions.Builder(context)
+        MultipleActionsDialog.Builder(context)
             .setTitle("Co chcesz zrobić z nagraniem?") // TODO
             .setCautionAction("Wywalić") { // TODO
                 deleteCurrentRecording()
