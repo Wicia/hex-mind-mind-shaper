@@ -7,6 +7,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
@@ -48,6 +49,10 @@ class SortDialogFragment(
         setupSortPropertyButtons()
         setupDirectionButton()
         updateDirectionButton()
+
+        view.findViewById<Button>(R.id.btn_dismiss).setOnClickListener {
+            dismiss()
+        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

@@ -227,6 +227,7 @@ class CarouselActivity : CoreActivity() {
             performListRefresh()
             btnSort.text = getString(sortConfig.property.displayNameRes)
                 .plus(": ")
+                .plus(getString(R.string.sort_info_prefix)).plus(" ")
                 .plus(getString(sortConfig.direction.getLabelResByFieldType(sortConfig.property.type)))
         }
     }
