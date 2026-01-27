@@ -13,6 +13,8 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtGrowthStage
 import pl.hexmind.mindshaper.activities.capture.handlers.AudioRecordingView
 import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType.*
+import pl.hexmind.mindshaper.common.SortConfig
+import pl.hexmind.mindshaper.common.SortProperty
 import pl.hexmind.mindshaper.common.ui.HexTextView
 import pl.hexmind.mindshaper.common.ui.ValueBar
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
@@ -36,8 +38,14 @@ class CarouselAdapter(
         return ThoughtViewHolder(view, thoughtValidator, onDeleteThought, onThoughtTap, onLoadAudio)
     }
 
+    private var currentSortConfig : SortConfig = SortConfig()
+
+    fun updateSortConfig(config: SortConfig) {
+        currentSortConfig = config
+    }
+
     override fun onBindViewHolder(holder: ThoughtViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), currentSortConfig)
     }
 
     /**
@@ -56,7 +64,6 @@ class CarouselAdapter(
         private var currentAudioFile: File? = null
 
         private val tvMetadata: TextView = itemView.findViewById(R.id.tv_though_metadata)
-        private val tvCreatedAt: TextView = itemView.findViewById(R.id.tv_created_at)
 
         private val tvRichText: HexTextView = itemView.findViewById(R.id.tv_rich_text)
 
@@ -73,9 +80,12 @@ class CarouselAdapter(
         /**
          * Bind thought data to view components with null safety
          */
-        fun bind(thought: ThoughtDTO) {
+        fun bind(thought: ThoughtDTO, sortConfig: SortConfig) {
             viewedThoughtDTO = thought
             setViewOnTouchListener()
+
+            audioView.visibility = View.GONE
+            tvRichText.visibility = View.GONE
 
             when (thought.mainContentType) {
                 RECORDING -> {
@@ -104,40 +114,43 @@ class CarouselAdapter(
                 }
             }
 
-            updateMetadataUI(thought)
-            updateCreatedAtUI(thought)
+            updateMetadataUI(thought, sortConfig)
 
             vbThoughtValue.maxLevel = thoughtValidator.getThoughtValueMax()
             vbThoughtValue.currentLevel = thought.value
         }
 
-        fun updateMetadataUI(thought: ThoughtDTO) {
-            val value : String = if(thought.thread.isNullOrBlank() && thought.project.isNullOrBlank()){
-                itemView.context.getString(R.string.carousel_thought_metadata_empty)
-            }
-            else if(thought.thread.isNullOrBlank() && !thought.project.isNullOrBlank()){
-                thought.project.orEmpty()
+        fun updateMetadataUI(thought: ThoughtDTO, sortConfig: SortConfig) {
+            if(sortConfig.property == SortProperty.VALUE){
+                vbThoughtValue.visibility = View.VISIBLE
+                tvMetadata.visibility = View.GONE
             }
             else{
-                thought.thread.orEmpty()
+                vbThoughtValue.visibility = View.GONE
+                tvMetadata.visibility = View.VISIBLE
             }
-
-            tvMetadata.text = "/ ".plus(value)
+            tvMetadata.text = when (sortConfig.property) {
+                SortProperty.CREATED_AT -> getFormattedCreatedAt(thought)
+                SortProperty.THREAD -> thought.thread ?: itemView.context.getString(R.string.carousel_thought_metadata_empty)
+                SortProperty.SOUL_MATE -> thought.soulMate ?: itemView.context.getString(R.string.carousel_thought_metadata_empty)
+                SortProperty.PROJECT -> thought.project ?: itemView.context.getString(R.string.carousel_thought_metadata_empty)
+                SortProperty.VALUE -> null
+            }
         }
 
-        fun updateCreatedAtUI(thought: ThoughtDTO){
+        fun getFormattedCreatedAt(thought: ThoughtDTO) : String{
             val ageLevel = ThoughtGrowthStage.newThoughtGrowthStage(thought.createdAt)
             val levelIcon = itemView.context.getString(ageLevel.level.iconResId)
 
-            when (ageLevel.ageInDays) {
+            return when (ageLevel.ageInDays) {
                 0L -> { // Today
-                    tvCreatedAt.text = itemView.context.getString(R.string.common_thought_age_0, levelIcon)
+                    itemView.context.getString(R.string.common_thought_age_0, levelIcon)
                 }
                 1L -> { // Yesterday
-                    tvCreatedAt.text = itemView.context.getString(R.string.common_thought_age_1, levelIcon)
+                    itemView.context.getString(R.string.common_thought_age_1, levelIcon)
                 }
                 else -> {
-                    tvCreatedAt.text = itemView.context.getString(
+                    itemView.context.getString(
                         R.string.common_thought_age_pattern, levelIcon, ageLevel.ageInDays.toString()
                     )
                 }

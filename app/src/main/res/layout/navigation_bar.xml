@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@drawable/nav_bar"
-    android:padding="12dp"
+    android:padding="8dp"
     android:clipToPadding="false"
     android:clipChildren="false"
     android:gravity="center_vertical">
@@ -15,8 +15,8 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnToggle"
         style="@style/AuxiliaryActionButton"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_gravity="center_vertical"
         app:icon="@drawable/ic_nav_expand"
         />
@@ -37,8 +37,8 @@
             android:id="@+id/navHome"
             style="@style/AuxiliaryActionButton"
             app:icon="@drawable/ic_header_home"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="16dp"
             />
@@ -48,8 +48,8 @@
             android:id="@+id/navCarousel"
             style="@style/AuxiliaryActionButton"
             app:icon="@drawable/ic_header_carousel"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="12dp"
             />
@@ -59,8 +59,8 @@
             android:id="@+id/navSettings"
             style="@style/AuxiliaryActionButton"
             app:icon="@drawable/ic_header_settings"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="12dp"
             />

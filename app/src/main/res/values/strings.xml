@@ -313,5 +313,6 @@
     <string name="common_thought_age_level_3_icon">🍀</string>
     <string name="common_thought_age_level_4_icon">🌳</string>
     <string name="common_thought_age_level_5_icon">🏝️</string>
+    <string name="sort_dialog_header">Sortowanie</string>
 
 </resources>

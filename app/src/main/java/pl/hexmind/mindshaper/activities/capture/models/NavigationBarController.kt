@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.res.ColorStateList
 import android.view.View
 import android.widget.LinearLayout
@@ -17,6 +18,20 @@ class NavigationBarController(
     private val appSettings: AppSettingsStorage
 ) {
 
+    private fun animateIconTint(
+        button: MaterialButton,
+        from: Int,
+        to: Int
+    ) {
+        ValueAnimator.ofArgb(from, to).apply {
+            duration = 250
+            addUpdateListener {
+                button.iconTint = ColorStateList.valueOf(it.animatedValue as Int)
+            }
+            start()
+        }
+    }
+
     private val btnToggle: MaterialButton = navigationBar.findViewById(R.id.btnToggle)
     private val navButtonsContainer: LinearLayout = navigationBar.findViewById(R.id.navButtonsContainer)
 
@@ -25,9 +40,24 @@ class NavigationBarController(
 
     // Navigation buttons
     private val navButtons = listOf(
-        NavButton(R.id.navHome, "Home"),
-        NavButton(R.id.navCarousel, "Carousel"),
-        NavButton(R.id.navSettings, "Settings"),
+        NavButton(
+            R.id.navHome,
+            "Home",
+            R.drawable.ic_header_home,
+            R.drawable.ic_header_home_filled
+        ),
+        NavButton(
+            R.id.navCarousel,
+            "Carousel",
+            R.drawable.ic_header_carousel,
+            R.drawable.ic_header_carousel_filled
+        ),
+        NavButton(
+            R.id.navSettings,
+            "Settings",
+            R.drawable.ic_header_settings,
+            R.drawable.ic_header_settings_filled
+        ),
     )
 
     private var selectedIndex = -1
@@ -40,7 +70,7 @@ class NavigationBarController(
     init {
         val context = navigationBar.context
         selectedColor = context.getColor(R.color._orange_lvl_3)
-        unselectedColor = context.getColor(R.color._orange_lvl_2)
+        unselectedColor = context.getColor(R.color._orange_lvl_3)
 
         setupNavButtons()
         setupToggleButton()
@@ -174,40 +204,23 @@ class NavigationBarController(
             val button = navigationBar.findViewById<MaterialButton>(navButton.id)
 
             button?.let {
-                if (i == index) { // Selected state
-                    it.iconTint = ColorStateList.valueOf(selectedColor)
+                if (i == index) { // SELECTED
+                    it.setIconResource(navButton.iconFilled)
 
                     if (animate) {
-                        ObjectAnimator.ofInt(
-                            it,
-                            "iconSize",
-                            it.iconSize,
-                            navigationBar.context.dpToPx(36)
-                        ).apply {
-                            duration = 1500
-                            start()
-                        }
+                        animateIconTint(it, unselectedColor, selectedColor)
                     }
                     else {
-                        it.iconSize = navigationBar.context.dpToPx(32)
+                        it.iconTint = ColorStateList.valueOf(selectedColor)
                     }
-                }
-                else { // Normal state
-                    it.iconTint = ColorStateList.valueOf(unselectedColor)
+
+                } else { // NORMAL
+                    it.setIconResource(navButton.icon)
 
                     if (animate) {
-                        ObjectAnimator.ofInt(
-                            it,
-                            "iconSize",
-                            it.iconSize,
-                            navigationBar.context.dpToPx(28)
-                        ).apply {
-                            duration = 1500
-                            start()
-                        }
-                    }
-                    else {
-                        it.iconSize = navigationBar.context.dpToPx(28)
+                        animateIconTint(it, selectedColor, unselectedColor)
+                    } else {
+                        it.iconTint = ColorStateList.valueOf(unselectedColor)
                     }
                 }
             }
@@ -238,5 +251,10 @@ class NavigationBarController(
         currentAnimator = null
     }
 
-    data class NavButton(val id: Int, val label: String)
+    data class NavButton(
+        val id: Int,
+        val label: String,
+        val icon: Int,
+        val iconFilled: Int
+    )
 }

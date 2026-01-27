@@ -16,16 +16,15 @@
         android:layout_gravity="center"
         android:padding="24dp">
 
-        <!-- VALUE BAR -->
-        <pl.hexmind.mindshaper.common.ui.ValueBar
-            android:id="@+id/vb_thought_value"
-            style="@style/ValueBar"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="12dp"
-            app:dotBackgroundColor="@color/app_background"
-            />
+        <ImageView
+            android:id="@+id/iv_icon_hex_tags"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp"
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+            app:srcCompat="@drawable/ic_decorator_label"
+            app:tint="@color/_gray_lvl_2" />
 
         <!-- RICH TEXT -->
         <pl.hexmind.mindshaper.common.ui.HexTextView
@@ -34,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:maxLines="6"
+            android:maxLines="7"
             android:backgroundTint="@color/hex_card_background"
             android:visibility="gone"/>
 
@@ -59,22 +58,24 @@
             android:gravity="center"
             android:orientation="vertical">
 
+            <!-- VALUE BAR -->
+            <pl.hexmind.mindshaper.common.ui.ValueBar
+                android:id="@+id/vb_thought_value"
+                style="@style/ValueBar"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                app:dotBackgroundColor="@color/app_background"
+                android:layout_marginTop="8dp"
+                />
+
             <!-- METADATA -->
             <TextView
                 android:id="@+id/tv_though_metadata"
                 style="@style/TextView_Metadata_Secondary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:layout_marginBottom="2dp"/>
-
-            <!-- CREATED DATE -->
-            <TextView
-                android:id="@+id/tv_created_at"
-                style="@style/TextView_Metadata_Secondary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:textAlignment="center" />
 
         </LinearLayout>
     </LinearLayout>

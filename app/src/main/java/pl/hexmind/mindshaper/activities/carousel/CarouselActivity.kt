@@ -224,12 +224,20 @@ class CarouselActivity : CoreActivity() {
         }
 
         viewModel.sortConfig.observe(this) { sortConfig ->
+            adapter.updateSortConfig(sortConfig)
             performListRefresh()
-            btnSort.text = getString(sortConfig.property.displayNameRes)
-                .plus(": ")
-                .plus(getString(R.string.sort_info_prefix)).plus(" ")
-                .plus(getString(sortConfig.direction.getLabelResByFieldType(sortConfig.property.type)))
+            updateSortButtonLabel(sortConfig)
         }
+    }
+
+    private fun updateSortButtonLabel(sortConfig : SortConfig){
+        val sortProperty = sortConfig.property
+        val labelText = getString(sortProperty.displayNameRes)
+            .plus(": ")
+            .plus(getString(R.string.sort_info_prefix)).plus(" ")
+            .plus(getString(sortConfig.direction.getLabelResByFieldType(sortProperty.type)))
+
+        btnSort.text = labelText
     }
 
     /**
