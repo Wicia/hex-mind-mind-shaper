@@ -58,14 +58,13 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <!-- VALUE BAR -->
-            <pl.hexmind.mindshaper.common.ui.ValueBar
+            <!-- VALUE CLOUDE -->
+            <pl.hexmind.mindshaper.common.ui.ValueCloude
                 android:id="@+id/vb_thought_value"
-                style="@style/ValueBar"
+                style="@style/ValueCloude"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_gravity="center"
-                app:dotBackgroundColor="@color/app_background"
                 android:layout_marginTop="8dp"
                 />
 

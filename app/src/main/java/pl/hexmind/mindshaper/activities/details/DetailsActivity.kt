@@ -203,10 +203,6 @@ class DetailsActivity : CoreActivity() {
     }
 
     private fun setupUI(){
-        binding.vbThoughtValue.apply {
-            maxLevel = thoughtValidator.getThoughtValueMax()
-        }
-
         updatePhotoFeatureVisibility()
     }
 

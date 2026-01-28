@@ -16,7 +16,7 @@ import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType.*
 import pl.hexmind.mindshaper.common.SortConfig
 import pl.hexmind.mindshaper.common.SortProperty
 import pl.hexmind.mindshaper.common.ui.HexTextView
-import pl.hexmind.mindshaper.common.ui.ValueBar
+import pl.hexmind.mindshaper.common.ui.ValueCloude
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import timber.log.Timber
@@ -69,7 +69,7 @@ class CarouselAdapter(
 
         private val audioView : AudioRecordingView = itemView.findViewById(R.id.arv_playback)
 
-        private val vbThoughtValue: ValueBar = itemView.findViewById(R.id.vb_thought_value)
+        private val vbThoughtValue: ValueCloude = itemView.findViewById(R.id.vb_thought_value)
 
         private var viewedThoughtDTO : ThoughtDTO? = null
 
@@ -104,19 +104,18 @@ class CarouselAdapter(
                     tvRichText.originalText = thought.richText.orEmpty()
                 }
                 PHOTO -> {
-                /* TODO */
+                    /* TODO */
                 }
                 DRAWING -> {
-                /* TODO */
+                    /* TODO */
                 }
                 UNKNOWN -> {
-                /* TODO */
+                    /* TODO */
                 }
             }
 
             updateMetadataUI(thought, sortConfig)
 
-            vbThoughtValue.maxLevel = thoughtValidator.getThoughtValueMax()
             vbThoughtValue.currentLevel = thought.value
         }
 

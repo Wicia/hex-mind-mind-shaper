@@ -16,6 +16,15 @@
         <attr name="showLevelText" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="ValueCloude">
+        <attr name="squareSize" format="dimension" />
+        <attr name="level" />
+        <attr name="squareColor" format="reference|color" />
+        <attr name="textColor" format="reference|color" />
+        <attr name="showLevelText" />
+        <attr name="textSize" format="dimension" />
+    </declare-styleable>
+
     <declare-styleable name="AudioRecordingView">
         <attr name="recordingMode" format="enum">
             <enum name="recordPlayback" value="0" />
