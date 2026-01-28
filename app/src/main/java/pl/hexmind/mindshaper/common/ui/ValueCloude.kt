@@ -102,24 +102,24 @@ class ValueCloude @JvmOverloads constructor(
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(it, R.styleable.ValueCloude, 0, 0)
             try {
-                squareSize = typedArray.getDimension(R.styleable.ValueSquare_squareSize, 120f)
-                currentLevel = typedArray.getInteger(R.styleable.ValueSquare_level, DEFAULT_LEVEL)
+                squareSize = typedArray.getDimension(R.styleable.ValueCloude_squareSize, 120f)
+                currentLevel = typedArray.getInteger(R.styleable.ValueCloude_level, DEFAULT_LEVEL)
 
                 squareColor = typedArray.getResourceId(
-                    R.styleable.ValueSquare_squareColor,
+                    R.styleable.ValueCloude_squareColor,
                     R.color._orange_lvl_2
                 )
                 textColor = typedArray.getResourceId(
-                    R.styleable.ValueSquare_textColor,
+                    R.styleable.ValueCloude_textColor,
                     R.color._black
                 )
 
                 textSize = typedArray.getDimension(
-                    R.styleable.ValueSquare_textSize,
+                    R.styleable.ValueCloude_textSize,
                     android.util.TypedValue.applyDimension(android.util.TypedValue.COMPLEX_UNIT_SP, 14f, context.resources.displayMetrics)
                 )
 
-                showLevelText = typedArray.getBoolean(R.styleable.ValueSquare_showLevelText, true)
+                showLevelText = typedArray.getBoolean(R.styleable.ValueCloude_showLevelText, true)
             } finally {
                 typedArray.recycle()
             }
