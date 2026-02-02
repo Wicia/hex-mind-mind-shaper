@@ -133,7 +133,7 @@ class CarouselAdapter(
                 SortProperty.THREAD -> thought.thread ?: itemView.context.getString(R.string.carousel_thought_metadata_empty)
                 SortProperty.SOUL_MATE -> thought.soulMate ?: itemView.context.getString(R.string.carousel_thought_metadata_empty)
                 SortProperty.PROJECT -> thought.project ?: itemView.context.getString(R.string.carousel_thought_metadata_empty)
-                SortProperty.VALUE -> null
+                SortProperty.VALUE -> null // Already handled above
             }
         }
 

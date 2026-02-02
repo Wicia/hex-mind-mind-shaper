@@ -52,6 +52,9 @@ data class ThoughtDTO(
     val hasAudio : Boolean
         get() = (audioDurationMs ?: 0) > 0
 
+    val hasText : Boolean
+        get() = !richText.isNullOrBlank()
+
     // ! Needed for ByteArray in data class
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

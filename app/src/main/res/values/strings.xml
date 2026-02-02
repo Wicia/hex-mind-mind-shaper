@@ -304,9 +304,9 @@
     <string name="settings_backup_error_loading">Błąd podczas wczytywania backupu</string>
 
     <!-- Thought Age -->
-    <string name="common_thought_age_pattern">%1$s %2$s dni temu</string>
-    <string name="common_thought_age_0">"%s Dzisiaj"</string>
-    <string name="common_thought_age_1">%s Wczoraj</string>
+    <string name="common_thought_age_pattern">%2$s dni temu %1$s</string>
+    <string name="common_thought_age_0">Dzisiaj %s</string>
+    <string name="common_thought_age_1">Wczoraj %s</string>
 
     <string name="common_thought_age_level_1_icon">🌱</string>
     <string name="common_thought_age_level_2_icon">🌿</string>
