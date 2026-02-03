@@ -42,6 +42,8 @@ class CarouselAdapter(
 
     fun updateSortConfig(config: SortConfig) {
         currentSortConfig = config
+        // Notify that all items need rebinding due to sortConfig change
+        notifyItemRangeChanged(0, itemCount)
     }
 
     override fun onBindViewHolder(holder: ThoughtViewHolder, position: Int) {
