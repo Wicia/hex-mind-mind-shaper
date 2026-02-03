@@ -120,7 +120,8 @@ class ValueCloude @JvmOverloads constructor(
                 )
 
                 showLevelText = typedArray.getBoolean(R.styleable.ValueCloude_showLevelText, true)
-            } finally {
+            }
+            finally {
                 typedArray.recycle()
             }
         }
@@ -165,11 +166,11 @@ class ValueCloude @JvmOverloads constructor(
 
     private fun drawCloud(canvas: Canvas) {
         val baseRadius = squareSize / 6f // B2: center radius = 30 when squareSize = 180
-        val mainRadius = baseRadius * 0.83f // Main directions slightly smaller
-        val diagonalRadius = baseRadius * 0.63f // Diagonal circles smaller
+        val mainRadius = baseRadius * 0.75f // Main directions slightly smaller
+        val diagonalRadius = baseRadius * 0.65f // Diagonal circles smaller
 
-        val mainOffset = squareSize * 0.22f // B2: offset = 40 when squareSize = 180
-        val diagonalOffset = squareSize * 0.16f // B2: offset = 29 when squareSize = 180
+        val mainOffset = squareSize * 0.18f // B2: offset = 40 when squareSize = 180
+        val diagonalOffset = squareSize * 0.15f // B2: offset = 29 when squareSize = 180
 
         // Center circle
         canvas.drawCircle(centerX, centerY, baseRadius, squarePaint)
