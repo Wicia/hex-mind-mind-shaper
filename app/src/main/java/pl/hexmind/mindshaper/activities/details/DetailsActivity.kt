@@ -4,6 +4,7 @@ import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -67,6 +68,7 @@ class DetailsActivity : CoreActivity() {
         }
 
         setupUI()
+        setupToolbarButtonWidths()
         setupListeners()
         setupObservers()
 
@@ -88,6 +90,29 @@ class DetailsActivity : CoreActivity() {
                 showErrorAndFinish(R.string.details_edit_thought_not_found)
             }
         }
+    }
+
+    /**
+     * Setup adding new thought content buttons with 30% of screen width
+     */
+    private fun setupToolbarButtonWidths() {
+        val screenWidth = resources.displayMetrics.widthPixels
+        val buttonWidth = (screenWidth * 0.30f).toInt() // Here
+
+        binding.btnRichTextAdd.layoutParams =
+            (binding.btnRichTextAdd.layoutParams as ViewGroup.MarginLayoutParams).apply {
+                width = buttonWidth
+            }
+
+        binding.btnRecordingAdd.layoutParams =
+            (binding.btnRecordingAdd.layoutParams as ViewGroup.MarginLayoutParams).apply {
+                width = buttonWidth
+            }
+
+        binding.btnPhotoAdd.layoutParams =
+            (binding.btnPhotoAdd.layoutParams as ViewGroup.MarginLayoutParams).apply {
+                width = buttonWidth
+            }
     }
 
     private fun setupListeners() {
@@ -148,19 +173,34 @@ class DetailsActivity : CoreActivity() {
                     showEditRichTextDialog()
                 }
             }
-            btnRichTextPlaceholder.apply{
+            btnRichTextAdd.apply{
                 setOnClickListener {
                     showEditRichTextDialog()
                 }
             }
 
             // RECORDING
-            btnRecordingPlaceholder.setOnClickListener {
-                showRecordingWidget()
+            btnRecordingAdd.setOnClickListener {
+                // Switch to recording mode inline
+                binding.btnRecordingAdd.visibility = View.GONE
+                binding.audioRecordingPlayback.visibility = View.VISIBLE
+                binding.audioRecordingPlayback.switchToRecordPlaybackMode()
+                binding.audioRecordingPlayback.cleanupResources(cancelCoroutines = false)
+                binding.audioRecordingPlayback.showStatus(
+                    getString(R.string.capture_voice_tooltip),
+                    R.color.validation_success
+                )
             }
 
-            btnPhotoPlaceholder.setOnClickListener {
-                showPhotoWidget()
+            // PHOTO
+            btnPhotoAdd.setOnClickListener {
+                // Show photo widget inline
+                binding.btnPhotoAdd.visibility = View.GONE
+                binding.photoDisplayView.visibility = View.VISIBLE
+                binding.photoDisplayView.showStatus(
+                    R.string.photos_no_file,
+                    R.color.validation_success
+                )
             }
 
             photoDisplayView.setCallback(object : HexPhotoView.PhotoCallback {
@@ -229,19 +269,10 @@ class DetailsActivity : CoreActivity() {
             .show()
     }
 
-    private fun showEditRichTextDialog() {
-        val currentText = viewModel.thoughtDetails.value?.richText.orEmpty()
-        TextEditDialog(
-            context = this,
-            textInput = currentText,
-            onSave = { newText ->
-                viewModel.updateRichText(newText)
-            }
-        ).show()
-    }
-
     private fun showEditThreadDialog() {
-        val currentText = viewModel.thoughtDetails.value?.thread.orEmpty()
+        val thought = viewModel.thoughtDetails.value ?: return
+        val currentText = thought.thread ?: ""
+
         TextEditDialog(
             context = this,
             textInput = currentText,
@@ -253,7 +284,9 @@ class DetailsActivity : CoreActivity() {
     }
 
     private fun showEditSoulNameDialog() {
-        val currentText = viewModel.thoughtDetails.value?.soulMate.orEmpty()
+        val thought = viewModel.thoughtDetails.value ?: return
+        val currentText = thought.soulMate ?: ""
+
         TextEditDialog(
             context = this,
             textInput = currentText,
@@ -264,8 +297,23 @@ class DetailsActivity : CoreActivity() {
         ).show()
     }
 
+    private fun showEditRichTextDialog() {
+        val thought = viewModel.thoughtDetails.value ?: return
+        val currentText = thought.richText ?: ""
+
+        TextEditDialog(
+            context = this,
+            textInput = currentText,
+            onSave = { newText ->
+                viewModel.updateRichText(newText)
+            }
+        ).show()
+    }
+
     private fun showEditProjectDialog() {
-        val currentText = viewModel.thoughtDetails.value?.project.orEmpty()
+        val thought = viewModel.thoughtDetails.value ?: return
+        val currentText = thought.project ?: ""
+
         TextEditDialog(
             context = this,
             textInput = currentText,
@@ -274,27 +322,6 @@ class DetailsActivity : CoreActivity() {
                 viewModel.updateProject(newText)
             }
         ).show()
-    }
-
-    private fun showRecordingWidget() {
-        binding.btnRecordingPlaceholder.visibility = View.GONE
-        binding.audioRecordingPlayback.visibility = View.VISIBLE
-
-        binding.audioRecordingPlayback.switchToRecordPlaybackMode()
-        binding.audioRecordingPlayback.cleanupResources(cancelCoroutines = false)
-        binding.audioRecordingPlayback.showStatus(
-            getString(R.string.capture_voice_tooltip),
-            R.color.validation_success
-        )
-    }
-
-    private fun showPhotoWidget() {
-        binding.btnPhotoPlaceholder.visibility = View.GONE
-        binding.photoDisplayView.visibility = View.VISIBLE
-        binding.photoDisplayView.showStatus(
-            R.string.photos_no_file,
-            R.color.validation_success
-        )
     }
 
     private fun takePhoto() {
@@ -326,7 +353,7 @@ class DetailsActivity : CoreActivity() {
 
         if (!featureEnabled) {
             binding.photoDisplayView.visibility = View.GONE
-            binding.btnPhotoPlaceholder.visibility = View.GONE
+            binding.btnPhotoAdd.visibility = View.GONE
         }
     }
 
@@ -345,11 +372,11 @@ class DetailsActivity : CoreActivity() {
 
     private fun updateRichTextUI(thought: ThoughtDTO) {
         if (thought.richText.isNullOrBlank()) {
-            binding.btnRichTextPlaceholder.visibility = View.VISIBLE
+            binding.btnRichTextAdd.visibility = View.VISIBLE
             binding.tvRichText.visibility = View.GONE
         }
         else {
-            binding.btnRichTextPlaceholder.visibility = View.GONE
+            binding.btnRichTextAdd.visibility = View.GONE
             binding.tvRichText.visibility = View.VISIBLE
             binding.tvRichText.originalText = thought.richText.orEmpty()
         }
@@ -412,7 +439,7 @@ class DetailsActivity : CoreActivity() {
 
     private fun updateAudioUI(thought: ThoughtDTO) {
         if (thought.hasAudio) {
-            binding.btnRecordingPlaceholder.visibility = View.GONE
+            binding.btnRecordingAdd.visibility = View.GONE
             binding.audioRecordingPlayback.visibility = View.VISIBLE
 
             lifecycleScope.launch {
@@ -422,25 +449,22 @@ class DetailsActivity : CoreActivity() {
             }
         }
         else {
-            binding.btnRecordingPlaceholder.visibility = View.VISIBLE
+            binding.btnRecordingAdd.visibility = View.VISIBLE
             binding.audioRecordingPlayback.visibility = View.GONE
         }
     }
 
-    /**
-     * Update value button UI with current value
-     */
     private fun updatePhotoUI(thought: ThoughtDTO) {
         val featureEnabled = appSettingsStorage.isPhotoFeatureEnabled()
 
         if (!featureEnabled) {
             binding.photoDisplayView.visibility = View.GONE
-            binding.btnPhotoPlaceholder.visibility = View.GONE
+            binding.btnPhotoAdd.visibility = View.GONE
             return
         }
 
         if (thought.hasPhoto) {
-            binding.btnPhotoPlaceholder.visibility = View.GONE
+            binding.btnPhotoAdd.visibility = View.GONE
             binding.photoDisplayView.visibility = View.VISIBLE
 
             lifecycleScope.launch {
@@ -450,7 +474,7 @@ class DetailsActivity : CoreActivity() {
             }
         }
         else {
-            binding.btnPhotoPlaceholder.visibility = View.VISIBLE
+            binding.btnPhotoAdd.visibility = View.VISIBLE
             binding.photoDisplayView.visibility = View.GONE
         }
     }
@@ -468,7 +492,7 @@ class DetailsActivity : CoreActivity() {
                 ContextCompat.getColor(this, R.color.button_secondary_disabled_background)
             )
         }
-        else{ // disabled
+        else{
             binding.btnValueIncrease.imageTintList  = ColorStateList.valueOf(
                 ContextCompat.getColor(this, R.color.button_secondary_enabled_background)
             )
@@ -478,7 +502,7 @@ class DetailsActivity : CoreActivity() {
                 ContextCompat.getColor(this, R.color.button_secondary_disabled_background)
             )
         }
-        else{ // disabled
+        else{
             binding.btnValueDecrease.imageTintList  = ColorStateList.valueOf(
                 ContextCompat.getColor(this, R.color.button_secondary_enabled_background)
             )

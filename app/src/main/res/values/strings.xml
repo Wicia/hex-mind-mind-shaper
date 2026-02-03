@@ -15,14 +15,15 @@
     <string name="common_btn_save">Zapisz</string>
     <string name="common_btn_cancel">Anuluj</string>
     <string name="common_btn_add">\?</string>
+    <string name="common_btn_create">+</string>
 
     <string name="common_info_save_changes">Zapisz zmiany</string>
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
 
     <!-- HEX TAGS / METADATA -->
     <string name="common_hex_tag_project">Projekt</string>
-    <string name="common_hex_tag_soul_mates">Człowiek lub inna dusza</string>
-    <string name="common_hex_tag_thread">Wątek</string>
+    <string name="common_hex_tag_soul_mates">Człowiek lub Ekipa</string>
+    <string name="common_hex_tag_thread">Wątek lub Temat</string>
     <string name="common_hex_tag_domain">Domena</string>
 
     <!-- PERMISSIONS: Voice Recording -->

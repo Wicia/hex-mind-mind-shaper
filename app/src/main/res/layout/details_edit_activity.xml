@@ -211,22 +211,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="90dp"
                 android:orientation="vertical">
-
-                <!-- RICH TEXT : n/a -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_rich_text_placeholder"
-                    style="@style/HexContentButton.NotUsed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_gravity="start"
-                    app:icon="@drawable/ic_thought_type_rich_text"
-                    app:iconGravity="textEnd"
-                    android:text="@string/common_operation_create_symbol"
-                    app:iconSize="36dp"
-                    />
 
                 <!-- RICH TEXT : Note -->
                 <pl.hexmind.mindshaper.common.ui.HexTextView
@@ -242,20 +228,6 @@
                     android:visibility="gone"
                     />
 
-                <!-- SOUND RECORDING : n/a -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_recording_placeholder"
-                    style="@style/HexContentButton.NotUsed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_marginBottom="8dp"
-                    app:icon="@drawable/ic_thought_type_recording"
-                    app:iconGravity="textEnd"
-                    android:text="@string/common_operation_create_symbol"
-                    app:iconSize="36dp"
-                    />
-
                 <!-- SOUND RECORDING : Media player for audio -->
                 <pl.hexmind.mindshaper.activities.capture.handlers.AudioRecordingView
                     android:id="@+id/audio_recording_playback"
@@ -267,19 +239,6 @@
                     android:padding="24dp"
                     android:visibility="gone" />
 
-                <!-- PHOTO : n/a -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_photo_placeholder"
-                    style="@style/HexContentButton.NotUsed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/common_operation_create_symbol"
-                    app:icon="@drawable/ic_thought_type_photo"
-                    app:iconGravity="textEnd"
-                    app:iconSize="36dp" />
-
                 <!-- PHOTO : Content -->
                 <pl.hexmind.mindshaper.common.ui.HexPhotoView
                     android:id="@+id/photo_display_view"
@@ -290,6 +249,55 @@
                     android:visibility="gone"
                     app:photoMode="captureDisplay"
                     app:compact="false" />
+
+                <!-- ADD CONTENT TOOLBAR -->
+                <LinearLayout
+                    android:id="@+id/ll_add_content_toolbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="start"
+                    android:layout_gravity="start"
+                    android:paddingVertical="4dp">
+
+                    <!-- BTN ADD - Rich Text -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_rich_text_add"
+                        style="@style/HexContentButton.NotUsed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="4dp"
+                        app:icon="@drawable/ic_thought_type_rich_text"
+                        app:iconGravity="textEnd"
+                        android:text="@string/common_btn_create"
+                        app:iconSize="28dp"
+                        />
+
+                    <!-- BTN ADD - Recording -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_recording_add"
+                        style="@style/HexContentButton.NotUsed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="4dp"
+                        app:icon="@drawable/ic_thought_type_recording"
+                        app:iconGravity="textEnd"
+                        android:text="@string/common_btn_create"
+                        app:iconSize="28dp"
+                        />
+
+                    <!-- BTN ADD - Photo -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_photo_add"
+                        style="@style/HexContentButton.NotUsed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="@string/common_btn_create"
+                        app:icon="@drawable/ic_thought_type_photo"
+                        app:iconGravity="textEnd"
+                        app:iconSize="28dp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
