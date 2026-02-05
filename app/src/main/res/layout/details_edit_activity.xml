@@ -19,7 +19,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- SOUL MATE -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,7 +49,7 @@
                     style="@style/MetadataContentButton.NotUsed"
                     android:layout_weight="3"
                     android:layout_width="0dp"
-                    android:layout_height="52dp"
+                    android:layout_height="55dp"
                     android:text="@string/common_btn_add"
                     android:layout_marginEnd="18dp"
                     app:icon="@drawable/ic_metadata_soul_mates"
@@ -63,7 +62,7 @@
                     style="@style/MetadataContentButton.Used"
                     android:layout_weight="3"
                     android:layout_width="0dp"
-                    android:layout_height="52dp"
+                    android:layout_height="55dp"
                     android:layout_marginEnd="18dp"
                     android:visibility="gone"
                     app:icon="@drawable/ic_metadata_soul_mates"
@@ -72,7 +71,6 @@
 
             </LinearLayout>
 
-            <!-- DOMAIN & PROJECT -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -81,6 +79,7 @@
                 android:gravity="center_vertical"
                 android:baselineAligned="false">
 
+                <!-- VALUE cloud -->
                 <pl.hexmind.mindshaper.common.ui.ValueCloude
                     android:id="@+id/vb_thought_value"
                     style="@style/ValueCloude"
@@ -95,7 +94,7 @@
                     style="@style/MetadataContentButton.NotUsed"
                     android:layout_weight="0.75"
                     android:layout_width="0dp"
-                    android:layout_height="60dp"
+                    android:layout_height="55dp"
                     android:layout_marginStart="8dp"
                     app:icon="@drawable/ic_domain_none"
                     app:iconGravity="textStart"
@@ -108,7 +107,7 @@
                     style="@style/MetadataContentButton.Used"
                     android:layout_weight="0.75"
                     android:layout_width="0dp"
-                    android:layout_height="60dp"
+                    android:layout_height="55dp"
                     android:layout_marginStart="8dp"
                     app:iconGravity="textStart"
                     app:iconSize="40dp"
@@ -121,7 +120,7 @@
                     style="@style/MetadataContentButton.NotUsed"
                     android:layout_weight="3"
                     android:layout_width="0dp"
-                    android:layout_height="52dp"
+                    android:layout_height="55dp"
                     android:layout_marginStart="8dp"
                     android:text="@string/common_btn_add"
                     app:icon="@drawable/ic_metadata_project"
@@ -134,7 +133,7 @@
                     style="@style/MetadataContentButton.Used"
                     android:layout_weight="3"
                     android:layout_width="0dp"
-                    android:layout_height="52dp"
+                    android:layout_height="55dp"
                     android:layout_marginStart="8dp"
                     app:icon="@drawable/ic_metadata_project"
                     app:iconSize="36dp"
@@ -143,13 +142,12 @@
 
             </LinearLayout>
 
-            <!-- VALUE + DOMAIN + PROJECT-->
             <LinearLayout
                 android:id="@+id/ll_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="4dp"
                 android:gravity="center_vertical"
                 android:baselineAligned="false">
 
@@ -175,7 +173,7 @@
                     android:id="@+id/btn_thread_placeholder"
                     style="@style/MetadataContentButton.NotUsed"
                     android:layout_width="0dp"
-                    android:layout_height="52dp"
+                    android:layout_height="55dp"
                     android:layout_marginEnd="18dp"
                     android:layout_weight="3"
                     android:text="@string/common_btn_add"
@@ -270,7 +268,7 @@
                         app:icon="@drawable/ic_thought_type_rich_text"
                         app:iconGravity="textEnd"
                         android:text="@string/common_btn_create"
-                        app:iconSize="28dp"
+                        app:iconSize="32dp"
                         />
 
                     <!-- BTN ADD - Recording -->
@@ -283,7 +281,7 @@
                         app:icon="@drawable/ic_thought_type_recording"
                         app:iconGravity="textEnd"
                         android:text="@string/common_btn_create"
-                        app:iconSize="28dp"
+                        app:iconSize="32dp"
                         />
 
                     <!-- BTN ADD - Photo -->
@@ -295,7 +293,7 @@
                         android:text="@string/common_btn_create"
                         app:icon="@drawable/ic_thought_type_photo"
                         app:iconGravity="textEnd"
-                        app:iconSize="28dp" />
+                        app:iconSize="32dp" />
 
                 </LinearLayout>
 
