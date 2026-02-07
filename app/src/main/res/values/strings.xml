@@ -94,23 +94,23 @@
     <string name="settings_backup_title">Kopia zapasowa</string>
     <string name="settings_backup_tooltip">Określisz czy raz na jakiś czas zapisać w pamięci apki dane swoich myśli czy też nie…</string>
 
-    <!-- CAROUSEL -->
-    <string name="carousel_entry_title">Twoje myśli</string>
-    <string name="carousel_entry_tooltip">W tym ruchliwym miejscu przeglądniesz swoje myśli.</string>
+    <!-- STREAM -->
+    <string name="stream_entry_title">Twoje myśli</string>
+    <string name="stream_entry_tooltip">W tym ruchliwym miejscu przeglądniesz swoje myśli.</string>
 
-    <string name="carousel_searching_title">Wyszukiwanie myśli</string>
-    <string name="carousel_searching_tooltip"><![CDATA[
+    <string name="stream_searching_title">Wyszukiwanie myśli</string>
+    <string name="stream_searching_tooltip"><![CDATA[
         Wpisując do pola-szukajki znak specjalny + tekst możesz wyszukiwać myśli, np.:\n
         ✓ #gotowanie - wyszuka myśli z projektem \"gotowanie\"\n
         ✓ @Michał - wyszuka myśli z osobą \"Michał\"\n
         ✓ wspomnienie - wyszuka myśli z etykietą \"wspomnienie\"\n
     ]]></string>
 
-    <string name="carousel_deleting_title">Usuwanie myśli</string>
-    <string name="carousel_deleting_tooltip">Przytrzymując pomarańczowy kafelek z myślą możesz go usunąć</string>
+    <string name="stream_deleting_title">Usuwanie myśli</string>
+    <string name="stream_deleting_tooltip">Przytrzymując pomarańczowy obszar z myślą możesz go usunąć</string>
 
-    <string name="carousel_details_title">Szczegóły myśli</string>
-    <string name="carousel_details_tooltip">No i tapując palcem na niego wejdziesz w szczegóły… (kto by pomyślał?)</string>
+    <string name="stream_details_title">Szczegóły myśli</string>
+    <string name="stream_details_tooltip">No i tapując palcem na niego wejdziesz w szczegóły… (kto by pomyślał?)</string>
 
     <!-- DETAILS -->
     <string name="details_entry_title">Szczegóły myśli</string>
@@ -208,22 +208,22 @@
     <string name="validation_recording_missing">Brak nagrania</string>
     <string name="validation_recording_empty">Nagranie jest puste</string>
 
-    <string name="thoughts_carousel_title">Moje Myśli</string>
+    <string name="thoughts_stream_title">Moje Myśli</string>
     <string name="previous_thought">Poprzednia myśl</string>
     <string name="next_thought">Następna myśl</string>
     <string name="thought_type_icon">Ikona typu myśli</string>
 
     <!-- ====================================== -->
-    <!--    ACTIVITY: THOUGHTS PREVIEW / CAROUSEL  -->
+    <!--    Activity: STREAM of THOUGHTS  -->
     <!-- ====================================== -->
 
-    <string name="carousel_thought_metadata_empty">\?\?\?</string>
-    <string name="carousel_searchbar_hint">Szukaj @człowieków / #projektu / wątku...</string>
+    <string name="stream_thought_metadata_empty">\?\?\?</string>
+    <string name="stream_searchbar_hint">Szukaj @człowieków / #projektu / wątku...</string>
 
     <!-- Filter -->
-    <string name="carousel_filter_dialog_title">Filtruj</string>
-    <string name="carousel_filter_all_domains">* Wszystkie domeny</string>
-    <string name="carousel_filter_button_none">-</string>
+    <string name="stream_filter_dialog_title">Filtruj</string>
+    <string name="stream_filter_all_domains">* Wszystkie domeny</string>
+    <string name="stream_filter_button_none">-</string>
 
     <!-- Sort Properties -->
     <string name="sort_info_prefix">Od</string>

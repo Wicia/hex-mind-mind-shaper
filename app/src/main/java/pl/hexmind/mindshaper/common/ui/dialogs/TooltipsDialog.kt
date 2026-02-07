@@ -15,10 +15,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.hexmind.mindshaper.R
 
-/**
- * Data class representing a single tooltip item in the dialog's carousel
- */
-data class TooltipItem(
+data class TooltipScreen(
     val title : String? = null,
     val description: String,
     val icon: Drawable? = null
@@ -26,11 +23,10 @@ data class TooltipItem(
 
 /**
  * Reusable dialog for showing preciousssss... knowledge and tooltips for user
- * Now with carousel support!
  */
 class DialogTooltips private constructor(
     private val context: Context,
-    private val tooltips: List<TooltipItem>,
+    private val tooltips: List<TooltipScreen>,
     private val onDismiss: (() -> Unit)?
 ) {
 
@@ -82,7 +78,7 @@ class DialogTooltips private constructor(
                 layoutParams = LinearLayout.LayoutParams(dotSize, dotSize).apply {
                     marginEnd = if (i < tooltips.size - 1) dotMargin else 0
                 }
-                setImageResource(R.drawable.shape_carousel_indicator)
+                setImageResource(R.drawable.shape_circle)
                 imageTintList = ColorStateList.valueOf(
                     ContextCompat.getColor(
                         context,
@@ -158,11 +154,11 @@ class DialogTooltips private constructor(
     }
 
     class Builder(private val context: Context) {
-        private var tooltips: MutableList<TooltipItem> = mutableListOf()
+        private var tooltips: MutableList<TooltipScreen> = mutableListOf()
         private var onDismiss: (() -> Unit)? = null
 
         fun addTooltip(description: String, title : String? = null, icon: Drawable? = null) = apply {
-            tooltips.add(TooltipItem(title = title, description = description, icon = icon))
+            tooltips.add(TooltipScreen(title = title, description = description, icon = icon))
         }
 
         fun setOnDismissAction(action: () -> Unit) = apply {

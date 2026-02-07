@@ -59,13 +59,15 @@
             android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity"
             android:theme="@style/Theme.MindShaper.NoActionBar" />
 
+        <!--
+            adjustNothing = displayed keyboard is not affecting activity layout
+        -->
         <activity
-            android:name="pl.hexmind.mindshaper.activities.carousel.CarouselActivity"
+            android:name="pl.hexmind.mindshaper.activities.stream.StreamActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustNothing"
             android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity"
             android:theme="@style/Theme.MindShaper.NoActionBar" />
-        <!-- adjustNothing = displayed keyboard is not affecting activity layout -->
 
         <activity
             android:name="pl.hexmind.mindshaper.activities.settings.SettingsActivity"

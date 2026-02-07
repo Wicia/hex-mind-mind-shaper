@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
+    tools:context=".activities.stream.StreamActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/activity_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- FILTER BUTTON -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_filter"
+            style="@style/AuxiliaryActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/stream_filter_button_none"
+            app:icon="@drawable/ic_filter"
+            app:layout_constraintEnd_toStartOf="@+id/btn_sort"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header"
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+
+        <!-- SORT BUTTON -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_sort"
+            style="@style/AuxiliaryActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="24dp"
+            app:icon="@drawable/ic_sorting"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_filter"
+            app:layout_constraintTop_toBottomOf="@+id/header"
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+
+        <!-- VERTICAL VIEWPAGER FOR FEED -->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_thoughts"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="56dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_sort" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- MAIN FAB -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_new_thought"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_catching_thought"
+        app:backgroundTint="@color/button_primary_enabled_background"
+        app:fabSize="normal"
+        app:elevation="6dp"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+
+    <!-- MENU FAB - RICH TEXT -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_rich_text_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_thought_type_rich_text"
+        app:backgroundTint="@color/button_primary_enabled_background"
+        app:fabSize="normal"
+        app:elevation="6dp"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+
+    <!-- MENU FAB - VOICE -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_voice_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_thought_type_recording"
+        app:backgroundTint="@color/button_primary_enabled_background"
+        app:fabSize="normal"
+        app:elevation="6dp"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

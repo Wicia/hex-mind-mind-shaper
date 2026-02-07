@@ -1,78 +1,83 @@
-package pl.hexmind.mindshaper.activities.carousel
+package pl.hexmind.mindshaper.activities.stream
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.activity.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.common.SortConfig
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
-import pl.hexmind.mindshaper.common.regex.HexTagsUtils
-import pl.hexmind.mindshaper.common.ui.dialogs.IconsListDialog
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
+import pl.hexmind.mindshaper.common.ui.dialogs.IconsListDialog
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.math.cos
+import kotlin.math.sin
 
 /**
- * Activity for browsing thoughts in an elegant carousel format with 3D animations and search
+ * Activity for browsing thoughts in a vertical feed (like Instagram/TikTok stories)
  */
 @AndroidEntryPoint
-class CarouselActivity : CoreActivity() {
+class StreamActivity : CoreActivity() {
 
     @Inject
     lateinit var thoughtValidator: ThoughtValidator
 
-    private val viewModel: CarouselViewModel by viewModels()
+    private val viewModel: StreamViewModel by viewModels()
 
     private lateinit var viewPager: ViewPager2
-    private lateinit var adapter: CarouselAdapter
+    private lateinit var adapter: StreamAdapter
 
-    // Search UI components
-    private lateinit var tilSearch: TextInputLayout
-    private lateinit var etSearch: TextInputEditText
     private lateinit var btnSort: MaterialButton
     private lateinit var btnFilter: MaterialButton
 
+    // FAB menu
+    private lateinit var fabNewThought: FloatingActionButton
+    private lateinit var fabNewThoughtRichText: FloatingActionButton
+    private lateinit var fabNewThoughtRecording: FloatingActionButton
+    private var isMenuOpen = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.carousel_activity)
+        setContentView(R.layout.stream_activity)
 
         initializeViews()
-        setupCarousel()
-        setupRealTimeSearchBar()
+        setupVerticalFeed()
         setupSortButton()
         setupFilterButton()
+        setupFabMenu()
         setupReactiveDataObserver()
 
         viewModel.loadDomains()
 
         onboardingManager.showTooltipForStep(
-            OnboardingProgressStep.CAROUSEL_TOOLTIP, this
+            OnboardingProgressStep.STREAM_TOOLTIP, this
         )
     }
 
     private fun initializeViews() {
         viewPager = findViewById(R.id.vp_thoughts)
-        tilSearch = findViewById(R.id.til_search)
-        etSearch = findViewById(R.id.et_search)
         btnSort = findViewById(R.id.btn_sort)
         btnFilter = findViewById(R.id.btn_filter)
-        setupHeader(R.drawable.ic_header_carousel, R.string.thoughts_carousel_title)
+
+        fabNewThought = findViewById(R.id.fab_new_thought)
+        fabNewThoughtRichText = findViewById(R.id.fab_rich_text_type)
+        fabNewThoughtRecording = findViewById(R.id.fab_voice_type)
+
+        setupHeader(R.drawable.ic_header_stream, R.string.thoughts_stream_title)
     }
 
-    private fun setupCarousel() {
-        adapter = CarouselAdapter(
+    private fun setupVerticalFeed() {
+        adapter = StreamAdapter(
             thoughtValidator,
             onDeleteThought = { thoughtToDelete ->
                 showDeleteConfirmationDialog(thoughtToDelete)
@@ -84,40 +89,19 @@ class CarouselActivity : CoreActivity() {
             },
             onLoadAudio = { thoughtId, onReady ->
                 viewModel.loadAudioForPlayback(thoughtId, onReady)
+            },
+            onLoadPhoto = { thoughtId, onReady ->
+                viewModel.loadPhotoForDisplay(thoughtId, onReady)
             }
         )
 
         viewPager.adapter = adapter
-        viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL // VERTICAL feed!
         viewPager.offscreenPageLimit = 3
-
-        // Custom page transformer for 3D carousel effect
-        viewPager.setPageTransformer { _, _ -> ThoughtCardPageTransformer() }
 
         // Smooth page change callback
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
         })
-    }
-
-    private fun setupRealTimeSearchBar() {
-        // ! TextWatcher for real-time search
-        etSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val hexTags = HexTagsUtils.parseInput(s?.toString() ?: "")
-                // Update search query in ViewModel on every text change
-                viewModel.updateSearchQuery(hexTags)
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        })
-
-        // Listener for X icon
-        tilSearch.setEndIconOnClickListener {
-            etSearch.text?.clear()
-            viewModel.clearSearch()
-        }
     }
 
     private fun setupSortButton() {
@@ -137,6 +121,97 @@ class CarouselActivity : CoreActivity() {
         }
     }
 
+    private fun setupFabMenu() {
+        // Initially hide all menu buttons
+        listOf(fabNewThoughtRichText, fabNewThoughtRecording).forEach { fab ->
+            fab.hide()
+            fab.alpha = 0f
+        }
+
+        fabNewThought.setOnClickListener {
+            toggleMenu()
+        }
+
+        // For now, FABs don't open anything - just placeholder
+        fabNewThoughtRichText.setOnClickListener {
+            closeMenu()
+            // TODO: Open CaptureActivity with RICH_TEXT type
+            showShortToast(R.string.common_placeholder_accessibility_content_desc, "Rich Text")
+        }
+
+        fabNewThoughtRecording.setOnClickListener {
+            closeMenu()
+            // TODO: Open CaptureActivity with RECORDING type
+            showShortToast(R.string.common_placeholder_accessibility_content_desc, "Recording")
+        }
+    }
+
+    private fun toggleMenu() {
+        if (isMenuOpen) {
+            closeMenu()
+        } else {
+            openMenu()
+        }
+    }
+
+    private fun openMenu() {
+        isMenuOpen = true
+
+        // Rotate main FAB
+        fabNewThought.animate()
+            .rotation(45f)
+            .setDuration(300)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .start()
+
+        // Show and animate menu buttons - fan out upward and left
+        val fabs = listOf(fabNewThoughtRichText, fabNewThoughtRecording)
+
+        // Angles: 90° (straight up), 135° (up-left)
+        val angles = listOf(90.0, 135.0)
+        val radius = 200f
+
+        fabs.forEachIndexed { index, fab ->
+            fab.show()
+
+            val angleRad = Math.toRadians(angles[index])
+            val x = (radius * cos(angleRad)).toFloat()
+            val y = (radius * sin(angleRad)).toFloat()
+
+            fab.animate()
+                .translationX(x)
+                .translationY(-y) // Negative Y because Android coordinates grow downward
+                .alpha(1f)
+                .setDuration(300)
+                .setStartDelay(index * 50L)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .start()
+        }
+    }
+
+    private fun closeMenu() {
+        isMenuOpen = false
+
+        // Rotate main FAB back
+        fabNewThought.animate()
+            .rotation(0f)
+            .setDuration(300)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .start()
+
+        // Hide menu buttons
+        listOf(fabNewThoughtRichText, fabNewThoughtRecording).forEach { fab ->
+            fab.animate()
+                .translationX(0f)
+                .translationY(0f)
+                .alpha(0f)
+                .setDuration(300)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .withEndAction { fab.hide() }
+                .start()
+        }
+    }
+
     private fun showFilterDialog() {
         val domains = viewModel.domainsWithIcons.value ?: emptyList()
         if (domains.isEmpty()) return
@@ -145,7 +220,7 @@ class CarouselActivity : CoreActivity() {
         val allDomainsOption = CommonIconsListItem(
             iconEntityId = null,
             iconResourceId = R.drawable.ic_domain_none,
-            labelText = getString(R.string.carousel_filter_all_domains),
+            labelText = getString(R.string.stream_filter_all_domains),
             labelEntityId = null,
             highlightItem = true
         )
@@ -153,7 +228,7 @@ class CarouselActivity : CoreActivity() {
         val domainsWithAll = listOf(allDomainsOption) + domains
 
         IconsListDialog.Builder(this)
-            .setTitle(getString(R.string.carousel_filter_dialog_title))
+            .setTitle(getString(R.string.stream_filter_dialog_title))
             .setIcons(domainsWithAll)
             .setOnIconSelected { selectedDomain ->
                 onDomainFilterSelected(selectedDomain)
@@ -173,9 +248,8 @@ class CarouselActivity : CoreActivity() {
 
     private fun updateFilterButtonText(domainId: Int?) {
         btnFilter.text = if (domainId == null) {
-            getString(R.string.carousel_filter_button_none)
-        }
-        else {
+            getString(R.string.stream_filter_button_none)
+        } else {
             "(1)" // TODO: to be replaced with filter counter
         }
     }

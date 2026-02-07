@@ -41,7 +41,7 @@
 
     </style>
 
-    <!-- Theme for carousel activity without action bar -->
+    <!-- Theme for activity without action bar -->
     <style name="Theme.MindShaper.NoActionBar" parent="Theme.MindShaper">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>

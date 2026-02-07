@@ -43,11 +43,11 @@
             android:layout_marginStart="16dp"
             />
 
-        <!-- Button 2: Carousel -->
+        <!-- Button 2: Stream -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/navCarousel"
+            android:id="@+id/navStream"
             style="@style/AuxiliaryActionButton"
-            app:icon="@drawable/ic_header_carousel"
+            app:icon="@drawable/ic_header_stream"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"

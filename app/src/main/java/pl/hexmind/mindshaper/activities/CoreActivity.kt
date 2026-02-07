@@ -17,9 +17,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.capture.models.NavigationBarController
-import pl.hexmind.mindshaper.activities.carousel.CarouselActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
+import pl.hexmind.mindshaper.activities.stream.StreamActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingManager
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.PermissionService
@@ -48,9 +48,9 @@ open class CoreActivity() : AppCompatActivity() {
          */
         private val activityToIndex = mapOf(
             HomeActivity::class.java.simpleName to 0,
-            CarouselActivity::class.java.simpleName to 1,
-            SettingsActivity::class.java.simpleName to 2,
-            "DetailsActivity" to 1 // Highlight Carousel icon when in Details
+            StreamActivity::class.java.simpleName to 1,
+            "DetailsActivity" to 1, // Highlight Stream icon when in Details
+            SettingsActivity::class.java.simpleName to 2
         )
     }
 
@@ -179,10 +179,10 @@ open class CoreActivity() : AppCompatActivity() {
     private fun initializeNavigationController() {
         navigationBarView?.let { navBar ->
             navigationController = NavigationBarController(navBar, appSettingsStorage)
-            navigationController?.setOnNavigationListener { index, label ->
+            navigationController?.setOnNavigationListener { index, _ ->
                 when (index) {
                     0 -> navigateToHome()
-                    1 -> navigateToCarousel()
+                    1 -> navigateToStream()
                     2 -> navigateToSettings()
                 }
             }
@@ -211,9 +211,9 @@ open class CoreActivity() : AppCompatActivity() {
         }
     }
 
-    private fun navigateToCarousel() {
-        if (this::class.java.simpleName != CarouselActivity::class.java.simpleName) {
-            val intent = Intent(this, CarouselActivity::class.java)
+    private fun navigateToStream() {
+        if (this::class.java.simpleName != StreamActivity::class.java.simpleName) {
+            val intent = Intent(this, StreamActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
             overrideTransitions()

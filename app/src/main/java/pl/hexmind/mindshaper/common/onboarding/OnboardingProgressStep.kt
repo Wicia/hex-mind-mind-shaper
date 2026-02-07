@@ -11,5 +11,5 @@ enum class OnboardingProgressStep(
     SETTINGS_TOOLTIP("onb_settings_tooltip_shown"),
     DETAILS_TOOLTIP("onb_details_tooltip_shown"),
     CAPTURE_TOOLTIP("onb_creation_tooltip_shown"),
-    CAROUSEL_TOOLTIP("onb_carousel_tooltip_shown");
+    STREAM_TOOLTIP("onb_stream_tooltip_shown");
 }

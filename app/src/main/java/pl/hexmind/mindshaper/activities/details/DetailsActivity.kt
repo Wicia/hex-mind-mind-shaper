@@ -120,9 +120,6 @@ class DetailsActivity : CoreActivity() {
 
     private fun setupListeners() {
         binding.apply {
-//            btnSave.setOnClickListener {
-//                navigateToCarousel()
-//            }
 
             // VALUE - Increase / Decrease
             btnValueIncrease.setOnClickListener {
@@ -273,10 +270,6 @@ class DetailsActivity : CoreActivity() {
         domain.labelEntityId?.let {
             viewModel.updateDomain(domainId = it)
         }
-    }
-
-    private fun navigateToCarousel() {
-        finish() // ! Don't create new Carousel Instance as sort + search params will vanish
     }
 
     private fun showDomainDialog() {

@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.activities.carousel
+package pl.hexmind.mindshaper.activities.stream
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.common.SortConfig
 import pl.hexmind.mindshaper.common.SortDirection
 import pl.hexmind.mindshaper.common.SortProperty
-import pl.hexmind.mindshaper.common.regex.HexTags
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.ThoughtsService
@@ -21,21 +20,23 @@ import java.io.File
 import javax.inject.Inject
 
 /**
- * ViewModel for managing carousel data and operations with search and sort functionality
+ * ViewModel for managing stream (vertical feed) data with sort and filter functionality
  */
 @HiltViewModel
-class CarouselViewModel @Inject constructor(
+class StreamViewModel @Inject constructor(
     private val thoughtsService: ThoughtsService,
     private val domainsService: DomainsService,
-    private val savedStateHandle: SavedStateHandle // ! To keep search + sort configs when returning from other activities to carousel
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     // All thoughts from database
     private val allThoughts: LiveData<List<ThoughtDTO>> = thoughtsService.getAllThoughts()
 
-    private val _searchQuery = savedStateHandle.getLiveData("search_query", HexTags())
-
-    private val _sortConfig = savedStateHandle.getLiveData("sort_config", SortConfig())
+    // Default sort: newest first (CREATED_AT DESCENDING)
+    private val _sortConfig = savedStateHandle.getLiveData(
+        "sort_config",
+        SortConfig(property = SortProperty.CREATED_AT, direction = SortDirection.DESCENDING)
+    )
     val sortConfig: LiveData<SortConfig> = _sortConfig
 
     private val _selectedDomainId = savedStateHandle.getLiveData<Int?>("selected_domain_id", null)
@@ -44,10 +45,9 @@ class CarouselViewModel @Inject constructor(
     private val _domainsWithIcons = MutableLiveData<List<CommonIconsListItem>>(emptyList())
     val domainsWithIcons: LiveData<List<CommonIconsListItem>> = _domainsWithIcons
 
-    // Combine search and sort using MediatorLiveData
+    // Combine filter and sort using MediatorLiveData
     val filteredThoughts: MediatorLiveData<List<ThoughtDTO>> = MediatorLiveData<List<ThoughtDTO>>().apply {
         var currentThoughts: List<ThoughtDTO>? = null
-        var currentQuery: HexTags? = null
         var currentSort: SortConfig? = null
         var currentDomainId: Int? = null
 
@@ -58,11 +58,13 @@ class CarouselViewModel @Inject constructor(
                 return
             }
 
-            val query = currentQuery ?: HexTags()
-            val sort = currentSort ?: SortConfig()
+            val sort = currentSort ?: SortConfig(
+                property = SortProperty.CREATED_AT,
+                direction = SortDirection.DESCENDING
+            )
             val domainId = currentDomainId
 
-            val filtered = filterThoughts(thoughts, query, domainId)
+            val filtered = filterThoughts(thoughts, domainId)
             val sorted = sortThoughts(filtered, sort)
 
             value = sorted
@@ -70,11 +72,6 @@ class CarouselViewModel @Inject constructor(
 
         addSource(allThoughts) { thoughts ->
             currentThoughts = thoughts
-            update()
-        }
-
-        addSource(_searchQuery) { query ->
-            currentQuery = query
             update()
         }
 
@@ -89,19 +86,9 @@ class CarouselViewModel @Inject constructor(
         }
     }
 
-    fun updateSearchQuery(query: HexTags) {
-        savedStateHandle["search_query"] = query
-        _searchQuery.value = query
-    }
-
     fun updateSortConfig(config: SortConfig) {
         savedStateHandle["sort_config"] = config
         _sortConfig.value = config
-    }
-
-    fun clearSearch() {
-        savedStateHandle["search_query"] = HexTags()
-        _searchQuery.value = HexTags()
     }
 
     fun loadDomains() {
@@ -121,32 +108,13 @@ class CarouselViewModel @Inject constructor(
         _selectedDomainId.value = null
     }
 
-    private fun filterThoughts(thoughts: List<ThoughtDTO>, query: HexTags, domainId: Int?): List<ThoughtDTO> {
-        var filtered = thoughts
-
+    private fun filterThoughts(thoughts: List<ThoughtDTO>, domainId: Int?): List<ThoughtDTO> {
         // Filter by domain if selected
-        if (domainId != null) {
-            filtered = filtered.filter { it.domainId == domainId }
+        return if (domainId != null) {
+            thoughts.filter { it.domainId == domainId }
+        } else {
+            thoughts
         }
-
-        // Filter by search query
-        if (!query.areCriteriaEmpty()) {
-            filtered = filtered.filter { thought ->
-                matchesCriteria(thought.thread, query.thread) &&
-                matchesCriteria(thought.soulMate, query.soulMate) &&
-                matchesCriteria(thought.project, query.project)
-            }
-        }
-
-        return filtered
-    }
-
-    private fun matchesCriteria(fieldValue: String?, searchQuery: String?): Boolean {
-        if (searchQuery.isNullOrBlank()) return true
-        if (fieldValue.isNullOrBlank()) return false
-
-        // case insensitive match (contains)
-        return fieldValue.contains(searchQuery, ignoreCase = true)
     }
 
     private fun sortThoughts(thoughts: List<ThoughtDTO>, config: SortConfig): List<ThoughtDTO> {
@@ -177,7 +145,6 @@ class CarouselViewModel @Inject constructor(
         }
     }
 
-    // TODO: there is same function in DetailsViewModel :)
     fun loadAudioForPlayback(
         thoughtId: Int,
         onAudioReady: (File) -> Unit,
@@ -194,13 +161,22 @@ class CarouselViewModel @Inject constructor(
                 }
 
                 // Creating temp file for playing
-                val tempFile = File.createTempFile("carousel_playback_", ".m4a")
+                val tempFile = File.createTempFile("stream_playback_", ".m4a")
                 tempFile.writeBytes(audioData)
                 onAudioReady(tempFile)
 
             } catch (e: Exception) {
                 Timber.e(e, "Error loading audio for thought $thoughtId")
                 onError()
+            }
+        }
+    }
+
+    fun loadPhotoForDisplay(thoughtId: Int, onPhotoReady: (ByteArray) -> Unit) {
+        viewModelScope.launch {
+            val photoData = thoughtsService.getPhotoData(thoughtId)
+            if (photoData != null && photoData.isNotEmpty()) {
+                onPhotoReady(photoData)
             }
         }
     }

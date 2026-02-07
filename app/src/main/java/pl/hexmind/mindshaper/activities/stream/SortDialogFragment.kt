@@ -1,12 +1,14 @@
-package pl.hexmind.mindshaper.activities.carousel
+package pl.hexmind.mindshaper.activities.stream
 
 import android.app.Dialog
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
@@ -20,7 +22,6 @@ import pl.hexmind.mindshaper.common.SortProperty
 /**
  * Dialog for selecting sort property and direction
  */
-// TODO: Apply more black background for this dialog like in other places
 class SortDialogFragment(
     private val currentConfig: SortConfig,
     private val onSortSelected: (SortConfig) -> Unit
@@ -60,7 +61,7 @@ class SortDialogFragment(
             window?.apply {
                 setBackgroundDrawableResource(android.R.color.transparent)
                 setDimAmount(0.9f)
-                addFlags(android.view.WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+                addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
             }
         }
     }
@@ -115,19 +116,19 @@ class SortDialogFragment(
     private fun updateDirectionButton() {
         val resId = selectedDirection.getLabelResByFieldType(selectedProperty.type)
         btnSortDirection.text = requireContext().getString(resId)
-        btnSortDirection.setTypeface(btnSortDirection.typeface, android.graphics.Typeface.BOLD)
+        btnSortDirection.setTypeface(btnSortDirection.typeface, Typeface.BOLD)
     }
 
     private fun updateButtonStyle(button: MaterialButton, isSelected: Boolean) {
         if (isSelected) {
             button.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.button_content_used_background))
             button.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_primary))
-            button.setTypeface(button.typeface, android.graphics.Typeface.BOLD)
+            button.setTypeface(button.typeface, Typeface.BOLD)
         }
         else {
             button.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.button_content_not_used_background))
             button.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_secondary))
-            button.setTypeface(button.typeface, android.graphics.Typeface.NORMAL)
+            button.setTypeface(button.typeface, Typeface.NORMAL)
         }
     }
 

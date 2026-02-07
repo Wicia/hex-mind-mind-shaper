@@ -10,7 +10,6 @@ import android.view.View
 import android.widget.LinearLayout
 import com.google.android.material.button.MaterialButton
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.common.ui.dpToPx
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 
 class NavigationBarController(
@@ -47,10 +46,10 @@ class NavigationBarController(
             R.drawable.ic_header_home_filled
         ),
         NavButton(
-            R.id.navCarousel,
-            "Carousel",
-            R.drawable.ic_header_carousel,
-            R.drawable.ic_header_carousel_filled
+            R.id.navStream,
+            "Stream",
+            R.drawable.ic_header_stream,
+            R.drawable.ic_header_stream_filled
         ),
         NavButton(
             R.id.navSettings,

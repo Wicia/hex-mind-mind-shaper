@@ -1,10 +1,11 @@
-package pl.hexmind.mindshaper.activities.carousel
+package pl.hexmind.mindshaper.activities.stream
 
 import android.view.GestureDetector
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -12,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtGrowthStage
 import pl.hexmind.mindshaper.activities.capture.handlers.AudioRecordingView
-import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType.*
 import pl.hexmind.mindshaper.common.SortConfig
 import pl.hexmind.mindshaper.common.SortProperty
+import pl.hexmind.mindshaper.common.ui.HexPhotoView
 import pl.hexmind.mindshaper.common.ui.HexTextView
 import pl.hexmind.mindshaper.common.ui.ValueCloude
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
@@ -23,19 +24,20 @@ import timber.log.Timber
 import java.io.File
 
 /**
- * Adapter for thought carousel with smooth animations and automatic updates via LiveData
+ * Adapter for vertical stream - shows ALL filled fields (text, audio, photo) in one card
  */
-class CarouselAdapter(
+class StreamAdapter(
     private val thoughtValidator: ThoughtValidator,
     private val onDeleteThought: (ThoughtDTO) -> Unit,
     private val onThoughtTap: (ThoughtDTO) -> Unit,
-    private val onLoadAudio: (thoughtId: Int, onReady: (File) -> Unit) -> Unit
-) : ListAdapter<ThoughtDTO, CarouselAdapter.ThoughtViewHolder>(ThoughtDiffCallback()) {
+    private val onLoadAudio: (thoughtId: Int, onReady: (File) -> Unit) -> Unit,
+    private val onLoadPhoto: (thoughtId: Int, onReady: (ByteArray) -> Unit) -> Unit
+) : ListAdapter<ThoughtDTO, StreamAdapter.ThoughtViewHolder>(ThoughtDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThoughtViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.carousel_item, parent, false)
-        return ThoughtViewHolder(view, thoughtValidator, onDeleteThought, onThoughtTap, onLoadAudio)
+            .inflate(R.layout.stream_item, parent, false)
+        return ThoughtViewHolder(view, thoughtValidator, onDeleteThought, onThoughtTap, onLoadAudio, onLoadPhoto)
     }
 
     private var currentSortConfig : SortConfig = SortConfig()
@@ -51,91 +53,100 @@ class CarouselAdapter(
     }
 
     /**
-     * ViewHolder for individual thought items with optimized binding logic
+     * ViewHolder for stream items - shows ALL filled fields
      */
     class ThoughtViewHolder(
         itemView: View,
         private val thoughtValidator: ThoughtValidator,
         private val onDeleteThought: (ThoughtDTO) -> Unit,
         private val onThoughtTap: (ThoughtDTO) -> Unit,
-        private val onLoadAudio: (thoughtId: Int, onReady: (File) -> Unit) -> Unit
+        private val onLoadAudio: (thoughtId: Int, onReady: (File) -> Unit) -> Unit,
+        private val onLoadPhoto: (thoughtId: Int, onReady: (ByteArray) -> Unit) -> Unit
     ) : RecyclerView.ViewHolder(itemView),
         GestureDetector.OnGestureListener,
         GestureDetector.OnDoubleTapListener {
 
         private var currentAudioFile: File? = null
 
-        private val tvMetadata: TextView = itemView.findViewById(R.id.tv_though_metadata)
+        private val nestedScrollView: androidx.core.widget.NestedScrollView =
+            itemView.findViewById(R.id.nested_scroll_view)
+        private val tvRichText: HexTextView = itemView.findViewById(R.id.rich_text_view)
+        private val audioView: AudioRecordingView = itemView.findViewById(R.id.arv_playback)
+        private val photoView: HexPhotoView = itemView.findViewById(R.id.pv_photo)
 
-        private val tvRichText: HexTextView = itemView.findViewById(R.id.tv_rich_text)
-
-        private val audioView : AudioRecordingView = itemView.findViewById(R.id.arv_playback)
+        private val tvLabel: TextView = itemView.findViewById(R.id.tv_label)
 
         private val vbThoughtValue: ValueCloude = itemView.findViewById(R.id.vb_thought_value)
 
-        private var viewedThoughtDTO : ThoughtDTO? = null
+        private val llLabel : LinearLayout = itemView.findViewById(R.id.ll_label)
+
+        private var viewedThoughtDTO: ThoughtDTO? = null
 
         private val gestureDetector = GestureDetector(itemView.context, this).apply {
             setOnDoubleTapListener(this@ThoughtViewHolder)
         }
 
         /**
-         * Bind thought data to view components with null safety
+         * Bind thought data - show ALL filled fields (text, audio, photo)
          */
         fun bind(thought: ThoughtDTO, sortConfig: SortConfig) {
             viewedThoughtDTO = thought
             setViewOnTouchListener()
 
-            audioView.visibility = View.GONE
+            // Reset all fields to GONE first
             tvRichText.visibility = View.GONE
+            audioView.visibility = View.GONE
+            photoView.visibility = View.GONE
 
-            when (thought.mainContentType) {
-                RECORDING -> {
-                    audioView.visibility = View.VISIBLE
-                    audioView.switchToPlaybackOnlyMode()
+            if (thought.hasText) {
+                tvRichText.visibility = View.VISIBLE
+                tvRichText.originalText = thought.richText!!
+            }
 
-                    thought.id?.let { thoughtId ->
-                        onLoadAudio(thoughtId) { audioFile ->
+            if (thought.hasAudio) {
+                thought.id?.let { thoughtId ->
+                    onLoadAudio(thoughtId) { audioFile ->
+                        if (audioFile.exists() && audioFile.length() > 0) {
+                            audioView.visibility = View.VISIBLE
+                            audioView.switchToPlaybackOnlyMode()
                             currentAudioFile = audioFile
                             audioView.loadAudioForPlayback(audioFile)
                         }
                     }
                 }
-                RICH_TEXT -> {
-                    tvRichText.visibility = View.VISIBLE
-                    tvRichText.originalText = thought.richText.orEmpty()
-                }
-                PHOTO -> {
-                    /* TODO */
-                }
-                DRAWING -> {
-                    /* TODO */
-                }
-                UNKNOWN -> {
-                    /* TODO */
+            }
+
+            if (thought.hasPhoto) {
+                thought.id?.let { thoughtId ->
+                    onLoadPhoto(thoughtId) { photoData ->
+                        if (photoData.isNotEmpty()) {
+                            photoView.visibility = View.VISIBLE
+                            photoView.loadPhoto(photoData)
+                        }
+                    }
                 }
             }
 
-            updateMetadataUI(thought, sortConfig)
-
             vbThoughtValue.currentLevel = thought.value
+
+            updateMetadataUI(thought, sortConfig)
         }
 
         fun updateMetadataUI(thought: ThoughtDTO, sortConfig: SortConfig) {
             if(sortConfig.property == SortProperty.VALUE){
                 vbThoughtValue.visibility = View.VISIBLE
-                tvMetadata.visibility = View.GONE
+                llLabel.visibility = View.GONE
             }
             else{
                 vbThoughtValue.visibility = View.GONE
-                tvMetadata.visibility = View.VISIBLE
-            }
-            tvMetadata.text = when (sortConfig.property) {
-                SortProperty.CREATED_AT -> getFormattedCreatedAt(thought)
-                SortProperty.THREAD -> thought.thread ?: itemView.context.getString(R.string.carousel_thought_metadata_empty)
-                SortProperty.SOUL_MATE -> thought.soulMate ?: itemView.context.getString(R.string.carousel_thought_metadata_empty)
-                SortProperty.PROJECT -> thought.project ?: itemView.context.getString(R.string.carousel_thought_metadata_empty)
-                SortProperty.VALUE -> null // Already handled above
+                llLabel.visibility = View.VISIBLE
+                tvLabel.text = when (sortConfig.property) {
+                    SortProperty.CREATED_AT -> getFormattedCreatedAt(thought)
+                    SortProperty.THREAD -> thought.thread ?: itemView.context.getString(R.string.stream_thought_metadata_empty)
+                    SortProperty.SOUL_MATE -> thought.soulMate ?: itemView.context.getString(R.string.stream_thought_metadata_empty)
+                    SortProperty.PROJECT -> thought.project ?: itemView.context.getString(R.string.stream_thought_metadata_empty)
+                    SortProperty.VALUE -> null
+                }
             }
         }
 
@@ -158,11 +169,14 @@ class CarouselAdapter(
             }
         }
 
-        fun setViewOnTouchListener(){
-            itemView.setOnTouchListener { _, event ->
-                gestureDetector.onTouchEvent(event).also { handled ->
-                    if (event.action == MotionEvent.ACTION_UP && handled) itemView.performClick()
+        fun setViewOnTouchListener() {
+            // Set touch listener on NestedScrollView to intercept gestures
+            nestedScrollView.setOnTouchListener { view, event ->
+                val handled = gestureDetector.onTouchEvent(event)
+                if (event.action == MotionEvent.ACTION_UP && handled) {
+                    view.performClick()
                 }
+                false // Return false to allow scrolling to work
             }
         }
 
@@ -182,7 +196,7 @@ class CarouselAdapter(
         }
 
         /**
-         * Handles long press gesture
+         * Handles long press gesture - delete thought
          */
         override fun onLongPress(e: MotionEvent) {
             viewedThoughtDTO?.let { thought ->
@@ -198,7 +212,7 @@ class CarouselAdapter(
             velocityX: Float,
             velocityY: Float
         ): Boolean {
-            TODO("Not yet implemented")
+            return false
         }
 
         override fun onSingleTapUp(e: MotionEvent): Boolean {
@@ -213,25 +227,23 @@ class CarouselAdapter(
         }
 
         override fun onDoubleTap(e: MotionEvent): Boolean {
-            TODO("Not yet implemented")
+            return false
         }
 
         override fun onDoubleTapEvent(e: MotionEvent): Boolean {
-            TODO("Not yet implemented")
+            return false
         }
     }
 
     /**
-     * Optimized DiffCallback for efficient list updates with proper comparison
+     * Optimized DiffCallback for efficient list updates
      */
     private class ThoughtDiffCallback : DiffUtil.ItemCallback<ThoughtDTO>() {
         override fun areItemsTheSame(oldItem: ThoughtDTO, newItem: ThoughtDTO): Boolean {
-            // Compare by ID for item identity
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: ThoughtDTO, newItem: ThoughtDTO): Boolean {
-            // Compare full objects for content changes - triggers smooth animations
             return oldItem == newItem
         }
     }
