@@ -316,4 +316,7 @@
     <string name="common_thought_age_level_5_icon">🏝️</string>
     <string name="sort_dialog_header">Sortowanie</string>
 
+    <string name="rich_text_removing_header">Usunąć tekst?</string>
+    <string name="rich_text_removing_content">Ta operacja jest nieodwracalna</string>
+
 </resources>

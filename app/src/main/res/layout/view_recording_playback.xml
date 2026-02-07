@@ -65,8 +65,8 @@
             style="@style/AuxiliaryActionButton"
             android:id="@+id/btn_skip_backward"
             android:minWidth="48dp"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
             android:layout_marginEnd="32dp"
             app:cornerRadius="24dp"
             app:strokeColor="@color/button_primary_stateful_icon"
@@ -74,34 +74,37 @@
             android:text="-5s"
             />
 
-        <!-- Skip forward 5s -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_record_new"
             style="@style/SecondaryActionButton"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_height="42dp"
             android:layout_marginEnd="8dp"
             app:icon="@drawable/ic_recording_record"
+            app:iconGravity="textStart"
             />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_record_stop_play"
             style="@style/SecondaryActionButton"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            app:icon="@drawable/ic_recording_stop" />
+            android:layout_height="42dp"
+            app:icon="@drawable/ic_recording_stop"
+            app:iconGravity="textStart"
+            />
 
+        <!-- Skip forward 5s -->
         <com.google.android.material.button.MaterialButton
             style="@style/AuxiliaryActionButton"
             android:id="@+id/btn_skip_forward"
-            android:minWidth="48dp"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
             android:layout_marginStart="32dp"
             app:cornerRadius="24dp"
             app:strokeColor="@color/button_primary_stateful_icon"
             app:strokeWidth="0.5dp"
             android:text="+5s"
             />
+
     </LinearLayout>
 </LinearLayout>

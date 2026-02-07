@@ -46,6 +46,10 @@ class RecordingCaptureHandler(
         // The file is already managed by the view
     }
 
+    override fun onRecordingDeleted() {
+        TODO("Not yet implemented")
+    }
+
     override fun onRecordingError(error: String) {
         view.showStatus(
             view.context.getString(R.string.capture_voice_error_recording),

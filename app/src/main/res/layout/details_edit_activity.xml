@@ -214,17 +214,12 @@
 
                 <!-- RICH TEXT : Note -->
                 <pl.hexmind.mindshaper.common.ui.HexTextView
-                    android:id="@+id/tv_rich_text"
-                    style="@style/HexTextViewDisplayed.Used"
+                    android:id="@+id/rich_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="90dp"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginEnd="0dp"
                     android:layout_marginBottom="8dp"
-                    android:padding="24dp"
                     android:visibility="gone"
-                    />
+                    app:richTextMode="editDisplay" />
 
                 <!-- SOUND RECORDING : Media player for audio -->
                 <pl.hexmind.mindshaper.activities.capture.handlers.AudioRecordingView
@@ -303,18 +298,18 @@
 
     </ScrollView>
 
-    <!-- SAVE (hiding on scrolling) -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_save"
-        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-        app:backgroundTint="@color/button_primary_enabled_background"
-        app:fabSize="normal"
-        app:maxImageSize="32dp"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
+    <!-- TODO: use it? -->
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/btn_save"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom|end"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:src="@drawable/ic_save"-->
+<!--        android:contentDescription="@string/common_placeholder_accessibility_content_desc"-->
+<!--        app:backgroundTint="@color/button_primary_enabled_background"-->
+<!--        app:fabSize="normal"-->
+<!--        app:maxImageSize="32dp"-->
+<!--        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

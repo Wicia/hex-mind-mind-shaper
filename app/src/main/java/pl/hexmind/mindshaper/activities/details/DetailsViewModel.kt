@@ -120,31 +120,6 @@ class DetailsViewModel @Inject constructor(
         } ?: false
     }
 
-    fun saveThought(recording: Recording) {
-        viewModelScope.launch {
-            // TODO: refactor this and move such logic to services layer (or reduce layers count by 1)
-            thoughtDetails.value?.let { thought ->
-                val thoughtId = thought.id ?: throw IllegalStateException("Thought ID cannot be null")
-
-                if (thought.hasAudio && !recording.fileExists()) {
-                    thoughtsService.deleteThoughtAudio(thoughtId)
-                    thought.audioDurationMs = null
-                }
-                else if (recording.fileExists()) {
-                    thoughtsService.updateThoughtRecording(
-                        thoughtId.toLong(),
-                        recording.file!!,
-                        recording.duration!!
-                    )
-                    thought.audioDurationMs = recording.duration
-                }
-
-                thoughtsService.updateThoughtMetadata(thought)
-                thoughtsService.updateThoughtRichText(thoughtId, thought.richText)
-            }
-        }
-    }
-
     fun updateRichText(richText: String) {
         viewModelScope.launch {
             thoughtDetails.value?.id?.let { id ->
@@ -203,29 +178,6 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    // TODO: Use it also in Carousel
-    fun loadPhotoThumbnail(thoughtId: Int, onReady: (Bitmap) -> Unit) {
-        viewModelScope.launch {
-            // Check cache first
-            thumbnailCache.get(thoughtId)?.let {
-                onReady(it)
-                return@launch
-            }
-
-            // Load and generate thumbnail
-            val photoData = thoughtsService.getPhotoData(thoughtId)
-            if (photoData != null && photoData.isNotEmpty()) {
-                val thumbnail = withContext(Dispatchers.Default) {
-                    thoughtsService.createThumbnail(photoData)
-                }
-                thumbnail?.let {
-                    thumbnailCache.put(thoughtId, it)
-                    onReady(it)
-                }
-            }
-        }
-    }
-
     fun createPhotoUri(): Uri {
         return thoughtsService.createPhotoUri()
     }
@@ -243,6 +195,43 @@ class DetailsViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 // Error handled in Activity via HexPhotoView.showError
+            }
+        }
+    }
+
+    fun saveAudioRecording(file: File, durationMs: Long) {
+        viewModelScope.launch {
+            thoughtDetails.value?.let { thought ->
+                val thoughtId = thought.id ?: return@let
+                thoughtsService.updateThoughtRecording(
+                    thoughtId.toLong(),
+                    file,
+                    durationMs
+                )
+                thought.audioDurationMs = durationMs
+                loadThought(thoughtId)  // Refresh UI
+            }
+        }
+    }
+
+    fun deleteAudioRecording() {
+        viewModelScope.launch {
+            thoughtDetails.value?.let { thought ->
+                val thoughtId = thought.id ?: return@let
+                thoughtsService.deleteThoughtAudio(thoughtId)
+                thought.audioDurationMs = null
+                loadThought(thoughtId)  // Refresh UI
+            }
+        }
+    }
+
+    fun deleteRichText() {
+        viewModelScope.launch {
+            thoughtDetails.value?.let { thought ->
+                val thoughtId = thought.id ?: return@let
+                thoughtsService.updateThoughtRichText(thoughtId, null) // TODO: add new method for deletion?
+                thought.richText = null
+                loadThought(thoughtId)  // Refresh UI
             }
         }
     }

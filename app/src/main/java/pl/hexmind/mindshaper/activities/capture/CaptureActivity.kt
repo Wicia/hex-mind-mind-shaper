@@ -152,6 +152,10 @@ class CaptureActivity : CoreActivity(), AudioRecordingView.RecordingCallback {
         // Optional: Update UI or perform actions when recording stops
     }
 
+    override fun onRecordingDeleted() {
+        TODO("Not yet implemented")
+    }
+
     override fun onRecordingError(error: String) {
         Timber.tag(TAG).e("Recording error: $error")
         tvHexTagsValidationInfo.text = getString(R.string.capture_voice_error_recording)

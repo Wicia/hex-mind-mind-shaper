@@ -41,4 +41,11 @@
         <attr name="compact" />
     </declare-styleable>
 
+    <declare-styleable name="RichTextView">
+        <attr name="richTextMode" format="enum">
+            <enum name="editDisplay" value="0" />
+            <enum name="displayOnly" value="1" />
+        </attr>
+    </declare-styleable>
+
 </resources>

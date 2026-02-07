@@ -16,15 +16,18 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
+import pl.hexmind.mindshaper.activities.capture.handlers.AudioRecordingView
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.ui.dialogs.IconsListDialog
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
 import pl.hexmind.mindshaper.common.ui.HexPhotoView
+import pl.hexmind.mindshaper.common.ui.HexTextView
 import pl.hexmind.mindshaper.common.ui.dialogs.PhotoFullscreenDialog
 import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
+import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -117,11 +120,9 @@ class DetailsActivity : CoreActivity() {
 
     private fun setupListeners() {
         binding.apply {
-            btnSave.setOnClickListener {
-                val recording = binding.audioRecordingPlayback.getCurrentRecording()
-                viewModel.saveThought(recording)
-                navigateToCarousel()
-            }
+//            btnSave.setOnClickListener {
+//                navigateToCarousel()
+//            }
 
             // VALUE - Increase / Decrease
             btnValueIncrease.setOnClickListener {
@@ -167,21 +168,12 @@ class DetailsActivity : CoreActivity() {
             }
 
             // RICH TEXT
-            tvRichText.apply{
-                propagateClickEventsToParent = false
-                setOnClickListener {
-                    showEditRichTextDialog()
-                }
-            }
-            btnRichTextAdd.apply{
-                setOnClickListener {
-                    showEditRichTextDialog()
-                }
+            btnRichTextAdd.setOnClickListener {
+                showEditRichTextDialog()
             }
 
             // RECORDING
             btnRecordingAdd.setOnClickListener {
-                // Switch to recording mode inline
                 binding.btnRecordingAdd.visibility = View.GONE
                 binding.audioRecordingPlayback.visibility = View.VISIBLE
                 binding.audioRecordingPlayback.switchToRecordPlaybackMode()
@@ -222,6 +214,37 @@ class DetailsActivity : CoreActivity() {
 
                 override fun onError(error: String) {
                     Toast.makeText(this@DetailsActivity, error, Toast.LENGTH_SHORT).show() // TODO
+                }
+            })
+
+            audioRecordingPlayback.setCallback(object : AudioRecordingView.RecordingCallback {
+                override fun onRecordingStarted() {}
+
+                override fun onRecordingStopped(file: File, durationMs: Long) {
+                    viewModel.saveAudioRecording(file, durationMs)
+                }
+
+                override fun onRecordingDeleted() {
+
+                    viewModel.deleteAudioRecording()
+                }
+
+                override fun onRecordingError(error: String) {
+                    Toast.makeText(this@DetailsActivity, error, Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onPlaybackStarted() {}
+                override fun onPlaybackStopped() {}
+                override fun onPermissionRequired() {}
+            })
+
+            richTextView.setCallback(object : HexTextView.TextCallback {
+                override fun onTextClicked() {
+                    showEditRichTextDialog()
+                }
+
+                override fun onTextDeleted() {
+                    viewModel.deleteRichText()
                 }
             })
         }
@@ -373,12 +396,12 @@ class DetailsActivity : CoreActivity() {
     private fun updateRichTextUI(thought: ThoughtDTO) {
         if (thought.richText.isNullOrBlank()) {
             binding.btnRichTextAdd.visibility = View.VISIBLE
-            binding.tvRichText.visibility = View.GONE
+            binding.richTextView.visibility = View.GONE
         }
         else {
             binding.btnRichTextAdd.visibility = View.GONE
-            binding.tvRichText.visibility = View.VISIBLE
-            binding.tvRichText.originalText = thought.richText.orEmpty()
+            binding.richTextView.visibility = View.VISIBLE
+            binding.richTextView.originalText = thought.richText.orEmpty()
         }
     }
 

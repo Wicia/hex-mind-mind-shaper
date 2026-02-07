@@ -23,7 +23,6 @@ class TextEditDialog(
 
     private val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_edit, null)
     private val etInput: TextInputEditText = dialogView.findViewById(R.id.et_input)
-
     private val tvHeader : TextView = dialogView.findViewById(R.id.tv_header)
     private val dialog: AlertDialog
 
@@ -32,20 +31,14 @@ class TextEditDialog(
         dialog = createDialog()
     }
 
-    /**
-     * Sets initial text and hint in EditText
-     */
     private fun setupInitialValues() {
         tvHeader.text = title
         etInput.setText(textInput)
         etInput.setSelection(textInput.length)  // Cursor at end
     }
 
-    /**
-     * Creates AlertDialog with custom styling and 80% transparent black background
-     */
     private fun createDialog(): AlertDialog {
-        return AlertDialog.Builder(context)
+        val builder = AlertDialog.Builder(context)
             .setView(dialogView)
             .setPositiveButton(context.getString(R.string.common_btn_save)) { _, _ ->
                 handleSave()
@@ -53,28 +46,22 @@ class TextEditDialog(
             .setNegativeButton(context.getString(R.string.common_btn_cancel)) { dialog, _ ->
                 dialog.dismiss()
             }
-            .create()
-            .apply {
-                // Setup window parameters for custom dim
+
+        return builder.create()
+            .apply { // Setup window parameters for custom dim
                 window?.apply {
                     setBackgroundDrawable(TRANSPARENT.toDrawable())
-                    setDimAmount(0.9f)  // 90% black overlay, dim amount (0.0 = no dim, 1.0 = fully black)
+                    setDimAmount(0.9f)
                     addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
                 }
             }
     }
 
-    /**
-     * Handles save button click
-     */
     private fun handleSave() {
         val text = etInput.text.toString()
         onSave(text)
     }
 
-    /**
-     * Shows the dialog
-     */
     fun show() {
         dialog.show()
         // Request focus and show keyboard

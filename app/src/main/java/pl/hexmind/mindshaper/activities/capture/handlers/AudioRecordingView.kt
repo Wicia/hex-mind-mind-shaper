@@ -66,6 +66,7 @@ class AudioRecordingView @JvmOverloads constructor(
     interface RecordingCallback {
         fun onRecordingStarted()
         fun onRecordingStopped(file: File, durationMs: Long)
+        fun onRecordingDeleted()
         fun onRecordingError(error: String)
         fun onPlaybackStarted()
         fun onPlaybackStopped()
@@ -275,16 +276,16 @@ class AudioRecordingView @JvmOverloads constructor(
 
     private fun showRecordingOptionsDialog() {
         MultipleActionsDialog.Builder(context)
-            .setTitle("Co chcesz zrobić z nagraniem?") // TODO
-            .setCautionAction("Wywalić") { // TODO
-                deleteCurrentRecording()
+            .setTitle("Co chcesz zrobić z nagraniem?")
+            .setCautionAction("Wywalić") {
+                deleteCurrentRecording(deleteFromDatabase = true)  // Delete from DB
                 showStatus(
                     context.getString(R.string.capture_voice_tooltip),
                     R.color.text_secondary
                 )
             }
-            .setStandardAction("Nadpisać") { // TODO
-                deleteCurrentRecording()
+            .setStandardAction("Nadpisać") {
+                deleteCurrentRecording(deleteFromDatabase = true)  // Delete from DB
                 startRecording()
             }
             .show()
@@ -418,7 +419,7 @@ class AudioRecordingView @JvmOverloads constructor(
         state = State.WAITING
     }
 
-    fun deleteCurrentRecording() {
+    fun deleteCurrentRecording(deleteFromDatabase: Boolean = false) {
         stopPlaying()
 
         tempAudioFile?.delete()
@@ -428,6 +429,11 @@ class AudioRecordingView @JvmOverloads constructor(
         clearVisualization()
         updateUIForState()
         showVisualization(false)
+
+        // Only notify callback when deleting from database
+        if (deleteFromDatabase) {
+            callback?.onRecordingDeleted()
+        }
     }
     
     fun getCurrentRecording(): Recording = Recording(audioFile, currentRecordingDuration)
@@ -685,6 +691,10 @@ class AudioRecordingView @JvmOverloads constructor(
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         cleanupResources()
+    }
+
+    fun setCallback(callback: RecordingCallback) {
+        this.callback = callback
     }
 }
 
