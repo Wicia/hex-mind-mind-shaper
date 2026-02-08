@@ -2,7 +2,6 @@ package pl.hexmind.mindshaper.activities.stream
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.activity.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.button.MaterialButton
@@ -11,6 +10,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
+import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.common.SortConfig
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
@@ -20,8 +20,6 @@ import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.math.cos
-import kotlin.math.sin
 
 /**
  * Activity for browsing thoughts in a vertical feed (like Instagram/TikTok stories)
@@ -42,8 +40,6 @@ class StreamActivity : CoreActivity() {
 
     // FAB menu
     private lateinit var fabNewThought: FloatingActionButton
-    private lateinit var fabNewThoughtRichText: FloatingActionButton
-    private lateinit var fabNewThoughtRecording: FloatingActionButton
     private var isMenuOpen = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,11 +64,7 @@ class StreamActivity : CoreActivity() {
         viewPager = findViewById(R.id.vp_thoughts)
         btnSort = findViewById(R.id.btn_sort)
         btnFilter = findViewById(R.id.btn_filter)
-
         fabNewThought = findViewById(R.id.fab_new_thought)
-        fabNewThoughtRichText = findViewById(R.id.fab_rich_text_type)
-        fabNewThoughtRecording = findViewById(R.id.fab_voice_type)
-
         setupHeader(R.drawable.ic_header_stream, R.string.thoughts_stream_title)
     }
 
@@ -122,93 +114,9 @@ class StreamActivity : CoreActivity() {
     }
 
     private fun setupFabMenu() {
-        // Initially hide all menu buttons
-        listOf(fabNewThoughtRichText, fabNewThoughtRecording).forEach { fab ->
-            fab.hide()
-            fab.alpha = 0f
-        }
-
         fabNewThought.setOnClickListener {
-            toggleMenu()
-        }
-
-        // For now, FABs don't open anything - just placeholder
-        fabNewThoughtRichText.setOnClickListener {
-            closeMenu()
-            // TODO: Open CaptureActivity with RICH_TEXT type
-            showShortToast(R.string.common_placeholder_accessibility_content_desc, "Rich Text")
-        }
-
-        fabNewThoughtRecording.setOnClickListener {
-            closeMenu()
-            // TODO: Open CaptureActivity with RECORDING type
-            showShortToast(R.string.common_placeholder_accessibility_content_desc, "Recording")
-        }
-    }
-
-    private fun toggleMenu() {
-        if (isMenuOpen) {
-            closeMenu()
-        } else {
-            openMenu()
-        }
-    }
-
-    private fun openMenu() {
-        isMenuOpen = true
-
-        // Rotate main FAB
-        fabNewThought.animate()
-            .rotation(45f)
-            .setDuration(300)
-            .setInterpolator(AccelerateDecelerateInterpolator())
-            .start()
-
-        // Show and animate menu buttons - fan out upward and left
-        val fabs = listOf(fabNewThoughtRichText, fabNewThoughtRecording)
-
-        // Angles: 90° (straight up), 135° (up-left)
-        val angles = listOf(90.0, 135.0)
-        val radius = 200f
-
-        fabs.forEachIndexed { index, fab ->
-            fab.show()
-
-            val angleRad = Math.toRadians(angles[index])
-            val x = (radius * cos(angleRad)).toFloat()
-            val y = (radius * sin(angleRad)).toFloat()
-
-            fab.animate()
-                .translationX(x)
-                .translationY(-y) // Negative Y because Android coordinates grow downward
-                .alpha(1f)
-                .setDuration(300)
-                .setStartDelay(index * 50L)
-                .setInterpolator(AccelerateDecelerateInterpolator())
-                .start()
-        }
-    }
-
-    private fun closeMenu() {
-        isMenuOpen = false
-
-        // Rotate main FAB back
-        fabNewThought.animate()
-            .rotation(0f)
-            .setDuration(300)
-            .setInterpolator(AccelerateDecelerateInterpolator())
-            .start()
-
-        // Hide menu buttons
-        listOf(fabNewThoughtRichText, fabNewThoughtRecording).forEach { fab ->
-            fab.animate()
-                .translationX(0f)
-                .translationY(0f)
-                .alpha(0f)
-                .setDuration(300)
-                .setInterpolator(AccelerateDecelerateInterpolator())
-                .withEndAction { fab.hide() }
-                .start()
+            val intent = Intent(this, CaptureActivity::class.java)
+            startActivity(intent)
         }
     }
 

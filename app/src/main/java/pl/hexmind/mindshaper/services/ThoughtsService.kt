@@ -50,18 +50,13 @@ class ThoughtsService @Inject constructor(
         }
     }
 
-    suspend fun addThought(thought: ThoughtDTO) {
+    suspend fun addThought(thought: ThoughtDTO) : Long {
         val entity = ThoughtsMapper.INSTANCE.dtoToEntity(thought)
-        repository.insertThought(entity)
+        return repository.insertThought(entity)
     }
 
     suspend fun deleteThoughtById(id: Int) {
         repository.deleteThoughtById(id)
-    }
-
-    suspend fun updateThought(thought: ThoughtDTO) {
-        val entity = ThoughtsMapper.INSTANCE.dtoToEntity(thought)
-        repository.updateThought(entity)
     }
 
     // === Sophisticated methods for updating specific part of thought (rich text, recording...)
@@ -80,22 +75,6 @@ class ThoughtsService @Inject constructor(
 
     suspend fun updateThoughtRichText(thoughtId: Int, richText: String?) {
         repository.updateRichText(thoughtId, richText)
-    }
-
-    /**
-     * Save thought with audio recording.
-     * Audio file is passed as separate object instead of byte data/array in DTO
-     * @param dto ThoughtDTO with thought data
-     * @param audioFile Temporary file with audio recording
-     * @return ID of saved thought
-     */
-    suspend fun addThoughtWithAudio(dto: ThoughtDTO, audioFile: File): Long {
-        val entity = ThoughtsMapper.INSTANCE.dtoToEntity(dto)
-        val thoughtId = repository.insertThought(entity)
-
-        updateThoughtRecording(thoughtId, audioFile, dto.duration ?: 0L)
-
-        return thoughtId
     }
 
     suspend fun updateThoughtRecording(thoughtId : Long, audioFile: File, duration : Long) {
@@ -127,6 +106,40 @@ class ThoughtsService @Inject constructor(
 
     suspend fun deleteThoughtPhoto(thoughtId: Int) {
         repository.deletePhoto(thoughtId.toLong())
+    }
+
+    /**
+     * Load photo from file with EXIF rotation applied (for preview)
+     * Returns photo as byte array ready for display
+     */
+    fun loadPhotoForPreview(photoFile: File, maxSize: Int = 800): ByteArray {
+        // Decode file to bitmap
+        val bitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
+
+        // Apply EXIF rotation
+        val rotatedBitmap = rotateBitmapIfNeeded(bitmap, photoFile)
+
+        // Scale to max size for preview (smaller = faster load)
+        val scaledBitmap = if (rotatedBitmap.width > maxSize || rotatedBitmap.height > maxSize) {
+            val scale = maxSize.toFloat() / max(rotatedBitmap.width, rotatedBitmap.height)
+            Bitmap.createScaledBitmap(
+                rotatedBitmap,
+                (rotatedBitmap.width * scale).toInt(),
+                (rotatedBitmap.height * scale).toInt(),
+                true
+            )
+        } else rotatedBitmap
+
+        // Convert to bytes
+        val outputStream = java.io.ByteArrayOutputStream()
+        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
+        val photoBytes = outputStream.toByteArray()
+
+        // Cleanup
+        rotatedBitmap.recycle()
+        if (scaledBitmap != rotatedBitmap) scaledBitmap.recycle()
+
+        return photoBytes
     }
 
     /**
@@ -165,41 +178,6 @@ class ThoughtsService @Inject constructor(
         if (scaledBitmap != rotatedBitmap) scaledBitmap.recycle()
 
         return compressed
-    }
-
-    /**
-     * Create thumbnail without loading full image into memory
-     */
-    fun createThumbnail(photoData: ByteArray, size: Int = 200): Bitmap? {
-        return try {
-            // Decode bounds first
-            val options = BitmapFactory.Options().apply {
-                inJustDecodeBounds = true
-            }
-            BitmapFactory.decodeByteArray(photoData, 0, photoData.size, options)
-
-            // Calculate sample size
-            val scale = minOf(
-                options.outWidth / size,
-                options.outHeight / size
-            ).coerceAtLeast(1)
-
-            // Decode with sample size
-            options.apply {
-                inJustDecodeBounds = false
-                inSampleSize = scale
-            }
-
-            val scaledBitmap = BitmapFactory.decodeByteArray(photoData, 0, photoData.size, options)
-
-            // Create exact size thumbnail
-            Bitmap.createScaledBitmap(scaledBitmap, size, size, true).also {
-                scaledBitmap?.recycle()
-            }
-        }
-        catch (e: Exception) {
-            null
-        }
     }
 
     /**

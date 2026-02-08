@@ -16,7 +16,9 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.capture.models.NavigationBarController
+import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
 import pl.hexmind.mindshaper.activities.stream.StreamActivity
@@ -47,9 +49,10 @@ open class CoreActivity() : AppCompatActivity() {
          * Maps activity class names to navigation bar indices
          */
         private val activityToIndex = mapOf(
-            HomeActivity::class.java.simpleName to 0,
-            StreamActivity::class.java.simpleName to 1,
-            "DetailsActivity" to 1, // Highlight Stream icon when in Details
+            HomeActivity::class.java.simpleName     to 0,
+            CaptureActivity::class.simpleName    to 0, // Highlight Home icon when in Capture
+            StreamActivity::class.java.simpleName   to 1,
+            DetailsActivity::class.simpleName       to 1, // Highlight Stream icon when in Details
             SettingsActivity::class.java.simpleName to 2
         )
     }

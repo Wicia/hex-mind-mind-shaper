@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
-import pl.hexmind.mindshaper.activities.capture.handlers.AudioRecordingView
+import pl.hexmind.mindshaper.common.views.audio.AudioRecordingView
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.ui.dialogs.IconsListDialog
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem

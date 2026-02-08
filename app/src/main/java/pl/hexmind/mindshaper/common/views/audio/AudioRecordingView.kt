@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.activities.capture.handlers
+package pl.hexmind.mindshaper.common.views.audio
 
 import android.Manifest
 import android.content.Context

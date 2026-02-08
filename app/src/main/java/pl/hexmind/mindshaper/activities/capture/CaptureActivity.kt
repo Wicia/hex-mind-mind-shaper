@@ -1,304 +1,378 @@
 package pl.hexmind.mindshaper.activities.capture
 
-import android.os.Build
+import android.net.Uri
 import android.os.Bundle
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.view.View
+import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
-import pl.hexmind.mindshaper.activities.capture.handlers.AudioRecordingView
-import pl.hexmind.mindshaper.activities.capture.handlers.RecordingCaptureHandler
-import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureHandler
-import pl.hexmind.mindshaper.activities.capture.handlers.RichTextCaptureView
-import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType
+import pl.hexmind.mindshaper.common.views.audio.AudioRecordingView
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
-import pl.hexmind.mindshaper.common.validation.ValidatedProperty
+import pl.hexmind.mindshaper.common.ui.HexPhotoView
+import pl.hexmind.mindshaper.common.ui.HexTextView
+import pl.hexmind.mindshaper.common.ui.dialogs.PhotoFullscreenDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
 import pl.hexmind.mindshaper.common.validation.ValidationResult
+import pl.hexmind.mindshaper.databinding.CaptureActivityNewBinding
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
-import pl.hexmind.mindshaper.services.validators.ThoughtValidator
-import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CaptureActivity : CoreActivity(), AudioRecordingView.RecordingCallback {
+class CaptureActivity : CoreActivity() {
 
-    companion object Params {
-        const val P_INIT_THOUGHT_TYPE = "P_EXTRA_INIT_THOUGHT_TYPE"
-        private const val TAG = "CaptureActivity"
-    }
-
-    @Inject
-    lateinit var thoughtValidator: ThoughtValidator
+    private val viewModel: CaptureActivityViewModel by viewModels()
+    private lateinit var binding: CaptureActivityNewBinding
 
     @Inject
     lateinit var thoughtsService: ThoughtsService
 
-    private var thoughtMainContentType: ThoughtMainContentType = ThoughtMainContentType.UNKNOWN
-    private lateinit var flContainerFeatures: FrameLayout
-    private lateinit var btnSave: FloatingActionButton
-    private lateinit var etHexTags: TextInputEditText
-    private lateinit var tvHexTagsValidationInfo: TextView
+    private var currentPhotoUri: Uri? = null
 
-    // HANDLER for specific input/thought type
-    private lateinit var thoughtCaptureHandler: ThoughtCaptureHandler
+    private val takePhotoLauncher = registerForActivityResult(
+        ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success && currentPhotoUri != null) {
+            handlePhotoResult(currentPhotoUri!!)
+        }
+    }
 
-    // Recording handler reference (for audio saving)
-    private var recordingHandler: RecordingCaptureHandler? = null
-
-    // Recording view reference (for direct access to recording functionality)
-    private var audioRecordingView: AudioRecordingView? = null
+    private val pickPhotoLauncher = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri ->
+        uri?.let { handlePhotoResult(it) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.capture_activity)
-        initViews()
-        saveExtrasFromIntent()
+        binding = CaptureActivityNewBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setupUI()
         setupListeners()
-        setupMode()
+        setupObservers()
 
         onboardingManager.showTooltipForStep(
             OnboardingProgressStep.CAPTURE_TOOLTIP, this
         )
     }
 
-    private fun initViews() {
-        etHexTags = findViewById(R.id.et_hex_tags)
-        flContainerFeatures = findViewById(R.id.fl_container_features)
-        btnSave = findViewById(R.id.btn_save)
-        tvHexTagsValidationInfo = findViewById(R.id.tv_hex_tags_validation_info)
-        setupHeader(R.drawable.ic_catching_thought, R.string.capture_main_label)
-    }
-
-    private fun saveExtrasFromIntent() {
-        thoughtMainContentType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(P_INIT_THOUGHT_TYPE, ThoughtMainContentType::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            intent.getParcelableExtra(P_INIT_THOUGHT_TYPE)
-        } ?: ThoughtMainContentType.UNKNOWN
-    }
-
-    private fun setupMode() {
-        flContainerFeatures.removeAllViews()
-        when (thoughtMainContentType) {
-            ThoughtMainContentType.RICH_TEXT -> {
-                val richTextCaptureView = RichTextCaptureView(this)
-                flContainerFeatures.addView(richTextCaptureView)
-                thoughtCaptureHandler = RichTextCaptureHandler(richTextCaptureView, thoughtValidator).apply {
-                    setupListeners()
-                }
-                recordingHandler = null
-                audioRecordingView = null
-            }
-            ThoughtMainContentType.RECORDING -> {
-                val captureRecordingView = createAudioRecordingView()
-                flContainerFeatures.addView(captureRecordingView)
-
-                val handler = RecordingCaptureHandler(
-                    activity = this,
-                    view = captureRecordingView,
-                    validator = thoughtValidator
-                )
-
-                thoughtCaptureHandler = handler
-                recordingHandler = handler
-                audioRecordingView = captureRecordingView
-            }
-            else -> { /* TODO: next modes */
-            }
+    private fun setupObservers() {
+        // Observe draft changes (in memory, NOT from DB)
+        viewModel.draftThought.observe(this) { draft ->
+            updateUI(draft)
         }
-    }
-
-    private fun createAudioRecordingView() : AudioRecordingView{
-        val captureRecordingView = AudioRecordingView(this)
-        captureRecordingView.switchToRecordPlaybackMode()
-        captureRecordingView.setRecordingCallback(this)
-        val params = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        ).apply {
-            bottomMargin = (16 * resources.displayMetrics.density).toInt()
-        }
-        captureRecordingView.layoutParams = params
-
-        return captureRecordingView
     }
 
     private fun setupListeners() {
-        btnSave.setOnClickListener {
-            lifecycleScope.launch { saveThought() }
+        binding.apply {
+
+            // SAVE BUTTON
+            btnSave.setOnClickListener {
+                lifecycleScope.launch {
+                    saveDraft()
+                }
+            }
+
+            // RICH TEXT
+            btnRichTextAdd.setOnClickListener {
+                showEditRichTextDialog()
+            }
+
+            // RECORDING
+            btnRecordingAdd.setOnClickListener {
+                btnRecordingAdd.visibility = View.GONE
+                audioRecordingPlayback.visibility = View.VISIBLE
+                audioRecordingPlayback.switchToRecordPlaybackMode()
+                audioRecordingPlayback.showStatus(
+                    getString(R.string.capture_voice_tooltip),
+                    R.color.validation_success
+                )
+            }
+
+            // PHOTO
+            btnPhotoAdd.setOnClickListener {
+                btnPhotoAdd.visibility = View.GONE
+                photoDisplayView.visibility = View.VISIBLE
+                photoDisplayView.showStatus(
+                    R.string.photos_no_file,
+                    R.color.validation_success
+                )
+            }
+
+            // PHOTO CALLBACKS
+            photoDisplayView.setCallback(object : HexPhotoView.PhotoCallback {
+                override fun onCameraCaptureRequested() {
+                    takePhoto()
+                }
+
+                override fun onGalleryPickRequested() {
+                    pickFromGallery()
+                }
+
+                override fun onPhotoDeleted() {
+                    viewModel.deletePhoto()
+                    // Hide widget
+                    btnPhotoAdd.visibility = View.VISIBLE
+                    photoDisplayView.visibility = View.GONE
+                }
+
+                override fun onPhotoClicked() {
+                    showFullscreenPhoto()
+                }
+
+                override fun onError(error: String) {
+                    Toast.makeText(this@CaptureActivity, error, Toast.LENGTH_SHORT).show()
+                }
+            })
+
+            // AUDIO CALLBACKS
+            audioRecordingPlayback.setCallback(object : AudioRecordingView.RecordingCallback {
+                override fun onRecordingStarted() {
+                    // Clear validation messages
+                    tvHexTagsValidationInfo.text = ""
+                }
+
+                override fun onRecordingStopped(file: File, durationMs: Long) {
+                    // Store temporarily (NOT in DB)
+                    viewModel.saveAudioRecording(file, durationMs)
+                }
+
+                override fun onRecordingDeleted() {
+                    viewModel.deleteAudioRecording()
+                    // Hide widget
+                    btnRecordingAdd.visibility = View.VISIBLE
+                    audioRecordingPlayback.visibility = View.GONE
+                }
+
+                override fun onRecordingError(error: String) {
+                    Toast.makeText(this@CaptureActivity, error, Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onPlaybackStarted() {}
+                override fun onPlaybackStopped() {}
+                override fun onPermissionRequired() {}
+            })
+
+            // RICH TEXT CALLBACKS
+            richTextView.setCallback(object : HexTextView.TextCallback {
+                override fun onTextClicked() {
+                    showEditRichTextDialog()
+                }
+
+                override fun onTextDeleted() {
+                    viewModel.deleteRichText()
+                    // Hide widget
+                    btnRichTextAdd.visibility = View.VISIBLE
+                    richTextView.visibility = View.GONE
+                }
+            })
         }
     }
 
-    // ===========================================
-    // AudioRecordingView.RecordingCallback Implementation
-    // ===========================================
+    private fun showFullscreenPhoto() {
+        val photoUri = viewModel.getTempPhotoUri() ?: return
 
-    override fun onRecordingStarted() {
-        // Optional: Update UI or perform actions when recording starts
-        resetValidationUI()
-    }
-
-    override fun onRecordingStopped(file: File, durationMs: Long) {
-        // Optional: Update UI or perform actions when recording stops
-    }
-
-    override fun onRecordingDeleted() {
-        TODO("Not yet implemented")
-    }
-
-    override fun onRecordingError(error: String) {
-        Timber.tag(TAG).e("Recording error: $error")
-        tvHexTagsValidationInfo.text = getString(R.string.capture_voice_error_recording)
-    }
-
-    override fun onPlaybackStarted() {
-
-    }
-
-    override fun onPlaybackStopped() {
-
-    }
-
-    override fun onPermissionRequired() {
-        Timber.tag(TAG).d("Permission required - will be handled by RecordingCaptureHandler")
-        // Permission handling is done by RecordingCaptureHandler
-    }
-
-    // ===========================================
-    // Permissions Handling
-    // ===========================================
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        recordingHandler?.onRequestPermissionsResult(requestCode, grantResults)
-    }
-
-    // ===========================================
-    //      Save Thought Logic
-    // ===========================================
-
-    private suspend fun saveThought() {
-        resetValidationUI()
-        val dto = ThoughtDTO()
-        val updatedDto = thoughtCaptureHandler.getUpdatedDTO(dto)
-        val dtoToSave = updateDTOWithHexTags(updatedDto)
-
-        val validationResult = thoughtCaptureHandler.performValidation(dtoToSave)
-        updateUIWithValidationResult(validationResult)
-
-        if (validationResult is ValidationResult.Valid) {
-            when (thoughtMainContentType) {
-                ThoughtMainContentType.RECORDING -> {
-                    saveThoughtWithAudio(dtoToSave)
+        lifecycleScope.launch {
+            try {
+                val photoFile = thoughtsService.getFileFromUri(photoUri)
+                if (photoFile != null) {
+                    val photoBytes = photoFile.readBytes()
+                    PhotoFullscreenDialog(this@CaptureActivity, photoBytes).show()
                 }
-                else -> {
-                    thoughtsService.addThought(dtoToSave)
-                    finish()
-                }
+            } catch (e: Exception) {
+                Toast.makeText(
+                    this@CaptureActivity,
+                    "Failed to load photo",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
 
-    private suspend fun saveThoughtWithAudio(dto: ThoughtDTO) {
-        val recording = recordingHandler?.getCurrentRecording()
+    private fun setupUI() {
+        setupHeader(R.drawable.ic_catching_thought, R.string.capture_main_label)
+        updatePhotoFeatureVisibility()
+    }
 
-        if (recording == null || !recording.fileExists()) {
-            Timber.tag(TAG).e("Audio file does not exist")
-            tvHexTagsValidationInfo.text = getString(R.string.validation_recording_missing)
-            return
+    private fun showEditRichTextDialog() {
+        val draft = viewModel.draftThought.value ?: return
+        val currentText = draft.richText ?: ""
+
+        TextEditDialog(
+            context = this,
+            textInput = currentText,
+            onSave = { newText ->
+                viewModel.updateRichText(newText)
+            }
+        ).show()
+    }
+
+    private fun takePhoto() {
+        val photoUri = viewModel.createPhotoUri()
+        currentPhotoUri = photoUri
+        takePhotoLauncher.launch(photoUri)
+    }
+
+    private fun pickFromGallery() {
+        pickPhotoLauncher.launch(
+            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+        )
+    }
+
+    private fun handlePhotoResult(uri: Uri) {
+        lifecycleScope.launch {
+            try {
+                timber.log.Timber.d("Photo result: uri=$uri")
+                binding.photoDisplayView.showLoading()
+
+                // Save URI to ViewModel (NOT to DB)
+                viewModel.savePhotoUri(uri)
+
+                // Load photo for preview display with EXIF rotation
+                withContext(kotlinx.coroutines.Dispatchers.IO) {
+                    val photoFile = thoughtsService.getFileFromUri(uri)
+
+                    if (photoFile != null) {
+                        // Load with EXIF rotation applied
+                        val photoBytes = thoughtsService.loadPhotoForPreview(photoFile)
+                        withContext(kotlinx.coroutines.Dispatchers.Main) {
+                            binding.photoDisplayView.loadPhoto(photoBytes)
+                        }
+                    }
+                    else {
+                        withContext(kotlinx.coroutines.Dispatchers.Main) {
+                            binding.photoDisplayView.showError("Failed to load photo")
+                        }
+                    }
+                }
+            }
+            catch (e: Exception) {
+                timber.log.Timber.e(e, "Error handling photo result")
+                binding.photoDisplayView.showError("Olaboga! Kod się wyburaczył :/")
+            }
         }
+    }
 
-        try {
-            // Get actual audio duration from MediaPlayer if possible
-            val durationMs = getDurationFromFile(recording.file!!)
-            dto.audioDurationMs = durationMs
+    private fun updatePhotoFeatureVisibility() {
+        val featureEnabled = appSettingsStorage.isPhotoFeatureEnabled()
 
-            thoughtsService.addThoughtWithAudio(dto, recording.file)
-            finish()
-        }
-        catch (e: Exception) {
-            Timber.tag(TAG).e(e, "Error saving thought with audio")
-            tvHexTagsValidationInfo.text = getString(R.string.capture_voice_error_saving)
+        if (!featureEnabled) {
+            binding.photoDisplayView.visibility = View.GONE
+            binding.btnPhotoAdd.visibility = View.GONE
         }
     }
 
     /**
-     * Get audio duration from file using MediaPlayer
+     * Save draft to database
      */
-    private fun getDurationFromFile(file: File): Long {
-        return try {
-            android.media.MediaPlayer().apply {
-                setDataSource(file.absolutePath)
-                prepare()
-            }.let { player ->
-                val duration = player.duration.toLong()
-                player.release()
-                duration
+    private suspend fun saveDraft() {
+        // Reset validation UI
+        binding.tvHexTagsValidationInfo.text = ""
+
+        // Parse hex tags from EditText
+        val hexTagsInput = binding.etHexTags.text?.toString().orEmpty()
+        val tags = HexTagsUtils.parseInput(hexTagsInput)
+
+        // Update draft with hex tags
+        viewModel.updateHexTags(
+            thread = tags.thread,
+            project = tags.project,
+            soulMate = tags.soulMate
+        )
+
+        // Validate
+        val validationResult = viewModel.validate()
+
+        // Show validation error
+        if (validationResult is ValidationResult.Error) {
+            binding.tvHexTagsValidationInfo.text = validationResult.message
+            return
+        }
+
+        // Save to DB
+        val result = viewModel.saveNewThought()
+
+        if (result.isSuccess) {
+            // Success - close activity
+            finish()
+        }
+        else {
+            // Error - show message
+            binding.tvHexTagsValidationInfo.text = result.exceptionOrNull()?.message
+                ?: getString(R.string.capture_voice_error_saving)
+        }
+    }
+
+    private fun updateUI(draft: ThoughtDTO) {
+        updateRichTextUI(draft)
+        updateAudioUI(draft)
+        updatePhotoUI(draft)
+    }
+
+    private fun updateRichTextUI(draft: ThoughtDTO) {
+        if (draft.richText.isNullOrBlank()) {
+            binding.btnRichTextAdd.visibility = View.VISIBLE
+            binding.richTextView.visibility = View.GONE
+        } else {
+            binding.btnRichTextAdd.visibility = View.GONE
+            binding.richTextView.visibility = View.VISIBLE
+            binding.richTextView.originalText = draft.richText.orEmpty()
+        }
+    }
+
+    private fun updateAudioUI(draft: ThoughtDTO) {
+        if (draft.hasAudio) {
+            binding.btnRecordingAdd.visibility = View.GONE
+            binding.audioRecordingPlayback.visibility = View.VISIBLE
+
+            // Don't reload if widget already has the recording
+            // (prevents resetting visualizer after recording)
+            val currentRecording = binding.audioRecordingPlayback.getCurrentRecording()
+            if (currentRecording.file == null) {
+                // Widget doesn't have recording yet - load it
+                viewModel.getTempAudioFile()?.let { audioFile ->
+                    binding.audioRecordingPlayback.loadAudioForPlayback(audioFile)
+                }
             }
-        } catch (e: Exception) {
-            Timber.tag(TAG).e(e, "Error getting duration from file, using file size as fallback")
-            file.length() // Fallback to file size
+        } else {
+            binding.btnRecordingAdd.visibility = View.VISIBLE
+            binding.audioRecordingPlayback.visibility = View.GONE
         }
     }
 
-    private fun resetValidationUI() {
-        tvHexTagsValidationInfo.text = ""
-    }
+    private fun updatePhotoUI(draft: ThoughtDTO) {
+        val featureEnabled = appSettingsStorage.isPhotoFeatureEnabled()
 
-    private fun updateUIWithValidationResult(result: ValidationResult) {
-        if (result is ValidationResult.Error) {
-            val validatedProperty = result.refProperty
-            when (validatedProperty) {
-                ValidatedProperty.T_THREAD,
-                ValidatedProperty.T_PROJECT,
-                ValidatedProperty.T_SOUL_MATES -> {
-                    tvHexTagsValidationInfo.text = result.message
-                }
-                ValidatedProperty.T_RICH_TEXT -> {
-                    // Skipping - RichText has real-time validation
-                }
-                ValidatedProperty.T_AUDIO -> {
-                    // TODO ???
-                }
-                else -> {
-                    // Handle other validation properties if needed
-                }
-            }
+        if (!featureEnabled) {
+            binding.photoDisplayView.visibility = View.GONE
+            binding.btnPhotoAdd.visibility = View.GONE
+            return
         }
-        else { // VALID
-            // TODO display or do sth?
+
+        if (draft.hasPhoto) {
+            binding.btnPhotoAdd.visibility = View.GONE
+            binding.photoDisplayView.visibility = View.VISIBLE
+
+            // Photo already loaded in handlePhotoResult
+            // No need to reload here
+        } else {
+            binding.btnPhotoAdd.visibility = View.VISIBLE
+            binding.photoDisplayView.visibility = View.GONE
         }
-    }
-
-    private fun updateDTOWithHexTags(dtoToUpdate: ThoughtDTO): ThoughtDTO {
-        val input = etHexTags.text?.toString().orEmpty()
-        val tags = HexTagsUtils.parseInput(input)
-
-        dtoToUpdate.soulMate = tags.soulMate
-        dtoToUpdate.project = tags.project
-        dtoToUpdate.thread = tags.thread
-
-        return dtoToUpdate
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        // Perform clean-up of recording handler resources
-        recordingHandler?.cleanupResources()
-        // AudioRecordingView will clean up automatically in onDetachedFromWindow
+        binding.audioRecordingPlayback.cleanupResources()
     }
 }

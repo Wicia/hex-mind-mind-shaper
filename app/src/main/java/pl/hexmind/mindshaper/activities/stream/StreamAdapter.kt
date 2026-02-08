@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtGrowthStage
-import pl.hexmind.mindshaper.activities.capture.handlers.AudioRecordingView
+import pl.hexmind.mindshaper.common.views.audio.AudioRecordingView
 import pl.hexmind.mindshaper.common.SortConfig
 import pl.hexmind.mindshaper.common.SortProperty
 import pl.hexmind.mindshaper.common.ui.HexPhotoView
