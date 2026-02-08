@@ -2,7 +2,6 @@ package pl.hexmind.mindshaper.database.initialization
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Environment
 import android.provider.Settings
 import androidx.core.net.toUri
@@ -115,20 +114,16 @@ class DataSnapshotManager @Inject constructor(
     }
 
     fun checkAndRequestPermissions(context: Context): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            // Android 11+
-            if (!Environment.isExternalStorageManager()) {
-                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
-                    data = "package:${context.packageName}".toUri()
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // WAŻNE dla Context
-                }
-                context.startActivity(intent)
-                return false
+        // Android 11+
+        if (!Environment.isExternalStorageManager()) {
+            val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
+                data = "package:${context.packageName}".toUri()
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // important for Context
             }
-            return true
-        } else {
-            throw IllegalStateException("Need Activity reference for Android < 11")
+            context.startActivity(intent)
+            return false
         }
+        return true
     }
 }
 
