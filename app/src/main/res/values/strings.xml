@@ -80,19 +80,35 @@
     <!-- ONBOARDING & TOOLTIPS-->
     <string name="onb_dialog_header">Wskazówka</string>
 
-    <!-- HOME -->
-    <string name="home_catching_button_title">Nowa myśl</string>
-    <string name="home_catching_button_tooltip">Guzior z taką ikoną rozpoczyna chwytanie myśli w formie tekstu lub głosówki</string>
+    <!-- WELCOME -->
+    <string name="home_capturing_button_title">Witaj w "Domu" :)</string>
+    <string name="home_capturing_button_tooltip">Jak ci wpadnie coś do głowy co chcesz zapisać to tapnij w przycisk na środku</string>
+    <string name="home_navigation_button_title">A tymczasem… :)</string>
+    <string name="home_navigation_button_tooltip">Tapnij na ikonkę z kompasem (rym!) a potem na ikonkę koła zymbatego</string>
 
     <!-- SETTINGS -->
-    <string name="settings_entry_title">Ustawienia</string>
-    <string name="settings_entry_tooltip">W tym kreatywnym miejscu skroisz aplikację pod siebie! Zapraszam Cię do radosnej zmiany ustawień i testów :)</string>
+    <string name="settings_entry_title_1">Ustawienia</string>
+    <string name="settings_entry_tooltip_1">
+    <![CDATA[
+        W tym kreatywnym miejscu skroisz aplikację pod siebie!\n\n
+        Tapnij na nagłówki, które Cię zainteresują…
+    ]]></string>
+    <string name="settings_entry_title_2">Zmieniaj ;)</string>
+    <string name="settings_entry_tooltip_2">Zapraszam Cię do radosnej zmiany ustawień i testów :)</string>
 
-    <string name="settings_domains_title">Domeny</string>
+    <string name="settings_your_name_title">Sekcja personalizacji</string>
+    <string name="settings_your_name_tooltip">[Jakiś mądry tekst który nie istnieje a miał w tym miejscu być] </string>
+
+    <string name="settings_domains_title">Sekcja "Domeny"</string>
     <string name="settings_domains_tooltip">Zdefiniujesz tutaj \"Domeny\" - swoje kategorie lub szufladki dla myśli</string>
 
-    <string name="settings_backup_title">Kopia zapasowa</string>
-    <string name="settings_backup_tooltip">Określisz czy raz na jakiś czas zapisać w pamięci apki dane swoich myśli czy też nie…</string>
+    <string name="settings_thought_value_title">Sekcja "Skala wartości myśli"</string>
+    <string name="settings_thought_value_tooltip">Każdej myśli możesz nadać wartość/wagę/priorytet liczbowy.\nOd ciebie zależą jego wartości… </string>
+
+    <string name="settings_backup_title_1">Sekcja "Kopia zapasowa"</string>
+    <string name="settings_backup_tooltip_1">Jeżeli chcesz mieć zarchiwizowane dane swoich myśli w pamięci telefonu to ta opcja musi być "włączona"</string>
+    <string name="settings_backup_title_2">Jak to działa?</string>
+    <string name="settings_backup_tooltip_2">Gdy uruchomisz aplikację jej mechanizm zapisze dane twoich myśli.\n\nMoże się to wydarzyć maksymalnie raz na godzinę.</string>
 
     <!-- STREAM -->
     <string name="stream_entry_title">Twoje myśli</string>
@@ -117,28 +133,33 @@
     <string name="details_entry_tooltip">To miejsce to warsztat w którym rzeźbisz i rozwijasz swoją myśl</string>
 
     <string name="details_fields_title">Edycja myśli</string>
-    <string name="details_fields_tooltip"> Tapując na pomarańczowe etykiety/pola zdefiniujesz lub zmienisz zapisaną w nich treść</string>
+    <string name="details_fields_tooltip">Tapując na pomarańczowe etykiety/pola zdefiniujesz lub zmienisz zapisaną w nich treść</string>
 
     <string name="details_value_title">Zmiana wartości myśli</string>
-    <string name="details_value_tooltip">Dodatkowo podbijesz wartość myśli tapując na nią. Możesz także podbijać i obniżać wartość innym sposobem który przypomina coś... \"naturalnego\"</string>
+    <string name="details_value_tooltip">Dodatkowo podbijesz wartość myśli tapując na nią. Możesz także podbijać i obniżać wartość innym sposobem który przypomina coś… \"naturalnego\"</string>
 
     <string name="details_extra_forms_title">Dodatkowe formy złapanej myśli</string>
-    <string name="details_extra_forms_tooltip">No i guziorami u dołu z symbolem [+] możesz dodać dodatkowe formy zapisu myśli</string>
+    <string name="details_extra_forms_tooltip">No i guziorami u dołu z [+] możesz dodać dodatkowe formy zapisu myśli</string>
 
     <string name="capturing_entry_title">Łapanie myśli</string>
-    <string name="capturing_entry_tooltip">Czas na schwytanie swojej pierwszej myśli! :)</string>
-
-    <string name="capturing_metadata_title">Metadane/tagi do myśli</string>
-    <string name="capturing_metadata_tooltip"><![CDATA[
-        W polu z serduchem możesz szybko skojarzyć myśl z:\n
-        ✓ osobą (znak @)\n
-        ✓ projektem (znak #)\n
-        ✓ wątkiem/tematem (brak znaku)\n
+    <string name="capturing_entry_tooltip"><![CDATA[
+        Czas na złapanie swojej pierwszej myśli! :)\n\n
+        Guziorami u dołu z [+] możesz wybrać postać/formę zapisu myśli:\n
+        tekst -> dźwięk -> zdjęcie
     ]]></string>
+    <string name="capturing_hextags_link_title">Skojarzenia lub Tagi dla myśli</string>
+    <string name="capturing_hextags_link_tooltip">Tapnij na puste pole u góry…</string>
 
-    <string name="catching_metadata_example_title">Zróbmy szybki przykład!</string>
-    <string name="catching_metadata_example_tooltip"><![CDATA[
-        Wpisz w polu z serduchem tekst:\n\n
+    <string name="capturing_hextags_title">Skojarzenia lub Tagi dla myśli</string>
+    <string name="capturing_hextags_tooltip"><![CDATA[
+        W tym polu możesz szybko dodać skojarzenia / tagi do myśli:\n
+        ✓ osoba (znak @)\n
+        ✓ projekt (znak #)\n
+        ✓ wątki/temat (brak znaku)\n
+    ]]></string>
+    <string name="capturing_hextags_example_title">Może mały przykład?</string>
+    <string name="capturing_hextags_example_tooltip"><![CDATA[
+        Wpisz w polu tekstowym… tekst:\n\n
             sukces  #aplikacja  @ja\n\n
         następnie Zapisz i zobacz szczegóły nowo złapanej myśli
     ]]></string>

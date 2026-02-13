@@ -36,7 +36,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/navHome"
             style="@style/AuxiliaryActionButton"
-            app:icon="@drawable/ic_header_home"
+            app:icon="@drawable/ic_capture_thought"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"

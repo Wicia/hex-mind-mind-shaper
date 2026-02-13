@@ -21,15 +21,27 @@ class OnboardingManager @Inject constructor(
 
         // HOME
         OnboardingProgressStep.HOME_TOOLTIP to listOf(
-            TooltipItemConfig(textRes = R.string.home_catching_button_tooltip, R.string.home_catching_button_title, iconRes = R.drawable.ic_catching_thought
-            )
+            TooltipItemConfig(textRes = R.string.home_capturing_button_tooltip, R.string.home_capturing_button_title, iconRes = R.drawable.ic_capture_thought),
+            TooltipItemConfig(textRes = R.string.home_navigation_button_tooltip, R.string.home_navigation_button_title)
         ),
 
-        // SETTINGS
-        OnboardingProgressStep.SETTINGS_TOOLTIP to listOf(
-            TooltipItemConfig(textRes = R.string.settings_entry_tooltip, titleRes =  R.string.settings_entry_title),
+        // == SETTINGS ==
+        OnboardingProgressStep.SETTINGS_ENTRY_TOOLTIP to listOf(
+            TooltipItemConfig(textRes = R.string.settings_entry_tooltip_1, titleRes =  R.string.settings_entry_title_1),
+            TooltipItemConfig(textRes = R.string.settings_entry_tooltip_2, titleRes =  R.string.settings_entry_title_2)
+        ),
+        OnboardingProgressStep.SETTINGS_YOUR_NAME_TOOLTIP to listOf(
+            TooltipItemConfig(textRes = R.string.settings_your_name_tooltip, titleRes =  R.string.settings_your_name_title)
+        ),
+        OnboardingProgressStep.SETTINGS_DOMAINS_TOOLTIP to listOf(
             TooltipItemConfig(textRes = R.string.settings_domains_tooltip, titleRes =  R.string.settings_domains_title),
-            TooltipItemConfig(textRes = R.string.settings_backup_tooltip, titleRes =  R.string.settings_backup_title)
+        ),
+        OnboardingProgressStep.SETTINGS_THOUGHT_VALUE_TOOLTIP to listOf(
+            TooltipItemConfig(textRes = R.string.settings_thought_value_tooltip, titleRes =  R.string.settings_thought_value_title),
+        ),
+        OnboardingProgressStep.SETTINGS_BACKUP_TOOLTIP to listOf(
+            TooltipItemConfig(textRes = R.string.settings_backup_tooltip_1, titleRes =  R.string.settings_backup_title_1),
+            TooltipItemConfig(textRes = R.string.settings_backup_tooltip_2, titleRes =  R.string.settings_backup_title_2)
         ),
 
         // STREAM
@@ -48,11 +60,16 @@ class OnboardingManager @Inject constructor(
             TooltipItemConfig(textRes = R.string.details_extra_forms_tooltip, titleRes = R.string.details_extra_forms_title)
         ),
 
-        // CAPTURING THOUGHTS
-        OnboardingProgressStep.CAPTURE_TOOLTIP to listOf(
+        // === CAPTURING THOUGHTS ===
+        // -> ENTRY (+ BUTTONS)
+        OnboardingProgressStep.CAPTURE_ENTRY_TOOLTIP to listOf(
             TooltipItemConfig(textRes = R.string.capturing_entry_tooltip, R.string.capturing_entry_title),
-            TooltipItemConfig(textRes = R.string.capturing_metadata_tooltip, R.string.capturing_metadata_title, iconRes = R.drawable.ic_hex_tags),
-            TooltipItemConfig(textRes = R.string.catching_metadata_example_tooltip, R.string.catching_metadata_example_title)
+            TooltipItemConfig(textRes = R.string.capturing_hextags_link_tooltip, R.string.capturing_hextags_link_title)
+        ),
+        // -> HEXTAGS
+        OnboardingProgressStep.CAPTURE_HEXTAGS_TOOLTIP to listOf(
+            TooltipItemConfig(textRes = R.string.capturing_hextags_tooltip, R.string.capturing_hextags_title),
+            TooltipItemConfig(textRes = R.string.capturing_hextags_example_tooltip, R.string.capturing_hextags_example_title)
         )
     )
 

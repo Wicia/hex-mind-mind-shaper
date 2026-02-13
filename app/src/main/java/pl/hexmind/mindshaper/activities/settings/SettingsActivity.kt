@@ -80,7 +80,7 @@ class SettingsActivity : CoreActivity() {
         loadSavedSettings()
 
         onboardingManager.showTooltipForStep(
-            OnboardingProgressStep.SETTINGS_TOOLTIP, this
+            OnboardingProgressStep.SETTINGS_ENTRY_TOOLTIP, this
         )
     }
 
@@ -102,6 +102,28 @@ class SettingsActivity : CoreActivity() {
     }
 
     private fun setupListeners(){
+        // Onboarding :)
+        binding.tvYourNameSectionHeader.setOnClickListener { // dla beki :P
+            onboardingManager.showTooltipForStep(
+                OnboardingProgressStep.SETTINGS_YOUR_NAME_TOOLTIP, this
+            )
+        }
+        binding.tvThoughtValueScaleSection.setOnClickListener {
+            onboardingManager.showTooltipForStep(
+                OnboardingProgressStep.SETTINGS_THOUGHT_VALUE_TOOLTIP, this
+            )
+        }
+        binding.tvDomainsSectionHeader.setOnClickListener {
+            onboardingManager.showTooltipForStep(
+                OnboardingProgressStep.SETTINGS_DOMAINS_TOOLTIP, this
+            )
+        }
+        binding.tvBackupSectionHeader.setOnClickListener {
+            onboardingManager.showTooltipForStep(
+                OnboardingProgressStep.SETTINGS_BACKUP_TOOLTIP, this
+            )
+        }
+
         // Save settings button
         binding.btnSaveSettings.setOnClickListener {
             saveSettings()

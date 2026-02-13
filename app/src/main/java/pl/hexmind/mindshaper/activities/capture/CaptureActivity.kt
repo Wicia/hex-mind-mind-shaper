@@ -62,7 +62,7 @@ class CaptureActivity : CoreActivity() {
         setupObservers()
 
         onboardingManager.showTooltipForStep(
-            OnboardingProgressStep.CAPTURE_TOOLTIP, this
+            OnboardingProgressStep.CAPTURE_ENTRY_TOOLTIP, this
         )
     }
 
@@ -75,6 +75,17 @@ class CaptureActivity : CoreActivity() {
 
     private fun setupListeners() {
         binding.apply {
+
+            // Onboarding :)
+            // ! tapping first time
+            etHexTags.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    onboardingManager.showTooltipForStep(
+                        OnboardingProgressStep.CAPTURE_HEXTAGS_TOOLTIP,
+                        this@CaptureActivity
+                    )
+                }
+            }
 
             // SAVE BUTTON
             btnSave.setOnClickListener {
@@ -200,7 +211,7 @@ class CaptureActivity : CoreActivity() {
     }
 
     private fun setupUI() {
-        setupHeader(R.drawable.ic_catching_thought, R.string.capture_main_label)
+        setupHeader(R.drawable.ic_capture_thought, R.string.capture_main_label)
         updatePhotoFeatureVisibility()
     }
 

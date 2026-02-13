@@ -24,7 +24,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-        app:srcCompat="@drawable/ic_catching_thought" />
+        app:srcCompat="@drawable/ic_capture_thought" />
 
     <TextView
         android:id="@+id/tv_description"

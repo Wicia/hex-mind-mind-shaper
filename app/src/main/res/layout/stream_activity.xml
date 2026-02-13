@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_catching_thought"
+        android:src="@drawable/ic_capture_thought"
         app:backgroundTint="@color/button_primary_enabled_background"
         app:fabSize="normal"
         app:elevation="6dp"

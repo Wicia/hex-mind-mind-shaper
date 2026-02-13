@@ -46,7 +46,7 @@ class DomainIconsService @Inject constructor(
     }
 
     /**
-     * Catching all icons at app startup
+     * Caching all icons at app startup
      */
     suspend fun preloadAllIcons() {
         try {

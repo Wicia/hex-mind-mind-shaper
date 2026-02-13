@@ -35,6 +35,7 @@
                     android:padding="16dp">
 
                     <TextView
+                        android:id="@+id/tv_your_name_section_header"
                         style="@style/TextView_Header_Section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -92,6 +93,7 @@
                         />
 
                     <TextView
+                        android:id="@+id/tv_thought_value_scale_section"
                         style="@style/TextView_Header_Section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -138,17 +140,12 @@
                     android:padding="16dp">
 
                     <TextView
+                        android:id="@+id/tv_domains_section_header"
                         style="@style/TextView_Header_Section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/settings_domains_header" />
-
-                    <TextView
-                        style="@style/TextView_Info_Success"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/settings_domains_hint" />
 
                     <GridLayout
                         android:id="@+id/gl_domains"
@@ -174,6 +171,7 @@
                     android:padding="16dp">
 
                     <TextView
+                        android:id="@+id/tv_backup_section_header"
                         style="@style/TextView_Header_Section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

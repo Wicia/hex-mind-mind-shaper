@@ -52,7 +52,7 @@
                     android:layout_height="55dp"
                     android:text="@string/common_btn_add"
                     android:layout_marginEnd="18dp"
-                    app:icon="@drawable/ic_metadata_soul_mates"
+                    app:icon="@drawable/ic_hextags_soul_mates"
                     app:iconSize="36dp"
                     />
 
@@ -65,7 +65,7 @@
                     android:layout_height="55dp"
                     android:layout_marginEnd="18dp"
                     android:visibility="gone"
-                    app:icon="@drawable/ic_metadata_soul_mates"
+                    app:icon="@drawable/ic_hextags_soul_mates"
                     app:iconSize="36dp"
                     />
 
@@ -123,7 +123,7 @@
                     android:layout_height="55dp"
                     android:layout_marginStart="8dp"
                     android:text="@string/common_btn_add"
-                    app:icon="@drawable/ic_metadata_project"
+                    app:icon="@drawable/ic_hextags_project"
                     app:iconSize="36dp"
                     />
 
@@ -135,7 +135,7 @@
                     android:layout_width="0dp"
                     android:layout_height="55dp"
                     android:layout_marginStart="8dp"
-                    app:icon="@drawable/ic_metadata_project"
+                    app:icon="@drawable/ic_hextags_project"
                     app:iconSize="36dp"
                     android:visibility="gone"
                     />
@@ -177,7 +177,7 @@
                     android:layout_marginEnd="18dp"
                     android:layout_weight="3"
                     android:text="@string/common_btn_add"
-                    app:icon="@drawable/ic_metadata_thread"
+                    app:icon="@drawable/ic_hextags_thread"
                     app:iconSize="36dp" />
 
                 <!-- THREAD: Content -->
@@ -188,7 +188,7 @@
                     android:layout_width="0dp"
                     android:layout_height="52dp"
                     android:layout_marginEnd="18dp"
-                    app:icon="@drawable/ic_metadata_thread"
+                    app:icon="@drawable/ic_hextags_thread"
                     app:iconSize="36dp"
                     android:visibility="gone" />
 
