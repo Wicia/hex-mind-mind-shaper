@@ -105,12 +105,12 @@
         <item name="android:paddingEnd">24dp</item>
 
         <!-- Background -->
-        <item name="backgroundTint">@color/button_content_not_used_background</item>
+        <item name="backgroundTint">@color/button_content_empty_background</item>
         <item name="android:background">@drawable/shape_hex_content</item>
-        <item name="android:backgroundTint">@color/button_content_not_used_background</item>
+        <item name="android:backgroundTint">@color/button_content_empty_background</item>
 
         <!-- Icons -->
-        <item name="iconTint">@color/button_content_not_used_icon</item>
+        <item name="iconTint">@color/button_content_empty_icon</item>
         <item name="iconPadding">0dp</item>
         <item name="iconGravity">textStart</item>
 
@@ -148,12 +148,12 @@
         <item name="android:padding">8dp</item>
 
         <!-- Background -->
-        <item name="backgroundTint">@color/button_content_used_background</item>
+        <item name="backgroundTint">@color/button_content_filled_background</item>
         <item name="android:background">@drawable/shape_hex_content</item>
-        <item name="android:backgroundTint">@color/button_content_used_background</item>
+        <item name="android:backgroundTint">@color/button_content_filled_background</item>
 
         <!-- Icons -->
-        <item name="iconTint">@color/button_content_used_icon</item>
+        <item name="iconTint">@color/button_content_filled_icon</item>
         <item name="iconPadding">0dp</item>
         <item name="iconGravity">end</item>
 
@@ -190,12 +190,12 @@
         <item name="android:padding">8dp</item>
 
         <!-- Background -->
-        <item name="backgroundTint">@color/button_content_not_used_background</item>
+        <item name="backgroundTint">@color/button_content_empty_background</item>
         <item name="android:background">@drawable/shape_hex_content</item>
-        <item name="android:backgroundTint">@color/button_content_not_used_background</item>
+        <item name="android:backgroundTint">@color/button_content_empty_background</item>
 
         <!-- Icons -->
-        <item name="iconTint">@color/button_content_not_used_icon</item>
+        <item name="iconTint">@color/button_content_empty_icon</item>
         <item name="iconPadding">0dp</item>
         <item name="iconGravity">end</item>
 
@@ -215,7 +215,7 @@
     <style name="RecordingPlaybackView_UsedWithTint">
         <item name="android:padding">12dp</item>
         <item name="android:background">@drawable/shape_hex_content</item>
-        <item name="android:backgroundTint">@color/button_content_used_background</item>
+        <item name="android:backgroundTint">@color/button_content_filled_background</item>
         <item name="android:orientation">vertical</item>
         <item name="cornerRadius">12dp</item>
     </style>
@@ -223,7 +223,7 @@
     <style name="PhotoDisplayView_UsedWithTint">
         <item name="android:padding">12dp</item>
         <item name="android:background">@drawable/shape_hex_content</item>
-        <item name="android:backgroundTint">@color/button_content_used_background</item>
+        <item name="android:backgroundTint">@color/button_content_filled_background</item>
         <item name="android:orientation">vertical</item>
     </style>
 

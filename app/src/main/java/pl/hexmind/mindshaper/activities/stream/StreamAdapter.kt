@@ -18,8 +18,8 @@ import pl.hexmind.mindshaper.common.SortProperty
 import pl.hexmind.mindshaper.common.ui.HexPhotoView
 import pl.hexmind.mindshaper.common.ui.HexTextView
 import pl.hexmind.mindshaper.common.ui.ValueCloude
+import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
-import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import timber.log.Timber
 import java.io.File
 
@@ -27,7 +27,7 @@ import java.io.File
  * Adapter for vertical stream - shows ALL filled fields (text, audio, photo) in one card
  */
 class StreamAdapter(
-    private val thoughtValidator: ThoughtValidator,
+    private val appSettingsStorage: AppSettingsStorage,
     private val onDeleteThought: (ThoughtDTO) -> Unit,
     private val onThoughtTap: (ThoughtDTO) -> Unit,
     private val onLoadAudio: (thoughtId: Int, onReady: (File) -> Unit) -> Unit,
@@ -37,7 +37,14 @@ class StreamAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThoughtViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.stream_item, parent, false)
-        return ThoughtViewHolder(view, thoughtValidator, onDeleteThought, onThoughtTap, onLoadAudio, onLoadPhoto)
+        return ThoughtViewHolder(
+            view,
+            appSettingsStorage,
+            onDeleteThought,
+            onThoughtTap,
+            onLoadAudio,
+            onLoadPhoto
+        )
     }
 
     private var currentSortConfig : SortConfig = SortConfig()
@@ -57,7 +64,7 @@ class StreamAdapter(
      */
     class ThoughtViewHolder(
         itemView: View,
-        private val thoughtValidator: ThoughtValidator,
+        private val appSettingsStorage: AppSettingsStorage,
         private val onDeleteThought: (ThoughtDTO) -> Unit,
         private val onThoughtTap: (ThoughtDTO) -> Unit,
         private val onLoadAudio: (thoughtId: Int, onReady: (File) -> Unit) -> Unit,
@@ -78,9 +85,13 @@ class StreamAdapter(
 
         private val vbThoughtValue: ValueCloude = itemView.findViewById(R.id.vb_thought_value)
 
-        private val llLabel : LinearLayout = itemView.findViewById(R.id.ll_label)
 
+        private val tvEmptyThought: TextView = itemView.findViewById(R.id.tv_empty_thought)
+
+        // Data
         private var viewedThoughtDTO: ThoughtDTO? = null
+
+        private val llLabel : LinearLayout = itemView.findViewById(R.id.ll_label)
 
         private val gestureDetector = GestureDetector(itemView.context, this).apply {
             setOnDoubleTapListener(this@ThoughtViewHolder)
@@ -97,13 +108,19 @@ class StreamAdapter(
             tvRichText.visibility = View.GONE
             audioView.visibility = View.GONE
             photoView.visibility = View.GONE
+            tvEmptyThought.visibility = View.GONE
 
+            var hasAnyContent = false
+
+            // Rich text
             if (thought.hasText) {
                 tvRichText.visibility = View.VISIBLE
                 tvRichText.originalText = thought.richText!!
+                hasAnyContent = true
             }
 
-            if (thought.hasAudio) {
+            // Audio
+            if (thought.hasAudio && appSettingsStorage.isVoiceRecordingEnabled()) {
                 thought.id?.let { thoughtId ->
                     onLoadAudio(thoughtId) { audioFile ->
                         if (audioFile.exists() && audioFile.length() > 0) {
@@ -114,9 +131,11 @@ class StreamAdapter(
                         }
                     }
                 }
+                hasAnyContent = true
             }
 
-            if (thought.hasPhoto) {
+            // Photo
+            if (thought.hasPhoto && appSettingsStorage.isPhotoFeatureEnabled()) {
                 thought.id?.let { thoughtId ->
                     onLoadPhoto(thoughtId) { photoData ->
                         if (photoData.isNotEmpty()) {
@@ -125,10 +144,15 @@ class StreamAdapter(
                         }
                     }
                 }
+                hasAnyContent = true
+            }
+
+            // Show all thought's forms are empty
+            if (!hasAnyContent) {
+                tvEmptyThought.visibility = View.VISIBLE
             }
 
             vbThoughtValue.currentLevel = thought.value
-
             updateMetadataUI(thought, sortConfig)
         }
 

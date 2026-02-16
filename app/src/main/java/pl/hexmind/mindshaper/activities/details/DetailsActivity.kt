@@ -15,15 +15,15 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.activities.CoreActivity
-import pl.hexmind.mindshaper.common.views.audio.AudioRecordingView
+import pl.hexmind.mindshaper.activities.ThoughtManagerActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
-import pl.hexmind.mindshaper.common.ui.dialogs.IconsListDialog
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
-import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
 import pl.hexmind.mindshaper.common.ui.HexPhotoView
 import pl.hexmind.mindshaper.common.ui.HexTextView
+import pl.hexmind.mindshaper.common.ui.dialogs.IconsListDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.PhotoFullscreenDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
+import pl.hexmind.mindshaper.common.views.audio.AudioRecordingView
 import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
@@ -31,7 +31,7 @@ import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class DetailsActivity : CoreActivity() {
+class DetailsActivity : ThoughtManagerActivity() {
 
     private val viewModel: DetailsViewModel by viewModels()
     private lateinit var binding: DetailsEditActivityBinding
@@ -171,6 +171,11 @@ class DetailsActivity : CoreActivity() {
 
             // RECORDING
             btnRecordingAdd.setOnClickListener {
+                if (!appSettingsStorage.isVoiceRecordingEnabled()) {
+                    showEnableAdditionalFeaturesDialog()
+                    return@setOnClickListener
+                }
+
                 binding.btnRecordingAdd.visibility = View.GONE
                 binding.audioRecordingPlayback.visibility = View.VISIBLE
                 binding.audioRecordingPlayback.switchToRecordPlaybackMode()
@@ -183,6 +188,11 @@ class DetailsActivity : CoreActivity() {
 
             // PHOTO
             btnPhotoAdd.setOnClickListener {
+                if (!appSettingsStorage.isPhotoFeatureEnabled()) {
+                    showEnableAdditionalFeaturesDialog()
+                    return@setOnClickListener
+                }
+
                 // Show photo widget inline
                 binding.btnPhotoAdd.visibility = View.GONE
                 binding.photoDisplayView.visibility = View.VISIBLE
@@ -210,7 +220,7 @@ class DetailsActivity : CoreActivity() {
                 }
 
                 override fun onError(error: String) {
-                    Toast.makeText(this@DetailsActivity, error, Toast.LENGTH_SHORT).show() // TODO
+                    Toast.makeText(this@DetailsActivity, error, Toast.LENGTH_SHORT).show()
                 }
             })
 
@@ -222,7 +232,6 @@ class DetailsActivity : CoreActivity() {
                 }
 
                 override fun onRecordingDeleted() {
-
                     viewModel.deleteAudioRecording()
                 }
 
@@ -256,14 +265,17 @@ class DetailsActivity : CoreActivity() {
                 viewModel.loadPhotoForDisplay(thought.id ?: return@launch) { photoData ->
                     PhotoFullscreenDialog(this@DetailsActivity, photoData).show()
                 }
-            } catch (e: Exception) {
-                Toast.makeText(this@DetailsActivity, "Failed to load photo", Toast.LENGTH_SHORT).show() // TODO
+            }
+            catch (e: Exception) {
+                Toast.makeText(this@DetailsActivity, "Failed to load photo", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun setupUI(){
-        updatePhotoFeatureVisibility()
+    private fun setupUI() {
+        // No header -> skip
+        updateAddPhotoButtonVisualState()
+        updateAddRecordingButtonVisualState()
     }
 
     private fun onDomainSelected(domain: CommonIconsListItem) {
@@ -359,18 +371,23 @@ class DetailsActivity : CoreActivity() {
                 viewModel.savePhotoFromUri(uri)
             }
             catch (e: Exception) {
-                binding.photoDisplayView.showError("Olaboga! Kod się wyburaczył :/") // TODO
+                binding.photoDisplayView.showError("Olaboga! Kod się wyburaczył :/")
             }
         }
     }
 
-    private fun updatePhotoFeatureVisibility() {
-        val featureEnabled = appSettingsStorage.isPhotoFeatureEnabled()
+    private fun updateAddPhotoButtonVisualState() {
+        updateAddButtonVisualState(
+            binding.btnPhotoAdd,
+            appSettingsStorage.isPhotoFeatureEnabled()
+        )
+    }
 
-        if (!featureEnabled) {
-            binding.photoDisplayView.visibility = View.GONE
-            binding.btnPhotoAdd.visibility = View.GONE
-        }
+    private fun updateAddRecordingButtonVisualState() {
+        updateAddButtonVisualState(
+            binding.btnRecordingAdd,
+            appSettingsStorage.isVoiceRecordingEnabled()
+        )
     }
 
     private fun updateUI(thought: ThoughtDTO) {
@@ -453,7 +470,21 @@ class DetailsActivity : CoreActivity() {
         }
     }
 
+    /**
+     * whole UI update for recording and playing sound recordings widget
+     */
     private fun updateAudioUI(thought: ThoughtDTO) {
+        val featureEnabled = appSettingsStorage.isVoiceRecordingEnabled()
+        updateAddRecordingButtonVisualState()
+
+        // Feature disabled
+        if (!featureEnabled) {
+            binding.btnRecordingAdd.visibility = View.VISIBLE // always show disabled button
+            binding.audioRecordingPlayback.visibility = View.GONE
+            return
+        }
+
+        // Feature enabled
         if (thought.hasAudio) {
             binding.btnRecordingAdd.visibility = View.GONE
             binding.audioRecordingPlayback.visibility = View.VISIBLE
@@ -470,15 +501,21 @@ class DetailsActivity : CoreActivity() {
         }
     }
 
+    /**
+     * whole UI update for taking and displaying photo
+     */
     private fun updatePhotoUI(thought: ThoughtDTO) {
         val featureEnabled = appSettingsStorage.isPhotoFeatureEnabled()
+        updateAddPhotoButtonVisualState()
 
+        // Feature disabled
         if (!featureEnabled) {
+            binding.btnPhotoAdd.visibility = View.VISIBLE // always show disabled button
             binding.photoDisplayView.visibility = View.GONE
-            binding.btnPhotoAdd.visibility = View.GONE
             return
         }
 
+        // Feature enabled
         if (thought.hasPhoto) {
             binding.btnPhotoAdd.visibility = View.GONE
             binding.photoDisplayView.visibility = View.VISIBLE

@@ -5,7 +5,7 @@
     android:height="24dp">
 
     <path
-        android:fillColor="@color/button_content_used_background"
+        android:fillColor="@color/button_content_filled_background"
         android:pathData="M50,0
                           a50,50 0 1,0 0,100
                           a50,50 0 1,0 0,-100"/>

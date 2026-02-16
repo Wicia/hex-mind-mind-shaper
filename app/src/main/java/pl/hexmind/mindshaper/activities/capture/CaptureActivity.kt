@@ -12,8 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.activities.CoreActivity
-import pl.hexmind.mindshaper.common.views.audio.AudioRecordingView
+import pl.hexmind.mindshaper.activities.ThoughtManagerActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.common.ui.HexPhotoView
@@ -21,6 +20,7 @@ import pl.hexmind.mindshaper.common.ui.HexTextView
 import pl.hexmind.mindshaper.common.ui.dialogs.PhotoFullscreenDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
 import pl.hexmind.mindshaper.common.validation.ValidationResult
+import pl.hexmind.mindshaper.common.views.audio.AudioRecordingView
 import pl.hexmind.mindshaper.databinding.CaptureActivityNewBinding
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
@@ -28,7 +28,7 @@ import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CaptureActivity : CoreActivity() {
+class CaptureActivity : ThoughtManagerActivity() {
 
     private val viewModel: CaptureActivityViewModel by viewModels()
     private lateinit var binding: CaptureActivityNewBinding
@@ -101,6 +101,11 @@ class CaptureActivity : CoreActivity() {
 
             // RECORDING
             btnRecordingAdd.setOnClickListener {
+                if (!appSettingsStorage.isVoiceRecordingEnabled()) {
+                    showEnableAdditionalFeaturesDialog()
+                    return@setOnClickListener
+                }
+
                 btnRecordingAdd.visibility = View.GONE
                 audioRecordingPlayback.visibility = View.VISIBLE
                 audioRecordingPlayback.switchToRecordPlaybackMode()
@@ -112,6 +117,11 @@ class CaptureActivity : CoreActivity() {
 
             // PHOTO
             btnPhotoAdd.setOnClickListener {
+                if (!appSettingsStorage.isPhotoFeatureEnabled()) {
+                    showEnableAdditionalFeaturesDialog()
+                    return@setOnClickListener
+                }
+
                 btnPhotoAdd.visibility = View.GONE
                 photoDisplayView.visibility = View.VISIBLE
                 photoDisplayView.showStatus(
@@ -200,7 +210,8 @@ class CaptureActivity : CoreActivity() {
                     val photoBytes = photoFile.readBytes()
                     PhotoFullscreenDialog(this@CaptureActivity, photoBytes).show()
                 }
-            } catch (e: Exception) {
+            }
+            catch (e: Exception) {
                 Toast.makeText(
                     this@CaptureActivity,
                     "Failed to load photo",
@@ -212,7 +223,8 @@ class CaptureActivity : CoreActivity() {
 
     private fun setupUI() {
         setupHeader(R.drawable.ic_capture_thought, R.string.capture_main_label)
-        updatePhotoFeatureVisibility()
+        updateAddPhotoButtonVisualState()
+        updateAddRecordingButtonVisualState()
     }
 
     private fun showEditRichTextDialog() {
@@ -274,13 +286,18 @@ class CaptureActivity : CoreActivity() {
         }
     }
 
-    private fun updatePhotoFeatureVisibility() {
-        val featureEnabled = appSettingsStorage.isPhotoFeatureEnabled()
+    private fun updateAddPhotoButtonVisualState() {
+        updateAddButtonVisualState(
+            binding.btnPhotoAdd,
+            appSettingsStorage.isPhotoFeatureEnabled()
+        )
+    }
 
-        if (!featureEnabled) {
-            binding.photoDisplayView.visibility = View.GONE
-            binding.btnPhotoAdd.visibility = View.GONE
-        }
+    private fun updateAddRecordingButtonVisualState() {
+        updateAddButtonVisualState(
+            binding.btnRecordingAdd,
+            appSettingsStorage.isVoiceRecordingEnabled()
+        )
     }
 
     /**
@@ -334,14 +351,29 @@ class CaptureActivity : CoreActivity() {
         if (draft.richText.isNullOrBlank()) {
             binding.btnRichTextAdd.visibility = View.VISIBLE
             binding.richTextView.visibility = View.GONE
-        } else {
+        }
+        else {
             binding.btnRichTextAdd.visibility = View.GONE
             binding.richTextView.visibility = View.VISIBLE
             binding.richTextView.originalText = draft.richText.orEmpty()
         }
     }
 
+    /**
+     * UI-related manager for recording and playing sound recordings
+     */
     private fun updateAudioUI(draft: ThoughtDTO) {
+        val featureEnabled = appSettingsStorage.isVoiceRecordingEnabled()
+        updateAddRecordingButtonVisualState()
+
+        // Feature disabled
+        if (!featureEnabled) {
+            binding.btnRecordingAdd.visibility = View.VISIBLE // always show disabled button
+            binding.audioRecordingPlayback.visibility = View.GONE
+            return
+        }
+
+        // Feature enabled
         if (draft.hasAudio) {
             binding.btnRecordingAdd.visibility = View.GONE
             binding.audioRecordingPlayback.visibility = View.VISIBLE
@@ -355,28 +387,34 @@ class CaptureActivity : CoreActivity() {
                     binding.audioRecordingPlayback.loadAudioForPlayback(audioFile)
                 }
             }
-        } else {
+        }
+        else {
             binding.btnRecordingAdd.visibility = View.VISIBLE
             binding.audioRecordingPlayback.visibility = View.GONE
         }
     }
 
+    /**
+     * UI-related manager for making and displaying photo
+     */
     private fun updatePhotoUI(draft: ThoughtDTO) {
         val featureEnabled = appSettingsStorage.isPhotoFeatureEnabled()
+        updateAddPhotoButtonVisualState()
 
+        // Feature disabled
         if (!featureEnabled) {
+            binding.btnPhotoAdd.visibility = View.VISIBLE // always show disabled button
             binding.photoDisplayView.visibility = View.GONE
-            binding.btnPhotoAdd.visibility = View.GONE
             return
         }
 
+        // Feature enabled
         if (draft.hasPhoto) {
             binding.btnPhotoAdd.visibility = View.GONE
             binding.photoDisplayView.visibility = View.VISIBLE
-
             // Photo already loaded in handlePhotoResult
-            // No need to reload here
-        } else {
+        }
+        else {
             binding.btnPhotoAdd.visibility = View.VISIBLE
             binding.photoDisplayView.visibility = View.GONE
         }

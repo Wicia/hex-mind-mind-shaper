@@ -86,8 +86,10 @@ class SettingsActivity : CoreActivity() {
 
     override fun onResume() {
         super.onResume()
-        syncVoiceRecordingToogleWithPermissions()
-        syncPhotoToggleWithPermissions()  // Photo feature sync
+
+        // Sync of permissions related widgets
+        syncVoiceRecordingToggleWithPermissions()
+        syncPhotoToggleWithPermissions()
     }
 
     /**
@@ -146,15 +148,15 @@ class SettingsActivity : CoreActivity() {
     // ========== VOICE RECORDING FEATURE ==========
 
     private fun setupVoiceRecordingFeatureToggle() {
-        binding.toggleRecording.setOnCheckedChangeListener { _, isChecked ->
+        binding.switchVoiceRecordingFeature.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 when {
                     permissionsService.isRecordAudioGranted() -> {
                         appSettingsStorage.setVoiceRecordingEnabled(true)
-                        binding.toggleRecording.isChecked = true
+                        binding.switchVoiceRecordingFeature.isChecked = true
                     }
                     else -> {
-                        showPermissionExplanationDialog()
+                        showVoiceRecordingPermissionExplanationDialog()
                     }
                 }
             }
@@ -163,57 +165,62 @@ class SettingsActivity : CoreActivity() {
             }
         }
 
-        syncVoiceRecordingToogleWithPermissions()
+        syncVoiceRecordingToggleWithPermissions()
     }
 
-    private fun syncVoiceRecordingToogleWithPermissions() {
+    private fun syncVoiceRecordingToggleWithPermissions() {
         val hasPermission = permissionsService.isRecordAudioGranted()
         val wantsRecording = appSettingsStorage.isVoiceRecordingEnabled()
 
-        binding.toggleRecording.isChecked = wantsRecording && hasPermission
+        binding.switchVoiceRecordingFeature.isChecked = wantsRecording && hasPermission
     }
 
-    private val requestPermissionLauncher = registerForActivityResult(
+    private val requestVoiceRecordingPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
             // Approved
             appSettingsStorage.setVoiceRecordingEnabled(true)
-            binding.toggleRecording.isChecked = true
+            binding.switchVoiceRecordingFeature.isChecked = true
         }
         else {
             // Denial
             appSettingsStorage.setVoiceRecordingEnabled(false)
-            binding.toggleRecording.isChecked = false
+            binding.switchVoiceRecordingFeature.isChecked = false
 
             // Handling permissions "blockade"
             if (!shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)) {
-                showPermissionPermanentDenialDialog()
+                showVoiceRecordingPermanentDenialDialog()
             }
         }
     }
 
-    private fun showPermissionExplanationDialog() {
+    private fun showVoiceRecordingPermissionExplanationDialog() {
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
-            .setMessage(getString(R.string.common_thoughts_permissions_dialog_message, "Aby móc nagrywać dźwięk, aplikacja potrzebuje dostępu do mikrofonu."))
+            .setMessage(getString(R.string.settings_voice_recording_info))
             .setPositiveButton("OK") { _, _ -> // TODO
-                requestPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+                requestVoiceRecordingPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
             }
             .setNegativeButton("Nie teraz") { _, _ -> // TODO
-                binding.toggleRecording.isChecked = false
+                binding.switchVoiceRecordingFeature.isChecked = false
             }
             .setOnCancelListener {
-                binding.toggleRecording.isChecked = false
+                binding.switchVoiceRecordingFeature.isChecked = false
             }
             .show()
     }
 
-    private fun showPermissionPermanentDenialDialog() {
+    private fun showVoiceRecordingPermanentDenialDialog() {
         MaterialAlertDialogBuilder(this)
-            .setTitle(getString(R.string.settings_thoughts_permissions_blockade))
-            .setMessage(getString(R.string.settings_thoughts_permissions_blockade_tooltip))
-            .setPositiveButton("OK") { _, _ -> } // TODO
+            .setTitle(getString(R.string.settings_permissions_blockade_title))
+            .setMessage(getString(R.string.settings_permissions_recording_blockade_tooltip))
+            .setPositiveButton("Otwórz ustawienia") { _, _ ->
+                openAppSettings()
+            }
+            .setNegativeButton("Anuluj") { _, _ ->
+                binding.switchVoiceRecordingFeature.isChecked = false
+            }
             .show()
     }
 
@@ -270,7 +277,7 @@ class SettingsActivity : CoreActivity() {
     private fun showPhotoPermissionExplanationDialog() {
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
-            .setMessage("Aby móc robić zdjęcia, aplikacja potrzebuje dostępu do kamery.") // TODO
+            .setMessage(getString(R.string.settings_permissions_photo_info))
             .setPositiveButton("OK") { _, _ -> // TODO
                 requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
             }
@@ -285,8 +292,8 @@ class SettingsActivity : CoreActivity() {
 
     private fun showPhotoPermanentDenialDialog() {
         MaterialAlertDialogBuilder(this)
-            .setTitle("Uprawnienie kamery") // TODO
-            .setMessage("Uprawnienie do kamery zostało trwale odrzucone. Możesz je włączyć w ustawieniach systemu.") // TODO
+            .setTitle(getString(R.string.settings_permissions_blockade_title))
+            .setMessage(getString(R.string.settings_permissions_photo_blockade_tooltip))
             .setPositiveButton("Otwórz ustawienia") { _, _ -> // TODO
                 openAppSettings()
             }

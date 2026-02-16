@@ -87,7 +87,7 @@
     <color name="button_secondary_enabled_background">@color/_orange_lvl_2</color>
     <color name="button_secondary_enabled_icon">@color/_gray_lvl_1</color>
 
-    <color name="button_secondary_disabled_background">@color/_gray_lvl_2</color>
+    <color name="button_secondary_disabled_background">@color/_gray_lvl_1</color>
     <color name="button_secondary_disabled_icon">@color/_gray_lvl_2</color>
 
     <!--  Auxiliary (no disabled state) -->
@@ -98,11 +98,14 @@
 <!--    CONTENT BUTTONS -->
 <!-- ====================================== -->
 
-    <color name="button_content_not_used_background">@color/_orange_lvl_1</color>
-    <color name="button_content_not_used_icon">@color/_orange_lvl_0</color>
+    <color name="button_content_empty_background_disabled">@color/_gray_lvl_1</color>
+    <color name="button_content_empty_background">@color/_orange_lvl_1</color>
 
-    <color name="button_content_used_background">@color/_orange_lvl_1</color>
-    <color name="button_content_used_icon">@color/_orange_lvl_0</color>
+    <color name="button_content_empty_icon_disabled">@color/_white</color>
+    <color name="button_content_empty_icon">@color/_orange_lvl_0</color>
+
+    <color name="button_content_filled_background">@color/_orange_lvl_1</color>
+    <color name="button_content_filled_icon">@color/_orange_lvl_0</color>
 
 <!-- ====================================== -->
 <!--    CARD VIEWS -->

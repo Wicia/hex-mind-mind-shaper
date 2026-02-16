@@ -70,7 +70,7 @@ class StreamActivity : CoreActivity() {
 
     private fun setupVerticalFeed() {
         adapter = StreamAdapter(
-            thoughtValidator,
+            appSettingsStorage,
             onDeleteThought = { thoughtToDelete ->
                 showDeleteConfirmationDialog(thoughtToDelete)
             },

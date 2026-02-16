@@ -70,9 +70,6 @@
     <string name="common_list_dialog_title">Wybierz coś sobie...</string>
 
     <string name="common_thoughts_permissions_dialog_header">Żądanie uprawnień do zasobów Androida</string>
-    <string name="common_thoughts_permissions_dialog_message">
-        %s\n\n(i) Dwukrotna ich odmowa = ustawienie to zostanie zablokowane i będzie je można odblokować w ustawieniach systemowych Androida.
-    </string>
 
     <!-- VALIDATION -->
     <string name="common_object_type_thought">Myśl</string>
@@ -247,7 +244,9 @@
     <string name="stream_filter_button_none">-</string>
 
     <!-- Sort Properties -->
-    <string name="sort_info_prefix">Od</string>
+    <string name="sort_dialog_header">Sortowanie</string>
+
+    <string name="sort_info_prefix">od</string>
 
     <string name="sort_property_created_at">Wiek</string>
     <string name="sort_property_thread">Wątek</string>
@@ -255,14 +254,14 @@
     <string name="sort_property_project">Projekt</string>
     <string name="sort_property_value">Wartość</string>
 
-    <string name="sort_text_desc_label">Z… → A</string>
-    <string name="sort_text_asc_label">A… → Z</string>
+    <string name="sort_text_desc_label">Z → A</string>
+    <string name="sort_text_asc_label">A → Z</string>
 
     <string name="sort_value_desc_label">Ważnych</string>
     <string name="sort_value_asc_label">Drobnych</string>
 
     <string name="sort_date_desc_label">Młodych</string>
-    <string name="sort_date_asc_label">Starszych</string>
+    <string name="sort_date_asc_label">Starych</string>
 
     <!-- Sort Directions -->
     <string name="sort_direction_description">Kierunek sortowania</string>
@@ -283,11 +282,13 @@
     <string name="settings_thoughts_value_system_10">od 1 do 10</string>
     <string name="settings_thoughts_value_system_6">od 1 do 6</string>
 
-    <string name="settings_thoughts_permissions_section">◗ Formy zapisu myśli</string>
-    <string name="settings_thoughts_permissions_voice_recording">Włącz zapis w formie głosówek</string>
-    <string name="settings_thoughts_permissions_photo">Włącz zapis w formie zdjęć</string>
-    <string name="settings_thoughts_permissions_blockade">Uprawnienie zablokowane</string>
-    <string name="settings_thoughts_permissions_blockade_tooltip">Aby włączyć nagrywanie, przejdź do ustawień Androida i nadaj ręcznie uprawnienie do mikrofonu.</string>
+    <string name="settings_permissions_section">◗ Formy zapisu myśli</string>
+    <string name="settings_permissions_voice_recording">Włącz zapis w formie głosówek</string>
+    <string name="settings_permissions_photo">Włącz zapis w formie zdjęć</string>
+
+    <string name="settings_permissions_blockade_title">Uprawnienie zablokowane</string>
+    <string name="settings_permissions_recording_blockade_tooltip">Uprawnienie do nagrywania dźwięku zostało trwale odrzucone.\nMożesz je włączyć w ustawieniach systemu Androida.</string>
+    <string name="settings_permissions_photo_blockade_tooltip">Uprawnienie do kamery zostało trwale odrzucone.\nMożesz je włączyć w ustawieniach systemu Androida.</string>
 
     <!-- Domains -->
     <string name="settings_domains_header">◗ Domeny</string>
@@ -335,9 +336,13 @@
     <string name="common_thought_age_level_3_icon">🍀</string>
     <string name="common_thought_age_level_4_icon">🌳</string>
     <string name="common_thought_age_level_5_icon">🏝️</string>
-    <string name="sort_dialog_header">Sortowanie</string>
 
     <string name="rich_text_removing_header">Usunąć tekst?</string>
     <string name="rich_text_removing_content">Ta operacja jest nieodwracalna</string>
+
+    <string name="stream_item_empty_thought">- ? -\n\nTa myśl jest pusta...</string>
+
+    <string name="settings_voice_recording_info">Aby móc nagrywać dźwięk, aplikacja potrzebuje dostępu do mikrofonu.</string>
+    <string name="settings_permissions_photo_info">Aby móc robić zdjęcia, aplikacja potrzebuje dostępu do kamery.</string>
 
 </resources>

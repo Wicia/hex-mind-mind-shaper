@@ -30,7 +30,7 @@ import javax.inject.Inject
 /**
  * Core activity with bottom navigation bar overlay
  */
-open class CoreActivity() : AppCompatActivity() {
+open class CoreActivity : AppCompatActivity() {
 
     @Inject
     lateinit var appSettingsStorage: AppSettingsStorage
