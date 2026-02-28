@@ -44,7 +44,6 @@ class Migrations {
         // Add PHOTO related columns
         val MIGRATION_3_TO_4 = object : Migration(3, 4) {
             override fun migrate(db: SupportSQLiteDatabase) {
-
                 db.execSQL("ALTER TABLE THOUGHTS ADD COLUMN photo_data BLOB DEFAULT NULL")
                 db.execSQL("ALTER TABLE THOUGHTS ADD COLUMN photo_file_size INTEGER DEFAULT NULL")
             }
@@ -56,6 +55,40 @@ class Migrations {
                 // SQLite DEFAULT can't reference other columns, so we add with 0 and then backfill
                 db.execSQL("ALTER TABLE THOUGHTS ADD COLUMN updated_at INTEGER NOT NULL DEFAULT 0")
                 db.execSQL("UPDATE THOUGHTS SET updated_at = created_at")
+            }
+        }
+
+        // Removing unused feature & column (carousel legacy)
+        val MIGRATION_5_TO_6 = object : Migration(5, 6) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("""
+            CREATE TABLE THOUGHTS_NEW (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                domain_id INTEGER,
+                thread TEXT,
+                created_at INTEGER NOT NULL,
+                updated_at INTEGER NOT NULL,
+                soul_mate TEXT,
+                project TEXT,
+                value INTEGER NOT NULL DEFAULT 1,
+                rich_text TEXT,
+                audio_data BLOB,
+                audio_duration_ms INTEGER,
+                photo_data BLOB,
+                photo_file_size INTEGER,
+                FOREIGN KEY (domain_id) REFERENCES DOMAINS(id) ON DELETE SET NULL
+            )
+        """)
+                db.execSQL("""
+            INSERT INTO THOUGHTS_NEW
+            SELECT id, domain_id, thread, created_at, updated_at,
+                   soul_mate, project, value, rich_text,
+                   audio_data, audio_duration_ms, photo_data, photo_file_size
+            FROM THOUGHTS
+        """)
+                db.execSQL("DROP TABLE THOUGHTS")
+                db.execSQL("ALTER TABLE THOUGHTS_NEW RENAME TO THOUGHTS")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_THOUGHTS_domain_id ON THOUGHTS(domain_id)")
             }
         }
     }

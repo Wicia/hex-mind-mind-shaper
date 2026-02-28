@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.Index
-import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType
 import java.time.Instant
 
 @Entity(
@@ -48,9 +47,6 @@ data class ThoughtEntity(
 
     // === Thought Content ===
 
-    @ColumnInfo(name = "main_content_type")
-    val mainContentType: ThoughtMainContentType,
-
     @ColumnInfo(name = "rich_text")
     val richText: String? = null,
 
@@ -82,7 +78,6 @@ data class ThoughtEntity(
         if (soulMate != other.soulMate) return false
         if (project != other.project) return false
         if (value != other.value) return false
-        if (mainContentType != other.mainContentType) return false
         if (richText != other.richText) return false
         if (audioDurationMs != other.audioDurationMs) return false
         if (audioData != null) {
@@ -102,7 +97,6 @@ data class ThoughtEntity(
         result = 31 * result + (soulMate?.hashCode() ?: 0)
         result = 31 * result + (project?.hashCode() ?: 0)
         result = 31 * result + value
-        result = 31 * result + mainContentType.hashCode()
         result = 31 * result + (richText?.hashCode() ?: 0)
         result = 31 * result + (audioDurationMs?.hashCode() ?: 0)
         result = 31 * result + (audioData?.contentHashCode() ?: 0)

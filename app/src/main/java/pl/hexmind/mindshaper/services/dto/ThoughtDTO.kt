@@ -4,7 +4,6 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.TypeParceler
 import pl.hexmind.mindshaper.common.intent.InstantParceler
-import pl.hexmind.mindshaper.activities.capture.models.ThoughtMainContentType
 import java.time.Instant
 
 @Parcelize
@@ -22,8 +21,6 @@ data class ThoughtDTO(
     var project: String? = null,
 
     var value: Int = 1,
-
-    var mainContentType: ThoughtMainContentType = ThoughtMainContentType.UNKNOWN,
 
 // ========= RICH TEXT =========
 
@@ -74,7 +71,6 @@ data class ThoughtDTO(
         if (soulMate != other.soulMate) return false
         if (project != other.project) return false
         if (value != other.value) return false
-        if (mainContentType != other.mainContentType) return false
         if (audioDurationMs != other.audioDurationMs) return false
         if (tempAudioFilePath != other.tempAudioFilePath) return false
 
@@ -91,7 +87,6 @@ data class ThoughtDTO(
         result = 31 * result + (soulMate?.hashCode() ?: 0)
         result = 31 * result + (project?.hashCode() ?: 0)
         result = 31 * result + value
-        result = 31 * result + mainContentType.hashCode()
         result = 31 * result + (audioDurationMs?.hashCode() ?: 0)
         result = 31 * result + (tempAudioFilePath?.hashCode() ?: 0)
         return result

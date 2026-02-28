@@ -29,6 +29,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun iconDAO(): IconDAO
 
     companion object {
-        const val DB_VERSION = 5
+        const val DB_VERSION = 6
     }
 }
