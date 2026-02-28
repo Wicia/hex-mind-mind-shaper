@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.common.SortConfig
 import pl.hexmind.mindshaper.common.SortDirection
 import pl.hexmind.mindshaper.common.SortProperty
+import pl.hexmind.mindshaper.common.regex.HexTags
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.ThoughtsService
@@ -32,6 +33,8 @@ class StreamViewModel @Inject constructor(
     // All thoughts from database
     private val allThoughts: LiveData<List<ThoughtDTO>> = thoughtsService.getAllThoughts()
 
+    private val _searchQuery = savedStateHandle.getLiveData("search_query", HexTags())
+
     // Default sort: newest first (CREATED_AT DESCENDING)
     private val _sortConfig = savedStateHandle.getLiveData(
         "sort_config",
@@ -48,6 +51,7 @@ class StreamViewModel @Inject constructor(
     // Combine filter and sort using MediatorLiveData
     val filteredThoughts: MediatorLiveData<List<ThoughtDTO>> = MediatorLiveData<List<ThoughtDTO>>().apply {
         var currentThoughts: List<ThoughtDTO>? = null
+        var currentQuery: HexTags? = null
         var currentSort: SortConfig? = null
         var currentDomainId: Int? = null
 
@@ -58,13 +62,14 @@ class StreamViewModel @Inject constructor(
                 return
             }
 
+            val query = currentQuery ?: HexTags()
             val sort = currentSort ?: SortConfig(
                 property = SortProperty.CREATED_AT,
                 direction = SortDirection.DESCENDING
             )
             val domainId = currentDomainId
 
-            val filtered = filterThoughts(thoughts, domainId)
+            val filtered = filterThoughts(thoughts, query, domainId)
             val sorted = sortThoughts(filtered, sort)
 
             value = sorted
@@ -72,6 +77,11 @@ class StreamViewModel @Inject constructor(
 
         addSource(allThoughts) { thoughts ->
             currentThoughts = thoughts
+            update()
+        }
+
+        addSource(_searchQuery) { query ->
+            currentQuery = query
             update()
         }
 
@@ -84,6 +94,16 @@ class StreamViewModel @Inject constructor(
             currentDomainId = domainId
             update()
         }
+    }
+
+    fun updateSearchQuery(query: HexTags) {
+        savedStateHandle["search_query"] = query
+        _searchQuery.value = query
+    }
+
+    fun clearSearch() {
+        savedStateHandle["search_query"] = HexTags()
+        _searchQuery.value = HexTags()
     }
 
     fun updateSortConfig(config: SortConfig) {
@@ -108,13 +128,30 @@ class StreamViewModel @Inject constructor(
         _selectedDomainId.value = null
     }
 
-    private fun filterThoughts(thoughts: List<ThoughtDTO>, domainId: Int?): List<ThoughtDTO> {
+    private fun filterThoughts(thoughts: List<ThoughtDTO>, query: HexTags, domainId: Int?): List<ThoughtDTO> {
+        var filtered = thoughts
+
         // Filter by domain if selected
-        return if (domainId != null) {
-            thoughts.filter { it.domainId == domainId }
-        } else {
-            thoughts
+        if (domainId != null) {
+            filtered = filtered.filter { it.domainId == domainId }
         }
+
+        // Filter by search query
+        if (!query.areCriteriaEmpty()) {
+            filtered = filtered.filter { thought ->
+                matchesCriteria(thought.thread, query.thread) &&
+                        matchesCriteria(thought.soulMate, query.soulMate) &&
+                        matchesCriteria(thought.project, query.project)
+            }
+        }
+
+        return filtered
+    }
+
+    private fun matchesCriteria(fieldValue: String?, searchQuery: String?): Boolean {
+        if (searchQuery.isNullOrBlank()) return true
+        if (fieldValue.isNullOrBlank()) return false
+        return fieldValue.contains(searchQuery, ignoreCase = true)
     }
 
     private fun sortThoughts(thoughts: List<ThoughtDTO>, config: SortConfig): List<ThoughtDTO> {

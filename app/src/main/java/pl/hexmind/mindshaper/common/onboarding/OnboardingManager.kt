@@ -5,7 +5,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.res.ResourcesCompat
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.common.ui.dialogs.DialogTooltips
+import pl.hexmind.mindshaper.common.ui.dialogs.TooltipsDialog
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -80,7 +80,7 @@ class OnboardingManager @Inject constructor(
 
         val tooltipConfig = tooltipsConfig[step]
 
-        val builder = DialogTooltips.Builder(context)
+        val builder = TooltipsDialog.Builder(context)
             .setOnDismissAction {
                 markTooltipShown(step)
             }

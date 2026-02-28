@@ -24,7 +24,7 @@ data class TooltipScreen(
 /**
  * Reusable dialog for showing preciousssss... knowledge and tooltips for user
  */
-class DialogTooltips private constructor(
+class TooltipsDialog private constructor(
     private val context: Context,
     private val tooltips: List<TooltipScreen>,
     private val onDismiss: (() -> Unit)?
@@ -171,7 +171,7 @@ class DialogTooltips private constructor(
         fun show() {
             require(tooltips.isNotEmpty()) { "At least one tooltip is required" }
 
-            DialogTooltips(
+            TooltipsDialog(
                 context = context,
                 tooltips = tooltips,
                 onDismiss = onDismiss

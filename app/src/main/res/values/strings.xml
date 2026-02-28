@@ -22,7 +22,7 @@
 
     <!-- HEX TAGS / METADATA -->
     <string name="common_hex_tag_project">Projekt</string>
-    <string name="common_hex_tag_soul_mates">Człowiek lub Ekipa</string>
+    <string name="common_hex_tag_soul_mates">Osoba (lub Ekipa)</string>
     <string name="common_hex_tag_thread">Wątek lub Temat</string>
     <string name="common_hex_tag_domain">Domena</string>
 
@@ -113,10 +113,11 @@
 
     <string name="stream_searching_title">Wyszukiwanie myśli</string>
     <string name="stream_searching_tooltip"><![CDATA[
-        Wpisując do pola-szukajki znak specjalny + tekst możesz wyszukiwać myśli, np.:\n
-        ✓ #gotowanie - wyszuka myśli z projektem \"gotowanie\"\n
-        ✓ @Michał - wyszuka myśli z osobą \"Michał\"\n
-        ✓ wspomnienie - wyszuka myśli z etykietą \"wspomnienie\"\n
+        Wpisujesz do pola-szukajki tekst (jak w przeglądarce WWW) no i automatycznie szukasz:\n\n
+        wspomnienie - wyszuka myśli z etykietą \"wspomnienie\"\n\n
+        #gotowanie - wyszuka myśli z projektem \"gotowanie\"\n\n
+        @Michał - wyszuka myśli z osobą \"Michał\"\n\n
+        wspomnienie @Michał - wyszuka myśli z etykietą \"wspomnienie\" oraz osobą \"Michał\"\n\n
     ]]></string>
 
     <string name="stream_deleting_title">Usuwanie myśli</string>
@@ -196,7 +197,7 @@
     <string name="capture_input_fields_error_empty">Notatka i Esencja są puste</string>
 
     <!-- Thread (common) -->
-    <string name="capture_hex_tags_tooltip">wątek @człowiek #projekt</string>
+    <string name="capture_hex_tags_tooltip">wątek @osoba #projekt</string>
     <string name="capture_thread_error_chars_exceeded">Wątek nie może przekroczyć %d znaków...</string>
     <string name="capture_project_error_chars_exceeded">Projekt nie może przekroczyć %d znaków...</string>
     <string name="capture_soul_mates_error_chars_exceeded">Opis osób nie może przekroczyć %d znaków...</string>
@@ -236,7 +237,7 @@
     <!-- ====================================== -->
 
     <string name="stream_thought_metadata_empty">\?\?\?</string>
-    <string name="stream_searchbar_hint">Szukaj @człowieków / #projektu / wątku...</string>
+    <string name="stream_searchbar_hint">Szukaj @osoby / #projektu / wątku...</string>
 
     <!-- Filter -->
     <string name="stream_filter_dialog_title">Filtruj</string>
@@ -250,7 +251,7 @@
 
     <string name="sort_property_created_at">Wiek</string>
     <string name="sort_property_thread">Wątek</string>
-    <string name="sort_property_soul_mate">Człowiek</string>
+    <string name="sort_property_soul_mate">Osoba</string>
     <string name="sort_property_project">Projekt</string>
     <string name="sort_property_value">Wartość</string>
 
@@ -327,7 +328,7 @@
     <string name="settings_backup_error_loading">Błąd podczas wczytywania backupu</string>
 
     <!-- Thought Age -->
-    <string name="common_thought_age_pattern">%2$s dni temu %1$s</string>
+    <string name="common_thought_age_pattern">%2$s dni temu  %1$s</string>
     <string name="common_thought_age_0">Dzisiaj %s</string>
     <string name="common_thought_age_1">Wczoraj %s</string>
 
@@ -344,5 +345,7 @@
 
     <string name="settings_voice_recording_info">Aby móc nagrywać dźwięk, aplikacja potrzebuje dostępu do mikrofonu.</string>
     <string name="settings_permissions_photo_info">Aby móc robić zdjęcia, aplikacja potrzebuje dostępu do kamery.</string>
+
+    <string name="carousel_searchbar_hint">Szukajka czeka na twój rozkaz…</string>
 
 </resources>

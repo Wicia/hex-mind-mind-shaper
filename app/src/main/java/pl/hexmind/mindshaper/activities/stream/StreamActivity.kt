@@ -2,11 +2,16 @@ package pl.hexmind.mindshaper.activities.stream
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.activity.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
@@ -14,8 +19,11 @@ import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.common.SortConfig
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
+import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
 import pl.hexmind.mindshaper.common.ui.dialogs.IconsListDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.MultipleActionsDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.TooltipsDialog
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import timber.log.Timber
@@ -37,6 +45,8 @@ class StreamActivity : CoreActivity() {
 
     private lateinit var btnSort: MaterialButton
     private lateinit var btnFilter: MaterialButton
+    private lateinit var tilSearch: TextInputLayout
+    private lateinit var etSearch: TextInputEditText
 
     // FAB menu
     private lateinit var fabNewThought: FloatingActionButton
@@ -48,6 +58,7 @@ class StreamActivity : CoreActivity() {
 
         initializeViews()
         setupVerticalFeed()
+        setupRealTimeSearchBar()
         setupSortButton()
         setupFilterButton()
         setupFabMenu()
@@ -64,6 +75,8 @@ class StreamActivity : CoreActivity() {
         viewPager = findViewById(R.id.vp_thoughts)
         btnSort = findViewById(R.id.btn_sort)
         btnFilter = findViewById(R.id.btn_filter)
+        tilSearch = findViewById(R.id.til_search)
+        etSearch = findViewById(R.id.et_search)
         fabNewThought = findViewById(R.id.fab_new_thought)
         setupHeader(R.drawable.ic_header_stream, R.string.thoughts_stream_title)
     }
@@ -94,6 +107,46 @@ class StreamActivity : CoreActivity() {
         // Smooth page change callback
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
         })
+    }
+
+    private fun setupRealTimeSearchBar() {
+        etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val hexTags = HexTagsUtils.parseInput(s?.toString() ?: "")
+                viewModel.updateSearchQuery(hexTags)
+                updateSearchEndIcon(s?.isNotEmpty() == true)
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        tilSearch.setEndIconOnClickListener {
+            if (etSearch.text?.isNotEmpty() == true) {
+                etSearch.text?.clear()
+                viewModel.clearSearch()
+            }
+            else {
+                showSearchHelpDialog()
+            }
+        }
+    }
+
+    private fun updateSearchEndIcon(hasText: Boolean) {
+        val iconRes = if (hasText) {
+            android.R.drawable.ic_menu_close_clear_cancel
+        }
+        else {
+            R.drawable.ic_search_help
+        }
+        tilSearch.endIconDrawable = ContextCompat.getDrawable(this, iconRes)
+    }
+
+    private fun showSearchHelpDialog() {
+        TooltipsDialog.Builder(this)
+            .addTooltip(getString(R.string.stream_searching_tooltip), getString(R.string.stream_searching_title))
+            .show()
     }
 
     private fun setupSortButton() {
