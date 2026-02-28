@@ -80,7 +80,7 @@
     <string name="settings_entry_tooltip_2">Zapraszam Cię do radosnej zmiany ustawień i testów :)</string>
 
     <string name="settings_your_name_title">Sekcja personalizacji</string>
-    <string name="settings_your_name_tooltip">[Jakiś mądry tekst który nie istnieje a miał w tym miejscu być] </string>
+    <string name="settings_your_name_tooltip">[Jakiś mądry tekst, który nie istnieje a miał w tym miejscu być] </string>
 
     <string name="settings_domains_title">Sekcja "Domeny"</string>
     <string name="settings_domains_tooltip">Zdefiniujesz tutaj \"Domeny\" - swoje kategorie lub szufladki dla myśli</string>
@@ -89,7 +89,7 @@
     <string name="settings_thought_value_tooltip">Każdej myśli możesz nadać wartość/wagę/priorytet liczbowy.\nOd ciebie zależą jego wartości… </string>
 
     <string name="settings_backup_title_1">Sekcja "Kopia zapasowa"</string>
-    <string name="settings_backup_tooltip_1">Jeżeli chcesz mieć zarchiwizowane dane swoich myśli w pamięci telefonu to ta opcja musi być "włączona"</string>
+    <string name="settings_backup_tooltip_1">Jeżeli chcesz mieć zarchiwizowane dane swoich myśli w pamięci telefonu, to ta opcja musi być "włączona"</string>
     <string name="settings_backup_title_2">Jak to działa?</string>
     <string name="settings_backup_tooltip_2">Gdy uruchomisz aplikację jej mechanizm zapisze dane twoich myśli.\n\nMoże się to wydarzyć maksymalnie raz na godzinę.</string>
 
@@ -103,7 +103,7 @@
         wspomnienie - wyszuka myśli z etykietą \"wspomnienie\"\n\n
         #gotowanie - wyszuka myśli z projektem \"gotowanie\"\n\n
         @Michał - wyszuka myśli z osobą \"Michał\"\n\n
-        wspomnienie @Michał - wyszuka myśli z etykietą \"wspomnienie\" oraz osobą \"Michał\"\n\n
+        wspomnienie @Michał - wyszuka myśli z etykietą \"wspomnienie\" oraz osobą \"Michał\"
     ]]></string>
 
     <string name="stream_deleting_title">Usuwanie myśli</string>
@@ -182,16 +182,15 @@
 
     <!-- Thread (common) -->
     <string name="capture_hex_tags_tooltip">wątek @osoba #projekt</string>
-    <string name="capture_thread_error_chars_exceeded">Wątek nie może przekroczyć %d znaków...</string>
-    <string name="capture_project_error_chars_exceeded">Projekt nie może przekroczyć %d znaków...</string>
-    <string name="capture_soul_mates_error_chars_exceeded">Opis osób nie może przekroczyć %d znaków...</string>
+    <string name="capture_thread_error_chars_exceeded">Wątek nie może przekroczyć %d znaków…</string>
+    <string name="capture_project_error_chars_exceeded">Projekt nie może przekroczyć %d znaków…</string>
+    <string name="capture_soul_mates_error_chars_exceeded">Opis osób nie może przekroczyć %d znaków…</string>
 
     <!-- Type: Rich Text (Note) -->
-    <string name="capture_rich_text_hint">\...\n\n\nJeżeli wpiszesz:\n\tx to jest myśl od kropki\nto po zapisie zobaczysz:\n\t• to jest myśl od kropki :)</string>
-    <string name="capture_rich_text_error_note_empty">Ekhm... To wyżej nie może być puste</string>
+    <string name="capture_rich_text_error_note_empty">To wyżej nie może być puste</string>
 
     <!-- Type: Voice Recording -->
-    <string name="capture_voice_recording_tooltip">Nagrywam...</string>
+    <string name="capture_voice_recording_tooltip">Nagrywam…</string>
     <string name="capture_voice_tooltip">Gotowy do nagrywania</string>
 
     <string name="capture_voice_status_recording_saved">Nagranie zapisane</string>
@@ -318,7 +317,7 @@
     <string name="rich_text_removing_header">Usunąć tekst?</string>
     <string name="rich_text_removing_content">Ta operacja jest nieodwracalna</string>
 
-    <string name="stream_item_empty_thought">- ? -\n\nTa myśl jest pusta...</string>
+    <string name="stream_item_empty_thought">- ? -\n\nTa myśl jest pusta…</string>
 
     <string name="settings_voice_recording_info">Aby móc nagrywać dźwięk, aplikacja potrzebuje dostępu do mikrofonu.</string>
     <string name="settings_permissions_photo_info">Aby móc robić zdjęcia, aplikacja potrzebuje dostępu do kamery.</string>
