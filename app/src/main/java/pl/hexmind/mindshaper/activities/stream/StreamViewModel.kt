@@ -35,10 +35,10 @@ class StreamViewModel @Inject constructor(
 
     private val _searchQuery = savedStateHandle.getLiveData("search_query", HexTags())
 
-    // Default sort: newest first (CREATED_AT DESCENDING)
+    // Default sort: recently updated first
     private val _sortConfig = savedStateHandle.getLiveData(
         "sort_config",
-        SortConfig(property = SortProperty.CREATED_AT, direction = SortDirection.DESCENDING)
+        SortConfig(property = SortProperty.UPDATED_AT, direction = SortDirection.DESCENDING)
     )
     val sortConfig: LiveData<SortConfig> = _sortConfig
 
@@ -64,7 +64,7 @@ class StreamViewModel @Inject constructor(
 
             val query = currentQuery ?: HexTags()
             val sort = currentSort ?: SortConfig(
-                property = SortProperty.CREATED_AT,
+                property = SortProperty.UPDATED_AT,
                 direction = SortDirection.DESCENDING
             )
             val domainId = currentDomainId
@@ -131,12 +131,10 @@ class StreamViewModel @Inject constructor(
     private fun filterThoughts(thoughts: List<ThoughtDTO>, query: HexTags, domainId: Int?): List<ThoughtDTO> {
         var filtered = thoughts
 
-        // Filter by domain if selected
         if (domainId != null) {
             filtered = filtered.filter { it.domainId == domainId }
         }
 
-        // Filter by search query
         if (!query.areCriteriaEmpty()) {
             filtered = filtered.filter { thought ->
                 matchesCriteria(thought.thread, query.thread) &&
@@ -157,18 +155,17 @@ class StreamViewModel @Inject constructor(
     private fun sortThoughts(thoughts: List<ThoughtDTO>, config: SortConfig): List<ThoughtDTO> {
         val comparator: Comparator<ThoughtDTO> = when (config.property) {
             SortProperty.CREATED_AT -> compareBy(nullsLast()) { it.createdAt }
+            SortProperty.UPDATED_AT -> compareBy(nullsLast()) { it.updatedAt }
             SortProperty.THREAD -> compareBy(nullsLast()) { it.thread?.lowercase() }
             SortProperty.SOUL_MATE -> compareBy(nullsLast()) { it.soulMate?.lowercase() }
             SortProperty.PROJECT -> compareBy(nullsLast()) { it.project?.lowercase() }
             SortProperty.VALUE -> compareBy(nullsLast()) { it.value }
         }
 
-        val sorted = when (config.direction) {
+        return when (config.direction) {
             SortDirection.ASCENDING -> thoughts.sortedWith(comparator)
             SortDirection.DESCENDING -> thoughts.sortedWith(comparator.reversed())
         }
-
-        return sorted
     }
 
     fun deleteThought(thought: ThoughtDTO) {

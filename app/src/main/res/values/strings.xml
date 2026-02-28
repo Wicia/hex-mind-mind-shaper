@@ -254,6 +254,12 @@
     <string name="sort_property_soul_mate">Osoba</string>
     <string name="sort_property_project">Projekt</string>
     <string name="sort_property_value">Wartość</string>
+    <string name="sort_property_updated_at">Data zmiany</string>
+
+    <string name="common_thought_updated_at_icon">📝</string>
+    <string name="common_thought_updated_at_0">Zmieniono dziś %s</string>
+    <string name="common_thought_updated_at_1">Zmieniono wczoraj %s</string>
+    <string name="common_thought_updated_at_pattern">Zmieniono %2$s dni temu  %1$s</string>
 
     <string name="sort_text_desc_label">Z → A</string>
     <string name="sort_text_asc_label">A → Z</string>

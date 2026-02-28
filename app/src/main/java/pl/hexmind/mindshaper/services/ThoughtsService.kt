@@ -21,6 +21,7 @@ import kotlin.math.max
 import androidx.exifinterface.media.ExifInterface
 import android.graphics.Matrix
 import timber.log.Timber
+import java.time.Instant
 
 @Singleton
 class ThoughtsService @Inject constructor(
@@ -68,7 +69,8 @@ class ThoughtsService @Inject constructor(
             thread = thought.thread,
             soulMate = thought.soulMate,
             project = thought.project,
-            value = thought.value
+            value = thought.value,
+            updatedAt = Instant.now().toEpochMilli()
         )
         repository.updateThoughtMetadata(metadata)
     }

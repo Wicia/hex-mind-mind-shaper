@@ -13,11 +13,14 @@ data class ThoughtDTO(
 
     var id: Int? = null,
     var createdAt: Instant = Instant.now(),
-    var domainId: Int? = null,
+    var updatedAt: Instant = Instant.now(),
 
+    // Links
+    var domainId: Int? = null,
     var thread: String? = null,
     var soulMate: String? = null,
     var project: String? = null,
+
     var value: Int = 1,
 
     var mainContentType: ThoughtMainContentType = ThoughtMainContentType.UNKNOWN,
@@ -49,10 +52,10 @@ data class ThoughtDTO(
     val duration: Long?
         get() = audioDurationMs
 
-    val hasAudio : Boolean
+    val hasAudio: Boolean
         get() = (audioDurationMs ?: 0) > 0
 
-    val hasText : Boolean
+    val hasText: Boolean
         get() = !richText.isNullOrBlank()
 
     // ! Needed for ByteArray in data class
@@ -64,6 +67,7 @@ data class ThoughtDTO(
 
         if (id != other.id) return false
         if (createdAt != other.createdAt) return false
+        if (updatedAt != other.updatedAt) return false
         if (domainId != other.domainId) return false
         if (thread != other.thread) return false
         if (richText != other.richText) return false
@@ -80,6 +84,7 @@ data class ThoughtDTO(
     override fun hashCode(): Int {
         var result = id ?: 0
         result = 31 * result + createdAt.hashCode()
+        result = 31 * result + updatedAt.hashCode()
         result = 31 * result + (domainId ?: 0)
         result = 31 * result + (thread?.hashCode() ?: 0)
         result = 31 * result + (richText?.hashCode() ?: 0)

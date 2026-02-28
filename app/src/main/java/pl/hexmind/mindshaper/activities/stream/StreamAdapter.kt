@@ -157,15 +157,15 @@ class StreamAdapter(
         }
 
         fun updateMetadataUI(thought: ThoughtDTO, sortConfig: SortConfig) {
-            if(sortConfig.property == SortProperty.VALUE){
+            if (sortConfig.property == SortProperty.VALUE) {
                 vbThoughtValue.visibility = View.VISIBLE
                 llLabel.visibility = View.GONE
-            }
-            else{
+            } else {
                 vbThoughtValue.visibility = View.GONE
                 llLabel.visibility = View.VISIBLE
                 tvLabel.text = when (sortConfig.property) {
                     SortProperty.CREATED_AT -> getFormattedCreatedAt(thought)
+                    SortProperty.UPDATED_AT -> getFormattedUpdatedAt(thought)
                     SortProperty.THREAD -> thought.thread ?: itemView.context.getString(R.string.stream_thought_metadata_empty)
                     SortProperty.SOUL_MATE -> thought.soulMate ?: itemView.context.getString(R.string.stream_thought_metadata_empty)
                     SortProperty.PROJECT -> thought.project ?: itemView.context.getString(R.string.stream_thought_metadata_empty)
@@ -190,6 +190,17 @@ class StreamAdapter(
                         R.string.common_thought_age_pattern, levelIcon, ageLevel.ageInDays.toString()
                     )
                 }
+            }
+        }
+
+        fun getFormattedUpdatedAt(thought: ThoughtDTO): String {
+            val ageInDays = ThoughtGrowthStage.getAgeInDays(thought.updatedAt)
+            val icon = itemView.context.getString(R.string.common_thought_updated_at_icon)
+
+            return when (ageInDays) {
+                0L -> itemView.context.getString(R.string.common_thought_updated_at_0, icon)
+                1L -> itemView.context.getString(R.string.common_thought_updated_at_1, icon)
+                else -> itemView.context.getString(R.string.common_thought_updated_at_pattern, icon, ageInDays.toString())
             }
         }
 

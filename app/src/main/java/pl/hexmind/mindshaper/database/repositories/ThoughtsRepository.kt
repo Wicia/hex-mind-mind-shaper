@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData
 import pl.hexmind.mindshaper.database.models.ThoughtEntity
 import pl.hexmind.mindshaper.database.models.ThoughtMetadataUpdate
 import java.io.File
+import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ThoughtsRepository @Inject constructor (
+class ThoughtsRepository @Inject constructor(
     private val thoughtsDAO: ThoughtsDAO
 ) {
 
@@ -41,7 +42,7 @@ class ThoughtsRepository @Inject constructor (
 // ========== RICH TEXT NOTES ==========
 
     suspend fun updateRichText(thoughtId: Int, richText: String?) {
-        thoughtsDAO.updateRichText(thoughtId, richText)
+        thoughtsDAO.updateRichText(thoughtId, richText, Instant.now().toEpochMilli())
     }
 
 // ========== AUDIO RECORDINGS ==========
@@ -55,7 +56,7 @@ class ThoughtsRepository @Inject constructor (
         require(audioFile.length() > 0) { "Audio file is empty" }
 
         val audioBytes = audioFile.readBytes()
-        thoughtsDAO.updateAudio(thoughtId, audioBytes, durationMs)
+        thoughtsDAO.updateAudio(thoughtId, audioBytes, durationMs, Instant.now().toEpochMilli())
         audioFile.delete()
     }
 
@@ -68,7 +69,7 @@ class ThoughtsRepository @Inject constructor (
     }
 
     suspend fun deleteAudio(thoughtId: Long) {
-        thoughtsDAO.deleteAudio(thoughtId)
+        thoughtsDAO.deleteAudio(thoughtId, Instant.now().toEpochMilli())
     }
 
 // ========== PHOTOS ==========
@@ -78,7 +79,7 @@ class ThoughtsRepository @Inject constructor (
         require(photoFile.length() > 0) { "Photo file is empty" }
 
         val photoBytes = photoFile.readBytes()
-        thoughtsDAO.updatePhoto(thoughtId, photoBytes, photoFile.length())
+        thoughtsDAO.updatePhoto(thoughtId, photoBytes, photoFile.length(), Instant.now().toEpochMilli())
         photoFile.delete()
     }
 
@@ -87,6 +88,6 @@ class ThoughtsRepository @Inject constructor (
     }
 
     suspend fun deletePhoto(thoughtId: Long) {
-        thoughtsDAO.deletePhoto(thoughtId)
+        thoughtsDAO.deletePhoto(thoughtId, Instant.now().toEpochMilli())
     }
 }

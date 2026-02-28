@@ -34,6 +34,9 @@ data class ThoughtEntity(
     @ColumnInfo(name = "created_at")
     val createdAt: Instant = Instant.now(),
 
+    @ColumnInfo(name = "updated_at")
+    val updatedAt: Instant = Instant.now(),
+
     @ColumnInfo(name = "soul_mate")
     val soulMate: String? = null,
 
@@ -75,10 +78,11 @@ data class ThoughtEntity(
         if (domainId != other.domainId) return false
         if (thread != other.thread) return false
         if (createdAt != other.createdAt) return false
+        if (updatedAt != other.updatedAt) return false
         if (soulMate != other.soulMate) return false
         if (project != other.project) return false
         if (value != other.value) return false
-        if (mainContentType != other.mainContentType) return false  // ← DODANE
+        if (mainContentType != other.mainContentType) return false
         if (richText != other.richText) return false
         if (audioDurationMs != other.audioDurationMs) return false
         if (audioData != null) {
@@ -94,10 +98,11 @@ data class ThoughtEntity(
         result = 31 * result + (domainId ?: 0)
         result = 31 * result + (thread?.hashCode() ?: 0)
         result = 31 * result + createdAt.hashCode()
+        result = 31 * result + updatedAt.hashCode()
         result = 31 * result + (soulMate?.hashCode() ?: 0)
         result = 31 * result + (project?.hashCode() ?: 0)
         result = 31 * result + value
-        result = 31 * result + mainContentType.hashCode()  // ← DODANE
+        result = 31 * result + mainContentType.hashCode()
         result = 31 * result + (richText?.hashCode() ?: 0)
         result = 31 * result + (audioDurationMs?.hashCode() ?: 0)
         result = 31 * result + (audioData?.contentHashCode() ?: 0)

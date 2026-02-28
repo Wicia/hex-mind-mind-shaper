@@ -14,7 +14,7 @@ import pl.hexmind.mindshaper.database.models.ThoughtMetadataUpdate
 interface ThoughtsDAO {
 
     @Query("SELECT * FROM thoughts where id = :id")
-    suspend fun getById(id : Long) : ThoughtEntity
+    suspend fun getById(id: Long): ThoughtEntity
 
     @Query("SELECT * FROM thoughts WHERE id = :id")
     fun getThoughtByIdLive(id: Long): LiveData<ThoughtEntity?>
@@ -56,28 +56,28 @@ interface ThoughtsDAO {
 
 // ========== RICH TEXT NOTES ==========
 
-    @Query("UPDATE THOUGHTS SET rich_text = :richText WHERE id = :thoughtId")
-    suspend fun updateRichText(thoughtId: Int, richText: String?)
+    @Query("UPDATE THOUGHTS SET rich_text = :richText, updated_at = :updatedAt WHERE id = :thoughtId")
+    suspend fun updateRichText(thoughtId: Int, richText: String?, updatedAt: Long)
 
 // ========== AUDIO RECORDINGS ==========
 
     @Query("SELECT audio_data FROM thoughts WHERE id = :id")
     suspend fun getAudioData(id: Long): ByteArray?
 
-    @Query("UPDATE thoughts SET audio_data = :audioData, audio_duration_ms = :durationMs WHERE id = :id")
-    suspend fun updateAudio(id: Long, audioData: ByteArray?, durationMs: Long?)
+    @Query("UPDATE thoughts SET audio_data = :audioData, audio_duration_ms = :durationMs, updated_at = :updatedAt WHERE id = :id")
+    suspend fun updateAudio(id: Long, audioData: ByteArray?, durationMs: Long?, updatedAt: Long)
 
-    @Query("UPDATE thoughts SET audio_data = NULL, audio_duration_ms = NULL WHERE id = :id")
-    suspend fun deleteAudio(id: Long)
+    @Query("UPDATE thoughts SET audio_data = NULL, audio_duration_ms = NULL, updated_at = :updatedAt WHERE id = :id")
+    suspend fun deleteAudio(id: Long, updatedAt: Long)
 
 // ========== PHOTOS ==========
 
-    @Query("UPDATE THOUGHTS SET photo_data = :photoBytes, photo_file_size = :fileSize WHERE id = :thoughtId")
-    suspend fun updatePhoto(thoughtId: Long, photoBytes: ByteArray, fileSize: Long)
+    @Query("UPDATE THOUGHTS SET photo_data = :photoBytes, photo_file_size = :fileSize, updated_at = :updatedAt WHERE id = :thoughtId")
+    suspend fun updatePhoto(thoughtId: Long, photoBytes: ByteArray, fileSize: Long, updatedAt: Long)
 
     @Query("SELECT photo_data FROM THOUGHTS WHERE id = :thoughtId")
     suspend fun getPhotoData(thoughtId: Long): ByteArray?
 
-    @Query("UPDATE THOUGHTS SET photo_data = NULL, photo_file_size = NULL WHERE id = :thoughtId")
-    suspend fun deletePhoto(thoughtId: Long)
+    @Query("UPDATE THOUGHTS SET photo_data = NULL, photo_file_size = NULL, updated_at = :updatedAt WHERE id = :thoughtId")
+    suspend fun deletePhoto(thoughtId: Long, updatedAt: Long)
 }

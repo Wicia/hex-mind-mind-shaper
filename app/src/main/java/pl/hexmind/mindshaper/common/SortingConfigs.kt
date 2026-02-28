@@ -10,7 +10,7 @@ import pl.hexmind.mindshaper.R
  */
 @Parcelize
 data class SortConfig(
-    val property: SortProperty = SortProperty.CREATED_AT,
+    val property: SortProperty = SortProperty.UPDATED_AT,
     val direction: SortDirection = SortDirection.DESCENDING
 ) : Parcelable
 
@@ -20,9 +20,10 @@ data class SortConfig(
 @Parcelize
 enum class SortProperty(
     @StringRes val displayNameRes: Int,
-    val type : SortPropertyType) : Parcelable {
+    val type: SortPropertyType) : Parcelable {
     VALUE(R.string.sort_property_value, SortPropertyType.NUMBER),
     CREATED_AT(R.string.sort_property_created_at, SortPropertyType.DATE),
+    UPDATED_AT(R.string.sort_property_updated_at, SortPropertyType.DATE),
     THREAD(R.string.sort_property_thread, SortPropertyType.TEXT),
     SOUL_MATE(R.string.sort_property_soul_mate, SortPropertyType.TEXT),
     PROJECT(R.string.sort_property_project, SortPropertyType.TEXT);
@@ -46,7 +47,6 @@ enum class SortDirection(val resSortLabelText: Int,
         R.string.sort_text_asc_label,
         R.string.sort_value_asc_label,
         R.string.sort_date_asc_label
-
     ),
     DESCENDING(
         R.string.sort_text_desc_label,
@@ -61,19 +61,11 @@ enum class SortDirection(val resSortLabelText: Int,
         }
     }
 
-    fun getLabelResByFieldType(fieldType : SortPropertyType) : Int{
+    fun getLabelResByFieldType(fieldType: SortPropertyType): Int {
         return when (fieldType) {
-            SortPropertyType.TEXT -> {
-                this.resSortLabelText
-            }
-
-            SortPropertyType.NUMBER -> {
-                this.resSortLabelNumber
-            }
-
-            SortPropertyType.DATE -> {
-                this.resSortLabelDate
-            }
+            SortPropertyType.TEXT -> this.resSortLabelText
+            SortPropertyType.NUMBER -> this.resSortLabelNumber
+            SortPropertyType.DATE -> this.resSortLabelDate
         }
     }
 }
