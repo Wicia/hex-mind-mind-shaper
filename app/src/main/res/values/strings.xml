@@ -17,7 +17,6 @@
     <string name="common_btn_add">\?</string>
     <string name="common_btn_create">+</string>
 
-    <string name="common_info_save_changes">Zapisz zmiany</string>
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
 
     <!-- HEX TAGS / METADATA -->
@@ -26,26 +25,14 @@
     <string name="common_hex_tag_thread">Wątek lub Temat</string>
     <string name="common_hex_tag_domain">Domena</string>
 
-    <!-- PERMISSIONS: Voice Recording -->
-    <string name="common_permission_audio_error_required">Uprawnienie do nagrywania audio jest wymagane dla notatek głosowych</string>
-    <string name="common_permission_audio_message_settings">Proszę włączyć uprawnienie do audio w ustawieniach aplikacji</string>
-    <string name="common_permission_audio_message_rationale">Uprawnienie do audio jest potrzebne do nagrywania notatek głosowych</string>
-
     <!-- FILES -->
     <string name="files_audio_error_file_not_accessible">Plik audio nie jest już dostępny</string>
     <string name="file_audio_error_reading_file">Błąd odczytu pliku audio</string>
-    <string name="files_audio_error_no_file_selected">Nie wybrano pliku audio</string>
     <string name="files_error_cannot_open_file_picker">Nie można otworzyć selektora plików</string>
-    <string name="files_info_selected_name">Wybrano plik: %s</string>
-    <string name="files_info_selected_temp_access">Plik wybrany - dostęp może być tymczasowy</string>
     <string name="files_error_selecting_file">Błąd podczas wyboru pliku</string>
     <string name="files_audio_error_unknown_file">Nieznany plik audio</string>
     <string name="files_error_unknown_file">Nieznany plik</string>
     <string name="files_state_no_file_selected">Nie wybrano pliku</string>
-
-    <string name="common_operation_create_symbol">&#160;+&#160;</string>
-    <string name="common_operation_smiling">&#160;\:)&#160;</string>
-    <string name="common_operation_upload">&#160;⬆&#160;</string>
 
     <string name="photos_removing_header">Coś ważnego!</string>
     <string name="photos_removing_file">Wywalić to zdjęcie?</string>
@@ -64,10 +51,9 @@
     <string name="common_deletion_dialog_yes">Tak</string>
     <string name="common_deletion_dialog_yes_2">Kasujemy</string>
     <string name="common_deletion_dialog_no">Nie</string>
-    <string name="common_deletion_dialog_no_2">Nie, zostaw...</string>
     <string name="common_deletion_dialog_confirmation">%s usunięto</string>
 
-    <string name="common_list_dialog_title">Wybierz coś sobie...</string>
+    <string name="common_list_dialog_title">Wybierz coś sobie…</string>
 
     <string name="common_thoughts_permissions_dialog_header">Żądanie uprawnień do zasobów Androida</string>
 
@@ -192,9 +178,7 @@
     <!-- ====================================== -->
 
     <!-- Core -->
-    <string name="capture_main_label">Chwytaj myśl...</string>
-    <string name="capture_main_state_saved">Myśl została pomyślnie uchwycona...</string>
-    <string name="capture_input_fields_error_empty">Notatka i Esencja są puste</string>
+    <string name="capture_main_label">Chwytaj myśl…</string>
 
     <!-- Thread (common) -->
     <string name="capture_hex_tags_tooltip">wątek @osoba #projekt</string>
@@ -210,34 +194,22 @@
     <string name="capture_voice_recording_tooltip">Nagrywam...</string>
     <string name="capture_voice_tooltip">Gotowy do nagrywania</string>
 
-    <string name="capture_voice_error_recording_failed">Nagrywanie nie powiodło się: %s</string>
-    <string name="capture_voice_error_no_recording">Brak nagrania do odtworzenia</string>
     <string name="capture_voice_status_recording_saved">Nagranie zapisane</string>
 
     <!-- Status messages -->
     <string name="capture_voice_status_max_duration_reached">Osiągnięto maksymalny czas nagrania (3 min)</string>
-    <string name="capture_voice_status_existing_recording">Masz już zapisane nagranie</string>
 
     <!-- Error messages -->
     <string name="capture_voice_error_recording">Błąd podczas nagrywania</string>
-    <string name="capture_voice_error_playback">Błąd podczas odtwarzania</string>
     <string name="capture_voice_error_saving">Błąd podczas zapisywania do bazy</string>
 
-    <!-- Validation -->
-    <string name="validation_recording_missing">Brak nagrania</string>
-    <string name="validation_recording_empty">Nagranie jest puste</string>
-
     <string name="thoughts_stream_title">Moje Myśli</string>
-    <string name="previous_thought">Poprzednia myśl</string>
-    <string name="next_thought">Następna myśl</string>
-    <string name="thought_type_icon">Ikona typu myśli</string>
 
     <!-- ====================================== -->
     <!--    Activity: STREAM of THOUGHTS  -->
     <!-- ====================================== -->
 
     <string name="stream_thought_metadata_empty">\?\?\?</string>
-    <string name="stream_searchbar_hint">Szukaj @osoby / #projektu / wątku...</string>
 
     <!-- Filter -->
     <string name="stream_filter_dialog_title">Filtruj</string>
@@ -299,7 +271,6 @@
 
     <!-- Domains -->
     <string name="settings_domains_header">◗ Domeny</string>
-    <string name="settings_domains_hint">Tutaj możesz zdefiniować nazwy oraz ikonki domen</string>
 
     <string name="settings_domains_loading_error">Błąd podczas ładowania ikon domen</string>
 
