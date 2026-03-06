@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.common.audio
+package pl.hexmind.mindshaper.common.ui.views.content
 
 import android.media.MediaCodec
 import android.media.MediaExtractor
@@ -26,7 +26,7 @@ class AudioAmplitudeExtractor {
          */
         fun extractAmplitudes(audioFile: File, targetSamples: Int = 100): List<Float> {
             if (!audioFile.exists()) {
-                Timber.tag(TAG).e("Audio file does not exist: ${audioFile.absolutePath}")
+                Timber.Forest.tag(TAG).e("Audio file does not exist: ${audioFile.absolutePath}")
                 return emptyList()
             }
 
@@ -105,11 +105,11 @@ class AudioAmplitudeExtractor {
 
                 amplitudes.addAll(resampleAmplitudes(rawAmplitudes, targetSamples))
 
-                Timber.tag(TAG)
+                Timber.Forest.tag(TAG)
                     .d("Extracted ${amplitudes.size} amplitude samples from ${rawAmplitudes.size} raw samples")
 
             } catch (e: Exception) {
-                Timber.tag(TAG).e(e, "Error extracting amplitudes")
+                Timber.Forest.tag(TAG).e(e, "Error extracting amplitudes")
                 return emptyList()
             } finally {
                 try {
@@ -117,7 +117,7 @@ class AudioAmplitudeExtractor {
                     codec?.release()
                     extractor.release()
                 } catch (e: Exception) {
-                    Timber.tag(TAG).e(e, "Error releasing resources")
+                    Timber.Forest.tag(TAG).e(e, "Error releasing resources")
                 }
             }
 

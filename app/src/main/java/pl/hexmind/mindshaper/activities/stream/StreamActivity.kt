@@ -17,12 +17,11 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
-import pl.hexmind.mindshaper.common.SortConfig
+import pl.hexmind.mindshaper.common.ui.views.lists.SortConfig
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
-import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
+import pl.hexmind.mindshaper.common.ui.views.lists.CommonIconsListItem
 import pl.hexmind.mindshaper.common.ui.dialogs.IconsListDialog
-import pl.hexmind.mindshaper.common.ui.dialogs.MultipleActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TooltipsDialog
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator

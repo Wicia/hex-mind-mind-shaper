@@ -10,7 +10,7 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
+import pl.hexmind.mindshaper.common.ui.views.lists.CommonIconsListItem
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
@@ -48,7 +48,7 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    fun updateDomain(domainId: Int) {
+    fun updateDomain(domainId: Int?) {
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
                 thought.domainId = domainId
@@ -158,10 +158,6 @@ class DetailsViewModel @Inject constructor(
                 onPhotoReady(photoData)
             }
         }
-    }
-
-    suspend fun getIconIdForDomain(domainId: Int): Int? {
-        return domainsService.getIconIdForDomain(domainId)
     }
 
     fun deletePhoto() {

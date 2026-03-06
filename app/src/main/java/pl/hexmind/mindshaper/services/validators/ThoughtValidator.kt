@@ -3,7 +3,7 @@ package pl.hexmind.mindshaper.services.validators
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.common.ThoughtValueSystem
+import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem
 import pl.hexmind.mindshaper.common.validation.ValidatedProperty
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.AppSettingsStorage

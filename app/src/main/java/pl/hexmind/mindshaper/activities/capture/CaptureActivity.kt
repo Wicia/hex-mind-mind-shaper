@@ -15,13 +15,13 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtManagerActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
-import pl.hexmind.mindshaper.common.ui.HexPhotoView
-import pl.hexmind.mindshaper.common.ui.HexTextView
+import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
+import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
 import pl.hexmind.mindshaper.common.ui.dialogs.PhotoFullscreenDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
 import pl.hexmind.mindshaper.common.validation.ValidationResult
-import pl.hexmind.mindshaper.common.views.audio.AudioRecordingView
-import pl.hexmind.mindshaper.databinding.CaptureActivityNewBinding
+import pl.hexmind.mindshaper.common.ui.views.content.AudioRecordingView
+import pl.hexmind.mindshaper.databinding.CaptureActivityBinding
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import java.io.File
@@ -31,7 +31,7 @@ import javax.inject.Inject
 class CaptureActivity : ThoughtManagerActivity() {
 
     private val viewModel: CaptureActivityViewModel by viewModels()
-    private lateinit var binding: CaptureActivityNewBinding
+    private lateinit var binding: CaptureActivityBinding
 
     @Inject
     lateinit var thoughtsService: ThoughtsService
@@ -54,7 +54,7 @@ class CaptureActivity : ThoughtManagerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = CaptureActivityNewBinding.inflate(layoutInflater)
+        binding = CaptureActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupUI()

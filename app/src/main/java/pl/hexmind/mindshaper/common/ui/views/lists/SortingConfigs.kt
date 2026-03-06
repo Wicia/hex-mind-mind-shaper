@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.common
+package pl.hexmind.mindshaper.common.ui.views.lists
 
 import android.os.Parcelable
 import androidx.annotation.StringRes

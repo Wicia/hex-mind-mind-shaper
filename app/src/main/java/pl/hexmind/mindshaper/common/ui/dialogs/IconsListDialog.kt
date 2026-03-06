@@ -10,8 +10,8 @@ import android.widget.TextView
 import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.common.ui.CommonIconsListAdapter
-import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
+import pl.hexmind.mindshaper.common.ui.views.lists.CommonIconsListAdapter
+import pl.hexmind.mindshaper.common.ui.views.lists.CommonIconsListItem
 
 class IconsListDialog private constructor(
     private val context: Context,

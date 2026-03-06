@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.common.ui
+package pl.hexmind.mindshaper.common.ui.views.content
 
 import android.content.Context
 import android.util.AttributeSet
@@ -7,6 +7,7 @@ import androidx.core.content.withStyledAttributes
 import com.google.android.material.button.MaterialButton
 import org.sufficientlysecure.htmltextview.HtmlTextView
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.common.ui.views.content.HtmlConverter
 import pl.hexmind.mindshaper.common.ui.dialogs.MultipleActionsDialog
 
 /**

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="64dp"
+    android:layout_height="64dp"
+    android:layout_margin="8dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/selector_icons_grid_item"
+    android:clickable="true"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/iv_grid_icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:tint="@color/_black"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+
+</LinearLayout>

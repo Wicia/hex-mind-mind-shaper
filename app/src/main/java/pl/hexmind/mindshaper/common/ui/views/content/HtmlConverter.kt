@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.common.ui
+package pl.hexmind.mindshaper.common.ui.views.content
 
 object HtmlConverter {
 

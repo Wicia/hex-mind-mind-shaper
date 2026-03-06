@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.common.audio
+package pl.hexmind.mindshaper.common.ui.views.content
 
 import android.content.Context
 import android.graphics.Canvas

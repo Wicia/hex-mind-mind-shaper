@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_background"
-    android:padding="16dp">
+    android:padding="16dp"
+    >
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -16,57 +18,34 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <!-- Header -->
             <include layout="@layout/activity_header" />
 
-            <!-- DYNAMIC CONTENT - NOTES / AUDIO etc. -->
-            <FrameLayout
-                android:id="@+id/fl_container_features"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"/>
-
             <!-- HEX TAGS -->
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
+                android:layout_gravity="end"
+                android:minWidth="160dp"
+                app:boxStrokeColor="#FFAF7A"
+                app:hintEnabled="false"
+                app:hintTextColor="#FF8C42">
 
-                <ImageView
-                    android:id="@+id/iv_icon_hex_tags"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="end"
-                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                    app:srcCompat="@drawable/ic_hex_tags"
-                    app:tint="@color/_gray_lvl_2" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="wrap_content"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_hex_tags"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:minWidth="140dp"
-                    app:boxStrokeColor="#FFAF7A"
-                    app:hintEnabled="false"
-                    app:hintTextColor="#FF8C42">
+                    android:background="@drawable/shape_edit_text"
+                    android:hint="@string/capture_hex_tags_tooltip"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:maxLines="2"
+                    android:minLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_hex_tags"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/shape_edit_text"
-                        android:hint="@string/capture_hex_tags_tooltip"
-                        android:inputType="textCapSentences|textMultiLine"
-                        android:maxLines="2"
-                        android:minLines="1"
-                        android:padding="12dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
+            <!-- VALIDATION INFO -->
             <TextView
                 android:id="@+id/tv_hex_tags_validation_info"
                 style="@style/TextView_Info_Success"
@@ -74,25 +53,114 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="52dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="24dp"
-                android:gravity="start"
-                />
+                android:layout_marginBottom="8dp"
+                android:gravity="start" />
+
+            <!-- =============================== -->
+            <!-- THOUGHT REPRESENTATIONS SECTION -->
+            <!-- =============================== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="90dp"
+                android:orientation="vertical">
+
+                <!-- RICH TEXT : Note -->
+                <pl.hexmind.mindshaper.common.ui.views.content.HexTextView
+                    android:id="@+id/rich_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"
+                    app:richTextMode="editDisplay" />
+
+                <!-- SOUND RECORDING : Media player for audio -->
+                <pl.hexmind.mindshaper.common.ui.views.content.AudioRecordingView
+                    android:id="@+id/audio_recording_playback"
+                    style="@style/RecordingPlaybackView_UsedWithTint"
+                    app:recordingMode="recordPlayback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:padding="24dp"
+                    android:visibility="gone" />
+
+                <!-- PHOTO : Content -->
+                <pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
+                    android:id="@+id/photo_display_view"
+                    style="@style/PhotoDisplayView_UsedWithTint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"
+                    app:photoMode="captureDisplay"
+                    app:compact="false" />
+
+                <!-- ADD CONTENT TOOLBAR -->
+                <LinearLayout
+                    android:id="@+id/ll_add_content_toolbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="start"
+                    android:layout_gravity="start"
+                    android:paddingVertical="4dp">
+
+                    <!-- BTN ADD - Rich Text -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_rich_text_add"
+                        style="@style/HexContentButton.NotUsed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="4dp"
+                        app:icon="@drawable/ic_thought_type_rich_text"
+                        app:iconGravity="textEnd"
+                        android:text="@string/common_btn_create"
+                        app:iconSize="32dp" />
+
+                    <!-- BTN ADD - Recording -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_recording_add"
+                        style="@style/HexContentButton.NotUsed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="4dp"
+                        app:icon="@drawable/ic_thought_type_recording"
+                        app:iconGravity="textEnd"
+                        android:text="@string/common_btn_create"
+                        app:iconSize="32dp" />
+
+                    <!-- BTN ADD - Photo -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_photo_add"
+                        style="@style/HexContentButton.NotUsed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="@string/common_btn_create"
+                        app:icon="@drawable/ic_thought_type_photo"
+                        app:iconGravity="textEnd"
+                        app:iconSize="32dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
+
     </ScrollView>
 
-    <!-- SAVE (hiding on scrolling) -->
+    <!-- SAVE BUTTON -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
         android:src="@drawable/ic_save"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
         app:backgroundTint="@color/button_primary_enabled_background"
         app:fabSize="normal"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
-        app:maxImageSize="32dp" />
+        app:maxImageSize="32dp"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

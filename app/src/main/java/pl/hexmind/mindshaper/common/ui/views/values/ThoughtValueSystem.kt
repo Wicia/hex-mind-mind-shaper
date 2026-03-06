@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.common
+package pl.hexmind.mindshaper.common.ui.views.values
 
 /* Saved system name/id for value specification
 *   6 - system with min value = 1 and max value = 6

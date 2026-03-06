@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.common.ThoughtValueSystem
+import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem
 import javax.inject.Inject
 import javax.inject.Singleton
 

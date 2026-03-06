@@ -1,10 +1,11 @@
-package pl.hexmind.mindshaper.common.ui
+package pl.hexmind.mindshaper.common.ui.views.values
 
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -78,7 +79,7 @@ class ValueCloude @JvmOverloads constructor(
 
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = ContextCompat.getColor(context, textColor)
-        textSize = android.util.TypedValue.applyDimension(android.util.TypedValue.COMPLEX_UNIT_SP, 14f, context.resources.displayMetrics)
+        textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14f, context.resources.displayMetrics)
         textAlign = Paint.Align.CENTER
         typeface = ResourcesCompat.getFont(context, R.font.montserrat_regular)
     }
@@ -116,7 +117,7 @@ class ValueCloude @JvmOverloads constructor(
 
                 textSize = typedArray.getDimension(
                     R.styleable.ValueCloude_textSize,
-                    android.util.TypedValue.applyDimension(android.util.TypedValue.COMPLEX_UNIT_SP, 14f, context.resources.displayMetrics)
+                    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14f, context.resources.displayMetrics)
                 )
 
                 showLevelText = typedArray.getBoolean(R.styleable.ValueCloude_showLevelText, true)

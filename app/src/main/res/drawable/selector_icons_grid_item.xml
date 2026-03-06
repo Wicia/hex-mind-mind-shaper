@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Selected: filled background + border -->
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="16dp" />
+            <solid android:color="@color/_orange_lvl_1" />
+            <stroke android:width="2dp" android:color="@color/_orange_lvl_3" />
+        </shape>
+    </item>
+
+    <!-- Default: transparent + subtle border only -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="16dp" />
+            <solid android:color="@android:color/transparent" />
+            <stroke android:width="1dp" android:color="@color/_orange_lvl_1" />
+        </shape>
+    </item>
+
+</selector>

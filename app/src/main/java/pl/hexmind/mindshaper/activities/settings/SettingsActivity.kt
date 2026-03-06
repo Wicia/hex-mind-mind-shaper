@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
-import pl.hexmind.mindshaper.common.ThoughtValueSystem
+import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.database.initialization.DataSnapshotManager

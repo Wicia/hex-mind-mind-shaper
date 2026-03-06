@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,13 +16,15 @@ import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtManagerActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
-import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
-import pl.hexmind.mindshaper.common.ui.HexPhotoView
-import pl.hexmind.mindshaper.common.ui.HexTextView
-import pl.hexmind.mindshaper.common.ui.dialogs.IconsListDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.HexTags
+import pl.hexmind.mindshaper.common.ui.dialogs.HexTagsBottomSheet
+import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
+import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
 import pl.hexmind.mindshaper.common.ui.dialogs.PhotoFullscreenDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
-import pl.hexmind.mindshaper.common.views.audio.AudioRecordingView
+import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
+import pl.hexmind.mindshaper.common.ui.views.IconsGridView
+import pl.hexmind.mindshaper.common.ui.views.content.AudioRecordingView
 import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
@@ -140,28 +141,9 @@ class DetailsActivity : ThoughtManagerActivity() {
                 showEditThreadDialog()
             }
 
-            // DOMAIN
-            btnDomainIcon.setOnClickListener {
-                showDomainDialog()
-            }
-            btnDomainIconPlaceholder.setOnClickListener {
-                showDomainDialog()
-            }
-
-            // SOUL MATE
-            btnSoulMatePlaceholder.setOnClickListener {
-                showEditSoulNameDialog()
-            }
-            tvSoulMate.setOnClickListener {
-                showEditSoulNameDialog()
-            }
-
-            // PROJECT
-            btnProjectPlaceholder.setOnClickListener {
-                showEditProjectDialog()
-            }
-            tvProject.setOnClickListener {
-                showEditProjectDialog()
+            // HEX TAGS
+            btnHexTags.setOnClickListener {
+                showHexTagsBottomSheet()
             }
 
             // RICH TEXT
@@ -278,25 +260,6 @@ class DetailsActivity : ThoughtManagerActivity() {
         updateAddRecordingButtonVisualState()
     }
 
-    private fun onDomainSelected(domain: CommonIconsListItem) {
-        domain.labelEntityId?.let {
-            viewModel.updateDomain(domainId = it)
-        }
-    }
-
-    private fun showDomainDialog() {
-        val domains = viewModel.domainsWithIcons.value ?: emptyList()
-        if (domains.isEmpty()) return
-
-        IconsListDialog.Builder(this)
-            .setTitle(this.getString(R.string.common_hex_tag_domain))
-            .setIcons(domains)
-            .setOnIconSelected { selectedDomain ->
-                onDomainSelected(selectedDomain)
-            }
-            .show()
-    }
-
     private fun showEditThreadDialog() {
         val thought = viewModel.thoughtDetails.value ?: return
         val currentText = thought.thread ?: ""
@@ -311,20 +274,6 @@ class DetailsActivity : ThoughtManagerActivity() {
         ).show()
     }
 
-    private fun showEditSoulNameDialog() {
-        val thought = viewModel.thoughtDetails.value ?: return
-        val currentText = thought.soulMate ?: ""
-
-        TextEditDialog(
-            context = this,
-            textInput = currentText,
-            title = getString(R.string.common_hex_tag_soul_mates),
-            onSave = { newText ->
-                viewModel.updateSoulMate(newText)
-            }
-        ).show()
-    }
-
     private fun showEditRichTextDialog() {
         val thought = viewModel.thoughtDetails.value ?: return
         val currentText = thought.richText ?: ""
@@ -334,20 +283,6 @@ class DetailsActivity : ThoughtManagerActivity() {
             textInput = currentText,
             onSave = { newText ->
                 viewModel.updateRichText(newText)
-            }
-        ).show()
-    }
-
-    private fun showEditProjectDialog() {
-        val thought = viewModel.thoughtDetails.value ?: return
-        val currentText = thought.project ?: ""
-
-        TextEditDialog(
-            context = this,
-            textInput = currentText,
-            title = getString(R.string.common_hex_tag_project),
-            onSave = { newText ->
-                viewModel.updateProject(newText)
             }
         ).show()
     }
@@ -393,14 +328,24 @@ class DetailsActivity : ThoughtManagerActivity() {
     private fun updateUI(thought: ThoughtDTO) {
         updateRichTextUI(thought)
         updateThreadUI(thought)
-        updateSoulNameUI(thought)
-        updateProjectUI(thought)
         updateValueUI(thought)
         updateAudioUI(thought)
         updatePhotoUI(thought)
-        lifecycleScope.launch {
-            updateDomainUI(thought)
-        }
+        updateHexTagsUI(thought)
+    }
+
+    private fun updateHexTagsUI(thought: ThoughtDTO) {
+        val count = listOfNotNull(
+            thought.soulMate?.takeIf { it.isNotBlank() },
+            thought.project?.takeIf { it.isNotBlank() },
+            thought.domainId
+        ).size
+
+        binding.btnHexTags.text =
+            if (count > 0)
+                count.toString()
+            else
+                getString(R.string.common_btn_create)
     }
 
     private fun updateRichTextUI(thought: ThoughtDTO) {
@@ -424,49 +369,6 @@ class DetailsActivity : ThoughtManagerActivity() {
             binding.btnThreadPlaceholder.visibility = View.GONE
             binding.tvThread.visibility = View.VISIBLE
             binding.tvThread.text = thought.thread
-        }
-    }
-
-    private suspend fun updateDomainUI(thought: ThoughtDTO) {
-        if (thought.domainId != null) {
-            val iconId = viewModel.getIconIdForDomain(thought.domainId!!)
-            if (iconId != null) {
-                binding.btnDomainIcon.visibility = View.VISIBLE
-                binding.btnDomainIcon.setIconResource(getIconResourceId(iconId))
-                binding.btnDomainIconPlaceholder.visibility = View.GONE
-            }
-            else {
-                binding.btnDomainIcon.visibility = View.GONE
-                binding.btnDomainIconPlaceholder.visibility = View.VISIBLE
-            }
-        }
-        else {
-            binding.btnDomainIcon.visibility = View.GONE
-            binding.btnDomainIconPlaceholder.visibility = View.VISIBLE
-        }
-    }
-
-    private fun updateSoulNameUI(thought: ThoughtDTO) {
-        if (thought.soulMate.isNullOrBlank()) {
-            binding.btnSoulMatePlaceholder.visibility = View.VISIBLE
-            binding.tvSoulMate.visibility = View.GONE
-        }
-        else {
-            binding.btnSoulMatePlaceholder.visibility = View.GONE
-            binding.tvSoulMate.visibility = View.VISIBLE
-            binding.tvSoulMate.text = thought.soulMate
-        }
-    }
-
-    private fun updateProjectUI(thought: ThoughtDTO) {
-        if (thought.project.isNullOrBlank()) {
-            binding.btnProjectPlaceholder.visibility = View.VISIBLE
-            binding.tvProject.visibility = View.GONE
-        }
-        else {
-            binding.btnProjectPlaceholder.visibility = View.GONE
-            binding.tvProject.visibility = View.VISIBLE
-            binding.tvProject.text = thought.project
         }
     }
 
@@ -562,15 +464,37 @@ class DetailsActivity : ThoughtManagerActivity() {
         }
     }
 
-    @DrawableRes
-    private fun getIconResourceId(iconIdToFind: Int): Int {
-        val domains = viewModel.domainsWithIcons.value ?: emptyList()
-        return domains.find { it.iconEntityId == iconIdToFind }?.iconResourceId ?: R.drawable.ic_domain_none
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         // Resources management
         binding.audioRecordingPlayback.cleanupResources()
+    }
+
+    private fun showHexTagsBottomSheet() {
+        val domains = viewModel.domainsWithIcons.value ?: emptyList()
+        if (domains.isEmpty()) return
+
+        val items = domains.mapNotNull { domain ->
+            IconsGridItem(
+                id = domain.labelEntityId ?: return@mapNotNull null,
+                iconResId = domain.iconResourceId
+            )
+        }
+
+        val tags = HexTags(
+            domainId = viewModel.thoughtDetails.value?.domainId,
+            person = viewModel.thoughtDetails.value?.soulMate,
+            project = viewModel.thoughtDetails.value?.project
+        )
+
+        HexTagsBottomSheet.show(
+            fragmentManager = supportFragmentManager,
+            items = items,
+            currentTags = tags
+        ) { result ->
+            viewModel.updateDomain(domainId = result.domainId)
+            viewModel.updateSoulMate(result.person ?: "")
+            viewModel.updateProject(result.project ?: "")
+        }
     }
 }

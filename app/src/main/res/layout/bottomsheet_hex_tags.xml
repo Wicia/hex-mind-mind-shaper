@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_hex_content"
+    android:backgroundTint="@color/app_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="80dp">
+
+        <!-- === DRAG HANDLE === -->
+        <View
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/_gray_lvl_2" />
+
+        <!-- === HEADER (jak dialog_sort) === -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="16dp">
+
+            <!-- * Decorator * -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:scaleX="-1"
+                android:scaleY="-1"
+                android:layout_gravity="center_vertical"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                app:srcCompat="@drawable/ic_decorator_olive"
+                app:tint="@color/separator_leaf" />
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tv_dialog_title"
+                style="@style/DialogTile"
+                android:textColor="@color/text_secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/hex_tags_dialog_header"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="0dp" />
+
+            <!-- * Decorator * -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_gravity="center_vertical"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleY="-1"
+                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                app:srcCompat="@drawable/ic_decorator_olive"
+                app:tint="@color/separator_leaf" />
+
+        </LinearLayout>
+
+        <!-- === TEXT FIELDS === -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_person"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="12dp"
+            android:hint="@string/hex_tags_hint_person"
+            app:boxStrokeColor="#FF8C42"
+            app:hintTextColor="@color/_gray_lvl_3">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_person"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:maxLines="1"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/_gray_lvl_3" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_project"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:hint="@string/hex_tags_hint_project"
+            app:boxStrokeColor="#FF8C42"
+            app:hintTextColor="@color/_gray_lvl_3">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_project"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:maxLines="1"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/_gray_lvl_3" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- === ICONS GRID === -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/hex_tags_label_domain"
+            android:textSize="16sp"
+            android:fontFamily="@font/montserrat_regular"
+            android:textColor="@color/_gray_lvl_3" />
+
+        <pl.hexmind.mindshaper.common.ui.views.IconsGridView
+            android:id="@+id/igv_hex_tags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp" />
+
+    </LinearLayout>
+
+    <!-- === FAB: Zapisz === -->
+    <!-- paddingBottom = 80dp in LinearLayout above keeps grid from hiding behind FAB -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_save"
+        app:maxImageSize="32dp"
+        app:backgroundTint="@color/button_primary_enabled_background"
+        app:fabSize="normal"
+        app:elevation="6dp"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

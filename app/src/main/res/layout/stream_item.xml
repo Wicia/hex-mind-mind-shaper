@@ -24,7 +24,7 @@
             android:padding="24dp">
 
             <!-- VALUE CLOUDE -->
-            <pl.hexmind.mindshaper.common.ui.ValueCloude
+            <pl.hexmind.mindshaper.common.ui.views.values.ValueCloude
                 android:id="@+id/vb_thought_value"
                 style="@style/ValueCloude"
                 android:layout_width="70dp"
@@ -76,7 +76,7 @@
                 android:padding="32dp" />
 
             <!-- RICH TEXT -->
-            <pl.hexmind.mindshaper.common.ui.HexTextView
+            <pl.hexmind.mindshaper.common.ui.views.content.HexTextView
                 android:id="@+id/rich_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
                 app:richTextMode="displayOnly" />
 
             <!-- AUDIO RECORDING -->
-            <pl.hexmind.mindshaper.common.views.audio.AudioRecordingView
+            <pl.hexmind.mindshaper.common.ui.views.content.AudioRecordingView
                 android:id="@+id/arv_playback"
                 app:recordingMode="playbackOnly"
                 app:compact="true"
@@ -97,7 +97,7 @@
                 android:visibility="gone" />
 
             <!-- PHOTO -->
-            <pl.hexmind.mindshaper.common.ui.HexPhotoView
+            <pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
                 android:id="@+id/pv_photo"
                 style="@style/PhotoDisplayView_UsedWithTint"
                 android:layout_width="match_parent"

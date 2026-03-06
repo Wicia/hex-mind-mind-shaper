@@ -15,9 +15,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.button.MaterialButton
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.common.SortConfig
-import pl.hexmind.mindshaper.common.SortDirection
-import pl.hexmind.mindshaper.common.SortProperty
+import pl.hexmind.mindshaper.common.ui.views.lists.SortConfig
+import pl.hexmind.mindshaper.common.ui.views.lists.SortDirection
+import pl.hexmind.mindshaper.common.ui.views.lists.SortProperty
 
 /**
  * Dialog for selecting sort property and direction

@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.common.views.audio
+package pl.hexmind.mindshaper.common.ui.views.content
 
 import android.Manifest
 import android.content.Context
@@ -23,8 +23,8 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.common.audio.AudioAmplitudeExtractor
-import pl.hexmind.mindshaper.common.audio.AudioVisualizerView
+import pl.hexmind.mindshaper.common.ui.views.content.AudioAmplitudeExtractor
+import pl.hexmind.mindshaper.common.ui.views.content.AudioVisualizerView
 import pl.hexmind.mindshaper.common.ui.dialogs.MultipleActionsDialog
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import timber.log.Timber

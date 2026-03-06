@@ -8,11 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import pl.hexmind.mindshaper.common.SortConfig
-import pl.hexmind.mindshaper.common.SortDirection
-import pl.hexmind.mindshaper.common.SortProperty
+import pl.hexmind.mindshaper.common.ui.views.lists.SortConfig
+import pl.hexmind.mindshaper.common.ui.views.lists.SortDirection
+import pl.hexmind.mindshaper.common.ui.views.lists.SortProperty
 import pl.hexmind.mindshaper.common.regex.HexTags
-import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
+import pl.hexmind.mindshaper.common.ui.views.lists.CommonIconsListItem
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO

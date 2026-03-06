@@ -1,7 +1,7 @@
 package pl.hexmind.mindshaper.services
 
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.common.ui.CommonIconsListItem
+import pl.hexmind.mindshaper.common.ui.views.lists.CommonIconsListItem
 import pl.hexmind.mindshaper.database.repositories.DomainRepository
 import pl.hexmind.mindshaper.services.dto.DomainDTO
 import pl.hexmind.mindshaper.services.mappers.DomainMapper

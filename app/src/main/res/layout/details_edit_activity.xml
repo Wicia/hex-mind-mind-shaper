@@ -22,51 +22,48 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginBottom="4dp"
-                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
                 android:baselineAligned="false">
 
                 <!-- * Decorator / Increase Button * -->
                 <ImageView
-                    android:id="@+id/btn_value_increase"
-                    android:layout_weight="0.8"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:id="@+id/btn_value_decrease"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
                     android:layout_gravity="center_vertical"
                     android:contentDescription="@string/common_placeholder_accessibility_content_desc"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:clickable="true"
                     android:focusable="true"
-                    android:scaleX="-1"
                     app:srcCompat="@drawable/ic_decorator_olive"
                     app:tint="@color/button_secondary_enabled_background"
+                    android:rotation="-15"
                     />
 
-                <!-- SOUL MATE(S): n/a -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_soul_mate_placeholder"
-                    style="@style/MetadataContentButton.NotUsed"
-                    android:layout_weight="3"
-                    android:layout_width="0dp"
-                    android:layout_height="55dp"
-                    android:text="@string/common_btn_add"
-                    android:layout_marginEnd="18dp"
-                    app:icon="@drawable/ic_hextags_soul_mates"
-                    app:iconSize="36dp"
+                <pl.hexmind.mindshaper.common.ui.views.values.ValueCloude
+                    android:id="@+id/vb_thought_value"
+                    style="@style/ValueCloude"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     />
 
-                <!-- SOUL MATE(S): Content -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/tv_soul_mate"
-                    style="@style/MetadataContentButton.Used"
-                    android:layout_weight="3"
-                    android:layout_width="0dp"
-                    android:layout_height="55dp"
-                    android:layout_marginEnd="18dp"
-                    android:visibility="gone"
-                    app:icon="@drawable/ic_hextags_soul_mates"
-                    app:iconSize="36dp"
+                <!-- * Decorator / Decrease Button * -->
+                <ImageView
+                    android:id="@+id/btn_value_increase"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                    android:layout_gravity="center_vertical"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:scaleX="-1"
+                    android:rotation="15"
+
+                    app:srcCompat="@drawable/ic_decorator_olive"
+                    app:tint="@color/button_secondary_enabled_background"
                     />
 
             </LinearLayout>
@@ -79,66 +76,42 @@
                 android:gravity="center_vertical"
                 android:baselineAligned="false">
 
-                <!-- VALUE cloud -->
-                <pl.hexmind.mindshaper.common.ui.ValueCloude
-                    android:id="@+id/vb_thought_value"
-                    style="@style/ValueCloude"
-                    android:layout_weight="0.9"
-                    android:layout_width="0dp"
-                    android:layout_height="70dp"
-                    />
-
-                <!-- DOMAIN: n/a -->
+                <!-- HEX TAGS -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_domain_icon_placeholder"
-                    style="@style/MetadataContentButton.NotUsed"
-                    android:layout_weight="0.75"
-                    android:layout_width="0dp"
-                    android:layout_height="55dp"
-                    android:layout_marginStart="8dp"
-                    app:icon="@drawable/ic_domain_none"
-                    app:iconGravity="textStart"
-                    app:iconSize="40dp"
-                    />
-
-                <!-- DOMAIN: Content -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_domain_icon"
+                    android:id="@+id/btn_hex_tags"
                     style="@style/MetadataContentButton.Used"
-                    android:layout_weight="0.75"
+                    android:layout_weight="0.20"
                     android:layout_width="0dp"
-                    android:layout_height="55dp"
-                    android:layout_marginStart="8dp"
-                    app:iconGravity="textStart"
-                    app:iconSize="40dp"
-                    android:visibility="gone"
-                    />
+                    android:layout_height="50dp"
+                    android:text="@string/common_btn_create"
+                    android:textColor="@color/text_on_primary"
+                    app:icon="@drawable/ic_hex_tags"
+                    app:iconGravity="end"
+                    app:iconSize="36dp" />
 
-                <!-- PROJECT: n/a -->
+                <!-- THREAD: empty -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_project_placeholder"
+                    android:id="@+id/btn_thread_placeholder"
                     style="@style/MetadataContentButton.NotUsed"
-                    android:layout_weight="3"
+                    android:layout_weight="0.85"
                     android:layout_width="0dp"
-                    android:layout_height="55dp"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:text="@string/common_btn_add"
-                    app:icon="@drawable/ic_hextags_project"
-                    app:iconSize="36dp"
-                    />
+                    app:icon="@drawable/ic_hextags_thread"
+                    app:iconSize="36dp" />
 
-                <!-- PROJECT: CONTENT -->
+                <!-- THREAD: Content -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/tv_project"
+                    android:id="@+id/tv_thread"
                     style="@style/MetadataContentButton.Used"
-                    android:layout_weight="3"
+                    android:layout_weight="0.85"
                     android:layout_width="0dp"
                     android:layout_height="55dp"
                     android:layout_marginStart="8dp"
-                    app:icon="@drawable/ic_hextags_project"
+                    app:icon="@drawable/ic_hextags_thread"
                     app:iconSize="36dp"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -150,47 +123,6 @@
                 android:layout_marginBottom="4dp"
                 android:gravity="center_vertical"
                 android:baselineAligned="false">
-
-                <!-- * Decorator / Decrease Button * -->
-                <ImageView
-                    android:id="@+id/btn_value_decrease"
-                    android:layout_weight="0.8"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                    android:layout_gravity="center_vertical"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:scaleY="-1"
-                    android:scaleX="-1"
-                    app:srcCompat="@drawable/ic_decorator_olive"
-                    app:tint="@color/button_secondary_enabled_background"
-                    />
-
-                <!-- THREAD: n/a -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_thread_placeholder"
-                    style="@style/MetadataContentButton.NotUsed"
-                    android:layout_width="0dp"
-                    android:layout_height="55dp"
-                    android:layout_marginEnd="18dp"
-                    android:layout_weight="3"
-                    android:text="@string/common_btn_add"
-                    app:icon="@drawable/ic_hextags_thread"
-                    app:iconSize="36dp" />
-
-                <!-- THREAD: Content -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/tv_thread"
-                    style="@style/MetadataContentButton.Used"
-                    android:layout_weight="3"
-                    android:layout_width="0dp"
-                    android:layout_height="52dp"
-                    android:layout_marginEnd="18dp"
-                    app:icon="@drawable/ic_hextags_thread"
-                    app:iconSize="36dp"
-                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -213,7 +145,7 @@
                 android:orientation="vertical">
 
                 <!-- RICH TEXT : Note -->
-                <pl.hexmind.mindshaper.common.ui.HexTextView
+                <pl.hexmind.mindshaper.common.ui.views.content.HexTextView
                     android:id="@+id/rich_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -222,7 +154,7 @@
                     app:richTextMode="editDisplay" />
 
                 <!-- SOUND RECORDING : Media player for audio -->
-                <pl.hexmind.mindshaper.common.views.audio.AudioRecordingView
+                <pl.hexmind.mindshaper.common.ui.views.content.AudioRecordingView
                     android:id="@+id/audio_recording_playback"
                     style="@style/RecordingPlaybackView_UsedWithTint"
                     app:recordingMode="recordPlayback"
@@ -233,7 +165,7 @@
                     android:visibility="gone" />
 
                 <!-- PHOTO : Content -->
-                <pl.hexmind.mindshaper.common.ui.HexPhotoView
+                <pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
                     android:id="@+id/photo_display_view"
                     style="@style/PhotoDisplayView_UsedWithTint"
                     android:layout_width="match_parent"
@@ -260,9 +192,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="48dp"
                         android:layout_marginEnd="4dp"
+                        android:text="@string/common_btn_create"
                         app:icon="@drawable/ic_thought_type_rich_text"
                         app:iconGravity="textEnd"
-                        android:text="@string/common_btn_create"
                         app:iconSize="32dp"
                         />
 
@@ -273,9 +205,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="48dp"
                         android:layout_marginEnd="4dp"
+                        android:text="@string/common_btn_create"
                         app:icon="@drawable/ic_thought_type_recording"
                         app:iconGravity="textEnd"
-                        android:text="@string/common_btn_create"
                         app:iconSize="32dp"
                         />
 

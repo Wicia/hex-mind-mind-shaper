@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.common.ui
+package pl.hexmind.mindshaper.common.ui.views.values
 
 import android.animation.ValueAnimator
 import android.content.Context

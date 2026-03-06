@@ -2,7 +2,7 @@ package pl.hexmind.mindshaper
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import pl.hexmind.mindshaper.common.ui.HtmlConverter
+import pl.hexmind.mindshaper.common.ui.views.content.HtmlConverter
 
 class HtmlConverterTest {
 
