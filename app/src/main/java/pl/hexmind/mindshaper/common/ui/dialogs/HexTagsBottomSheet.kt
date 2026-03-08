@@ -1,5 +1,6 @@
 package pl.hexmind.mindshaper.common.ui.dialogs
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -40,11 +41,19 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
         return binding.root
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // Force showing full-height bottom sheet
         (dialog as? BottomSheetDialog)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
+
+        // Clear focus and hide keyboard when tapping outside an input field
+        binding.root.setOnTouchListener { _, _ ->
+            binding.root.findFocus()?.clearFocus()
+            hideKeyboard()
+            false
+        }
 
         val selectedDomainId = arguments?.getInt(ARG_SELECTED_ID, -1)?.takeIf { it != -1 }
         val currentPerson = arguments?.getString(ARG_PERSON)
@@ -80,6 +89,12 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun hideKeyboard() {
+        val imm = requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE)
+                as android.view.inputmethod.InputMethodManager
+        imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
     }
 
     companion object {

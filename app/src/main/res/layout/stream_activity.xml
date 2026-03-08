@@ -39,15 +39,14 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_search"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hintEnabled="false"
                 app:endIconMode="custom"
-                app:endIconDrawable="@drawable/ic_search_help"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp">
+                app:endIconDrawable="@drawable/ic_search_help">
 
+                <!-- Search field inside MaterialCardView — background intentionally omitted,
+                     the card provides the visual container -->
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_search"
                     android:layout_width="match_parent"

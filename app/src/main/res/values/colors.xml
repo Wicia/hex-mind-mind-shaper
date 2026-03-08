@@ -18,7 +18,6 @@
     <color name="_gray_lvl_1">#EEEEEE</color>        <!-- background, cards -->
     <color name="_gray_lvl_2">#BDBDBD</color>        <!-- subtle borders, inactive elements -->
     <color name="_gray_lvl_3">#757575</color>        <!-- secondary text, icons -->
-    <color name="_gray_lvl_4">#424242</color>        <!-- primary text -->
 
     <color name="_black">#000000</color>
 
@@ -34,17 +33,13 @@
     <!-- Success, error, warning states -->
     <color name="validation_success">@color/_gray_lvl_3</color>
     <color name="validation_error">#480808</color>
-    <color name="info_blue">#1976D2</color>
 
 <!-- ====================================== -->
 <!--    APP THEME MAPPINGS -->
 <!-- ====================================== -->
 
     <color name="app_primary">@color/_orange_lvl_3</color>
-    <color name="app_primary_variant">@color/_orange_lvl_3</color>
-
     <color name="app_secondary">@color/_orange_lvl_3</color>
-    <color name="app_secondary_variant">@color/_orange_lvl_3</color>
 
     <color name="app_background">@color/_orange_lvl_0</color>
     <color name="app_surface">@color/_white</color>
@@ -58,10 +53,6 @@
     <color name="text_secondary">@color/graphite_light</color>
 
     <color name="text_on_primary">@color/_white</color>
-    <color name="text_on_secondary">@color/_white</color>
-
-    <!-- Bullet points -->
-    <color name="text_bullet_point">@color/_gray_lvl_3</color>
 
 <!-- ====================================== -->
 <!--    WIDGET COLORS -->
@@ -69,8 +60,8 @@
 
     <!-- Input controls -->
     <color name="input_background">@color/_white</color>
-    <color name="input_stroke">@color/app_background</color>
-    <color name="input_focused">@color/_orange_lvl_3</color>
+    <color name="input_stroke">@color/_orange_lvl_2</color>
+    <color name="input_stroke_focused">@color/_orange_lvl_3</color>
 
 <!-- ====================================== -->
 <!--    ACTION BUTTONS -->
@@ -78,17 +69,11 @@
 
     <!-- Primary -->
     <color name="button_primary_enabled_background">@color/_orange_lvl_3</color>
-    <color name="button_primary_enabled_icon">@color/_orange_lvl_2</color>
-
-    <color name="button_primary_disabled_background">@color/_gray_lvl_3</color>
-    <color name="button_primary_disabled_icon">@color/_gray_lvl_2</color>
 
     <!-- Secondary -->
     <color name="button_secondary_enabled_background">@color/_orange_lvl_2</color>
-    <color name="button_secondary_enabled_icon">@color/_gray_lvl_1</color>
 
     <color name="button_secondary_disabled_background">@color/_gray_lvl_1</color>
-    <color name="button_secondary_disabled_icon">@color/_gray_lvl_2</color>
 
     <!--  Auxiliary (no disabled state) -->
     <color name="button_auxiliary_background">@color/_orange_lvl_1</color>
@@ -128,7 +113,6 @@
 
     <!-- Separator / dividers -->
     <color name="separator_background">@color/_orange_lvl_1</color>
-    <color name="separator_card">@color/_orange_lvl_0</color>
 
     <!-- Leafs -->
     <color name="separator_leaf">@color/_gray_lvl_2</color>

@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- Base application theme for light mode -->
     <style name="Theme.MindShaper" parent="Theme.Material3.Light">
@@ -39,6 +39,9 @@
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:forceDarkAllowed">false</item>
 
+        <!-- Use custom InputLayout style with no Material box decoration -->
+        <item name="textInputStyle">@style/InputLayout_NoBox</item>
+
     </style>
 
     <!-- Theme for activity without action bar -->
@@ -46,18 +49,6 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowFullscreen">false</item>
-    </style>
-
-    <!-- Theme for capture activity with immersive feel -->
-    <style name="Theme.MindShaper.Capture" parent="Theme.MindShaper">
-        <item name="android:windowBackground">@color/_orange_lvl_0</item>
-        <item name="colorSurface">@color/_white</item>
-    </style>
-
-    <!-- Theme for details activity -->
-    <style name="Theme.MindShaper.Details" parent="Theme.MindShaper">
-        <item name="android:windowBackground">@color/_white</item>
-        <item name="colorSurface">@color/_orange_lvl_0</item>
     </style>
 
 </resources>

@@ -12,7 +12,7 @@
     <string name="common_foobar">""</string>
 
     <string name="hex_tags_dialog_header">Tagowanie</string>
-    <string name="hex_tags_hint_person">Osoba</string>
+    <string name="hex_tags_hint_person">Osoba lub Ekipa</string>
     <string name="hex_tags_hint_project">Projekt</string>
     <string name="hex_tags_label_domain">| Domena</string>
 
@@ -25,10 +25,7 @@
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
 
     <!-- HEX TAGS / METADATA -->
-    <string name="common_hex_tag_project">Projekt</string>
-    <string name="common_hex_tag_soul_mates">Osoba (lub Ekipa)</string>
     <string name="common_hex_tag_thread">Wątek lub Temat</string>
-    <string name="common_hex_tag_domain">Domena</string>
 
     <!-- FILES -->
     <string name="files_audio_error_file_not_accessible">Plik audio nie jest już dostępny</string>
@@ -257,15 +254,15 @@
     <string name="settings_header">Ustawienia</string>
 
     <!-- Your Name Setting -->
-    <string name="settings_your_name_header">◗ Twoje Prawdziwe Imię?</string>
+    <string name="settings_your_name_header">✒️ Twoje Prawdziwe Imię?</string>
     <string name="settings_your_name_default">Bezimienn(y/a)</string>
 
-    <string name="settings_thoughts_value_header">◗ Skala wartości myśli</string>
+    <string name="settings_thoughts_value_header">⚖️ Skala wartości myśli</string>
     <string name="settings_thoughts_value_action_info">Zmiana systemu może wymagać przeskalowania wartości</string>
     <string name="settings_thoughts_value_system_10">od 1 do 10</string>
     <string name="settings_thoughts_value_system_6">od 1 do 6</string>
 
-    <string name="settings_permissions_section">◗ Formy zapisu myśli</string>
+    <string name="settings_permissions_section">🔆 Formy zapisu myśli</string>
     <string name="settings_permissions_voice_recording">Włącz zapis w formie głosówek</string>
     <string name="settings_permissions_photo">Włącz zapis w formie zdjęć</string>
 
@@ -274,9 +271,7 @@
     <string name="settings_permissions_photo_blockade_tooltip">Uprawnienie do kamery zostało trwale odrzucone.\nMożesz je włączyć w ustawieniach systemu Androida.</string>
 
     <!-- Domains -->
-    <string name="settings_domains_header">◗ Domeny</string>
-
-    <string name="settings_domains_loading_error">Błąd podczas ładowania ikon domen</string>
+    <string name="settings_domains_header">🌾 Domeny</string>
 
     <string name="settings_domains_domain_name">Twoja nazwa dla domeny</string>
     <string name="settings_domains_error_name_empty">Nazwa domeny nie może być pusta</string>
@@ -299,7 +294,7 @@
     </string-array>
 
     <!-- Backup Section -->
-    <string name="settings_backup_header">◗ Kopia zapasowa twoich myśli</string>
+    <string name="settings_backup_header">💾 Kopia zapasowa twoich myśli</string>
     <string name="settings_backup_hint">Wybierz plik kopii zapasowej z folderu Downloads/mind_shaper</string>
     <string name="settings_backup_select">Wybierz</string>
     <string name="settings_backup_load">Wczytaj</string>

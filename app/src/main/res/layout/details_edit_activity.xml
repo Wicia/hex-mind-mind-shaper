@@ -84,9 +84,9 @@
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:text="@string/common_btn_create"
-                    android:textColor="@color/text_on_primary"
+                    android:textColor="@color/_orange_lvl_3"
                     app:icon="@drawable/ic_hex_tags"
-                    app:iconGravity="end"
+                    app:iconGravity="textEnd"
                     app:iconSize="36dp" />
 
                 <!-- THREAD: empty -->

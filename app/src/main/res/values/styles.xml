@@ -23,6 +23,7 @@
         <item name="android:textColor">@color/card_section_header</item>
     </style>
 
+    <!-- TODO: Not used = use or delete -->
     <!-- Activity / Text Standard -->
     <style name="TextView_Standard">
         <item name="android:fontFamily">@font/alegreya_regular</item>
@@ -33,16 +34,7 @@
         <item name="android:textColor">@color/text_primary</item>
     </style>
 
-    <!-- For displaying metadata as primary data e.g. details -> project, soul mate, thread) -->
-    <style name="TextView_Metadata_Primary">
-        <item name="android:textSize">16sp</item>
-        <item name="android:padding">12dp</item>
-        <item name="android:fontFamily">@font/montserrat_regular</item>
-        <item name="android:textColor">@color/text_secondary</item>
-    </style>
-
-    <!-- For displaying metadata as secondary data e.g. on the list -->
-    <style name="TextView_Metadata_Secondary">
+    <style name="TextView_Metadata">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/montserrat_regular</item>
         <item name="android:textColor">@color/text_secondary</item>
@@ -70,16 +62,6 @@
     <style name="TextView_Number_State">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/montserrat_regular</item>
-        <item name="android:textColor">@color/text_secondary</item>
-    </style>
-
-    <!-- ====================================== -->
-    <!--    EDIT TEXT                           -->
-    <!-- ====================================== -->
-
-    <style name="EditText_Hint">
-        <item name="android:fontFamily">@font/montserrat_regular</item>
-        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
@@ -370,11 +352,6 @@
         <item name="tint">@color/_gray_lvl_2</item>
     </style>
 
-    <!-- Icons -->
-    <style name="ImageView_Icon">
-        <item name="tint">@color/_gray_lvl_3</item>
-    </style>
-
     <!-- ====================================== -->
     <!--    HEX KEYBOARD -->
     <!-- ====================================== -->
@@ -413,18 +390,6 @@
     <!--    PROGRESS BARS / INDICATORS          -->
     <!-- ====================================== -->
 
-    <style name="ValueBar">
-        <!-- Radius -->
-        <item name="radius">50dp</item>
-        <item name="minDotRadius">5dp</item>
-        <item name="maxDotRadius">10dp</item>
-
-        <!-- Colors -->
-        <item name="dotBackgroundColor">@color/_orange_lvl_1</item>
-        <item name="dotProgressColor">@color/_orange_lvl_3</item>
-        <item name="dotTextColor">@color/black</item>
-    </style>
-a
     <style name="ValueCloude">
         <!-- Size -->
         <item name="squareSize">80dp</item>
@@ -446,6 +411,11 @@ a
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">16dp</item>
+    </style>
+
+    <!-- Suppress Material3 default box decoration; custom background handles the border -->
+    <style name="InputLayout_NoBox" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundMode">none</item>
     </style>
 
 </resources>

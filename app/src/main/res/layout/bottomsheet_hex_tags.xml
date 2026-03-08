@@ -76,13 +76,13 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="12dp"
             android:hint="@string/hex_tags_hint_person"
-            app:boxStrokeColor="#FF8C42"
             app:hintTextColor="@color/_gray_lvl_3">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_person"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/shape_edit_text"
                 android:inputType="textCapWords"
                 android:maxLines="1"
                 android:textColor="@android:color/black"
@@ -98,13 +98,13 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:hint="@string/hex_tags_hint_project"
-            app:boxStrokeColor="#FF8C42"
             app:hintTextColor="@color/_gray_lvl_3">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_project"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/shape_edit_text"
                 android:inputType="textCapWords"
                 android:maxLines="1"
                 android:textColor="@android:color/black"

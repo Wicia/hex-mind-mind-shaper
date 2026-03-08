@@ -55,7 +55,7 @@
 
                 <TextView
                     android:id="@+id/tv_label"
-                    style="@style/TextView_Metadata_Secondary"
+                    style="@style/TextView_Metadata"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp" />
@@ -65,7 +65,7 @@
             <!-- for EMPTY THOUGHT scenario -->
             <TextView
                 android:id="@+id/tv_empty_thought"
-                style="@style/TextView_Metadata_Secondary"
+                style="@style/TextView_Metadata"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
