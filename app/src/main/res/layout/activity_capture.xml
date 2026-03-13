@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_background"
-    android:padding="16dp"
     >
 
     <ScrollView
@@ -19,7 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="90dp">
 
             <!-- Header -->
             <include layout="@layout/activity_header" />
@@ -156,7 +157,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_save"
+        android:src="@drawable/ic_action_save"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc"
         app:backgroundTint="@color/button_primary_enabled_background"
         app:fabSize="normal"

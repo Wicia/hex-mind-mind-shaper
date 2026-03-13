@@ -117,4 +117,12 @@
     <!-- Leafs -->
     <color name="separator_leaf">@color/_gray_lvl_2</color>
 
+<!-- ====================================== -->
+<!--    PRIORITIES -->
+<!-- ====================================== -->
+
+    <color name="priority_high">#F26B6B</color>
+    <color name="priority_medium">#F5C842</color>
+    <color name="priority_low">#5ECE8A</color>
+
 </resources>

@@ -36,7 +36,7 @@ class HomeActivity : CoreActivity() {
     }
 
     private fun initViews() {
-        setupHeader(R.drawable.ic_header_home, R.string.common_foobar)
+        setupHeader(R.drawable.ic_activity_home, R.string.common_foobar)
         fabNewThought = findViewById(R.id.fab_new_thought)
         setupHeaderWithGreetings()
     }

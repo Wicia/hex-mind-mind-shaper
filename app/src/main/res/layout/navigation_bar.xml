@@ -47,18 +47,29 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/navStream"
             style="@style/AuxiliaryActionButton"
-            app:icon="@drawable/ic_header_stream"
+            app:icon="@drawable/ic_activity_stream"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="12dp"
             />
 
-        <!-- Button 3: Settings -->
+        <!-- Button 3: Workshop -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/navWorkshop"
+            style="@style/AuxiliaryActionButton"
+            app:icon="@drawable/ic_activity_workshop"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="12dp"
+            />
+
+        <!-- Button 4: SETTINGS -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/navSettings"
             style="@style/AuxiliaryActionButton"
-            app:icon="@drawable/ic_header_settings"
+            app:icon="@drawable/ic_activity_settings"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"

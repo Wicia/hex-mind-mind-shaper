@@ -233,7 +233,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_save"
+        android:src="@drawable/ic_action_save"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc"
         app:backgroundTint="@color/button_primary_enabled_background"
         app:fabSize="normal"

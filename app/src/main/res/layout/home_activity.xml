@@ -30,6 +30,7 @@
                 android:scaleY="1"
                 android:scaleX="1"
                 app:srcCompat="@drawable/ic_decorator_olive"
+                android:rotation="-15"
                 app:tint="@color/separator_leaf"
                 />
 
@@ -49,6 +50,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleY="1"
                 android:scaleX="-1"
+                android:rotation="15"
                 app:srcCompat="@drawable/ic_decorator_olive"
                 app:tint="@color/separator_leaf"
                 />

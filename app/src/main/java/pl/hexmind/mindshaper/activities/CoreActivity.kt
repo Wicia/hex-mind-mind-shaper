@@ -22,6 +22,7 @@ import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
 import pl.hexmind.mindshaper.activities.stream.StreamActivity
+import pl.hexmind.mindshaper.activities.workshop.WorkshopActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingManager
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.PermissionService
@@ -50,10 +51,11 @@ open class CoreActivity : AppCompatActivity() {
          */
         private val activityToIndex = mapOf(
             HomeActivity::class.java.simpleName     to 0,
-            CaptureActivity::class.simpleName    to 0, // Highlight Home icon when in Capture
+                CaptureActivity::class.simpleName   to 0, // Highlight Home icon when in Capture
             StreamActivity::class.java.simpleName   to 1,
-            DetailsActivity::class.simpleName       to 1, // Highlight Stream icon when in Details
-            SettingsActivity::class.java.simpleName to 2
+                DetailsActivity::class.simpleName   to 1, // Highlight Stream icon when in Details
+            WorkshopActivity::class.java.simpleName to 2,
+            SettingsActivity::class.java.simpleName to 3
         )
     }
 
@@ -186,7 +188,8 @@ open class CoreActivity : AppCompatActivity() {
                 when (index) {
                     0 -> navigateToHome()
                     1 -> navigateToStream()
-                    2 -> navigateToSettings()
+                    2 -> navigateToWorkshop()
+                    3 -> navigateToSettings()
                 }
             }
         }
@@ -226,6 +229,15 @@ open class CoreActivity : AppCompatActivity() {
     private fun navigateToSettings() {
         if (this::class.java.simpleName != SettingsActivity::class.java.simpleName) {
             val intent = Intent(this, SettingsActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            overrideTransitions()
+        }
+    }
+
+    private fun navigateToWorkshop() {
+        if (this::class.java.simpleName != WorkshopActivity::class.java.simpleName) {
+            val intent = Intent(this, WorkshopActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
             overrideTransitions()

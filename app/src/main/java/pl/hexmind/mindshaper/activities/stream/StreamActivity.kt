@@ -29,7 +29,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * Activity for browsing thoughts in a vertical feed (like Instagram/TikTok stories)
+ * Activity for browsing thoughts in a vertical feed
  */
 @AndroidEntryPoint
 class StreamActivity : CoreActivity() {
@@ -53,7 +53,7 @@ class StreamActivity : CoreActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.stream_activity)
+        setContentView(R.layout.activity_stream)
 
         initializeViews()
         setupVerticalFeed()
@@ -77,7 +77,7 @@ class StreamActivity : CoreActivity() {
         tilSearch = findViewById(R.id.til_search)
         etSearch = findViewById(R.id.et_search)
         fabNewThought = findViewById(R.id.fab_new_thought)
-        setupHeader(R.drawable.ic_header_stream, R.string.thoughts_stream_title)
+        setupHeader(R.drawable.ic_activity_stream, R.string.thoughts_stream_title)
     }
 
     private fun setupVerticalFeed() {

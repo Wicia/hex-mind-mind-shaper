@@ -24,7 +24,7 @@
 
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
 
-    <!-- HEX TAGS / METADATA -->
+    <!-- HEX TAGS (metadata) -->
     <string name="common_hex_tag_thread">Wątek lub Temat</string>
 
     <!-- FILES -->
@@ -204,7 +204,7 @@
     <string name="capture_voice_error_recording">Błąd podczas nagrywania</string>
     <string name="capture_voice_error_saving">Błąd podczas zapisywania do bazy</string>
 
-    <string name="thoughts_stream_title">Moje Myśli</string>
+    <string name="thoughts_stream_title">Strumień myśli</string>
 
     <!-- ====================================== -->
     <!--    Activity: STREAM of THOUGHTS  -->
@@ -323,5 +323,23 @@
     <string name="settings_permissions_photo_info">Aby móc robić zdjęcia, aplikacja potrzebuje dostępu do kamery.</string>
 
     <string name="carousel_searchbar_hint">Szukajka czeka na twój rozkaz…</string>
+
+    <!-- Workshop -->
+    <string name="workshop_title">Warsztat</string>
+    <string name="workshop_section_goals">🎯 Cele lub Kierunki</string>
+    <string name="workshop_add_step">Dodaj krok</string>
+
+    <!-- Workshop dialogs -->
+    <string name="workshop_dialog_add_goal">Nowy cel</string>
+    <string name="workshop_dialog_edit_goal">Edytuj cel</string>
+    <string name="workshop_dialog_delete_goal_title">Usunąć cel?</string>
+    <string name="workshop_dialog_delete_goal_desc">Zostaną usunięte też wszystkie kroki tego celu.</string>
+    <string name="workshop_dialog_add_step">Nowy krok</string>
+    <string name="workshop_dialog_edit_step">Edytuj krok</string>
+    <string name="workshop_dialog_delete_step_title">Usunąć krok?</string>
+    <string name="workshop_dialog_delete_step_desc">Tej operacji nie można cofnąć.</string>
+
+    <!-- Common buttons (TODO: with already existing ones -->
+    <string name="common_btn_delete">Usuń</string>
 
 </resources>

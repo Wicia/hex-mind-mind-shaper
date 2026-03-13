@@ -21,11 +21,11 @@ import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
-import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
+import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.database.initialization.DataSnapshotManager
-import pl.hexmind.mindshaper.databinding.SettingsActivityBinding
+import pl.hexmind.mindshaper.databinding.ActivitySettingsBinding
 import pl.hexmind.mindshaper.services.DomainIconsService
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.MediaStorageService
@@ -55,7 +55,7 @@ class SettingsActivity : CoreActivity() {
     @Inject
     lateinit var dataSnapshotManager: DataSnapshotManager
 
-    private lateinit var binding: SettingsActivityBinding
+    private lateinit var binding: ActivitySettingsBinding
 
     private var selectedAudioUri: Uri? = null
     private var selectedBackupUri: Uri? = null
@@ -73,7 +73,7 @@ class SettingsActivity : CoreActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = SettingsActivityBinding.inflate(layoutInflater)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupUI()
@@ -96,7 +96,7 @@ class SettingsActivity : CoreActivity() {
      * Initialize UI components and click listeners
      */
     private fun setupUI() {
-        setupHeader(R.drawable.ic_header_settings, R.string.settings_header)
+        setupHeader(R.drawable.ic_activity_settings, R.string.settings_header)
 
         setupListeners()
         initThoughtsValuesSystemConfig()
@@ -342,7 +342,7 @@ class SettingsActivity : CoreActivity() {
             try {
                 // Create buttons with loaded icons
                 titles.forEachIndexed { domainIndex , domainDTO ->
-                    val buttonView = layoutInflater.inflate(R.layout.settings_domains_item, gridLayout, false)
+                    val buttonView = layoutInflater.inflate(R.layout.item_domain_settings, gridLayout, false)
 
                     val ivDomainName = buttonView.findViewById<TextView>(R.id.tv_domain_name)
                     ivDomainName.text = domainDTO.name

@@ -75,6 +75,12 @@
             android:theme="@style/Theme.MindShaper.NoActionBar"
             android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity"/>
 
+        <activity
+            android:name="pl.hexmind.mindshaper.activities.workshop.WorkshopActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MindShaper.NoActionBar"
+            android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity" />
+
         <service
             android:name=".common.HexKeyboard"
             android:label="Hex Keyboard"

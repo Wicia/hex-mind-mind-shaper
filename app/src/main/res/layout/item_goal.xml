@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Single goal row. Modes: read-only and edit -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Goal header row -->
+    <LinearLayout
+        android:id="@+id/ll_goal_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:background="?attr/selectableItemBackground">
+
+        <!-- Priority badge (1/2/3) -->
+        <TextView
+            android:id="@+id/tv_priority_badge"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:background="@drawable/shape_workshop_priority_badge" />
+
+        <!-- Goal description -->
+        <TextView
+            android:id="@+id/tv_goal_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:lineSpacingExtra="1dp" />
+
+        <!-- Chevron: rotates 180° when expanded. Hidden in edit mode. -->
+        <ImageView
+            android:id="@+id/iv_goal_chevron"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_nav_collapse"
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+            app:tint="@color/_gray_lvl_3" />
+
+        <!-- Delete button: shown only in edit mode -->
+        <ImageView
+            android:id="@+id/iv_goal_delete"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_action_delete"
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:visibility="gone"
+            app:tint="@color/_orange_lvl_2" />
+
+    </LinearLayout>
+
+    <!-- Divider between header and sub-items (shown when sub-items visible) -->
+    <View
+        android:id="@+id/divider_goal"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/_gray_lvl_1"
+        android:visibility="gone" />
+
+    <!-- Sub-items list (nested RecyclerView) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_subitems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"
+        android:overScrollMode="never"
+        android:visibility="gone" />
+
+    <!-- Sub-items footer: "+ Dodaj krok" — shown only in edit mode when sub-items visible -->
+    <LinearLayout
+        android:id="@+id/ll_subitems_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_add_subitem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/workshop_add_step"
+            android:textSize="14sp"
+            android:textColor="@color/_orange_lvl_3"
+            android:textStyle="bold"
+            android:drawablePadding="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp"
+            app:drawableStartCompat="@drawable/ic_action_add" />
+
+    </LinearLayout>
+
+</LinearLayout>

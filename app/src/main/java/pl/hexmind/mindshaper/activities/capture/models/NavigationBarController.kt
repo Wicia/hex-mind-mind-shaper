@@ -42,21 +42,27 @@ class NavigationBarController(
         NavButton(
             R.id.navHome,
             "Home",
-            R.drawable.ic_header_home,
-            R.drawable.ic_header_home_filled
+            R.drawable.ic_activity_home,
+            R.drawable.ic_activity_home_filled
         ),
         NavButton(
             R.id.navStream,
             "Stream",
-            R.drawable.ic_header_stream,
-            R.drawable.ic_header_stream_filled
+            R.drawable.ic_activity_stream,
+            R.drawable.ic_activity_stream_filled
+        ),
+        NavButton(
+            R.id.navWorkshop,
+            "Workshop",
+            R.drawable.ic_activity_workshop,
+            R.drawable.ic_activity_workshop_filled
         ),
         NavButton(
             R.id.navSettings,
             "Settings",
-            R.drawable.ic_header_settings,
-            R.drawable.ic_header_settings_filled
-        ),
+            R.drawable.ic_activity_settings,
+            R.drawable.ic_activity_settings_filled
+        )
     )
 
     private var selectedIndex = -1

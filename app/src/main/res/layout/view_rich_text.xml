@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="@drawable/shape_hex_content"
     android:backgroundTint="@color/button_content_filled_background"
-    android:padding="12dp">
+    android:padding="8dp">
 
     <!-- HTML Text Display Area -->
     <org.sufficientlysecure.htmltextview.HtmlTextView
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="42dp"
             android:layout_marginEnd="8dp"
-            app:icon="@drawable/ic_delete"
+            app:icon="@drawable/ic_action_delete"
             android:visibility="gone"
             app:iconGravity="textStart"
             />
