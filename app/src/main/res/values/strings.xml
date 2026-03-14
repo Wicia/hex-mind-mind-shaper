@@ -50,10 +50,11 @@
     <!-- DIALOGS -->
     <string name="common_deletion_dialog_title">Uwaga!</string>
     <string name="common_deletion_dialog_message">Czy na pewno chcesz usunąć %s?</string>
-    <string name="common_deletion_dialog_yes">Tak</string>
+    <string name="common_deletion_dialog_yes">Usuń</string>
     <string name="common_deletion_dialog_yes_2">Kasujemy</string>
-    <string name="common_deletion_dialog_no">Nie</string>
+    <string name="common_deletion_dialog_no">Nie, zostaw</string>
     <string name="common_deletion_dialog_confirmation">%s usunięto</string>
+    <string name="common_deletion_dialog_warning">Tej operacji nie można cofnąć.</string>
 
     <string name="common_list_dialog_title">Wybierz coś sobie…</string>
 
@@ -326,20 +327,17 @@
 
     <!-- Workshop -->
     <string name="workshop_title">Warsztat</string>
-    <string name="workshop_section_goals">🎯 Cele lub Kierunki</string>
-    <string name="workshop_add_step">Dodaj krok</string>
+    <string name="workshop_section_goals">🍹 Cele lub Kierunki</string>
+    <string name="workshop_add_step">Dodaj wytyczną / krok</string>
 
     <!-- Workshop dialogs -->
-    <string name="workshop_dialog_add_goal">Nowy cel</string>
-    <string name="workshop_dialog_edit_goal">Edytuj cel</string>
-    <string name="workshop_dialog_delete_goal_title">Usunąć cel?</string>
-    <string name="workshop_dialog_delete_goal_desc">Zostaną usunięte też wszystkie kroki tego celu.</string>
-    <string name="workshop_dialog_add_step">Nowy krok</string>
-    <string name="workshop_dialog_edit_step">Edytuj krok</string>
-    <string name="workshop_dialog_delete_step_title">Usunąć krok?</string>
-    <string name="workshop_dialog_delete_step_desc">Tej operacji nie można cofnąć.</string>
+    <string name="workshop_dialog_add_goal">Nowy cel / kierunek</string>
+    <string name="workshop_dialog_edit_goal">Edytuj cel / kierunek</string>
+    <string name="workshop_dialog_delete_goal_title">Usunąć cel / kierunek?</string>
+    <string name="workshop_dialog_delete_goal_desc">Zostaną usunięte też wszystkie wytyczne tego celu.</string>
 
-    <!-- Common buttons (TODO: with already existing ones -->
-    <string name="common_btn_delete">Usuń</string>
+    <string name="workshop_dialog_add_guideline">Nowa wytyczna / krok</string>
+    <string name="workshop_dialog_edit_guideline">Edytuj wytyczną / krok</string>
+    <string name="workshop_dialog_delete_guideline_title">Usunąć wytyczną / krok?</string>
 
 </resources>

@@ -91,5 +91,34 @@ class Migrations {
                 db.execSQL("CREATE INDEX IF NOT EXISTS index_THOUGHTS_domain_id ON THOUGHTS(domain_id)")
             }
         }
+
+        // Workshop: Goals and Guidelines tables
+        val MIGRATION_6_TO_7 = object : Migration(6, 7) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("""
+                    CREATE TABLE GOALS (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        description TEXT NOT NULL,
+                        priority INTEGER NOT NULL DEFAULT 3,
+                        last_modified_at INTEGER NOT NULL
+                    )
+                """)
+
+                db.execSQL("""
+                    CREATE TABLE GOAL_GUIDELINES (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        goal_id INTEGER NOT NULL,
+                        description TEXT NOT NULL,
+                        is_done INTEGER NOT NULL DEFAULT 0,
+                        position INTEGER NOT NULL DEFAULT 0,
+                        FOREIGN KEY (goal_id) REFERENCES GOALS(id) ON DELETE CASCADE
+                    )
+                """)
+
+                db.execSQL(
+                    "CREATE INDEX IF NOT EXISTS index_GOAL_GUIDELINES_goal_id ON GOAL_GUIDELINES(goal_id)"
+                )
+            }
+        }
     }
 }

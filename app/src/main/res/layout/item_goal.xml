@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:text="@string/workshop_add_step"
             android:textSize="14sp"
-            android:textColor="@color/_orange_lvl_3"
+            android:textColor="@color/_orange_lvl_2"
             android:textStyle="bold"
             android:drawablePadding="4dp"
             android:background="?attr/selectableItemBackgroundBorderless"

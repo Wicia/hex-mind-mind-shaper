@@ -99,8 +99,8 @@ class GuidelinesAdapter(
             // Detach listener before setting checked state to avoid callback loop
             holder.cbDone.setOnCheckedChangeListener(null)
 
-            val textColor = if (sub.isDone) context.getColor(R.color._gray_lvl_3)
-            else context.getColor(R.color.text_primary)
+            val textColor = if (sub.isDone) context.getColor(R.color._gray_lvl_2)
+                else context.getColor(R.color.text_primary)
             holder.tvDescription.setTextColor(textColor)
 
             // Toggle done: tap row or tap checkbox

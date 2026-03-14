@@ -6,9 +6,13 @@ import androidx.room.TypeConverters
 import pl.hexmind.mindshaper.database.AppDatabase.Companion.DB_VERSION
 import pl.hexmind.mindshaper.database.mappers.CommonTypesConverters
 import pl.hexmind.mindshaper.database.models.DomainEntity
+import pl.hexmind.mindshaper.database.models.GoalEntity
+import pl.hexmind.mindshaper.database.models.GuidelineEntity
 import pl.hexmind.mindshaper.database.models.IconEntity
 import pl.hexmind.mindshaper.database.models.ThoughtEntity
 import pl.hexmind.mindshaper.database.repositories.DomainDAO
+import pl.hexmind.mindshaper.database.repositories.GoalDAO
+import pl.hexmind.mindshaper.database.repositories.GuidelineDAO
 import pl.hexmind.mindshaper.database.repositories.IconDAO
 import pl.hexmind.mindshaper.database.repositories.ThoughtsDAO
 
@@ -16,7 +20,9 @@ import pl.hexmind.mindshaper.database.repositories.ThoughtsDAO
     entities = [
         ThoughtEntity::class,
         DomainEntity::class,
-        IconEntity::class
+        IconEntity::class,
+        GoalEntity::class,
+        GuidelineEntity::class
     ],
     version = DB_VERSION,
     exportSchema = true
@@ -27,8 +33,10 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun thoughtsDao(): ThoughtsDAO
     abstract fun domainDAO(): DomainDAO
     abstract fun iconDAO(): IconDAO
+    abstract fun goalDao(): GoalDAO
+    abstract fun guidelineDao(): GuidelineDAO
 
     companion object {
-        const val DB_VERSION = 6
+        const val DB_VERSION = 7
     }
 }

@@ -3,16 +3,15 @@ package pl.hexmind.mindshaper.activities.workshop
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
-import pl.hexmind.mindshaper.common.formatting.colorStateList
 import pl.hexmind.mindshaper.common.ui.dialogs.MultipleActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
 
@@ -25,8 +24,8 @@ class WorkshopActivity : CoreActivity() {
     private val viewModel: WorkshopViewModel by viewModels()
 
     private lateinit var rvGoals: RecyclerView
-    private lateinit var btnToggleEdit: ImageView
-    private lateinit var btnAddGoal: ImageView
+    private lateinit var btnToggleEdit: MaterialButton
+    private lateinit var btnAddGoal: MaterialButton
     private lateinit var fabCapture: FloatingActionButton
     private lateinit var goalsAdapter: GoalsAdapter
 
@@ -122,8 +121,7 @@ class WorkshopActivity : CoreActivity() {
         btnAddGoal.setOnClickListener { showAddGoalDialog() }
 
         // Switch icon: pencil → tick (white checkmark on orange background)
-        btnToggleEdit.setImageResource(R.drawable.ic_action_approve)
-        btnToggleEdit.backgroundTintList = resources.colorStateList(R.color._orange_lvl_3, theme)
+        btnToggleEdit.setIconResource(R.drawable.ic_action_approve)
     }
 
     private fun exitEditMode() {
@@ -135,8 +133,7 @@ class WorkshopActivity : CoreActivity() {
         btnAddGoal.setOnClickListener(null)
 
         // Restore pencil icon
-        btnToggleEdit.setImageResource(R.drawable.ic_action_edit)
-        btnToggleEdit.backgroundTintList = resources.colorStateList(R.color._orange_lvl_1, theme)
+        btnToggleEdit.setIconResource(R.drawable.ic_action_edit)
 
         // Sort goals: priority ASC, then lastModifiedAt DESC
         viewModel.sortGoals()
@@ -166,7 +163,7 @@ class WorkshopActivity : CoreActivity() {
         MultipleActionsDialog.Builder(this)
             .setTitle(getString(R.string.workshop_dialog_delete_goal_title))
             .setDescription(getString(R.string.workshop_dialog_delete_goal_desc))
-            .setCautionAction(getString(R.string.common_btn_delete)) {
+            .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
                 viewModel.deleteGoal(goalId)
             }
             .setCancelText(getString(R.string.common_btn_cancel))
@@ -178,7 +175,7 @@ class WorkshopActivity : CoreActivity() {
     private fun showAddSubItemDialog(goalId: Int) {
         TextEditDialog(
             context = this,
-            title = getString(R.string.workshop_dialog_add_step),
+            title = getString(R.string.workshop_dialog_add_guideline),
             textInput = "",
             onSave = { description -> viewModel.addSubItem(goalId, description) }
         ).show()
@@ -187,7 +184,7 @@ class WorkshopActivity : CoreActivity() {
     private fun showEditSubItemDialog(goalId: Int, subItem: GoalGuideline) {
         TextEditDialog(
             context = this,
-            title = getString(R.string.workshop_dialog_edit_step),
+            title = getString(R.string.workshop_dialog_edit_guideline),
             textInput = subItem.description,
             onSave = { description ->
                 viewModel.updateSubItemDescription(goalId, subItem.id, description)
@@ -197,9 +194,9 @@ class WorkshopActivity : CoreActivity() {
 
     private fun showDeleteSubItemConfirmation(goalId: Int, subItemId: Int) {
         MultipleActionsDialog.Builder(this)
-            .setTitle(getString(R.string.workshop_dialog_delete_step_title))
-            .setDescription(getString(R.string.workshop_dialog_delete_step_desc))
-            .setCautionAction(getString(R.string.common_btn_delete)) {
+            .setTitle(getString(R.string.workshop_dialog_delete_guideline_title))
+            .setDescription(getString(R.string.common_deletion_dialog_warning))
+            .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
                 viewModel.deleteSubItem(goalId, subItemId)
             }
             .setCancelText(getString(R.string.common_btn_cancel))

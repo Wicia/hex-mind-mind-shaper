@@ -24,14 +24,10 @@
             <include layout="@layout/activity_header" />
 
             <!-- GOALS -->
-            <com.google.android.material.card.MaterialCardView
+            <!-- TODO: choose one approach -> this or MaterialCardView in all places -->
+            <androidx.cardview.widget.CardView
                 android:id="@+id/card_goals"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:strokeWidth="0dp">
+                style="@style/AppCardView">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -58,28 +54,26 @@
                             android:text="@string/workshop_section_goals" />
 
                         <!-- Adding new goal (edit mode) -->
-                        <ImageView
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_add_goal"
+                            style="@style/SecondaryActionButton"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:padding="6dp"
-                            android:layout_marginEnd="8dp"
-                            android:src="@drawable/ic_action_add"
-                            android:background="@drawable/shape_workshop_priority_badge"
-                            android:backgroundTint="@color/_orange_lvl_1"
-                            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                            android:layout_marginEnd="12dp"
+                            app:icon="@drawable/ic_action_add"
+                            app:iconGravity="textStart"
+                            app:iconSize="16dp"
                             android:visibility="gone" />
 
                         <!-- Edit / Done toggle button -->
-                        <ImageView
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_toggle_edit_mode"
+                            style="@style/SecondaryActionButton"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:padding="8dp"
-                            android:src="@drawable/ic_action_edit"
-                            android:background="@drawable/shape_workshop_priority_badge"
-                            android:backgroundTint="@color/_orange_lvl_1"
-                            android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+                            app:icon="@drawable/ic_action_edit"
+                            app:iconGravity="textStart"
+                            app:iconSize="16dp" />
 
                     </LinearLayout>
 
@@ -99,7 +93,7 @@
 
                 </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 

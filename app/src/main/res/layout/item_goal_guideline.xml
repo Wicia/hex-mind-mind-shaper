@@ -6,15 +6,20 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:padding="12dp"
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:minHeight="36dp"
     android:background="?attr/selectableItemBackground">
 
-    <!-- Drag handle (edit mode) -->
+    <!-- Drag handle (edit mode only) -->
     <ImageView
         android:id="@+id/iv_sub_drag_handle"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:src="@drawable/ic_action_drag_handle"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc"
         android:visibility="gone" />
@@ -24,8 +29,9 @@
         android:id="@+id/cb_subitem_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:buttonTint="@color/_orange_lvl_3"
+        android:layout_marginEnd="6dp"
+        android:minHeight="24dp"
+        android:buttonTint="@color/_orange_lvl_2"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
 
     <!-- Description text -->
@@ -34,11 +40,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:textColor="@color/text_primary"
-        android:lineSpacingExtra="1dp" />
+        android:lineSpacingExtra="0dp" />
 
-    <!-- Delete button (edit mode) -->
+    <!-- Delete button (edit mode only) -->
     <ImageView
         android:id="@+id/iv_sub_delete"
         android:layout_width="32dp"
