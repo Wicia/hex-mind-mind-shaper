@@ -29,6 +29,7 @@ import pl.hexmind.mindshaper.databinding.ActivitySettingsBinding
 import pl.hexmind.mindshaper.services.DomainIconsService
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.MediaStorageService
+import pl.hexmind.mindshaper.services.dto.DefaultCaptureForm
 import pl.hexmind.mindshaper.services.dto.DomainDTO
 import pl.hexmind.mindshaper.services.validators.DomainValidator
 import timber.log.Timber
@@ -100,6 +101,7 @@ class SettingsActivity : CoreActivity() {
 
         setupListeners()
         initThoughtsValuesSystemConfig()
+        initDefaultCaptureFormConfig()
         initDomainButtons()
     }
 
@@ -173,6 +175,7 @@ class SettingsActivity : CoreActivity() {
         val wantsRecording = appSettingsStorage.isVoiceRecordingEnabled()
 
         binding.switchVoiceRecordingFeature.isChecked = wantsRecording && hasPermission
+        syncDefaultCaptureFormRadioStates()
     }
 
     private val requestVoiceRecordingPermissionLauncher = registerForActivityResult(
@@ -252,6 +255,7 @@ class SettingsActivity : CoreActivity() {
         val wantsPhoto = appSettingsStorage.isPhotoFeatureEnabled()
 
         binding.switchPhotoFeature.isChecked = wantsPhoto && hasPermission
+        syncDefaultCaptureFormRadioStates()
     }
 
     private val requestCameraPermissionLauncher = registerForActivityResult(
@@ -331,6 +335,53 @@ class SettingsActivity : CoreActivity() {
                     appSettingsStorage.setThoughtValueSystemId(ThoughtValueSystem.STANDARD_10)
                 }
             }
+        }
+    }
+
+    private fun initDefaultCaptureFormConfig() {
+        val radioGroup = binding.rgDefaultCaptureForm
+        val currentForm = appSettingsStorage.getDefaultCaptureForm()
+
+        when (currentForm) {
+            DefaultCaptureForm.TEXT  -> radioGroup.check(R.id.rb_default_form_text)
+            DefaultCaptureForm.VOICE -> radioGroup.check(R.id.rb_default_form_voice)
+            DefaultCaptureForm.PHOTO -> radioGroup.check(R.id.rb_default_form_photo)
+        }
+
+        // Sync disabled state on initial load
+        syncDefaultCaptureFormRadioStates()
+
+        radioGroup.setOnCheckedChangeListener { _, checkedButtonId ->
+            val selectedForm = when (checkedButtonId) {
+                R.id.rb_default_form_text  -> DefaultCaptureForm.TEXT
+                R.id.rb_default_form_voice -> DefaultCaptureForm.VOICE
+                R.id.rb_default_form_photo -> DefaultCaptureForm.PHOTO
+                else -> DefaultCaptureForm.TEXT
+            }
+            appSettingsStorage.setDefaultCaptureForm(selectedForm)
+        }
+    }
+
+    /**
+     * Enables/disables default-form radio buttons based on feature toggles.
+     * If the currently selected form becomes unavailable, falls back to TEXT.
+     */
+    private fun syncDefaultCaptureFormRadioStates() {
+        val voiceEnabled = binding.switchVoiceRecordingFeature.isChecked
+        val photoEnabled = binding.switchPhotoFeature.isChecked
+
+        binding.rbDefaultFormVoice.isEnabled = voiceEnabled
+        binding.rbDefaultFormPhoto.isEnabled = photoEnabled
+
+        // If selected option just got disabled → reset to TEXT
+        val currentForm = appSettingsStorage.getDefaultCaptureForm()
+        if (currentForm == DefaultCaptureForm.VOICE && !voiceEnabled) {
+            binding.rgDefaultCaptureForm.check(R.id.rb_default_form_text)
+            appSettingsStorage.setDefaultCaptureForm(DefaultCaptureForm.TEXT)
+        }
+        if (currentForm == DefaultCaptureForm.PHOTO && !photoEnabled) {
+            binding.rgDefaultCaptureForm.check(R.id.rb_default_form_text)
+            appSettingsStorage.setDefaultCaptureForm(DefaultCaptureForm.TEXT)
         }
     }
 

@@ -15,14 +15,15 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtManagerActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
-import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
-import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
 import pl.hexmind.mindshaper.common.ui.dialogs.PhotoFullscreenDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
-import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.common.ui.views.content.AudioRecordingView
+import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
+import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
+import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.databinding.ActivityCaptureBinding
 import pl.hexmind.mindshaper.services.ThoughtsService
+import pl.hexmind.mindshaper.services.dto.DefaultCaptureForm
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import java.io.File
 import javax.inject.Inject
@@ -66,10 +67,17 @@ class CaptureActivity : ThoughtManagerActivity() {
         )
     }
 
+    private var defaultFormAutoOpened = false
+
     private fun setupObservers() {
         // Observe draft changes (in memory, NOT from DB)
         viewModel.draftThought.observe(this) { draft ->
             updateUI(draft)
+            // Auto-open only once, AFTER first updateUI resets widget states
+            if (!defaultFormAutoOpened) {
+                defaultFormAutoOpened = true
+                autoOpenDefaultFormIfNeeded()
+            }
         }
     }
 
@@ -221,6 +229,52 @@ class CaptureActivity : ThoughtManagerActivity() {
         }
     }
 
+    /**
+     * Auto-opens the default capture dialog / widget based on user's preference in Settings.
+     */
+    private fun autoOpenDefaultFormIfNeeded() {
+        when (appSettingsStorage.getDefaultCaptureForm()) {
+            DefaultCaptureForm.TEXT  -> showEditRichTextDialog()
+            DefaultCaptureForm.VOICE -> autoOpenVoiceRecording()
+            DefaultCaptureForm.PHOTO -> autoOpenPhoto()
+        }
+    }
+
+    /**
+     * Expands the recording widget as if the user tapped the add-recording button.
+     */
+    private fun autoOpenVoiceRecording() {
+        if (!appSettingsStorage.isVoiceRecordingEnabled()) {
+            showEnableAdditionalFeaturesDialog()
+            return
+        }
+
+        binding.btnRecordingAdd.visibility = View.GONE
+        binding.audioRecordingPlayback.visibility = View.VISIBLE
+        binding.audioRecordingPlayback.switchToRecordPlaybackMode()
+        binding.audioRecordingPlayback.showStatus(
+            getString(R.string.capture_voice_tooltip),
+            R.color.validation_success
+        )
+    }
+
+    /**
+     * Expands the photo widget as if the user tapped the add-photo button.
+     */
+    private fun autoOpenPhoto() {
+        if (!appSettingsStorage.isPhotoFeatureEnabled()) {
+            showEnableAdditionalFeaturesDialog()
+            return
+        }
+
+        binding.btnPhotoAdd.visibility = View.GONE
+        binding.photoDisplayView.visibility = View.VISIBLE
+        binding.photoDisplayView.showStatus(
+            R.string.photos_no_file,
+            R.color.validation_success
+        )
+    }
+
     private fun setupUI() {
         setupHeader(R.drawable.ic_capture_thought, R.string.capture_main_label)
         updateAddPhotoButtonVisualState()
@@ -233,6 +287,7 @@ class CaptureActivity : ThoughtManagerActivity() {
 
         TextEditDialog(
             context = this,
+            title = getString(R.string.common_edit_note_header),
             textInput = currentText,
             onSave = { newText ->
                 viewModel.updateRichText(newText)

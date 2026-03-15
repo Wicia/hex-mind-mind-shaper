@@ -86,7 +86,7 @@ class OnboardingManager @Inject constructor(
             }
 
         tooltipConfig?.forEach { tooltipConfig ->
-            val title = context.getString(tooltipConfig.titleRes?: R.string.onb_dialog_header)
+            val title = context.getString(tooltipConfig.titleRes?: R.string.common_onb_dialog_header)
             val icon = tooltipConfig.iconRes?.let {
                 ResourcesCompat.getDrawable(context.resources, tooltipConfig.iconRes, context.theme
             )}

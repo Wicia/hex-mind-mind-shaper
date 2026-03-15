@@ -92,6 +92,39 @@
                         android:text="@string/settings_permissions_photo"
                         />
 
+                    <!-- Default way to capture thoughts -->
+                    <TextView
+                        android:id="@+id/tv_default_capture_form_section"
+                        style="@style/TextView_Header_Section"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_default_form_header" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_default_capture_form"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:id="@+id/rb_default_form_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_default_form_text" />
+
+                        <RadioButton
+                            android:id="@+id/rb_default_form_voice"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_default_form_voice" />
+
+                        <RadioButton
+                            android:id="@+id/rb_default_form_photo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_default_form_photo" />
+
+                    </RadioGroup>
+
                     <TextView
                         android:id="@+id/tv_thought_value_scale_section"
                         style="@style/TextView_Header_Section"

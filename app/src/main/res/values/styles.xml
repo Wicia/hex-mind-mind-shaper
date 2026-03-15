@@ -15,7 +15,7 @@
 
     <!-- Activity / Section -->
     <style name="TextView_Header_Section">
-        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:fontFamily">@font/baloo2</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_marginTop">16dp</item>
@@ -35,13 +35,13 @@
     </style>
 
     <style name="TextView_Metadata">
-        <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/baloo2</item>
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
     <style name="TextView_Info_Success">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/validation_success</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
@@ -60,8 +60,8 @@
     </style>
 
     <style name="TextView_Number_State">
-        <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/baloo2</item>
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
@@ -144,11 +144,11 @@
 
         <!-- Texts -->
         <item name="android:lineSpacingExtra">-1dp</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:letterSpacing">0.0</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/text_secondary</item>
-        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:fontFamily">@font/baloo2</item>
         <item name="android:textAllCaps">false</item>
         <item name="textAllCaps">false</item>
     </style>
@@ -185,11 +185,11 @@
         <item name="cornerRadius">12dp</item>
 
         <!-- Texts -->
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:letterSpacing">0.0</item>
         <item name="android:textColor">@color/text_secondary</item>
-        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:fontFamily">@font/baloo2</item>
         <item name="android:textAllCaps">false</item>
         <item name="textAllCaps">false</item>
     </style>
@@ -238,11 +238,11 @@
         <item name="cornerRadius">8dp</item>
 
         <!-- Text styling -->
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:letterSpacing">0.0</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/text_secondary</item>
-        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:fontFamily">@font/baloo2</item>
         <item name="android:textAllCaps">false</item>
         <item name="textAllCaps">false</item>
     </style>
@@ -314,8 +314,8 @@
     </style>
 
     <style name="DialogItemText">
-        <item name="android:textSize">13sp</item>
-        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/baloo2</item>
         <item name="android:textColor">@color/text_secondary</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:padding">12dp</item>
@@ -323,7 +323,7 @@
 
     <!-- Dialogs -->
     <style name="Dialog_Header">
-        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:fontFamily">@font/baloo2</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_marginTop">16dp</item>
@@ -332,8 +332,8 @@
     </style>
 
     <style name="Dialog_Text">
-        <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/baloo2</item>
         <item name="android:textColor">@color/text_secondary</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:padding">12dp</item>

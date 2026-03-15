@@ -3,9 +3,9 @@
     <!-- [module/feature] / [component/screen] -> [message type] -> [details] -->
     <!-- [module/feature] / [component/screen] -> label -> [element] -->
 
-    <!-- ====================================== -->
-    <!--    CORE / COMMON -->
-    <!-- ====================================== -->
+<!-- ====================================== -->
+<!--    CORE / COMMON -->
+<!-- ====================================== -->
 
     <string name="app_name">MindShaper</string>
 
@@ -55,6 +55,7 @@
     <string name="common_deletion_dialog_no">Nie, zostaw</string>
     <string name="common_deletion_dialog_confirmation">%s usunięto</string>
     <string name="common_deletion_dialog_warning">Tej operacji nie można cofnąć.</string>
+    <string name="common_edit_note_header">Edytuj notatkę</string>
 
     <string name="common_list_dialog_title">Wybierz coś sobie…</string>
 
@@ -64,13 +65,24 @@
     <string name="common_object_type_thought">Myśl</string>
 
     <!-- ONBOARDING & TOOLTIPS-->
-    <string name="onb_dialog_header">Wskazówka</string>
+    <string name="common_onb_dialog_header">Wskazówka</string>
+
+    <!-- Thought Age -->
+    <string name="common_thought_age_pattern">%2$s dni temu  %1$s</string>
+    <string name="common_thought_age_0">Dzisiaj %s</string>
+    <string name="common_thought_age_1">Wczoraj %s</string>
+
+    <string name="common_thought_age_level_1_icon">🌱</string>
+    <string name="common_thought_age_level_2_icon">🌿</string>
+    <string name="common_thought_age_level_3_icon">🍀</string>
+    <string name="common_thought_age_level_4_icon">🌳</string>
+    <string name="common_thought_age_level_5_icon">🏝️</string>
 
     <!-- WELCOME -->
     <string name="home_capturing_button_title">Witaj w "Domu" :)</string>
     <string name="home_capturing_button_tooltip">Jak ci wpadnie coś do głowy co chcesz zapisać to tapnij w przycisk na środku</string>
     <string name="home_navigation_button_title">A tymczasem… :)</string>
-    <string name="home_navigation_button_tooltip">Tapnij na ikonkę z kompasem (rym!) a potem na ikonkę koła zymbatego</string>
+    <string name="home_navigation_button_tooltip">Tapnij na ikonkę z kompasem (rym!), a potem na ikonkę koła zymbatego</string>
 
     <!-- SETTINGS -->
     <string name="settings_entry_title_1">Ustawienia</string>
@@ -117,7 +129,7 @@
 
     <!-- DETAILS -->
     <string name="details_entry_title">Szczegóły myśli</string>
-    <string name="details_entry_tooltip">To miejsce to warsztat w którym rzeźbisz i rozwijasz swoją myśl</string>
+    <string name="details_entry_tooltip">To miejsce to warsztat, w którym rzeźbisz i rozwijasz swoją myśl</string>
 
     <string name="details_fields_title">Edycja myśli</string>
     <string name="details_fields_tooltip">Tapując na pomarańczowe etykiety/pola zdefiniujesz lub zmienisz zapisaną w nich treść</string>
@@ -151,9 +163,9 @@
         następnie Zapisz i zobacz szczegóły nowo złapanej myśli
     ]]></string>
 
-    <!-- ====================================== -->
-    <!--    ACTIVITY: HOME -->
-    <!-- ====================================== -->
+<!-- ====================================== -->
+<!--    Activity: HOME -->
+<!-- ====================================== -->
 
     <array name="home_greetings_values_list">
         <item>Dużo dobrego %s!</item>
@@ -169,16 +181,16 @@
         <item>Dobrze Cię widzieć %s ;)</item>
     </array>
 
-    <!-- ====================================== -->
-    <!--    ACTIVITY: DETAILS / EDIT -->
-    <!-- ====================================== -->
+<!-- ====================================== -->
+<!--    Activity: DETAILS / EDIT -->
+<!-- ====================================== -->
 
     <string name="details_edit_thought_invalid_id">Niepoprawne ID rekordu Myśli :/</string>
     <string name="details_edit_thought_not_found">Nie znaleziono myśli :/</string>
 
-    <!-- ====================================== -->
-    <!--    ACTIVITY: CAPTURE THOUGHT -->
-    <!-- ====================================== -->
+<!-- ====================================== -->
+<!--    Activity: CAPTURE THOUGHT -->
+<!-- ====================================== -->
 
     <!-- Core -->
     <string name="capture_main_label">Chwytaj myśl…</string>
@@ -207,9 +219,9 @@
 
     <string name="thoughts_stream_title">Strumień myśli</string>
 
-    <!-- ====================================== -->
-    <!--    Activity: STREAM of THOUGHTS  -->
-    <!-- ====================================== -->
+<!-- ====================================== -->
+<!--    Activity: STREAM of THOUGHTS  -->
+<!-- ====================================== -->
 
     <string name="stream_thought_metadata_empty">\?\?\?</string>
 
@@ -247,9 +259,9 @@
     <!-- Sort Directions -->
     <string name="sort_direction_description">Kierunek sortowania</string>
 
-    <!-- ====================================== -->
-    <!--    ACTIVITY: SETTINGS -->
-    <!-- ====================================== -->
+<!-- ====================================== -->
+<!--    Activity: SETTINGS -->
+<!-- ====================================== -->
 
     <!-- Header -->
     <string name="settings_header">Ustawienia</string>
@@ -266,6 +278,10 @@
     <string name="settings_permissions_section">🔆 Formy zapisu myśli</string>
     <string name="settings_permissions_voice_recording">Włącz zapis w formie głosówek</string>
     <string name="settings_permissions_photo">Włącz zapis w formie zdjęć</string>
+    <string name="settings_default_form_header">✍️ Domyślna forma zapisu myśli</string>
+    <string name="settings_default_form_text">Tekst</string>
+    <string name="settings_default_form_voice">Głosówka</string>
+    <string name="settings_default_form_photo">Zdjęcie</string>
 
     <string name="settings_permissions_blockade_title">Uprawnienie zablokowane</string>
     <string name="settings_permissions_recording_blockade_tooltip">Uprawnienie do nagrywania dźwięku zostało trwale odrzucone.\nMożesz je włączyć w ustawieniach systemu Androida.</string>
@@ -304,33 +320,25 @@
     <string name="settings_backup_loaded_success">Backup wczytany pomyślnie</string>
     <string name="settings_backup_error_loading">Błąd podczas wczytywania backupu</string>
 
-    <!-- Thought Age -->
-    <string name="common_thought_age_pattern">%2$s dni temu  %1$s</string>
-    <string name="common_thought_age_0">Dzisiaj %s</string>
-    <string name="common_thought_age_1">Wczoraj %s</string>
-
-    <string name="common_thought_age_level_1_icon">🌱</string>
-    <string name="common_thought_age_level_2_icon">🌿</string>
-    <string name="common_thought_age_level_3_icon">🍀</string>
-    <string name="common_thought_age_level_4_icon">🌳</string>
-    <string name="common_thought_age_level_5_icon">🏝️</string>
-
     <string name="rich_text_removing_header">Usunąć tekst?</string>
     <string name="rich_text_removing_content">Ta operacja jest nieodwracalna</string>
 
     <string name="stream_item_empty_thought">- ? -\n\nTa myśl jest pusta…</string>
+    <string name="stream_searchbar_hint">Szukajka czeka na twój rozkaz…</string>
 
     <string name="settings_voice_recording_info">Aby móc nagrywać dźwięk, aplikacja potrzebuje dostępu do mikrofonu.</string>
     <string name="settings_permissions_photo_info">Aby móc robić zdjęcia, aplikacja potrzebuje dostępu do kamery.</string>
 
-    <string name="carousel_searchbar_hint">Szukajka czeka na twój rozkaz…</string>
+<!-- ====================================== -->
+<!--    Activity: WORKSHOP -->
+<!-- ====================================== -->
 
-    <!-- Workshop -->
+    <!-- Main -->
     <string name="workshop_title">Warsztat</string>
     <string name="workshop_section_goals">🍹 Cele lub Kierunki</string>
     <string name="workshop_add_step">Dodaj wytyczną / krok</string>
 
-    <!-- Workshop dialogs -->
+    <!-- Dialogs -->
     <string name="workshop_dialog_add_goal">Nowy cel / kierunek</string>
     <string name="workshop_dialog_edit_goal">Edytuj cel / kierunek</string>
     <string name="workshop_dialog_delete_goal_title">Usunąć cel / kierunek?</string>

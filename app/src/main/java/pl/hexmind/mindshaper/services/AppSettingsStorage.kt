@@ -6,6 +6,7 @@ import androidx.core.content.edit
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem
+import pl.hexmind.mindshaper.services.dto.DefaultCaptureForm
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -36,6 +37,9 @@ class AppSettingsStorage @Inject constructor(
 
         // Permissions
         private const val PARAM_VOICE_RECORDING_ENABLED = "param_voice_recording_enabled"
+
+        // Default capture form
+        private const val PARAM_DEFAULT_CAPTURE_FORM = "param_default_capture_form"
 
         private const val PARAM_PHOTO_FEATURE_ENABLED = "photo_feature_enabled"
     }
@@ -121,8 +125,21 @@ class AppSettingsStorage @Inject constructor(
     }
 
     fun setPhotoFeatureEnabled(enabled: Boolean) {
-        sharedPreferences.edit()
-            .putBoolean(PARAM_PHOTO_FEATURE_ENABLED, enabled)
-            .apply()
+        sharedPreferences.edit {
+            putBoolean(PARAM_PHOTO_FEATURE_ENABLED, enabled)
+        }
+    }
+
+    // === DEFAULT CAPTURE FORM ===
+
+    fun setDefaultCaptureForm(form: DefaultCaptureForm) {
+        sharedPreferences.edit {
+            putString(PARAM_DEFAULT_CAPTURE_FORM, form.name)
+        }
+    }
+
+    fun getDefaultCaptureForm(): DefaultCaptureForm {
+        val value = sharedPreferences.getString(PARAM_DEFAULT_CAPTURE_FORM, "")
+        return if (!value.isNullOrBlank()) DefaultCaptureForm.valueOf(value) else DefaultCaptureForm.TEXT
     }
 }

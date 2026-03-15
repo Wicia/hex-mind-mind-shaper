@@ -81,7 +81,7 @@ class ValueCloude @JvmOverloads constructor(
         color = ContextCompat.getColor(context, textColor)
         textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14f, context.resources.displayMetrics)
         textAlign = Paint.Align.CENTER
-        typeface = ResourcesCompat.getFont(context, R.font.montserrat_regular)
+        typeface = ResourcesCompat.getFont(context, R.font.baloo2)
     }
 
     // ✨ Flash animation paint
