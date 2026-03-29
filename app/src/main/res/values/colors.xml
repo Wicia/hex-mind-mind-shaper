@@ -71,7 +71,7 @@
     <color name="button_primary_enabled_background">@color/_orange_lvl_3</color>
 
     <!-- Secondary -->
-    <color name="button_secondary_enabled_background">@color/_orange_lvl_2</color>
+    <color name="button_secondary_enabled_background">@color/_orange_lvl_1</color>
 
     <color name="button_secondary_disabled_background">@color/_gray_lvl_1</color>
 

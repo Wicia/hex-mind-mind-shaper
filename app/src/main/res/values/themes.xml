@@ -41,6 +41,8 @@
 
         <!-- Use custom InputLayout style with no Material box decoration -->
         <item name="textInputStyle">@style/InputLayout_NoBox</item>
+        <item name="android:fontFamily">@font/baloo2</item>
+        <item name="fontFamily">@font/baloo2</item>
 
     </style>
 

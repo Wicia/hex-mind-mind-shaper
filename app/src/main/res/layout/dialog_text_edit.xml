@@ -31,7 +31,9 @@
             android:maxLines="100"
             android:minLines="3"
             android:textColor="@color/text_primary"
-            android:textColorHint="@color/text_secondary" />
+            android:textColorHint="@color/text_secondary"
+            android:fontFamily="@font/alegreya_regular"
+            android:textSize="18sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

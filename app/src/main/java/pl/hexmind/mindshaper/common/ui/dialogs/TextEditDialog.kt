@@ -2,11 +2,13 @@ package pl.hexmind.mindshaper.common.ui.dialogs
 
 import android.content.Context
 import android.graphics.Color.TRANSPARENT
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.textfield.TextInputEditText
 import pl.hexmind.mindshaper.R
 import androidx.core.graphics.drawable.toDrawable
@@ -17,11 +19,12 @@ import androidx.core.graphics.drawable.toDrawable
 class TextEditDialog(
     private val context: Context,
     private val title: String? = "",
+    private val notesStyle: Boolean = false, // true = for making/editing notes (rich text)
     private val textInput: String = "",
     private val onSave: (String) -> Unit
 ) {
 
-    private val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_edit, null)
+    private val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_text_edit, null)
     private val etInput: TextInputEditText = dialogView.findViewById(R.id.et_input)
     private val tvHeader : TextView = dialogView.findViewById(R.id.tv_header)
     private val dialog: AlertDialog
@@ -35,6 +38,15 @@ class TextEditDialog(
         tvHeader.text = title
         etInput.setText(textInput)
         etInput.setSelection(textInput.length)  // Cursor at end
+
+        if (notesStyle) {
+            etInput.typeface = ResourcesCompat.getFont(context, R.font.alegreya_regular)
+            etInput.textSize = 18f
+        }
+        else {
+            etInput.typeface = ResourcesCompat.getFont(context, R.font.baloo2)
+            etInput.textSize = 16f
+        }
     }
 
     private fun createDialog(): AlertDialog {

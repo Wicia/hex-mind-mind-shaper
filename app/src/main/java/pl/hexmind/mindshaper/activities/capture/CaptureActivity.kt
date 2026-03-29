@@ -289,6 +289,7 @@ class CaptureActivity : ThoughtManagerActivity() {
             context = this,
             title = getString(R.string.common_edit_note_header),
             textInput = currentText,
+            notesStyle = true,
             onSave = { newText ->
                 viewModel.updateRichText(newText)
             }

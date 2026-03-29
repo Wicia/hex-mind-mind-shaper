@@ -23,7 +23,7 @@
 
             <include layout="@layout/activity_header" />
 
-            <!-- GOALS -->
+            <!-- === GOALS section === -->
             <!-- TODO: choose one approach -> this or MaterialCardView in all places -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_goals"
@@ -34,7 +34,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- ADD button + mode toggle: edit/done -->
                     <LinearLayout
                         android:id="@+id/ll_goals_section_header"
                         android:layout_width="match_parent"
@@ -53,7 +52,6 @@
                             android:layout_marginBottom="4dp"
                             android:text="@string/workshop_section_goals" />
 
-                        <!-- Adding new goal (edit mode) -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_add_goal"
                             style="@style/SecondaryActionButton"
@@ -65,7 +63,6 @@
                             app:iconSize="16dp"
                             android:visibility="gone" />
 
-                        <!-- Edit / Done toggle button -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_toggle_edit_mode"
                             style="@style/SecondaryActionButton"
@@ -82,7 +79,6 @@
                         android:layout_height="1dp"
                         android:background="@color/_gray_lvl_1" />
 
-                    <!-- Goals list -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_goals"
                         android:layout_width="match_parent"
@@ -90,6 +86,63 @@
                         android:nestedScrollingEnabled="false"
                         android:overScrollMode="never"
                         tools:listitem="@layout/item_goal" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- === PATHS section === -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_paths"
+                style="@style/AppCardView">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            style="@style/TextView_Header_Section"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/workshop_section_paths" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/_gray_lvl_1" />
+
+                    <!-- Dynamic path step cards (handled in code) -->
+                    <LinearLayout
+                        android:id="@+id/ll_paths_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="10dp" />
+
+                    <!-- Special info -->
+                    <TextView
+                        android:id="@+id/tv_paths_pool_empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/path_pool_empty"
+                        android:textSize="13sp"
+                        android:textColor="@color/_gray_lvl_3"
+                        android:textAlignment="center"
+                        android:padding="20dp"
+                        android:visibility="gone" />
 
                 </LinearLayout>
 

@@ -8,36 +8,24 @@ class Migrations {
     companion object {
         val MIGRATION_1_TO_2 = object : Migration(1, 2) {
             override fun migrate(db: SupportSQLiteDatabase) {
-                db.execSQL(
-                    """
-                ALTER TABLE THOUGHTS 
-                ADD COLUMN audio_data BLOB DEFAULT NULL
-                """.trimIndent()
-                )
-
-                db.execSQL(
-                    """
-                ALTER TABLE THOUGHTS 
-                ADD COLUMN audio_duration_ms INTEGER DEFAULT NULL
-                """.trimIndent()
-                )
+                db.execSQL("ALTER TABLE THOUGHTS ADD COLUMN audio_data BLOB DEFAULT NULL")
+                db.execSQL("ALTER TABLE THOUGHTS ADD COLUMN audio_duration_ms INTEGER DEFAULT NULL")
             }
         }
 
         val MIGRATION_2_TO_3 = object : Migration(2, 3) {
             override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE thoughts ADD COLUMN main_content_type TEXT NOT NULL DEFAULT 'U'")
                 db.execSQL(
-                    "ALTER TABLE thoughts ADD COLUMN main_content_type TEXT NOT NULL DEFAULT 'U'"
-                )
-
-                db.execSQL("""
+                    """
                     UPDATE THOUGHTS 
                     SET main_content_type = CASE
                         WHEN audio_data IS NOT NULL THEN 'R'
                         WHEN rich_text IS NOT NULL AND rich_text != '' THEN 'T'
                         ELSE 'U'
                     END
-                """)
+                """
+                )
             }
         }
 
@@ -61,31 +49,35 @@ class Migrations {
         // Removing unused feature & column (carousel legacy)
         val MIGRATION_5_TO_6 = object : Migration(5, 6) {
             override fun migrate(db: SupportSQLiteDatabase) {
-                db.execSQL("""
-            CREATE TABLE THOUGHTS_NEW (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                domain_id INTEGER,
-                thread TEXT,
-                created_at INTEGER NOT NULL,
-                updated_at INTEGER NOT NULL,
-                soul_mate TEXT,
-                project TEXT,
-                value INTEGER NOT NULL DEFAULT 1,
-                rich_text TEXT,
-                audio_data BLOB,
-                audio_duration_ms INTEGER,
-                photo_data BLOB,
-                photo_file_size INTEGER,
-                FOREIGN KEY (domain_id) REFERENCES DOMAINS(id) ON DELETE SET NULL
-            )
-        """)
-                db.execSQL("""
-            INSERT INTO THOUGHTS_NEW
-            SELECT id, domain_id, thread, created_at, updated_at,
-                   soul_mate, project, value, rich_text,
-                   audio_data, audio_duration_ms, photo_data, photo_file_size
-            FROM THOUGHTS
-        """)
+                db.execSQL(
+                    """
+                    CREATE TABLE THOUGHTS_NEW (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        domain_id INTEGER,
+                        thread TEXT,
+                        created_at INTEGER NOT NULL,
+                        updated_at INTEGER NOT NULL,
+                        soul_mate TEXT,
+                        project TEXT,
+                        value INTEGER NOT NULL DEFAULT 1,
+                        rich_text TEXT,
+                        audio_data BLOB,
+                        audio_duration_ms INTEGER,
+                        photo_data BLOB,
+                        photo_file_size INTEGER,
+                        FOREIGN KEY (domain_id) REFERENCES DOMAINS(id) ON DELETE SET NULL
+                    )
+                """
+                )
+                db.execSQL(
+                    """
+                    INSERT INTO THOUGHTS_NEW
+                    SELECT id, domain_id, thread, created_at, updated_at,
+                           soul_mate, project, value, rich_text,
+                           audio_data, audio_duration_ms, photo_data, photo_file_size
+                    FROM THOUGHTS
+                """
+                )
                 db.execSQL("DROP TABLE THOUGHTS")
                 db.execSQL("ALTER TABLE THOUGHTS_NEW RENAME TO THOUGHTS")
                 db.execSQL("CREATE INDEX IF NOT EXISTS index_THOUGHTS_domain_id ON THOUGHTS(domain_id)")
@@ -95,16 +87,18 @@ class Migrations {
         // Workshop: Goals and Guidelines tables
         val MIGRATION_6_TO_7 = object : Migration(6, 7) {
             override fun migrate(db: SupportSQLiteDatabase) {
-                db.execSQL("""
+                db.execSQL(
+                    """
                     CREATE TABLE GOALS (
                         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                         description TEXT NOT NULL,
                         priority INTEGER NOT NULL DEFAULT 3,
                         last_modified_at INTEGER NOT NULL
                     )
-                """)
-
-                db.execSQL("""
+                """
+                )
+                db.execSQL(
+                    """
                     CREATE TABLE GOAL_GUIDELINES (
                         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                         goal_id INTEGER NOT NULL,
@@ -113,11 +107,36 @@ class Migrations {
                         position INTEGER NOT NULL DEFAULT 0,
                         FOREIGN KEY (goal_id) REFERENCES GOALS(id) ON DELETE CASCADE
                     )
-                """)
-
-                db.execSQL(
-                    "CREATE INDEX IF NOT EXISTS index_GOAL_GUIDELINES_goal_id ON GOAL_GUIDELINES(goal_id)"
+                """
                 )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_GOAL_GUIDELINES_goal_id ON GOAL_GUIDELINES(goal_id)")
+            }
+        }
+
+        // Workshop: Paths and Steps
+        val MIGRATION_7_TO_8 = object : Migration(7, 8) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("""
+            CREATE TABLE PATHS (
+                path_key           TEXT PRIMARY KEY NOT NULL,
+                category           TEXT NOT NULL,
+                status             TEXT NOT NULL DEFAULT 'UNSELECTED',
+                current_step_index INTEGER NOT NULL DEFAULT 0,
+                last_drawn_date    INTEGER DEFAULT NULL
+            )
+        """)
+
+                db.execSQL("""
+            CREATE TABLE PATH_STEPS (
+                id       INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                path_key TEXT NOT NULL,
+                position INTEGER NOT NULL,
+                content  TEXT NOT NULL,
+                FOREIGN KEY (path_key) REFERENCES PATHS(path_key) ON DELETE CASCADE
+            )
+        """)
+
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_PATH_STEPS_path_key ON PATH_STEPS(path_key)")
             }
         }
     }

@@ -1,0 +1,66 @@
+[
+  {
+    "key": "relations_gratitude_1",
+    "category": "Relacje",
+    "steps": [
+      "Pomyśl o 3 osobach, które ostatnio Cię wsparły",
+      "Może warto jej podziękować i powiedzieć co to dobrego zrobiło? :)"
+    ]
+  },
+  {
+    "key": "relations_place_1",
+    "category": "Relacje",
+    "steps": [
+      "Zabierz swojego przyjaciela/przyjaciółkę do miejsca, które jest dla Ciebie wyjątkowe",
+      "Opowiedz jemu/jej związaną z tym historię i czemu to miejsce jest dla Ciebie ważne"
+    ]
+  },
+  {
+    "key": "myself_mirror_1",
+    "category": "Autorefleksja",
+    "steps": [
+      "Co czujesz gdy patrzysz na swoje odbicie w lustrze?"
+    ]
+  },
+  {
+    "key": "myself_personality_1",
+    "category": "Wyobraźnia",
+    "steps": [
+      "Zwizualizuj sobie jedną ze swoich cech lub osobowości",
+      "Narysuj ją na kartce albo w aplikacji"
+    ]
+  },
+  {
+    "key": "myself_practise_1",
+    "category": "Nawyki",
+    "steps": [
+      "Stwórz swój rytuał"
+    ]
+  },
+  {
+    "key": "myself_life_1",
+    "category": "Życie i Śmierć",
+    "steps": [
+      "Została Ci jedna godzina życia. Co z nią zrobisz?",
+      "Czego będziesz najbardziej żałować?",
+      "Kto by przyszedł na Twój pogrzeb?"
+    ]
+  },
+  {
+    "key": "relations_house_1",
+    "category": "Relacje",
+    "steps": [
+      "Wyobraź sobie, że dom w którym mieszkasz to fantastyczna kraina",
+      "Opisz jego mieszkańców jako tubylców tej krainy",
+      "Opisz jego pokoje jako miejsca w tej krainie"
+    ]
+  },
+  {
+    "key": "relations_common_1",
+    "category": "Relacje",
+    "steps": [
+      "Pomyśl o ludziach z którymi dzisiaj rozmawiał(eś/aś)",
+      "Jakie tematy lub cechy macie wspólne?"
+    ]
+  }
+]

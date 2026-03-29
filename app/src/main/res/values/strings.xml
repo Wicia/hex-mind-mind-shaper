@@ -3,9 +3,9 @@
     <!-- [module/feature] / [component/screen] -> [message type] -> [details] -->
     <!-- [module/feature] / [component/screen] -> label -> [element] -->
 
-<!-- ====================================== -->
-<!--    CORE / COMMON -->
-<!-- ====================================== -->
+    <!-- ====================================== -->
+    <!--    CORE / COMMON -->
+    <!-- ====================================== -->
 
     <string name="app_name">MindShaper</string>
 
@@ -163,9 +163,9 @@
         następnie Zapisz i zobacz szczegóły nowo złapanej myśli
     ]]></string>
 
-<!-- ====================================== -->
-<!--    Activity: HOME -->
-<!-- ====================================== -->
+    <!-- ====================================== -->
+    <!--    Activity: HOME -->
+    <!-- ====================================== -->
 
     <array name="home_greetings_values_list">
         <item>Dużo dobrego %s!</item>
@@ -181,16 +181,16 @@
         <item>Dobrze Cię widzieć %s ;)</item>
     </array>
 
-<!-- ====================================== -->
-<!--    Activity: DETAILS / EDIT -->
-<!-- ====================================== -->
+    <!-- ====================================== -->
+    <!--    Activity: DETAILS / EDIT -->
+    <!-- ====================================== -->
 
     <string name="details_edit_thought_invalid_id">Niepoprawne ID rekordu Myśli :/</string>
     <string name="details_edit_thought_not_found">Nie znaleziono myśli :/</string>
 
-<!-- ====================================== -->
-<!--    Activity: CAPTURE THOUGHT -->
-<!-- ====================================== -->
+    <!-- ====================================== -->
+    <!--    Activity: CAPTURE THOUGHT -->
+    <!-- ====================================== -->
 
     <!-- Core -->
     <string name="capture_main_label">Chwytaj myśl…</string>
@@ -219,9 +219,9 @@
 
     <string name="thoughts_stream_title">Strumień myśli</string>
 
-<!-- ====================================== -->
-<!--    Activity: STREAM of THOUGHTS  -->
-<!-- ====================================== -->
+    <!-- ====================================== -->
+    <!--    Activity: STREAM of THOUGHTS  -->
+    <!-- ====================================== -->
 
     <string name="stream_thought_metadata_empty">\?\?\?</string>
 
@@ -259,9 +259,9 @@
     <!-- Sort Directions -->
     <string name="sort_direction_description">Kierunek sortowania</string>
 
-<!-- ====================================== -->
-<!--    Activity: SETTINGS -->
-<!-- ====================================== -->
+    <!-- ====================================== -->
+    <!--    Activity: SETTINGS -->
+    <!-- ====================================== -->
 
     <!-- Header -->
     <string name="settings_header">Ustawienia</string>
@@ -271,7 +271,7 @@
     <string name="settings_your_name_default">Bezimienn(y/a)</string>
 
     <string name="settings_thoughts_value_header">⚖️ Skala wartości myśli</string>
-    <string name="settings_thoughts_value_action_info">Zmiana systemu może wymagać przeskalowania wartości</string>
+    <string name="settings_thoughts_value_action_info">Zmiana skali może wymagać przeskalowania wartości wszystkich myśli</string>
     <string name="settings_thoughts_value_system_10">od 1 do 10</string>
     <string name="settings_thoughts_value_system_6">od 1 do 6</string>
 
@@ -329,13 +329,13 @@
     <string name="settings_voice_recording_info">Aby móc nagrywać dźwięk, aplikacja potrzebuje dostępu do mikrofonu.</string>
     <string name="settings_permissions_photo_info">Aby móc robić zdjęcia, aplikacja potrzebuje dostępu do kamery.</string>
 
-<!-- ====================================== -->
-<!--    Activity: WORKSHOP -->
-<!-- ====================================== -->
+    <!-- ====================================== -->
+    <!--    Activity: WORKSHOP -->
+    <!-- ====================================== -->
 
     <!-- Main -->
     <string name="workshop_title">Warsztat</string>
-    <string name="workshop_section_goals">🍹 Cele lub Kierunki</string>
+    <string name="workshop_section_goals">🏹 Cele lub Kierunki</string>
     <string name="workshop_add_step">Dodaj wytyczną / krok</string>
 
     <!-- Dialogs -->
@@ -347,5 +347,16 @@
     <string name="workshop_dialog_add_guideline">Nowa wytyczna / krok</string>
     <string name="workshop_dialog_edit_guideline">Edytuj wytyczną / krok</string>
     <string name="workshop_dialog_delete_guideline_title">Usunąć wytyczną / krok?</string>
+
+    <string name="workshop_section_paths">🌟 Ścieżki rozwojowe</string>
+    <string name="path_pool_empty">Nie mam Cię już czego nauczyć…</string>
+
+    <!-- For displaying proper plural of steps cound under specific path (!) -->
+    <plurals name="path_steps_count">
+        <item quantity="one">%d krok</item>
+        <item quantity="few">%d kroki</item>
+        <item quantity="many">%d kroków</item>
+        <item quantity="other">%d kroki</item>
+    </plurals>
 
 </resources>

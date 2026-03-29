@@ -267,6 +267,7 @@ class DetailsActivity : ThoughtManagerActivity() {
             context = this,
             textInput = currentText,
             title = getString(R.string.common_hex_tag_thread),
+            notesStyle = false,
             onSave = { newText ->
                 viewModel.updateThread(newText)
             }
@@ -280,6 +281,8 @@ class DetailsActivity : ThoughtManagerActivity() {
         TextEditDialog(
             context = this,
             textInput = currentText,
+            title = getString(R.string.common_edit_note_header),
+            notesStyle = true,
             onSave = { newText ->
                 viewModel.updateRichText(newText)
             }

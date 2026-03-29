@@ -7,9 +7,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.services.GoalsService
+import pl.hexmind.mindshaper.services.PathsService
 import javax.inject.Inject
 
-// ── UI models TODO: to be moved somewhere as separate class
+// ── UI models TODO: to be moved somewhere as separate class?
 
 data class Goal(
     val id: Int,
@@ -26,18 +27,37 @@ data class GoalGuideline(
     val isDone: Boolean = false
 )
 
+// Currently shown step
+data class PathItem(
+    val pathKey: String,
+    val category: String,
+    val status: String, // PathEntity.STATUS_*
+    val currentStepIndex: Int,
+    val totalSteps: Int,
+    val currentStepContent: String,
+    val isFirstStep: Boolean,
+    val isLastStep: Boolean
+)
+
 // ── ViewModel ─────────────────────────────────────────────────────────────────
 
 @HiltViewModel
 class WorkshopViewModel @Inject constructor(
-    private val goalsService: GoalsService
+    private val goalsService: GoalsService,
+    private val pathsService: PathsService
 ) : ViewModel() {
 
+    // GOALS
     private val _goals = MutableLiveData<List<Goal>>()
     val goals: LiveData<List<Goal>> = _goals
 
+    // PATHS
+    private val _pickedPaths = MutableLiveData<List<PathItem>>()
+    val pickedPaths: LiveData<List<PathItem>> = _pickedPaths
+
     init {
         loadGoals()
+        loadTodayPaths()
     }
 
     // ── Load ───────────────────────────────────────────────────────────────────
@@ -59,6 +79,51 @@ class WorkshopViewModel @Inject constructor(
         }
     }
 
+    private fun loadTodayPaths() {
+        viewModelScope.launch {
+            pathsService.pickIfNeededOnStart()
+            refreshPaths()
+        }
+    }
+
+    private suspend fun refreshPaths() {
+        _pickedPaths.value = pathsService.getTodayPaths().map { dto ->
+            PathItem(
+                pathKey = dto.pathKey,
+                category = dto.category,
+                status = dto.status,
+                currentStepIndex = dto.currentStepIndex,
+                totalSteps = dto.totalSteps,
+                currentStepContent = dto.currentStepContent,
+                isFirstStep = dto.isFirstStep,
+                isLastStep = dto.isLastStep
+            )
+        }
+    }
+
+    // ── Path actions ───────────────────────────────────────────────────────────
+
+    fun revealPath(pathKey: String) {
+        viewModelScope.launch {
+            pathsService.revealPath(pathKey)
+            refreshPaths()
+        }
+    }
+
+    fun advanceToNextStep(pathKey: String) {
+        viewModelScope.launch {
+            pathsService.advanceToNextStep(pathKey)
+            refreshPaths()
+        }
+    }
+
+    fun repickPath(pathKey: String) {
+        viewModelScope.launch {
+            pathsService.repickPath(pathKey)
+            refreshPaths()
+        }
+    }
+
     // ── Goal actions ───────────────────────────────────────────────────────────
 
     fun toggleGoalExpanded(goalId: Int) {
@@ -70,27 +135,26 @@ class WorkshopViewModel @Inject constructor(
     fun cycleGoalPriority(goalId: Int) {
         val current = _goals.value?.firstOrNull { it.id == goalId } ?: return
         val next = if (current.priority >= 3) 1 else current.priority + 1
-
-        // Optimistic update
         _goals.value = _goals.value?.map { goal ->
-            if (goal.id == goalId) goal.copy(priority = next, lastModifiedAt = System.currentTimeMillis())
+            if (goal.id == goalId) goal.copy(
+                priority = next,
+                lastModifiedAt = System.currentTimeMillis()
+            )
             else goal
         }
-        viewModelScope.launch {
-            goalsService.updateGoalPriority(goalId, next)
-        }
+        viewModelScope.launch { goalsService.updateGoalPriority(goalId, next) }
     }
 
     fun updateGoalDescription(goalId: Int, description: String) {
-        // Optimistic update
         _goals.value = _goals.value?.map { goal ->
             if (goal.id == goalId)
-                goal.copy(description = description.trim(), lastModifiedAt = System.currentTimeMillis())
+                goal.copy(
+                    description = description.trim(),
+                    lastModifiedAt = System.currentTimeMillis()
+                )
             else goal
         }
-        viewModelScope.launch {
-            goalsService.updateGoalDescription(goalId, description)
-        }
+        viewModelScope.launch { goalsService.updateGoalDescription(goalId, description) }
     }
 
     fun addGoal(description: String) {
@@ -102,9 +166,7 @@ class WorkshopViewModel @Inject constructor(
 
     fun deleteGoal(goalId: Int) {
         _goals.value = _goals.value?.filter { it.id != goalId }
-        viewModelScope.launch {
-            goalsService.deleteGoal(goalId)
-        }
+        viewModelScope.launch { goalsService.deleteGoal(goalId) }
     }
 
     fun sortGoals() {
@@ -122,9 +184,7 @@ class WorkshopViewModel @Inject constructor(
                 if (g.id == guidelineId) g.copy(isDone = !g.isDone) else g
             })
         }
-        viewModelScope.launch {
-            goalsService.toggleGuidelineDone(guidelineId)
-        }
+        viewModelScope.launch { goalsService.toggleGuidelineDone(guidelineId) }
     }
 
     fun updateSubItemDescription(goalId: Int, guidelineId: Int, description: String) {
@@ -134,9 +194,7 @@ class WorkshopViewModel @Inject constructor(
                 if (g.id == guidelineId) g.copy(description = description.trim()) else g
             })
         }
-        viewModelScope.launch {
-            goalsService.updateGuidelineDescription(guidelineId, description)
-        }
+        viewModelScope.launch { goalsService.updateGuidelineDescription(guidelineId, description) }
     }
 
     fun addSubItem(goalId: Int, description: String) {
@@ -151,9 +209,7 @@ class WorkshopViewModel @Inject constructor(
             if (goal.id != goalId) goal
             else goal.copy(subItems = goal.subItems.filter { it.id != guidelineId })
         }
-        viewModelScope.launch {
-            goalsService.deleteGuideline(guidelineId)
-        }
+        viewModelScope.launch { goalsService.deleteGuideline(guidelineId) }
     }
 
     fun reorderSubItems(goalId: Int, from: Int, to: Int) {
@@ -164,9 +220,7 @@ class WorkshopViewModel @Inject constructor(
         _goals.value = _goals.value?.map { goal ->
             if (goal.id != goalId) goal else goal.copy(subItems = mutable)
         }
-        viewModelScope.launch {
-            goalsService.reorderGuidelines(mutable.map { it.id })
-        }
+        viewModelScope.launch { goalsService.reorderGuidelines(mutable.map { it.id }) }
     }
 
     // ── Helpers ────────────────────────────────────────────────────────────────

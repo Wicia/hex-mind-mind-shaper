@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_path_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="136dp"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="@drawable/shape_hex_content">
+
+    <!-- Row 1: action icon -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <!-- "Proceed" action -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_path_proceed_action"
+            style="@style/AuxiliaryActionButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            app:icon="@drawable/ic_action_edit"
+            app:iconGravity="textStart"
+            app:iconSize="24dp" />
+
+    </LinearLayout>
+
+    <!-- Row 2: center content — grows -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp">
+
+        <!-- Category or step content -->
+        <TextView
+            android:id="@+id/tv_path_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="13sp"
+            android:lineSpacingExtra="1dp"
+            android:textAlignment="center"
+            android:gravity="center" />
+
+        <!-- Step count -->
+        <TextView
+            android:id="@+id/tv_path_steps_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/_gray_lvl_3"
+            android:textAlignment="center"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <!-- Repicking -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="6dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_path_redraw"
+            style="@style/AuxiliaryActionButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            app:icon="@drawable/ic_recording_renew"
+            app:iconGravity="textStart"
+            app:iconSize="24dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

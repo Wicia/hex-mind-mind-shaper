@@ -29,7 +29,6 @@
         android:id="@+id/cb_subitem_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="6dp"
         android:minHeight="24dp"
         android:buttonTint="@color/_orange_lvl_2"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
@@ -40,7 +39,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="13sp"
+        android:textSize="14sp"
         android:textColor="@color/text_primary"
         android:lineSpacingExtra="0dp" />
 

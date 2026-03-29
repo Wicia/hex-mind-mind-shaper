@@ -8,6 +8,7 @@
     <!-- Activity / Headers -->
     <style name="TextView_Header_Activity">
         <item name="android:fontFamily">@font/alegreya_regular</item>
+        <item name="fontFamily">@font/alegreya_regular</item>
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/_gray_lvl_2</item>
@@ -16,7 +17,7 @@
     <!-- Activity / Section -->
     <style name="TextView_Header_Section">
         <item name="android:fontFamily">@font/baloo2</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">17sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_marginTop">16dp</item>
         <item name="android:layout_marginBottom">8dp</item>
