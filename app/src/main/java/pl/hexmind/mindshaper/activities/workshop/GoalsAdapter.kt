@@ -87,7 +87,8 @@ class GoalsAdapter(
         holder.llSubItemsFooter.visibility = View.GONE
 
         // Chevron rotation reflects expanded state
-        holder.ivChevron.rotation = if (goal.isExpanded) 90f else 270f
+        if (goal.isExpanded) holder.ivChevron.setImageResource(R.drawable.ic_section_collapse)
+        else holder.ivChevron.setImageResource(R.drawable.ic_section_expand)
 
         // Tap header (except badge) → expand/collapse
         holder.llHeader.setOnClickListener { onToggleExpand(goal.id) }

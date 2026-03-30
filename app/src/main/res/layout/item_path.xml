@@ -18,11 +18,12 @@
         <!-- "Proceed" action -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_path_proceed_action"
-            style="@style/AuxiliaryActionButton"
+            style="@style/SecondaryActionButton"
             android:layout_width="36dp"
             android:layout_height="36dp"
             app:icon="@drawable/ic_action_edit"
             app:iconGravity="textStart"
+            android:layout_marginBottom="12dp"
             app:iconSize="24dp" />
 
     </LinearLayout>
@@ -42,10 +43,10 @@
             android:id="@+id/tv_path_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="12dp"
             android:textSize="13sp"
-            android:lineSpacingExtra="1dp"
             android:textAlignment="center"
+            android:textColor="@color/text_primary"
             android:gravity="center" />
 
         <!-- Step count -->
@@ -53,6 +54,7 @@
             android:id="@+id/tv_path_steps_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
             android:textSize="13sp"
             android:textColor="@color/_gray_lvl_3"
             android:textAlignment="center"
@@ -64,12 +66,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="6dp">
+        android:gravity="center">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_path_redraw"
-            style="@style/AuxiliaryActionButton"
+            style="@style/SecondaryActionButton"
             android:layout_width="36dp"
             android:layout_height="36dp"
             app:icon="@drawable/ic_recording_renew"

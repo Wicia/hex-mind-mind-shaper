@@ -121,8 +121,8 @@
 <!--    PRIORITIES -->
 <!-- ====================================== -->
 
-    <color name="priority_high">#F26B6B</color>
-    <color name="priority_medium">#F5C842</color>
-    <color name="priority_low">#5ECE8A</color>
+    <color name="priority_high">#FFA7A7</color>
+    <color name="priority_medium">#FFE6A6</color>
+    <color name="priority_low">#A7FFCA</color>
 
 </resources>

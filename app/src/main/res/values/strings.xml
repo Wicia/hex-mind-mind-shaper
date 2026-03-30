@@ -114,7 +114,7 @@
 
     <string name="stream_searching_title">Wyszukiwanie myśli</string>
     <string name="stream_searching_tooltip"><![CDATA[
-        Wpisujesz do pola-szukajki tekst (jak w przeglądarce WWW) no i automatycznie szukasz:\n\n
+        Wpisujesz do pola-szukajki specjalny tekst, a ta od razu Ci szuka:\n\n
         wspomnienie - wyszuka myśli z etykietą \"wspomnienie\"\n\n
         #gotowanie - wyszuka myśli z projektem \"gotowanie\"\n\n
         @Michał - wyszuka myśli z osobą \"Michał\"\n\n
@@ -324,7 +324,7 @@
     <string name="rich_text_removing_content">Ta operacja jest nieodwracalna</string>
 
     <string name="stream_item_empty_thought">- ? -\n\nTa myśl jest pusta…</string>
-    <string name="stream_searchbar_hint">Szukajka czeka na twój rozkaz…</string>
+    <string name="stream_searchbar_hint">Szukajka czeka na twoje polecenie…</string>
 
     <string name="settings_voice_recording_info">Aby móc nagrywać dźwięk, aplikacja potrzebuje dostępu do mikrofonu.</string>
     <string name="settings_permissions_photo_info">Aby móc robić zdjęcia, aplikacja potrzebuje dostępu do kamery.</string>

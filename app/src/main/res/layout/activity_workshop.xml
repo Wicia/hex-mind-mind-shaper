@@ -117,6 +117,15 @@
                             android:layout_marginBottom="4dp"
                             android:text="@string/workshop_section_paths" />
 
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_paths_toggle"
+                            style="@style/SecondaryActionButton"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            app:icon="@drawable/ic_section_collapse"
+                            app:iconGravity="textStart"
+                            app:iconSize="24dp" />
+
                     </LinearLayout>
 
                     <View

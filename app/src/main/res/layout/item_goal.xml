@@ -45,7 +45,7 @@
             android:id="@+id/iv_goal_chevron"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_nav_collapse"
+            android:src="@drawable/ic_section_collapse"
             android:contentDescription="@string/common_placeholder_accessibility_content_desc"
             app:tint="@color/_gray_lvl_3" />
 

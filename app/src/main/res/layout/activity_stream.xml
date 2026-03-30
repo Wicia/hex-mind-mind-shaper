@@ -37,13 +37,13 @@
             app:layout_constraintTop_toBottomOf="@+id/header">
 
             <!-- Search field -->
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:hintEnabled="false"
                 app:endIconMode="custom"
+                app:endIconTint="@color/_orange_lvl_2"
                 app:endIconDrawable="@drawable/ic_search_help">
 
                 <com.google.android.material.textfield.TextInputEditText

@@ -1,5 +1,7 @@
 package pl.hexmind.mindshaper.activities.capture.models
 
+// TODO: Move this class to proper location -> its common-like thing
+
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet

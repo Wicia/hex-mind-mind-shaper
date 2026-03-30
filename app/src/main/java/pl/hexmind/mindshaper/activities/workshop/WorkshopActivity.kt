@@ -23,6 +23,7 @@ import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.common.ui.dialogs.MultipleActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
 import pl.hexmind.mindshaper.database.models.PathEntity
+import androidx.core.view.isEmpty
 
 @AndroidEntryPoint
 class WorkshopActivity : CoreActivity() {
@@ -39,6 +40,9 @@ class WorkshopActivity : CoreActivity() {
     // PATHS
     private lateinit var llPathsList: LinearLayout
     private lateinit var tvPoolEmpty: TextView
+
+    private lateinit var btnPathsToggle: MaterialButton
+    private var isPathsExpanded: Boolean = true
 
     private var isEditMode = false
 
@@ -66,6 +70,9 @@ class WorkshopActivity : CoreActivity() {
 
         llPathsList = findViewById(R.id.ll_paths_list)
         tvPoolEmpty = findViewById(R.id.tv_paths_pool_empty)
+
+        btnPathsToggle = findViewById(R.id.btn_paths_toggle)
+        btnPathsToggle.setOnClickListener { togglePathsSection()}
     }
 
     private fun setupGoalsList() {
@@ -127,18 +134,24 @@ class WorkshopActivity : CoreActivity() {
         }
         tvPoolEmpty.visibility = View.GONE
 
-        paths.forEach { path ->
-            val cardView = LayoutInflater.from(this)
-                .inflate(R.layout.item_path, llPathsList, false)
+        for (slot in 0 until 2) {
+            val path = paths.getOrNull(slot)
+
+            val view: View = if (path != null) {
+                LayoutInflater.from(this)
+                    .inflate(R.layout.item_path, llPathsList, false)
+                    .also { bindPathCard(it, path) }
+            } else {
+                // pusty placeholder zachowuje symetrię
+                View(this)
+            }
 
             val params = LinearLayout.LayoutParams(
                 0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f
             )
-            if (llPathsList.isNotEmpty()) params.marginStart = 8
-            cardView.layoutParams = params
-
-            bindPathCard(cardView, path)
-            llPathsList.addView(cardView)
+            if (slot > 0) params.marginStart = 8
+            view.layoutParams = params
+            llPathsList.addView(view)
         }
     }
 
@@ -192,6 +205,16 @@ class WorkshopActivity : CoreActivity() {
             tvContent.text = path.currentStepContent
             tvStepsCount.visibility = View.GONE
         }
+    }
+
+    private fun togglePathsSection() {
+        isPathsExpanded = !isPathsExpanded
+        val contentVisibility = if (isPathsExpanded) View.VISIBLE else View.GONE
+        llPathsList.visibility = contentVisibility
+        tvPoolEmpty.visibility = if (isPathsExpanded && llPathsList.isEmpty()) View.VISIBLE else View.GONE
+        btnPathsToggle.setIconResource(
+            if (isPathsExpanded) R.drawable.ic_section_collapse else R.drawable.ic_section_expand
+        )
     }
 
     // ── Edit mode ──────────────────────────────────────────────────────────────
