@@ -62,5 +62,13 @@
       "Pomyśl o ludziach z którymi dzisiaj rozmawiał(eś/aś)",
       "Jakie tematy lub cechy macie wspólne?"
     ]
+  },
+  {
+    "key": "myself_love_1",
+    "category": "Miłość",
+    "steps": [
+      "Jaki jesteś dla samego/samej siebie?",
+      "Jak to wpływa na ludzi wokół Ciebie?"
+    ]
   }
 ]

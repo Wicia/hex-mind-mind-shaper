@@ -335,7 +335,7 @@
 
     <!-- Main -->
     <string name="workshop_title">Warsztat</string>
-    <string name="workshop_section_goals">🏹 Cele lub Kierunki</string>
+    <string name="workshop_section_goals">🎯 Cele lub Kierunki</string>
     <string name="workshop_add_step">Dodaj wytyczną / krok</string>
 
     <!-- Dialogs -->
@@ -348,7 +348,7 @@
     <string name="workshop_dialog_edit_guideline">Edytuj wytyczną / krok</string>
     <string name="workshop_dialog_delete_guideline_title">Usunąć wytyczną / krok?</string>
 
-    <string name="workshop_section_paths">🌟 Ścieżki rozwojowe</string>
+    <string name="workshop_section_paths">✨ Ścieżki doświadczeń</string>
     <string name="path_pool_empty">Nie mam Cię już czego nauczyć…</string>
 
     <!-- For displaying proper plural of steps cound under specific path (!) -->
