@@ -6,9 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.GridLayout
 import android.widget.ImageView
-import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
@@ -22,14 +20,14 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
-import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem
+import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem.STANDARD_10
+import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem.STANDARD_6
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.database.initialization.DataSnapshotManager
 import pl.hexmind.mindshaper.databinding.ActivitySettingsBinding
 import pl.hexmind.mindshaper.services.DomainIconsService
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.MediaStorageService
-import pl.hexmind.mindshaper.services.dto.DefaultCaptureForm
 import pl.hexmind.mindshaper.services.dto.DomainDTO
 import pl.hexmind.mindshaper.services.validators.DomainValidator
 import timber.log.Timber
@@ -58,7 +56,6 @@ class SettingsActivity : CoreActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
 
-    private var selectedAudioUri: Uri? = null
     private var selectedBackupUri: Uri? = null
 
     // Activity result launcher for backup file selection
@@ -99,20 +96,22 @@ class SettingsActivity : CoreActivity() {
     private fun setupUI() {
         setupHeader(R.drawable.ic_activity_settings, R.string.settings_header)
 
+        // ! Keep sequence: initDefaultCaptureFormConfig MUST be before setupListeners
+        // so that tile states are ready before syncDefaultCaptureFormTileStates fires
+        initDefaultCaptureFormConfig()
         setupListeners()
         initThoughtsValuesSystemConfig()
-        initDefaultCaptureFormConfig()
         initDomainButtons()
     }
 
-    private fun setupListeners(){
+    private fun setupListeners() {
         // Onboarding :)
         binding.tvYourNameSectionHeader.setOnClickListener { // dla beki :P
             onboardingManager.showTooltipForStep(
                 OnboardingProgressStep.SETTINGS_YOUR_NAME_TOOLTIP, this
             )
         }
-        binding.tvThoughtValueScaleSection.setOnClickListener {
+        binding.tvThoughtValueScaleSectionHeader.setOnClickListener {
             onboardingManager.showTooltipForStep(
                 OnboardingProgressStep.SETTINGS_THOUGHT_VALUE_TOOLTIP, this
             )
@@ -147,6 +146,24 @@ class SettingsActivity : CoreActivity() {
         setupPhotoFeatureToggle()
     }
 
+    // ========== DEFAULT CAPTURE FORM ==========
+
+    private fun initDefaultCaptureFormConfig() {
+        binding.tilesDefaultCaptureForm.setSelected(appSettingsStorage.getDefaultCaptureForm())
+        // Tile enabled states are synced in onResume via syncDefaultCaptureFormTileStates
+    }
+
+    /**
+     * Enables/disables capture form tiles based on preffs storage + permissions
+     */
+    private fun syncDefaultCaptureFormTileStates() {
+        val voiceEnabled = appSettingsStorage.isVoiceRecordingEnabled() && permissionsService.isRecordAudioGranted()
+        binding.tilesDefaultCaptureForm.setVoiceEnabled(voiceEnabled)
+
+        val photoEnabled = appSettingsStorage.isPhotoFeatureEnabled()   && permissionsService.isCameraGranted()
+        binding.tilesDefaultCaptureForm.setPhotoEnabled(photoEnabled)
+    }
+
     // ========== VOICE RECORDING FEATURE ==========
 
     private fun setupVoiceRecordingFeatureToggle() {
@@ -175,7 +192,7 @@ class SettingsActivity : CoreActivity() {
         val wantsRecording = appSettingsStorage.isVoiceRecordingEnabled()
 
         binding.switchVoiceRecordingFeature.isChecked = wantsRecording && hasPermission
-        syncDefaultCaptureFormRadioStates()
+        syncDefaultCaptureFormTileStates()
     }
 
     private val requestVoiceRecordingPermissionLauncher = registerForActivityResult(
@@ -255,7 +272,7 @@ class SettingsActivity : CoreActivity() {
         val wantsPhoto = appSettingsStorage.isPhotoFeatureEnabled()
 
         binding.switchPhotoFeature.isChecked = wantsPhoto && hasPermission
-        syncDefaultCaptureFormRadioStates()
+        syncDefaultCaptureFormTileStates()
     }
 
     private val requestCameraPermissionLauncher = registerForActivityResult(
@@ -318,95 +335,33 @@ class SettingsActivity : CoreActivity() {
     // ========== THOUGHTS VALUES SYSTEM & DOMAINS ==========
 
     private fun initThoughtsValuesSystemConfig() {
-        val radioGroup = findViewById<RadioGroup>(R.id.rg_values_system)
-        val thoughtValueSystem = appSettingsStorage.getThoughtValueSystem()
-
-        when (thoughtValueSystem) {
-            ThoughtValueSystem.STANDARD_6 -> radioGroup.check(R.id.rb_system_6)
-            ThoughtValueSystem.STANDARD_10 -> radioGroup.check(R.id.rb_system_10)
+        val currentSystem = appSettingsStorage.getThoughtValueSystem()
+        when (currentSystem) {
+            STANDARD_6  -> binding.rgValuesSystem.check(R.id.rb_system_6)
+            STANDARD_10 -> binding.rgValuesSystem.check(R.id.rb_system_10)
         }
-
-        radioGroup.setOnCheckedChangeListener { _, checkedButtonId ->
-            when (checkedButtonId) {
-                R.id.rb_system_6 -> {
-                    appSettingsStorage.setThoughtValueSystemId(ThoughtValueSystem.STANDARD_6)
-                }
-                R.id.rb_system_10 -> {
-                    appSettingsStorage.setThoughtValueSystemId(ThoughtValueSystem.STANDARD_10)
-                }
-            }
-        }
-    }
-
-    private fun initDefaultCaptureFormConfig() {
-        val radioGroup = binding.rgDefaultCaptureForm
-        val currentForm = appSettingsStorage.getDefaultCaptureForm()
-
-        when (currentForm) {
-            DefaultCaptureForm.TEXT  -> radioGroup.check(R.id.rb_default_form_text)
-            DefaultCaptureForm.VOICE -> radioGroup.check(R.id.rb_default_form_voice)
-            DefaultCaptureForm.PHOTO -> radioGroup.check(R.id.rb_default_form_photo)
-        }
-
-        // Sync disabled state on initial load
-        syncDefaultCaptureFormRadioStates()
-
-        radioGroup.setOnCheckedChangeListener { _, checkedButtonId ->
-            val selectedForm = when (checkedButtonId) {
-                R.id.rb_default_form_text  -> DefaultCaptureForm.TEXT
-                R.id.rb_default_form_voice -> DefaultCaptureForm.VOICE
-                R.id.rb_default_form_photo -> DefaultCaptureForm.PHOTO
-                else -> DefaultCaptureForm.TEXT
-            }
-            appSettingsStorage.setDefaultCaptureForm(selectedForm)
-        }
-    }
-
-    /**
-     * Enables/disables default-form radio buttons based on feature toggles.
-     * If the currently selected form becomes unavailable, falls back to TEXT.
-     */
-    private fun syncDefaultCaptureFormRadioStates() {
-        val voiceEnabled = binding.switchVoiceRecordingFeature.isChecked
-        val photoEnabled = binding.switchPhotoFeature.isChecked
-
-        binding.rbDefaultFormVoice.isEnabled = voiceEnabled
-        binding.rbDefaultFormPhoto.isEnabled = photoEnabled
-
-        // If selected option just got disabled → reset to TEXT
-        val currentForm = appSettingsStorage.getDefaultCaptureForm()
-        if (currentForm == DefaultCaptureForm.VOICE && !voiceEnabled) {
-            binding.rgDefaultCaptureForm.check(R.id.rb_default_form_text)
-            appSettingsStorage.setDefaultCaptureForm(DefaultCaptureForm.TEXT)
-        }
-        if (currentForm == DefaultCaptureForm.PHOTO && !photoEnabled) {
-            binding.rgDefaultCaptureForm.check(R.id.rb_default_form_text)
-            appSettingsStorage.setDefaultCaptureForm(DefaultCaptureForm.TEXT)
-        }
+        // No listener needed — value is read from RadioGroup at save time
     }
 
     private fun initDomainButtons() {
-        val gridLayout = findViewById<GridLayout>(R.id.gl_domains)
         lifecycleScope.launch {
             val titles = domainService.getAllDomains()
 
             try {
                 // Create buttons with loaded icons
                 titles.forEachIndexed { domainIndex , domainDTO ->
-                    val buttonView = layoutInflater.inflate(R.layout.item_domain_settings, gridLayout, false)
+                    val buttonView = layoutInflater.inflate(R.layout.item_domain_settings, binding.glDomains, false)
 
-                    val ivDomainName = buttonView.findViewById<TextView>(R.id.tv_domain_name)
-                    ivDomainName.text = domainDTO.name
+                    buttonView.findViewById<TextView>(R.id.tv_domain_name).text = domainDTO.name
 
-                    val ivDomainIcon = buttonView.findViewById<ImageView>(R.id.iv_domain_icon)
                     val resourceId = domainIconsService.getIconResourceId(domainDTO.iconId)
-                    ivDomainIcon.setImageResource(resourceId)
+                    buttonView.findViewById<ImageView>(R.id.iv_domain_icon).setImageResource(resourceId)
 
                     buttonView.setOnClickListener {
                         onDomainButtonClick(domainIndex, domainDTO)
                     }
 
-                    gridLayout.addView(buttonView)
+                    binding.glDomains.addView(buttonView)
                 }
             }
             catch (e: Exception) {
@@ -426,9 +381,7 @@ class SettingsActivity : CoreActivity() {
      * Load previously saved settings using AppSettingsStorage
      */
     private fun loadSavedSettings() {
-        // Load app name
-        val yourName = appSettingsStorage.getYourName()
-        binding.etYourName.setText(yourName)
+        binding.etYourName.setText(appSettingsStorage.getYourName())
     }
 
     /**
@@ -479,7 +432,7 @@ class SettingsActivity : CoreActivity() {
         }
     }
 
-    private fun showSnapshotLoadingDialog(){
+    private fun showSnapshotLoadingDialog() {
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.common_deletion_dialog_title))
             .setMessage(getString(R.string.settings_snapshot_restore_warning))
@@ -531,14 +484,22 @@ class SettingsActivity : CoreActivity() {
     }
 
     /**
-     * Save all settings using AppSettingsStorage
+     * Save all settings using AppSettingsStorage.
+     * Exceptions: voice/photo feature toggles are saved immediately (permission flow side effects).
      */
     private fun saveSettings() {
-        // Save app name
         val yourName = binding.etYourName.text?.toString()?.trim()
             ?.takeIf { it.isNotEmpty() }
             ?: getString(R.string.settings_your_name_default)
         appSettingsStorage.setYourName(yourName)
+
+        appSettingsStorage.setDefaultCaptureForm(binding.tilesDefaultCaptureForm.getSelected())
+
+        val thoughtValueSystem = when (binding.rgValuesSystem.checkedRadioButtonId) {
+            R.id.rb_system_10 -> STANDARD_10
+            else              -> STANDARD_6
+        }
+        appSettingsStorage.setThoughtValueSystemId(thoughtValueSystem)
 
         showShortToast(R.string.common_info_changes_saved)
 
@@ -582,8 +543,7 @@ class SettingsActivity : CoreActivity() {
                 { selectedIconNumber ->
                     val updatedName = etDomainName.text.toString()
                     val updatedDTO = DomainDTO(id = currentDomainDTO.id, name = updatedName, iconId = selectedIconNumber)
-                    val validationResult = domainValidator.validate(updatedDTO)
-                    when(validationResult){
+                    when (val validationResult = domainValidator.validate(updatedDTO)) {
                         is ValidationResult.Valid -> {
                             onDTOUpdated(updatedDTO)
                             dialog.dismiss()
@@ -595,7 +555,6 @@ class SettingsActivity : CoreActivity() {
                 }
 
                 rvIconsList.adapter = adapter
-
             }
             catch (e: Exception) {
                 // TODO: Handling exception is needed?
@@ -611,16 +570,12 @@ class SettingsActivity : CoreActivity() {
     private fun updateDomainButton(buttonIndex: Int, updatedDomainDTO : DomainDTO) {
         lifecycleScope.launch {
             // Find the button in GridLayout and update its icon
-            val glDomains = findViewById<GridLayout>(R.id.gl_domains)
-            if (buttonIndex < glDomains.childCount) {
-                val buttonView = glDomains.getChildAt(buttonIndex)
+            if (buttonIndex < binding.glDomains.childCount) {
+                val buttonView = binding.glDomains.getChildAt(buttonIndex)
 
-                val ivDomainIcon = buttonView.findViewById<ImageView>(R.id.iv_domain_icon)
                 val resourceId = domainIconsService.getIconResourceId(updatedDomainDTO.iconId)
-                ivDomainIcon.setImageResource(resourceId)
-
-                val tvDomainName = buttonView.findViewById<TextView>(R.id.tv_domain_name)
-                tvDomainName.text = updatedDomainDTO.name
+                buttonView.findViewById<ImageView>(R.id.iv_domain_icon).setImageResource(resourceId)
+                buttonView.findViewById<TextView>(R.id.tv_domain_name).text = updatedDomainDTO.name
             }
         }
     }
