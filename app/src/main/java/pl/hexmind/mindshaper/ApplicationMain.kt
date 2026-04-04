@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.database.initialization.DataSnapshotManager
+import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.DomainIconsService
 import timber.log.Timber
 
@@ -23,6 +24,9 @@ class ApplicationMain : Application() {
     @Inject
     lateinit var snapshotManager: DataSnapshotManager
 
+    @Inject
+    lateinit var appSettingsStorage: AppSettingsStorage
+
     override fun onCreate() {
         super.onCreate()
 
@@ -31,11 +35,13 @@ class ApplicationMain : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
-        // Initialize database on app startup
         CoroutineScope(Dispatchers.IO).launch {
             databaseInitializer.initializeIfNeeded()
-            domainIconsService.preloadAllIcons()
-            snapshotManager.createSnapshot() // For preventing data loss
+            domainIconsService.preloadAllIcons() // loading icons resources from /drawable
+
+            if (appSettingsStorage.isBackupEnabled()) {
+                snapshotManager.createSnapshot() // For preventing data loss
+            }
         }
     }
 }

@@ -42,6 +42,8 @@ class AppSettingsStorage @Inject constructor(
         private const val PARAM_DEFAULT_CAPTURE_FORM = "param_default_capture_form"
 
         private const val PARAM_PHOTO_FEATURE_ENABLED = "photo_feature_enabled"
+
+        private const val PARAM_BACKUP_ENABLED = "param_backup_enabled"
     }
 
     fun getApplicationContext() : Context {
@@ -127,6 +129,18 @@ class AppSettingsStorage @Inject constructor(
     fun setPhotoFeatureEnabled(enabled: Boolean) {
         sharedPreferences.edit {
             putBoolean(PARAM_PHOTO_FEATURE_ENABLED, enabled)
+        }
+    }
+
+    // === BACKUP ===
+
+    fun isBackupEnabled(): Boolean {
+        return sharedPreferences.getBoolean(PARAM_BACKUP_ENABLED, false)
+    }
+
+    fun setBackupEnabled(enabled: Boolean) {
+        sharedPreferences.edit {
+            putBoolean(PARAM_BACKUP_ENABLED, enabled)
         }
     }
 

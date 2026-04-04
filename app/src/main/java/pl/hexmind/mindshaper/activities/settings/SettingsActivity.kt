@@ -88,6 +88,7 @@ class SettingsActivity : CoreActivity() {
         // Sync of permissions related widgets
         syncVoiceRecordingToggleWithPermissions()
         syncPhotoToggleWithPermissions()
+        syncBackupToggleWithPermissions()
     }
 
     /**
@@ -144,6 +145,7 @@ class SettingsActivity : CoreActivity() {
 
         setupVoiceRecordingFeatureToggle()
         setupPhotoFeatureToggle()
+        setupBackupFeatureToggle()
     }
 
     // ========== DEFAULT CAPTURE FORM ==========
@@ -219,10 +221,10 @@ class SettingsActivity : CoreActivity() {
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
             .setMessage(getString(R.string.settings_voice_recording_info))
-            .setPositiveButton("OK") { _, _ -> // TODO
+            .setPositiveButton(R.string.common_btn_confirm_ok) { _, _ ->
                 requestVoiceRecordingPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
             }
-            .setNegativeButton("Nie teraz") { _, _ -> // TODO
+            .setNegativeButton(R.string.common_btn_cancel_not_now) { _, _ ->
                 binding.switchVoiceRecordingFeature.isChecked = false
             }
             .setOnCancelListener {
@@ -235,10 +237,10 @@ class SettingsActivity : CoreActivity() {
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.settings_permissions_blockade_title))
             .setMessage(getString(R.string.settings_permissions_recording_blockade_tooltip))
-            .setPositiveButton("Otwórz ustawienia") { _, _ ->
+            .setPositiveButton(getString(R.string.common_dialog_open_android_settings)) { _, _ ->
                 openAppSettings()
             }
-            .setNegativeButton("Anuluj") { _, _ ->
+            .setNegativeButton(R.string.common_btn_cancel) { _, _ ->
                 binding.switchVoiceRecordingFeature.isChecked = false
             }
             .show()
@@ -299,10 +301,10 @@ class SettingsActivity : CoreActivity() {
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
             .setMessage(getString(R.string.settings_permissions_photo_info))
-            .setPositiveButton("OK") { _, _ -> // TODO
+            .setPositiveButton(R.string.common_btn_confirm_ok) { _, _ ->
                 requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
             }
-            .setNegativeButton("Nie teraz") { _, _ -> // TODO
+            .setNegativeButton(R.string.common_btn_cancel_not_now) { _, _ ->
                 binding.switchPhotoFeature.isChecked = false
             }
             .setOnCancelListener {
@@ -315,10 +317,10 @@ class SettingsActivity : CoreActivity() {
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.settings_permissions_blockade_title))
             .setMessage(getString(R.string.settings_permissions_photo_blockade_tooltip))
-            .setPositiveButton("Otwórz ustawienia") { _, _ -> // TODO
+            .setPositiveButton(R.string.common_dialog_open_android_settings) { _, _ ->
                 openAppSettings()
             }
-            .setNegativeButton("Anuluj") { _, _ -> // TODO
+            .setNegativeButton(R.string.common_btn_cancel) { _, _ ->
                 binding.switchPhotoFeature.isChecked = false
             }
             .show()
@@ -330,6 +332,84 @@ class SettingsActivity : CoreActivity() {
             Uri.fromParts("package", packageName, null)
         )
         startActivity(intent)
+    }
+
+    // ========== BACKUP FEATURE ==========
+
+        binding.switchBackupFeature.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                when {
+                    permissionsService.isStorageGranted() -> {
+                        appSettingsStorage.setBackupEnabled(true)
+                        binding.switchBackupFeature.isChecked = true
+                    }
+                    else -> {
+                        showBackupPermissionExplanationDialog()
+                    }
+                }
+            }
+            else {
+                appSettingsStorage.setBackupEnabled(false)
+            }
+        }
+
+        syncBackupToggleWithPermissions()
+    }
+
+    private fun syncBackupToggleWithPermissions() {
+        val hasPermission = permissionsService.isStorageGranted()
+        val wantsBackup = appSettingsStorage.isBackupEnabled()
+
+        binding.switchBackupFeature.isChecked = wantsBackup && hasPermission
+    }
+
+    private val requestStoragePermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // Approved
+            appSettingsStorage.setBackupEnabled(true)
+            binding.switchBackupFeature.isChecked = true
+        }
+        else {
+            // Denial
+            appSettingsStorage.setBackupEnabled(false)
+            binding.switchBackupFeature.isChecked = false
+
+            // Handling permissions "blockade"
+            if (!shouldShowRequestPermissionRationale(permissionsService.getStoragePermission())) {
+                showBackupPermanentDenialDialog()
+            }
+        }
+    }
+
+    private fun showBackupPermissionExplanationDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
+            .setMessage(getString(R.string.settings_backup_permission_info))
+            .setPositiveButton(R.string.common_btn_confirm_ok) { _, _ ->
+                requestStoragePermissionLauncher.launch(permissionsService.getStoragePermission())
+            }
+            .setNegativeButton(R.string.common_btn_cancel_not_now) { _, _ ->
+                binding.switchBackupFeature.isChecked = false
+            }
+            .setOnCancelListener {
+                binding.switchBackupFeature.isChecked = false
+            }
+            .show()
+    }
+
+    private fun showBackupPermanentDenialDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.settings_permissions_blockade_title))
+            .setMessage(getString(R.string.settings_permissions_backup_blockade_tooltip))
+            .setPositiveButton(R.string.common_dialog_open_android_settings) { _, _ ->
+                openAppSettings()
+            }
+            .setNegativeButton(R.string.common_btn_cancel) { _, _ ->
+                binding.switchBackupFeature.isChecked = false
+            }
+            .show()
     }
 
     // ========== THOUGHTS VALUES SYSTEM & DOMAINS ==========
