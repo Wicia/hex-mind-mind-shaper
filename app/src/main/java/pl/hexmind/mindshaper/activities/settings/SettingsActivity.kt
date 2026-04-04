@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
@@ -89,6 +91,7 @@ class SettingsActivity : CoreActivity() {
         syncVoiceRecordingToggleWithPermissions()
         syncPhotoToggleWithPermissions()
         syncBackupToggleWithPermissions()
+        refreshSnapshotStats()
     }
 
     /**
@@ -384,6 +387,21 @@ class SettingsActivity : CoreActivity() {
         }
     }
 
+    private fun refreshSnapshotStats() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val stats = dataSnapshotManager.getSnapshotStats()
+            val text = if (stats.count == 0) {
+                getString(R.string.settings_backup_no_snapshots)
+            }
+            else {
+                getString(R.string.settings_backup_stats, stats.count, stats.totalSizeMb)
+            }
+            withContext(Dispatchers.Main) {
+                binding.tvSnapshotStats.text = text
+            }
+        }
+    }
+
     private fun showBackupPermissionExplanationDialog() {
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
@@ -537,6 +555,7 @@ class SettingsActivity : CoreActivity() {
                     showShortToast(R.string.settings_backup_loaded_success)
                     // Reset after successful load
                     clearBackupSelection()
+                    refreshSnapshotStats()
                 }
             }
             catch (e: Exception) {

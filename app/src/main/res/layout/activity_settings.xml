@@ -204,6 +204,13 @@
                         android:layout_height="wrap_content"
                         android:text="@string/settings_backup_hint" />
 
+                    <TextView
+                        android:id="@+id/tv_snapshot_stats"
+                        style="@style/TextView_Info_Success"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

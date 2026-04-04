@@ -125,6 +125,15 @@ class DataSnapshotManager @Inject constructor(
         }
         return true
     }
+
+    fun getSnapshotStats(): SnapshotStats {
+        val files = getBackupDirectory().listFiles { f -> f.extension == "json" } ?: emptyArray()
+        val totalBytes = files.sumOf { it.length() }
+        return SnapshotStats(
+            count = files.size,
+            totalSizeMb = totalBytes / (1024f * 1024f)
+        )
+    }
 }
 
 data class DatabaseSnapshot(
@@ -134,4 +143,9 @@ data class DatabaseSnapshot(
     val thoughts: List<ThoughtEntity>?,
     val domains: List<DomainEntity>?,
     val domainIcons: List<IconEntity>?,
+)
+
+data class SnapshotStats(
+    val count: Int,
+    val totalSizeMb: Float
 )

@@ -111,6 +111,9 @@
     <string name="settings_backup_title_2">Jak to działa?</string>
     <string name="settings_backup_tooltip_2">Gdy uruchomisz aplikację jej mechanizm zapisze dane twoich myśli.\n\nMoże się to wydarzyć maksymalnie raz na godzinę.</string>
 
+    <string name="settings_backup_stats">ⓘ Obecnie masz %1$d plików z kopią zapasową o wadze %2$.1f MB</string>
+    <string name="settings_backup_no_snapshots">Brak zapisanych kopii zapasowych…</string>
+
     <!-- STREAM -->
     <string name="stream_entry_title">Twoje myśli</string>
     <string name="stream_entry_tooltip">W tym ruchliwym miejscu przeglądniesz swoje myśli.</string>
