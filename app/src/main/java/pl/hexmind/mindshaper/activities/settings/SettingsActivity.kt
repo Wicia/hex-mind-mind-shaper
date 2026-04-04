@@ -336,6 +336,7 @@ class SettingsActivity : CoreActivity() {
 
     // ========== BACKUP FEATURE ==========
 
+    private fun setupBackupFeatureToggle() {
         binding.switchBackupFeature.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 when {
