@@ -8,8 +8,8 @@
     android:gravity="center_vertical"
     android:paddingStart="12dp"
     android:paddingEnd="12dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
     android:minHeight="36dp"
     android:background="?attr/selectableItemBackground">
 
@@ -29,6 +29,7 @@
         android:id="@+id/cb_subitem_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="top"
         android:minHeight="24dp"
         android:buttonTint="@color/_orange_lvl_2"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
