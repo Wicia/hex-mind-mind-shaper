@@ -5,8 +5,9 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -75,23 +76,24 @@ class StreamAdapter(
 
         private var currentAudioFile: File? = null
 
-        private val nestedScrollView: androidx.core.widget.NestedScrollView =
-            itemView.findViewById(R.id.nested_scroll_view)
+        private val nestedScrollView: NestedScrollView = itemView.findViewById(R.id.nested_scroll_view)
         private val tvRichText: HexTextView = itemView.findViewById(R.id.rich_text_view)
         private val audioView: AudioRecordingView = itemView.findViewById(R.id.arv_playback)
         private val photoView: HexPhotoView = itemView.findViewById(R.id.pv_photo)
 
         private val tvLabel: TextView = itemView.findViewById(R.id.tv_label)
+        private val tvThreadLabel: TextView = itemView.findViewById(R.id.tv_thread_label)
+
+        private val tvTextIcon: TextView = itemView.findViewById(R.id.tv_text_icon)
 
         private val vbThoughtValue: ValueCloude = itemView.findViewById(R.id.vb_thought_value)
 
+        private val ivDecoratorIcon: ImageView = itemView.findViewById(R.id.iv_decorator_icon)
 
         private val tvEmptyThought: TextView = itemView.findViewById(R.id.tv_empty_thought)
 
         // Data
         private var viewedThoughtDTO: ThoughtDTO? = null
-
-        private val llLabel : LinearLayout = itemView.findViewById(R.id.ll_label)
 
         private val gestureDetector = GestureDetector(itemView.context, this).apply {
             setOnDoubleTapListener(this@ThoughtViewHolder)
@@ -108,6 +110,11 @@ class StreamAdapter(
             tvRichText.visibility = View.GONE
             audioView.visibility = View.GONE
             photoView.visibility = View.GONE
+            // extra cases
+            tvThreadLabel.visibility = View.GONE
+            vbThoughtValue.visibility = View.GONE
+            tvTextIcon.visibility = View.GONE
+            // empty thought
             tvEmptyThought.visibility = View.GONE
 
             var hasAnyContent = false
@@ -157,50 +164,87 @@ class StreamAdapter(
         }
 
         fun updateMetadataUI(thought: ThoughtDTO, sortConfig: SortConfig) {
-            if (sortConfig.property == SortProperty.VALUE) {
-                vbThoughtValue.visibility = View.VISIBLE
-                llLabel.visibility = View.GONE
-            } else {
-                vbThoughtValue.visibility = View.GONE
-                llLabel.visibility = View.VISIBLE
-                tvLabel.text = when (sortConfig.property) {
-                    SortProperty.CREATED_AT -> getFormattedCreatedAt(thought)
-                    SortProperty.UPDATED_AT -> getFormattedUpdatedAt(thought)
-                    SortProperty.THREAD -> thought.thread ?: itemView.context.getString(R.string.stream_thought_metadata_empty)
-                    SortProperty.SOUL_MATE -> thought.soulMate ?: itemView.context.getString(R.string.stream_thought_metadata_empty)
-                    SortProperty.PROJECT -> thought.project ?: itemView.context.getString(R.string.stream_thought_metadata_empty)
-                    SortProperty.VALUE -> null
+            // Showing thread label basing on sorting config
+            val showThreadLabel = !thought.thread.isNullOrBlank() && sortConfig.property != SortProperty.THREAD
+            tvThreadLabel.visibility = if (showThreadLabel) View.VISIBLE else View.GONE
+            if (showThreadLabel) tvThreadLabel.text = "⧽  ".plus(thought.thread)
+
+            // Cases by sorting properties
+            when (sortConfig.property) {
+                SortProperty.VALUE -> {
+                    vbThoughtValue.visibility = View.VISIBLE
+                    ivDecoratorIcon.visibility = View.GONE
+                    tvLabel.visibility = View.GONE
+                }
+                SortProperty.CREATED_AT -> {
+                    updateCreatedAtCase(thought)
+                }
+                SortProperty.UPDATED_AT -> {
+                    updateChangedAtCase(thought)
+                }
+                SortProperty.THREAD -> {
+                    ivDecoratorIcon.visibility = View.VISIBLE
+                    ivDecoratorIcon.setImageResource(R.drawable.ic_hextags_thread)
+                    tvLabel.visibility = View.VISIBLE
+                    tvLabel.text = when (thought.thread.isNullOrBlank()){
+                        true  -> {itemView.context.getString(R.string.stream_thought_metadata_empty)}
+                        false -> {thought.thread}
+                    }
+                }
+                SortProperty.PROJECT -> {
+                    ivDecoratorIcon.visibility = View.VISIBLE
+                    ivDecoratorIcon.setImageResource(R.drawable.ic_hextags_project)
+                    tvLabel.visibility = View.VISIBLE
+                    tvLabel.text = when (thought.project.isNullOrBlank()){
+                        true -> {itemView.context.getString(R.string.stream_thought_metadata_empty)}
+                        false -> {thought.project}
+                    }
+                }
+                SortProperty.SOUL_MATE -> {
+                    ivDecoratorIcon.visibility = View.VISIBLE
+                    ivDecoratorIcon.setImageResource(R.drawable.ic_hextags_soul_mates)
+                    tvLabel.visibility = View.VISIBLE
+                    tvLabel.text = when (thought.soulMate.isNullOrBlank()){
+                        true -> {itemView.context.getString(R.string.stream_thought_metadata_empty)}
+                        false -> {thought.soulMate}
+                    }
                 }
             }
         }
 
-        fun getFormattedCreatedAt(thought: ThoughtDTO) : String{
+        fun updateCreatedAtCase(thought : ThoughtDTO){
             val ageLevel = ThoughtGrowthStage.newThoughtGrowthStage(thought.createdAt)
-            val levelIcon = itemView.context.getString(ageLevel.level.iconResId)
+            ivDecoratorIcon.visibility = View.GONE
 
-            return when (ageLevel.ageInDays) {
+            tvTextIcon.visibility = View.VISIBLE
+            tvTextIcon.text = itemView.context.getString(ageLevel.level.iconResId)
+
+            tvLabel.visibility = View.VISIBLE
+            tvLabel.text = when (ageLevel.ageInDays) { // TODO: apply mechanism witch plurals? (see: strings.xml -> path_steps_count)
                 0L -> { // Today
-                    itemView.context.getString(R.string.common_thought_age_0, levelIcon)
+                    itemView.context.getString(R.string.common_thought_age_0)
                 }
                 1L -> { // Yesterday
-                    itemView.context.getString(R.string.common_thought_age_1, levelIcon)
+                    itemView.context.getString(R.string.common_thought_age_1)
                 }
                 else -> {
                     itemView.context.getString(
-                        R.string.common_thought_age_pattern, levelIcon, ageLevel.ageInDays.toString()
+                        R.string.common_thought_age_pattern, ageLevel.ageInDays.toString()
                     )
                 }
             }
         }
 
-        fun getFormattedUpdatedAt(thought: ThoughtDTO): String {
-            val ageInDays = ThoughtGrowthStage.getAgeInDays(thought.updatedAt)
-            val icon = itemView.context.getString(R.string.common_thought_updated_at_icon)
+        fun updateChangedAtCase(thought: ThoughtDTO) {
+            ivDecoratorIcon.visibility = View.VISIBLE
+            ivDecoratorIcon.setImageResource(R.drawable.ic_replace_or_renew)
 
-            return when (ageInDays) {
-                0L -> itemView.context.getString(R.string.common_thought_updated_at_0, icon)
-                1L -> itemView.context.getString(R.string.common_thought_updated_at_1, icon)
-                else -> itemView.context.getString(R.string.common_thought_updated_at_pattern, icon, ageInDays.toString())
+            tvLabel.visibility = View.VISIBLE
+            val ageInDays = ThoughtGrowthStage.getAgeInDays(thought.updatedAt)
+            tvLabel.text = when (ageInDays) {
+                0L -> itemView.context.getString(R.string.common_thought_updated_at_0)
+                1L -> itemView.context.getString(R.string.common_thought_updated_at_1)
+                else -> itemView.context.getString(R.string.common_thought_updated_at_pattern, ageInDays.toString())
             }
         }
 

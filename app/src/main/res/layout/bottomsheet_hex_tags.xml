@@ -123,7 +123,7 @@
             android:textColor="@color/_gray_lvl_3" />
 
         <pl.hexmind.mindshaper.common.ui.views.IconsGridView
-            android:id="@+id/igv_hex_tags"
+            android:id="@+id/igv_domains"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -132,7 +132,6 @@
     </LinearLayout>
 
     <!-- === FAB: Zapisz === -->
-    <!-- paddingBottom = 80dp in LinearLayout above keeps grid from hiding behind FAB -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_confirm"
         android:layout_width="wrap_content"

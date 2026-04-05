@@ -70,7 +70,7 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
             arguments?.getParcelableArrayList(ARG_ITEMS)
         } ?: emptyList()
 
-        binding.igvHexTags.bind(
+        binding.igvDomains.bind(
             items = iconItems,
             selectedId = selectedDomainId
         )
@@ -79,7 +79,7 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
             val result = HexTags(
                 person = binding.etPerson.text?.toString()?.trim()?.takeIf { it.isNotEmpty() },
                 project = binding.etProject.text?.toString()?.trim()?.takeIf { it.isNotEmpty() },
-                domainId = binding.igvHexTags.selectedItemId
+                domainId = binding.igvDomains.selectedItemId
             )
             onConfirm?.invoke(result)
             dismiss()

@@ -5,6 +5,9 @@ import pl.hexmind.mindshaper.R
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
+/**
+ * Class for dedicated feature (@MC) :)
+ */
 class ThoughtGrowthStage(
     val level : Level,
     val ageInDays : Long

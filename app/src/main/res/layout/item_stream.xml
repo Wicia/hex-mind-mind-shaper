@@ -9,105 +9,184 @@
     app:cardElevation="8dp"
     app:cardBackgroundColor="@color/hex_card_background">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nested_scroll_view"
-        android:clickable="false"
-        android:focusable="false"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:orientation="vertical">
 
+        <!-- SCROLLABLE CONTENT + fade overlay -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nested_scroll_view"
+                android:clickable="false"
+                android:focusable="false"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="18dp">
+
+                    <!-- THREAD LABEL (shown / hidden) -->
+                    <TextView
+                        android:id="@+id/tv_thread_label"
+                        style="@style/TextView_Metadata"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:layout_marginBottom="4dp"
+                        android:textColor="@color/text_secondary"
+                        />
+
+                    <!-- for EMPTY THOUGHT scenario -->
+                    <TextView
+                        android:id="@+id/tv_empty_thought"
+                        style="@style/TextView_Metadata"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textStyle="bold"
+                        android:text="@string/stream_item_empty_thought"
+                        android:textAlignment="center"
+                        android:layout_marginTop="32dp"
+                        android:padding="32dp" />
+
+                    <!-- RICH TEXT -->
+                    <pl.hexmind.mindshaper.common.ui.views.content.HexTextView
+                        android:id="@+id/rich_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:visibility="gone"
+                        app:richTextMode="displayOnly" />
+
+                    <!-- AUDIO RECORDING -->
+                    <pl.hexmind.mindshaper.common.ui.views.content.AudioRecordingView
+                        android:id="@+id/arv_playback"
+                        app:recordingMode="playbackOnly"
+                        app:compact="true"
+                        style="@style/RecordingPlaybackView_UsedWithTint"
+                        android:background="@null"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:visibility="gone" />
+
+                    <!-- PHOTO -->
+                    <pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
+                        android:id="@+id/pv_photo"
+                        style="@style/PhotoDisplayView_UsedWithTint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:visibility="gone"
+                        app:photoMode="displayOnly" />
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+            <!-- Gradient fade overlay -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/gradient_steam_item_bar"
+                android:clickable="false"
+                android:focusable="false" />
+
+        </FrameLayout>
+
+        <!-- BOTTOM BAR -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="18dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:background="@color/_orange_lvl_0">
 
-            <!-- VALUE CLOUDE -->
-            <pl.hexmind.mindshaper.common.ui.views.values.ValueCloude
-                android:id="@+id/vb_thought_value"
-                style="@style/ValueCloude"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="8dp"
-                android:visibility="gone"
-                />
-
-            <!-- HEADER: Icon + Label -->
+            <!-- Row 1 -->
             <LinearLayout
-                android:id="@+id/ll_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="start|center_vertical"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp">
+                android:gravity="center_vertical">
 
+                <!-- Left line decorator -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0.5dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/_gray_lvl_2" />
+
+                <!-- Mid element: VALUE CLOUD -->
+                <pl.hexmind.mindshaper.common.ui.views.values.ValueCloude
+                    android:id="@+id/vb_thought_value"
+                    style="@style/ValueCloude"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:visibility="gone" />
+
+                <!-- Mid element: Icon -->
                 <ImageView
                     android:id="@+id/iv_decorator_icon"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:src="@drawable/ic_decorator_label"
                     app:tint="@color/_orange_lvl_2"
-                    android:rotation="90"
-                    android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                    android:visibility="gone" />
 
+                <!-- Mid element: Text or "Emoji Icon" -->
                 <TextView
-                    android:id="@+id/tv_label"
+                    android:id="@+id/tv_text_icon"
                     style="@style/TextView_Metadata"
+                    android:textColor="@color/_gray_lvl_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp" />
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:visibility="gone" />
+
+                <!-- Right line decorator -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0.5dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="16dp"
+                    android:background="@color/_gray_lvl_2" />
 
             </LinearLayout>
 
-            <!-- for EMPTY THOUGHT scenario -->
+            <!-- Row 2: text -->
             <TextView
-                android:id="@+id/tv_empty_thought"
+                android:id="@+id/tv_label"
                 style="@style/TextView_Metadata"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textStyle="bold"
-                android:text="@string/stream_item_empty_thought"
-                android:textAlignment="center"
-                android:layout_marginTop="32dp"
-                android:padding="32dp" />
-
-            <!-- RICH TEXT -->
-            <pl.hexmind.mindshaper.common.ui.views.content.HexTextView
-                android:id="@+id/rich_text_view"
+                android:textColor="@color/_gray_lvl_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:visibility="gone"
-                app:richTextMode="displayOnly" />
-
-            <!-- AUDIO RECORDING -->
-            <pl.hexmind.mindshaper.common.ui.views.content.AudioRecordingView
-                android:id="@+id/arv_playback"
-                app:recordingMode="playbackOnly"
-                app:compact="true"
-                style="@style/RecordingPlaybackView_UsedWithTint"
-                android:background="@null"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
                 android:visibility="gone" />
-
-            <!-- PHOTO -->
-            <pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
-                android:id="@+id/pv_photo"
-                style="@style/PhotoDisplayView_UsedWithTint"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:visibility="gone"
-                app:photoMode="displayOnly" />
 
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

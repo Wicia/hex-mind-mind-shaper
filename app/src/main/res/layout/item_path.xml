@@ -70,7 +70,7 @@
             style="@style/SecondaryActionButton"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            app:icon="@drawable/ic_recording_renew"
+            app:icon="@drawable/ic_replace_or_renew"
             app:iconGravity="textStart"
             app:iconSize="24dp" />
 

@@ -23,8 +23,6 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.common.ui.views.content.AudioAmplitudeExtractor
-import pl.hexmind.mindshaper.common.ui.views.content.AudioVisualizerView
 import pl.hexmind.mindshaper.common.ui.dialogs.MultipleActionsDialog
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import timber.log.Timber
@@ -172,7 +170,7 @@ class AudioRecordingView @JvmOverloads constructor(
             }
             hasRecording -> {
                 btnRecordNew.isEnabled = true
-                btnRecordNew.icon = AppCompatResources.getDrawable(context, R.drawable.ic_recording_renew)
+                btnRecordNew.icon = AppCompatResources.getDrawable(context, R.drawable.ic_replace_or_renew)
 
                 btnRecordStopPlay.isEnabled = true
                 btnRecordStopPlay.icon = AppCompatResources.getDrawable(context, R.drawable.ic_recording_play)

@@ -71,15 +71,15 @@
     <string name="common_onb_dialog_header">Wskazówka</string>
 
     <!-- Thought Age -->
-    <string name="common_thought_age_pattern">%2$s dni temu  %1$s</string>
-    <string name="common_thought_age_0">Dzisiaj %s</string>
-    <string name="common_thought_age_1">Wczoraj %s</string>
+    <string name="common_thought_age_pattern">Złapano %s dni temu</string>
+    <string name="common_thought_age_0">Dzisiaj złapano</string>
+    <string name="common_thought_age_1">Wczoraj złapano</string>
 
     <string name="common_thought_age_level_1_icon">🌱</string>
-    <string name="common_thought_age_level_2_icon">🌿</string>
-    <string name="common_thought_age_level_3_icon">🍀</string>
-    <string name="common_thought_age_level_4_icon">🌳</string>
-    <string name="common_thought_age_level_5_icon">🏝️</string>
+    <string name="common_thought_age_level_2_icon">🍀</string>
+    <string name="common_thought_age_level_3_icon">🌿</string>
+    <string name="common_thought_age_level_4_icon">🌾</string>
+    <string name="common_thought_age_level_5_icon">🌴</string>
 
     <!-- WELCOME -->
     <string name="home_capturing_button_title">Witaj w "Domu" :)</string>
@@ -199,7 +199,7 @@
     <!-- ====================================== -->
 
     <!-- Core -->
-    <string name="capture_main_label">Chwytaj myśl…</string>
+    <string name="capture_main_label">Łapanie myśli</string>
 
     <!-- Thread (common) -->
     <string name="capture_hex_tags_tooltip">wątek @osoba #projekt</string>
@@ -249,9 +249,9 @@
     <string name="sort_property_updated_at">Data zmiany</string>
 
     <string name="common_thought_updated_at_icon">📝</string>
-    <string name="common_thought_updated_at_0">Zmieniono dziś %s</string>
-    <string name="common_thought_updated_at_1">Zmieniono wczoraj %s</string>
-    <string name="common_thought_updated_at_pattern">Zmieniono %2$s dni temu  %1$s</string>
+    <string name="common_thought_updated_at_0">Zmieniono dziś</string>
+    <string name="common_thought_updated_at_1">Zmieniono wczoraj</string>
+    <string name="common_thought_updated_at_pattern">Zmieniono %s dni temu</string>
 
     <string name="sort_text_desc_label">Z → A</string>
     <string name="sort_text_asc_label">A → Z</string>
