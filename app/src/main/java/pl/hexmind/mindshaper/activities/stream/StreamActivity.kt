@@ -144,7 +144,8 @@ class StreamActivity : CoreActivity() {
 
     private fun showSearchHelpDialog() {
         TooltipsDialog.Builder(this)
-            .addTooltip(getString(R.string.stream_searching_tooltip), getString(R.string.stream_searching_title))
+            .addTooltip(getString(R.string.stream_searching_tooltip_1), getString(R.string.stream_searching_title_1))
+            .addTooltip(getString(R.string.stream_searching_tooltip_2), getString(R.string.stream_searching_title_2))
             .show()
     }
 

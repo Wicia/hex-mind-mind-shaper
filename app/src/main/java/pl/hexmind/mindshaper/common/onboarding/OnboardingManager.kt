@@ -47,7 +47,7 @@ class OnboardingManager @Inject constructor(
         // STREAM
         OnboardingProgressStep.STREAM_TOOLTIP to listOf(
             TooltipItemConfig(textRes = R.string.stream_entry_tooltip, titleRes = R.string.stream_entry_title),
-            TooltipItemConfig(textRes = R.string.stream_searching_tooltip, titleRes = R.string.stream_searching_title),
+            TooltipItemConfig(textRes = R.string.stream_entry_searching_tooltip, titleRes = R.string.stream_entry_searching_title),
             TooltipItemConfig(textRes = R.string.stream_deleting_tooltip, titleRes = R.string.stream_deleting_title),
             TooltipItemConfig(textRes = R.string.stream_details_tooltip, titleRes = R.string.stream_details_title)
         ),

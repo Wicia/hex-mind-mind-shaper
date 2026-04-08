@@ -118,13 +118,23 @@
     <string name="stream_entry_title">Twoje myśli</string>
     <string name="stream_entry_tooltip">W tym ruchliwym miejscu przeglądniesz swoje myśli.</string>
 
-    <string name="stream_searching_title">Wyszukiwanie myśli</string>
-    <string name="stream_searching_tooltip"><![CDATA[
+    <string name="stream_entry_searching_title">Wyszukiwanie myśli</string>
+    <string name="stream_entry_searching_tooltip"><![CDATA[
+        Widzisz pole do wyszukiwania u góry? To z pomarańczowym znakiem "?"\n
+        To wskazówka jak szybko szukać myśli - możesz ją aktywować po każdym tapnięciu na nią.
+    ]]></string>
+
+    <string name="stream_searching_title_1">Wyszukiwanie myśli</string>
+    <string name="stream_searching_tooltip_1"><![CDATA[
         Wpisujesz do pola-szukajki specjalny tekst, a ta od razu Ci szuka:\n\n
         wspomnienie - wyszuka myśli z etykietą \"wspomnienie\"\n\n
         #gotowanie - wyszuka myśli z projektem \"gotowanie\"\n\n
-        @Michał - wyszuka myśli z osobą \"Michał\"\n\n
-        wspomnienie @Michał - wyszuka myśli z etykietą \"wspomnienie\" oraz osobą \"Michał\"
+        @Michał - wyszuka myśli z osobą \"Michał\"
+    ]]></string>
+    <string name="stream_searching_title_2">Połączone wyszukiwanie</string>
+    <string name="stream_searching_tooltip_2"><![CDATA[
+        Możesz też połączyć kilka fraz w jedno:\n\n
+        wspomnienie @Michał #wakacje \n\n- wyszuka myśli z etykietą \"wspomnienie\"\n- oraz osobą \"Michał\" \n- oraz projektem \"wakacje\"
     ]]></string>
 
     <string name="stream_deleting_title">Usuwanie myśli</string>
