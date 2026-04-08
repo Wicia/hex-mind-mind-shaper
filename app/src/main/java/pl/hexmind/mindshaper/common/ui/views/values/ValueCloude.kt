@@ -132,16 +132,14 @@ class ValueCloude @JvmOverloads constructor(
         super.onSizeChanged(w, h, oldw, oldh)
         centerX = w / 2f
         centerY = h / 2f
-
+        squareSize = minOf(w, h).toFloat()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        // Cloud size calculation: base size + offset for outer circles + padding
-        val cloudExtent = (squareSize * 0.22f * 2) + (squareSize / 6f * 0.83f * 2) + 20f
-        val desiredSize = (squareSize + cloudExtent).toInt()
+        val desired = squareSize.toInt()
         setMeasuredDimension(
-            resolveSize(desiredSize, widthMeasureSpec),
-            resolveSize(desiredSize, heightMeasureSpec)
+            resolveSize(desired, widthMeasureSpec),
+            resolveSize(desired, heightMeasureSpec)
         )
     }
 

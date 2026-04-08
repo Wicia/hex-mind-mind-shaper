@@ -7,7 +7,6 @@ import androidx.core.content.withStyledAttributes
 import com.google.android.material.button.MaterialButton
 import org.sufficientlysecure.htmltextview.HtmlTextView
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.common.ui.views.content.HtmlConverter
 import pl.hexmind.mindshaper.common.ui.dialogs.MultipleActionsDialog
 
 /**
@@ -63,8 +62,8 @@ class HexTextView @JvmOverloads constructor(
 
         // Read XML attributes
         attrs?.let {
-            context.withStyledAttributes(it, R.styleable.RichTextView) {
-                val modeValue = getInt(R.styleable.RichTextView_richTextMode, 0)
+            context.withStyledAttributes(it, R.styleable.HexTextView) {
+                val modeValue = getInt(R.styleable.HexTextView_richTextMode, 0)
                 mode = if (modeValue == 1) Mode.DISPLAY_ONLY else Mode.EDIT_DISPLAY
                 setupUIForMode()
             }
