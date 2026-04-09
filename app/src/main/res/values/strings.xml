@@ -266,11 +266,11 @@
     <string name="sort_text_desc_label">Z → A</string>
     <string name="sort_text_asc_label">A → Z</string>
 
-    <string name="sort_value_desc_label">Ważnych</string>
-    <string name="sort_value_asc_label">Drobnych</string>
+    <string name="sort_value_desc_label">od Ważnych</string>
+    <string name="sort_value_asc_label">od Drobnych</string>
 
-    <string name="sort_date_desc_label">Młodych</string>
-    <string name="sort_date_asc_label">Starych</string>
+    <string name="sort_date_desc_label">od Młodych</string>
+    <string name="sort_date_asc_label">od Starych</string>
 
     <!-- Sort Directions -->
     <string name="sort_direction_description">Kierunek sortowania</string>

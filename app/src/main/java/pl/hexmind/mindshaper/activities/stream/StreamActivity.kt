@@ -269,7 +269,6 @@ class StreamActivity : CoreActivity() {
         val sortProperty = sortConfig.property
         val labelText = getString(sortProperty.displayNameRes)
             .plus(": ")
-            .plus(getString(R.string.sort_info_prefix)).plus(" ")
             .plus(getString(sortConfig.direction.getLabelResByFieldType(sortProperty.type)))
 
         btnSort.text = labelText

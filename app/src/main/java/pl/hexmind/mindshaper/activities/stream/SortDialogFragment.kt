@@ -1,6 +1,5 @@
 package pl.hexmind.mindshaper.activities.stream
 
-import android.app.Dialog
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.ContextThemeWrapper
@@ -8,11 +7,11 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.Button
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.DialogFragment
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.views.lists.SortConfig
@@ -20,113 +19,128 @@ import pl.hexmind.mindshaper.common.ui.views.lists.SortDirection
 import pl.hexmind.mindshaper.common.ui.views.lists.SortProperty
 
 /**
- * Dialog for selecting sort property and direction
+ * Bottom sheet for selecting sort property and direction.
  */
 class SortDialogFragment(
     private val currentConfig: SortConfig,
     private val onSortSelected: (SortConfig) -> Unit
-) : DialogFragment() {
+) : BottomSheetDialogFragment() {
 
     private var selectedProperty: SortProperty = currentConfig.property
     private var selectedDirection: SortDirection = currentConfig.direction
 
     private lateinit var llSortProperties: LinearLayout
-    private lateinit var btnSortDirection: MaterialButton
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.dialog_sort, container, false)
+        return inflater.inflate(R.layout.bottomsheet_sort, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Force showing full-height bottom sheet
+        (dialog as? BottomSheetDialog)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
+
         llSortProperties = view.findViewById(R.id.ll_sort_properties)
-        btnSortDirection = view.findViewById(R.id.btn_sort_direction)
 
-        setupSortPropertyButtons()
-        setupDirectionButton()
-        updateDirectionButton()
-
-        view.findViewById<Button>(R.id.btn_dismiss).setOnClickListener {
-            dismiss()
-        }
+        rebuildList()
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return super.onCreateDialog(savedInstanceState).apply {
-            window?.apply {
-                setBackgroundDrawableResource(android.R.color.transparent)
-                setDimAmount(0.9f)
-                addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-            }
-        }
-    }
-
-    private fun setupSortPropertyButtons() {
+    private fun rebuildList() {
         llSortProperties.removeAllViews()
 
         SortProperty.entries.forEach { property ->
-            val btnSortProperty = createSortPropertyButton(property)
-            llSortProperties.addView(btnSortProperty)
+            llSortProperties.addView(createPropertyButton(property))
+
+            // Expand direction buttons below the selected property
+            if (property == selectedProperty) {
+                SortDirection.entries.forEach { direction ->
+                    llSortProperties.addView(createDirectionButton(direction))
+                }
+            }
         }
     }
 
-    private fun createSortPropertyButton(property: SortProperty): MaterialButton {
+    private fun createPropertyButton(property: SortProperty): MaterialButton {
         val themedContext = ContextThemeWrapper(requireContext(), R.style.SecondaryActionButton)
         return MaterialButton(themedContext).apply {
             text = getString(property.displayNameRes)
-            gravity = Gravity.END
+            gravity = Gravity.START or Gravity.CENTER_VERTICAL
 
             val isSelected = property == selectedProperty
 
+            // Checkmark icon on selected property
+            if (isSelected) {
+                setIconResource(R.drawable.ic_action_approve)
+                iconGravity = MaterialButton.ICON_GRAVITY_START
+                iconTint = ContextCompat.getColorStateList(requireContext(), R.color.text_primary)
+            } else {
+                icon = null
+            }
+
             layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             ).apply {
-                // Shift selected button to the right
-                val leftMargin = if (isSelected) 24 else 0
-                setMargins(leftMargin, 8, 0, 8)
+                setMargins(0, 8, 0, 0)
             }
+
+            minimumWidth = 400 // px
 
             updateButtonStyle(this, isSelected)
 
             setOnClickListener {
                 selectedProperty = property
+                rebuildList()
+            }
+        }
+    }
+
+    private fun createDirectionButton(direction: SortDirection): MaterialButton {
+        val themedContext = ContextThemeWrapper(requireContext(), R.style.SecondaryActionButton)
+        return MaterialButton(themedContext).apply {
+            text = getString(direction.getLabelResByFieldType(selectedProperty.type))
+            gravity = Gravity.START or Gravity.CENTER_VERTICAL
+
+            val isSelected = direction == selectedDirection
+
+            // No icon on direction buttons
+            icon = null
+
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                // Indent direction buttons under property
+                setMargins(64, 4, 0, 4)
+            }
+
+            minimumWidth = 400 // px
+
+            updateButtonStyle(this, isSelected)
+
+            setOnClickListener {
+                selectedDirection = direction
                 onSortSelected(SortConfig(selectedProperty, selectedDirection))
                 dismiss()
             }
         }
     }
 
-    private fun setupDirectionButton() {
-        // Click on entire direction container toggles, applies and dismisses
-        view?.findViewById<View>(R.id.btn_sort_direction)?.setOnClickListener {
-            selectedDirection = selectedDirection.toggle()
-            updateDirectionButton()
-            val config = SortConfig(selectedProperty, selectedDirection)
-            onSortSelected(config)
-            dismiss()
-        }
-    }
-
-    private fun updateDirectionButton() {
-        val resId = selectedDirection.getLabelResByFieldType(selectedProperty.type)
-        btnSortDirection.text = requireContext().getString(resId)
-        btnSortDirection.setTypeface(btnSortDirection.typeface, Typeface.BOLD)
-    }
-
     private fun updateButtonStyle(button: MaterialButton, isSelected: Boolean) {
         if (isSelected) {
-            button.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.button_content_filled_background))
+            button.strokeColor = ContextCompat.getColorStateList(requireContext(), R.color._orange_lvl_3)
+            button.strokeWidth = 2 // px
+            button.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.button_secondary_enabled_background))
             button.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_primary))
             button.setTypeface(button.typeface, Typeface.BOLD)
         }
         else {
-            button.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.button_content_empty_background))
+            button.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.button_secondary_enabled_background))
             button.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_secondary))
             button.setTypeface(button.typeface, Typeface.NORMAL)
         }
