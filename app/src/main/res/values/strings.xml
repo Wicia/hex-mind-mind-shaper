@@ -343,7 +343,7 @@
     <string name="stream_searchbar_hint">Szukajka czeka na twoje polecenie…</string>
 
     <string name="settings_voice_recording_info">Aby móc nagrywać dźwięk, aplikacja potrzebuje dostępu do mikrofonu.</string>
-    <string name="settings_permissions_backup">Włącz robienie kopii zapasowych</string>
+    <string name="settings_permissions_backup">Włącz tworzenie kopii zapasowych</string>
     <string name="settings_backup_permission_info">Aby zapisywać i wczytywać kopie zapasowe, aplikacja potrzebuje dostępu do pamięci urządzenia.</string>
     <string name="settings_permissions_backup_blockade_tooltip">Uprawnienie do pamięci urządzenia zostało trwale odrzucone.\nMożesz je włączyć w ustawieniach systemu Androida.</string>
 
