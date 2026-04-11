@@ -24,12 +24,12 @@ class DomainValidator @Inject constructor(
     fun validateName(name: String): ValidationResult {
         return when {
             name.trim().isEmpty() -> {
-                ValidationResult.Error(context.getString(R.string.settings_domains_error_name_empty))
+                ValidationResult.Error(context.getString(R.string.sheet_domain_edit_error_nameEmpty))
             }
 
             name.length > NAME_MAX_CHARS -> {
                 ValidationResult.Error(
-                    context.getString(R.string.settings_domains_error_name_too_long, NAME_MAX_CHARS.toString())
+                    context.getString(R.string.sheet_domain_edit_error_nameTooLong, NAME_MAX_CHARS.toString())
                 )
             }
 

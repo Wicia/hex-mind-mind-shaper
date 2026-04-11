@@ -102,6 +102,8 @@
 
     <string name="settings_domains_title">Sekcja "Domeny"</string>
     <string name="settings_domains_tooltip">Zdefiniujesz tutaj \"Domeny\" - swoje kategorie lub szufladki dla myśli</string>
+    <string name="sheet_domains_edit_title">Edytuj domenę</string>
+    <string name="sheet_domains_edit_icons_title">| Ikona</string>
 
     <string name="settings_thought_value_title">Sekcja "Skala wartości myśli"</string>
     <string name="settings_thought_value_tooltip">Każdej myśli możesz nadać wartość/wagę/priorytet liczbowy.\nOd ciebie zależą jego wartości… </string>
@@ -306,9 +308,9 @@
     <!-- Domains -->
     <string name="settings_domains_header">🌾 Domeny</string>
 
-    <string name="settings_domains_domain_name">Twoja nazwa dla domeny</string>
-    <string name="settings_domains_error_name_empty">Nazwa domeny nie może być pusta</string>
-    <string name="settings_domains_error_name_too_long">Nazwa domeny nie może przekraczać %s znaków</string>
+    <string name="sheet_domain_edit_hint">Nazwa</string>
+    <string name="sheet_domain_edit_error_nameEmpty">Nazwa domeny nie może być pusta</string>
+    <string name="sheet_domain_edit_error_nameTooLong">Nazwa domeny nie może przekraczać %s znaków</string>
 
     <string name="settings_snapshot_restore_warning">Wszystkie obecne dane zostaną zastąpione danymi wczytanymi z wybranego pliku. Kontynuować?</string>
 

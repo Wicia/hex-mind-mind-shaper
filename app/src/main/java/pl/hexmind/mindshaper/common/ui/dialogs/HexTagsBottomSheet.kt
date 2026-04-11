@@ -1,10 +1,14 @@
 package pl.hexmind.mindshaper.common.ui.dialogs
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -13,6 +17,7 @@ import pl.hexmind.mindshaper.databinding.BottomsheetHexTagsBinding
 
 /**
  * Bottom sheet for picking a hex tag icon.
+ *
  * Caller provides items + optional pre-selected HexTags, receives filled HexTags on confirm.
  * Dismiss by swiping down or tapping outside — no cancel button needed.
  *
@@ -64,7 +69,7 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
         currentProject?.let { binding.etProject.setText(it) }
 
         @Suppress("DEPRECATION")
-        val iconItems: List<IconsGridItem> = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+        val iconItems: List<IconsGridItem> = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelableArrayList(ARG_ITEMS, IconsGridItem::class.java)
         } else {
             arguments?.getParcelableArrayList(ARG_ITEMS)
@@ -92,8 +97,7 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun hideKeyboard() {
-        val imm = requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE)
-                as android.view.inputmethod.InputMethodManager
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
     }
 
@@ -105,7 +109,7 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
         private const val ARG_PROJECT = "arg_project"
 
         fun show(
-            fragmentManager: androidx.fragment.app.FragmentManager,
+            fragmentManager: FragmentManager,
             items: List<IconsGridItem>,
             currentTags: HexTags = HexTags(),
             onConfirm: (HexTags) -> Unit

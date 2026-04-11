@@ -1,7 +1,6 @@
 package pl.hexmind.mindshaper.activities.settings
 
 import android.Manifest
-import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,10 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputEditText
+import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,7 +21,6 @@ import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem.STANDARD_10
 import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem.STANDARD_6
-import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.database.initialization.DataSnapshotManager
 import pl.hexmind.mindshaper.databinding.ActivitySettingsBinding
 import pl.hexmind.mindshaper.services.DomainIconsService
@@ -470,7 +466,7 @@ class SettingsActivity : CoreActivity() {
     }
 
     private fun onDomainButtonClick(domainTileIndex: Int, currentDomainDTO : DomainDTO) {
-        showIconPickerDialog(currentDomainDTO) { updatedDTO ->
+        showDomainEditBottomSheet(currentDomainDTO) { updatedDTO ->
             updateDomainButton(domainTileIndex, updatedDTO)
             lifecycleScope.launch { domainService.updateDomain(dto = updatedDTO) }
         }
@@ -607,61 +603,32 @@ class SettingsActivity : CoreActivity() {
         startActivity(intent)
     }
 
-    /**
-     * Show icon picker dialog with 4 columns and vertical scrolling
-     */
-    private fun showIconPickerDialog(currentDomainDTO: DomainDTO, onDTOUpdated: (DomainDTO) -> Unit) {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_domain_edit, null)
-        val rvIconsList = dialogView.findViewById<RecyclerView>(R.id.rv_icons_list)
-        val etDomainName = dialogView.findViewById<TextInputEditText>(R.id.et_domain_name)
-        val tvDomainNameValidationInfo = dialogView.findViewById<TextView>(R.id.tv_domain_name_validation_info)
-
-        etDomainName.setText(currentDomainDTO.name)
-
-        val dialog = AlertDialog.Builder(this)
-            .setView(dialogView)
-            .setNegativeButton(getString(R.string.common_btn_cancel), null)
-            .create()
-
-        // Fixed 4-columns + vertical scrolling
-        rvIconsList.layoutManager = GridLayoutManager(this, 4)
-
+    private fun showDomainEditBottomSheet(currentDomainDTO: DomainDTO, onDTOUpdated: (DomainDTO) -> Unit) {
         lifecycleScope.launch {
             try {
-                rvIconsList.visibility = View.GONE
-
                 val availableIconsIds = domainIconsService.getAvailableIconsIds()
                 val iconsMap = domainIconsService.loadIconsBatch(availableIconsIds)
 
-                rvIconsList.visibility = View.VISIBLE
-
-                val adapter = IconPickerAdapter(
-                    iconsIds = availableIconsIds,
-                    iconsMap = iconsMap,
-                    selectedIconNumber = currentDomainDTO.iconId
-                )
-                { selectedIconNumber ->
-                    val updatedName = etDomainName.text.toString()
-                    val updatedDTO = DomainDTO(id = currentDomainDTO.id, name = updatedName, iconId = selectedIconNumber)
-                    when (val validationResult = domainValidator.validate(updatedDTO)) {
-                        is ValidationResult.Valid -> {
-                            onDTOUpdated(updatedDTO)
-                            dialog.dismiss()
-                        }
-                        is ValidationResult.Error -> {
-                            tvDomainNameValidationInfo.text = validationResult.message
-                        }
-                    }
+                // Convert to IconsGridItem list expected by IconsGridView
+                val iconItems = availableIconsIds.mapNotNull { id ->
+                    iconsMap[id]?.let { resId -> IconsGridItem(id = id, iconResId = resId) }
                 }
 
-                rvIconsList.adapter = adapter
+                DomainEditBottomSheet.show(
+                    fragmentManager = supportFragmentManager,
+                    items = iconItems,
+                    domainName = currentDomainDTO.name,
+                    selectedIconId = currentDomainDTO.iconId,
+                    validator = domainValidator
+                ) { name, iconId ->
+                    val updatedDTO = DomainDTO(id = currentDomainDTO.id, name = name, iconId = iconId)
+                    onDTOUpdated(updatedDTO)
+                }
             }
             catch (e: Exception) {
                 // TODO: Handling exception is needed?
             }
         }
-
-        dialog.show()
     }
 
     /**
