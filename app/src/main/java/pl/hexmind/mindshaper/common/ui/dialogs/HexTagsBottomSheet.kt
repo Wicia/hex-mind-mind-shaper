@@ -13,7 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
-import pl.hexmind.mindshaper.databinding.BottomsheetHexTagsBinding
+import pl.hexmind.mindshaper.databinding.ZHexTagsBottomsheetBinding
 
 /**
  * Bottom sheet for picking a hex tag icon.
@@ -32,7 +32,7 @@ import pl.hexmind.mindshaper.databinding.BottomsheetHexTagsBinding
  */
 class HexTagsBottomSheet : BottomSheetDialogFragment() {
 
-    private var _binding: BottomsheetHexTagsBinding? = null
+    private var _binding: ZHexTagsBottomsheetBinding? = null
     private val binding get() = _binding!!
 
     private var onConfirm: ((HexTags) -> Unit)? = null
@@ -42,7 +42,7 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = BottomsheetHexTagsBinding.inflate(inflater, container, false)
+        _binding = ZHexTagsBottomsheetBinding.inflate(inflater, container, false)
         return binding.root
     }
 

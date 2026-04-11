@@ -51,7 +51,7 @@ class GuidelinesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubItemViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_goal_guideline, parent, false)
+            .inflate(R.layout.goal_guideline_item, parent, false)
         return SubItemViewHolder(view)
     }
 

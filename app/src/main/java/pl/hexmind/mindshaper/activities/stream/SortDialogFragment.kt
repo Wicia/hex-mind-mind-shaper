@@ -36,7 +36,7 @@ class SortDialogFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.bottomsheet_sort, container, false)
+        return inflater.inflate(R.layout.stream_sort_bottomsheet, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

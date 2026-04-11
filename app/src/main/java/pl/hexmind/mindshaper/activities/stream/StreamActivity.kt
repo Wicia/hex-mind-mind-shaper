@@ -53,7 +53,7 @@ class StreamActivity : CoreActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_stream)
+        setContentView(R.layout.stream_activity)
 
         initializeViews()
         setupVerticalFeed()

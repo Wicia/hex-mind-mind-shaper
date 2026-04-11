@@ -34,7 +34,7 @@ class MultipleActionsDialog private constructor(
 ) {
 
     fun show() {
-        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_multiple_actions, null)
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.z_multiple_actions_dialog, null)
 
         val dialog = MaterialAlertDialogBuilder(context)
             .setView(dialogView)

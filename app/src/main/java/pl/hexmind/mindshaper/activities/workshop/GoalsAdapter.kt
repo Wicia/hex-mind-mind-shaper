@@ -57,7 +57,7 @@ class GoalsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GoalViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_goal, parent, false)
+            .inflate(R.layout.goal_item, parent, false)
         return GoalViewHolder(view)
     }
 

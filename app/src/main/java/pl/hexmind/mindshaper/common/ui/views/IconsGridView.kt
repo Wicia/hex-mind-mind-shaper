@@ -92,7 +92,7 @@ class IconsGridView @JvmOverloads constructor(
 
             rowItems.forEach { item ->
                 val itemView = LayoutInflater.from(context)
-                    .inflate(R.layout.view_icons_grid_item, rowLayout, false)
+                    .inflate(R.layout.z_icons_grid_item_view, rowLayout, false)
 
                 // Fixed square size — same for every item regardless of row column count
                 // Margins preserved explicitly since we override layoutParams

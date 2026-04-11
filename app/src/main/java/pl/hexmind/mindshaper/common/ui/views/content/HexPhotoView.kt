@@ -76,7 +76,7 @@ class HexPhotoView @JvmOverloads constructor(
     private var viewScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     init {
-        inflate(context, R.layout.view_photo_display, this)
+        inflate(context, R.layout.z_photo_display_view, this)
         orientation = VERTICAL
 
         // Initialize UI components

@@ -35,7 +35,7 @@ class TooltipsDialog private constructor(
     private lateinit var dialogView: View
 
     fun show() {
-        dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_tooltips, null)
+        dialogView = LayoutInflater.from(context).inflate(R.layout.z_tooltip_dialog, null)
 
         dialog = MaterialAlertDialogBuilder(context)
             .setView(dialogView)

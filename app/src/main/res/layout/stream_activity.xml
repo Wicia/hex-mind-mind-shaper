@@ -15,7 +15,7 @@
 
         <include
             android:id="@+id/header"
-            layout="@layout/activity_header"
+            layout="@layout/z_header_activity"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

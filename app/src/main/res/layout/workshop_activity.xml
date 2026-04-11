@@ -21,7 +21,7 @@
             android:paddingEnd="16dp"
             android:paddingBottom="80dp">
 
-            <include layout="@layout/activity_header" />
+            <include layout="@layout/z_header_activity" />
 
             <!-- === GOALS section === -->
             <!-- TODO: choose one approach -> this or MaterialCardView in all places -->
@@ -85,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="false"
                         android:overScrollMode="never"
-                        tools:listitem="@layout/item_goal" />
+                        tools:listitem="@layout/goal_item" />
 
                 </LinearLayout>
 

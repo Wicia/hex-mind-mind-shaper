@@ -21,7 +21,7 @@ import pl.hexmind.mindshaper.common.ui.views.content.AudioRecordingView
 import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
 import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
 import pl.hexmind.mindshaper.common.validation.ValidationResult
-import pl.hexmind.mindshaper.databinding.ActivityCaptureBinding
+import pl.hexmind.mindshaper.databinding.CaptureActivityBinding
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.DefaultCaptureForm
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
@@ -32,7 +32,7 @@ import javax.inject.Inject
 class CaptureActivity : ThoughtManagerActivity() {
 
     private val viewModel: CaptureActivityViewModel by viewModels()
-    private lateinit var binding: ActivityCaptureBinding
+    private lateinit var binding: CaptureActivityBinding
 
     @Inject
     lateinit var thoughtsService: ThoughtsService
@@ -55,7 +55,7 @@ class CaptureActivity : ThoughtManagerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCaptureBinding.inflate(layoutInflater)
+        binding = CaptureActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupUI()

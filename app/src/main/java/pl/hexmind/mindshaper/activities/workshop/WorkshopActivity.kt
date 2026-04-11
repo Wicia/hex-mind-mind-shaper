@@ -46,7 +46,7 @@ class WorkshopActivity : CoreActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_workshop)
+        setContentView(R.layout.workshop_activity)
 
         initializeViews()
         setupGoalsList()
@@ -130,7 +130,7 @@ class WorkshopActivity : CoreActivity() {
 
             val view: View = if (path != null) {
                 LayoutInflater.from(this)
-                    .inflate(R.layout.item_path, llPathsList, false)
+                    .inflate(R.layout.path_item, llPathsList, false)
                     .also { bindPathCard(it, path) }
             }
             else {

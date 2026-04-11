@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,7 +21,7 @@ import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem.STANDARD_10
 import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem.STANDARD_6
 import pl.hexmind.mindshaper.database.initialization.DataSnapshotManager
-import pl.hexmind.mindshaper.databinding.ActivitySettingsBinding
+import pl.hexmind.mindshaper.databinding.SettingsActivityBinding
 import pl.hexmind.mindshaper.services.DomainIconsService
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.MediaStorageService
@@ -52,7 +51,7 @@ class SettingsActivity : CoreActivity() {
     @Inject
     lateinit var dataSnapshotManager: DataSnapshotManager
 
-    private lateinit var binding: ActivitySettingsBinding
+    private lateinit var binding: SettingsActivityBinding
 
     private var selectedBackupUri: Uri? = null
 
@@ -69,7 +68,7 @@ class SettingsActivity : CoreActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        binding = SettingsActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupUI()
@@ -445,7 +444,7 @@ class SettingsActivity : CoreActivity() {
             try {
                 // Create buttons with loaded icons
                 titles.forEachIndexed { domainIndex , domainDTO ->
-                    val buttonView = layoutInflater.inflate(R.layout.item_domain_settings, binding.glDomains, false)
+                    val buttonView = layoutInflater.inflate(R.layout.settings_domain_item, binding.glDomains, false)
 
                     buttonView.findViewById<TextView>(R.id.tv_domain_name).text = domainDTO.name
 

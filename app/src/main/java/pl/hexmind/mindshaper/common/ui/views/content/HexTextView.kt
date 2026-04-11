@@ -53,7 +53,7 @@ class HexTextView @JvmOverloads constructor(
         }
 
     init {
-        inflate(context, R.layout.view_rich_text, this)
+        inflate(context, R.layout.z_rich_text_view, this)
         orientation = VERTICAL
 
         // Initialize UI components

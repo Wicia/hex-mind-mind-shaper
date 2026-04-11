@@ -22,7 +22,7 @@
             android:paddingBottom="90dp">
 
             <!-- Header -->
-            <include layout="@layout/activity_header" />
+            <include layout="@layout/z_header_activity" />
 
             <!-- === YOUR NAME === -->
             <androidx.cardview.widget.CardView

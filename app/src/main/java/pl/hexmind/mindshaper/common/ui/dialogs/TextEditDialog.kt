@@ -2,7 +2,6 @@ package pl.hexmind.mindshaper.common.ui.dialogs
 
 import android.content.Context
 import android.graphics.Color.TRANSPARENT
-import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -24,7 +23,7 @@ class TextEditDialog(
     private val onSave: (String) -> Unit
 ) {
 
-    private val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_text_edit, null)
+    private val dialogView = LayoutInflater.from(context).inflate(R.layout.z_text_edit_dialog, null)
     private val etInput: TextInputEditText = dialogView.findViewById(R.id.et_input)
     private val tvHeader : TextView = dialogView.findViewById(R.id.tv_header)
     private val dialog: AlertDialog

@@ -57,7 +57,7 @@ open class HexOptionTiles @JvmOverloads constructor(
 
         options.forEachIndexed { index, option ->
             val tileView = LayoutInflater.from(context)
-                .inflate(R.layout.view_radio_tile_item, this, false)
+                .inflate(R.layout.z_radio_tile_item_view, this, false)
 
             tileView.findViewById<ImageView>(R.id.iv_tile_icon).setImageResource(option.iconRes)
             tileView.findViewById<TextView>(R.id.tv_tile_label).setText(option.labelRes)

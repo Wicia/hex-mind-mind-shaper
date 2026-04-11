@@ -37,7 +37,7 @@ class StreamAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThoughtViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_stream, parent, false)
+            .inflate(R.layout.stream_item, parent, false)
         return ThoughtViewHolder(
             view,
             appSettingsStorage,

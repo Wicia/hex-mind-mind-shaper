@@ -103,7 +103,7 @@ class AudioRecordingView @JvmOverloads constructor(
     private var callback: RecordingCallback? = null
 
     init {
-        inflate(context, R.layout.view_recording_playback, this)
+        inflate(context, R.layout.z_recording_playback_view, this)
         orientation = VERTICAL
 
         // Initialize UI components

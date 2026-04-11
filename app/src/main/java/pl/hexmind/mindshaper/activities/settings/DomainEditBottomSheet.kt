@@ -14,7 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
 import pl.hexmind.mindshaper.common.validation.ValidationResult
-import pl.hexmind.mindshaper.databinding.BottomsheetDomainEditBinding
+import pl.hexmind.mindshaper.databinding.DomainEditBottomsheetBinding
 import pl.hexmind.mindshaper.services.validators.DomainValidator
 
 /**
@@ -36,7 +36,7 @@ class DomainEditBottomSheet(
     private val validator: DomainValidator
 ) : BottomSheetDialogFragment() {
 
-    private var _binding: BottomsheetDomainEditBinding? = null
+    private var _binding: DomainEditBottomsheetBinding? = null
     private val binding get() = _binding!!
 
     private var onConfirm: ((name: String, iconId: Int) -> Unit)? = null
@@ -46,7 +46,7 @@ class DomainEditBottomSheet(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = BottomsheetDomainEditBinding.inflate(inflater, container, false)
+        _binding = DomainEditBottomsheetBinding.inflate(inflater, container, false)
         return binding.root
     }
 
