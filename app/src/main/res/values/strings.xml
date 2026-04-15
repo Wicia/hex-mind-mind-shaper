@@ -3,9 +3,9 @@
     <!-- [module/feature] / [component/screen] -> [message type] -> [details] -->
     <!-- [module/feature] / [component/screen] -> label -> [element] -->
 
-    <!-- ====================================== -->
+    <!-- ============================================================================ -->
     <!--    CORE / COMMON -->
-    <!-- ====================================== -->
+    <!-- ============================================================================ -->
 
     <string name="app_name">MindShaper</string>
 
@@ -16,14 +16,17 @@
     <string name="hex_tags_hint_project">Projekt</string>
     <string name="hex_tags_label_domain">| Domena</string>
 
-    <!-- BUTTONS + ACTIONS -->
+    <!-- BUTTONS & ACTIONS -->
     <string name="common_btn_save">Zapisz</string>
     <string name="common_btn_cancel">Anuluj</string>
     <string name="common_btn_cancel_not_now">Nie teraz</string>
     <string name="common_btn_confirm_ok">OK</string>
+    <string name="common_btn_confirm_ok_2">Dobra</string>
 
     <string name="common_btn_add">\?</string>
     <string name="common_btn_create">+</string>
+    <string name="common_btn_increase">+</string>
+    <string name="common_btn_decrease">-</string>
 
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
 
@@ -59,6 +62,7 @@
     <string name="common_deletion_dialog_confirmation">%s usunięto</string>
     <string name="common_deletion_dialog_warning">Tej operacji nie można cofnąć.</string>
     <string name="common_edit_note_header">Edytuj notatkę</string>
+    <string name="common_thoughts_forms_permissions_needed">Możesz aktywować zapisywanie myśli w formie nagrań głosowych oraz zdjęć w Ustawieniach.\n\nCzy przejść do Ustawień?</string>
 
     <string name="common_list_dialog_title">Wybierz coś sobie…</string>
 
@@ -181,9 +185,9 @@
         następnie Zapisz i zobacz szczegóły nowo złapanej myśli
     ]]></string>
 
-    <!-- ====================================== -->
+    <!-- ============================================================================ -->
     <!--    Activity: HOME -->
-    <!-- ====================================== -->
+    <!-- ============================================================================ -->
 
     <array name="home_greetings_values_list">
         <item>Dużo dobrego %s!</item>
@@ -199,16 +203,16 @@
         <item>Dobrze Cię widzieć %s ;)</item>
     </array>
 
-    <!-- ====================================== -->
+    <!-- ============================================================================ -->
     <!--    Activity: DETAILS / EDIT -->
-    <!-- ====================================== -->
+    <!-- ============================================================================ -->
 
     <string name="details_edit_thought_invalid_id">Niepoprawne ID rekordu Myśli :/</string>
     <string name="details_edit_thought_not_found">Nie znaleziono myśli :/</string>
 
-    <!-- ====================================== -->
+    <!-- ============================================================================ -->
     <!--    Activity: CAPTURE THOUGHT -->
-    <!-- ====================================== -->
+    <!-- ============================================================================ -->
 
     <!-- Core -->
     <string name="capture_main_label">Łapanie myśli</string>
@@ -237,11 +241,15 @@
 
     <string name="thoughts_stream_title">Strumień myśli</string>
 
-    <!-- ====================================== -->
-    <!--    Activity: STREAM of THOUGHTS  -->
-    <!-- ====================================== -->
+    <!-- ============================================================================ -->
+    <!--    Activity: STREAM of thoughts  -->
+    <!-- ============================================================================ -->
 
     <string name="stream_thought_metadata_empty">\?\?\?</string>
+    <string name="stream_item_empty_thought">- ? -\n\nTa myśl jest pusta…</string>
+
+    <!-- Searching -->
+    <string name="stream_searchbar_hint">Szukajka czeka na twoje polecenie…</string>
 
     <!-- Filter -->
     <string name="stream_filter_dialog_title">Filtruj</string>
@@ -251,8 +259,6 @@
     <!-- Sort Properties -->
     <string name="sort_dialog_header">Sortowanie</string>
 
-    <string name="sort_info_prefix">od</string>
-
     <string name="sort_property_created_at">Wiek</string>
     <string name="sort_property_thread">Wątek</string>
     <string name="sort_property_soul_mate">Osoba</string>
@@ -260,7 +266,6 @@
     <string name="sort_property_value">Wartość</string>
     <string name="sort_property_updated_at">Data zmiany</string>
 
-    <string name="common_thought_updated_at_icon">📝</string>
     <string name="common_thought_updated_at_0">Zmieniono dziś</string>
     <string name="common_thought_updated_at_1">Zmieniono wczoraj</string>
     <string name="common_thought_updated_at_pattern">Zmieniono %s dni temu</string>
@@ -274,12 +279,9 @@
     <string name="sort_date_desc_label">od Młodych</string>
     <string name="sort_date_asc_label">od Starych</string>
 
-    <!-- Sort Directions -->
-    <string name="sort_direction_description">Kierunek sortowania</string>
-
-    <!-- ====================================== -->
+    <!-- ============================================================================ -->
     <!--    Activity: SETTINGS -->
-    <!-- ====================================== -->
+    <!-- ============================================================================ -->
 
     <!-- Header -->
     <string name="settings_header">Ustawienia</string>
@@ -336,13 +338,10 @@
     <string name="settings_backup_state_no_file">Nie wybrano pliku</string>
     <string name="settings_backup_state_file_selected">Wybrany plik: %1$s</string>
     <string name="settings_backup_loaded_success">Backup wczytany pomyślnie</string>
-    <string name="settings_backup_error_loading">Błąd podczas wczytywania backupu</string>
+    <string name="settings_backup_error_loading">Błąd podczas wczytywania backupu</string>sda
 
     <string name="rich_text_removing_header">Usunąć tekst?</string>
     <string name="rich_text_removing_content">Ta operacja jest nieodwracalna</string>
-
-    <string name="stream_item_empty_thought">- ? -\n\nTa myśl jest pusta…</string>
-    <string name="stream_searchbar_hint">Szukajka czeka na twoje polecenie…</string>
 
     <string name="settings_voice_recording_info">Aby móc nagrywać dźwięk, aplikacja potrzebuje dostępu do mikrofonu.</string>
     <string name="settings_permissions_backup">Włącz tworzenie kopii zapasowych</string>
@@ -351,9 +350,12 @@
 
     <string name="settings_permissions_photo_info">Aby móc robić zdjęcia, aplikacja potrzebuje dostępu do kamery.</string>
 
-    <!-- ====================================== -->
+    <string name="settings_slow_mode_header">⏳ Tryb powolny</string>
+    <string name="settings_slow_mode_label">Włącz możliwość nadawania wartości myślom po tylu godzinach:</string>
+
+    <!-- ============================================================================ -->
     <!--    Activity: WORKSHOP -->
-    <!-- ====================================== -->
+    <!-- ============================================================================ -->
 
     <!-- Main -->
     <string name="workshop_title">Warsztat</string>

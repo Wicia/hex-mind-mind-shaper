@@ -120,24 +120,67 @@
                         android:layout_marginBottom="8dp"
                         android:text="@string/settings_thoughts_value_action_info" />
 
-                    <RadioGroup
-                        android:id="@+id/rg_values_system"
+                    <pl.hexmind.mindshaper.activities.settings.widgets.ThoughtValueSystemTiles
+                        android:id="@+id/tiles_value_system"
+                        android:layout_width="220dp"
+                        android:layout_height="wrap_content" />
+
+                    <!-- Slow mode section -->
+                    <TextView
+                        android:id="@+id/tv_slow_mode_section_header"
+                        style="@style/TextView_Header_Section"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/settings_slow_mode_header" />
 
-                        <RadioButton
-                            android:id="@+id/rb_system_6"
-                            android:layout_width="match_parent"
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_slow_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_slow_mode_label" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_slow_mode_hours_picker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_slow_mode_decrease"
+                            style="@style/SecondaryActionButton"
+                            android:layout_width="wrap_content"
+                            android:minWidth="35dp"
                             android:layout_height="wrap_content"
-                            android:text="@string/settings_thoughts_value_system_6" />
+                            android:text="@string/common_btn_decrease" />
 
-                        <RadioButton
-                            android:id="@+id/rb_system_10"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/tv_slow_mode_hours"
+                            android:layout_width="40dp"
                             android:layout_height="wrap_content"
-                            android:text="@string/settings_thoughts_value_system_10" />
+                            android:gravity="center"
+                            android:text="1"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
-                    </RadioGroup>
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_slow_mode_increase"
+                            style="@style/SecondaryActionButton"
+                            android:layout_width="wrap_content"
+                            android:minWidth="35dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/common_btn_increase" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:text="h"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

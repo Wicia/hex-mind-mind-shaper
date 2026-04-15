@@ -85,7 +85,17 @@ class DetailsViewModel @Inject constructor(
     }
 
     fun increaseValue() {
-        updateValue(1)
+        if (canIncreaseValue()) {
+            updateValue(1)
+        }
+        else { // Go back to MIN value for thought
+            viewModelScope.launch {
+                thoughtDetails.value?.let { thought ->
+                    thought.value = validator.getThoughtValueMin()
+                    thoughtsService.updateThoughtMetadata(thought)
+                }
+            }
+        }
     }
 
     fun decreaseValue() {
@@ -228,7 +238,6 @@ class DetailsViewModel @Inject constructor(
             }
         }
     }
-
     override fun onCleared() {
         super.onCleared()
         thumbnailCache.evictAll()

@@ -44,6 +44,13 @@ class AppSettingsStorage @Inject constructor(
         private const val PARAM_PHOTO_FEATURE_ENABLED = "photo_feature_enabled"
 
         private const val PARAM_BACKUP_ENABLED = "param_backup_enabled"
+
+        // Slow mode
+        private const val PARAM_SLOW_MODE_ENABLED = "param_slow_mode_enabled"
+        private const val PARAM_SLOW_MODE_HOURS   = "param_slow_mode_hours"
+
+        const val SLOW_MODE_HOURS_MIN = 1 // TODO: Move to validator when there will be more business logic related to validating settings
+        const val SLOW_MODE_HOURS_MAX = 12
     }
 
     fun getApplicationContext() : Context {
@@ -155,5 +162,21 @@ class AppSettingsStorage @Inject constructor(
     fun getDefaultCaptureForm(): DefaultCaptureForm {
         val value = sharedPreferences.getString(PARAM_DEFAULT_CAPTURE_FORM, "")
         return if (!value.isNullOrBlank()) DefaultCaptureForm.valueOf(value) else DefaultCaptureForm.TEXT
+    }
+
+    // === SLOW MODE ===
+
+    fun isSlowModeEnabled(): Boolean =
+        sharedPreferences.getBoolean(PARAM_SLOW_MODE_ENABLED, false)
+
+    fun setSlowModeEnabled(enabled: Boolean) {
+        sharedPreferences.edit { putBoolean(PARAM_SLOW_MODE_ENABLED, enabled) }
+    }
+
+    fun getSlowModeHours(): Int =
+        sharedPreferences.getInt(PARAM_SLOW_MODE_HOURS, SLOW_MODE_HOURS_MIN)
+
+    fun setSlowModeHours(hours: Int) {
+        sharedPreferences.edit { putInt(PARAM_SLOW_MODE_HOURS, hours) }
     }
 }

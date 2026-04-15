@@ -4,6 +4,7 @@ import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.os.CountDownTimer
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
@@ -28,6 +29,8 @@ import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import java.io.File
+import java.time.Duration
+import java.time.Instant
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -129,7 +132,7 @@ class DetailsActivity : ThoughtManagerActivity() {
                 viewModel.decreaseValue()
             }
             vbThoughtValue.setOnClickListener {
-                viewModel.increaseValue()
+                viewModel.increaseValue() // for not locked thought
             }
 
             // THREAD
@@ -437,32 +440,98 @@ class DetailsActivity : ThoughtManagerActivity() {
     }
 
     private fun updateValueUI(thought: ThoughtDTO) {
-        // Set text to display value
+
+        val isThoughtLocked = isThoughtLocked(thought)
+        binding.vbThoughtValue.isLocked = isThoughtLocked
+
+        // Locked = slow mode is still active
+        if (isThoughtLocked) {
+            binding.btnValueIncrease.isEnabled = false
+            binding.btnValueDecrease.isEnabled = false
+            val gray = ColorStateList.valueOf(
+                ContextCompat.getColor(this, R.color.button_secondary_disabled_background)
+            )
+            binding.btnValueIncrease.imageTintList = gray
+            binding.btnValueDecrease.imageTintList = gray
+            binding.vbThoughtValue.setOnClickListener { animateStatusIconGlow() }
+
+            binding.ivStatus.setImageResource(R.drawable.ic_status_locked)
+            binding.ivStatus.imageTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(this, R.color._gray_lvl_2)
+            )
+            binding.ivStatus.setOnClickListener { showLockedCountdownDialog(thought) }
+            return
+        }
+
+        // Unlocked - "WIP"
+        binding.vbThoughtValue.setOnClickListener { viewModel.increaseValue() }
+
+        binding.ivStatus.setImageResource(R.drawable.ic_status_wip)
+        binding.ivStatus.imageTintList = ColorStateList.valueOf(
+            ContextCompat.getColor(this, R.color._orange_lvl_1)
+        )
+        binding.ivStatus.setOnClickListener(null)
+
         binding.vbThoughtValue.currentLevel = thought.value
 
         // Enable/disable buttons based on bounds
         binding.btnValueIncrease.isEnabled = viewModel.canIncreaseValue()
         binding.btnValueDecrease.isEnabled = viewModel.canDecreaseValue()
+    }
 
-        if(!binding.btnValueIncrease.isEnabled){
-            binding.btnValueIncrease.imageTintList  = ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.button_secondary_disabled_background)
-            )
+    // ========== SLOW MODE LOCK ==========
+
+    private fun isThoughtLocked(thought: ThoughtDTO): Boolean {
+        if (!appSettingsStorage.isSlowModeEnabled()) return false
+        val hours = appSettingsStorage.getSlowModeHours()
+        val elapsed = Duration.between(thought.createdAt, Instant.now()).toHours()
+        return elapsed < hours
+    }
+
+    private fun animateStatusIconGlow() {
+        binding.ivStatus.animate()
+            .scaleX(1.35f).scaleY(1.35f).setDuration(130)
+            .withEndAction {
+                binding.ivStatus.animate()
+                    .scaleX(1f).scaleY(1f).setDuration(130).start()
+            }.start()
+    }
+
+    private fun showLockedCountdownDialog(thought: ThoughtDTO) {
+        val hours = appSettingsStorage.getSlowModeHours()
+        val unlockAt = thought.createdAt.plusSeconds(hours * 3600L)
+        val remainingMs = Duration.between(Instant.now(), unlockAt).toMillis()
+
+        if (remainingMs <= 0) return
+
+        val dialog = com.google.android.material.dialog.MaterialAlertDialogBuilder(this) // TODO: Replace with custom dialog
+            .setTitle("⏳ Tryb powolny")
+            .setMessage(formatRemainingTime(Duration.ofMillis(remainingMs)))
+            .setPositiveButton(R.string.common_btn_confirm_ok) { d, _ -> d.dismiss() }
+            .show()
+
+        // Real-time countdown — ticks every minute, refreshes message
+        val timer = object : CountDownTimer(remainingMs, 60_000) {
+            override fun onTick(millisUntilFinished: Long) {
+                dialog.setMessage(formatRemainingTime(Duration.ofMillis(millisUntilFinished)))
+            }
+            override fun onFinish() {
+                dialog.dismiss()
+                // Refresh UI — lock expired while dialog was open
+                viewModel.thoughtDetails.value?.let { updateValueUI(it) }
+            }
         }
-        else{
-            binding.btnValueIncrease.imageTintList  = ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.button_secondary_enabled_background)
-            )
-        }
-        if(!binding.btnValueDecrease.isEnabled){
-            binding.btnValueDecrease.imageTintList  = ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.button_secondary_disabled_background)
-            )
-        }
-        else{
-            binding.btnValueDecrease.imageTintList  = ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.button_secondary_enabled_background)
-            )
+        timer.start()
+        dialog.setOnDismissListener { timer.cancel() }
+    }
+
+    private fun formatRemainingTime(remaining: Duration): String {
+        val h = remaining.toHours()
+        val m = remaining.toMinutes() % 60
+        return when {
+            h > 0 && m > 0 -> "Poczekaj jeszcze $h godz. i $m min. zanim będzie można ocenić tą myśl…"
+            h > 0          -> "Poczekaj jeszcze $h godz. zanim będzie można ocenić tą myśl…"
+            else           -> "Poczekaj jeszcze $m min. zanim będzie można ocenić tą myśl…"
         }
     }
 

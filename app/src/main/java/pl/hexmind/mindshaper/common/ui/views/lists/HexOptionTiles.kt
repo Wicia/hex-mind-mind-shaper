@@ -12,6 +12,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import pl.hexmind.mindshaper.R
+import androidx.core.view.isVisible
 
 /**
  * Horizontal tile-based radio group — each tile shows an icon + label.
@@ -36,7 +37,7 @@ open class HexOptionTiles @JvmOverloads constructor(
     data class Option(
         val id: Int,
         @StringRes val labelRes: Int,
-        @DrawableRes val iconRes: Int
+        @DrawableRes val iconRes: Int? = null
     )
 
     var onSelectionChanged: ((selectedId: Int) -> Unit)? = null
@@ -57,9 +58,18 @@ open class HexOptionTiles @JvmOverloads constructor(
 
         options.forEachIndexed { index, option ->
             val tileView = LayoutInflater.from(context)
-                .inflate(R.layout.z_radio_tile_item_view, this, false)
+                .inflate(R.layout.z_option_tile_item_view, this, false)
 
-            tileView.findViewById<ImageView>(R.id.iv_tile_icon).setImageResource(option.iconRes)
+            // Icon handling
+            val icon = tileView.findViewById<ImageView>(R.id.iv_tile_icon)
+            if (option.iconRes != null) {
+                icon.setImageResource(option.iconRes)
+                icon.visibility = VISIBLE
+            } else {
+                icon.visibility = GONE
+            }
+
+            // Label handling
             tileView.findViewById<TextView>(R.id.tv_tile_label).setText(option.labelRes)
 
             // Gap between tiles (not before the first one)
@@ -165,7 +175,10 @@ open class HexOptionTiles @JvmOverloads constructor(
             setStroke(strokeWidth, strokeColor)
         }
 
-        icon.setColorFilter(contentColor)
+        if (icon.isVisible) {
+            icon.setColorFilter(contentColor)
+        }
+
         label.setTextColor(contentColor)
     }
 

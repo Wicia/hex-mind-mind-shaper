@@ -18,10 +18,9 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
-import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem.STANDARD_10
-import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem.STANDARD_6
 import pl.hexmind.mindshaper.database.initialization.DataSnapshotManager
 import pl.hexmind.mindshaper.databinding.SettingsActivityBinding
+import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.DomainIconsService
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.MediaStorageService
@@ -54,6 +53,8 @@ class SettingsActivity : CoreActivity() {
     private lateinit var binding: SettingsActivityBinding
 
     private var selectedBackupUri: Uri? = null
+
+    private var slowModeHours: Int = 1
 
     // Activity result launcher for backup file selection
     private val backupPickerLauncher = registerForActivityResult(
@@ -98,8 +99,9 @@ class SettingsActivity : CoreActivity() {
         // ! Keep sequence: initDefaultCaptureFormConfig MUST be before setupListeners
         // so that tile states are ready before syncDefaultCaptureFormTileStates fires
         initDefaultCaptureFormConfig()
-        setupListeners()
         initThoughtsValuesSystemConfig()
+        initSlowModeConfig()
+        setupListeners()
         initDomainButtons()
     }
 
@@ -144,6 +146,7 @@ class SettingsActivity : CoreActivity() {
         setupVoiceRecordingFeatureToggle()
         setupPhotoFeatureToggle()
         setupBackupFeatureToggle()
+        setupSlowModeListeners()
     }
 
     // ========== DEFAULT CAPTURE FORM ==========
@@ -429,13 +432,44 @@ class SettingsActivity : CoreActivity() {
     // ========== THOUGHTS VALUES SYSTEM & DOMAINS ==========
 
     private fun initThoughtsValuesSystemConfig() {
-        val currentSystem = appSettingsStorage.getThoughtValueSystem()
-        when (currentSystem) {
-            STANDARD_6  -> binding.rgValuesSystem.check(R.id.rb_system_6)
-            STANDARD_10 -> binding.rgValuesSystem.check(R.id.rb_system_10)
-        }
-        // No listener needed — value is read from RadioGroup at save time
+        binding.tilesValueSystem.setSelected(appSettingsStorage.getThoughtValueSystem())
     }
+
+    // ========== SLOW MODE ==========
+
+    private fun initSlowModeConfig() {
+        slowModeHours = appSettingsStorage.getSlowModeHours()
+        binding.switchSlowMode.isChecked = appSettingsStorage.isSlowModeEnabled()
+        updateSlowModeHoursDisplay()
+        syncSlowModeHoursPickerState()
+    }
+
+    private fun setupSlowModeListeners() {
+        binding.switchSlowMode.setOnCheckedChangeListener { _, _ ->
+            syncSlowModeHoursPickerState()
+        }
+        binding.btnSlowModeDecrease.setOnClickListener {
+            if (slowModeHours > 1) { slowModeHours--; updateSlowModeHoursDisplay() }
+        }
+        binding.btnSlowModeIncrease.setOnClickListener {
+            if (slowModeHours < 12) { slowModeHours++; updateSlowModeHoursDisplay() }
+        }
+    }
+
+    private fun updateSlowModeHoursDisplay() {
+        binding.tvSlowModeHours.text = slowModeHours.toString()
+        binding.btnSlowModeDecrease.isEnabled = slowModeHours > AppSettingsStorage.SLOW_MODE_HOURS_MIN
+        binding.btnSlowModeIncrease.isEnabled = slowModeHours < AppSettingsStorage.SLOW_MODE_HOURS_MAX
+    }
+
+    private fun syncSlowModeHoursPickerState() {
+        val enabled = binding.switchSlowMode.isChecked
+        binding.llSlowModeHoursPicker.alpha = if (enabled) 1f else 0.4f
+        binding.btnSlowModeDecrease.isEnabled = enabled && slowModeHours > AppSettingsStorage.SLOW_MODE_HOURS_MIN
+        binding.btnSlowModeIncrease.isEnabled = enabled && slowModeHours < AppSettingsStorage.SLOW_MODE_HOURS_MAX
+    }
+
+    // ========== DOMAINS ==========
 
     private fun initDomainButtons() {
         lifecycleScope.launch {
@@ -590,11 +624,11 @@ class SettingsActivity : CoreActivity() {
 
         appSettingsStorage.setDefaultCaptureForm(binding.tilesDefaultCaptureForm.getSelected())
 
-        val thoughtValueSystem = when (binding.rgValuesSystem.checkedRadioButtonId) {
-            R.id.rb_system_10 -> STANDARD_10
-            else              -> STANDARD_6
-        }
-        appSettingsStorage.setThoughtValueSystemId(thoughtValueSystem)
+        appSettingsStorage.setThoughtValueSystemId(binding.tilesValueSystem.getSelected())
+
+        // Slow mode
+        appSettingsStorage.setSlowModeEnabled(binding.switchSlowMode.isChecked)
+        appSettingsStorage.setSlowModeHours(slowModeHours)
 
         showShortToast(R.string.common_info_changes_saved)
 

@@ -68,6 +68,15 @@ class ValueCloude @JvmOverloads constructor(
             invalidate()
         }
 
+    var isLocked: Boolean = false // for "slow mode"
+        set(value) {
+            field = value
+            squarePaint.color = ContextCompat.getColor(
+                context, if (value) R.color._gray_lvl_2 else squareColor
+            )
+            invalidate()
+        }
+
     // Callback
     var onLevelChangeListener: ((Int) -> Unit)? = null
 
@@ -84,10 +93,14 @@ class ValueCloude @JvmOverloads constructor(
         typeface = ResourcesCompat.getFont(context, R.font.baloo2)
     }
 
-    // ✨ Flash animation paint
-    private val flashPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    // Animating glow effect when changing thought's value
+    private val glowRings = listOf(
+        Triple(1.05f,  5f, 210),   // scale, strokeWidth, maxAlpha — inner: sharp bright ring
+        Triple(1.13f,  9f, 120),   // middle: softer halo
+        Triple(1.23f, 14f,  50),   // outer: wide diffuse bloom
+    )
+    private val glowPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
-        strokeWidth = 8f
         color = ContextCompat.getColor(context, R.color._orange_lvl_3)
         alpha = 0
     }
@@ -146,20 +159,24 @@ class ValueCloude @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        // Draw cloud shape (9 circles - B2 variant)
-        drawCloud(canvas)
-
-        // ✨ Flash animation on cloud
+        // To ensure that animation is displayed properly
         if (flashProgress < 1f) {
-            flashPaint.alpha = ((1f - flashProgress) * 200).toInt()
-            val flashScale = 1f + (1f - flashProgress) * 0.15f
-            drawCloudFlash(canvas, flashScale)
+            val fade = 1f - flashProgress
+            glowRings.forEach { (scale, strokeW, maxAlpha) ->
+                glowPaint.strokeWidth = strokeW
+                glowPaint.alpha = (fade * maxAlpha).toInt()
+                drawCloudGlowRing(canvas, scale)
+            }
         }
+
+        // Draw cloud shape on top — covers internal ring intersections
+        drawCloud(canvas)
 
         // Center text
         if (showLevelText) {
             val textY = centerY - (textPaint.descent() + textPaint.ascent()) / 2
-            canvas.drawText("$currentLevel", centerX, textY, textPaint)
+            val label = if (isLocked) "?" else "$currentLevel"
+            canvas.drawText(label, centerX, textY, textPaint)
         }
     }
 
@@ -187,34 +204,32 @@ class ValueCloude @JvmOverloads constructor(
         canvas.drawCircle(centerX + diagonalOffset, centerY + diagonalOffset, diagonalRadius, squarePaint) // Bottom-right
     }
 
-    private fun drawCloudFlash(canvas: Canvas, scale: Float) {
-        val baseRadius = squareSize / 6f * scale
-        val mainRadius = baseRadius * 0.83f
-        val diagonalRadius = baseRadius * 0.63f
+    // Draw the cloud outline for cool tapping effect :)
+    private fun drawCloudGlowRing(canvas: Canvas, scale: Float) {
+        val baseRadius     = squareSize / 6f
+        val mainRadius     = baseRadius * 0.75f
+        val diagonalRadius = baseRadius * 0.65f
 
-        val mainOffset = squareSize * 0.22f
-        val diagonalOffset = squareSize * 0.16f
+        val mainOffset     = squareSize * 0.18f   // same as drawCloud
+        val diagonalOffset = squareSize * 0.15f   // same as drawCloud
 
-        // Center circle
-        canvas.drawCircle(centerX, centerY, baseRadius, flashPaint)
+        canvas.drawCircle(centerX, centerY, baseRadius * scale, glowPaint)
 
-        // Main directions
-        canvas.drawCircle(centerX, centerY - mainOffset, mainRadius, flashPaint)
-        canvas.drawCircle(centerX, centerY + mainOffset, mainRadius, flashPaint)
-        canvas.drawCircle(centerX - mainOffset, centerY, mainRadius, flashPaint)
-        canvas.drawCircle(centerX + mainOffset, centerY, mainRadius, flashPaint)
+        canvas.drawCircle(centerX, centerY - mainOffset, mainRadius * scale, glowPaint)
+        canvas.drawCircle(centerX, centerY + mainOffset, mainRadius * scale, glowPaint)
+        canvas.drawCircle(centerX - mainOffset, centerY, mainRadius * scale, glowPaint)
+        canvas.drawCircle(centerX + mainOffset, centerY, mainRadius * scale, glowPaint)
 
-        // Diagonals
-        canvas.drawCircle(centerX - diagonalOffset, centerY - diagonalOffset, diagonalRadius, flashPaint)
-        canvas.drawCircle(centerX + diagonalOffset, centerY - diagonalOffset, diagonalRadius, flashPaint)
-        canvas.drawCircle(centerX - diagonalOffset, centerY + diagonalOffset, diagonalRadius, flashPaint)
-        canvas.drawCircle(centerX + diagonalOffset, centerY + diagonalOffset, diagonalRadius, flashPaint)
+        canvas.drawCircle(centerX - diagonalOffset, centerY - diagonalOffset, diagonalRadius * scale, glowPaint)
+        canvas.drawCircle(centerX + diagonalOffset, centerY - diagonalOffset, diagonalRadius * scale, glowPaint)
+        canvas.drawCircle(centerX - diagonalOffset, centerY + diagonalOffset, diagonalRadius * scale, glowPaint)
+        canvas.drawCircle(centerX + diagonalOffset, centerY + diagonalOffset, diagonalRadius * scale, glowPaint)
     }
 
     private fun startFlashAnimation() {
         flashProgress = 0f
         ValueAnimator.ofFloat(0f, 1f).apply {
-            duration = 250
+            duration = 400  // slightly longer so the outer bloom is visible
             addUpdateListener {
                 flashProgress = it.animatedValue as Float
                 invalidate()
