@@ -99,11 +99,11 @@ class DetailsActivity : ThoughtManagerActivity() {
     }
 
     /**
-     * Setup adding new thought content buttons with 30% of screen width
+     * Setup adding new thought content buttons with 25% of screen width
      */
     private fun setupToolbarButtonWidths() {
         val screenWidth = resources.displayMetrics.widthPixels
-        val buttonWidth = (screenWidth * 0.30f).toInt() // Here
+        val buttonWidth = (screenWidth * 0.25f).toInt()
 
         binding.btnRichTextAdd.layoutParams =
             (binding.btnRichTextAdd.layoutParams as ViewGroup.MarginLayoutParams).apply {
