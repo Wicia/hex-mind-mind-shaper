@@ -25,7 +25,7 @@
         <attr name="textSize" format="dimension" />
     </declare-styleable>
 
-    <declare-styleable name="AudioRecordingView">
+    <declare-styleable name="HexAudioView">
         <attr name="recordingMode" format="enum">
             <enum name="recordPlayback" value="0" />
             <enum name="playbackOnly" value="1" />
@@ -33,7 +33,7 @@
         <attr name="compact" />
     </declare-styleable>
 
-    <declare-styleable name="PhotoDisplayView">
+    <declare-styleable name="HexPhotoView">
         <attr name="photoMode" format="enum">
             <enum name="captureDisplay" value="0" />
             <enum name="displayOnly" value="1" />

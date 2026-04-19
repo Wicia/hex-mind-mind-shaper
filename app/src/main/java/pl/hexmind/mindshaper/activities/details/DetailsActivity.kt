@@ -22,7 +22,7 @@ import pl.hexmind.mindshaper.common.ui.dialogs.HexTagsBottomSheet
 import pl.hexmind.mindshaper.common.ui.dialogs.PhotoFullscreenDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
 import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
-import pl.hexmind.mindshaper.common.ui.views.content.AudioRecordingView
+import pl.hexmind.mindshaper.common.ui.views.content.HexAudioView
 import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
 import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
 import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
@@ -208,7 +208,7 @@ class DetailsActivity : ThoughtManagerActivity() {
                 }
             })
 
-            audioRecordingPlayback.setCallback(object : AudioRecordingView.RecordingCallback {
+            audioRecordingPlayback.setCallback(object : HexAudioView.RecordingCallback {
                 override fun onRecordingStarted() {}
 
                 override fun onRecordingStopped(file: File, durationMs: Long) {

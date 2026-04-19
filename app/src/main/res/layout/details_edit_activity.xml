@@ -159,7 +159,7 @@
                     app:richTextMode="editDisplay" />
 
                 <!-- SOUND RECORDING : Media player for audio -->
-                <pl.hexmind.mindshaper.common.ui.views.content.AudioRecordingView
+                <pl.hexmind.mindshaper.common.ui.views.content.HexAudioView
                     android:id="@+id/audio_recording_playback"
                     style="@style/RecordingPlaybackView_UsedWithTint"
                     app:recordingMode="recordPlayback"

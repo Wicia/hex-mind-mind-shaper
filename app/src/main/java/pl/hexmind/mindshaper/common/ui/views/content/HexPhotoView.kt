@@ -27,7 +27,6 @@ import kotlin.math.max
 
 /**
  * Universal photo display and capture view
- * Pattern: AudioRecordingView
  */
 class HexPhotoView @JvmOverloads constructor(
     context: Context,
@@ -59,7 +58,7 @@ class HexPhotoView @JvmOverloads constructor(
         fun onError(error: String)
     }
 
-    // UI Components (public like AudioRecordingView)
+    // UI Components
     val ivPhoto: ImageView
     private val tvInfo: TextView
     private val progressBar: ProgressBar
@@ -89,10 +88,10 @@ class HexPhotoView @JvmOverloads constructor(
 
         // Read XML attributes
         attrs?.let {
-            context.withStyledAttributes(it, R.styleable.PhotoDisplayView) {
-                val modeValue = getInt(R.styleable.PhotoDisplayView_photoMode, 0)
+            context.withStyledAttributes(it, R.styleable.HexPhotoView) {
+                val modeValue = getInt(R.styleable.HexPhotoView_photoMode, 0)
                 mode = if (modeValue == 1) Mode.DISPLAY_ONLY else Mode.CAPTURE_DISPLAY
-                compact = getBoolean(R.styleable.PhotoDisplayView_compact, false)
+                compact = getBoolean(R.styleable.HexPhotoView_compact, false)
                 setupUIForMode()
             }
         }

@@ -17,7 +17,7 @@ import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.common.ui.dialogs.PhotoFullscreenDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
-import pl.hexmind.mindshaper.common.ui.views.content.AudioRecordingView
+import pl.hexmind.mindshaper.common.ui.views.content.HexAudioView
 import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
 import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
 import pl.hexmind.mindshaper.common.validation.ValidationResult
@@ -165,7 +165,7 @@ class CaptureActivity : ThoughtManagerActivity() {
             })
 
             // AUDIO CALLBACKS
-            audioRecordingPlayback.setCallback(object : AudioRecordingView.RecordingCallback {
+            audioRecordingPlayback.setCallback(object : HexAudioView.RecordingCallback {
                 override fun onRecordingStarted() {
                     // Clear validation messages
                     tvHexTagsValidationInfo.text = ""

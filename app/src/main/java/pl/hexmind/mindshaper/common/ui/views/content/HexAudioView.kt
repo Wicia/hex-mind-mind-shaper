@@ -34,7 +34,7 @@ import java.io.File
  * - RECORD_PLAYBACK: Full recording + playback functionality
  * - PLAYBACK_ONLY: Playback only (for viewing saved recordings)
  */
-class AudioRecordingView @JvmOverloads constructor(
+class HexAudioView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -52,7 +52,7 @@ class AudioRecordingView @JvmOverloads constructor(
     }
 
     companion object {
-        private const val TAG = "AudioRecordingView"
+        private const val TAG = "HexAudioView"
         private const val TIMER_UPDATE_INTERVAL_MS = 100L
         private const val AMPLITUDE_UPDATE_INTERVAL_MS = 50L
         private const val SKIP_DURATION_MS = 5000L
@@ -118,11 +118,11 @@ class AudioRecordingView @JvmOverloads constructor(
 
         // Read mode from XML attributes if provided
         attrs?.let {
-            context.withStyledAttributes(it, R.styleable.AudioRecordingView) {
-                val modeValue = getInt(R.styleable.AudioRecordingView_recordingMode, 0)
+            context.withStyledAttributes(it, R.styleable.HexAudioView) {
+                val modeValue = getInt(R.styleable.HexAudioView_recordingMode, 0)
                 mode = if (modeValue == 1) Mode.PLAYBACK_ONLY else Mode.RECORD_PLAYBACK
                 setupUIForMode()
-                compact = getBoolean(R.styleable.AudioRecordingView_compact, false)
+                compact = getBoolean(R.styleable.HexAudioView_compact, false)
             }
         }
 

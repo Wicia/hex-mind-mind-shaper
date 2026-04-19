@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtGrowthStage
-import pl.hexmind.mindshaper.common.ui.views.content.AudioRecordingView
+import pl.hexmind.mindshaper.common.ui.views.content.HexAudioView
 import pl.hexmind.mindshaper.common.ui.views.lists.SortConfig
 import pl.hexmind.mindshaper.common.ui.views.lists.SortProperty
 import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
@@ -78,7 +78,7 @@ class StreamAdapter(
 
         private val nestedScrollView: NestedScrollView = itemView.findViewById(R.id.nested_scroll_view)
         private val tvRichText: HexTextView = itemView.findViewById(R.id.rich_text_view)
-        private val audioView: AudioRecordingView = itemView.findViewById(R.id.arv_playback)
+        private val audioView: HexAudioView = itemView.findViewById(R.id.arv_playback)
         private val photoView: HexPhotoView = itemView.findViewById(R.id.pv_photo)
 
         private val tvLabel: TextView = itemView.findViewById(R.id.tv_label)

@@ -58,7 +58,7 @@
                         app:richTextMode="displayOnly" />
 
                     <!-- AUDIO RECORDING -->
-                    <pl.hexmind.mindshaper.common.ui.views.content.AudioRecordingView
+                    <pl.hexmind.mindshaper.common.ui.views.content.HexAudioView
                         android:id="@+id/arv_playback"
                         app:recordingMode="playbackOnly"
                         app:compact="true"
