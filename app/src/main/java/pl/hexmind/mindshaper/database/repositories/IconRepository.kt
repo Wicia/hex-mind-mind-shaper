@@ -1,7 +1,5 @@
 package pl.hexmind.mindshaper.database.repositories
 
-import android.database.sqlite.SQLiteConstraintException
-import androidx.lifecycle.LiveData
 import pl.hexmind.mindshaper.database.models.IconEntity
 import timber.log.Timber
 import javax.inject.Inject
@@ -46,6 +44,25 @@ class IconRepository @Inject constructor(
         }
         catch (e: Exception) {
             Timber.e(e, "Failed to seed icons")
+        }
+    }
+
+    /**
+     * Additive seed used after snapshot restore — inserts only icons not yet in DB
+     */
+    suspend fun seedNewIcons(icons: List<IconEntity>) {
+        try {
+            val existingNames = iconDao.getAllDrawableNames().toSet()
+            val newIcons = icons.filter { it.drawableName !in existingNames }
+            if (newIcons.isEmpty()) {
+                Timber.i("No new icons to seed")
+                return
+            }
+            iconDao.insertIcons(newIcons)
+            Timber.i("Seeded ${newIcons.size} new icons")
+        }
+        catch (e: Exception) {
+            Timber.e(e, "Failed to seed new icons")
         }
     }
 }

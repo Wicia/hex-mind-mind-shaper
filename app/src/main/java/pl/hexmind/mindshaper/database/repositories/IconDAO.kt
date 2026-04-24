@@ -1,6 +1,5 @@
 package pl.hexmind.mindshaper.database.repositories
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -15,6 +14,9 @@ interface IconDAO {
 
     @Query("SELECT id FROM icons")
     suspend fun getAllIconIds(): List<Int>
+
+    @Query("SELECT drawable_name FROM icons")
+    suspend fun getAllDrawableNames(): List<String>
 
     @Query("SELECT * FROM icons WHERE id = :iconId")
     suspend fun getIconById(iconId: Int): IconEntity?

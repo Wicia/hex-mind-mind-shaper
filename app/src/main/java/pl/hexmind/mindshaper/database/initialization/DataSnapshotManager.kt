@@ -33,7 +33,8 @@ import javax.inject.Singleton
  */
 @Singleton
 class DataSnapshotManager @Inject constructor(
-    private val database: AppDatabase
+    private val database: AppDatabase,
+    private val databaseInitializer: DatabaseInitializer
 ) {
     private val gson = GsonBuilder()
         // ! Adapter for Instant type fields
@@ -144,6 +145,10 @@ class DataSnapshotManager @Inject constructor(
                     restoredCount++
                 }
             }
+
+            // ! Seed entries added in newer app versions that may be missing from the snapshot
+            databaseInitializer.seedNewIcons()
+            databaseInitializer.seedNewPaths()
 
             return Result.success(restoredCount)
         }

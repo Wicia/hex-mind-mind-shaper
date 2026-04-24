@@ -33,14 +33,25 @@ class DatabaseInitializer @Inject constructor(
     }
 
     suspend fun initializeIfNeeded() {
-        // only during first app launch perform db setup/seeding
-        if (storage.getCurrentDBVersion() == -1) { // TODO - to be replaced with better seeding mechanism
-            storage.setCurrentDBVersion(AppDatabase.DB_VERSION)
-            seedIcons()
-            seedDomains()
+        if (isFirstLaunch()) {
+            onFirstLaunch()
         }
-        // Paths seeded separately — idempotent, handles app updates
-        seedPaths()
+        onEveryLaunch()
+    }
+
+    private fun isFirstLaunch(): Boolean {
+        return storage.getCurrentDBVersion() == -1 // TODO - to be replaced with better seeding mechanism
+    }
+
+    private suspend fun onFirstLaunch() {
+        storage.setCurrentDBVersion(AppDatabase.DB_VERSION)
+        seedIcons()
+        seedDomains()
+    }
+
+    private suspend fun onEveryLaunch() {
+        seedNewIcons()
+        seedNewPaths()
     }
 
     suspend fun seedDomains() {
@@ -66,7 +77,17 @@ class DatabaseInitializer @Inject constructor(
         }
     }
 
-    suspend fun seedPaths() {
+    suspend fun seedNewIcons() {
+        try {
+            val iconsList = createIconsList()
+            iconRepository.seedNewIcons(iconsList)
+        }
+        catch (e: Exception) {
+            Timber.e(e, "Failed to seed new icons")
+        }
+    }
+
+    suspend fun seedNewPaths() {
         // TODO: To be applied extended mechanism for comparing json <-> DB state and updating if needed (path = #hash)
         val pathSeeds = loadPathsFromJson() ?: run {
             Timber.e("Failed to load paths seed from JSON — skipping seed")
