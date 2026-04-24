@@ -17,4 +17,15 @@ interface PathStepDAO {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(steps: List<PathStepEntity>)
+
+    // === BACKUP Management (snapshot restore) ===
+
+    @Query("SELECT * FROM PATH_STEPS")
+    suspend fun getAllSteps(): List<PathStepEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrReplace(steps: List<PathStepEntity>)
+
+    @Query("DELETE FROM PATH_STEPS")
+    suspend fun clearAll()
 }

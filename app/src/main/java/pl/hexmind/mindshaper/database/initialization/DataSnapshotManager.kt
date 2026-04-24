@@ -12,7 +12,11 @@ import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializer
 import pl.hexmind.mindshaper.database.AppDatabase
 import pl.hexmind.mindshaper.database.models.DomainEntity
+import pl.hexmind.mindshaper.database.models.GoalEntity
+import pl.hexmind.mindshaper.database.models.GuidelineEntity
 import pl.hexmind.mindshaper.database.models.IconEntity
+import pl.hexmind.mindshaper.database.models.PathEntity
+import pl.hexmind.mindshaper.database.models.PathStepEntity
 import pl.hexmind.mindshaper.database.models.ThoughtEntity
 import java.io.File
 import java.text.SimpleDateFormat
@@ -24,6 +28,7 @@ import javax.inject.Singleton
 
 /**
  * Helper class for saving all DB records as .json file in device memory and then loading it again to DB.
+ * Snapshot policy: max 1 per day + overriding file
  */
 @Singleton
 class DataSnapshotManager @Inject constructor(
@@ -49,14 +54,19 @@ class DataSnapshotManager @Inject constructor(
                 thoughts = database.thoughtsDao().getAllThoughts(),
                 domains = database.domainDAO().getAllDomains(),
                 domainIcons = database.iconDAO().getAllIcons(),
+                goals = database.goalDao().getAllGoals(),
+                guidelines = database.guidelineDao().getAllGuidelines(),
+                paths = database.pathDao().getAllPaths(),
+                pathSteps = database.pathStepDao().getAllSteps(),
             )
 
             val backupDir = getBackupDirectory()
             backupDir.mkdirs()
 
-            val timestamp = SimpleDateFormat("yyyy-MM-dd_HH'H'", Locale.getDefault())
+            // ! Daily snapshot: filename is date-only → same file is overwritten each day on each launch
+            val dateStamp = SimpleDateFormat("dd_MM_yyyy", Locale.getDefault())
                 .format(Date())
-            val snapshotFile = File(backupDir, "snapshot_v${snapshot.version}_$timestamp.json")
+            val snapshotFile = File(backupDir, "mindshaper_v${snapshot.version}_$dateStamp.json")
 
             snapshotFile.writeText(gson.toJson(snapshot))
 
@@ -76,19 +86,44 @@ class DataSnapshotManager @Inject constructor(
 
             var restoredCount = 0
 
-            // ! Insert in specific order: parent tables -> child tables
+            // ! Insert in specific order: PARENT tables first -> then CHILD tables (FK constraints)
             database.withTransaction  {
-                // 1. Tables with no foreign keys
+
+                // 1. PARENTS tables with no foreign keys
                 snapshot.domainIcons?.apply {
                     database.iconDAO().clearAll()
                     database.iconDAO().insertOrReplace(this)
                     restoredCount++
                 }
 
-                // 2. Tables with foreign keys
+                snapshot.goals?.apply {
+                    database.goalDao().clearAll()
+                    database.goalDao().insertOrReplace(this)
+                    restoredCount++
+                }
+
+                snapshot.paths?.apply {
+                    database.pathDao().clearAll()
+                    database.pathDao().insertOrReplace(this)
+                    restoredCount++
+                }
+
+                // 2. CHILDREN tables with foreign keys
                 snapshot.domains?.apply {
                     database.domainDAO().clearAll()
                     database.domainDAO().insertOrReplace(this)
+                    restoredCount++
+                }
+
+                snapshot.guidelines?.apply {
+                    database.guidelineDao().clearAll()
+                    database.guidelineDao().insertOrReplace(this)
+                    restoredCount++
+                }
+
+                snapshot.pathSteps?.apply {
+                    database.pathStepDao().clearAll()
+                    database.pathStepDao().insertOrReplace(this)
                     restoredCount++
                 }
 
@@ -143,6 +178,10 @@ data class DatabaseSnapshot(
     val thoughts: List<ThoughtEntity>?,
     val domains: List<DomainEntity>?,
     val domainIcons: List<IconEntity>?,
+    val goals: List<GoalEntity>?,
+    val guidelines: List<GuidelineEntity>?,
+    val paths: List<PathEntity>?,
+    val pathSteps: List<PathStepEntity>?,
 )
 
 data class SnapshotStats(

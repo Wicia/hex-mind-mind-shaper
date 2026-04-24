@@ -28,4 +28,15 @@ interface GuidelineDAO {
 
     @Query("UPDATE GOAL_GUIDELINES SET position = :position WHERE id = :id")
     suspend fun updatePosition(id: Int, position: Int)
+
+    // === BACKUP management (snapshot restore) ===
+
+    @Query("SELECT * FROM GOAL_GUIDELINES")
+    suspend fun getAllGuidelines(): List<GuidelineEntity>
+
+    @Query("DELETE FROM GOAL_GUIDELINES")
+    suspend fun clearAll()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrReplace(guidelines: List<GuidelineEntity>)
 }

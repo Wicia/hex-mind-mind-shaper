@@ -43,4 +43,15 @@ interface PathDAO {
 
     @Query("SELECT COUNT(*) FROM PATHS")
     suspend fun count(): Int
+
+    // === BACKUP management (snapshot restore) ===
+
+    @Query("SELECT * FROM PATHS")
+    suspend fun getAllPaths(): List<PathEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrReplace(paths: List<PathEntity>)
+
+    @Query("DELETE FROM PATHS")
+    suspend fun clearAll()
 }

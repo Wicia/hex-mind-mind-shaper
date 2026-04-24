@@ -28,4 +28,15 @@ interface GoalDAO {
 
     @Query("DELETE FROM GOALS WHERE id = :goalId")
     suspend fun deleteById(goalId: Int)
+
+    // === BACKUP management (snapshot restore) ===
+
+    @Query("SELECT * FROM GOALS")
+    suspend fun getAllGoals(): List<GoalEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrReplace(goals: List<GoalEntity>)
+
+    @Query("DELETE FROM GOALS")
+    suspend fun clearAll()
 }
