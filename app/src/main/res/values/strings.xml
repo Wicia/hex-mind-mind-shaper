@@ -120,6 +120,8 @@
     <string name="settings_backup_stats">ⓘ Obecnie masz %1$d plików z kopią zapasową o wadze %2$.1f MB</string>
     <string name="settings_backup_no_snapshots">Brak zapisanych kopii zapasowych…</string>
 
+    <string name="settings_backup_error_version_mismatch">Backup z nowszej wersji aplikacji (%1$d) nie może być załadowany (aktualna wersja: %2$d)</string>
+
     <!-- STREAM -->
     <string name="stream_entry_title">Twoje myśli</string>
     <string name="stream_entry_tooltip">W tym ruchliwym miejscu przeglądniesz swoje myśli.</string>

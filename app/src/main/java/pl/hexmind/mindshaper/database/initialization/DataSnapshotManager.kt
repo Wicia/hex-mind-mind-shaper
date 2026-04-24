@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializer
+import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.database.AppDatabase
 import pl.hexmind.mindshaper.database.models.DomainEntity
 import pl.hexmind.mindshaper.database.models.GoalEntity
@@ -83,6 +84,16 @@ class DataSnapshotManager @Inject constructor(
             val snapshotFile = File(getBackupDirectory(), fileName)
             val json = snapshotFile.readText()
             val snapshot = gson.fromJson(json, DatabaseSnapshot::class.java)
+
+            // ! Prevent loading snapshots newer than existing DB version
+            if (snapshot.version > database.openHelper.readableDatabase.version) {
+                val errorMsg = context.getString(
+                    R.string.settings_backup_error_version_mismatch,
+                    snapshot.version,
+                    database.openHelper.readableDatabase.version
+                )
+                return Result.failure(Exception(errorMsg))
+            }
 
             var restoredCount = 0
 
