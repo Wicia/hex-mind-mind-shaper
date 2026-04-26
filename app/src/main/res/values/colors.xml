@@ -32,7 +32,7 @@
 
     <!-- Success, error, warning states -->
     <color name="validation_success">@color/_gray_lvl_3</color>
-    <color name="validation_error">#480808</color>
+    <color name="validation_error">#5B0E0E</color>
 
 <!-- ====================================== -->
 <!--    APP THEME MAPPINGS -->
@@ -124,5 +124,11 @@
     <color name="priority_high">#FFA7A7</color>
     <color name="priority_medium">#FFE6A6</color>
     <color name="priority_low">#A7FFCA</color>
+
+<!-- ====================================== -->
+<!--    STATES COLORS -->
+<!-- ====================================== -->
+
+    <color name="thought_status_icon">@color/_orange_lvl_2</color>
 
 </resources>

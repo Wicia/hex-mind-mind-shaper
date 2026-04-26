@@ -1,7 +1,6 @@
 package pl.hexmind.mindshaper.activities
 
 import android.content.Intent
-import android.content.res.ColorStateList
 import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import pl.hexmind.mindshaper.R
@@ -20,7 +19,7 @@ open class ThoughtManagerActivity : CoreActivity() {
             .setCautionAction(getString(R.string.common_btn_confirm_ok_2)) {
                 startActivity(Intent(this, SettingsActivity::class.java))
             }
-            .setCancelText("Nie")
+            .setDismissText("Nie")
             .show()
     }
 
@@ -32,28 +31,16 @@ open class ThoughtManagerActivity : CoreActivity() {
         featureEnabled: Boolean
     ) {
         if (featureEnabled) {
-            addFormButton.backgroundTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.button_content_filled_background)
-            )
-
-            addFormButton.iconTint = ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.button_content_filled_icon)
-            )
-
+            addFormButton.backgroundTintList = colorStateListOf(R.color.button_content_filled_background)
+            addFormButton.iconTint = colorStateListOf( R.color.button_content_filled_icon)
             addFormButton.text = "+"
             addFormButton.setTextColor(
                 ContextCompat.getColor(this, R.color.button_content_filled_icon)
             )
         }
         else { // Disabled
-            addFormButton.backgroundTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.button_content_empty_background_disabled)
-            )
-
-            addFormButton.iconTint = ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.button_content_empty_icon_disabled)
-            )
-
+            addFormButton.backgroundTintList = colorStateListOf( R.color.button_content_empty_background_disabled)
+            addFormButton.iconTint = colorStateListOf( R.color.button_content_empty_icon_disabled)
             addFormButton.text = "?"
             addFormButton.setTextColor(
                 ContextCompat.getColor(this, R.color.button_content_empty_icon_disabled)

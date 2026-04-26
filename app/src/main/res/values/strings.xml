@@ -212,6 +212,15 @@
     <string name="details_edit_thought_invalid_id">Niepoprawne ID rekordu Myśli :/</string>
     <string name="details_edit_thought_not_found">Nie znaleziono myśli :/</string>
 
+    <string name="details_warning_dialog_title">⚠️ Myśl niedługo zaśnie</string>
+    <string name="details_warning_dialog_message">Tej myśli zostały 3 dni do uśpienia. Edytuj ją lub zwiększ wartość, by ją zachować.</string>
+
+    <string name="details_dormant_dialog_title">🌙 Uśpiona myśl</string>
+    <string name="details_dormant_dialog_message">Ta myśl jest uśpiona — ma niską wartość i nie była modyfikowana od dłuższego czasu.</string>
+
+    <string name="details_dormant_dialog_restore">Przywróć</string>
+    <string name="details_dormant_dialog_leave">Zostaw</string>
+
     <!-- ============================================================================ -->
     <!--    Activity: CAPTURE THOUGHT -->
     <!-- ============================================================================ -->
@@ -354,6 +363,18 @@
 
     <string name="settings_slow_mode_header">⏳ Tryb powolny</string>
     <string name="settings_slow_mode_label">Włącz możliwość nadawania wartości myślom po tylu godzinach:</string>
+
+    <string name="settings_dormant_mode_header">🌙 Tryb uśpienia</string>
+    <string name="settings_dormant_mode_switch_label">Aktywuj tryb, w którym myśli będą automatycznie ukrywane, gdy spełnią określone warunki</string>
+
+    <string name="settings_dormant_mode_days_label">Myśl nie była zmieniana od</string>
+    <string name="settings_dormant_mode_value_label">oraz  Wartość myśli jest ≤</string>
+
+    <string name="settings_dormant_mode_value_error">Wartość myśli musi być między %1$d a %2$d</string>
+    <string name="settings_dormant_mode_value_error_toast">Popraw wartość progu uśpienia przed ponownym zapisem</string>
+
+    <string name="settings_dormant_mode_days_error">Liczba dni musi być między %1$d a %2$d</string>
+    <string name="settings_dormant_mode_days_error_toast">Popraw liczbę dni przed ponownym zapisem</string>
 
     <!-- ============================================================================ -->
     <!--    Activity: WORKSHOP -->

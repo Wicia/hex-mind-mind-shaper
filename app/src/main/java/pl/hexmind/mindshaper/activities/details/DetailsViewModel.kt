@@ -16,6 +16,7 @@ import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import java.io.File
+import java.time.Instant
 import javax.inject.Inject
 
 @HiltViewModel
@@ -224,6 +225,17 @@ class DetailsViewModel @Inject constructor(
                 thoughtsService.deleteThoughtAudio(thoughtId)
                 thought.audioDurationMs = null
                 loadThought(thoughtId)  // Refresh UI
+            }
+        }
+    }
+
+    /**
+     * Invoking updating mechanism to reset dormant state ("moving" thought to ACTIVE state automatically)
+     */
+    fun restoreFromDormant() {
+        viewModelScope.launch {
+            thoughtDetails.value?.let { thought ->
+                thoughtsService.updateThoughtMetadata(thought)
             }
         }
     }

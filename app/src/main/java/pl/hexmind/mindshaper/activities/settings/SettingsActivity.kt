@@ -2,8 +2,13 @@ package pl.hexmind.mindshaper.activities.settings
 
 import android.Manifest
 import android.content.Intent
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -101,6 +106,7 @@ class SettingsActivity : CoreActivity() {
         initDefaultCaptureFormConfig()
         initThoughtsValuesSystemConfig()
         initSlowModeConfig()
+        initDormantModeConfig()
         setupListeners()
         initDomainButtons()
     }
@@ -147,6 +153,7 @@ class SettingsActivity : CoreActivity() {
         setupPhotoFeatureToggle()
         setupBackupFeatureToggle()
         setupSlowModeListeners()
+        setupDormantModeListeners()
     }
 
     // ========== DEFAULT CAPTURE FORM ==========
@@ -469,6 +476,83 @@ class SettingsActivity : CoreActivity() {
         binding.btnSlowModeIncrease.isEnabled = enabled && slowModeHours < AppSettingsStorage.SLOW_MODE_HOURS_MAX
     }
 
+    // ========== DORMANT MODE ==========
+
+    private fun initDormantModeConfig() {
+        binding.switchDormantMode.isChecked = appSettingsStorage.isDormantModeEnabled()
+        binding.etDormantDays.setText(appSettingsStorage.getDormantDaysThreshold().toString())
+        binding.etDormantValue.setText(appSettingsStorage.getDormantValueThreshold().toString())
+        syncDormantPickerState()
+        validateDormantDaysInput()
+        validateDormantValueInput()
+    }
+
+    private fun setupDormantModeListeners() {
+        binding.switchDormantMode.setOnCheckedChangeListener { _, _ -> syncDormantPickerState() }
+
+        // TextWatcher for live validation of value threshold
+        binding.etDormantValue.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+            override fun afterTextChanged(s: android.text.Editable?) {
+                validateDormantValueInput()
+            }
+        })
+
+        // TextWatcher for live validation of days threshold
+        binding.etDormantDays.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+            override fun afterTextChanged(s: android.text.Editable?) {
+                validateDormantDaysInput()
+            }
+        })
+    }
+
+    private fun syncDormantPickerState() {
+        val enabled = binding.switchDormantMode.isChecked
+        binding.llDormantThresholdsPicker.alpha = if (enabled) 1f else 0.4f
+        binding.etDormantDays.isEnabled  = enabled
+        binding.etDormantValue.isEnabled = enabled
+    }
+
+    private fun validateDormantDaysInput() : Boolean {
+        val raw = binding.etDormantDays.text?.toString()?.toIntOrNull()
+        val isValid = raw != null && raw in AppSettingsStorage.DORMANT_DAYS_MIN..AppSettingsStorage.DORMANT_DAYS_MAX
+        binding.tvDormantModeError.visibility = if (isValid) View.INVISIBLE else View.VISIBLE
+        binding.tvDormantModeError.text = getString(
+            R.string.settings_dormant_mode_days_error,
+            AppSettingsStorage.DORMANT_DAYS_MIN,
+            AppSettingsStorage.DORMANT_DAYS_MAX
+        )
+
+        return isValid
+    }
+
+    private fun validateDormantValueInput() : Boolean {
+        val max = appSettingsStorage.getDormantValueMax()
+        val raw = binding.etDormantValue.text?.toString()?.toIntOrNull()
+        val isValid = raw != null && raw in AppSettingsStorage.DORMANT_VALUE_MIN..max
+        binding.tvDormantModeError.visibility = if (isValid) View.INVISIBLE else View.VISIBLE
+        binding.tvDormantModeError.text = getString(
+            R.string.settings_dormant_mode_value_error,
+            AppSettingsStorage.DORMANT_VALUE_MIN,
+            max
+        )
+
+        return isValid
+    }
+
+    private fun readDormantDays(): Int? {
+        val raw = binding.etDormantDays.text?.toString()?.toIntOrNull() ?: return null
+        return raw.coerceIn(AppSettingsStorage.DORMANT_DAYS_MIN, AppSettingsStorage.DORMANT_DAYS_MAX)
+    }
+
+    private fun readDormantValue(): Int? {
+        val raw = binding.etDormantValue.text?.toString()?.toIntOrNull() ?: return null
+        return raw.coerceIn(AppSettingsStorage.DORMANT_VALUE_MIN, appSettingsStorage.getDormantValueMax())
+    }
+
     // ========== DOMAINS ==========
 
     private fun initDomainButtons() {
@@ -630,6 +714,19 @@ class SettingsActivity : CoreActivity() {
         appSettingsStorage.setSlowModeEnabled(binding.switchSlowMode.isChecked)
         appSettingsStorage.setSlowModeHours(slowModeHours)
 
+        // Dormant mode
+        if (binding.switchDormantMode.isChecked && !validateDormantDaysInput()) {
+            showShortToast(R.string.settings_dormant_mode_days_error_toast)
+            return
+        }
+        if (binding.switchDormantMode.isChecked && !validateDormantValueInput()) {
+            showShortToast(R.string.settings_dormant_mode_value_error_toast)
+            return
+        }
+        appSettingsStorage.setDormantModeEnabled(binding.switchDormantMode.isChecked)
+        appSettingsStorage.setDormantDaysThreshold(readDormantDays() ?: AppSettingsStorage.DORMANT_DAYS_DEFAULT)
+        appSettingsStorage.setDormantValueThreshold(readDormantValue() ?: AppSettingsStorage.DORMANT_VALUE_DEFAULT)
+
         showShortToast(R.string.common_info_changes_saved)
 
         val intent = Intent(this, HomeActivity::class.java)
@@ -678,5 +775,29 @@ class SettingsActivity : CoreActivity() {
                 buttonView.findViewById<TextView>(R.id.tv_domain_name).text = updatedDomainDTO.name
             }
         }
+    }
+
+    /**
+     * Helper methods for removing focus from input when tapping on other widgets
+     * TODO: Move it to Core?
+     */
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            val view = currentFocus
+            if (view is EditText) {
+                val outRect = Rect()
+                view.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                    view.clearFocus()
+                    hideKeyboard(view)
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event)
+    }
+
+    private fun hideKeyboard(view: View) {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

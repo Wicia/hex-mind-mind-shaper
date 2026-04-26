@@ -161,6 +161,11 @@ class TooltipsDialog private constructor(
             tooltips.add(TooltipScreen(title = title, description = description, icon = icon))
         }
 
+        // For showing only one screen with title and info (simple info dialog)
+        fun setInfo(title : String, description: String, icon: Drawable? = null) = apply {
+            tooltips.add(TooltipScreen(title = title, description = description, icon = icon))
+        }
+
         fun setOnDismissAction(action: () -> Unit) = apply {
             this.onDismiss = action
         }

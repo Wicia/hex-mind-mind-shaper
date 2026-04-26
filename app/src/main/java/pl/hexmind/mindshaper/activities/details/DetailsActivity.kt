@@ -16,21 +16,26 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtManagerActivity
+import pl.hexmind.mindshaper.common.dormant.ThoughtState
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.ui.dialogs.HexTags
 import pl.hexmind.mindshaper.common.ui.dialogs.HexTagsBottomSheet
+import pl.hexmind.mindshaper.common.ui.dialogs.MultipleActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.PhotoFullscreenDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.TooltipsDialog
 import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
 import pl.hexmind.mindshaper.common.ui.views.content.HexAudioView
 import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
 import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
 import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
+import pl.hexmind.mindshaper.services.AppSettingsStorage.Companion.DORMANT_DAYS_MIN
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import java.io.File
 import java.time.Duration
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -441,42 +446,71 @@ class DetailsActivity : ThoughtManagerActivity() {
 
     private fun updateValueUI(thought: ThoughtDTO) {
 
-        val isThoughtLocked = isThoughtLocked(thought)
-        binding.vbThoughtValue.isLocked = isThoughtLocked
+        val state = computeThoughtState(thought)
+        updateBackgroundForState(state)
 
-        // Locked = slow mode is still active
-        if (isThoughtLocked) {
-            binding.btnValueIncrease.isEnabled = false
-            binding.btnValueDecrease.isEnabled = false
-            val gray = ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.button_secondary_disabled_background)
-            )
-            binding.btnValueIncrease.imageTintList = gray
-            binding.btnValueDecrease.imageTintList = gray
-            binding.vbThoughtValue.setOnClickListener { animateStatusIconGlow() }
+        val statusColor = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.thought_status_icon))
 
-            binding.ivStatus.setImageResource(R.drawable.ic_status_locked)
-            binding.ivStatus.imageTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color._gray_lvl_2)
-            )
-            binding.ivStatus.setOnClickListener { showLockedCountdownDialog(thought) }
-            return
+        when (state) {
+
+            ThoughtState.LOCKED -> {
+                binding.vbThoughtValue.isLocked = true
+                binding.btnValueIncrease.isEnabled = false
+                binding.btnValueDecrease.isEnabled = false
+                val gray = ColorStateList.valueOf(
+                    ContextCompat.getColor(this, R.color.button_secondary_disabled_background)
+                )
+                binding.btnValueIncrease.imageTintList = gray
+                binding.btnValueDecrease.imageTintList = gray
+                binding.vbThoughtValue.setOnClickListener { animateStatusIconGlow() }
+
+                binding.ivStatus.setImageResource(R.drawable.ic_status_locked)
+                binding.ivStatus.imageTintList = statusColor
+                binding.ivStatus.setOnClickListener { showLockedCountdownDialog(thought) }
+            }
+
+            ThoughtState.WARNING -> {
+                binding.vbThoughtValue.isLocked = false
+                binding.vbThoughtValue.currentLevel = thought.value
+                binding.vbThoughtValue.setOnClickListener { viewModel.increaseValue() }
+                binding.btnValueIncrease.isEnabled = viewModel.canIncreaseValue()
+                binding.btnValueDecrease.isEnabled = viewModel.canDecreaseValue()
+                binding.btnValueIncrease.imageTintList = null
+                binding.btnValueDecrease.imageTintList = null
+
+                binding.ivStatus.setImageResource(R.drawable.ic_status_attention)
+                binding.ivStatus.imageTintList = statusColor
+                binding.ivStatus.setOnClickListener { showWarningDialog() }
+            }
+
+            ThoughtState.DORMANT -> {
+                binding.vbThoughtValue.isLocked = false
+                binding.vbThoughtValue.currentLevel = thought.value
+                binding.vbThoughtValue.setOnClickListener { viewModel.increaseValue() }
+                binding.btnValueIncrease.isEnabled = viewModel.canIncreaseValue()
+                binding.btnValueDecrease.isEnabled = viewModel.canDecreaseValue()
+                binding.btnValueIncrease.imageTintList = null
+                binding.btnValueDecrease.imageTintList = null
+
+                binding.ivStatus.setImageResource(R.drawable.ic_status_dormant)
+                binding.ivStatus.imageTintList = statusColor
+                binding.ivStatus.setOnClickListener { showDormantDialog() }
+            }
+
+            ThoughtState.ACTIVE -> {
+                binding.vbThoughtValue.isLocked = false
+                binding.vbThoughtValue.currentLevel = thought.value
+                binding.vbThoughtValue.setOnClickListener { viewModel.increaseValue() }
+                binding.btnValueIncrease.isEnabled = viewModel.canIncreaseValue()
+                binding.btnValueDecrease.isEnabled = viewModel.canDecreaseValue()
+                binding.btnValueIncrease.imageTintList = null
+                binding.btnValueDecrease.imageTintList = null
+
+                binding.ivStatus.setImageResource(R.drawable.ic_status_wip)
+                binding.ivStatus.imageTintList = statusColor
+                binding.ivStatus.setOnClickListener(null)
+            }
         }
-
-        // Unlocked - "WIP"
-        binding.vbThoughtValue.setOnClickListener { viewModel.increaseValue() }
-
-        binding.ivStatus.setImageResource(R.drawable.ic_status_wip)
-        binding.ivStatus.imageTintList = ColorStateList.valueOf(
-            ContextCompat.getColor(this, R.color._orange_lvl_1)
-        )
-        binding.ivStatus.setOnClickListener(null)
-
-        binding.vbThoughtValue.currentLevel = thought.value
-
-        // Enable/disable buttons based on bounds
-        binding.btnValueIncrease.isEnabled = viewModel.canIncreaseValue()
-        binding.btnValueDecrease.isEnabled = viewModel.canDecreaseValue()
     }
 
     // ========== SLOW MODE LOCK ==========
@@ -486,6 +520,44 @@ class DetailsActivity : ThoughtManagerActivity() {
         val hours = appSettingsStorage.getSlowModeHours()
         val elapsed = Duration.between(thought.createdAt, Instant.now()).toHours()
         return elapsed < hours
+    }
+
+    private fun computeThoughtState(thought: ThoughtDTO): ThoughtState {
+        if (isThoughtLocked(thought)) return ThoughtState.LOCKED
+        if (!appSettingsStorage.isDormantModeEnabled()) return ThoughtState.ACTIVE
+        if (thought.value > appSettingsStorage.getDormantValueThreshold()) return ThoughtState.ACTIVE
+
+        val daysSinceUpdate = ChronoUnit.DAYS.between(thought.updatedAt, Instant.now())
+        val daysThreshold   = appSettingsStorage.getDormantDaysThreshold().toLong()
+        val warningThreshold = maxOf(0L, daysThreshold - DORMANT_DAYS_MIN)
+
+        return when {
+            daysSinceUpdate >= daysThreshold    -> ThoughtState.DORMANT
+            daysSinceUpdate >= warningThreshold -> ThoughtState.WARNING
+            else                                -> ThoughtState.ACTIVE
+        }
+    }
+
+    private fun updateBackgroundForState(state: ThoughtState) {
+        val bgColor = if (state == ThoughtState.DORMANT) R.color._gray_lvl_1 else R.color.app_background
+        binding.llDetailsContent.setBackgroundColor(ContextCompat.getColor(this, bgColor))
+    }
+
+    private fun showWarningDialog() {
+        TooltipsDialog.Builder(this)
+            .setInfo(getString(R.string.details_warning_dialog_title), getString(R.string.details_warning_dialog_message))
+            .show()
+    }
+
+    private fun showDormantDialog() {
+        MultipleActionsDialog.Builder(this)
+            .setTitle(getString(R.string.details_dormant_dialog_title))
+            .setDescription(getString(R.string.details_dormant_dialog_message))
+            .setCautionAction(getString(R.string.details_dormant_dialog_restore)) {
+                viewModel.restoreFromDormant()
+            }
+            .setDismissText(getString(R.string.details_dormant_dialog_leave))
+            .show()
     }
 
     private fun animateStatusIconGlow() {

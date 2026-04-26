@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -62,7 +61,7 @@ class MultipleActionsDialog private constructor(
     }
 
     private fun setupButtons(dialogView : View, dialog : AlertDialog) {
-        // Setup caution button
+        // Caution
         val btnCaution = dialogView.findViewById<MaterialButton>(R.id.btn_action_caution)
         if (btnCautionText != null && btnCautionAction != null) {
             btnCaution.text = btnCautionText
@@ -75,7 +74,7 @@ class MultipleActionsDialog private constructor(
             btnCaution.visibility = View.GONE
         }
 
-        // Setup standard button
+        // Standard
         val btnStandard = dialogView.findViewById<MaterialButton>(R.id.btn_action_standard)
         if (btnStandardText != null && btnStandardAction != null) {
             btnStandard.text = btnStandardText
@@ -88,7 +87,7 @@ class MultipleActionsDialog private constructor(
             btnStandard.visibility = View.GONE
         }
 
-        // Setup cancel button
+        // Dismiss
         val btnDismiss = dialogView.findViewById<MaterialButton>(R.id.btn_dismiss)
         btnDismiss.apply {
             text = btnDismissText
@@ -112,22 +111,15 @@ class MultipleActionsDialog private constructor(
     class Builder(private val context: Context) {
         private var title: String = ""
         private var description: String? = null
-
-        @DrawableRes
-        private var iconResId: Int? = null
         private var cautionText: String? = null
         private var cautionAction: (() -> Unit)? = null
         private var standardText: String? = null
         private var standardAction: (() -> Unit)? = null
-        private var cancelText: String = "Anuluj"
-        private var onCancel: (() -> Unit)? = null
+        private var dismissText: String = "Anuluj"
+        private var dismissAction: (() -> Unit)? = null
 
         fun setTitle(title: String) = apply {
             this.title = title
-        }
-
-        fun setIconResId(@DrawableRes iconResId: Int?) = apply {
-            this.iconResId = iconResId
         }
 
         fun setDescription(description : String) = apply {
@@ -155,17 +147,10 @@ class MultipleActionsDialog private constructor(
         }
 
         /**
-         * Set custom cancel button text (default: "Anuluj")
+         * Set custom dismiss button text (default: "Anuluj")
          */
-        fun setCancelText(text: String) = apply {
-            this.cancelText = text
-        }
-
-        /**
-         * Set action to perform when cancel is clicked (optional)
-         */
-        fun setOnCancel(action: () -> Unit) = apply {
-            this.onCancel = action
+        fun setDismissText(text: String) = apply {
+            this.dismissText = text
         }
 
         /**
@@ -185,8 +170,8 @@ class MultipleActionsDialog private constructor(
                 btnCautionAction = cautionAction,
                 btnStandardText = standardText,
                 btnStandardAction = standardAction,
-                btnDismissText = cancelText,
-                btnDismissAction = onCancel
+                btnDismissText = dismissText,
+                btnDismissAction = dismissAction
             ).show()
         }
     }

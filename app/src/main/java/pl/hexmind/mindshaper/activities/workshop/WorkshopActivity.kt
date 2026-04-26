@@ -254,7 +254,7 @@ class WorkshopActivity : CoreActivity() {
             .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
                 viewModel.deleteGoal(goalId)
             }
-            .setCancelText(getString(R.string.common_btn_cancel))
+            .setDismissText(getString(R.string.common_btn_cancel))
             .show()
     }
 
@@ -289,7 +289,7 @@ class WorkshopActivity : CoreActivity() {
             .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
                 viewModel.deleteSubItem(goalId, subItemId)
             }
-            .setCancelText(getString(R.string.common_btn_cancel))
+            .setDismissText(getString(R.string.common_btn_cancel))
             .show()
     }
 }

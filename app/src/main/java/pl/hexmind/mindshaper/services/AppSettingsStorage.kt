@@ -50,7 +50,19 @@ class AppSettingsStorage @Inject constructor(
         private const val PARAM_SLOW_MODE_HOURS   = "param_slow_mode_hours"
 
         const val SLOW_MODE_HOURS_MIN = 1 // TODO: Move to validator when there will be more business logic related to validating settings
-        const val SLOW_MODE_HOURS_MAX = 12
+        const val SLOW_MODE_HOURS_MAX = 72
+
+        // Dormant mode
+        private const val PARAM_DORMANT_MODE_ENABLED    = "param_dormant_mode_enabled"
+        private const val PARAM_DORMANT_VALUE_THRESHOLD = "param_dormant_value_threshold"
+        private const val PARAM_DORMANT_DAYS_THRESHOLD  = "param_dormant_days_threshold"
+
+        const val DORMANT_VALUE_DEFAULT = 1
+        const val DORMANT_VALUE_MIN     = 1
+
+        const val DORMANT_DAYS_DEFAULT  = 7
+        const val DORMANT_DAYS_MIN      = 3
+        const val DORMANT_DAYS_MAX      = 90
     }
 
     fun getApplicationContext() : Context {
@@ -179,4 +191,32 @@ class AppSettingsStorage @Inject constructor(
     fun setSlowModeHours(hours: Int) {
         sharedPreferences.edit { putInt(PARAM_SLOW_MODE_HOURS, hours) }
     }
+
+    // === DORMANT MODE ===
+
+    fun isDormantModeEnabled(): Boolean =
+        sharedPreferences.getBoolean(PARAM_DORMANT_MODE_ENABLED, false)
+
+    fun setDormantModeEnabled(enabled: Boolean) {
+        sharedPreferences.edit { putBoolean(PARAM_DORMANT_MODE_ENABLED, enabled) }
+    }
+
+    fun getDormantValueThreshold(): Int =
+        sharedPreferences.getInt(PARAM_DORMANT_VALUE_THRESHOLD, DORMANT_VALUE_DEFAULT)
+
+    fun setDormantValueThreshold(value: Int) {
+        sharedPreferences.edit { putInt(PARAM_DORMANT_VALUE_THRESHOLD, value) }
+    }
+
+    fun getDormantDaysThreshold(): Int =
+        sharedPreferences.getInt(PARAM_DORMANT_DAYS_THRESHOLD, DORMANT_DAYS_DEFAULT)
+
+    fun setDormantDaysThreshold(days: Int) {
+        sharedPreferences.edit { putInt(PARAM_DORMANT_DAYS_THRESHOLD, days) }
+    }
+
+    /**
+     * Max dormant value threshold - mirrors current ThoughtValueSystem.maxValue
+     */
+    fun getDormantValueMax(): Int = getThoughtValueSystem().maxValue
 }
