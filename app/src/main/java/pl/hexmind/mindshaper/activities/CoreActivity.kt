@@ -1,6 +1,7 @@
 package pl.hexmind.mindshaper.activities
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
@@ -11,9 +12,11 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
@@ -275,5 +278,9 @@ open class CoreActivity : AppCompatActivity() {
             @Suppress("DEPRECATION")
             overridePendingTransition(0, 0)
         }
+    }
+
+    fun colorStateListOf(@ColorRes id : Int): ColorStateList {
+        return ColorStateList.valueOf(ContextCompat.getColor(this, id))
     }
 }
