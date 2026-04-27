@@ -553,7 +553,7 @@ class DetailsActivity : ThoughtManagerActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.details_dormant_dialog_title))
             .setDescription(getString(R.string.details_dormant_dialog_message))
-            .setCautionAction(getString(R.string.details_dormant_dialog_restore)) {
+            .setCautionAction(getString(R.string.details_dormant_dialog_wake)) {
                 viewModel.restoreFromDormant()
             }
             .setDismissText(getString(R.string.details_dormant_dialog_leave))

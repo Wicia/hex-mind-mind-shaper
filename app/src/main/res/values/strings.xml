@@ -222,11 +222,11 @@
     <string name="details_dormant_dialog_title">🌙 Uśpiona myśl</string>
     <string name="details_dormant_dialog_message">Ta myśl jest uśpiona — ma niską wartość i nie była modyfikowana od dłuższego czasu.</string>
 
-    <string name="details_dormant_dialog_restore">Przywróć</string>
+    <string name="details_dormant_dialog_wake">Obudź</string>
     <string name="details_dormant_dialog_leave">Zostaw</string>
 
     <string name="details_slow_mode_title">⏳ Tryb powolny aktywny…</string>
-    <string name="details_slow_mode_description">Nadawanie wartości tej myśli zostanie odblokowane za:</string>
+    <string name="details_slow_mode_description">Nadawanie wartości tej myśli będzie możliwe za:</string>
 
     <!-- ============================================================================ -->
     <!--    Activity: CAPTURE THOUGHT -->
