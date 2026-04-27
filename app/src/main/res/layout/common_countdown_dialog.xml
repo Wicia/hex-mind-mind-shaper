@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="18dp"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <TextView
+        android:id="@+id/tv_info_header"
+        style="@style/Dialog_Header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Tytuł"
+        />
+
+    <TextView
+        android:id="@+id/tv_description"
+        style="@style/Dialog_Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Opis..."
+        />
+
+    <TextView
+        android:id="@+id/tv_countdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:fontFamily="@font/baloo2"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@color/_orange_lvl_3"
+        android:text="—"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_dismiss"
+        style="@style/AuxiliaryActionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        />
+
+</LinearLayout>

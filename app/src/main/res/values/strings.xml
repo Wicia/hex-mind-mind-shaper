@@ -30,6 +30,10 @@
 
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
 
+    <string name="common_btn_grant_permission">Przyznaj</string>
+    <string name="common_btn_confirm_replace">Tak, zastąp</string>
+    <string name="common_btn_cancel_replace">Nie, zostaw</string>
+
     <!-- HEX TAGS (metadata) -->
     <string name="common_hex_tag_thread">Wątek lub Temat</string>
 
@@ -220,6 +224,9 @@
 
     <string name="details_dormant_dialog_restore">Przywróć</string>
     <string name="details_dormant_dialog_leave">Zostaw</string>
+
+    <string name="details_slow_mode_title">⏳ Tryb powolny aktywny…</string>
+    <string name="details_slow_mode_description">Nadawanie wartości tej myśli zostanie odblokowane za:</string>
 
     <!-- ============================================================================ -->
     <!--    Activity: CAPTURE THOUGHT -->

@@ -7,7 +7,7 @@ import android.text.TextWatcher
 import androidx.activity.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -25,7 +25,6 @@ import pl.hexmind.mindshaper.common.ui.dialogs.IconsListDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.GuideDialog
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -226,18 +225,13 @@ class StreamActivity : CoreActivity() {
     }
 
     private fun showDeleteConfirmationDialog(thought: ThoughtDTO) {
-        MaterialAlertDialogBuilder(this)
+        ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_deletion_dialog_title))
-            .setMessage(getString(R.string.common_deletion_dialog_message, "myśl"))
-            .setPositiveButton(getString(R.string.common_deletion_dialog_yes)) { dialog, _ ->
+            .setDescription(getString(R.string.common_deletion_dialog_message, getString(R.string.common_object_type_thought)))
+            .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
                 deleteThought(thought)
-                Timber.d("Thought deleted: ${thought.id}")
-                dialog.dismiss()
             }
-            .setNegativeButton(getString(R.string.common_deletion_dialog_no)) { dialog, _ ->
-                Timber.d("Deletion cancelled")
-                dialog.dismiss()
-            }
+            .setDismissText(getString(R.string.common_deletion_dialog_no))
             .show()
     }
 

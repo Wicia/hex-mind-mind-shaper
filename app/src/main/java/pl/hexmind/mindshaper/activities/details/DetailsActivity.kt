@@ -4,7 +4,7 @@ import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.os.CountDownTimer
+import pl.hexmind.mindshaper.common.ui.dialogs.CountdownDialog
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
@@ -576,35 +576,13 @@ class DetailsActivity : ThoughtManagerActivity() {
 
         if (remainingMs <= 0) return
 
-        val dialog = com.google.android.material.dialog.MaterialAlertDialogBuilder(this) // TODO: Replace with custom dialog
-            .setTitle("⏳ Tryb powolny")
-            .setMessage(formatRemainingTime(Duration.ofMillis(remainingMs)))
-            .setPositiveButton(R.string.common_btn_confirm_ok) { d, _ -> d.dismiss() }
-            .show()
-
-        // Real-time countdown — ticks every minute, refreshes message
-        val timer = object : CountDownTimer(remainingMs, 60_000) {
-            override fun onTick(millisUntilFinished: Long) {
-                dialog.setMessage(formatRemainingTime(Duration.ofMillis(millisUntilFinished)))
-            }
-            override fun onFinish() {
-                dialog.dismiss()
-                // Refresh UI — lock expired while dialog was open
-                viewModel.thoughtDetails.value?.let { updateValueUI(it) }
-            }
-        }
-        timer.start()
-        dialog.setOnDismissListener { timer.cancel() }
-    }
-
-    private fun formatRemainingTime(remaining: Duration): String {
-        val h = remaining.toHours()
-        val m = remaining.toMinutes() % 60
-        return when {
-            h > 0 && m > 0 -> "Poczekaj jeszcze $h godz. i $m min. zanim będzie można ocenić tą myśl…"
-            h > 0          -> "Poczekaj jeszcze $h godz. zanim będzie można ocenić tą myśl…"
-            else           -> "Poczekaj jeszcze $m min. zanim będzie można ocenić tą myśl…"
-        }
+        CountdownDialog(
+            context    = this,
+            title      = getString(R.string.details_slow_mode_title),
+            durationMs = remainingMs,
+            message    = getString(R.string.details_slow_mode_description),
+            onFinish   = { viewModel.thoughtDetails.value?.let { updateValueUI(it) } }
+        ).show()
     }
 
     override fun onDestroy() {

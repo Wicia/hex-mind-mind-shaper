@@ -13,7 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -226,31 +226,25 @@ class SettingsActivity : CoreActivity() {
     }
 
     private fun showVoiceRecordingPermissionExplanationDialog() {
-        MaterialAlertDialogBuilder(this)
+        ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
-            .setMessage(getString(R.string.settings_voice_recording_info))
-            .setPositiveButton(R.string.common_btn_confirm_ok) { _, _ ->
+            .setDescription(getString(R.string.settings_voice_recording_info))
+            .setStandardAction(getString(R.string.common_btn_grant_permission)) {
                 requestVoiceRecordingPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
             }
-            .setNegativeButton(R.string.common_btn_cancel_not_now) { _, _ ->
-                binding.switchVoiceRecordingFeature.isChecked = false
-            }
-            .setOnCancelListener {
-                binding.switchVoiceRecordingFeature.isChecked = false
-            }
+            .setDismissText(getString(R.string.common_btn_cancel_not_now))
+            .setDismissAction { binding.switchVoiceRecordingFeature.isChecked = false }
             .show()
     }
 
     private fun showVoiceRecordingPermanentDenialDialog() {
-        MaterialAlertDialogBuilder(this)
+        ActionsDialog.Builder(this)
             .setTitle(getString(R.string.settings_permissions_blockade_title))
-            .setMessage(getString(R.string.settings_permissions_recording_blockade_tooltip))
-            .setPositiveButton(getString(R.string.common_dialog_open_android_settings)) { _, _ ->
+            .setDescription(getString(R.string.settings_permissions_recording_blockade_tooltip))
+            .setCautionAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
-            .setNegativeButton(R.string.common_btn_cancel) { _, _ ->
-                binding.switchVoiceRecordingFeature.isChecked = false
-            }
+            .setDismissAction { binding.switchVoiceRecordingFeature.isChecked = false }
             .show()
     }
 
@@ -306,31 +300,25 @@ class SettingsActivity : CoreActivity() {
     }
 
     private fun showPhotoPermissionExplanationDialog() {
-        MaterialAlertDialogBuilder(this)
+        ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
-            .setMessage(getString(R.string.settings_permissions_photo_info))
-            .setPositiveButton(R.string.common_btn_confirm_ok) { _, _ ->
+            .setDescription(getString(R.string.settings_permissions_photo_info))
+            .setStandardAction(getString(R.string.common_btn_grant_permission)) {
                 requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
             }
-            .setNegativeButton(R.string.common_btn_cancel_not_now) { _, _ ->
-                binding.switchPhotoFeature.isChecked = false
-            }
-            .setOnCancelListener {
-                binding.switchPhotoFeature.isChecked = false
-            }
+            .setDismissText(getString(R.string.common_btn_cancel_not_now))
+            .setDismissAction { binding.switchPhotoFeature.isChecked = false }
             .show()
     }
 
     private fun showPhotoPermanentDenialDialog() {
-        MaterialAlertDialogBuilder(this)
+        ActionsDialog.Builder(this)
             .setTitle(getString(R.string.settings_permissions_blockade_title))
-            .setMessage(getString(R.string.settings_permissions_photo_blockade_tooltip))
-            .setPositiveButton(R.string.common_dialog_open_android_settings) { _, _ ->
+            .setDescription(getString(R.string.settings_permissions_photo_blockade_tooltip))
+            .setCautionAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
-            .setNegativeButton(R.string.common_btn_cancel) { _, _ ->
-                binding.switchPhotoFeature.isChecked = false
-            }
+            .setDismissAction { binding.switchPhotoFeature.isChecked = false }
             .show()
     }
 
@@ -408,31 +396,25 @@ class SettingsActivity : CoreActivity() {
     }
 
     private fun showBackupPermissionExplanationDialog() {
-        MaterialAlertDialogBuilder(this)
+        ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
-            .setMessage(getString(R.string.settings_backup_permission_info))
-            .setPositiveButton(R.string.common_btn_confirm_ok) { _, _ ->
+            .setDescription(getString(R.string.settings_backup_permission_info))
+            .setStandardAction(getString(R.string.common_btn_grant_permission)) {
                 requestStoragePermissionLauncher.launch(permissionsService.getStoragePermission())
             }
-            .setNegativeButton(R.string.common_btn_cancel_not_now) { _, _ ->
-                binding.switchBackupFeature.isChecked = false
-            }
-            .setOnCancelListener {
-                binding.switchBackupFeature.isChecked = false
-            }
+            .setDismissText(getString(R.string.common_btn_cancel_not_now))
+            .setDismissAction { binding.switchBackupFeature.isChecked = false }
             .show()
     }
 
     private fun showBackupPermanentDenialDialog() {
-        MaterialAlertDialogBuilder(this)
+        ActionsDialog.Builder(this)
             .setTitle(getString(R.string.settings_permissions_blockade_title))
-            .setMessage(getString(R.string.settings_permissions_backup_blockade_tooltip))
-            .setPositiveButton(R.string.common_dialog_open_android_settings) { _, _ ->
+            .setDescription(getString(R.string.settings_permissions_backup_blockade_tooltip))
+            .setCautionAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
-            .setNegativeButton(R.string.common_btn_cancel) { _, _ ->
-                binding.switchBackupFeature.isChecked = false
-            }
+            .setDismissAction { binding.switchBackupFeature.isChecked = false }
             .show()
     }
 
@@ -645,17 +627,13 @@ class SettingsActivity : CoreActivity() {
     }
 
     private fun showSnapshotLoadingDialog() {
-        MaterialAlertDialogBuilder(this)
+        ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_deletion_dialog_title))
-            .setMessage(getString(R.string.settings_snapshot_restore_warning))
-            .setPositiveButton(getString(R.string.common_deletion_dialog_yes)) { dialog, _ ->
+            .setDescription(getString(R.string.settings_snapshot_restore_warning))
+            .setCautionAction(getString(R.string.common_btn_confirm_replace)) {
                 loadBackupFile()
-                dialog.dismiss()
             }
-            .setNegativeButton(getString(R.string.common_deletion_dialog_no)) { dialog, _ ->
-                Timber.d("Snapshot loading cancelled")
-                dialog.dismiss()
-            }
+            .setDismissText(getString(R.string.common_btn_cancel_replace))
             .show()
     }
 
