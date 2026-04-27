@@ -7,7 +7,7 @@ import androidx.core.content.withStyledAttributes
 import com.google.android.material.button.MaterialButton
 import org.sufficientlysecure.htmltextview.HtmlTextView
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.common.ui.dialogs.MultipleActionsDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 
 /**
  * Universal rich text display view supporting HTML markups
@@ -53,7 +53,7 @@ class HexTextView @JvmOverloads constructor(
         }
 
     init {
-        inflate(context, R.layout.z_rich_text_view, this)
+        inflate(context, R.layout.common_rich_text_view, this)
         orientation = VERTICAL
 
         // Initialize UI components
@@ -112,7 +112,7 @@ class HexTextView @JvmOverloads constructor(
     }
 
     private fun showDeleteConfirmation() {
-        MultipleActionsDialog.Builder(context)
+        ActionsDialog.Builder(context)
             .setTitle(context.getString(R.string.rich_text_removing_header))
             .setDescription(context.getString(R.string.rich_text_removing_content))
             .setCautionAction(context.getString(R.string.common_deletion_dialog_yes_2)) {

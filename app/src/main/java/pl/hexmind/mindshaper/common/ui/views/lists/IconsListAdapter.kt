@@ -50,7 +50,7 @@ class CommonIconsListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IconViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.z_icons_list_item_dialog, parent, false)
+            .inflate(R.layout.common_icons_list_item_dialog, parent, false)
         return IconViewHolder(view)
     }
 

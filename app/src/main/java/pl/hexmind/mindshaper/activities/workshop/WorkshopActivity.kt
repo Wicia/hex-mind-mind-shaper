@@ -19,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
-import pl.hexmind.mindshaper.common.ui.dialogs.MultipleActionsDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
 import pl.hexmind.mindshaper.database.models.PathEntity
 
@@ -248,7 +248,7 @@ class WorkshopActivity : CoreActivity() {
     }
 
     private fun showDeleteGoalConfirmation(goalId: Int) {
-        MultipleActionsDialog.Builder(this)
+        ActionsDialog.Builder(this)
             .setTitle(getString(R.string.workshop_dialog_delete_goal_title))
             .setDescription(getString(R.string.workshop_dialog_delete_goal_desc))
             .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
@@ -283,7 +283,7 @@ class WorkshopActivity : CoreActivity() {
     }
 
     private fun showDeleteSubItemConfirmation(goalId: Int, subItemId: Int) {
-        MultipleActionsDialog.Builder(this)
+        ActionsDialog.Builder(this)
             .setTitle(getString(R.string.workshop_dialog_delete_guideline_title))
             .setDescription(getString(R.string.common_deletion_dialog_warning))
             .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {

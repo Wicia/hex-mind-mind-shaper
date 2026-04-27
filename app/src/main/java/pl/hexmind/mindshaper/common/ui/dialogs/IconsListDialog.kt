@@ -26,7 +26,7 @@ class IconsListDialog private constructor(
 
     fun show() {
         dialog = Dialog(context).apply {
-            setContentView(R.layout.z_icons_list_dialog)
+            setContentView(R.layout.common_icons_list_dialog)
             setupTitle()
             setupRecyclerView()
             setupButtons()

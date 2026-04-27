@@ -23,7 +23,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.common.ui.dialogs.MultipleActionsDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import timber.log.Timber
 import java.io.File
@@ -103,7 +103,7 @@ class HexAudioView @JvmOverloads constructor(
     private var callback: RecordingCallback? = null
 
     init {
-        inflate(context, R.layout.z_recording_playback_view, this)
+        inflate(context, R.layout.common_recording_playback_view, this)
         orientation = VERTICAL
 
         // Initialize UI components
@@ -273,7 +273,7 @@ class HexAudioView @JvmOverloads constructor(
     }
 
     private fun showRecordingOptionsDialog() {
-        MultipleActionsDialog.Builder(context)
+        ActionsDialog.Builder(context)
             .setTitle("Co chcesz zrobić z nagraniem?")
             .setCautionAction("Wywalić") {
                 deleteCurrentRecording(deleteFromDatabase = true)  // Delete from DB

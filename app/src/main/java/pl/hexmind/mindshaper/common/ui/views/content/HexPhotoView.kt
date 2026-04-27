@@ -21,7 +21,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.common.ui.dialogs.MultipleActionsDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import timber.log.Timber
 import kotlin.math.max
 
@@ -75,7 +75,7 @@ class HexPhotoView @JvmOverloads constructor(
     private var viewScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     init {
-        inflate(context, R.layout.z_photo_display_view, this)
+        inflate(context, R.layout.common_photo_display_view, this)
         orientation = VERTICAL
 
         // Initialize UI components
@@ -167,7 +167,7 @@ class HexPhotoView @JvmOverloads constructor(
     }
 
     private fun showDeleteConfirmation() {
-        MultipleActionsDialog.Builder(context)
+        ActionsDialog.Builder(context)
             .setTitle(context.getString(R.string.photos_removing_header))
             .setDescription(context.getString(R.string.photos_removing_file))
             .setCautionAction(context.getString(R.string.common_deletion_dialog_yes_2)) {

@@ -23,7 +23,7 @@ class TextEditDialog(
     private val onSave: (String) -> Unit
 ) {
 
-    private val dialogView = LayoutInflater.from(context).inflate(R.layout.z_text_edit_dialog, null)
+    private val dialogView = LayoutInflater.from(context).inflate(R.layout.common_text_edit_dialog, null)
     private val etInput: TextInputEditText = dialogView.findViewById(R.id.et_input)
     private val tvHeader : TextView = dialogView.findViewById(R.id.tv_header)
     private val dialog: AlertDialog

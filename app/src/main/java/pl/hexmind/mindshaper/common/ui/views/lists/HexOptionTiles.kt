@@ -58,7 +58,7 @@ open class HexOptionTiles @JvmOverloads constructor(
 
         options.forEachIndexed { index, option ->
             val tileView = LayoutInflater.from(context)
-                .inflate(R.layout.z_option_tile_item_view, this, false)
+                .inflate(R.layout.common_option_tile_item_view, this, false)
 
             // Icon handling
             val icon = tileView.findViewById<ImageView>(R.id.iv_tile_icon)

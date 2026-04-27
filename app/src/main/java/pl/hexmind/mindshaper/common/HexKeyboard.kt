@@ -12,7 +12,7 @@ class HexKeyboard : InputMethodService() {
     private var keyboardView: View? = null
 
     override fun onCreateInputView(): View {
-        keyboardView = layoutInflater.inflate(R.layout.z_hex_keyboard_layout, null)
+        keyboardView = layoutInflater.inflate(R.layout.common_hex_keyboard_layout, null)
 
         setupSpecialCharacters(keyboardView!!)
         setupLetterKeys(keyboardView!!)

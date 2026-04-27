@@ -54,7 +54,7 @@
         android:clipToPadding="false">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_action_next_tooltip"
+            android:id="@+id/btn_action_next_screen"
             style="@style/SecondaryActionButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"

@@ -13,7 +13,7 @@ import pl.hexmind.mindshaper.R
 /**
  * Reusable dialog with two action buttons (caution + standard) and cancel/dismiss button
  */
-class MultipleActionsDialog private constructor(
+class ActionsDialog private constructor(
     // core
     private val context: Context,
 
@@ -33,7 +33,7 @@ class MultipleActionsDialog private constructor(
 ) {
 
     fun show() {
-        val dialogView = LayoutInflater.from(context).inflate(R.layout.z_multiple_actions_dialog, null)
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.common_actions_dialog, null)
 
         val dialog = MaterialAlertDialogBuilder(context)
             .setView(dialogView)
@@ -147,6 +147,13 @@ class MultipleActionsDialog private constructor(
         }
 
         /**
+         * Set action for dismiss/cancel button (default: just closes the dialog)
+         */
+        fun setDismissAction(action: () -> Unit) = apply {
+            this.dismissAction = action
+        }
+
+        /**
          * Set custom dismiss button text (default: "Anuluj")
          */
         fun setDismissText(text: String) = apply {
@@ -157,12 +164,12 @@ class MultipleActionsDialog private constructor(
          * Build and show the dialog
          */
         fun show() {
-            require(title.isNotEmpty()) { "Question text is required" }
+            require(title.isNotEmpty()) { "Title text is required" }
             require(cautionAction != null || standardAction != null) {
                 "At least one action (caution or standard) must be set"
             }
 
-            MultipleActionsDialog(
+            ActionsDialog(
                 context = context,
                 title = title,
                 description = description,

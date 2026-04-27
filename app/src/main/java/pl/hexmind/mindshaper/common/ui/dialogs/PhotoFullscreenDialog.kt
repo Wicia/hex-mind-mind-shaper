@@ -36,7 +36,7 @@ class PhotoFullscreenDialog(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
-        setContentView(R.layout.z_photo_fullscreen_dialog)
+        setContentView(R.layout.common_photo_fullscreen_dialog)
 
         // Full screen setup
         window?.setLayout(

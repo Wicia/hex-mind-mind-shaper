@@ -22,7 +22,7 @@ import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.common.ui.views.lists.CommonIconsListItem
 import pl.hexmind.mindshaper.common.ui.dialogs.IconsListDialog
-import pl.hexmind.mindshaper.common.ui.dialogs.TooltipsDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.GuideDialog
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import timber.log.Timber
@@ -143,9 +143,9 @@ class StreamActivity : CoreActivity() {
     }
 
     private fun showSearchHelpDialog() {
-        TooltipsDialog.Builder(this)
-            .addTooltip(getString(R.string.stream_searching_tooltip_1), getString(R.string.stream_searching_title_1))
-            .addTooltip(getString(R.string.stream_searching_tooltip_2), getString(R.string.stream_searching_title_2))
+        GuideDialog.Builder(this)
+            .addGuideScreen(getString(R.string.stream_searching_tooltip_1), getString(R.string.stream_searching_title_1))
+            .addGuideScreen(getString(R.string.stream_searching_tooltip_2), getString(R.string.stream_searching_title_2))
             .show()
     }
 

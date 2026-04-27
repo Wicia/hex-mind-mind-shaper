@@ -20,10 +20,10 @@ import pl.hexmind.mindshaper.common.dormant.ThoughtState
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.ui.dialogs.HexTags
 import pl.hexmind.mindshaper.common.ui.dialogs.HexTagsBottomSheet
-import pl.hexmind.mindshaper.common.ui.dialogs.MultipleActionsDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.PhotoFullscreenDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
-import pl.hexmind.mindshaper.common.ui.dialogs.TooltipsDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.GuideDialog
 import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
 import pl.hexmind.mindshaper.common.ui.views.content.HexAudioView
 import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
@@ -544,13 +544,13 @@ class DetailsActivity : ThoughtManagerActivity() {
     }
 
     private fun showWarningDialog() {
-        TooltipsDialog.Builder(this)
-            .setInfo(getString(R.string.details_warning_dialog_title), getString(R.string.details_warning_dialog_message))
+        GuideDialog.Builder(this)
+            .withSingleScreen(getString(R.string.details_warning_dialog_title), getString(R.string.details_warning_dialog_message))
             .show()
     }
 
     private fun showDormantDialog() {
-        MultipleActionsDialog.Builder(this)
+        ActionsDialog.Builder(this)
             .setTitle(getString(R.string.details_dormant_dialog_title))
             .setDescription(getString(R.string.details_dormant_dialog_message))
             .setCautionAction(getString(R.string.details_dormant_dialog_restore)) {

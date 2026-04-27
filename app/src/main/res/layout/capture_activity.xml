@@ -23,7 +23,7 @@
             android:paddingBottom="90dp">
 
             <!-- Header -->
-            <include layout="@layout/z_header_activity" />
+            <include layout="@layout/common_header_activity" />
 
             <!-- HEX TAGS -->
             <com.google.android.material.textfield.TextInputLayout

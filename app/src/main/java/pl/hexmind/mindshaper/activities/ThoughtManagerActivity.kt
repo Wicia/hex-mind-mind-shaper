@@ -5,7 +5,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
-import pl.hexmind.mindshaper.common.ui.dialogs.MultipleActionsDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 
 /**
  * Parent class for all common thought capture & edit functionalities
@@ -13,7 +13,7 @@ import pl.hexmind.mindshaper.common.ui.dialogs.MultipleActionsDialog
 open class ThoughtManagerActivity : CoreActivity() {
 
     fun showEnableAdditionalFeaturesDialog() {
-        MultipleActionsDialog.Builder(this)
+        ActionsDialog.Builder(this)
             .setTitle("Nieaktywna forma zapisu myśli")
             .setDescription(getString(R.string.common_thoughts_forms_permissions_needed))
             .setCautionAction(getString(R.string.common_btn_confirm_ok_2)) {
