@@ -1,5 +1,6 @@
 package pl.hexmind.mindshaper.activities.stream
 
+import android.content.res.ColorStateList
 import android.view.GestureDetector
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -7,12 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtGrowthStage
+import pl.hexmind.mindshaper.common.dormant.ThoughtState
+import pl.hexmind.mindshaper.services.ThoughtStatusService
 import pl.hexmind.mindshaper.common.ui.views.content.HexAudioView
 import pl.hexmind.mindshaper.common.ui.views.lists.SortConfig
 import pl.hexmind.mindshaper.common.ui.views.lists.SortProperty
@@ -29,6 +33,7 @@ import java.io.File
  */
 class StreamAdapter(
     private val appSettingsStorage: AppSettingsStorage,
+    private val thoughtStatusService: ThoughtStatusService,
     private val onDeleteThought: (ThoughtDTO) -> Unit,
     private val onThoughtTap: (ThoughtDTO) -> Unit,
     private val onLoadAudio: (thoughtId: Int, onReady: (File) -> Unit) -> Unit,
@@ -41,6 +46,7 @@ class StreamAdapter(
         return ThoughtViewHolder(
             view,
             appSettingsStorage,
+            thoughtStatusService,
             onDeleteThought,
             onThoughtTap,
             onLoadAudio,
@@ -66,6 +72,7 @@ class StreamAdapter(
     class ThoughtViewHolder(
         itemView: View,
         private val appSettingsStorage: AppSettingsStorage,
+        private val thoughtStatusService: ThoughtStatusService,
         private val onDeleteThought: (ThoughtDTO) -> Unit,
         private val onThoughtTap: (ThoughtDTO) -> Unit,
         private val onLoadAudio: (thoughtId: Int, onReady: (File) -> Unit) -> Unit,
@@ -89,6 +96,7 @@ class StreamAdapter(
         private val vbThoughtValue: ValueCloude = itemView.findViewById(R.id.vb_thought_value)
 
         private val ivDecoratorIcon: ImageView = itemView.findViewById(R.id.iv_decorator_icon)
+        private val ivStatusIcon: ImageView = itemView.findViewById(R.id.iv_status_icon)
 
         private val tvEmptyThought: TextView = itemView.findViewById(R.id.tv_empty_thought)
 
@@ -161,6 +169,7 @@ class StreamAdapter(
 
             vbThoughtValue.currentLevel = thought.value
             updateMetadataUI(thought, sortConfig)
+            updateStatusIcon(thought)
         }
 
         fun updateMetadataUI(thought: ThoughtDTO, sortConfig: SortConfig) {
@@ -245,6 +254,24 @@ class StreamAdapter(
                 0L -> itemView.context.getString(R.string.common_thought_updated_at_0)
                 1L -> itemView.context.getString(R.string.common_thought_updated_at_1)
                 else -> itemView.context.getString(R.string.common_thought_updated_at_pattern, ageInDays.toString())
+            }
+        }
+
+        private fun updateStatusIcon(thought: ThoughtDTO) {
+            val iconRes = when (thoughtStatusService.computeState(thought)) {
+                ThoughtState.LOCKED  -> R.drawable.ic_status_locked
+                ThoughtState.WARNING -> R.drawable.ic_status_attention
+                ThoughtState.DORMANT -> R.drawable.ic_status_dormant
+                ThoughtState.ACTIVE  -> null
+            }
+            if (iconRes != null) {
+                ivStatusIcon.setImageResource(iconRes)
+                ivStatusIcon.imageTintList = ColorStateList.valueOf(
+                    ContextCompat.getColor(itemView.context, R.color.thought_status_icon)
+                )
+                ivStatusIcon.visibility = View.VISIBLE
+            } else {
+                ivStatusIcon.visibility = View.GONE
             }
         }
 

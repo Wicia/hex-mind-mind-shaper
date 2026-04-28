@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtManagerActivity
 import pl.hexmind.mindshaper.common.dormant.ThoughtState
+import pl.hexmind.mindshaper.services.ThoughtStatusService
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.ui.dialogs.HexTags
 import pl.hexmind.mindshaper.common.ui.dialogs.HexTagsBottomSheet
@@ -29,13 +30,11 @@ import pl.hexmind.mindshaper.common.ui.views.content.HexAudioView
 import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
 import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
 import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
-import pl.hexmind.mindshaper.services.AppSettingsStorage.Companion.DORMANT_DAYS_MIN
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import java.io.File
 import java.time.Duration
 import java.time.Instant
-import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -46,6 +45,9 @@ class DetailsActivity : ThoughtManagerActivity() {
 
     @Inject
     lateinit var thoughtValidator: ThoughtValidator
+
+    @Inject
+    lateinit var thoughtStatusService: ThoughtStatusService
 
     private var currentPhotoUri: Uri? = null
 
@@ -446,7 +448,7 @@ class DetailsActivity : ThoughtManagerActivity() {
 
     private fun updateValueUI(thought: ThoughtDTO) {
 
-        val state = computeThoughtState(thought)
+        val state = thoughtStatusService.computeState(thought)
         updateBackgroundForState(state)
 
         val statusColor = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.thought_status_icon))
@@ -510,31 +512,6 @@ class DetailsActivity : ThoughtManagerActivity() {
                 binding.ivStatus.imageTintList = statusColor
                 binding.ivStatus.setOnClickListener(null)
             }
-        }
-    }
-
-    // ========== SLOW MODE LOCK ==========
-
-    private fun isThoughtLocked(thought: ThoughtDTO): Boolean {
-        if (!appSettingsStorage.isSlowModeEnabled()) return false
-        val hours = appSettingsStorage.getSlowModeHours()
-        val elapsed = Duration.between(thought.createdAt, Instant.now()).toHours()
-        return elapsed < hours
-    }
-
-    private fun computeThoughtState(thought: ThoughtDTO): ThoughtState {
-        if (isThoughtLocked(thought)) return ThoughtState.LOCKED
-        if (!appSettingsStorage.isDormantModeEnabled()) return ThoughtState.ACTIVE
-        if (thought.value > appSettingsStorage.getDormantValueThreshold()) return ThoughtState.ACTIVE
-
-        val daysSinceUpdate = ChronoUnit.DAYS.between(thought.updatedAt, Instant.now())
-        val daysThreshold   = appSettingsStorage.getDormantDaysThreshold().toLong()
-        val warningThreshold = maxOf(0L, daysThreshold - DORMANT_DAYS_MIN)
-
-        return when {
-            daysSinceUpdate >= daysThreshold    -> ThoughtState.DORMANT
-            daysSinceUpdate >= warningThreshold -> ThoughtState.WARNING
-            else                                -> ThoughtState.ACTIVE
         }
     }
 

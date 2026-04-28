@@ -23,6 +23,7 @@ import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.common.ui.views.lists.CommonIconsListItem
 import pl.hexmind.mindshaper.common.ui.dialogs.IconsListDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.GuideDialog
+import pl.hexmind.mindshaper.services.ThoughtStatusService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import javax.inject.Inject
@@ -35,6 +36,9 @@ class StreamActivity : CoreActivity() {
 
     @Inject
     lateinit var thoughtValidator: ThoughtValidator
+
+    @Inject
+    lateinit var thoughtStatusService: ThoughtStatusService
 
     private val viewModel: StreamViewModel by viewModels()
 
@@ -82,6 +86,7 @@ class StreamActivity : CoreActivity() {
     private fun setupVerticalFeed() {
         adapter = StreamAdapter(
             appSettingsStorage,
+            thoughtStatusService,
             onDeleteThought = { thoughtToDelete ->
                 showDeleteConfirmationDialog(thoughtToDelete)
             },

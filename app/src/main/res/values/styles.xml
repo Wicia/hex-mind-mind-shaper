@@ -392,13 +392,8 @@
     <!-- ====================================== -->
 
     <style name="ValueCloude">
-        <!-- Size -->
-        <item name="squareSize">80dp</item>
-
-        <!-- Colors -->
-        <item name="squareColor">@color/_orange_lvl_2</item>
-        <item name="textSize">18sp</item>
-        <item name="textColor">@color/text_secondary</item>
+        <item name="cloudColor">@color/_orange_lvl_2</item>
+        <item name="valueTextColor">@color/graphite_dark</item>
     </style>
 
     <!-- ====================================== -->

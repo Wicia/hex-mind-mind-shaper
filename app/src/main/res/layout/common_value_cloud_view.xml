@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <!-- Cloud shape -->
+    <ImageView
+        android:id="@+id/iv_cloud_shape"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_cloud_shape"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+
+    <!-- Value label -->
+    <TextView
+        android:id="@+id/tv_cloud_value"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:fontFamily="@font/baloo2"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textColor="@color/_black"
+        android:text="0" />
+
+</FrameLayout>

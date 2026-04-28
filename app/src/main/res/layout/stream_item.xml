@@ -111,84 +111,76 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical"
             android:background="@color/_orange_lvl_0">
 
-            <!-- Row 1 -->
+            <!-- LEFT: value cloud / icon + label (80%) -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="4"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <!-- Left line decorator -->
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0.5dp"
-                    android:layout_weight="1"
-                    android:layout_marginStart="16dp"
-                    android:background="@color/_gray_lvl_2" />
-
-                <!-- Mid element: VALUE CLOUD -->
+                <!-- VALUE CLOUD -->
                 <pl.hexmind.mindshaper.common.ui.views.values.ValueCloude
                     android:id="@+id/vb_thought_value"
                     style="@style/ValueCloude"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    app:squareColor="@color/_orange_lvl_1"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    app:cloudColor="@color/_orange_lvl_1"
+                    app:valueTextSize="14sp"
+                    app:valueTextColor="@color/_gray_lvl_2"
                     android:visibility="gone"
                     />
 
-                <!-- Mid element: Icon -->
+                <!-- Icon -->
                 <ImageView
                     android:id="@+id/iv_decorator_icon"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="8dp"
                     android:src="@drawable/ic_decorator_label"
                     app:tint="@color/_gray_lvl_2"
                     android:contentDescription="@string/common_placeholder_accessibility_content_desc"
                     android:visibility="gone" />
 
-                <!-- Mid element: Text or "Emoji Icon" -->
+                <!-- Text or "Emoji Icon" -->
                 <TextView
                     android:id="@+id/tv_text_icon"
                     style="@style/TextView_Metadata"
                     android:textColor="@color/_gray_lvl_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:gravity="center"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center_vertical"
                     android:visibility="gone" />
 
-                <!-- Right line decorator -->
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0.5dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="16dp"
-                    android:background="@color/_gray_lvl_2" />
+                <!-- Label text -->
+                <TextView
+                    android:id="@+id/tv_label"
+                    style="@style/TextView_Metadata"
+                    android:textColor="@color/_gray_lvl_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
-            <!-- Row 2: text -->
-            <TextView
-                android:id="@+id/tv_label"
-                style="@style/TextView_Metadata"
-                android:textColor="@color/_gray_lvl_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:gravity="center"
-                android:visibility="gone" />
+            <!-- RIGHT: image (20%) -->
+            <ImageView
+                android:id="@+id/iv_status_icon"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:layout_gravity="bottom"
+                android:scaleType="fitEnd"
+                android:src="@drawable/ic_decorator_label"
+                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                 />
 
         </LinearLayout>
 

@@ -1,0 +1,46 @@
+<!--
+    Cloud shape: 9 overlapping circles (center + 4 main + 4 diagonal)
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- Center -->
+    <path android:fillColor="#000000"
+        android:pathData="M 28,50 a 22,22 0 1,0 44,0 a 22,22 0 1,0 -44,0 Z"/>
+
+    <!-- Top -->
+    <path android:fillColor="#000000"
+        android:pathData="M 33,26 a 17,17 0 1,0 34,0 a 17,17 0 1,0 -34,0 Z"/>
+
+    <!-- Bottom -->
+    <path android:fillColor="#000000"
+        android:pathData="M 33,74 a 17,17 0 1,0 34,0 a 17,17 0 1,0 -34,0 Z"/>
+
+    <!-- Left -->
+    <path android:fillColor="#000000"
+        android:pathData="M 9,50 a 17,17 0 1,0 34,0 a 17,17 0 1,0 -34,0 Z"/>
+
+    <!-- Right -->
+    <path android:fillColor="#000000"
+        android:pathData="M 57,50 a 17,17 0 1,0 34,0 a 17,17 0 1,0 -34,0 Z"/>
+
+    <!-- Top-left -->
+    <path android:fillColor="#000000"
+        android:pathData="M 16,30 a 14,14 0 1,0 28,0 a 14,14 0 1,0 -28,0 Z"/>
+
+    <!-- Top-right -->
+    <path android:fillColor="#000000"
+        android:pathData="M 56,30 a 14,14 0 1,0 28,0 a 14,14 0 1,0 -28,0 Z"/>
+
+    <!-- Bottom-left -->
+    <path android:fillColor="#000000"
+        android:pathData="M 16,70 a 14,14 0 1,0 28,0 a 14,14 0 1,0 -28,0 Z"/>
+
+    <!-- Bottom-right -->
+    <path android:fillColor="#000000"
+        android:pathData="M 56,70 a 14,14 0 1,0 28,0 a 14,14 0 1,0 -28,0 Z"/>
+
+</vector>

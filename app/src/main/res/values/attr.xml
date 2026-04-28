@@ -17,12 +17,11 @@
     </declare-styleable>
 
     <declare-styleable name="ValueCloude">
-        <attr name="squareSize" format="dimension" />
         <attr name="level" />
-        <attr name="squareColor" format="reference|color" />
-        <attr name="textColor" format="reference|color" />
+        <attr name="cloudColor" format="reference|color" />
+        <attr name="valueTextSize" format="dimension" />
         <attr name="showLevelText" />
-        <attr name="textSize" format="dimension" />
+        <attr name="valueTextColor" format="reference|color" />
     </declare-styleable>
 
     <declare-styleable name="HexAudioView">

@@ -48,6 +48,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="4dp"
                     android:orientation="horizontal">
 
                     <!-- * Decorator / "Secret" Decrease Button * -->
@@ -67,8 +69,10 @@
                     <pl.hexmind.mindshaper.common.ui.views.values.ValueCloude
                         android:id="@+id/vb_thought_value"
                         style="@style/ValueCloude"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp" />
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
+                        app:valueTextSize="18sp"
+                        />
 
                     <!-- * Decorator / "Secret" Increase Button * -->
                     <ImageView
