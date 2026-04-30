@@ -271,13 +271,17 @@
 
     <!-- Filter -->
     <string name="stream_filter_dialog_title">Filtruj</string>
-    <string name="stream_filter_all_domains">* Wszystkie domeny</string>
     <string name="stream_filter_button_none">-</string>
+    <string name="stream_filter_label_states">| Stany</string>
+    <string name="stream_filter_show_active">Aktywne myśli</string>
+    <string name="stream_filter_show_dormant">Uśpione myśli</string>
+    <string name="stream_filter_toast_count">Wybrano %1s myśli</string>
 
     <!-- Sort Properties -->
     <string name="sort_dialog_header">Sortowanie</string>
 
     <string name="sort_property_created_at">Wiek</string>
+
     <string name="sort_property_thread">Wątek</string>
     <string name="sort_property_soul_mate">Osoba</string>
     <string name="sort_property_project">Projekt</string>

@@ -15,6 +15,8 @@ import pl.hexmind.mindshaper.common.regex.HexTags
 import pl.hexmind.mindshaper.common.ui.views.lists.CommonIconsListItem
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.ThoughtsService
+import pl.hexmind.mindshaper.common.dormant.ThoughtState
+import pl.hexmind.mindshaper.services.ThoughtStatusService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import timber.log.Timber
 import java.io.File
@@ -27,7 +29,8 @@ import javax.inject.Inject
 class StreamViewModel @Inject constructor(
     private val thoughtsService: ThoughtsService,
     private val domainsService: DomainsService,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val thoughtStatusService: ThoughtStatusService
 ) : ViewModel() {
 
     // All thoughts from database
@@ -45,6 +48,12 @@ class StreamViewModel @Inject constructor(
     private val _selectedDomainId = savedStateHandle.getLiveData<Int?>("selected_domain_id", null)
     val selectedDomainId: LiveData<Int?> = _selectedDomainId
 
+    private val _showActive  = savedStateHandle.getLiveData("show_active", true)
+    val showActive: LiveData<Boolean> = _showActive
+
+    private val _showDormant = savedStateHandle.getLiveData("show_dormant", false)
+    val showDormant: LiveData<Boolean> = _showDormant
+
     private val _domainsWithIcons = MutableLiveData<List<CommonIconsListItem>>(emptyList())
     val domainsWithIcons: LiveData<List<CommonIconsListItem>> = _domainsWithIcons
 
@@ -54,6 +63,8 @@ class StreamViewModel @Inject constructor(
         var currentQuery: HexTags? = null
         var currentSort: SortConfig? = null
         var currentDomainId: Int? = null
+        var currentShowActive: Boolean  = true
+        var currentShowDormant: Boolean = false
 
         fun update() {
             val thoughts = currentThoughts
@@ -69,7 +80,7 @@ class StreamViewModel @Inject constructor(
             )
             val domainId = currentDomainId
 
-            val filtered = filterThoughts(thoughts, query, domainId)
+            val filtered = filterThoughts(thoughts, query, domainId, currentShowActive, currentShowDormant)
             val sorted = sortThoughts(filtered, sort)
 
             value = sorted
@@ -92,6 +103,16 @@ class StreamViewModel @Inject constructor(
 
         addSource(_selectedDomainId) { domainId ->
             currentDomainId = domainId
+            update()
+        }
+
+        addSource(_showActive) { show ->
+            currentShowActive = show
+            update()
+        }
+
+        addSource(_showDormant) { show ->
+            currentShowDormant = show
             update()
         }
     }
@@ -123,13 +144,26 @@ class StreamViewModel @Inject constructor(
         _selectedDomainId.value = domainId
     }
 
-    fun clearDomainFilter() {
-        savedStateHandle["selected_domain_id"] = null
-        _selectedDomainId.value = null
+    fun updateShowActive(show: Boolean) {
+        savedStateHandle["show_active"] = show
+        _showActive.value = show
     }
 
-    private fun filterThoughts(thoughts: List<ThoughtDTO>, query: HexTags, domainId: Int?): List<ThoughtDTO> {
+    fun updateShowDormant(show: Boolean) {
+        savedStateHandle["show_dormant"] = show
+        _showDormant.value = show
+    }
+
+    private fun filterThoughts(thoughts: List<ThoughtDTO>, query: HexTags, domainId: Int?, showActive: Boolean, showDormant: Boolean): List<ThoughtDTO> {
         var filtered = thoughts
+
+        // Filter by state — keep thought if its state category is checked
+        filtered = filtered.filter { thought ->
+            when (thoughtStatusService.computeState(thought)) {
+                ThoughtState.DORMANT  -> showDormant
+                else                  -> showActive // ACTIVE, WARNING, LOCKED
+            }
+        }
 
         if (domainId != null) {
             filtered = filtered.filter { it.domainId == domainId }

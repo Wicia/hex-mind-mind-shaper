@@ -121,4 +121,21 @@
         app:elevation="6dp"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
 
+
+    <!-- SCROLL PROGRESS INDICATOR — fills top to bottom as user pages through thoughts -->
+    <FrameLayout
+        android:id="@+id/fl_scroll_indicator"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="@color/graphite_light">
+
+        <View
+            android:id="@+id/v_scroll_progress"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/_orange_lvl_2" />
+
+    </FrameLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,12 +1,12 @@
 package pl.hexmind.mindshaper.services
 
-import jakarta.inject.Inject
 import pl.hexmind.mindshaper.common.dormant.ThoughtState
 import pl.hexmind.mindshaper.services.AppSettingsStorage.Companion.DORMANT_DAYS_MIN
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import java.time.Duration
 import java.time.Instant
 import java.time.temporal.ChronoUnit
+import javax.inject.Inject
 
 /**
  * Computes the current state of a thought based on slow mode and dormant mode settings.

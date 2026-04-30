@@ -20,9 +20,8 @@ import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.common.ui.views.lists.SortConfig
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
-import pl.hexmind.mindshaper.common.ui.views.lists.CommonIconsListItem
-import pl.hexmind.mindshaper.common.ui.dialogs.IconsListDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.GuideDialog
+import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
 import pl.hexmind.mindshaper.services.ThoughtStatusService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
@@ -164,6 +163,22 @@ class StreamActivity : CoreActivity() {
             showFilterDialog()
         }
 
+        // Listen for filter result from StreamFilterBottomSheet
+        supportFragmentManager.setFragmentResultListener(
+            StreamFilterBottomSheet.REQUEST_KEY, this
+        ) { _, result ->
+            val showActive  = result.getBoolean(StreamFilterBottomSheet.RESULT_SHOW_ACTIVE, true)
+            val showDormant = result.getBoolean(StreamFilterBottomSheet.RESULT_SHOW_DORMANT, false)
+            val domainId    = result.getInt(StreamFilterBottomSheet.RESULT_DOMAIN_ID, -1).takeIf { it != -1 }
+            viewModel.updateShowActive(showActive)
+            viewModel.updateShowDormant(showDormant)
+            viewModel.updateSelectedDomain(domainId)
+
+            // Show count of filtered thoughts after applying filters
+            val count = viewModel.filteredThoughts.value?.size ?: 0
+            showShortToast(R.string.stream_filter_toast_count, count.toString())
+        }
+
         // Update filter button text when domain changes
         viewModel.selectedDomainId.observe(this) { domainId ->
             updateFilterButtonText(domainId)
@@ -179,44 +194,30 @@ class StreamActivity : CoreActivity() {
 
     private fun showFilterDialog() {
         val domains = viewModel.domainsWithIcons.value ?: emptyList()
-        if (domains.isEmpty()) return
-
-        // Add "All domains" option at the beginning
-        val allDomainsOption = CommonIconsListItem(
-            iconEntityId = null,
-            iconResourceId = R.drawable.ic_domain_none,
-            labelText = getString(R.string.stream_filter_all_domains),
-            labelEntityId = null,
-            highlightItem = true
-        )
-
-        val domainsWithAll = listOf(allDomainsOption) + domains
-
-        IconsListDialog.Builder(this)
-            .setTitle(getString(R.string.stream_filter_dialog_title))
-            .setIcons(domainsWithAll)
-            .setOnIconSelected { selectedDomain ->
-                onDomainFilterSelected(selectedDomain)
-            }
-            .show()
-    }
-
-    private fun onDomainFilterSelected(domain: CommonIconsListItem) {
-        if (domain.labelEntityId == null) {
-            // "All domains" selected - clear filter
-            viewModel.clearDomainFilter()
-        } else {
-            // Specific domain selected
-            viewModel.updateSelectedDomain(domain.labelEntityId)
+        val domainGridItems = domains.mapNotNull { domain ->
+            val id = domain.labelEntityId ?: return@mapNotNull null
+            IconsGridItem(id = id, iconResId = domain.iconResourceId)
         }
+
+        StreamFilterBottomSheet.show(
+            fragmentManager      = supportFragmentManager,
+            showActive           = viewModel.showActive.value ?: true,
+            showDormant          = viewModel.showDormant.value ?: false,
+            selectedDomainId     = viewModel.selectedDomainId.value,
+            domainItems          = domainGridItems,
+            isDormantModeEnabled = appSettingsStorage.isDormantModeEnabled()
+        )
     }
+
 
     private fun updateFilterButtonText(domainId: Int?) {
-        btnFilter.text = if (domainId == null) {
-            getString(R.string.stream_filter_button_none)
-        } else {
-            "(1)" // TODO: to be replaced with filter counter
-        }
+        val dormantModeOn = appSettingsStorage.isDormantModeEnabled()
+        val count = listOfNotNull(
+            if (dormantModeOn && viewModel.showActive.value == false) true else null,
+            if (dormantModeOn && viewModel.showDormant.value == true) true else null,
+            domainId
+        ).size
+        btnFilter.text = if (count == 0) getString(R.string.stream_filter_button_none) else "($count)"
     }
 
     private fun showSortDialog() {
