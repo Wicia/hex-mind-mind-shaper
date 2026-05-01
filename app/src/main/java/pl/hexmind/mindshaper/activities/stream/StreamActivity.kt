@@ -53,6 +53,10 @@ class StreamActivity : CoreActivity() {
     private lateinit var fabNewThought: FloatingActionButton
     private var isMenuOpen = false
 
+    // Scroll progress indicator
+    private lateinit var flScrollIndicator: android.widget.FrameLayout
+    private lateinit var vScrollProgress: android.view.View
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.stream_activity)
@@ -63,6 +67,7 @@ class StreamActivity : CoreActivity() {
         setupSortButton()
         setupFilterButton()
         setupFabMenu()
+        setupScrollIndicator()
         setupReactiveDataObserver()
 
         viewModel.loadDomains()
@@ -79,6 +84,8 @@ class StreamActivity : CoreActivity() {
         tilSearch = findViewById(R.id.til_search)
         etSearch = findViewById(R.id.et_search)
         fabNewThought = findViewById(R.id.fab_new_thought)
+        flScrollIndicator = findViewById(R.id.fl_scroll_indicator)
+        vScrollProgress   = findViewById(R.id.v_scroll_progress)
         setupHeader(R.drawable.ic_activity_stream, R.string.thoughts_stream_title)
     }
 
@@ -108,7 +115,30 @@ class StreamActivity : CoreActivity() {
 
         // Smooth page change callback
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                updateScrollIndicator(position)
+            }
         })
+    }
+
+    private fun setupScrollIndicator() {
+        // Trigger initial state after layout is measured
+        viewPager.post {
+            updateScrollIndicator(viewPager.currentItem)
+        }
+    }
+
+    private fun updateScrollIndicator(position: Int) {
+        val total = adapter.itemCount
+        if (total <= 1) {
+            vScrollProgress.layoutParams.height = 0
+            vScrollProgress.requestLayout()
+            return
+        }
+        val progress    = position.toFloat() / (total - 1).toFloat()
+        val totalHeight = flScrollIndicator.height
+        vScrollProgress.layoutParams.height = (totalHeight * progress).toInt()
+        vScrollProgress.requestLayout()
     }
 
     private fun setupRealTimeSearchBar() {
@@ -179,10 +209,10 @@ class StreamActivity : CoreActivity() {
             showShortToast(R.string.stream_filter_toast_count, count.toString())
         }
 
-        // Update filter button text when domain changes
-        viewModel.selectedDomainId.observe(this) { domainId ->
-            updateFilterButtonText(domainId)
-        }
+        // Update filter button text when any filter changes
+        viewModel.selectedDomainId.observe(this) { updateFilterButtonText(it) }
+        viewModel.showActive.observe(this)        { updateFilterButtonText(viewModel.selectedDomainId.value) }
+        viewModel.showDormant.observe(this)       { updateFilterButtonText(viewModel.selectedDomainId.value) }
     }
 
     private fun setupFabMenu() {
@@ -209,11 +239,10 @@ class StreamActivity : CoreActivity() {
         )
     }
 
-
     private fun updateFilterButtonText(domainId: Int?) {
         val dormantModeOn = appSettingsStorage.isDormantModeEnabled()
         val count = listOfNotNull(
-            if (dormantModeOn && viewModel.showActive.value == false) true else null,
+            if (dormantModeOn && viewModel.showActive.value == true) true else null,
             if (dormantModeOn && viewModel.showDormant.value == true) true else null,
             domainId
         ).size
