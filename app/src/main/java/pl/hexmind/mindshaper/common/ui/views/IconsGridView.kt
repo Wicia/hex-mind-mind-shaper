@@ -13,12 +13,9 @@ import kotlinx.parcelize.Parcelize
 import pl.hexmind.mindshaper.R
 
 /**
- * Reusable icon grid widget with brick/honeycomb row pattern (3-4-3-4...).
+ * Reusable icon grid widget with brick/honeycomb row pattern.
  * Single selection — selected item gets filled background via isSelected state.
  * No label, icon only.
- *
- * All items have identical fixed size (48dp square).
- * Rows with fewer items (3) align to start and leave space on the right.
  *
  * Usage:
  *   binding.igvDomains.bind(items, selectedId) { clicked -> ... }
@@ -37,11 +34,20 @@ class IconsGridView @JvmOverloads constructor(
     // Flat list of all inflated item views for fast selection updates
     private val itemViews = mutableListOf<View>()
 
-    // Alternating column counts per row: 3, 4, 3, 4...
-    private val rowPattern = listOf(3, 4)
+    // Row pattern — configurable via XML (app:rowPattern="3,4") or bind() parameter
+    private var rowPattern = listOf(3, 4)
 
     init {
         orientation = VERTICAL
+        attrs?.let {
+            val a = context.obtainStyledAttributes(it, R.styleable.IconsGridView, 0, 0)
+            try {
+                a.getString(R.styleable.IconsGridView_rowPattern)
+                    ?.let { raw -> rowPattern = parsePattern(raw) }
+            } finally {
+                a.recycle()
+            }
+        }
     }
 
     /**
@@ -49,13 +55,16 @@ class IconsGridView @JvmOverloads constructor(
      *
      * @param items       list of items to display
      * @param selectedId  optional pre-selected item ID
+     * @param rowPattern  optional row pattern override e.g. listOf(4) or listOf(3,4)
      * @param onItemClick optional callback fired on every tap
      */
     fun bind(
         items: List<IconsGridItem>,
         selectedId: Int? = null,
+        rowPattern: List<Int>? = null,
         onItemClick: ((IconsGridItem) -> Unit)? = null
     ) {
+        rowPattern?.let { this.rowPattern = it }
         populate(items, selectedId, onItemClick)
     }
 
@@ -122,7 +131,7 @@ class IconsGridView @JvmOverloads constructor(
     }
 
     /**
-     * Splits flat items list into rows following the 3-4-3-4... pattern.
+     * Splits flat items list into rows following the configured pattern.
      * Last row may be shorter if items don't divide evenly.
      */
     private fun buildRows(items: List<IconsGridItem>): List<List<IconsGridItem>> {
@@ -139,6 +148,10 @@ class IconsGridView @JvmOverloads constructor(
 
         return rows
     }
+
+    // Parses "3,4" → listOf(3, 4). Falls back to listOf(4) on invalid input.
+    private fun parsePattern(raw: String): List<Int> =
+        raw.split(",").mapNotNull { it.trim().toIntOrNull() }.ifEmpty { listOf(4) }
 }
 
 /** Item model for [IconsGridView]. Parcelable required for Bundle transfer via HexTagsBottomSheet. */
