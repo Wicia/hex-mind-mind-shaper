@@ -10,13 +10,14 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import pl.hexmind.mindshaper.common.ui.dialogs.HexTags
 import pl.hexmind.mindshaper.common.ui.views.lists.CommonIconsListItem
+import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import java.io.File
-import java.time.Instant
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,6 +43,27 @@ class DetailsViewModel @Inject constructor(
         _thoughtId.value = id
     }
 
+    fun validateTags(tags: HexTags): ValidationResult {
+        val personResult = validator.validateSoulMates(tags.person)
+        if (personResult is ValidationResult.Error) return personResult
+
+        val projectResult = validator.validateProject(tags.project)
+        if (projectResult is ValidationResult.Error) return projectResult
+
+        return ValidationResult.Valid()
+    }
+
+    fun updateHexTags(tags: HexTags) {
+        viewModelScope.launch {
+            thoughtDetails.value?.let { thought ->
+                thought.soulMate = tags.person ?: ""
+                thought.project = tags.project ?: ""
+                thought.domainId = tags.domainId
+                thoughtsService.updateThoughtMetadata(thought)
+            }
+        }
+    }
+
     fun loadDomains() {
         viewModelScope.launch {
             val domains = domainsService.getAllDomainWithIcons()
@@ -49,37 +71,10 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    fun updateDomain(domainId: Int?) {
-        viewModelScope.launch {
-            thoughtDetails.value?.let { thought ->
-                thought.domainId = domainId
-                thoughtsService.updateThoughtMetadata(thought)
-            }
-        }
-    }
-
     fun updateThread(thread: String) {
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
                 thought.thread = thread
-                thoughtsService.updateThoughtMetadata(thought)
-            }
-        }
-    }
-
-    fun updateSoulMate(soulMate: String) {
-        viewModelScope.launch {
-            thoughtDetails.value?.let { thought ->
-                thought.soulMate = soulMate
-                thoughtsService.updateThoughtMetadata(thought)
-            }
-        }
-    }
-
-    fun updateProject(project: String) {
-        viewModelScope.launch {
-            thoughtDetails.value?.let { thought ->
-                thought.project = project
                 thoughtsService.updateThoughtMetadata(thought)
             }
         }

@@ -31,7 +31,6 @@ import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
 import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
 import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
-import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import java.io.File
 import java.time.Duration
 import java.time.Instant
@@ -42,9 +41,6 @@ class DetailsActivity : ThoughtManagerActivity() {
 
     private val viewModel: DetailsViewModel by viewModels()
     private lateinit var binding: DetailsEditActivityBinding
-
-    @Inject
-    lateinit var thoughtValidator: ThoughtValidator
 
     @Inject
     lateinit var thoughtStatusService: ThoughtStatusService
@@ -588,11 +584,10 @@ class DetailsActivity : ThoughtManagerActivity() {
         HexTagsBottomSheet.show(
             fragmentManager = supportFragmentManager,
             items = items,
+            onValidate = { tags -> viewModel.validateTags(tags) },
             currentTags = tags
         ) { result ->
-            viewModel.updateDomain(domainId = result.domainId)
-            viewModel.updateSoulMate(result.person ?: "")
-            viewModel.updateProject(result.project ?: "")
+            viewModel.updateHexTags(result)
         }
     }
 }

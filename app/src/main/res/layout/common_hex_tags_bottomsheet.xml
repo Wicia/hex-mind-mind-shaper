@@ -68,49 +68,23 @@
         </LinearLayout>
 
         <!-- === TEXT FIELDS === -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_person"
+        <pl.hexmind.mindshaper.common.ui.views.HexInputField
+            android:id="@+id/hif_person"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="12dp"
-            android:hint="@string/hex_tags_hint_person"
-            app:hintTextColor="@color/_gray_lvl_3">
+            app:hint="@string/hex_tags_hint_person" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_person"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_edit_text"
-                android:inputType="textCapWords"
-                android:maxLines="1"
-                android:textColor="@android:color/black"
-                android:textColorHint="@color/_gray_lvl_3" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_project"
+        <pl.hexmind.mindshaper.common.ui.views.HexInputField
+            android:id="@+id/hif_project"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:hint="@string/hex_tags_hint_project"
-            app:hintTextColor="@color/_gray_lvl_3">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_project"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_edit_text"
-                android:inputType="textCapWords"
-                android:maxLines="1"
-                android:textColor="@android:color/black"
-                android:textColorHint="@color/_gray_lvl_3" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            app:hint="@string/hex_tags_hint_project" />
 
         <!-- === ICONS GRID === -->
         <TextView

@@ -17,9 +17,9 @@ class ThoughtValidator @Inject constructor(
     private val appSettingsStorage: AppSettingsStorage
 ) {
     companion object {
-        const val THREAD_MAX_CHARS: Int = 24
-        const val PROJECT_MAX_CHARS: Int = 24
-        const val SOUL_MATES_MAX_CHARS: Int = 24
+        const val THREAD_MAX_CHARS: Int = 36
+        const val PROJECT_MAX_CHARS: Int = 36
+        const val SOUL_MATES_MAX_CHARS: Int = 36
 
         const val VOICE_RECORDING_MAX_DURATION_MS = 180_000L
     }
@@ -55,7 +55,7 @@ class ThoughtValidator @Inject constructor(
 
         return if (thread.length > THREAD_MAX_CHARS) {
             ValidationResult.Error(
-                context.getString(R.string.capture_thread_error_chars_exceeded),
+                context.getString(R.string.common_thread_error_chars_exceeded, THREAD_MAX_CHARS),
                 ValidatedProperty.T_THREAD
             )
         }
@@ -72,7 +72,7 @@ class ThoughtValidator @Inject constructor(
 
         return if (project.length > PROJECT_MAX_CHARS) {
             ValidationResult.Error(
-                context.getString(R.string.capture_project_error_chars_exceeded),
+                context.getString(R.string.common_project_error_chars_exceeded, PROJECT_MAX_CHARS),
                 ValidatedProperty.T_PROJECT
             )
         }
@@ -89,7 +89,7 @@ class ThoughtValidator @Inject constructor(
 
         return if (soulMates.length > SOUL_MATES_MAX_CHARS) {
             ValidationResult.Error(
-                context.getString(R.string.capture_soul_mates_error_chars_exceeded),
+                context.getString(R.string.common_soul_mates_error_chars_exceeded, SOUL_MATES_MAX_CHARS),
                 ValidatedProperty.T_SOUL_MATES
             )
         }

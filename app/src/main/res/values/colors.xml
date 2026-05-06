@@ -33,6 +33,7 @@
     <!-- Success, error, warning states -->
     <color name="validation_success">@color/_gray_lvl_3</color>
     <color name="validation_error">#5B0E0E</color>
+    <color name="validation_error_frame">#8B1313</color>
 
 <!-- ====================================== -->
 <!--    APP THEME MAPPINGS -->

@@ -51,4 +51,8 @@
         <attr name="rowPattern" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="HexInputField">
+        <attr name="hint" format="string|reference" />
+    </declare-styleable>
+
 </resources>

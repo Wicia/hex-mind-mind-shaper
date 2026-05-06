@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_input"
+        app:boxBackgroundMode="none"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hintTextColor="@color/_gray_lvl_3"
+        app:hintTextAppearance="@style/HexInputHintAppearance">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_edit_text"
+            android:inputType="textCapWords"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/_gray_lvl_3" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tv_error"
+        style="@style/TextView_Info_Error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="0dp"
+        android:visibility="invisible" />
+
+</merge>

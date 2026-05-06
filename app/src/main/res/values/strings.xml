@@ -36,6 +36,9 @@
 
     <!-- HEX TAGS (metadata) -->
     <string name="common_hex_tag_thread">Wątek lub Temat</string>
+    <string name="common_thread_error_chars_exceeded">Wątek nie może przekroczyć %d znaków…</string>
+    <string name="common_project_error_chars_exceeded">Projekt nie może przekroczyć %d znaków…</string>
+    <string name="common_soul_mates_error_chars_exceeded">Opis osób nie może przekroczyć %d znaków…</string>
 
     <!-- FILES -->
     <string name="files_audio_error_file_not_accessible">Plik audio nie jest już dostępny</string>
@@ -234,12 +237,7 @@
 
     <!-- Core -->
     <string name="capture_main_label">Łapanie myśli</string>
-
-    <!-- Thread (common) -->
     <string name="capture_hex_tags_tooltip">wątek @osoba #projekt</string>
-    <string name="capture_thread_error_chars_exceeded">Wątek nie może przekroczyć %d znaków…</string>
-    <string name="capture_project_error_chars_exceeded">Projekt nie może przekroczyć %d znaków…</string>
-    <string name="capture_soul_mates_error_chars_exceeded">Opis osób nie może przekroczyć %d znaków…</string>
 
     <!-- Type: Rich Text (Note) -->
     <string name="capture_rich_text_error_note_empty">To wyżej nie może być puste</string>

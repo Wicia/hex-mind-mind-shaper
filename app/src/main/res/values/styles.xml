@@ -414,4 +414,9 @@
         <item name="boxBackgroundMode">none</item>
     </style>
 
+    <style name="HexInputHintAppearance" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/_gray_lvl_3</item>
+    </style>
+
 </resources>

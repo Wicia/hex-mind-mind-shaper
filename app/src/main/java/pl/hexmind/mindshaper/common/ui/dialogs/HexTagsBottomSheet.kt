@@ -13,6 +13,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
+import pl.hexmind.mindshaper.common.validation.ValidatedProperty
+import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.databinding.CommonHexTagsBottomsheetBinding
 
 /**
@@ -35,6 +37,7 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
     private var _binding: CommonHexTagsBottomsheetBinding? = null
     private val binding get() = _binding!!
 
+    private var onValidate: ((HexTags) -> ValidationResult)? = null
     private var onConfirm: ((HexTags) -> Unit)? = null
 
     override fun onCreateView(
@@ -65,8 +68,8 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
         val currentProject = arguments?.getString(ARG_PROJECT)
 
         // Pre-fill fields with existing values
-        currentPerson?.let { binding.etPerson.setText(it) }
-        currentProject?.let { binding.etProject.setText(it) }
+        currentPerson?.let { binding.hifPerson.setText(it) }
+        currentProject?.let { binding.hifProject.setText(it) }
 
         @Suppress("DEPRECATION")
         val iconItems: List<IconsGridItem> = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -82,12 +85,26 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
 
         binding.fabConfirm.setOnClickListener {
             val result = HexTags(
-                person = binding.etPerson.text?.toString()?.trim()?.takeIf { it.isNotEmpty() },
-                project = binding.etProject.text?.toString()?.trim()?.takeIf { it.isNotEmpty() },
+                person = binding.hifPerson.getText().takeIf { it.isNotEmpty() },
+                project = binding.hifProject.getText().takeIf { it.isNotEmpty() },
                 domainId = binding.igvDomains.selectedItemId
             )
-            onConfirm?.invoke(result)
-            dismiss()
+
+            val validationResult = onValidate?.invoke(result)
+            if (validationResult is ValidationResult.Error) {
+                showExternalError(validationResult)
+            } else {
+                dismiss()
+                onConfirm?.invoke(result)
+            }
+        }
+    }
+
+    private fun showExternalError(error: ValidationResult.Error) {
+        when (error.refProperty) {
+            ValidatedProperty.T_SOUL_MATES -> binding.hifPerson.showError(error.message)
+            ValidatedProperty.T_PROJECT    -> binding.hifProject.showError(error.message)
+            else -> { }
         }
     }
 
@@ -112,6 +129,7 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
             fragmentManager: FragmentManager,
             items: List<IconsGridItem>,
             currentTags: HexTags = HexTags(),
+            onValidate: (HexTags) -> ValidationResult,
             onConfirm: (HexTags) -> Unit
         ) {
             HexTagsBottomSheet().apply {
@@ -121,6 +139,7 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
                     currentTags.person?.let { putString(ARG_PERSON, it) }
                     currentTags.project?.let { putString(ARG_PROJECT, it) }
                 }
+                this.onValidate = onValidate
                 this.onConfirm = onConfirm
             }.show(fragmentManager, TAG)
         }
