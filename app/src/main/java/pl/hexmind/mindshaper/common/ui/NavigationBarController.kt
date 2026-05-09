@@ -1,6 +1,4 @@
-package pl.hexmind.mindshaper.activities.capture.models
-
-// TODO: Move this class to proper location -> its common-like thing
+package pl.hexmind.mindshaper.common.ui
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -111,7 +109,18 @@ class NavigationBarController(
 
             button?.setOnClickListener {
                 selectButton(index, animate = true)
-                onNavigationListener?.invoke(index, navButton.label)
+
+                // info - if expanded, collapse first and navigate after animation; otherwise navigate immediately
+                if (isExpanded) {
+                    currentAnimator?.cancel()
+                    isExpanded = false
+                    appSettings.setNavigationExpanded(false)
+                    collapseNavBar {
+                        onNavigationListener?.invoke(index, navButton.label)
+                    }
+                } else {
+                    onNavigationListener?.invoke(index, navButton.label)
+                }
             }
         }
     }
@@ -172,8 +181,9 @@ class NavigationBarController(
 
     /**
      * Collapses the navigation bar to hide all buttons
+     * @param onComplete optional callback fired after animation ends
      */
-    private fun collapseNavBar() {
+    private fun collapseNavBar(onComplete: (() -> Unit)? = null) {
         val alphaAnimator = ObjectAnimator.ofFloat(navButtonsContainer, "alpha", 1f, 0f)
         val scaleXAnimator = ObjectAnimator.ofFloat(navButtonsContainer, "scaleX", 1f, 0.7f)
         val scaleYAnimator = ObjectAnimator.ofFloat(navButtonsContainer, "scaleY", 1f, 0.7f)
@@ -186,6 +196,7 @@ class NavigationBarController(
                 override fun onAnimationEnd(animation: Animator) {
                     navButtonsContainer.visibility = View.GONE
                     currentAnimator = null
+                    onComplete?.invoke()
                 }
 
                 override fun onAnimationCancel(animation: Animator) {

@@ -20,7 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
-import pl.hexmind.mindshaper.activities.capture.models.NavigationBarController
+import pl.hexmind.mindshaper.common.ui.NavigationBarController
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
