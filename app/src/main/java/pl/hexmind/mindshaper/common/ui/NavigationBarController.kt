@@ -79,25 +79,6 @@ class NavigationBarController(
 
         setupNavButtons()
         setupToggleButton()
-
-        // Restore ONLY expanded state
-        restoreExpandedState()
-    }
-
-    /**
-     * Restores only expanded/collapsed state
-     */
-    private fun restoreExpandedState() {
-        val wasExpanded = appSettings.isNavigationExpanded()
-        if (wasExpanded) {
-            // Show expanded without animation
-            isExpanded = true
-            navButtonsContainer.visibility = View.VISIBLE
-            navButtonsContainer.alpha = 1f
-            navButtonsContainer.scaleX = 1f
-            navButtonsContainer.scaleY = 1f
-            btnToggle.setIconResource(R.drawable.ic_nav_collapse)
-        }
     }
 
     /**
@@ -114,7 +95,6 @@ class NavigationBarController(
                 if (isExpanded) {
                     currentAnimator?.cancel()
                     isExpanded = false
-                    appSettings.setNavigationExpanded(false)
                     collapseNavBar {
                         onNavigationListener?.invoke(index, navButton.label)
                     }
@@ -133,8 +113,6 @@ class NavigationBarController(
             currentAnimator?.cancel()
             isExpanded = !isExpanded
             animateNavBar()
-
-            appSettings.setNavigationExpanded(isExpanded)
         }
     }
 

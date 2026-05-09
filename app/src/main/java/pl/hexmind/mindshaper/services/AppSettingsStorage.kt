@@ -30,9 +30,6 @@ class AppSettingsStorage @Inject constructor(
         private const val PARAM_YOUR_NAME = "param_your_name"
         private const val PARAM_DB_CURRENT_VERSION = "param_db_current_version"
 
-        // Navigation bar settings
-        private const val PARAM_NAV_IS_EXPANDED = "param_nav_is_expanded"
-
         private const val PARAM_THOUGHTS_VALUES_SYSTEM = "param_thoughts_values_system"
 
         // Permissions
@@ -90,18 +87,6 @@ class AppSettingsStorage @Inject constructor(
     fun getYourName(): String {
         val defaultName = context.getString(R.string.settings_your_name_default)
         return sharedPreferences.getString(PARAM_YOUR_NAME, defaultName) ?: defaultName
-    }
-
-    // === NAVIGATION BAR STATE ===
-
-    fun setNavigationExpanded(isExpanded: Boolean) {
-        sharedPreferences.edit {
-            putBoolean(PARAM_NAV_IS_EXPANDED, isExpanded)
-        }
-    }
-
-    fun isNavigationExpanded(): Boolean {
-        return sharedPreferences.getBoolean(PARAM_NAV_IS_EXPANDED, false)
     }
 
     // === THOUGHT VALUES SYSTEM ===
