@@ -21,6 +21,7 @@ import pl.hexmind.mindshaper.common.ui.views.content.HexAudioView
 import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
 import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
 import pl.hexmind.mindshaper.common.validation.ValidationResult
+import pl.hexmind.mindshaper.common.validation.resolveMessage
 import pl.hexmind.mindshaper.databinding.CaptureActivityBinding
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.DefaultCaptureForm
@@ -379,7 +380,7 @@ class CaptureActivity : ThoughtManagerActivity() {
 
         // Show validation error
         if (validationResult is ValidationResult.Error) {
-            binding.tvHexTagsValidationInfo.text = validationResult.message
+            binding.tvHexTagsValidationInfo.text = validationResult.resolveMessage(this)
             return
         }
 

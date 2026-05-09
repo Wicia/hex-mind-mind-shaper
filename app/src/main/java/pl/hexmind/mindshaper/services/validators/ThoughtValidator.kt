@@ -1,7 +1,5 @@
 package pl.hexmind.mindshaper.services.validators
 
-import android.content.Context
-import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem
 import pl.hexmind.mindshaper.common.validation.ValidatedProperty
@@ -12,8 +10,6 @@ import javax.inject.Singleton
 
 @Singleton
 class ThoughtValidator @Inject constructor(
-    @ApplicationContext
-    private val context: Context,
     private val appSettingsStorage: AppSettingsStorage
 ) {
     companion object {
@@ -38,8 +34,8 @@ class ThoughtValidator @Inject constructor(
     fun validateRichText(richText: String?): ValidationResult {
         return if (richText.isNullOrBlank()) {
             ValidationResult.Error(
-                context.getString(R.string.capture_rich_text_error_note_empty),
-                ValidatedProperty.T_RICH_TEXT
+                R.string.capture_rich_text_error_note_empty,
+                refProperty = ValidatedProperty.T_RICH_TEXT
             )
         }
         else {
@@ -55,7 +51,8 @@ class ThoughtValidator @Inject constructor(
 
         return if (thread.length > THREAD_MAX_CHARS) {
             ValidationResult.Error(
-                context.getString(R.string.common_thread_error_chars_exceeded, THREAD_MAX_CHARS),
+                R.string.common_thread_error_chars_exceeded,
+                THREAD_MAX_CHARS.toString(),
                 ValidatedProperty.T_THREAD
             )
         }
@@ -72,7 +69,8 @@ class ThoughtValidator @Inject constructor(
 
         return if (project.length > PROJECT_MAX_CHARS) {
             ValidationResult.Error(
-                context.getString(R.string.common_project_error_chars_exceeded, PROJECT_MAX_CHARS),
+                R.string.common_project_error_chars_exceeded,
+                PROJECT_MAX_CHARS.toString(),
                 ValidatedProperty.T_PROJECT
             )
         }
@@ -89,7 +87,8 @@ class ThoughtValidator @Inject constructor(
 
         return if (soulMates.length > SOUL_MATES_MAX_CHARS) {
             ValidationResult.Error(
-                context.getString(R.string.common_soul_mates_error_chars_exceeded, SOUL_MATES_MAX_CHARS),
+                R.string.common_soul_mates_error_chars_exceeded,
+                SOUL_MATES_MAX_CHARS.toString(),
                 ValidatedProperty.T_SOUL_MATES
             )
         }

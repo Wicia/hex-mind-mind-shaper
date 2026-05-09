@@ -15,6 +15,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
 import pl.hexmind.mindshaper.common.validation.ValidatedProperty
 import pl.hexmind.mindshaper.common.validation.ValidationResult
+import pl.hexmind.mindshaper.common.validation.resolveMessage
 import pl.hexmind.mindshaper.databinding.CommonHexTagsBottomsheetBinding
 
 /**
@@ -63,7 +64,7 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
             false
         }
 
-        val selectedDomainId = arguments?.getInt(ARG_SELECTED_ID, -1)?.takeIf { it != -1 }
+        val selectedDomainId = arguments?.getInt(ARG_SELECTED_DOMAIN_ID, -1)?.takeIf { it != -1 }
         val currentPerson = arguments?.getString(ARG_PERSON)
         val currentProject = arguments?.getString(ARG_PROJECT)
 
@@ -101,9 +102,10 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun showExternalError(error: ValidationResult.Error) {
+        val errorMessage : String = error.resolveMessage(requireContext())
         when (error.refProperty) {
-            ValidatedProperty.T_SOUL_MATES -> binding.hifPerson.showError(error.message)
-            ValidatedProperty.T_PROJECT    -> binding.hifProject.showError(error.message)
+            ValidatedProperty.T_SOUL_MATES -> binding.hifPerson.showError(errorMessage)
+            ValidatedProperty.T_PROJECT    -> binding.hifProject.showError(errorMessage)
             else -> { }
         }
     }
@@ -121,7 +123,7 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
     companion object {
         private const val TAG = "HexTagsBottomSheet"
         private const val ARG_ITEMS = "arg_items"
-        private const val ARG_SELECTED_ID = "arg_selected_id"
+        private const val ARG_SELECTED_DOMAIN_ID = "arg_selected_domain_id"
         private const val ARG_PERSON = "arg_person"
         private const val ARG_PROJECT = "arg_project"
 
@@ -135,7 +137,7 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
             HexTagsBottomSheet().apply {
                 arguments = Bundle().apply {
                     putParcelableArrayList(ARG_ITEMS, ArrayList(items))
-                    currentTags.domainId?.let { putInt(ARG_SELECTED_ID, it) }
+                    currentTags.domainId?.let { putInt(ARG_SELECTED_DOMAIN_ID, it) }
                     currentTags.person?.let { putString(ARG_PERSON, it) }
                     currentTags.project?.let { putString(ARG_PROJECT, it) }
                 }

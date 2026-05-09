@@ -14,6 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
 import pl.hexmind.mindshaper.common.validation.ValidationResult
+import pl.hexmind.mindshaper.common.validation.resolveMessage
 import pl.hexmind.mindshaper.databinding.DomainEditBottomsheetBinding
 import pl.hexmind.mindshaper.services.validators.DomainValidator
 
@@ -92,7 +93,7 @@ class DomainEditBottomSheet(
                     dismiss()
                 }
                 is ValidationResult.Error -> {
-                    binding.tvDomainNameValidationInfo.text = result.message
+                    binding.tvDomainNameValidationInfo.text = result.resolveMessage(requireContext())
                 }
             }
         }

@@ -11,6 +11,8 @@
 
     <string name="common_foobar">""</string>
 
+    <string name="common_thought_draft_notFound">No draft available</string>
+
     <string name="hex_tags_dialog_header">Tagowanie</string>
     <string name="hex_tags_hint_person">Osoba lub Ekipa</string>
     <string name="hex_tags_hint_project">Projekt</string>
@@ -36,9 +38,9 @@
 
     <!-- HEX TAGS (metadata) -->
     <string name="common_hex_tag_thread">Wątek lub Temat</string>
-    <string name="common_thread_error_chars_exceeded">Wątek nie może przekroczyć %d znaków…</string>
-    <string name="common_project_error_chars_exceeded">Projekt nie może przekroczyć %d znaków…</string>
-    <string name="common_soul_mates_error_chars_exceeded">Opis osób nie może przekroczyć %d znaków…</string>
+    <string name="common_thread_error_chars_exceeded">Wątek nie może przekroczyć %s znaków…</string>
+    <string name="common_project_error_chars_exceeded">Projekt nie może przekroczyć %s znaków…</string>
+    <string name="common_soul_mates_error_chars_exceeded">Opis osób nie może przekroczyć %s znaków…</string>
 
     <!-- FILES -->
     <string name="files_audio_error_file_not_accessible">Plik audio nie jest już dostępny</string>
@@ -239,27 +241,28 @@
     <string name="capture_main_label">Łapanie myśli</string>
     <string name="capture_hex_tags_tooltip">wątek @osoba #projekt</string>
 
-    <!-- Type: Rich Text (Note) -->
+    <string name="capture_error_noContent">Potrzebujesz cos zapisać (tekst, nagranie lub obraz)</string>
+
+    <!-- === Type: Rich Text (Note) === -->
     <string name="capture_rich_text_error_note_empty">To wyżej nie może być puste</string>
 
-    <!-- Type: Voice Recording -->
+    <!-- === Type: Voice Recording === -->
     <string name="capture_voice_recording_tooltip">Nagrywam…</string>
     <string name="capture_voice_tooltip">Gotowy do nagrywania</string>
-
     <string name="capture_voice_status_recording_saved">Nagranie zapisane</string>
 
-    <!-- Status messages -->
+    <!-- Validation / Error messages -->
+    <string name="capture_voice_error_notExists">Nagranie nie istnieje :(</string>
+    <string name="capture_voice_error_empty">Eeee… To nagranie ma 0 sekund :/</string>
     <string name="capture_voice_status_max_duration_reached">Osiągnięto maksymalny czas nagrania (3 min)</string>
-
-    <!-- Error messages -->
     <string name="capture_voice_error_recording">Błąd podczas nagrywania</string>
     <string name="capture_voice_error_saving">Błąd podczas zapisywania do bazy</string>
-
-    <string name="thoughts_stream_title">Strumień myśli</string>
 
     <!-- ============================================================================ -->
     <!--    Activity: STREAM of thoughts  -->
     <!-- ============================================================================ -->
+
+    <string name="thoughts_stream_title">Strumień myśli</string>
 
     <string name="stream_thought_metadata_empty">\?\?\?</string>
     <string name="stream_item_empty_thought">- ? -\n\nTa myśl jest pusta…</string>

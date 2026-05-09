@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
@@ -130,7 +131,7 @@ class CaptureActivityViewModel @Inject constructor(
      * Returns ValidationResult with error message or Valid
      */
     fun validate(): ValidationResult {
-        val draft = _draftThought.value ?: return ValidationResult.Error("No draft available")
+        val draft = _draftThought.value ?: return ValidationResult.Error(R.string.common_thought_draft_notFound)
 
         // Validate hex tags (thread, project, soulMate)
         val threadResult = validator.validateThread(draft.thread)
@@ -151,10 +152,10 @@ class CaptureActivityViewModel @Inject constructor(
         // Validate audio (if present)
         if (tempAudioFile != null) {
             if (!tempAudioFile!!.exists()) {
-                return ValidationResult.Error("Audio file does not exist")
+                return ValidationResult.Error(R.string.capture_voice_error_notExists)
             }
             if (tempAudioDuration == 0L) {
-                return ValidationResult.Error("Audio recording is empty")
+                return ValidationResult.Error(R.string.capture_voice_error_empty)
             }
         }
 
@@ -164,7 +165,7 @@ class CaptureActivityViewModel @Inject constructor(
                 || tempPhotoUri != null
 
         if (!hasContent) {
-            return ValidationResult.Error("Add at least one content (text, audio, or photo)")
+            return ValidationResult.Error(R.string.capture_error_noContent)
         }
 
         return ValidationResult.Valid()
@@ -178,12 +179,13 @@ class CaptureActivityViewModel @Inject constructor(
      * Save new thought to database
      * Strategy: Save thought first, then update audio/photo if they exist
      *
+     *
      * @return Result.success if saved, Result.failure with exception if error
      */
     suspend fun saveNewThought(): Result<Unit> {
         return try {
             val draft = _draftThought.value
-                ?: return Result.failure(Exception("No draft available"))
+                ?: return Result.failure(Exception("No draft available")) // TODO: don't refactor for now
 
             // Step 1: Always save thought first (with richText + hexTags)
             val thoughtId = thoughtsService.addThought(draft)
@@ -200,7 +202,7 @@ class CaptureActivityViewModel @Inject constructor(
             // Step 3: If photo exists → update
             if (tempPhotoUri != null) {
                 val photoFile = thoughtsService.getFileFromUri(tempPhotoUri!!)
-                    ?: return Result.failure(Exception("Photo file not found"))
+                    ?: return Result.failure(Exception("Photo file not found")) // TODO: don't refactor for now
 
                 thoughtsService.updateThoughtPhoto(thoughtId, photoFile)
             }
