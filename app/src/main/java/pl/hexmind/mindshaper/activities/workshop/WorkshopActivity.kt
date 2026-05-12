@@ -30,7 +30,6 @@ class WorkshopActivity : CoreActivity() {
 
     // GOALS
     private lateinit var rvGoals: RecyclerView
-    private lateinit var btnToggleEdit: MaterialButton
     private lateinit var btnAddGoal: MaterialButton
     private lateinit var fabCapture: FloatingActionButton
     private lateinit var goalsAdapter: GoalsAdapter
@@ -42,7 +41,6 @@ class WorkshopActivity : CoreActivity() {
     private lateinit var cardAnimator: PathCardAnimator
 
     private var isPathsExpanded: Boolean = true
-    private var isEditMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,10 +48,15 @@ class WorkshopActivity : CoreActivity() {
 
         initializeViews()
         setupGoalsList()
-        setupEditModeToggle()
         setupFab()
         observeGoals()
         observePaths()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Reload goals after returning from GoalDetailActivity (changeable guidelines may change :)
+        viewModel.reload()
     }
 
     // ── Init ───────────────────────────────────────────────────────────────────
@@ -61,14 +64,15 @@ class WorkshopActivity : CoreActivity() {
     private fun initializeViews() {
         setupHeader(R.drawable.ic_activity_workshop, R.string.workshop_title)
 
-        rvGoals = findViewById(R.id.rv_goals)
-        btnToggleEdit = findViewById(R.id.btn_toggle_edit_mode)
+        rvGoals    = findViewById(R.id.rv_goals)
         btnAddGoal = findViewById(R.id.btn_add_goal)
         fabCapture = findViewById(R.id.fab_capture)
 
-        llPathsList = findViewById(R.id.ll_paths_list)
-        tvPoolEmpty = findViewById(R.id.tv_paths_pool_empty)
+        btnAddGoal.visibility = View.VISIBLE
+        btnAddGoal.setOnClickListener { showAddGoalDialog() }
 
+        llPathsList   = findViewById(R.id.ll_paths_list)
+        tvPoolEmpty   = findViewById(R.id.tv_paths_pool_empty)
         btnPathsToggle = findViewById(R.id.btn_paths_toggle)
         btnPathsToggle.setOnClickListener { togglePathsSection() }
 
@@ -77,19 +81,9 @@ class WorkshopActivity : CoreActivity() {
 
     private fun setupGoalsList() {
         goalsAdapter = GoalsAdapter(
-            onToggleExpand = { goalId -> viewModel.toggleGoalExpanded(goalId) },
+            onGoalTap      = { goalId -> openGoalDetail(goalId) },
             onCyclePriority = { goalId -> viewModel.cycleGoalPriority(goalId) },
-            onGoalEditTap = { goal -> showEditGoalDialog(goal) },
-            onGoalDeleteTap = { goalId -> showDeleteGoalConfirmation(goalId) },
-            onToggleSubItemDone = { goalId, subItemId ->
-                viewModel.toggleSubItemDone(goalId, subItemId)
-            },
-            onSubItemEditTap = { goalId, subItem -> showEditSubItemDialog(goalId, subItem) },
-            onSubItemDeleteTap = { goalId, subItemId ->
-                showDeleteSubItemConfirmation(goalId, subItemId)
-            },
-            onSubItemReorder = { goalId, from, to -> viewModel.reorderSubItems(goalId, from, to) },
-            onAddSubItemTap = { goalId -> showAddSubItemDialog(goalId) }
+            onGoalLongPress = { goalId -> showDeleteGoalConfirmation(goalId) }
         )
         rvGoals.apply {
             layoutManager = LinearLayoutManager(this@WorkshopActivity)
@@ -108,6 +102,12 @@ class WorkshopActivity : CoreActivity() {
 
     private fun observeGoals() {
         viewModel.goals.observe(this) { goals -> goalsAdapter.submitList(goals) }
+    }
+
+    // ── Navigation ─────────────────────────────────────────────────────────────
+
+    private fun openGoalDetail(goalId: Int) {
+        startActivity(GoalDetailActivity.newIntent(this, goalId))
     }
 
     // ── Paths ──────────────────────────────────────────────────────────────────
@@ -200,31 +200,6 @@ class WorkshopActivity : CoreActivity() {
         )
     }
 
-    // ── Edit mode ──────────────────────────────────────────────────────────────
-
-    private fun setupEditModeToggle() {
-        btnToggleEdit.setOnClickListener {
-            if (isEditMode) exitEditMode() else enterEditMode()
-        }
-    }
-
-    private fun enterEditMode() {
-        isEditMode = true
-        goalsAdapter.isEditMode = true
-        btnAddGoal.visibility = View.VISIBLE
-        btnAddGoal.setOnClickListener { showAddGoalDialog() }
-        btnToggleEdit.setIconResource(R.drawable.ic_action_approve)
-    }
-
-    private fun exitEditMode() {
-        isEditMode = false
-        goalsAdapter.isEditMode = false
-        btnAddGoal.visibility = View.GONE
-        btnAddGoal.setOnClickListener(null)
-        btnToggleEdit.setIconResource(R.drawable.ic_action_edit)
-        viewModel.sortGoals()
-    }
-
     // ── Dialogs: goals ─────────────────────────────────────────────────────────
 
     private fun showAddGoalDialog() {
@@ -237,57 +212,12 @@ class WorkshopActivity : CoreActivity() {
         ).show()
     }
 
-    private fun showEditGoalDialog(goal: Goal) {
-        TextEditDialog(
-            context = this,
-            title = getString(R.string.workshop_dialog_edit_goal),
-            notesStyle = false,
-            textInput = goal.description,
-            onSave = { description -> viewModel.updateGoalDescription(goal.id, description) }
-        ).show()
-    }
-
     private fun showDeleteGoalConfirmation(goalId: Int) {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.workshop_dialog_delete_goal_title))
             .setDescription(getString(R.string.workshop_dialog_delete_goal_desc))
             .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
                 viewModel.deleteGoal(goalId)
-            }
-            .setDismissText(getString(R.string.common_btn_cancel))
-            .show()
-    }
-
-    // ── Dialogs: sub-items ─────────────────────────────────────────────────────
-
-    private fun showAddSubItemDialog(goalId: Int) {
-        TextEditDialog(
-            context = this,
-            title = getString(R.string.workshop_dialog_add_guideline),
-            notesStyle = false,
-            textInput = "",
-            onSave = { description -> viewModel.addSubItem(goalId, description) }
-        ).show()
-    }
-
-    private fun showEditSubItemDialog(goalId: Int, subItem: GoalGuideline) {
-        TextEditDialog(
-            context = this,
-            title = getString(R.string.workshop_dialog_edit_guideline),
-            notesStyle = false,
-            textInput = subItem.description,
-            onSave = { description ->
-                viewModel.updateSubItemDescription(goalId, subItem.id, description)
-            }
-        ).show()
-    }
-
-    private fun showDeleteSubItemConfirmation(goalId: Int, subItemId: Int) {
-        ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.workshop_dialog_delete_guideline_title))
-            .setDescription(getString(R.string.common_deletion_dialog_warning))
-            .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
-                viewModel.deleteSubItem(goalId, subItemId)
             }
             .setDismissText(getString(R.string.common_btn_cancel))
             .show()

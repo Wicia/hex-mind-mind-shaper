@@ -6,6 +6,8 @@
     <!-- Color set programmatically based on priority value (1/2/3) -->
     <solid android:color="@color/_orange_lvl_1" />
 
-    <corners android:radius="8dp" />
+    <corners
+        android:topLeftRadius="12dp"
+        android:bottomRightRadius="12dp" />
 
 </shape>

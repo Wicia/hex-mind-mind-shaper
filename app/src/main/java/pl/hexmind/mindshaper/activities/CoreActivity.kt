@@ -25,6 +25,7 @@ import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
 import pl.hexmind.mindshaper.activities.stream.StreamActivity
+import pl.hexmind.mindshaper.activities.workshop.GoalDetailActivity
 import pl.hexmind.mindshaper.activities.workshop.WorkshopActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingManager
 import pl.hexmind.mindshaper.services.AppSettingsStorage
@@ -53,11 +54,12 @@ open class CoreActivity : AppCompatActivity() {
          * Maps activity class names to navigation bar indices
          */
         private val activityToIndex = mapOf(
-            HomeActivity::class.java.simpleName     to 0,
-                CaptureActivity::class.simpleName   to 0, // Highlight Home icon when in Capture
-            StreamActivity::class.java.simpleName   to 1,
-                DetailsActivity::class.simpleName   to 1, // Highlight Stream icon when in Details
+                HomeActivity::class.java.simpleName to 0,
+             CaptureActivity::class.simpleName      to 0, // Highlight Home icon when in Capture
+              StreamActivity::class.java.simpleName to 1,
+             DetailsActivity::class.simpleName      to 1, // Highlight Stream icon when in Thought Details
             WorkshopActivity::class.java.simpleName to 2,
+          GoalDetailActivity::class.java.simpleName to 2, // Highlight Workshop icon when in Goal Details
             SettingsActivity::class.java.simpleName to 3
         )
     }

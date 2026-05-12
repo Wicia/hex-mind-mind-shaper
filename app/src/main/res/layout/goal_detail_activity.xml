@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
+    tools:context=".activities.workshop.GoalDetailActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="28dp"
+            android:paddingBottom="80dp">
+
+            <!-- Goal header: priority badge + goal name -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp">
+
+                <!-- Priority badge -->
+                <TextView
+                    android:id="@+id/tv_goal_priority_badge"
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:background="@drawable/shape_workshop_priority_badge" />
+
+                <!-- Goal name -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/cb_goal_description"
+                    style="@style/MetadataContentButton.Used"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    app:icon="@drawable/ic_hextags_project"
+                    app:iconSize="32dp"
+                    android:layout_marginStart="8dp"
+                    />
+
+            </LinearLayout>
+
+            <!-- Guidelines card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_guidelines"
+                style="@style/AppCardView">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_guidelines"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never"
+                        tools:listitem="@layout/goal_detail_guideline_item" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- fab - Add guideline -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_action_add"
+        app:backgroundTint="@color/button_primary_enabled_background"
+        app:fabSize="normal"
+        app:elevation="6dp"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

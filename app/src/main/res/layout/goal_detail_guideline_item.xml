@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="4dp"
+    android:minHeight="48dp"
+    android:background="?attr/selectableItemBackground">
+
+    <!-- Done / undone checkbox -->
+    <CheckBox
+        android:id="@+id/cb_guideline_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:buttonTint="@color/_orange_lvl_2"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+
+    <!-- Description — tap to edit dialog, long press to delete dialog -->
+    <TextView
+        android:id="@+id/tv_guideline_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:textSize="14sp"
+        android:textColor="@color/text_primary"
+        android:lineSpacingExtra="0dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp" />
+
+    <!-- Drag handle — touch starts reorder drag -->
+    <ImageView
+        android:id="@+id/iv_guideline_drag_handle"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="4dp"
+        android:padding="4dp"
+        android:src="@drawable/ic_action_drag_handle"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+        app:tint="@color/_gray_lvl_3" />
+
+</LinearLayout>

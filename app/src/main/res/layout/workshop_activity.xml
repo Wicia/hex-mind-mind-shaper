@@ -57,21 +57,9 @@
                             style="@style/SecondaryActionButton"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:layout_marginEnd="12dp"
                             app:icon="@drawable/ic_action_add"
                             app:iconGravity="textStart"
-                            app:iconSize="16dp"
-                            android:visibility="gone" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_toggle_edit_mode"
-                            style="@style/SecondaryActionButton"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            app:icon="@drawable/ic_action_edit"
-                            app:iconGravity="textStart"
                             app:iconSize="16dp" />
-
                     </LinearLayout>
 
                     <View
