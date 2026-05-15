@@ -46,9 +46,10 @@
                     android:id="@+id/cb_goal_description"
                     style="@style/MetadataContentButton.Used"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    app:icon="@drawable/ic_hextags_project"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/ic_goal"
                     app:iconSize="32dp"
+                    android:maxLines="2"
                     android:layout_marginStart="8dp"
                     />
 

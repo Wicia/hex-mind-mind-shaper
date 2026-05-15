@@ -43,6 +43,6 @@
         android:src="@drawable/ic_action_drag_handle"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-        app:tint="@color/_gray_lvl_3" />
+        app:tint="@color/_gray_lvl_1" />
 
 </LinearLayout>
