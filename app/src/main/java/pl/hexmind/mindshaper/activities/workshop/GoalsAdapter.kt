@@ -59,7 +59,6 @@ class GoalsAdapter(
 
     private fun applyImportanceBadgeStyle(badge: TextView, importance: Int) {
         val context = badge.context
-        // 1 = mało ważny (zielony), 2 = średnio ważny (żółty), 3 = kluczowy (czerwony)
         val (bgColorRes, textColorRes) = when (importance) {
             3    -> Pair(R.color.importance_high,   R.color.graphite_medium)
             2    -> Pair(R.color.importance_medium,   R.color.graphite_medium)
