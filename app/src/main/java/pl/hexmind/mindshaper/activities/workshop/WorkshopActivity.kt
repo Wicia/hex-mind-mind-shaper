@@ -82,7 +82,7 @@ class WorkshopActivity : CoreActivity() {
     private fun setupGoalsList() {
         goalsAdapter = GoalsAdapter(
             onGoalTap      = { goalId -> openGoalDetail(goalId) },
-            onCyclePriority = { goalId -> viewModel.cycleGoalPriority(goalId) },
+            onCycleImportance = { goalId -> viewModel.cycleGoalImportance(goalId) },
             onGoalLongPress = { goalId -> showDeleteGoalConfirmation(goalId) }
         )
         rvGoals.apply {

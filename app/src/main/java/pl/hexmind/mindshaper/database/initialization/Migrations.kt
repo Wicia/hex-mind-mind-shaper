@@ -139,5 +139,33 @@ class Migrations {
                 db.execSQL("CREATE INDEX IF NOT EXISTS index_PATH_STEPS_path_key ON PATH_STEPS(path_key)")
             }
         }
+        // Rename `priority` → `importance` in GOALS + reverse scale (old 1=highest → new 3=highest)
+        // Remapping: importance = 4 - priority  (1→3, 2→2, 3→1)
+        val MIGRATION_8_TO_9 = object : Migration(8, 9) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE GOALS_NEW (
+                        id               INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        description      TEXT NOT NULL,
+                        importance       INTEGER NOT NULL DEFAULT 1,
+                        last_modified_at INTEGER NOT NULL
+                    )
+                """
+                )
+                // Remap: old priority 1 (highest) → importance 3
+                //        old priority 3 (lowest)  → importance 1
+                db.execSQL(
+                    """
+                    INSERT INTO GOALS_NEW (id, description, importance, last_modified_at)
+                    SELECT id, description, (4 - priority), last_modified_at
+                    FROM GOALS
+                """
+                )
+                db.execSQL("DROP TABLE GOALS")
+                db.execSQL("ALTER TABLE GOALS_NEW RENAME TO GOALS")
+            }
+        }
+
     }
 }

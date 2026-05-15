@@ -13,7 +13,7 @@ import pl.hexmind.mindshaper.database.models.GoalWithGuidelines
 interface GoalDAO {
 
     @Transaction
-    @Query("SELECT * FROM GOALS ORDER BY priority ASC, last_modified_at DESC")
+    @Query("SELECT * FROM GOALS ORDER BY importance DESC, last_modified_at DESC")
     suspend fun getAllWithGuidelines(): List<GoalWithGuidelines>
 
     // Needed for efficient single-entity updates (avoid full table scan)

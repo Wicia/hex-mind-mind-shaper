@@ -16,46 +16,46 @@ object GoalMapper {
 
     fun entityToDTO(row: GoalWithGuidelines): GoalDTO =
         GoalDTO(
-            id = row.goal.id,
-            description = row.goal.description,
-            priority = row.goal.priority,
+            id             = row.goal.id,
+            description    = row.goal.description,
+            importance     = row.goal.importance,
             lastModifiedAt = row.goal.lastModifiedAt,
-            guidelines = row.guidelines
+            guidelines     = row.guidelines
                 .sortedBy { it.position }
                 .map { guidelineEntityToDTO(it) }
         )
 
     fun goalEntityToDTO(entity: GoalEntity): GoalDTO =
         GoalDTO(
-            id = entity.id,
-            description = entity.description,
-            priority = entity.priority,
+            id             = entity.id,
+            description    = entity.description,
+            importance     = entity.importance,
             lastModifiedAt = entity.lastModifiedAt
         )
 
     fun dtoToEntity(dto: GoalDTO): GoalEntity =
         GoalEntity(
-            id = dto.id,
-            description = dto.description,
-            priority = dto.priority,
+            id             = dto.id,
+            description    = dto.description,
+            importance     = dto.importance,
             lastModifiedAt = dto.lastModifiedAt
         )
 
     fun guidelineEntityToDTO(entity: GuidelineEntity): GuidelineDTO =
         GuidelineDTO(
-            id = entity.id,
-            goalId = entity.goalId,
+            id          = entity.id,
+            goalId      = entity.goalId,
             description = entity.description,
-            isDone = entity.isDone,
-            position = entity.position
+            isDone      = entity.isDone,
+            position    = entity.position
         )
 
     fun guidelineDTOToEntity(dto: GuidelineDTO): GuidelineEntity =
         GuidelineEntity(
-            id = dto.id,
-            goalId = dto.goalId,
+            id          = dto.id,
+            goalId      = dto.goalId,
             description = dto.description,
-            isDone = dto.isDone,
-            position = dto.position
+            isDone      = dto.isDone,
+            position    = dto.position
         )
 }

@@ -15,7 +15,7 @@ import pl.hexmind.mindshaper.R
  */
 class GoalsAdapter(
     private val onGoalTap: (goalId: Int) -> Unit,
-    private val onCyclePriority: (goalId: Int) -> Unit,
+    private val onCycleImportance: (goalId: Int) -> Unit,
     private val onGoalLongPress: (goalId: Int) -> Unit
 ) : ListAdapter<Goal, GoalsAdapter.GoalViewHolder>(DiffCallback) {
 
@@ -27,8 +27,8 @@ class GoalsAdapter(
     }
 
     class GoalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val llHeader: View = itemView.findViewById(R.id.ll_goal_header)
-        val tvPriority: TextView = itemView.findViewById(R.id.tv_priority_badge)
+        val llHeader:      View     = itemView.findViewById(R.id.ll_goal_header)
+        val tvImportance:  TextView = itemView.findViewById(R.id.tv_importance_badge)
         val tvDescription: TextView = itemView.findViewById(R.id.tv_goal_description)
     }
 
@@ -41,11 +41,10 @@ class GoalsAdapter(
     override fun onBindViewHolder(holder: GoalViewHolder, position: Int) {
         val goal = getItem(position)
 
-        // Priority badge:
-        holder.tvPriority.text = goal.priority.toString()
-        applyPriorityBadgeStyle(holder.tvPriority, goal.priority)
-        // - tap cycles through 1 → 2 → 3 → 1
-        holder.tvPriority.setOnClickListener { onCyclePriority(goal.id) }
+        // Importance badge — tap cycles through 1 → 2 → 3 → 1
+        holder.tvImportance.text = goal.importance.toString()
+        applyImportanceBadgeStyle(holder.tvImportance, goal.importance)
+        holder.tvImportance.setOnClickListener { onCycleImportance(goal.id) }
 
         // Description:
         holder.tvDescription.text = goal.description
@@ -58,12 +57,13 @@ class GoalsAdapter(
         }
     }
 
-    private fun applyPriorityBadgeStyle(badge: TextView, priority: Int) {
+    private fun applyImportanceBadgeStyle(badge: TextView, importance: Int) {
         val context = badge.context
-        val (bgColorRes, textColorRes) = when (priority) {
-            1 -> Pair(R.color.priority_high, R.color.graphite_medium)
-            2 -> Pair(R.color.priority_medium, R.color.graphite_medium)
-            else -> Pair(R.color.priority_low, R.color.graphite_medium)
+        // 1 = mało ważny (zielony), 2 = średnio ważny (żółty), 3 = kluczowy (czerwony)
+        val (bgColorRes, textColorRes) = when (importance) {
+            3    -> Pair(R.color.importance_high,   R.color.graphite_medium)
+            2    -> Pair(R.color.importance_medium,   R.color.graphite_medium)
+            else -> Pair(R.color.importance_low,    R.color.graphite_medium)
         }
         badge.backgroundTintList = ColorStateList.valueOf(context.getColor(bgColorRes))
         badge.setTextColor(context.getColor(textColorRes))

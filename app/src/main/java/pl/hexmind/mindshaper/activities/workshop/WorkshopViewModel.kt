@@ -15,7 +15,7 @@ import javax.inject.Inject
 data class Goal(
     val id: Int,
     val description: String,
-    val priority: Int,
+    val importance: Int,
     val subItems: List<GoalGuideline> = emptyList(),
     val lastModifiedAt: Long = System.currentTimeMillis()
 )
@@ -63,11 +63,12 @@ class WorkshopViewModel @Inject constructor(
 
     private fun loadGoals() {
         viewModelScope.launch {
+            // DB query already sorts by importance DESC, last_modified_at DESC
             _goals.value = goalsService.getAllGoals().map { dto ->
                 Goal(
                     id             = dto.id,
                     description    = dto.description,
-                    priority       = dto.priority,
+                    importance     = dto.importance,
                     lastModifiedAt = dto.lastModifiedAt,
                     subItems       = dto.guidelines.map { g ->
                         GoalGuideline(id = g.id, description = g.description, isDone = g.isDone)
@@ -128,19 +129,19 @@ class WorkshopViewModel @Inject constructor(
 
     // ── Goal actions ───────────────────────────────────────────────────────────
 
-    fun cycleGoalPriority(goalId: Int) {
+    fun cycleGoalImportance(goalId: Int) {
         val current = _goals.value?.firstOrNull { it.id == goalId } ?: return
-        val next = if (current.priority >= 3) 1 else current.priority + 1 // TODO: Search and introduce PRIORITY_MAX_VALUE = 3
-        // Optimistic update + re-sort in memory (same logic as in DB query)
+        val next = if (current.importance >= 3) 1 else current.importance + 1 // TODO: Search and introduce MAX_VALUE = 3
+        // Optimistic update + re-sort in memory (mirrors DB ORDER BY importance DESC, last_modified_at DESC)
         _goals.value = _goals.value
             ?.map { goal ->
                 if (goal.id == goalId) goal.copy(
-                    priority       = next,
+                    importance     = next,
                     lastModifiedAt = System.currentTimeMillis()
                 ) else goal
             }
             ?.let { sortGoals(it) }
-        viewModelScope.launch { goalsService.updateGoalPriority(goalId, next) }
+        viewModelScope.launch { goalsService.updateGoalImportance(goalId, next) }
     }
 
     fun addGoal(description: String) {
@@ -157,7 +158,7 @@ class WorkshopViewModel @Inject constructor(
 
     // ── Helpers ────────────────────────────────────────────────────────────────
 
-    // Mirrors DB query / logic
+    // Mirrors DB: ORDER BY importance DESC, last_modified_at DESC
     private fun sortGoals(list: List<Goal>): List<Goal> =
-        list.sortedWith(compareBy<Goal> { it.priority }.thenByDescending { it.lastModifiedAt })
+        list.sortedWith(compareByDescending<Goal> { it.importance }.thenByDescending { it.lastModifiedAt })
 }

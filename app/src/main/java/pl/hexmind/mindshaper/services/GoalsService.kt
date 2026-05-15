@@ -18,10 +18,10 @@ class GoalsService @Inject constructor(
     suspend fun getAllGoals(): List<GoalDTO> =
         repository.getAllGoalsWithGuidelines().map { GoalMapper.entityToDTO(it) }
 
-    suspend fun addGoal(description: String, priority: Int = 3): Long {
+    suspend fun addGoal(description: String, importance: Int = 1): Long {
         val entity = GoalEntity(
-            description = description.trim(),
-            priority = priority,
+            description    = description.trim(),
+            importance     = importance,
             lastModifiedAt = System.currentTimeMillis()
         )
         return repository.insertGoal(entity)
@@ -30,15 +30,15 @@ class GoalsService @Inject constructor(
     suspend fun updateGoalDescription(goalId: Int, description: String) {
         val current = repository.getGoalById(goalId) ?: return
         repository.updateGoal(current.copy(
-            description = description.trim(),
+            description    = description.trim(),
             lastModifiedAt = System.currentTimeMillis()
         ))
     }
 
-    suspend fun updateGoalPriority(goalId: Int, priority: Int) {
+    suspend fun updateGoalImportance(goalId: Int, importance: Int) {
         val current = repository.getGoalById(goalId) ?: return
         repository.updateGoal(current.copy(
-            priority = priority,
+            importance     = importance,
             lastModifiedAt = System.currentTimeMillis()
         ))
     }
@@ -51,9 +51,9 @@ class GoalsService @Inject constructor(
     suspend fun addGuideline(goalId: Int, description: String) {
         val existingCount = repository.getGuidelinesByGoalId(goalId).size
         val entity = GuidelineEntity(
-            goalId = goalId,
+            goalId      = goalId,
             description = description.trim(),
-            position = existingCount
+            position    = existingCount
         )
         repository.insertGuideline(entity)
     }

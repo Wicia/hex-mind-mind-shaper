@@ -15,9 +15,9 @@
         android:padding="12dp"
         android:background="?attr/selectableItemBackground">
 
-        <!-- Priority badge (1/2/3) -->
+        <!-- Importance badge (1/2/3) -->
         <TextView
-            android:id="@+id/tv_priority_badge"
+            android:id="@+id/tv_importance_badge"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:gravity="center"

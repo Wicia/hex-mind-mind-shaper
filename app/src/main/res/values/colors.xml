@@ -122,9 +122,9 @@
 <!--    PRIORITIES -->
 <!-- ====================================== -->
 
-    <color name="priority_high">#FFA7A7</color>
-    <color name="priority_medium">#FFE6A6</color>
-    <color name="priority_low">#A7FFCA</color>
+    <color name="importance_high">#FFA7A7</color>
+    <color name="importance_medium">#FFE6A6</color>
+    <color name="importance_low">#A7FFCA</color>
 
 <!-- ====================================== -->
 <!--    STATES COLORS -->

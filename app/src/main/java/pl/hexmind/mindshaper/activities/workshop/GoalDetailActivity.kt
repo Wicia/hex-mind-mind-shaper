@@ -114,16 +114,17 @@ class GoalDetailActivity : CoreActivity() {
     }
 
     private fun bindHeader(goal: Goal) {
-        tvBadge.text = goal.priority.toString()
-        val bgRes = when (goal.priority) {
-            1    -> R.color.priority_high
-            2    -> R.color.priority_medium
-            else -> R.color.priority_low
+        tvBadge.text = goal.importance.toString()
+
+        val bgRes = when (goal.importance) {
+            3    -> R.color.importance_high
+            2    -> R.color.importance_medium
+            else -> R.color.importance_low
         }
         tvBadge.backgroundTintList = ColorStateList.valueOf(
             ContextCompat.getColor(this, bgRes)
         )
-        tvBadge.setOnClickListener { viewModel.cycleGoalPriority() }
+        tvBadge.setOnClickListener { viewModel.cycleGoalImportance() }
 
         cbGoalDesc.text = goal.description
         cbGoalDesc.setOnClickListener { showEditGoalDescriptionDialog(goal) }

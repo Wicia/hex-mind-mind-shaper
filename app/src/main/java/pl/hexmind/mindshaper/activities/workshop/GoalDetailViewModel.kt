@@ -35,7 +35,7 @@ class GoalDetailViewModel @Inject constructor(
                 Goal(
                     id             = it.id,
                     description    = it.description,
-                    priority       = it.priority,
+                    importance     = it.importance,
                     lastModifiedAt = it.lastModifiedAt,
                     subItems       = it.guidelines.map { guideline -> GoalGuideline(
                         id          = guideline.id,
@@ -49,11 +49,11 @@ class GoalDetailViewModel @Inject constructor(
 
     // ── Goal header actions ────────────────────────────────────────────────────
 
-    fun cycleGoalPriority() {
+    fun cycleGoalImportance() {
         val current = _goal.value ?: return
-        val next = if (current.priority >= 3) 1 else current.priority + 1 // TODO: Search and introduce PRIORITY_MAX_VALUE = 3
-        _goal.value = current.copy(priority = next)
-        viewModelScope.launch { goalsService.updateGoalPriority(goalId, next) }
+        val next = if (current.importance >= 3) 1 else current.importance + 1 // TODO: Search and introduce MAX_VALUE = 3
+        _goal.value = current.copy(importance = next)
+        viewModelScope.launch { goalsService.updateGoalImportance(goalId, next) }
     }
 
     fun updateGoalDescription(description: String) {

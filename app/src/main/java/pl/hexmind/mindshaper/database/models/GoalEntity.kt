@@ -13,8 +13,8 @@ data class GoalEntity(
     @ColumnInfo(name = "description")
     val description: String,
 
-    @ColumnInfo(name = "priority")
-    val priority: Int = 3,                     // 1..3, 1 = highest
+    @ColumnInfo(name = "importance")
+    val importance: Int = 1,                   // 1..3, 3 = high importance
 
     @ColumnInfo(name = "last_modified_at")
     val lastModifiedAt: Long = System.currentTimeMillis()
