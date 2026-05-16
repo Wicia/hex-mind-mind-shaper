@@ -61,10 +61,11 @@ class GoalDetailActivity : CoreActivity() {
 
     private fun setupGuidelinesList() {
         guidelinesAdapter = GoalDetailGuidelinesAdapter(
-            onTapText    = { gl -> showEditGuidelineDialog(gl) },
-            onLongPress  = { id -> showDeleteGuidelineConfirmation(id) },
-            onToggleDone = { id -> viewModel.toggleGuideline(id) },
-            onStartDrag  = { holder -> itemTouchHelper.startDrag(holder) }
+            onTapText       = { gl -> showEditGuidelineSheet(gl) },
+            onLongPressText = { id -> showDeleteGuidelineConfirmation(id) },
+            onTapRing       = { id -> viewModel.incrementGuideline(id) },
+            onLongPressRing = { id -> viewModel.decrementGuideline(id) },
+            onStartDrag     = { holder -> itemTouchHelper.startDrag(holder) }
         )
 
         val dragCallback = object : ItemTouchHelper.SimpleCallback(
@@ -100,7 +101,7 @@ class GoalDetailActivity : CoreActivity() {
     }
 
     private fun setupFab() {
-        fabAdd.setOnClickListener { showAddGuidelineDialog() }
+        fabAdd.setOnClickListener { showAddGuidelineSheet() }
     }
 
     // ── Observe ────────────────────────────────────────────────────────────────
@@ -115,7 +116,7 @@ class GoalDetailActivity : CoreActivity() {
 
     private fun bindHeader(goal: Goal) {
         tvBadge.text = goal.importance.toString()
-
+        // 1 = low importance (green), 2 = medium (yellow), 3 = critical (red)
         val bgRes = when (goal.importance) {
             3    -> R.color.importance_high
             2    -> R.color.importance_medium
@@ -130,16 +131,27 @@ class GoalDetailActivity : CoreActivity() {
         cbGoalDesc.setOnClickListener { showEditGoalDescriptionDialog(goal) }
     }
 
-    // ── Dialogs ────────────────────────────────────────────────────────────────
+    // ── Bottom sheets: guidelines ──────────────────────────────────────────────
 
-    private fun showAddGuidelineDialog() {
-        TextEditDialog(
-            context   = this,
-            title     = getString(R.string.workshop_dialog_add_guideline),
-            textInput = "",
-            onSave    = { desc -> viewModel.addGuideline(desc) }
-        ).show()
+    private fun showAddGuidelineSheet() {
+        GuidelineEditBottomSheet.show(
+            fragmentManager = supportFragmentManager,
+            title           = getString(R.string.workshop_dialog_add_guideline),
+            description     = "",
+            maxRepetitions  = 1
+        ) { desc, maxReps -> viewModel.addGuideline(desc, maxReps) }
     }
+
+    private fun showEditGuidelineSheet(guideline: GoalGuideline) {
+        GuidelineEditBottomSheet.show(
+            fragmentManager = supportFragmentManager,
+            title           = getString(R.string.workshop_dialog_edit_guideline),
+            description     = guideline.description,
+            maxRepetitions  = guideline.maxRepetitions
+        ) { desc, maxReps -> viewModel.updateGuideline(guideline.id, desc, maxReps) }
+    }
+
+    // ── Dialogs ────────────────────────────────────────────────────────────────
 
     private fun showEditGoalDescriptionDialog(goal: Goal) {
         TextEditDialog(
@@ -147,15 +159,6 @@ class GoalDetailActivity : CoreActivity() {
             title     = getString(R.string.workshop_dialog_edit_goal),
             textInput = goal.description,
             onSave    = { desc -> viewModel.updateGoalDescription(desc) }
-        ).show()
-    }
-
-    private fun showEditGuidelineDialog(guideline: GoalGuideline) {
-        TextEditDialog(
-            context   = this,
-            title     = getString(R.string.workshop_dialog_edit_guideline),
-            textInput = guideline.description,
-            onSave    = { desc -> viewModel.updateGuideline(guideline.id, desc) }
         ).show()
     }
 

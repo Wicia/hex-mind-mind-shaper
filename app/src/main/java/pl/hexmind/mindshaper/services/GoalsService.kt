@@ -48,24 +48,31 @@ class GoalsService @Inject constructor(
 
     // ── Guidelines ─────────────────────────────────────────────────────────────
 
-    suspend fun addGuideline(goalId: Int, description: String) {
+    suspend fun addGuideline(goalId: Int, description: String, maxRepetitions: Int = 1) {
         val existingCount = repository.getGuidelinesByGoalId(goalId).size
         val entity = GuidelineEntity(
-            goalId      = goalId,
-            description = description.trim(),
-            position    = existingCount
+            goalId             = goalId,
+            description        = description.trim(),
+            position           = existingCount,
+            currentRepetitions = 0,
+            maxRepetitions     = maxRepetitions
         )
         repository.insertGuideline(entity)
     }
 
-    suspend fun updateGuidelineDescription(guidelineId: Int, description: String) {
+    suspend fun updateGuideline(guidelineId: Int, description: String, maxRepetitions: Int) {
         val current = repository.getGuidelineById(guidelineId) ?: return
-        repository.updateGuideline(current.copy(description = description.trim()))
+        repository.updateGuideline(current.copy(
+            description        = description.trim(),
+            // Clamp current so it never exceeds the new max
+            currentRepetitions = current.currentRepetitions.coerceAtMost(maxRepetitions),
+            maxRepetitions     = maxRepetitions
+        ))
     }
 
-    suspend fun toggleGuidelineDone(guidelineId: Int) {
+    suspend fun updateGuidelineCurrentRepetitions(guidelineId: Int, currentRepetitions: Int) {
         val current = repository.getGuidelineById(guidelineId) ?: return
-        repository.updateGuideline(current.copy(isDone = !current.isDone))
+        repository.updateGuideline(current.copy(currentRepetitions = currentRepetitions))
     }
 
     suspend fun deleteGuideline(guidelineId: Int) =

@@ -305,7 +305,7 @@
 
     <!-- Common -->
     <style name="DialogTile">
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:baselineAligned">true</item>
         <item name="android:gravity">center</item>
@@ -333,7 +333,7 @@
     </style>
 
     <style name="Dialog_Text">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/baloo2</item>
         <item name="android:textColor">@color/text_secondary</item>
         <item name="android:layout_gravity">center_vertical</item>
@@ -417,6 +417,45 @@
     <style name="HexInputHintAppearance" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/_gray_lvl_3</item>
+    </style>
+
+    <style name="ChipPresetButton" parent="Widget.MaterialComponents.Button">
+        <!-- Min constraints -->
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+
+        <!-- Insets -->
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+
+        <!-- Padding -->
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+
+        <!-- Background (selector) -->
+        <item name="android:background">@drawable/shape_chip_preset_selector</item>
+        <item name="backgroundTint">@null</item>
+
+        <!-- Text -->
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.0</item>
+        <item name="android:letterSpacing">0.0</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:fontFamily">@font/baloo2</item>
+
+        <!-- Text color -->
+        <item name="android:textColor">@color/text_primary</item>
+
+        <!-- Elevation / ripple -->
+        <item name="android:stateListAnimator">@null</item>
+        <item name="rippleColor">@color/_orange_lvl_2</item>
+        <item name="cornerRadius">16dp</item>
     </style>
 
 </resources>

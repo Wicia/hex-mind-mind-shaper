@@ -18,7 +18,7 @@
     <string name="hex_tags_hint_project">Projekt</string>
     <string name="hex_tags_label_domain">| Domena</string>
 
-    <!-- BUTTONS & ACTIONS -->
+    <!-- BUTTONS & ACTIONS ________________________________________________________ -->
     <string name="common_btn_save">Zapisz</string>
     <string name="common_btn_cancel">Anuluj</string>
     <string name="common_btn_cancel_not_now">Nie teraz</string>
@@ -76,6 +76,7 @@
     <string name="common_list_dialog_title">Wybierz coś sobie…</string>
 
     <string name="common_thoughts_permissions_dialog_header">Żądanie uprawnień do zasobów Androida</string>
+    <string name="common_dialog_open_android_settings">Otwórz ustawienia</string>
 
     <!-- VALIDATION -->
     <string name="common_object_type_thought">Myśl</string>
@@ -409,7 +410,21 @@
 
     <string name="workshop_section_paths">✨ Ścieżki doświadczeń</string>
     <string name="path_pool_empty">Nie mam Cię już czego nauczyć…</string>
-    <string name="common_dialog_open_android_settings">Otwórz ustawienia</string>
+
+    <string name="workshop_guideline_edit_header">Edytuj wytyczną / krok</string>
+    <string name="workshop_guideline_repetitions_header">Ile razy trzeba to wykonać?</string>
+    <string name="workshop_guideline_repetitions_label">Liczba</string>
+    <string name="workshop_guideline_repetitions_single">Jeden raz</string>
+
+    <string name="workshop_goal_repetitions_7">7 ⟳</string>
+    <string name="workshop_goal_repetitions_14">14 ⟳</string>
+    <string name="workshop_goal_repetitions_21">21 ⟳</string>
+    <string name="workshop_goal_repetitions_31">31 ⟳</string>
+
+    <string name="guideline_description_error_noInput">Wytyczna lub krok musi mieć jakiś opis…</string>
+    <string name="guideline_repetitions_error_noInput">Brak liczby</string>
+    <string name="guideline_repetitions_error_belowMin"><![CDATA[Liczba < 0]]></string>
+    <string name="guideline_repetitions_error_aboveMax"><![CDATA[Liczba > 31]]></string>
 
     <!-- For displaying proper plural of steps cound under specific path (!) -->
     <plurals name="path_steps_count">

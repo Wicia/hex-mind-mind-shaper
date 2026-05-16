@@ -23,8 +23,12 @@ data class Goal(
 data class GoalGuideline(
     val id: Int,
     val description: String,
-    val isDone: Boolean = false
-)
+    val currentRepetitions: Int = 0,
+    val maxRepetitions: Int = 1
+) {
+    // Completed when progress reaches the target; used for visual styling in the adapter
+    val isCompleted: Boolean get() = currentRepetitions >= maxRepetitions
+}
 
 // Currently shown step
 data class PathItem(
@@ -71,7 +75,12 @@ class WorkshopViewModel @Inject constructor(
                     importance     = dto.importance,
                     lastModifiedAt = dto.lastModifiedAt,
                     subItems       = dto.guidelines.map { g ->
-                        GoalGuideline(id = g.id, description = g.description, isDone = g.isDone)
+                        GoalGuideline(
+                            id                 = g.id,
+                            description        = g.description,
+                            currentRepetitions = g.currentRepetitions,
+                            maxRepetitions     = g.maxRepetitions
+                        )
                     }
                 )
             }
@@ -131,7 +140,7 @@ class WorkshopViewModel @Inject constructor(
 
     fun cycleGoalImportance(goalId: Int) {
         val current = _goals.value?.firstOrNull { it.id == goalId } ?: return
-        val next = if (current.importance >= 3) 1 else current.importance + 1 // TODO: Search and introduce MAX_VALUE = 3
+        val next = if (current.importance >= 3) 1 else current.importance + 1 // TODO: Search and introduce IMPORTANCE_MAX_VALUE = 3
         // Optimistic update + re-sort in memory (mirrors DB ORDER BY importance DESC, last_modified_at DESC)
         _goals.value = _goals.value
             ?.map { goal ->

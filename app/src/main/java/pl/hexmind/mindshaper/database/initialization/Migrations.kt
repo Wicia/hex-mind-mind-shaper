@@ -167,5 +167,34 @@ class Migrations {
             }
         }
 
+        // Replace is_done (checkbox/single state) with current_repetitions + max_repetitions
+        val MIGRATION_9_TO_10 = object : Migration(9, 10) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE GOAL_GUIDELINES_NEW (
+                        id                  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        goal_id             INTEGER NOT NULL,
+                        description         TEXT NOT NULL,
+                        position            INTEGER NOT NULL DEFAULT 0,
+                        current_repetitions INTEGER NOT NULL DEFAULT 0,
+                        max_repetitions     INTEGER NOT NULL DEFAULT 1,
+                        FOREIGN KEY (goal_id) REFERENCES GOALS(id) ON DELETE CASCADE
+                    )
+                """
+                )
+                db.execSQL(
+                    """
+                    INSERT INTO GOAL_GUIDELINES_NEW (id, goal_id, description, position, current_repetitions, max_repetitions)
+                    SELECT id, goal_id, description, position, is_done, 1
+                    FROM GOAL_GUIDELINES
+                """
+                )
+                db.execSQL("DROP TABLE GOAL_GUIDELINES")
+                db.execSQL("ALTER TABLE GOAL_GUIDELINES_NEW RENAME TO GOAL_GUIDELINES")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_GOAL_GUIDELINES_goal_id ON GOAL_GUIDELINES(goal_id)")
+            }
+        }
+
     }
 }

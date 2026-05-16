@@ -53,6 +53,12 @@
 
     <declare-styleable name="HexInputField">
         <attr name="hint" format="string|reference" />
+        <attr name="hexInputType" format="enum">
+            <enum name="all_chars" value="0" />
+            <enum name="text"      value="1" />
+            <enum name="number"    value="2" />
+        </attr>
+        <attr name="maxLines" format="integer" />
     </declare-styleable>
 
 </resources>

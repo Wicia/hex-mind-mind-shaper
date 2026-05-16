@@ -7,10 +7,10 @@ import pl.hexmind.mindshaper.services.dto.GoalDTO
 import pl.hexmind.mindshaper.services.dto.GuidelineDTO
 
 /**
- * Manual mapper for Goal/Guideline entities ↔ DTOs.
+ * Manual mapper for Goal/Guideline entities <-> DTOs.
  *
  * ! Not using MapStruct here because it can't auto-map 1:N relations (Goal -> Guidelines).
- * TODO: standardize approach and library wih other mappers
+ * TODO: standardize approach and library with other mappers
  */
 object GoalMapper {
 
@@ -43,19 +43,21 @@ object GoalMapper {
 
     fun guidelineEntityToDTO(entity: GuidelineEntity): GuidelineDTO =
         GuidelineDTO(
-            id          = entity.id,
-            goalId      = entity.goalId,
-            description = entity.description,
-            isDone      = entity.isDone,
-            position    = entity.position
+            id                 = entity.id,
+            goalId             = entity.goalId,
+            description        = entity.description,
+            position           = entity.position,
+            currentRepetitions = entity.currentRepetitions,
+            maxRepetitions     = entity.maxRepetitions
         )
 
     fun guidelineDTOToEntity(dto: GuidelineDTO): GuidelineEntity =
         GuidelineEntity(
-            id          = dto.id,
-            goalId      = dto.goalId,
-            description = dto.description,
-            isDone      = dto.isDone,
-            position    = dto.position
+            id                 = dto.id,
+            goalId             = dto.goalId,
+            description        = dto.description,
+            position           = dto.position,
+            currentRepetitions = dto.currentRepetitions,
+            maxRepetitions     = dto.maxRepetitions
         )
 }

@@ -29,9 +29,12 @@ data class GuidelineEntity(
     @ColumnInfo(name = "description")
     val description: String,
 
-    @ColumnInfo(name = "is_done")
-    val isDone: Boolean = false,
-
     @ColumnInfo(name = "position")
-    val position: Int = 0                      // user-defined order via drag & drop
+    val position: Int = 0,                         // user-defined order via drag & drop
+
+    @ColumnInfo(name = "current_repetitions")
+    val currentRepetitions: Int = 0,               // how many times the step has been completed so far
+
+    @ColumnInfo(name = "max_repetitions")
+    val maxRepetitions: Int = 1                    // target count; 1 = single checkbox
 )
