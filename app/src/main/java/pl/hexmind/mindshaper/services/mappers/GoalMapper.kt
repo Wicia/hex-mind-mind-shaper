@@ -48,7 +48,8 @@ object GoalMapper {
             description        = entity.description,
             position           = entity.position,
             currentRepetitions = entity.currentRepetitions,
-            maxRepetitions     = entity.maxRepetitions
+            maxRepetitions     = entity.maxRepetitions,
+            thoughtId          = entity.thoughtId
         )
 
     fun guidelineDTOToEntity(dto: GuidelineDTO): GuidelineEntity =
@@ -58,6 +59,7 @@ object GoalMapper {
             description        = dto.description,
             position           = dto.position,
             currentRepetitions = dto.currentRepetitions,
-            maxRepetitions     = dto.maxRepetitions
+            maxRepetitions     = dto.maxRepetitions,
+            thoughtId          = dto.thoughtId
         )
 }

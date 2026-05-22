@@ -1,7 +1,6 @@
 package pl.hexmind.mindshaper.activities.workshop
 
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -9,19 +8,23 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import pl.hexmind.mindshaper.R
 
 /**
  * Adapter for the guidelines list in GoalDetailActivity.
- * ! Plain RecyclerView.Adapter (no ListAdapter/DiffUtil) — avoids async diff conflicts with drag.
+ * #! Plain RecyclerView.Adapter — keeps things simple for small guidelines list to avoid
+ * async ListAdapter/DiffUtil mechanism conflicts.
  */
 class GoalDetailGuidelinesAdapter(
     private val onTapText: (GoalGuideline) -> Unit,
     private val onLongPressText: (guidelineId: Int) -> Unit,
     private val onTapRing: (guidelineId: Int) -> Unit,
     private val onLongPressRing: (guidelineId: Int) -> Unit,
-    private val onStartDrag: (holder: RecyclerView.ViewHolder) -> Unit
+    private val onMenuClick: (anchor: View, guideline: GoalGuideline, isFirst: Boolean, isLast: Boolean) -> Unit,
+    private val onThoughtChipClick: (thoughtId: Int) -> Unit,
+    private val onThoughtChipLongPress: (guidelineId: Int) -> Unit
 ) : RecyclerView.Adapter<GoalDetailGuidelinesAdapter.ViewHolder>() {
 
     private val items = mutableListOf<GoalGuideline>()
@@ -31,7 +34,8 @@ class GoalDetailGuidelinesAdapter(
         val cpiRing: CircularProgressIndicator = itemView.findViewById(R.id.cpi_guideline_ring)
         val tvRingLabel: TextView              = itemView.findViewById(R.id.tv_ring_label)
         val tvDesc: TextView                   = itemView.findViewById(R.id.tv_guideline_description)
-        val ivDrag: ImageView                  = itemView.findViewById(R.id.iv_guideline_drag_handle)
+        val ivMore: ImageView                  = itemView.findViewById(R.id.iv_guideline_more)
+        val btnLinkedThought: MaterialButton   = itemView.findViewById(R.id.btn_linked_thought)
     }
 
     fun setItems(list: List<GoalGuideline>) {
@@ -39,13 +43,6 @@ class GoalDetailGuidelinesAdapter(
         items.addAll(list)
         notifyDataSetChanged()
     }
-
-    fun moveItem(from: Int, to: Int) {
-        items.add(to, items.removeAt(from))
-        notifyItemMoved(from, to)
-    }
-
-    fun getOrderedIds(): List<Int> = items.map { it.id }
 
     override fun getItemCount() = items.size
 
@@ -57,27 +54,16 @@ class GoalDetailGuidelinesAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val guideline = items[position]
+        val isFirst = position == 0
+        val isLast = position == items.size - 1
 
         bindRing(holder, guideline)
-        holder.flRing.setOnClickListener { onTapRing(guideline.id) }
-        holder.flRing.setOnLongClickListener {
-            onLongPressRing(guideline.id)
-            true
-        }
-
-        holder.tvDesc.text = guideline.description
-        applyCompletedStyle(holder.tvDesc, guideline.isCompleted)
-        holder.tvDesc.setOnClickListener { onTapText(guideline) }
-        holder.tvDesc.setOnLongClickListener {
-            onLongPressText(guideline.id)
-            true
-        }
-
-        holder.ivDrag.setOnTouchListener { _, event ->
-            if (event.actionMasked == MotionEvent.ACTION_DOWN) onStartDrag(holder)
-            false
-        }
+        bindDescription(holder, guideline)
+        bindMenu(holder, guideline, isFirst, isLast)
+        bindLinkedThought(holder, guideline)
     }
+
+    // ── Bindings ───────────────────────────────────────────────────────────────
 
     private fun bindRing(holder: ViewHolder, guideline: GoalGuideline) {
         val context = holder.cpiRing.context
@@ -108,14 +94,50 @@ class GoalDetailGuidelinesAdapter(
             guideline.maxRepetitions > 1 -> guideline.currentRepetitions.toString()
             else                         -> ""  // single checkbox — no label when empty
         }
+
+        // Ring -> Tap
+        holder.flRing.setOnClickListener { onTapRing(guideline.id) }
+
+        // Ring -> Long press
+        holder.flRing.setOnLongClickListener {
+            onLongPressRing(guideline.id)
+            true
+        }
     }
 
-    private fun applyCompletedStyle(tv: TextView, isCompleted: Boolean) {
-        if (isCompleted) {
-            tv.setTextColor(ContextCompat.getColor(tv.context, R.color._gray_lvl_3))
+    private fun bindDescription(holder: ViewHolder, guideline: GoalGuideline) {
+        holder.tvDesc.text = guideline.description
+        holder.tvDesc.setOnClickListener { onTapText(guideline) }
+        holder.tvDesc.setOnLongClickListener {
+            onLongPressText(guideline.id)
+            true
         }
-        else {
-            tv.setTextColor(ContextCompat.getColor(tv.context, R.color.text_primary))
+    }
+
+    private fun bindMenu(holder: ViewHolder, guideline: GoalGuideline, isFirst: Boolean, isLast: Boolean) {
+        holder.ivMore.setOnClickListener {
+            onMenuClick(holder.ivMore, guideline, isFirst, isLast)
+        }
+    }
+
+    private fun bindLinkedThought(holder: ViewHolder, guideline: GoalGuideline) {
+        if (!guideline.hasLinkedThought) {
+            holder.btnLinkedThought.visibility = View.GONE
+            return
+        }
+        holder.btnLinkedThought.visibility = View.VISIBLE
+
+        // Fallback when thread is empty/null
+        holder.btnLinkedThought.text = guideline.thoughtThread
+            ?.takeIf { it.isNotBlank() }
+            ?: holder.btnLinkedThought.context.getString(R.string.workshop_guideline_linked_thought_fallback)
+
+        holder.btnLinkedThought.setOnClickListener {
+            guideline.thoughtId?.let { onThoughtChipClick(it) }
+        }
+        holder.btnLinkedThought.setOnLongClickListener {
+            onThoughtChipLongPress(guideline.id)
+            true
         }
     }
 }

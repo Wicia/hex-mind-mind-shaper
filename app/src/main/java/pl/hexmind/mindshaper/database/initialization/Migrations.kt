@@ -196,5 +196,38 @@ class Migrations {
             }
         }
 
+        // Add thought_id to GOAL_GUIDELINES (FK to THOUGHTS, SET NULL on delete).
+        // SQLite ALTER TABLE can't add FK + index in one go, so we recreate the table.
+        val MIGRATION_10_TO_11 = object : Migration(10, 11) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE GOAL_GUIDELINES_NEW (
+                        id                  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        goal_id             INTEGER NOT NULL,
+                        description         TEXT NOT NULL,
+                        position            INTEGER NOT NULL DEFAULT 0,
+                        current_repetitions INTEGER NOT NULL DEFAULT 0,
+                        max_repetitions     INTEGER NOT NULL DEFAULT 1,
+                        thought_id          INTEGER DEFAULT NULL,
+                        FOREIGN KEY (goal_id)    REFERENCES GOALS(id)    ON DELETE CASCADE,
+                        FOREIGN KEY (thought_id) REFERENCES THOUGHTS(id) ON DELETE SET NULL
+                    )
+                """
+                )
+                db.execSQL(
+                    """
+                    INSERT INTO GOAL_GUIDELINES_NEW (id, goal_id, description, position, current_repetitions, max_repetitions, thought_id)
+                    SELECT id, goal_id, description, position, current_repetitions, max_repetitions, NULL
+                    FROM GOAL_GUIDELINES
+                """
+                )
+                db.execSQL("DROP TABLE GOAL_GUIDELINES")
+                db.execSQL("ALTER TABLE GOAL_GUIDELINES_NEW RENAME TO GOAL_GUIDELINES")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_GOAL_GUIDELINES_goal_id ON GOAL_GUIDELINES(goal_id)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_GOAL_GUIDELINES_thought_id ON GOAL_GUIDELINES(thought_id)")
+            }
+        }
+
     }
 }

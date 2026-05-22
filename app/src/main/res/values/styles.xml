@@ -419,7 +419,7 @@
         <item name="android:textColor">@color/_gray_lvl_3</item>
     </style>
 
-    <style name="ChipPresetButton" parent="Widget.MaterialComponents.Button">
+    <style name="ChipButton" parent="Widget.MaterialComponents.Button">
         <!-- Min constraints -->
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
@@ -437,12 +437,11 @@
         <item name="android:paddingEnd">12dp</item>
 
         <!-- Background (selector) -->
-        <item name="android:background">@drawable/shape_chip_preset_selector</item>
-        <item name="backgroundTint">@null</item>
+        <item name="backgroundTint">@color/chip_background_selector</item>
+        <item name="android:background">@null</item>
 
         <!-- Text -->
         <item name="android:textSize">14sp</item>
-        <item name="android:letterSpacing">0.0</item>
         <item name="android:letterSpacing">0.0</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textAllCaps">false</item>

@@ -209,7 +209,7 @@
         <item>Elo %s :)</item>
         <item>Dobrego dnia %s!</item>
         <item>Hejka %s</item>
-        <item>Yoł %s</item>
+        <item>Yoł %s!</item>
         <item>No jak tam %s?</item>
         <item>Siema %s!</item>
         <item>Dobrze Cię widzieć %s ;)</item>
@@ -426,7 +426,25 @@
     <string name="guideline_repetitions_error_belowMin"><![CDATA[Liczba < 0]]></string>
     <string name="guideline_repetitions_error_aboveMax"><![CDATA[Liczba > 31]]></string>
 
-    <!-- For displaying proper plural of steps cound under specific path (!) -->
+    <!-- Guideline ⋮ menu -->
+    <string name="workshop_guideline_menu_move_up">Przesuń w górę</string>
+    <string name="workshop_guideline_menu_move_down">Przesuń w dół</string>
+    <string name="workshop_guideline_menu_link_thought">Nowa połączona myśl</string>
+    <string name="workshop_guideline_menu_change_thought">Zmień połączoną myśl</string>
+
+    <!-- Linked thought chip -->
+    <string name="workshop_guideline_linked_thought_fallback">Powiązana myśl</string>
+
+    <!-- Unlink thought dialog (long press on chip) -->
+    <string name="workshop_guideline_unlink_title">Powiązana myśl</string>
+    <string name="workshop_guideline_unlink_description">Co zrobić z powiązaniem?</string>
+    <string name="workshop_guideline_unlink_keep_thought">Odepnij i zostaw myśl</string>
+    <string name="workshop_guideline_unlink_delete_thought">Odepnij i usuń myśl</string>
+
+    <!--
+        PATHS ======================================================================================
+    -->
+    <!-- #! For displaying proper plural of steps cound under specific path -->
     <plurals name="path_steps_count">
         <item quantity="one">%d krok</item>
         <item quantity="few">%d kroki</item>

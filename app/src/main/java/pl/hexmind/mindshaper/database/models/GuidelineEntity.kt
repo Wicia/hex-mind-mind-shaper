@@ -14,9 +14,18 @@ import androidx.room.PrimaryKey
             parentColumns = ["id"],
             childColumns = ["goal_id"],
             onDelete = ForeignKey.CASCADE   // delete guidelines when goal is deleted
+        ),
+        ForeignKey(
+            entity = ThoughtEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["thought_id"],
+            onDelete = ForeignKey.SET_NULL  // unlink (not delete) guideline when its thought is deleted
         )
     ],
-    indices = [Index(value = ["goal_id"])]
+    indices = [
+        Index(value = ["goal_id"]),
+        Index(value = ["thought_id"])
+    ]
 )
 data class GuidelineEntity(
 
@@ -30,11 +39,14 @@ data class GuidelineEntity(
     val description: String,
 
     @ColumnInfo(name = "position")
-    val position: Int = 0,                         // user-defined order via drag & drop
+    val position: Int = 0,                         // user-defined order
 
     @ColumnInfo(name = "current_repetitions")
     val currentRepetitions: Int = 0,               // how many times the step has been completed so far
 
     @ColumnInfo(name = "max_repetitions")
-    val maxRepetitions: Int = 1                    // target count; 1 = single checkbox
+    val maxRepetitions: Int = 1,                   // target count; 1 = single checkbox
+
+    @ColumnInfo(name = "thought_id")
+    val thoughtId: Int? = null                     // linked thought (1:1, optional)
 )

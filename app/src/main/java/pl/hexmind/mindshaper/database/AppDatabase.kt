@@ -45,6 +45,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun pathStepDao(): PathStepDAO
 
     companion object {
-        const val DB_VERSION = 10
+        const val DB_VERSION = 11
     }
 }

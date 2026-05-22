@@ -180,9 +180,9 @@ class CaptureActivityViewModel @Inject constructor(
      * Strategy: Save thought first, then update audio/photo if they exist
      *
      *
-     * @return Result.success if saved, Result.failure with exception if error
+     * @return Result.success(thoughtId) if saved, Result.failure with exception if error
      */
-    suspend fun saveNewThought(): Result<Unit> {
+    suspend fun saveNewThought(): Result<Long> {
         return try {
             val draft = _draftThought.value
                 ?: return Result.failure(Exception("No draft available")) // TODO: don't refactor for now
@@ -207,7 +207,7 @@ class CaptureActivityViewModel @Inject constructor(
                 thoughtsService.updateThoughtPhoto(thoughtId, photoFile)
             }
 
-            Result.success(Unit)
+            Result.success(thoughtId)
 
         } catch (e: Exception) {
             Result.failure(e)

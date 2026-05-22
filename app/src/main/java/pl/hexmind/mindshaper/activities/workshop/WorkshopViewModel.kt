@@ -24,10 +24,16 @@ data class GoalGuideline(
     val id: Int,
     val description: String,
     val currentRepetitions: Int = 0,
-    val maxRepetitions: Int = 1
+    val maxRepetitions: Int = 1,
+
+    // Linked thought -> TODO: Change names to linkedThoughtId etc.?
+    val thoughtId: Int? = null,
+    val thoughtThread: String? = null
 ) {
     // Completed when progress reaches the target; used for visual styling in the adapter
     val isCompleted: Boolean get() = currentRepetitions >= maxRepetitions
+
+    val hasLinkedThought: Boolean get() = thoughtId != null
 }
 
 // Currently shown step
@@ -79,7 +85,8 @@ class WorkshopViewModel @Inject constructor(
                             id                 = g.id,
                             description        = g.description,
                             currentRepetitions = g.currentRepetitions,
-                            maxRepetitions     = g.maxRepetitions
+                            maxRepetitions     = g.maxRepetitions,
+                            thoughtId          = g.thoughtId
                         )
                     }
                 )

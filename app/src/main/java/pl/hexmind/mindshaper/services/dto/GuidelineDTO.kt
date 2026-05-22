@@ -6,5 +6,6 @@ data class GuidelineDTO(
     val description: String = "",
     val position: Int = 0,
     val currentRepetitions: Int = 0,
-    val maxRepetitions: Int = 1
+    val maxRepetitions: Int = 1,
+    val thoughtId: Int? = null
 )

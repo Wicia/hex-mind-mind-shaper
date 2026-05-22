@@ -132,7 +132,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/chip_1x"
-                        style="@style/ChipPresetButton"
+                        style="@style/ChipButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -141,7 +141,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/chip_7x"
-                        style="@style/ChipPresetButton"
+                        style="@style/ChipButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -157,7 +157,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/chip_14x"
-                        style="@style/ChipPresetButton"
+                        style="@style/ChipButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -166,7 +166,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/chip_21x"
-                        style="@style/ChipPresetButton"
+                        style="@style/ChipButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -175,7 +175,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/chip_31x"
-                        style="@style/ChipPresetButton"
+                        style="@style/ChipButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

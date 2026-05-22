@@ -9,6 +9,7 @@ import androidx.room.Query
 import androidx.room.Update
 import pl.hexmind.mindshaper.database.models.ThoughtEntity
 import pl.hexmind.mindshaper.database.models.ThoughtMetadataUpdate
+import pl.hexmind.mindshaper.database.models.ThoughtThreadRow
 
 @Dao
 interface ThoughtsDAO {
@@ -37,6 +38,9 @@ interface ThoughtsDAO {
 
     @Query("DELETE FROM thoughts WHERE id = :id")
     suspend fun deleteById(id: Int)
+
+    @Query("SELECT id, thread FROM thoughts WHERE id IN (:ids)")
+    suspend fun getThreadsByIds(ids: List<Int>): List<ThoughtThreadRow>
 
     // Basic queries
     @Query("SELECT * FROM thoughts ORDER BY created_at DESC")

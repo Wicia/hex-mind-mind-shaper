@@ -60,6 +60,13 @@ class ThoughtsService @Inject constructor(
         repository.deleteThoughtById(id)
     }
 
+    /**
+     * Lightweight fetch — No BLOBs loaded
+     * @returns map of thoughtId -> thread (title)
+     */
+    suspend fun getThreadsByIds(ids: List<Int>): Map<Int, String?> =
+        repository.getThreadsByIds(ids)
+
     // === Sophisticated methods for updating specific part of thought (rich text, recording...)
 
     suspend fun updateThoughtMetadata(thought: ThoughtDTO) {

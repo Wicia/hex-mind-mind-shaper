@@ -8,11 +8,13 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.services.GoalsService
+import pl.hexmind.mindshaper.services.ThoughtsService
 import javax.inject.Inject
 
 @HiltViewModel
 class GoalDetailViewModel @Inject constructor(
     private val goalsService: GoalsService,
+    private val thoughtsService: ThoughtsService,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -31,22 +33,32 @@ class GoalDetailViewModel @Inject constructor(
     fun loadGoal() {
         viewModelScope.launch {
             val dto = goalsService.getAllGoals().firstOrNull { it.id == goalId }
-            _goal.value = dto?.let {
-                Goal(
-                    id             = it.id,
-                    description    = it.description,
-                    importance     = it.importance,
-                    lastModifiedAt = it.lastModifiedAt,
-                    subItems       = it.guidelines.map { g ->
-                        GoalGuideline(
-                            id                 = g.id,
-                            description        = g.description,
-                            currentRepetitions = g.currentRepetitions,
-                            maxRepetitions     = g.maxRepetitions
-                        )
-                    }
-                )
+            if (dto == null) {
+                _goal.value = null
+                return@launch
             }
+
+            // Fetch linked thoughts (lightweight: id + thread only, no BLOBs)
+            val thoughtIds = dto.guidelines.mapNotNull { it.thoughtId }
+            val threadsMap: Map<Int, String?> = if (thoughtIds.isEmpty()) emptyMap()
+                else thoughtsService.getThreadsByIds(thoughtIds)
+
+            _goal.value = Goal(
+                id             = dto.id,
+                description    = dto.description,
+                importance     = dto.importance,
+                lastModifiedAt = dto.lastModifiedAt,
+                subItems       = dto.guidelines.map { g ->
+                    GoalGuideline(
+                        id                 = g.id,
+                        description        = g.description,
+                        currentRepetitions = g.currentRepetitions,
+                        maxRepetitions     = g.maxRepetitions,
+                        thoughtId          = g.thoughtId,
+                        thoughtThread      = g.thoughtId?.let { threadsMap[it] }
+                    )
+                }
+            )
         }
     }
 
@@ -127,12 +139,48 @@ class GoalDetailViewModel @Inject constructor(
         }
     }
 
-    // Called from GoalDetailActivity after drag ends (clearView) — adapter owns the visual order during drag
-    fun persistReorder(orderedIds: List<Int>) {
-        // Sync _goal.subItems to reflect the new order so LiveData stays consistent
+    // ── Reorder guidelines ─────────────────────────────────
+
+    fun moveGuidelineUp(guidelineId: Int) = moveGuideline(guidelineId, -1)
+    fun moveGuidelineDown(guidelineId: Int) = moveGuideline(guidelineId, +1)
+
+    private fun moveGuideline(guidelineId: Int, direction: Int) {
         val current = _goal.value ?: return
-        val reordered = orderedIds.mapNotNull { id -> current.subItems.firstOrNull { it.id == id } }
-        _goal.value = current.copy(subItems = reordered)
+        val items = current.subItems.toMutableList()
+        val idx = items.indexOfFirst { it.id == guidelineId }
+        val to = idx + direction
+        if (idx < 0 || to < 0 || to >= items.size) return
+
+        // Swap in memory
+        val moved = items.removeAt(idx)
+        items.add(to, moved)
+        _goal.value = current.copy(subItems = items)
+
+        // Persist the new full order
+        val orderedIds = items.map { it.id }
         viewModelScope.launch { goalsService.reorderGuidelines(orderedIds) }
+    }
+
+    // ── Linked thought (1:1) ───────────────────────────────────────────────────
+
+    fun linkThought(guidelineId: Int, thoughtId: Int) {
+        viewModelScope.launch {
+            goalsService.linkThought(guidelineId, thoughtId)
+            loadGoal()  // refresh = thought chip refresh
+        }
+    }
+
+    /**
+     * Handles actions "unpin only" or "unpin + delete thought".
+     */
+    fun unlinkThought(guidelineId: Int, alsoDeleteThought: Boolean) {
+        // Optimistic UI: clear thoughtId + thread in the affected guideline
+        _goal.value = _goal.value?.let { goal ->
+            goal.copy(subItems = goal.subItems.map {
+                if (it.id == guidelineId) it.copy(thoughtId = null, thoughtThread = null)
+                else it
+            })
+        }
+        viewModelScope.launch { goalsService.unlinkThought(guidelineId, alsoDeleteThought) }
     }
 }

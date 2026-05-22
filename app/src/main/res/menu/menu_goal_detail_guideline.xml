@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_move_up"
+        android:title="@string/workshop_guideline_menu_move_up" />
+
+    <item
+        android:id="@+id/action_move_down"
+        android:title="@string/workshop_guideline_menu_move_down" />
+
+    <item
+        android:id="@+id/action_link_thought"
+        android:title="@string/workshop_guideline_menu_link_thought" />
+
+</menu>

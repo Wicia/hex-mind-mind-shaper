@@ -1,76 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:padding="4dp"
-    android:minHeight="48dp"
-    android:background="?attr/selectableItemBackground">
+    android:orientation="vertical"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp">
 
-    <!-- Progress ring -->
-    <FrameLayout
-        android:id="@+id/fl_guideline_ring"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_vertical"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="?attr/selectableItemBackgroundBorderless">
-
-        <!-- Indicator -->
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/cpi_guideline_ring"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            app:indicatorSize="32dp"
-            app:trackThickness="7dp"
-            app:trackCornerRadius="4dp"
-            app:indicatorColor="@color/_orange_lvl_3"
-            app:trackColor="@color/_orange_lvl_1"
-            app:indicatorTrackGapSize="0dp"
-            android:indeterminate="false" />
-
-        <!-- Repetition number -->
-        <TextView
-            android:id="@+id/tv_ring_label"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_secondary" />
-
-    </FrameLayout>
-
-    <!-- Description -->
-    <TextView
-        android:id="@+id/tv_guideline_description"
-        android:layout_width="0dp"
+    <!-- Main row: ring + text + menu -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="4dp"
-        android:textSize="14sp"
-        android:textColor="@color/text_primary"
-        android:lineSpacingExtra="0dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="4dp"
+        android:minHeight="48dp"
+        android:background="?attr/selectableItemBackground">
 
-    <!-- Drag handle — touch starts reorder drag -->
-    <ImageView
-        android:id="@+id/iv_guideline_drag_handle"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="8dp"
-        android:src="@drawable/ic_action_drag_handle"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-        app:tint="@color/_gray_lvl_2" />
+        <!-- Progress ring -->
+        <FrameLayout
+            android:id="@+id/fl_guideline_ring"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/cpi_guideline_ring"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:indicatorSize="32dp"
+                app:trackThickness="7dp"
+                app:trackCornerRadius="4dp"
+                app:indicatorColor="@color/_orange_lvl_3"
+                app:trackColor="@color/_orange_lvl_1"
+                app:indicatorTrackGapSize="0dp"
+                android:indeterminate="false" />
+
+            <TextView
+                android:id="@+id/tv_ring_label"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_secondary" />
+
+        </FrameLayout>
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/tv_guideline_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
+            android:textSize="14sp"
+            android:textColor="@color/text_primary"
+            android:lineSpacingExtra="0dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp" />
+
+        <!-- Menu button -->
+        <ImageView
+            android:id="@+id/iv_guideline_more"
+            android:layout_width="40dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:padding="6dp"
+            android:src="@drawable/ic_action_more_vert"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+            app:tint="@color/_gray_lvl_3" />
+
+    </LinearLayout>
+
+    <!-- Linked thought chip -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_linked_thought"
+        style="@style/ChipButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="4dp"
+        app:icon="@drawable/ic_action_chevron_right"
+        app:iconTint="@color/black"
+        app:iconGravity="end"
+        app:iconSize="16dp"
+        app:iconPadding="6dp"
+        android:visibility="gone"
+        tools:ignore="MissingPrefix" />
 
 </LinearLayout>

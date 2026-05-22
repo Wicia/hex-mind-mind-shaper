@@ -388,7 +388,12 @@ class CaptureActivity : ThoughtManagerActivity() {
         val result = viewModel.saveNewThought()
 
         if (result.isSuccess) {
-            // Success - close activity
+            // Success — return new thoughtId
+            val thoughtId = result.getOrNull()
+            if (thoughtId != null) {
+                val data = android.content.Intent().putExtra(EXTRA_THOUGHT_ID, thoughtId)
+                setResult(RESULT_OK, data)
+            }
             finish()
         }
         else {
@@ -480,5 +485,9 @@ class CaptureActivity : ThoughtManagerActivity() {
     override fun onDestroy() {
         super.onDestroy()
         binding.audioRecordingPlayback.cleanupResources()
+    }
+
+    companion object {
+        const val EXTRA_THOUGHT_ID = "EXTRA_THOUGHT_ID"
     }
 }

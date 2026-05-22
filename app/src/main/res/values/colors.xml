@@ -9,8 +9,8 @@
     <!-- 0..3 -> color intensity -->
     <color name="_orange_lvl_0">#FFF4E6</color>     <!-- APP BACKGROUND (neutral orange) -->
     <color name="_orange_lvl_1">#FFE1C8</color>     <!-- TERTIARY: list actions + other -->
-    <color name="_orange_lvl_2">#EDFFCA98</color>   <!-- SECONDARY: activity secondary actions -->
-    <color name="_orange_lvl_3">#FF9F49</color>     <!-- PRIMARY: fab buttons & activity main action -->
+    <color name="_orange_lvl_2">#FFC59A</color>     <!-- SECONDARY: activity secondary actions -->
+    <color name="_orange_lvl_3">#FFA86B</color>     <!-- PRIMARY: fab buttons & activity main action -->
 
     <!-- NEUTRAL: Grayscale for text and backgrounds -->
     <color name="_white">#FFFFFF</color>

@@ -10,7 +10,8 @@ import javax.inject.Singleton
 
 @Singleton
 class GoalsService @Inject constructor(
-    private val repository: WorkshopRepository
+    private val repository: WorkshopRepository,
+    private val thoughtsService: ThoughtsService
 ) {
 
     // ── Goals ──────────────────────────────────────────────────────────────────
@@ -81,6 +82,29 @@ class GoalsService @Inject constructor(
     suspend fun reorderGuidelines(orderedIds: List<Int>) {
         orderedIds.forEachIndexed { index, id ->
             repository.updateGuidelinePosition(id, index)
+        }
+    }
+
+    // ── Linked thought (1:1) ───────────────────────────────────────────────────
+
+    suspend fun linkThought(guidelineId: Int, thoughtId: Int) {
+        val current = repository.getGuidelineById(guidelineId) ?: return
+        repository.updateGuideline(current.copy(thoughtId = thoughtId))
+    }
+
+    /**
+     * Unlinks the thought from the guideline
+     * If [alsoDeleteThought] is true, the underlying thought is also deleted from THOUGHTS.
+     */
+    suspend fun unlinkThought(guidelineId: Int, alsoDeleteThought: Boolean) {
+        val current = repository.getGuidelineById(guidelineId) ?: return
+        val linkedId = current.thoughtId ?: return
+
+        // Clear FK first (avoid orphan window even though SET_NULL would handle it)
+        repository.updateGuideline(current.copy(thoughtId = null))
+
+        if (alsoDeleteThought) {
+            thoughtsService.deleteThoughtById(linkedId)
         }
     }
 }
