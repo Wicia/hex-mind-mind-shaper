@@ -43,8 +43,7 @@
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_section_expand"
-            android:rotation="-90"
+            android:src="@drawable/ic_action_chevron_right"
             android:contentDescription="@string/common_placeholder_accessibility_content_desc"
             app:tint="@color/_gray_lvl_3" />
 
