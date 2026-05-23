@@ -30,6 +30,7 @@ import pl.hexmind.mindshaper.common.ui.views.content.HexAudioView
 import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
 import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
 import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
+import pl.hexmind.mindshaper.services.dto.GuidelineWithGoalDTO
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import java.io.File
 import java.time.Duration
@@ -97,6 +98,26 @@ class DetailsActivity : ThoughtManagerActivity() {
             }
             else {
                 showErrorAndFinish(R.string.details_edit_thought_not_found)
+            }
+        }
+
+        viewModel.linkedGuideline.observe(this) { linked ->
+            updateUsageSection(linked)
+        }
+    }
+
+    private fun updateUsageSection(linked: GuidelineWithGoalDTO?) {
+        binding.apply {
+            if (linked != null) {
+                btnUsageLink.visibility = View.GONE
+                llUsageLinked.visibility = View.VISIBLE
+                tvUsageHeader.text = getText(R.string.details_usage_linked)
+                tvUsageGoalContext.text = linked.goalDescription
+            }
+            else { // Not linked
+                btnUsageLink.visibility = View.VISIBLE
+                llUsageLinked.visibility = View.GONE
+                tvUsageHeader.text = getText(R.string.details_usage_not_linked)
             }
         }
     }
@@ -240,7 +261,37 @@ class DetailsActivity : ThoughtManagerActivity() {
                     viewModel.deleteRichText()
                 }
             })
+
+            // Guideline link/unlink handlers
+            btnUsageLink.setOnClickListener {
+                openGuidelinePicker()
+            }
+            btnUsageUnlink.setOnClickListener {
+                showUnlinkDialog()
+            }
         }
+    }
+
+    private fun openGuidelinePicker() {
+        GuidelinePickerBottomSheet.show(supportFragmentManager) { guidelineId ->
+            viewModel.linkToGuideline(guidelineId)
+        }
+    }
+
+    private fun showUnlinkDialog() {
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.details_usage_dialog_title))
+            .setDescription(getString(R.string.details_usage_dialog_description))
+            .setStandardAction(getString(R.string.details_usage_dialog_change)) {
+                // Swap flow
+                viewModel.unlinkFromGuideline()
+                openGuidelinePicker()
+            }
+            .setCautionAction(getString(R.string.details_usage_dialog_unlink)) {
+                viewModel.unlinkFromGuideline()
+            }
+            .setDismissText(getString(R.string.common_btn_cancel))
+            .show()
     }
 
     private fun showFullscreenPhoto() {

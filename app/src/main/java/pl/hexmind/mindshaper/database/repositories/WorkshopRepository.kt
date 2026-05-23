@@ -51,4 +51,7 @@ class WorkshopRepository @Inject constructor(
 
     suspend fun updateGuidelinePosition(id: Int, position: Int) =
         guidelineDao.updatePosition(id, position)
+
+    suspend fun findGuidelineByThoughtId(thoughtId: Int): GuidelineEntity? =
+        guidelineDao.findByThoughtId(thoughtId)
 }

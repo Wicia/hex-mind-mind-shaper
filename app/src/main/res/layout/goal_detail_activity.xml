@@ -30,16 +30,12 @@
                 android:gravity="center_vertical"
                 android:layout_marginBottom="16dp">
 
-                <!-- Priority badge -->
-                <TextView
-                    android:id="@+id/tv_goal_priority_badge"
+                <!-- Importance badge -->
+                <pl.hexmind.mindshaper.common.ui.views.GoalImportanceBadge
+                    android:id="@+id/tv_goal_importance_badge"
                     android:layout_width="46dp"
                     android:layout_height="46dp"
-                    android:gravity="center"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_primary"
-                    android:background="@drawable/shape_workshop_priority_badge" />
+                    android:textSize="18sp" />
 
                 <!-- Goal name -->
                 <com.google.android.material.button.MaterialButton

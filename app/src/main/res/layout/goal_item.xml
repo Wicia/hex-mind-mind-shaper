@@ -16,15 +16,11 @@
         android:background="?attr/selectableItemBackground">
 
         <!-- Importance badge (1/2/3) -->
-        <TextView
+        <pl.hexmind.mindshaper.common.ui.views.GoalImportanceBadge
             android:id="@+id/tv_importance_badge"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_primary"
-            android:background="@drawable/shape_workshop_priority_badge" />
+            android:textSize="16sp" />
 
         <!-- Goal description -->
         <TextView

@@ -234,6 +234,21 @@
     <string name="details_slow_mode_title">⏳ Tryb powolny aktywny…</string>
     <string name="details_slow_mode_description">Nadawanie wartości tej myśli będzie możliwe za:</string>
 
+    <!-- Wykorzystano w: section in DetailsActivity -->
+    <string name="details_usage_linked">Wykorzystano w celu:</string>
+    <string name="details_usage_not_linked">Nie powiązano z celem / wytyczną…</string>
+    <string name="details_usage_link_button">Powiąż z wytyczną</string>
+
+    <!-- Unlink dialog (tap on "x" next to linked guideline) -->
+    <string name="details_usage_dialog_title">Powiązana wytyczna</string>
+    <string name="details_usage_dialog_description">Co zrobić z powiązaniem?</string>
+    <string name="details_usage_dialog_unlink">Odepnij</string>
+    <string name="details_usage_dialog_change">Podmień</string>
+
+    <!-- Guideline picker (bottom sheet) -->
+    <string name="details_picker_title">Wybierz wytyczną</string>
+    <string name="details_picker_empty_state">Wszystkie wytyczne mają już podpięte myśli. Najpierw odepnij jedną.</string>
+
     <!-- ============================================================================ -->
     <!--    Activity: CAPTURE THOUGHT -->
     <!-- ============================================================================ -->

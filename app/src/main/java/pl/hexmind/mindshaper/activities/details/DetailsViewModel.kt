@@ -14,7 +14,9 @@ import pl.hexmind.mindshaper.common.ui.dialogs.HexTags
 import pl.hexmind.mindshaper.common.ui.views.lists.CommonIconsListItem
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.DomainsService
+import pl.hexmind.mindshaper.services.GoalsService
 import pl.hexmind.mindshaper.services.ThoughtsService
+import pl.hexmind.mindshaper.services.dto.GuidelineWithGoalDTO
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import java.io.File
@@ -24,6 +26,7 @@ import javax.inject.Inject
 class DetailsViewModel @Inject constructor(
     private val thoughtsService: ThoughtsService,
     private val domainsService: DomainsService,
+    private val goalsService: GoalsService,
     private val validator : ThoughtValidator
 ) : ViewModel() {
 
@@ -36,11 +39,18 @@ class DetailsViewModel @Inject constructor(
         thoughtsService.getThoughtByIdLive(id)
     }
 
+
+    // Domains
     private val _domainsWithIcons = MutableLiveData<List<CommonIconsListItem>>(emptyList())
     val domainsWithIcons: LiveData<List<CommonIconsListItem>> = _domainsWithIcons
 
+    // Linked guideline
+    private val _linkedGuideline = MutableLiveData<GuidelineWithGoalDTO?>(null)
+    val linkedGuideline: LiveData<GuidelineWithGoalDTO?> = _linkedGuideline
+
     fun loadThought(id: Int) {
         _thoughtId.value = id
+        refreshLinkedGuideline()
     }
 
     fun validateTags(tags: HexTags): ValidationResult {
@@ -245,6 +255,37 @@ class DetailsViewModel @Inject constructor(
             }
         }
     }
+
+    // ── Linked guideline ──────────────────────────────────
+
+    /**
+     * Refreshes the linked-guideline state for the currently loaded thought.
+     * Call after every change (link / unlink / swap) and on screen open.
+     */
+    fun refreshLinkedGuideline() {
+        val thoughtId = _thoughtId.value ?: return
+        viewModelScope.launch {
+            _linkedGuideline.value = goalsService.findGuidelineLinkedToThought(thoughtId)
+        }
+    }
+
+    fun linkToGuideline(guidelineId: Int) {
+        val thoughtId = _thoughtId.value ?: return
+        viewModelScope.launch {
+            goalsService.linkThoughtToGuideline(thoughtId, guidelineId)
+            refreshLinkedGuideline()
+        }
+    }
+
+    fun unlinkFromGuideline() {
+        val linkedGuideline = _linkedGuideline.value ?: return
+        // Optimistic clear so UI flips immediately
+        _linkedGuideline.value = null
+        viewModelScope.launch {
+            goalsService.unlinkThought(linkedGuideline.guidelineId, alsoDeleteThought = false)
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
         thumbnailCache.evictAll()

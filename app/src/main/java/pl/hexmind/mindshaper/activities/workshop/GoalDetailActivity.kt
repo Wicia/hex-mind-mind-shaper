@@ -2,14 +2,11 @@ package pl.hexmind.mindshaper.activities.workshop
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -21,6 +18,7 @@ import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
+import pl.hexmind.mindshaper.common.ui.views.GoalImportanceBadge
 
 @AndroidEntryPoint
 class GoalDetailActivity : CoreActivity() {
@@ -36,7 +34,7 @@ class GoalDetailActivity : CoreActivity() {
 
     private val viewModel: GoalDetailViewModel by viewModels()
 
-    private lateinit var tvBadge: TextView
+    private lateinit var tvBadge: GoalImportanceBadge
     private lateinit var cbGoalDesc: MaterialButton
     private lateinit var rvGuidelines: RecyclerView
     private lateinit var fabAdd: FloatingActionButton
@@ -73,7 +71,7 @@ class GoalDetailActivity : CoreActivity() {
     // ── Init ───────────────────────────────────────────────────────────────────
 
     private fun initViews() {
-        tvBadge      = findViewById(R.id.tv_goal_priority_badge)
+        tvBadge      = findViewById(R.id.tv_goal_importance_badge)
         cbGoalDesc   = findViewById(R.id.cb_goal_description)
         rvGuidelines = findViewById(R.id.rv_guidelines)
         fabAdd       = findViewById(R.id.fab_add_guideline)
@@ -114,16 +112,7 @@ class GoalDetailActivity : CoreActivity() {
     }
 
     private fun bindHeader(goal: Goal) {
-        tvBadge.text = goal.importance.toString()
-        // 1 = low importance (green), 2 = medium (yellow), 3 = critical (red)
-        val bgRes = when (goal.importance) {
-            3    -> R.color.importance_high
-            2    -> R.color.importance_medium
-            else -> R.color.importance_low
-        }
-        tvBadge.backgroundTintList = ColorStateList.valueOf(
-            ContextCompat.getColor(this, bgRes)
-        )
+        tvBadge.setImportance(goal.importance)
         tvBadge.setOnClickListener { viewModel.cycleGoalImportance() }
 
         cbGoalDesc.text = goal.description

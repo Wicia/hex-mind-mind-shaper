@@ -29,6 +29,10 @@ interface GuidelineDAO {
     @Query("UPDATE GOAL_GUIDELINES SET position = :position WHERE id = :id")
     suspend fun updatePosition(id: Int, position: Int)
 
+    // #! Business rule — only 0 or 1 guideline ever has linked thought with given id
+    @Query("SELECT * FROM GOAL_GUIDELINES WHERE thought_id = :thoughtId LIMIT 1")
+    suspend fun findByThoughtId(thoughtId: Int): GuidelineEntity?
+
     // === BACKUP management (snapshot restore) ===
 
     @Query("SELECT * FROM GOAL_GUIDELINES")

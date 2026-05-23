@@ -4,6 +4,7 @@ import pl.hexmind.mindshaper.database.models.GoalEntity
 import pl.hexmind.mindshaper.database.models.GuidelineEntity
 import pl.hexmind.mindshaper.database.repositories.WorkshopRepository
 import pl.hexmind.mindshaper.services.dto.GoalDTO
+import pl.hexmind.mindshaper.services.dto.GuidelineWithGoalDTO
 import pl.hexmind.mindshaper.services.mappers.GoalMapper
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -85,7 +86,7 @@ class GoalsService @Inject constructor(
         }
     }
 
-    // ── Linked thought (1:1) ───────────────────────────────────────────────────
+    // ── Linked thought ───────────────────────────────────────────────────
 
     suspend fun linkThought(guidelineId: Int, thoughtId: Int) {
         val current = repository.getGuidelineById(guidelineId) ?: return
@@ -93,7 +94,7 @@ class GoalsService @Inject constructor(
     }
 
     /**
-     * Unlinks the thought from the guideline
+     * Unlinks the thought from the guideline.
      * If [alsoDeleteThought] is true, the underlying thought is also deleted from THOUGHTS.
      */
     suspend fun unlinkThought(guidelineId: Int, alsoDeleteThought: Boolean) {
@@ -106,5 +107,43 @@ class GoalsService @Inject constructor(
         if (alsoDeleteThought) {
             thoughtsService.deleteThoughtById(linkedId)
         }
+    }
+
+    /**
+     * Returns the guideline that the given thought is linked to (along with goal context),
+     * or null if no guideline references this thought.
+     */
+    suspend fun findGuidelineLinkedToThought(thoughtId: Int): GuidelineWithGoalDTO? {
+        val guideline = repository.findGuidelineByThoughtId(thoughtId) ?: return null
+        val goal = repository.getGoalById(guideline.goalId) ?: return null
+        return GuidelineWithGoalDTO(
+            guidelineId          = guideline.id,
+            guidelineDescription = guideline.description,
+            goalId               = goal.id,
+            goalDescription      = goal.description,
+            goalImportance       = goal.importance
+        )
+    }
+
+    /**
+     * Returns goals with their guidelines that have no linked thought yet
+     */
+    suspend fun getAvailableGuidelinesForLink(): List<GoalDTO> =
+        getAllGoals()
+            .map { goal -> goal.copy(guidelines = goal.guidelines.filter { it.thoughtId == null }) }
+            .filter { it.guidelines.isNotEmpty() }
+
+    /**
+     * Links thought to guideline from the thought side.
+     * If the thought was already linked to a different guideline, the previous link is cleared first
+     */
+    suspend fun linkThoughtToGuideline(thoughtId: Int, guidelineId: Int) {
+        // Clear any previous link pointing to this thought ("defensive programming" type of protection)
+        repository.findGuidelineByThoughtId(thoughtId)?.let { previous ->
+            if (previous.id != guidelineId) {
+                repository.updateGuideline(previous.copy(thoughtId = null))
+            }
+        }
+        linkThought(guidelineId, thoughtId)
     }
 }

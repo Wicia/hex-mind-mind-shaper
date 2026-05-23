@@ -35,7 +35,7 @@
                     android:id="@+id/btn_hex_tags"
                     style="@style/MetadataContentButton.Used"
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
+                    android:layout_height="48dp"
                     android:text="@string/common_btn_create"
                     android:textColor="@color/_orange_lvl_3"
                     app:icon="@drawable/ic_hex_tags"
@@ -94,8 +94,8 @@
                 <!-- RIGHT: status icon (for different states / modes) -->
                 <ImageView
                     android:id="@+id/iv_status"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:contentDescription="@string/common_placeholder_accessibility_content_desc"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:clickable="true"
@@ -151,7 +151,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="90dp"
+                android:layout_marginBottom="48dp"
                 android:orientation="vertical">
 
                 <!-- RICH TEXT : Note -->
@@ -236,22 +236,83 @@
 
             </LinearLayout>
 
+            <!-- ============================== -->
+            <!--    Linked guideline            -->
+            <!-- ============================== -->
+            <TextView
+                android:id="@+id/tv_usage_header"
+                style="@style/TextView_Section_Info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/details_usage_not_linked" />
+
+            <!-- Empty state (no link) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_usage_link"
+                style="@style/MetadataContentButton.NotUsed"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginBottom="90dp"
+                android:text="@string/details_usage_link_button"
+                android:textColor="@color/text_secondary"
+                app:icon="@drawable/ic_action_add"
+                app:iconGravity="textStart"
+                app:iconSize="24dp"
+                app:iconTint="@color/text_secondary" />
+
+            <!-- Linked state -->
+            <LinearLayout
+                android:id="@+id/ll_usage_linked"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="90dp"
+                android:weightSum="10"
+                android:background="@drawable/shape_hex_content"
+                android:backgroundTint="@color/button_content_filled_background"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:visibility="visible">
+
+                <!-- Unlink button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_usage_unlink"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_weight="1"
+                    app:backgroundTint="@color/_orange_lvl_1"
+                    app:icon="@drawable/ic_replace_or_renew"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="28dp"
+                    app:iconTint="@color/_orange_lvl_3" />
+
+                <TextView
+                    android:id="@+id/tv_usage_goal_context"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_weight="8"
+                    android:fontFamily="@font/baloo2"
+                    android:textColor="@color/text_secondary"
+                    android:lineSpacingExtra="-1dp"
+                    android:minLines="1"
+                    android:maxLines="2"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                    app:srcCompat="@drawable/ic_action_chevron_right"
+                    app:tint="@color/_gray_lvl_2" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>
-
-    <!-- TODO: use it? -->
-    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-    <!--        android:id="@+id/btn_save"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_gravity="bottom|end"-->
-    <!--        android:layout_margin="16dp"-->
-    <!--        android:src="@drawable/ic_save"-->
-    <!--        android:contentDescription="@string/common_placeholder_accessibility_content_desc"-->
-    <!--        app:backgroundTint="@color/button_primary_enabled_background"-->
-    <!--        app:fabSize="normal"-->
-    <!--        app:maxImageSize="32dp"-->
-    <!--        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

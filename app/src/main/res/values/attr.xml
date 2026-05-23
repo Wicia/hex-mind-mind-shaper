@@ -61,4 +61,8 @@
         <attr name="maxLines" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="GoalImportanceBadge">
+        <attr name="importance" format="integer" />
+    </declare-styleable>
+
 </resources>

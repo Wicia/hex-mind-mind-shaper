@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/shape_hex_content"
+    android:backgroundTint="@android:color/white"
+    android:elevation="1dp">
+
+    <!-- Goal row (tap to expand/collapse) -->
+    <LinearLayout
+        android:id="@+id/ll_goal_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+
+        <!-- Importance badge -->
+        <TextView
+            android:id="@+id/tv_goal_badge"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:fontFamily="@font/baloo2" />
+
+        <!-- Goal name -->
+        <TextView
+            android:id="@+id/tv_goal_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:fontFamily="@font/baloo2" />
+
+        <!-- Expand arrow -->
+        <ImageView
+            android:id="@+id/iv_goal_arrow"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_action_chevron_right"
+            app:tint="@color/_gray_lvl_3"
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+
+    </LinearLayout>
+
+    <!-- Inner list of guidelines (handled in code) -->
+    <LinearLayout
+        android:id="@+id/ll_guidelines_inner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone" />
+
+</LinearLayout>
