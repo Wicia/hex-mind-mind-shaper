@@ -105,12 +105,20 @@
 
             </LinearLayout>
 
+            <View
+                android:id="@+id/tv_separator"
+                android:background="@color/separator_background"
+                android:layout_width="48dp"
+                android:layout_height="1dp"
+                android:layout_marginBottom="12dp"
+                android:layout_gravity="center" />
+
             <!-- THREAD ROW -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="8dp"
                 android:gravity="center_vertical"
                 android:baselineAligned="false">
 
@@ -119,7 +127,7 @@
                     android:id="@+id/btn_thread_placeholder"
                     style="@style/MetadataContentButton.NotUsed"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:text="@string/common_btn_add"
                     app:icon="@drawable/ic_hextags_thread"
                     app:iconSize="36dp" />
@@ -129,21 +137,13 @@
                     android:id="@+id/tv_thread"
                     style="@style/MetadataContentButton.Used"
                     android:layout_width="match_parent"
-                    android:layout_height="55dp"
+                    android:layout_height="48dp"
                     app:icon="@drawable/ic_hextags_thread"
                     app:iconSize="36dp"
                     android:visibility="gone" />
 
             </LinearLayout>
 
-            <View
-                android:id="@+id/tv_separator"
-                android:background="@color/separator_background"
-                android:layout_width="48dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
-                android:layout_gravity="center" />
 
             <!-- =============================== -->
             <!-- THOUGHT REPRESENTATIONS SECTION -->
@@ -263,6 +263,9 @@
             <!-- Linked state -->
             <LinearLayout
                 android:id="@+id/ll_usage_linked"
+                android:focusable="true"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginBottom="90dp"
@@ -278,8 +281,8 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_usage_unlink"
                     android:layout_width="0dp"
-                    android:layout_height="42dp"
-                    android:layout_weight="1"
+                    android:layout_height="48dp"
+                    android:layout_weight="1.25"
                     app:backgroundTint="@color/_orange_lvl_1"
                     app:icon="@drawable/ic_replace_or_renew"
                     app:iconGravity="textStart"
@@ -290,21 +293,20 @@
                 <TextView
                     android:id="@+id/tv_usage_goal_context"
                     android:layout_width="0dp"
-                    android:layout_height="42dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="8"
                     android:fontFamily="@font/baloo2"
                     android:textColor="@color/text_secondary"
                     android:lineSpacingExtra="-1dp"
                     android:minLines="1"
-                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:textSize="14sp" />
 
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="36dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_weight="0.75"
                     android:contentDescription="@string/common_placeholder_accessibility_content_desc"
                     app:srcCompat="@drawable/ic_action_chevron_right"
                     app:tint="@color/_gray_lvl_2" />
