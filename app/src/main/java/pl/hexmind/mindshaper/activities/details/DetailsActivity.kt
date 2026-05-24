@@ -1,5 +1,6 @@
 package pl.hexmind.mindshaper.activities.details
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
@@ -16,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtManagerActivity
+import pl.hexmind.mindshaper.activities.workshop.GoalDetailActivity
 import pl.hexmind.mindshaper.common.dormant.ThoughtState
 import pl.hexmind.mindshaper.services.ThoughtStatusService
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
@@ -268,6 +270,11 @@ class DetailsActivity : ThoughtManagerActivity() {
             }
             btnUsageUnlink.setOnClickListener {
                 showUnlinkDialog()
+            }
+
+            llUsageLinked.setOnClickListener {
+                val linked = viewModel.linkedGuideline.value ?: return@setOnClickListener
+                startActivity(GoalDetailActivity.newIntent(this@DetailsActivity, linked.goalId))
             }
         }
     }
