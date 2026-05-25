@@ -45,7 +45,7 @@
                 android:textColor="@color/text_secondary"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/workshop_guideline_edit_header"
+                android:text="@string/workshop_step_edit_header"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="0dp" />
@@ -72,7 +72,7 @@
             app:hintTextColor="@color/text_secondary">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_guideline_description"
+                android:id="@+id/et_step_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_edit_text"
@@ -91,7 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="@string/workshop_guideline_repetitions_header"
+            android:text="@string/workshop_step_repetitions_header"
             android:textSize="16sp"
             android:fontFamily="@font/baloo2"
             android:textColor="@color/_gray_lvl_3" />
@@ -112,7 +112,7 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                app:hint="@string/workshop_guideline_repetitions_label"
+                app:hint="@string/workshop_step_repetitions_label"
                 app:hexInputType="number"
                 app:maxLines="1" />
 
@@ -137,7 +137,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         android:layout_marginEnd="6dp"
-                        android:text="@string/workshop_guideline_repetitions_single" />
+                        android:text="@string/workshop_step_repetitions_single" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/chip_7x"
@@ -191,7 +191,7 @@
 
     <!-- FAB confirm -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_guideline_confirm"
+        android:id="@+id/fab_step_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

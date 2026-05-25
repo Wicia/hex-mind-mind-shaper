@@ -9,7 +9,7 @@
     android:backgroundTint="@android:color/white"
     android:elevation="1dp">
 
-    <!-- Goal row (tap to expand/collapse) -->
+    <!-- Goal row (+ linked steps as sub-list) -->
     <LinearLayout
         android:id="@+id/ll_goal_row"
         android:layout_width="match_parent"
@@ -56,9 +56,9 @@
 
     </LinearLayout>
 
-    <!-- Inner list of guidelines (handled in code) -->
+    <!-- Inner list of steps (handled in code) -->
     <LinearLayout
-        android:id="@+id/ll_guidelines_inner"
+        android:id="@+id/ll_steps_inner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

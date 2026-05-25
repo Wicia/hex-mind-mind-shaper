@@ -237,7 +237,7 @@
             </LinearLayout>
 
             <!-- ============================== -->
-            <!--    Linked guideline            -->
+            <!--    Linked steps                -->
             <!-- ============================== -->
             <TextView
                 android:id="@+id/tv_usage_header"

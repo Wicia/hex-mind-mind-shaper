@@ -189,7 +189,7 @@
         W tym polu możesz szybko dodać skojarzenia / tagi do myśli:\n
         ✓ osoba (znak @)\n
         ✓ projekt (znak #)\n
-        ✓ wątki/temat (brak znaku)\n
+        ✓ temat (brak znaku)\n
     ]]></string>
     <string name="capturing_hextags_example_title">Może mały przykład?</string>
     <string name="capturing_hextags_example_tooltip"><![CDATA[
@@ -235,20 +235,20 @@
     <string name="details_slow_mode_title">⏳ Tryb powolny aktywny…</string>
     <string name="details_slow_mode_description">Nadawanie wartości tej myśli będzie możliwe za:</string>
 
-    <!-- Wykorzystano w: section in DetailsActivity -->
+    <!-- Linked thought - details -->
     <string name="details_usage_linked">Wykorzystano w celu:</string>
-    <string name="details_usage_not_linked">Nie powiązano z celem / wytyczną…</string>
-    <string name="details_usage_link_button">Powiąż z wytyczną</string>
+    <string name="details_usage_not_linked">Nie powiązano z krokiem celu</string>
+    <string name="details_usage_link_button">Powiąż z krokiem celu</string>
 
-    <!-- Unlink dialog (tap on "x" next to linked guideline) -->
-    <string name="details_usage_dialog_title">Powiązana wytyczna</string>
+    <!-- Unlink dialog -->
+    <string name="details_usage_dialog_title">Powiązany krok</string>
     <string name="details_usage_dialog_description">Co zrobić z powiązaniem?</string>
     <string name="details_usage_dialog_unlink">Odepnij</string>
     <string name="details_usage_dialog_change">Podmień</string>
 
-    <!-- Guideline picker (bottom sheet) -->
-    <string name="details_picker_title">Wybierz wytyczną</string>
-    <string name="details_picker_empty_state">Wszystkie wytyczne mają już podpięte myśli. Najpierw odepnij jedną.</string>
+    <!-- Step picker (bottom sheet) -->
+    <string name="details_picker_title">Wybierz krok</string>
+    <string name="details_picker_empty_state">Wszystkie kroki mają już podpięte myśli. Najpierw odepnij jedną.</string>
 
     <!-- ============================================================================ -->
     <!--    Activity: CAPTURE THOUGHT -->
@@ -412,50 +412,50 @@
     <!-- Main -->
     <string name="workshop_title">Warsztat</string>
     <string name="workshop_section_goals">🎯 Cele lub Kierunki</string>
-    <string name="workshop_add_step">Dodaj wytyczną / krok</string>
+    <string name="workshop_add_step">Dodaj krok</string>
 
     <!-- Dialogs -->
     <string name="workshop_dialog_add_goal">Nowy cel / kierunek</string>
     <string name="workshop_dialog_edit_goal">Edytuj cel / kierunek</string>
     <string name="workshop_dialog_delete_goal_title">Usunąć cel / kierunek?</string>
-    <string name="workshop_dialog_delete_goal_desc">Zostaną usunięte też wszystkie wytyczne tego celu.</string>
+    <string name="workshop_dialog_delete_goal_desc">Zostaną usunięte też wszystkie kroki tego celu.</string>
 
-    <string name="workshop_dialog_add_guideline">Nowa wytyczna / krok</string>
-    <string name="workshop_dialog_edit_guideline">Edytuj wytyczną / krok</string>
-    <string name="workshop_dialog_delete_guideline_title">Usunąć wytyczną / krok?</string>
+    <string name="workshop_dialog_add_step">Nowy krok</string>
+    <string name="workshop_dialog_edit_step">Edytuj krok</string>
+    <string name="workshop_dialog_delete_step_title">Usunąć krok?</string>
 
     <string name="workshop_section_paths">✨ Ścieżki doświadczeń</string>
     <string name="path_pool_empty">Nie mam Cię już czego nauczyć…</string>
 
-    <string name="workshop_guideline_edit_header">Edytuj wytyczną / krok</string>
-    <string name="workshop_guideline_repetitions_header">Ile razy trzeba to wykonać?</string>
-    <string name="workshop_guideline_repetitions_label">Liczba</string>
-    <string name="workshop_guideline_repetitions_single">Jeden raz</string>
+    <string name="workshop_step_edit_header">Edytuj krok</string>
+    <string name="workshop_step_repetitions_header">Ile razy trzeba to wykonać?</string>
+    <string name="workshop_step_repetitions_label">Liczba</string>
+    <string name="workshop_step_repetitions_single">Jeden raz</string>
 
     <string name="workshop_goal_repetitions_7">7 ⟳</string>
     <string name="workshop_goal_repetitions_14">14 ⟳</string>
     <string name="workshop_goal_repetitions_21">21 ⟳</string>
     <string name="workshop_goal_repetitions_31">31 ⟳</string>
 
-    <string name="guideline_description_error_noInput">Wytyczna lub krok musi mieć jakiś opis…</string>
-    <string name="guideline_repetitions_error_noInput">Brak liczby</string>
-    <string name="guideline_repetitions_error_belowMin"><![CDATA[Liczba < 0]]></string>
-    <string name="guideline_repetitions_error_aboveMax"><![CDATA[Liczba > 31]]></string>
+    <string name="step_description_error_noInput">Krok musi mieć jakiś opis…</string>
+    <string name="step_repetitions_error_noInput">Brak liczby</string>
+    <string name="step_repetitions_error_belowMin"><![CDATA[Liczba < 0]]></string>
+    <string name="step_repetitions_error_aboveMax"><![CDATA[Liczba > 31]]></string>
 
-    <!-- Guideline ⋮ menu -->
-    <string name="workshop_guideline_menu_move_up">Przesuń w górę</string>
-    <string name="workshop_guideline_menu_move_down">Przesuń w dół</string>
-    <string name="workshop_guideline_menu_link_thought">Nowa połączona myśl</string>
-    <string name="workshop_guideline_menu_change_thought">Zmień połączoną myśl</string>
+    <!-- Step ⋮ menu -->
+    <string name="workshop_step_menu_move_up">Przesuń w górę</string>
+    <string name="workshop_step_menu_move_down">Przesuń w dół</string>
+    <string name="workshop_step_menu_link_thought">Nowa połączona myśl</string>
+    <string name="workshop_step_menu_change_thought">Zmień połączoną myśl</string>
 
     <!-- Linked thought chip -->
-    <string name="workshop_guideline_linked_thought_fallback">Powiązana myśl</string>
+    <string name="workshop_step_linked_thought_fallback">Powiązana myśl</string>
 
-    <!-- Unlink thought dialog (long press on chip) -->
-    <string name="workshop_guideline_unlink_title">Powiązana myśl</string>
-    <string name="workshop_guideline_unlink_description">Co zrobić z powiązaniem?</string>
-    <string name="workshop_guideline_unlink_keep_thought">Odepnij i zostaw myśl</string>
-    <string name="workshop_guideline_unlink_delete_thought">Odepnij i usuń myśl</string>
+    <!-- Unlink thought dialog -->
+    <string name="workshop_step_unlink_title">Powiązana myśl</string>
+    <string name="workshop_step_unlink_description">Co zrobić z powiązaniem?</string>
+    <string name="workshop_step_unlink_keep_thought">Odepnij i zostaw myśl</string>
+    <string name="workshop_step_unlink_delete_thought">Odepnij i usuń myśl</string>
 
     <!--
         PATHS ======================================================================================

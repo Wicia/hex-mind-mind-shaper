@@ -1,28 +1,28 @@
 package pl.hexmind.mindshaper.services.mappers
 
 import pl.hexmind.mindshaper.database.models.GoalEntity
-import pl.hexmind.mindshaper.database.models.GoalWithGuidelines
-import pl.hexmind.mindshaper.database.models.GuidelineEntity
+import pl.hexmind.mindshaper.database.models.GoalWithSteps
+import pl.hexmind.mindshaper.database.models.StepEntity
 import pl.hexmind.mindshaper.services.dto.GoalDTO
-import pl.hexmind.mindshaper.services.dto.GuidelineDTO
+import pl.hexmind.mindshaper.services.dto.StepDTO
 
 /**
- * Manual mapper for Goal/Guideline entities <-> DTOs.
+ * Manual mapper for Goal/Step entities <-> DTOs.
  *
- * ! Not using MapStruct here because it can't auto-map 1:N relations (Goal -> Guidelines).
+ * ! Not using MapStruct here because it can't auto-map 1:N relations (Goal -> Steps).
  * TODO: standardize approach and library with other mappers
  */
 object GoalMapper {
 
-    fun entityToDTO(row: GoalWithGuidelines): GoalDTO =
+    fun entityToDTO(row: GoalWithSteps): GoalDTO =
         GoalDTO(
             id             = row.goal.id,
             description    = row.goal.description,
             importance     = row.goal.importance,
             lastModifiedAt = row.goal.lastModifiedAt,
-            guidelines     = row.guidelines
+            steps          = row.steps
                 .sortedBy { it.position }
-                .map { guidelineEntityToDTO(it) }
+                .map { stepEntityToDTO(it) }
         )
 
     fun goalEntityToDTO(entity: GoalEntity): GoalDTO =
@@ -41,8 +41,8 @@ object GoalMapper {
             lastModifiedAt = dto.lastModifiedAt
         )
 
-    fun guidelineEntityToDTO(entity: GuidelineEntity): GuidelineDTO =
-        GuidelineDTO(
+    fun stepEntityToDTO(entity: StepEntity): StepDTO =
+        StepDTO(
             id                 = entity.id,
             goalId             = entity.goalId,
             description        = entity.description,
@@ -52,8 +52,8 @@ object GoalMapper {
             thoughtId          = entity.thoughtId
         )
 
-    fun guidelineDTOToEntity(dto: GuidelineDTO): GuidelineEntity =
-        GuidelineEntity(
+    fun stepDTOToEntity(dto: StepDTO): StepEntity =
+        StepEntity(
             id                 = dto.id,
             goalId             = dto.goalId,
             description        = dto.description,

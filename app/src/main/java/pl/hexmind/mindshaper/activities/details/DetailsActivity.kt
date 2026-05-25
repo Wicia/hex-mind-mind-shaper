@@ -1,11 +1,9 @@
 package pl.hexmind.mindshaper.activities.details
 
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import pl.hexmind.mindshaper.common.ui.dialogs.CountdownDialog
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
@@ -19,20 +17,21 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtManagerActivity
 import pl.hexmind.mindshaper.activities.workshop.GoalDetailActivity
 import pl.hexmind.mindshaper.common.dormant.ThoughtState
-import pl.hexmind.mindshaper.services.ThoughtStatusService
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
+import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.CountdownDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.GuideDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.HexTags
 import pl.hexmind.mindshaper.common.ui.dialogs.HexTagsBottomSheet
-import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.PhotoFullscreenDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
-import pl.hexmind.mindshaper.common.ui.dialogs.GuideDialog
 import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
 import pl.hexmind.mindshaper.common.ui.views.content.HexAudioView
 import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
 import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
 import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
-import pl.hexmind.mindshaper.services.dto.GuidelineWithGoalDTO
+import pl.hexmind.mindshaper.services.ThoughtStatusService
+import pl.hexmind.mindshaper.services.dto.StepWithGoalDTO
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import java.io.File
 import java.time.Duration
@@ -103,12 +102,12 @@ class DetailsActivity : ThoughtManagerActivity() {
             }
         }
 
-        viewModel.linkedGuideline.observe(this) { linked ->
+        viewModel.linkedStep.observe(this) { linked ->
             updateUsageSection(linked)
         }
     }
 
-    private fun updateUsageSection(linked: GuidelineWithGoalDTO?) {
+    private fun updateUsageSection(linked: StepWithGoalDTO?) {
         binding.apply {
             if (linked != null) {
                 btnUsageLink.visibility = View.GONE
@@ -264,24 +263,24 @@ class DetailsActivity : ThoughtManagerActivity() {
                 }
             })
 
-            // Guideline link/unlink handlers
+            // Step link/unlink handlers
             btnUsageLink.setOnClickListener {
-                openGuidelinePicker()
+                openStepPicker()
             }
             btnUsageUnlink.setOnClickListener {
                 showUnlinkDialog()
             }
 
             llUsageLinked.setOnClickListener {
-                val linked = viewModel.linkedGuideline.value ?: return@setOnClickListener
+                val linked = viewModel.linkedStep.value ?: return@setOnClickListener
                 startActivity(GoalDetailActivity.newIntent(this@DetailsActivity, linked.goalId))
             }
         }
     }
 
-    private fun openGuidelinePicker() {
-        GuidelinePickerBottomSheet.show(supportFragmentManager) { guidelineId ->
-            viewModel.linkToGuideline(guidelineId)
+    private fun openStepPicker() {
+        StepPickerBottomSheet.show(supportFragmentManager) { stepId ->
+            viewModel.linkToStep(stepId)
         }
     }
 
@@ -291,11 +290,11 @@ class DetailsActivity : ThoughtManagerActivity() {
             .setDescription(getString(R.string.details_usage_dialog_description))
             .setStandardAction(getString(R.string.details_usage_dialog_change)) {
                 // Swap flow
-                viewModel.unlinkFromGuideline()
-                openGuidelinePicker()
+                viewModel.unlinkFromStep()
+                openStepPicker()
             }
             .setCautionAction(getString(R.string.details_usage_dialog_unlink)) {
-                viewModel.unlinkFromGuideline()
+                viewModel.unlinkFromStep()
             }
             .setDismissText(getString(R.string.common_btn_cancel))
             .show()

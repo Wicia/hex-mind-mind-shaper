@@ -1,6 +1,6 @@
 package pl.hexmind.mindshaper.services.dto
 
-data class GuidelineDTO(
+data class StepDTO(
     val id: Int = 0,
     val goalId: Int = 0,
     val description: String = "",

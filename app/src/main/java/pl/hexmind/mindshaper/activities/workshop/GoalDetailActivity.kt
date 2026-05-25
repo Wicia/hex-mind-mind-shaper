@@ -36,12 +36,12 @@ class GoalDetailActivity : CoreActivity() {
 
     private lateinit var tvBadge: GoalImportanceBadge
     private lateinit var cbGoalDesc: MaterialButton
-    private lateinit var rvGuidelines: RecyclerView
+    private lateinit var rvSteps: RecyclerView
     private lateinit var fabAdd: FloatingActionButton
-    private lateinit var guidelinesAdapter: GoalDetailGuidelinesAdapter
+    private lateinit var stepsAdapter: GoalDetailStepsAdapter
 
-    // Guideline which launched CaptureActivity
-    private var pendingLinkGuidelineId: Int? = null
+    // Step which launched CaptureActivity
+    private var pendingLinkStepId: Int? = null
 
     // Handling receiving newly-created thoughtId in the result from CaptureActivity
     private val captureActivityLauncher = registerForActivityResult(
@@ -49,12 +49,12 @@ class GoalDetailActivity : CoreActivity() {
     ) { result ->
         if (result.resultCode == RESULT_OK) {
             val thoughtId = result.data?.getLongExtra(CaptureActivity.EXTRA_THOUGHT_ID, -1L) ?: -1L
-            val guidelineId = pendingLinkGuidelineId
-            if (thoughtId > 0 && guidelineId != null) {
-                viewModel.linkThought(guidelineId, thoughtId.toInt())
+            val stepId = pendingLinkStepId
+            if (thoughtId > 0 && stepId != null) {
+                viewModel.linkThought(stepId, thoughtId.toInt())
             }
         }
-        pendingLinkGuidelineId = null
+        pendingLinkStepId = null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +63,7 @@ class GoalDetailActivity : CoreActivity() {
         // No header widget
 
         initViews()
-        setupGuidelinesList()
+        setupStepsList()
         setupFab()
         observeGoal()
     }
@@ -73,32 +73,32 @@ class GoalDetailActivity : CoreActivity() {
     private fun initViews() {
         tvBadge      = findViewById(R.id.tv_goal_importance_badge)
         cbGoalDesc   = findViewById(R.id.cb_goal_description)
-        rvGuidelines = findViewById(R.id.rv_guidelines)
-        fabAdd       = findViewById(R.id.fab_add_guideline)
+        rvSteps = findViewById(R.id.rv_steps)
+        fabAdd       = findViewById(R.id.fab_add_step)
     }
 
-    private fun setupGuidelinesList() {
-        guidelinesAdapter = GoalDetailGuidelinesAdapter(
-            onTapText              = { gl -> showEditGuidelineSheet(gl) },
-            onLongPressText        = { id -> showDeleteGuidelineConfirmation(id) },
-            onTapRing              = { id -> viewModel.incrementGuideline(id) },
-            onLongPressRing        = { id -> viewModel.decrementGuideline(id) },
-            onMenuClick            = { anchor, gl, isFirst, isLast ->
-                showGuidelineMenu(anchor, gl, isFirst, isLast)
+    private fun setupStepsList() {
+        stepsAdapter = GoalDetailStepsAdapter(
+            onTapText              = { step -> showEditStepSheet(step) },
+            onLongPressText        = { id -> showDeleteStepConfirmation(id) },
+            onTapRing              = { id -> viewModel.incrementStep(id) },
+            onLongPressRing        = { id -> viewModel.decrementStep(id) },
+            onMenuClick            = { anchor, step, isFirst, isLast ->
+                showStepMenu(anchor, step, isFirst, isLast)
             },
             onThoughtChipClick     = { thoughtId -> openThoughtDetails(thoughtId) },
             onThoughtChipLongPress = { id -> showUnlinkThoughtDialog(id) }
         )
 
-        rvGuidelines.apply {
+        rvSteps.apply {
             layoutManager = LinearLayoutManager(this@GoalDetailActivity)
-            adapter = guidelinesAdapter
+            adapter = stepsAdapter
             isNestedScrollingEnabled = false
         }
     }
 
     private fun setupFab() {
-        fabAdd.setOnClickListener { showAddGuidelineSheet() }
+        fabAdd.setOnClickListener { showAddStepSheet() }
     }
 
     // ── Observe ────────────────────────────────────────────────────────────────
@@ -107,7 +107,7 @@ class GoalDetailActivity : CoreActivity() {
         viewModel.goal.observe(this) { goal ->
             goal ?: return@observe
             bindHeader(goal)
-            guidelinesAdapter.setItems(goal.subItems)
+            stepsAdapter.setItems(goal.subItems)
         }
     }
 
@@ -119,11 +119,11 @@ class GoalDetailActivity : CoreActivity() {
         cbGoalDesc.setOnClickListener { showEditGoalDescriptionDialog(goal) }
     }
 
-    // ── Guideline menu ───────────────────────────────────────────────────────────────────────────
+    // ── Step menu ────────────────────────────────────────────────────────────────────────────────
 
-    private fun showGuidelineMenu(anchor: View, guideline: GoalGuideline, isFirst: Boolean, isLast: Boolean) {
+    private fun showStepMenu(anchor: View, step: GoalStep, isFirst: Boolean, isLast: Boolean) {
         val popup = PopupMenu(this, anchor)
-        popup.menuInflater.inflate(R.menu.menu_goal_detail_guideline, popup.menu) // TODO: replace with more cool/fancy UI menu
+        popup.menuInflater.inflate(R.menu.menu_goal_detail_step, popup.menu) // TODO: replace with more cool/fancy UI menu
 
         // Disable move up/down at list edges
         popup.menu.findItem(R.id.action_move_up).isEnabled = !isFirst
@@ -132,16 +132,16 @@ class GoalDetailActivity : CoreActivity() {
         // Label of "link thought" depends on whether one is already linked
         val linkItem = popup.menu.findItem(R.id.action_link_thought)
         linkItem.title = getString(
-            if (guideline.hasLinkedThought) R.string.workshop_guideline_menu_change_thought
-            else R.string.workshop_guideline_menu_link_thought
+            if (step.hasLinkedThought) R.string.workshop_step_menu_change_thought
+            else R.string.workshop_step_menu_link_thought
         )
 
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.action_move_up   -> { viewModel.moveGuidelineUp(guideline.id); true }
-                R.id.action_move_down -> { viewModel.moveGuidelineDown(guideline.id); true }
+                R.id.action_move_up   -> { viewModel.moveStepUp(step.id); true }
+                R.id.action_move_down -> { viewModel.moveStepDown(step.id); true }
                 R.id.action_link_thought -> {
-                    launchCaptureForGuideline(guideline)
+                    launchCaptureForStep(step)
                     true
                 }
                 else -> false
@@ -150,9 +150,9 @@ class GoalDetailActivity : CoreActivity() {
         popup.show()
     }
 
-    private fun launchCaptureForGuideline(guideline: GoalGuideline) {
-        pendingLinkGuidelineId = guideline.id
-        // If guideline already has a linked thought, the old link is replaced after CaptureActivity returns
+    private fun launchCaptureForStep(step: GoalStep) {
+        pendingLinkStepId = step.id
+        // If step already has a linked thought, the old link is replaced after CaptureActivity returns
         captureActivityLauncher.launch(Intent(this, CaptureActivity::class.java))
     }
 
@@ -164,38 +164,38 @@ class GoalDetailActivity : CoreActivity() {
         startActivity(intent)
     }
 
-    private fun showUnlinkThoughtDialog(guidelineId: Int) {
+    private fun showUnlinkThoughtDialog(stepId: Int) {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.workshop_guideline_unlink_title))
-            .setDescription(getString(R.string.workshop_guideline_unlink_description))
-            .setStandardAction(getString(R.string.workshop_guideline_unlink_keep_thought)) {
-                viewModel.unlinkThought(guidelineId, alsoDeleteThought = false)
+            .setTitle(getString(R.string.workshop_step_unlink_title))
+            .setDescription(getString(R.string.workshop_step_unlink_description))
+            .setStandardAction(getString(R.string.workshop_step_unlink_keep_thought)) {
+                viewModel.unlinkThought(stepId, alsoDeleteThought = false)
             }
-            .setCautionAction(getString(R.string.workshop_guideline_unlink_delete_thought)) {
-                viewModel.unlinkThought(guidelineId, alsoDeleteThought = true)
+            .setCautionAction(getString(R.string.workshop_step_unlink_delete_thought)) {
+                viewModel.unlinkThought(stepId, alsoDeleteThought = true)
             }
             .setDismissText(getString(R.string.common_btn_cancel))
             .show()
     }
 
-    // ── Bottom sheets: guidelines ──────────────────────────────────────────────
+    // ── Bottom sheets: steps ───────────────────────────────────────────────────
 
-    private fun showAddGuidelineSheet() {
-        GuidelineEditBottomSheet.show(
+    private fun showAddStepSheet() {
+        StepEditBottomSheet.show(
             fragmentManager = supportFragmentManager,
-            title           = getString(R.string.workshop_dialog_add_guideline),
+            title           = getString(R.string.workshop_dialog_add_step),
             description     = "",
             maxRepetitions  = 1
-        ) { desc, maxReps -> viewModel.addGuideline(desc, maxReps) }
+        ) { desc, maxReps -> viewModel.addStep(desc, maxReps) }
     }
 
-    private fun showEditGuidelineSheet(guideline: GoalGuideline) {
-        GuidelineEditBottomSheet.show(
+    private fun showEditStepSheet(step: GoalStep) {
+        StepEditBottomSheet.show(
             fragmentManager = supportFragmentManager,
-            title           = getString(R.string.workshop_dialog_edit_guideline),
-            description     = guideline.description,
-            maxRepetitions  = guideline.maxRepetitions
-        ) { desc, maxReps -> viewModel.updateGuideline(guideline.id, desc, maxReps) }
+            title           = getString(R.string.workshop_dialog_edit_step),
+            description     = step.description,
+            maxRepetitions  = step.maxRepetitions
+        ) { desc, maxReps -> viewModel.updateStep(step.id, desc, maxReps) }
     }
 
     // ── Dialogs ────────────────────────────────────────────────────────────────
@@ -209,12 +209,12 @@ class GoalDetailActivity : CoreActivity() {
         ).show()
     }
 
-    private fun showDeleteGuidelineConfirmation(guidelineId: Int) {
+    private fun showDeleteStepConfirmation(stepId: Int) {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.workshop_dialog_delete_guideline_title))
+            .setTitle(getString(R.string.workshop_dialog_delete_step_title))
             .setDescription(getString(R.string.common_deletion_dialog_warning))
             .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
-                viewModel.deleteGuideline(guidelineId)
+                viewModel.deleteStep(stepId)
             }
             .setDismissText(getString(R.string.common_btn_cancel))
             .show()

@@ -18,17 +18,17 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.views.HexInputField
 
 /**
- * Bottom sheet for adding or editing a guideline.
+ * Bottom sheet for adding or editing a step.
  *
  * Usage:
- *   GuidelineEditBottomSheet.show(
+ *   StepEditBottomSheet.show(
  *       fragmentManager  = supportFragmentManager,
- *       title            = getString(R.string.workshop_dialog_add_guideline),
+ *       title            = getString(R.string.workshop_dialog_add_step),
  *       description      = "",
  *       maxRepetitions   = 1
- *   ) { desc, maxReps -> viewModel.addGuideline(desc, maxReps) }
+ *   ) { desc, maxReps -> viewModel.addStep(desc, maxReps) }
  */
-class GuidelineEditBottomSheet : BottomSheetDialogFragment() {
+class StepEditBottomSheet : BottomSheetDialogFragment() {
 
     private var onConfirm: ((description: String, maxRepetitions: Int) -> Unit)? = null
 
@@ -45,7 +45,7 @@ class GuidelineEditBottomSheet : BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.guideline_edit_bottom_sheet, container, false)
+    ): View = inflater.inflate(R.layout.step_edit_bottom_sheet, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -62,9 +62,9 @@ class GuidelineEditBottomSheet : BottomSheetDialogFragment() {
 
     private fun bindViews(view: View) {
         rootView        = view as ViewGroup
-        etDescription   = view.findViewById(R.id.et_guideline_description)
+        etDescription   = view.findViewById(R.id.et_step_description)
         hifRepetitions  = view.findViewById(R.id.hif_repetitions)
-        fabConfirm      = view.findViewById(R.id.fab_guideline_confirm)
+        fabConfirm      = view.findViewById(R.id.fab_step_confirm)
 
         chipButtons = listOf(
             view.findViewById<MaterialButton>(R.id.chip_1x)  to 1,
@@ -122,7 +122,7 @@ class GuidelineEditBottomSheet : BottomSheetDialogFragment() {
         fabConfirm.setOnClickListener {
             val description = etDescription.text.toString().trim()
             if (description.isEmpty()) {
-                etDescription.error = getString(R.string.guideline_description_error_noInput)
+                etDescription.error = getString(R.string.step_description_error_noInput)
                 return@setOnClickListener
             }
             val maxRepsText = hifRepetitions.getText()
@@ -130,15 +130,15 @@ class GuidelineEditBottomSheet : BottomSheetDialogFragment() {
 
             // TODO Move it to validation in view model + callback here (Nice to have)
             if (maxRepetitions == null) {
-                hifRepetitions.showError(getString(R.string.guideline_repetitions_error_noInput))
+                hifRepetitions.showError(getString(R.string.step_repetitions_error_noInput))
                 return@setOnClickListener
             }
             else if (maxRepetitions < 1){
-                hifRepetitions.showError(getString(R.string.guideline_repetitions_error_belowMin))
+                hifRepetitions.showError(getString(R.string.step_repetitions_error_belowMin))
                 return@setOnClickListener
             }
             else if (maxRepetitions > 31){
-                hifRepetitions.showError(getString(R.string.guideline_repetitions_error_aboveMax))
+                hifRepetitions.showError(getString(R.string.step_repetitions_error_aboveMax))
                 return@setOnClickListener
             }
             dismiss()
@@ -158,7 +158,7 @@ class GuidelineEditBottomSheet : BottomSheetDialogFragment() {
     }
 
     companion object {
-        private const val TAG                 = "GuidelineEditBottomSheet"
+        private const val TAG                 = "StepEditBottomSheet"
         private const val ARG_TITLE           = "arg_title"
         private const val ARG_DESCRIPTION     = "arg_description"
         private const val ARG_MAX_REPETITIONS = "arg_max_repetitions"
@@ -170,7 +170,7 @@ class GuidelineEditBottomSheet : BottomSheetDialogFragment() {
             maxRepetitions: Int = 1,
             onConfirm: (description: String, maxRepetitions: Int) -> Unit
         ) {
-            GuidelineEditBottomSheet().apply {
+            StepEditBottomSheet().apply {
                 arguments = Bundle().apply {
                     putString(ARG_TITLE, title)
                     putString(ARG_DESCRIPTION, description)

@@ -13,32 +13,32 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import pl.hexmind.mindshaper.R
 
 /**
- * Adapter for the guidelines list in GoalDetailActivity.
- * #! Plain RecyclerView.Adapter — keeps things simple for small guidelines list to avoid
+ * Adapter for the steps list in GoalDetailActivity.
+ * #! Plain RecyclerView.Adapter — keeps things simple for small steps list to avoid
  * async ListAdapter/DiffUtil mechanism conflicts.
  */
-class GoalDetailGuidelinesAdapter(
-    private val onTapText: (GoalGuideline) -> Unit,
-    private val onLongPressText: (guidelineId: Int) -> Unit,
-    private val onTapRing: (guidelineId: Int) -> Unit,
-    private val onLongPressRing: (guidelineId: Int) -> Unit,
-    private val onMenuClick: (anchor: View, guideline: GoalGuideline, isFirst: Boolean, isLast: Boolean) -> Unit,
+class GoalDetailStepsAdapter(
+    private val onTapText: (GoalStep) -> Unit,
+    private val onLongPressText: (stepId: Int) -> Unit,
+    private val onTapRing: (stepId: Int) -> Unit,
+    private val onLongPressRing: (stepId: Int) -> Unit,
+    private val onMenuClick: (anchor: View, step: GoalStep, isFirst: Boolean, isLast: Boolean) -> Unit,
     private val onThoughtChipClick: (thoughtId: Int) -> Unit,
-    private val onThoughtChipLongPress: (guidelineId: Int) -> Unit
-) : RecyclerView.Adapter<GoalDetailGuidelinesAdapter.ViewHolder>() {
+    private val onThoughtChipLongPress: (stepId: Int) -> Unit
+) : RecyclerView.Adapter<GoalDetailStepsAdapter.ViewHolder>() {
 
-    private val items = mutableListOf<GoalGuideline>()
+    private val items = mutableListOf<GoalStep>()
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val flRing: FrameLayout                = itemView.findViewById(R.id.fl_guideline_ring)
-        val cpiRing: CircularProgressIndicator = itemView.findViewById(R.id.cpi_guideline_ring)
+        val flRing: FrameLayout                = itemView.findViewById(R.id.fl_step_ring)
+        val cpiRing: CircularProgressIndicator = itemView.findViewById(R.id.cpi_step_ring)
         val tvRingLabel: TextView              = itemView.findViewById(R.id.tv_ring_label)
-        val tvDesc: TextView                   = itemView.findViewById(R.id.tv_guideline_description)
-        val ivMore: ImageView                  = itemView.findViewById(R.id.iv_guideline_more)
+        val tvDesc: TextView                   = itemView.findViewById(R.id.tv_step_description)
+        val ivMore: ImageView                  = itemView.findViewById(R.id.iv_step_more)
         val btnLinkedThought: MaterialButton   = itemView.findViewById(R.id.btn_linked_thought)
     }
 
-    fun setItems(list: List<GoalGuideline>) {
+    fun setItems(list: List<GoalStep>) {
         items.clear()
         items.addAll(list)
         notifyDataSetChanged()
@@ -48,30 +48,30 @@ class GoalDetailGuidelinesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.goal_detail_guideline_item, parent, false)
+            .inflate(R.layout.goal_detail_step_item, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val guideline = items[position]
+        val step = items[position]
         val isFirst = position == 0
         val isLast = position == items.size - 1
 
-        bindRing(holder, guideline)
-        bindDescription(holder, guideline)
-        bindMenu(holder, guideline, isFirst, isLast)
-        bindLinkedThought(holder, guideline)
+        bindRing(holder, step)
+        bindDescription(holder, step)
+        bindMenu(holder, step, isFirst, isLast)
+        bindLinkedThought(holder, step)
     }
 
     // ── Bindings ───────────────────────────────────────────────────────────────
 
-    private fun bindRing(holder: ViewHolder, guideline: GoalGuideline) {
+    private fun bindRing(holder: ViewHolder, step: GoalStep) {
         val context = holder.cpiRing.context
-        val done = guideline.isCompleted
+        val done = step.isCompleted
 
         val progress = when {
-            guideline.maxRepetitions == 0 -> 0
-            else -> (guideline.currentRepetitions * 100 / guideline.maxRepetitions).coerceIn(0, 100)
+            step.maxRepetitions == 0 -> 0
+            else -> (step.currentRepetitions * 100 / step.maxRepetitions).coerceIn(0, 100)
         }
         // Disable animation on rebind to avoid flicker during scroll / setItems
         holder.cpiRing.setProgressCompat(progress, false)
@@ -91,52 +91,52 @@ class GoalDetailGuidelinesAdapter(
         )
         holder.tvRingLabel.text = when {
             done                         -> "✓"
-            guideline.maxRepetitions > 1 -> guideline.currentRepetitions.toString()
+            step.maxRepetitions > 1 -> step.currentRepetitions.toString()
             else                         -> ""  // single checkbox — no label when empty
         }
 
         // Ring -> Tap
-        holder.flRing.setOnClickListener { onTapRing(guideline.id) }
+        holder.flRing.setOnClickListener { onTapRing(step.id) }
 
         // Ring -> Long press
         holder.flRing.setOnLongClickListener {
-            onLongPressRing(guideline.id)
+            onLongPressRing(step.id)
             true
         }
     }
 
-    private fun bindDescription(holder: ViewHolder, guideline: GoalGuideline) {
-        holder.tvDesc.text = guideline.description
-        holder.tvDesc.setOnClickListener { onTapText(guideline) }
+    private fun bindDescription(holder: ViewHolder, step: GoalStep) {
+        holder.tvDesc.text = step.description
+        holder.tvDesc.setOnClickListener { onTapText(step) }
         holder.tvDesc.setOnLongClickListener {
-            onLongPressText(guideline.id)
+            onLongPressText(step.id)
             true
         }
     }
 
-    private fun bindMenu(holder: ViewHolder, guideline: GoalGuideline, isFirst: Boolean, isLast: Boolean) {
+    private fun bindMenu(holder: ViewHolder, step: GoalStep, isFirst: Boolean, isLast: Boolean) {
         holder.ivMore.setOnClickListener {
-            onMenuClick(holder.ivMore, guideline, isFirst, isLast)
+            onMenuClick(holder.ivMore, step, isFirst, isLast)
         }
     }
 
-    private fun bindLinkedThought(holder: ViewHolder, guideline: GoalGuideline) {
-        if (!guideline.hasLinkedThought) {
+    private fun bindLinkedThought(holder: ViewHolder, step: GoalStep) {
+        if (!step.hasLinkedThought) {
             holder.btnLinkedThought.visibility = View.GONE
             return
         }
         holder.btnLinkedThought.visibility = View.VISIBLE
 
         // Fallback when subject is empty/null
-        holder.btnLinkedThought.text = guideline.thoughtSubject
+        holder.btnLinkedThought.text = step.thoughtSubject
             ?.takeIf { it.isNotBlank() }
-            ?: holder.btnLinkedThought.context.getString(R.string.workshop_guideline_linked_thought_fallback)
+            ?: holder.btnLinkedThought.context.getString(R.string.workshop_step_linked_thought_fallback)
 
         holder.btnLinkedThought.setOnClickListener {
-            guideline.thoughtId?.let { onThoughtChipClick(it) }
+            step.thoughtId?.let { onThoughtChipClick(it) }
         }
         holder.btnLinkedThought.setOnLongClickListener {
-            onThoughtChipLongPress(guideline.id)
+            onThoughtChipLongPress(step.id)
             true
         }
     }

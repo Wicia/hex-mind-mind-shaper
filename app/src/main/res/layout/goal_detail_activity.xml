@@ -51,9 +51,9 @@
 
             </LinearLayout>
 
-            <!-- Guidelines card -->
+            <!-- Steps card -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/card_guidelines"
+                android:id="@+id/card_steps"
                 style="@style/AppCardView">
 
                 <LinearLayout
@@ -62,12 +62,12 @@
                     android:orientation="vertical">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_guidelines"
+                        android:id="@+id/rv_steps"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="false"
                         android:overScrollMode="never"
-                        tools:listitem="@layout/goal_detail_guideline_item" />
+                        tools:listitem="@layout/goal_detail_step_item" />
 
                 </LinearLayout>
 
@@ -77,9 +77,9 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- fab - Add guideline -->
+    <!-- fab - Add step -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_guideline"
+        android:id="@+id/fab_add_step"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

@@ -16,7 +16,7 @@ import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.GoalsService
 import pl.hexmind.mindshaper.services.ThoughtsService
-import pl.hexmind.mindshaper.services.dto.GuidelineWithGoalDTO
+import pl.hexmind.mindshaper.services.dto.StepWithGoalDTO
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.validators.ThoughtValidator
 import java.io.File
@@ -44,13 +44,13 @@ class DetailsViewModel @Inject constructor(
     private val _domainsWithIcons = MutableLiveData<List<CommonIconsListItem>>(emptyList())
     val domainsWithIcons: LiveData<List<CommonIconsListItem>> = _domainsWithIcons
 
-    // Linked guideline
-    private val _linkedGuideline = MutableLiveData<GuidelineWithGoalDTO?>(null)
-    val linkedGuideline: LiveData<GuidelineWithGoalDTO?> = _linkedGuideline
+    // Linked step
+    private val _linkedStep = MutableLiveData<StepWithGoalDTO?>(null)
+    val linkedStep: LiveData<StepWithGoalDTO?> = _linkedStep
 
     fun loadThought(id: Int) {
         _thoughtId.value = id
-        refreshLinkedGuideline()
+        refreshLinkedStep()
     }
 
     fun validateTags(tags: HexTags): ValidationResult {
@@ -256,33 +256,33 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    // ── Linked guideline ──────────────────────────────────
+    // ── Linked step ────────────────────────────────────────
 
     /**
-     * Refreshes the linked-guideline state for the currently loaded thought.
+     * Refreshes the linked step state for the currently loaded thought.
      * Call after every change (link / unlink / swap) and on screen open.
      */
-    fun refreshLinkedGuideline() {
+    fun refreshLinkedStep() {
         val thoughtId = _thoughtId.value ?: return
         viewModelScope.launch {
-            _linkedGuideline.value = goalsService.findGuidelineLinkedToThought(thoughtId)
+            _linkedStep.value = goalsService.findStepLinkedToThought(thoughtId)
         }
     }
 
-    fun linkToGuideline(guidelineId: Int) {
+    fun linkToStep(stepId: Int) {
         val thoughtId = _thoughtId.value ?: return
         viewModelScope.launch {
-            goalsService.linkThoughtToGuideline(thoughtId, guidelineId)
-            refreshLinkedGuideline()
+            goalsService.linkThoughtToStep(thoughtId, stepId)
+            refreshLinkedStep()
         }
     }
 
-    fun unlinkFromGuideline() {
-        val linkedGuideline = _linkedGuideline.value ?: return
+    fun unlinkFromStep() {
+        val linkedStep = _linkedStep.value ?: return
         // Optimistic clear so UI flips immediately
-        _linkedGuideline.value = null
+        _linkedStep.value = null
         viewModelScope.launch {
-            goalsService.unlinkThought(linkedGuideline.guidelineId, alsoDeleteThought = false)
+            goalsService.unlinkThought(linkedStep.stepId, alsoDeleteThought = false)
         }
     }
 

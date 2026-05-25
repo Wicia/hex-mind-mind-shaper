@@ -7,14 +7,14 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import pl.hexmind.mindshaper.database.models.GoalEntity
-import pl.hexmind.mindshaper.database.models.GoalWithGuidelines
+import pl.hexmind.mindshaper.database.models.GoalWithSteps
 
 @Dao
 interface GoalDAO {
 
     @Transaction
     @Query("SELECT * FROM GOALS ORDER BY importance DESC, last_modified_at DESC")
-    suspend fun getAllWithGuidelines(): List<GoalWithGuidelines>
+    suspend fun getAllWithSteps(): List<GoalWithSteps>
 
     // Needed for efficient single-entity updates (avoid full table scan)
     @Query("SELECT * FROM GOALS WHERE id = :goalId")

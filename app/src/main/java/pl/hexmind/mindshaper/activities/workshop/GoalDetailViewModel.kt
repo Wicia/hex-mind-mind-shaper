@@ -39,7 +39,7 @@ class GoalDetailViewModel @Inject constructor(
             }
 
             // Fetch linked thoughts (lightweight: id + subject only, no BLOBs)
-            val thoughtIds = dto.guidelines.mapNotNull { it.thoughtId }
+            val thoughtIds = dto.steps.mapNotNull { it.thoughtId }
             val subjectsMap: Map<Int, String?> = if (thoughtIds.isEmpty()) emptyMap()
                 else thoughtsService.getSubjectsByIds(thoughtIds)
 
@@ -48,8 +48,8 @@ class GoalDetailViewModel @Inject constructor(
                 description    = dto.description,
                 importance     = dto.importance,
                 lastModifiedAt = dto.lastModifiedAt,
-                subItems       = dto.guidelines.map { g ->
-                    GoalGuideline(
+                subItems       = dto.steps.map { g ->
+                    GoalStep(
                         id                 = g.id,
                         description        = g.description,
                         currentRepetitions = g.currentRepetitions,
@@ -77,77 +77,77 @@ class GoalDetailViewModel @Inject constructor(
         viewModelScope.launch { goalsService.updateGoalDescription(goalId, description) }
     }
 
-    // ── Guideline actions ──────────────────────────────────────────────────────
+    // ── Step actions ──────────────────────────────────────────────────────────
 
     /**
      * Short tap on ring:
      * - Not completed yet -> increment by 1
      * - Already completed (current >= max) -> reset to 0
      */
-    fun incrementGuideline(guidelineId: Int) {
-        val guideline = _goal.value?.subItems?.firstOrNull { it.id == guidelineId } ?: return
-        val newCurrent = if (guideline.isCompleted) 0 else guideline.currentRepetitions + 1
-        updateGuidelineCurrent(guidelineId, newCurrent)
+    fun incrementStep(stepId: Int) {
+        val step = _goal.value?.subItems?.firstOrNull { it.id == stepId } ?: return
+        val newCurrent = if (step.isCompleted) 0 else step.currentRepetitions + 1
+        updateStepCurrent(stepId, newCurrent)
     }
 
     /**
      * Long press on ring: step back by 1, min 0.
      */
-    fun decrementGuideline(guidelineId: Int) {
-        val guideline = _goal.value?.subItems?.firstOrNull { it.id == guidelineId } ?: return
-        if (guideline.currentRepetitions == 0) return
-        updateGuidelineCurrent(guidelineId, guideline.currentRepetitions - 1)
+    fun decrementStep(stepId: Int) {
+        val step = _goal.value?.subItems?.firstOrNull { it.id == stepId } ?: return
+        if (step.currentRepetitions == 0) return
+        updateStepCurrent(stepId, step.currentRepetitions - 1)
     }
 
-    private fun updateGuidelineCurrent(guidelineId: Int, newCurrent: Int) {
+    private fun updateStepCurrent(stepId: Int, newCurrent: Int) {
         _goal.value = _goal.value?.let { goal ->
-            goal.copy(subItems = goal.subItems.map { guideline ->
-                if (guideline.id == guidelineId)
-                    guideline.copy(currentRepetitions = newCurrent)
-                else guideline
+            goal.copy(subItems = goal.subItems.map { step ->
+                if (step.id == stepId)
+                    step.copy(currentRepetitions = newCurrent)
+                else step
             })
         }
-        viewModelScope.launch { goalsService.updateGuidelineCurrentRepetitions(guidelineId, newCurrent) }
+        viewModelScope.launch { goalsService.updateStepCurrentRepetitions(stepId, newCurrent) }
     }
 
-    fun updateGuideline(guidelineId: Int, description: String, maxRepetitions: Int) {
+    fun updateStep(stepId: Int, description: String, maxRepetitions: Int) {
         _goal.value = _goal.value?.let { goal ->
-            goal.copy(subItems = goal.subItems.map { guideline ->
-                if (guideline.id == guidelineId) guideline.copy(
+            goal.copy(subItems = goal.subItems.map { step ->
+                if (step.id == stepId) step.copy(
                     description        = description.trim(),
                     // Clamp current so it never exceeds the new max
-                    currentRepetitions = if (maxRepetitions < guideline.maxRepetitions) 0
-                        else guideline.currentRepetitions.coerceAtMost(maxRepetitions),
+                    currentRepetitions = if (maxRepetitions < step.maxRepetitions) 0
+                        else step.currentRepetitions.coerceAtMost(maxRepetitions),
                     maxRepetitions = maxRepetitions
-                ) else guideline
+                ) else step
             })
         }
-        viewModelScope.launch { goalsService.updateGuideline(guidelineId, description, maxRepetitions) }
+        viewModelScope.launch { goalsService.updateStep(stepId, description, maxRepetitions) }
     }
 
-    fun deleteGuideline(guidelineId: Int) {
+    fun deleteStep(stepId: Int) {
         _goal.value = _goal.value?.let { goal ->
-            goal.copy(subItems = goal.subItems.filter { it.id != guidelineId })
+            goal.copy(subItems = goal.subItems.filter { it.id != stepId })
         }
-        viewModelScope.launch { goalsService.deleteGuideline(guidelineId) }
+        viewModelScope.launch { goalsService.deleteStep(stepId) }
     }
 
-    fun addGuideline(description: String, maxRepetitions: Int) {
+    fun addStep(description: String, maxRepetitions: Int) {
         viewModelScope.launch {
-            goalsService.addGuideline(goalId, description, maxRepetitions)
+            goalsService.addStep(goalId, description, maxRepetitions)
             loadGoal()
         }
     }
 
-    // ── Reorder guidelines ─────────────────────────────────
+    // ── Reorder steps ─────────────────────────────────────
 
-    fun moveGuidelineUp(guidelineId: Int) = moveGuideline(guidelineId, -1)
-    fun moveGuidelineDown(guidelineId: Int) = moveGuideline(guidelineId, +1)
+    fun moveStepUp(stepId: Int) = moveStep(stepId, -1)
+    fun moveStepDown(stepId: Int) = moveStep(stepId, +1)
 
-    private fun moveGuideline(guidelineId: Int, direction: Int) {
+    private fun moveStep(stepId: Int, direction: Int) {
         val current = _goal.value ?: return
         val items = current.subItems.toMutableList()
-        val idx = items.indexOfFirst { it.id == guidelineId }
+        val idx = items.indexOfFirst { it.id == stepId }
         val to = idx + direction
         if (idx < 0 || to < 0 || to >= items.size) return
 
@@ -158,14 +158,14 @@ class GoalDetailViewModel @Inject constructor(
 
         // Persist the new full order
         val orderedIds = items.map { it.id }
-        viewModelScope.launch { goalsService.reorderGuidelines(orderedIds) }
+        viewModelScope.launch { goalsService.reorderSteps(orderedIds) }
     }
 
     // ── Linked thought (1:1) ───────────────────────────────────────────────────
 
-    fun linkThought(guidelineId: Int, thoughtId: Int) {
+    fun linkThought(stepId: Int, thoughtId: Int) {
         viewModelScope.launch {
-            goalsService.linkThought(guidelineId, thoughtId)
+            goalsService.linkThought(stepId, thoughtId)
             loadGoal()  // refresh = thought chip refresh
         }
     }
@@ -173,14 +173,14 @@ class GoalDetailViewModel @Inject constructor(
     /**
      * Handles actions "unpin only" or "unpin + delete thought".
      */
-    fun unlinkThought(guidelineId: Int, alsoDeleteThought: Boolean) {
-        // Optimistic UI: clear thoughtId + subject in the affected guideline
+    fun unlinkThought(stepId: Int, alsoDeleteThought: Boolean) {
+        // Optimistic UI: clear thoughtId + subject in the affected step
         _goal.value = _goal.value?.let { goal ->
             goal.copy(subItems = goal.subItems.map {
-                if (it.id == guidelineId) it.copy(thoughtId = null, thoughtSubject = null)
+                if (it.id == stepId) it.copy(thoughtId = null, thoughtSubject = null)
                 else it
             })
         }
-        viewModelScope.launch { goalsService.unlinkThought(guidelineId, alsoDeleteThought) }
+        viewModelScope.launch { goalsService.unlinkThought(stepId, alsoDeleteThought) }
     }
 }

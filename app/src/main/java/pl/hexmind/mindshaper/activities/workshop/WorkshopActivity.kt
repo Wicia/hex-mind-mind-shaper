@@ -55,7 +55,7 @@ class WorkshopActivity : CoreActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Reload goals after returning from GoalDetailActivity (changeable guidelines may change :)
+        // Reload goals after returning from GoalDetailActivity (goal's steps may change :)
         viewModel.reload()
     }
 

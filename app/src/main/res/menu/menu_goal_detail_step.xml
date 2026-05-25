@@ -3,14 +3,14 @@
 
     <item
         android:id="@+id/action_move_up"
-        android:title="@string/workshop_guideline_menu_move_up" />
+        android:title="@string/workshop_step_menu_move_up" />
 
     <item
         android:id="@+id/action_move_down"
-        android:title="@string/workshop_guideline_menu_move_down" />
+        android:title="@string/workshop_step_menu_move_down" />
 
     <item
         android:id="@+id/action_link_thought"
-        android:title="@string/workshop_guideline_menu_link_thought" />
+        android:title="@string/workshop_step_menu_link_thought" />
 
 </menu>

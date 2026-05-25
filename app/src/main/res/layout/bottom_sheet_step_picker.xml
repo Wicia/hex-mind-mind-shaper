@@ -41,7 +41,7 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Empty state (no available guidelines) -->
+    <!-- Empty state (no available steps) -->
     <TextView
         android:id="@+id/tv_empty_state"
         style="@style/Dialog_Text"

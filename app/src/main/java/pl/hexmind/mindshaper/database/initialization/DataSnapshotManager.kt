@@ -14,7 +14,7 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.database.AppDatabase
 import pl.hexmind.mindshaper.database.models.DomainEntity
 import pl.hexmind.mindshaper.database.models.GoalEntity
-import pl.hexmind.mindshaper.database.models.GuidelineEntity
+import pl.hexmind.mindshaper.database.models.StepEntity
 import pl.hexmind.mindshaper.database.models.IconEntity
 import pl.hexmind.mindshaper.database.models.PathEntity
 import pl.hexmind.mindshaper.database.models.PathStepEntity
@@ -57,7 +57,7 @@ class DataSnapshotManager @Inject constructor(
                 domains = database.domainDAO().getAllDomains(),
                 domainIcons = database.iconDAO().getAllIcons(),
                 goals = database.goalDao().getAllGoals(),
-                guidelines = database.guidelineDao().getAllGuidelines(),
+                guidelines = database.stepDao().getAllSteps(),  // TODO: field name kept for JSON backward compat
                 paths = database.pathDao().getAllPaths(),
                 pathSteps = database.pathStepDao().getAllSteps(),
             )
@@ -128,8 +128,8 @@ class DataSnapshotManager @Inject constructor(
                 }
 
                 snapshot.guidelines?.apply {
-                    database.guidelineDao().clearAll()
-                    database.guidelineDao().insertOrReplace(this)
+                    database.stepDao().clearAll()
+                    database.stepDao().insertOrReplace(this)
                     restoredCount++
                 }
 
@@ -195,7 +195,7 @@ data class DatabaseSnapshot(
     val domains: List<DomainEntity>?,
     val domainIcons: List<IconEntity>?,
     val goals: List<GoalEntity>?,
-    val guidelines: List<GuidelineEntity>?,
+    val guidelines: List<StepEntity>?,  // TODO: "guidelines" key preserved for JSON snapshot backward compat
     val paths: List<PathEntity>?,
     val pathSteps: List<PathStepEntity>?,
 )

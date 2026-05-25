@@ -5,5 +5,5 @@ data class GoalDTO(
     val description: String = "",
     val importance: Int = 1,
     val lastModifiedAt: Long = System.currentTimeMillis(),
-    val guidelines: List<GuidelineDTO> = emptyList()
+    val steps: List<StepDTO> = emptyList()
 )

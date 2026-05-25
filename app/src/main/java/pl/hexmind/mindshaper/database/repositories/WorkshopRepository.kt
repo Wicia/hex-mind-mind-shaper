@@ -1,8 +1,8 @@
 package pl.hexmind.mindshaper.database.repositories
 
 import pl.hexmind.mindshaper.database.models.GoalEntity
-import pl.hexmind.mindshaper.database.models.GoalWithGuidelines
-import pl.hexmind.mindshaper.database.models.GuidelineEntity
+import pl.hexmind.mindshaper.database.models.GoalWithSteps
+import pl.hexmind.mindshaper.database.models.StepEntity
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,13 +12,13 @@ import javax.inject.Singleton
 @Singleton
 class WorkshopRepository @Inject constructor(
     private val goalDao: GoalDAO,
-    private val guidelineDao: GuidelineDAO
+    private val stepDao: StepDAO
 ) {
 
     // ── Goals ──────────────────────────────────────────────────────────────────
 
-    suspend fun getAllGoalsWithGuidelines(): List<GoalWithGuidelines> =
-        goalDao.getAllWithGuidelines()
+    suspend fun getAllGoalsWithSteps(): List<GoalWithSteps> =
+        goalDao.getAllWithSteps()
 
     suspend fun insertGoal(entity: GoalEntity): Long =
         goalDao.insert(entity)
@@ -32,26 +32,26 @@ class WorkshopRepository @Inject constructor(
     suspend fun deleteGoal(goalId: Int) =
         goalDao.deleteById(goalId)
 
-    // ── Guidelines ─────────────────────────────────────────────────────────────
+    // ── Steps ─────────────────────────────────────────────────────────────────
 
-    suspend fun insertGuideline(entity: GuidelineEntity): Long =
-        guidelineDao.insert(entity)
+    suspend fun insertStep(entity: StepEntity): Long =
+        stepDao.insert(entity)
 
-    suspend fun updateGuideline(entity: GuidelineEntity) =
-        guidelineDao.update(entity)
+    suspend fun updateStep(entity: StepEntity) =
+        stepDao.update(entity)
 
-    suspend fun getGuidelineById(guidelineId: Int): GuidelineEntity? =
-        guidelineDao.getById(guidelineId)
+    suspend fun getStepById(stepId: Int): StepEntity? =
+        stepDao.getById(stepId)
 
-    suspend fun getGuidelinesByGoalId(goalId: Int): List<GuidelineEntity> =
-        guidelineDao.getByGoalId(goalId)
+    suspend fun getStepsByGoalId(goalId: Int): List<StepEntity> =
+        stepDao.getByGoalId(goalId)
 
-    suspend fun deleteGuideline(guidelineId: Int) =
-        guidelineDao.deleteById(guidelineId)
+    suspend fun deleteStep(stepId: Int) =
+        stepDao.deleteById(stepId)
 
-    suspend fun updateGuidelinePosition(id: Int, position: Int) =
-        guidelineDao.updatePosition(id, position)
+    suspend fun updateStepPosition(id: Int, position: Int) =
+        stepDao.updatePosition(id, position)
 
-    suspend fun findGuidelineByThoughtId(thoughtId: Int): GuidelineEntity? =
-        guidelineDao.findByThoughtId(thoughtId)
+    suspend fun findStepByThoughtId(thoughtId: Int): StepEntity? =
+        stepDao.findByThoughtId(thoughtId)
 }

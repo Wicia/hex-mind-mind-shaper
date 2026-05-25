@@ -14,29 +14,29 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.activities.details.GuidelinePickerBottomSheet.Companion.show
+import pl.hexmind.mindshaper.activities.details.StepPickerBottomSheet.Companion.show
 import pl.hexmind.mindshaper.services.GoalsService
 import pl.hexmind.mindshaper.services.dto.GoalDTO
 import javax.inject.Inject
 
 /**
- * Bottom sheet that lets the user pick a guideline to link the current thought to.
+ * Bottom sheet that lets the user pick a goal step to link the current thought to.
  *
- * Result is delivered via [onGuidelinePicked] callback, set through the [show] factory.
+ * Result is delivered via [onStepPicked] callback, set through the [show] factory.
  */
 @AndroidEntryPoint
-class GuidelinePickerBottomSheet : BottomSheetDialogFragment() {
+class StepPickerBottomSheet : BottomSheetDialogFragment() {
 
     @Inject lateinit var goalsService: GoalsService
 
-    private var onGuidelinePicked: ((guidelineId: Int) -> Unit)? = null
+    private var onStepPicked: ((stepId: Int) -> Unit)? = null
 
     private lateinit var llGoalsContainer: LinearLayout
     private lateinit var tvEmptyState: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.bottom_sheet_guideline_picker, container, false)
+    ): View = inflater.inflate(R.layout.bottom_sheet_step_picker, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,7 +50,7 @@ class GuidelinePickerBottomSheet : BottomSheetDialogFragment() {
 
     private fun loadGoals() {
         lifecycleScope.launch {
-            val goals = goalsService.getAvailableGuidelinesForLink()
+            val goals = goalsService.getAvailableStepsForLink()
             renderGoals(goals)
         }
     }
@@ -67,7 +67,7 @@ class GuidelinePickerBottomSheet : BottomSheetDialogFragment() {
         val inflater = LayoutInflater.from(requireContext())
         goals.forEach { goal ->
             val block = inflater.inflate(
-                R.layout.guideline_picker_goal_item, llGoalsContainer, false
+                R.layout.step_picker_goal_item, llGoalsContainer, false
             )
             bindGoalBlock(block, goal, inflater)
             llGoalsContainer.addView(block)
@@ -78,7 +78,7 @@ class GuidelinePickerBottomSheet : BottomSheetDialogFragment() {
         val tvGoalBadge: TextView      = block.findViewById(R.id.tv_goal_badge)
         val tvGoalName: TextView       = block.findViewById(R.id.tv_goal_name)
         val ivArrow                    = block.findViewById<View>(R.id.iv_goal_arrow)
-        val llGuidelinesInner: LinearLayout = block.findViewById(R.id.ll_guidelines_inner)
+        val llStepsInner: LinearLayout = block.findViewById(R.id.ll_steps_inner)
         val goalRow                    = block.findViewById<View>(R.id.ll_goal_row)
 
         tvGoalBadge.text = goal.importance.toString()
@@ -95,25 +95,25 @@ class GuidelinePickerBottomSheet : BottomSheetDialogFragment() {
 
         tvGoalName.text = goal.description
 
-        // Build guideline rows once; toggle visibility on goal tap
-        goal.guidelines.forEach { guideline ->
+        // Build step rows once; toggle visibility on goal tap
+        goal.steps.forEach { step ->
             val glRow = inflater.inflate(
-                R.layout.guideline_picker_guideline_item, llGuidelinesInner, false
+                R.layout.step_picker_step_item, llStepsInner, false
             )
-            glRow.findViewById<TextView>(R.id.tv_guideline_description).text = guideline.description
+            glRow.findViewById<TextView>(R.id.tv_step_description).text = step.description
             glRow.setOnClickListener {
-                onGuidelinePicked?.invoke(guideline.id)
+                onStepPicked?.invoke(step.id)
                 dismiss()
             }
-            llGuidelinesInner.addView(glRow)
+            llStepsInner.addView(glRow)
         }
 
         // Single-expand pattern: tapping a goal collapses any other expanded one
         goalRow.setOnClickListener {
-            val willExpand = llGuidelinesInner.visibility != View.VISIBLE
+            val willExpand = llStepsInner.visibility != View.VISIBLE
             collapseAllGoals()
             if (willExpand) {
-                llGuidelinesInner.visibility = View.VISIBLE
+                llStepsInner.visibility = View.VISIBLE
                 ivArrow.rotation = 90f
             }
         }
@@ -122,25 +122,25 @@ class GuidelinePickerBottomSheet : BottomSheetDialogFragment() {
     private fun collapseAllGoals() {
         for (i in 0 until llGoalsContainer.childCount) {
             val block = llGoalsContainer.getChildAt(i)
-            block.findViewById<LinearLayout>(R.id.ll_guidelines_inner).visibility = View.GONE
+            block.findViewById<LinearLayout>(R.id.ll_steps_inner).visibility = View.GONE
             block.findViewById<View>(R.id.iv_goal_arrow).rotation = 0f
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        onGuidelinePicked = null
+        onStepPicked = null
     }
 
     companion object {
-        private const val TAG = "GuidelinePickerBottomSheet"
+        private const val TAG = "StepPickerBottomSheet"
 
         fun show(
             fragmentManager: FragmentManager,
-            onGuidelinePicked: (guidelineId: Int) -> Unit
+            onStepPicked: (stepId: Int) -> Unit
         ) {
-            GuidelinePickerBottomSheet().apply {
-                this.onGuidelinePicked = onGuidelinePicked
+            StepPickerBottomSheet().apply {
+                this.onStepPicked = onStepPicked
             }.show(fragmentManager, TAG)
         }
     }

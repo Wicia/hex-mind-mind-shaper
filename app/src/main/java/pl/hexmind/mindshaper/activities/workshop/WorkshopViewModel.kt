@@ -16,11 +16,11 @@ data class Goal(
     val id: Int,
     val description: String,
     val importance: Int,
-    val subItems: List<GoalGuideline> = emptyList(),
+    val subItems: List<GoalStep> = emptyList(),
     val lastModifiedAt: Long = System.currentTimeMillis()
 )
 
-data class GoalGuideline(
+data class GoalStep(
     val id: Int,
     val description: String,
     val currentRepetitions: Int = 0,
@@ -80,8 +80,8 @@ class WorkshopViewModel @Inject constructor(
                     description    = dto.description,
                     importance     = dto.importance,
                     lastModifiedAt = dto.lastModifiedAt,
-                    subItems       = dto.guidelines.map { g ->
-                        GoalGuideline(
+                    subItems       = dto.steps.map { g ->
+                        GoalStep(
                             id                 = g.id,
                             description        = g.description,
                             currentRepetitions = g.currentRepetitions,

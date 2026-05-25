@@ -84,7 +84,7 @@ class Migrations {
             }
         }
 
-        // Workshop: Goals and Guidelines tables
+        // Workshop: Goals and Steps tables (originally "Guidelines", renamed in migration 12→13)
         val MIGRATION_6_TO_7 = object : Migration(6, 7) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL(
@@ -267,5 +267,16 @@ class Migrations {
                 db.execSQL("CREATE INDEX IF NOT EXISTS index_THOUGHTS_domain_id ON THOUGHTS(domain_id)")
             }
         }
+        // Rename table: GOAL_GUIDELINES -> GOAL_STEPS
+        val MIGRATION_12_TO_13 = object : Migration(12, 13) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE GOAL_GUIDELINES RENAME TO GOAL_STEPS")
+                db.execSQL("DROP INDEX IF EXISTS index_GOAL_GUIDELINES_goal_id")
+                db.execSQL("DROP INDEX IF EXISTS index_GOAL_GUIDELINES_thought_id")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_GOAL_STEPS_goal_id ON GOAL_STEPS(goal_id)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_GOAL_STEPS_thought_id ON GOAL_STEPS(thought_id)")
+            }
+        }
+
     }
 }

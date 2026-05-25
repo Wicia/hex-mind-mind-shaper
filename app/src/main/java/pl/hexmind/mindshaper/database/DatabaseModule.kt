@@ -10,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 import pl.hexmind.mindshaper.database.initialization.Migrations
 import pl.hexmind.mindshaper.database.repositories.DomainDAO
 import pl.hexmind.mindshaper.database.repositories.GoalDAO
-import pl.hexmind.mindshaper.database.repositories.GuidelineDAO
+import pl.hexmind.mindshaper.database.repositories.StepDAO
 import pl.hexmind.mindshaper.database.repositories.IconDAO
 import pl.hexmind.mindshaper.database.repositories.PathDAO
 import pl.hexmind.mindshaper.database.repositories.PathStepDAO
@@ -40,6 +40,7 @@ object DatabaseModule {
             .addMigrations(Migrations.MIGRATION_9_TO_10)
             .addMigrations(Migrations.MIGRATION_10_TO_11)
             .addMigrations(Migrations.MIGRATION_11_TO_12)
+            .addMigrations(Migrations.MIGRATION_12_TO_13)
             //.fallbackToDestructiveMigration()
             .build()
     }
@@ -48,7 +49,7 @@ object DatabaseModule {
     @Provides fun provideDomainDao(db: AppDatabase): DomainDAO = db.domainDAO()
     @Provides fun provideIconDao(db: AppDatabase): IconDAO = db.iconDAO()
     @Provides fun provideGoalDao(db: AppDatabase): GoalDAO = db.goalDao()
-    @Provides fun provideGuidelineDao(db: AppDatabase): GuidelineDAO = db.guidelineDao()
+    @Provides fun provideStepDao(db: AppDatabase): StepDAO = db.stepDao()
     @Provides fun providePathDao(db: AppDatabase): PathDAO = db.pathDao()
     @Provides fun providePathStepDao(db: AppDatabase): PathStepDAO = db.pathStepDao()
 }

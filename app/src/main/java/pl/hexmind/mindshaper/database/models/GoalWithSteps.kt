@@ -4,10 +4,10 @@ import androidx.room.Embedded
 import androidx.room.Relation
 
 /**
- * Room POJO: single query result combining a goal with all its guidelines.
+ * Room POJO: single query result combining a goal with all its steps.
  * Used internally by GoalDao — not exposed outside the database layer.
  */
-data class GoalWithGuidelines(
+data class GoalWithSteps(
 
     @Embedded
     val goal: GoalEntity,
@@ -15,7 +15,7 @@ data class GoalWithGuidelines(
     @Relation(
         parentColumn = "id",
         entityColumn = "goal_id",
-        entity = GuidelineEntity::class
+        entity = StepEntity::class
     )
-    val guidelines: List<GuidelineEntity>
+    val steps: List<StepEntity>
 )

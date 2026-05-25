@@ -20,7 +20,7 @@
 
         <!-- Progress ring -->
         <FrameLayout
-            android:id="@+id/fl_guideline_ring"
+            android:id="@+id/fl_step_ring"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
@@ -29,7 +29,7 @@
             android:background="?attr/selectableItemBackgroundBorderless">
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:id="@+id/cpi_guideline_ring"
+                android:id="@+id/cpi_step_ring"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -55,7 +55,7 @@
 
         <!-- Description -->
         <TextView
-            android:id="@+id/tv_guideline_description"
+            android:id="@+id/tv_step_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -70,7 +70,7 @@
 
         <!-- Menu button -->
         <ImageView
-            android:id="@+id/iv_guideline_more"
+            android:id="@+id/iv_step_more"
             android:layout_width="40dp"
             android:layout_height="32dp"
             android:layout_gravity="center_vertical"

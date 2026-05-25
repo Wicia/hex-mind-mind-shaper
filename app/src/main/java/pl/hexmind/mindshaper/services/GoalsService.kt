@@ -1,10 +1,10 @@
 package pl.hexmind.mindshaper.services
 
 import pl.hexmind.mindshaper.database.models.GoalEntity
-import pl.hexmind.mindshaper.database.models.GuidelineEntity
+import pl.hexmind.mindshaper.database.models.StepEntity
 import pl.hexmind.mindshaper.database.repositories.WorkshopRepository
 import pl.hexmind.mindshaper.services.dto.GoalDTO
-import pl.hexmind.mindshaper.services.dto.GuidelineWithGoalDTO
+import pl.hexmind.mindshaper.services.dto.StepWithGoalDTO
 import pl.hexmind.mindshaper.services.mappers.GoalMapper
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,7 +18,7 @@ class GoalsService @Inject constructor(
     // ── Goals ──────────────────────────────────────────────────────────────────
 
     suspend fun getAllGoals(): List<GoalDTO> =
-        repository.getAllGoalsWithGuidelines().map { GoalMapper.entityToDTO(it) }
+        repository.getAllGoalsWithSteps().map { GoalMapper.entityToDTO(it) }
 
     suspend fun addGoal(description: String, importance: Int = 1): Long {
         val entity = GoalEntity(
@@ -48,23 +48,23 @@ class GoalsService @Inject constructor(
     suspend fun deleteGoal(goalId: Int) =
         repository.deleteGoal(goalId)
 
-    // ── Guidelines ─────────────────────────────────────────────────────────────
+    // ── Steps ─────────────────────────────────────────────────────────────────
 
-    suspend fun addGuideline(goalId: Int, description: String, maxRepetitions: Int = 1) {
-        val existingCount = repository.getGuidelinesByGoalId(goalId).size
-        val entity = GuidelineEntity(
+    suspend fun addStep(goalId: Int, description: String, maxRepetitions: Int = 1) {
+        val existingCount = repository.getStepsByGoalId(goalId).size
+        val entity = StepEntity(
             goalId             = goalId,
             description        = description.trim(),
             position           = existingCount,
             currentRepetitions = 0,
             maxRepetitions     = maxRepetitions
         )
-        repository.insertGuideline(entity)
+        repository.insertStep(entity)
     }
 
-    suspend fun updateGuideline(guidelineId: Int, description: String, maxRepetitions: Int) {
-        val current = repository.getGuidelineById(guidelineId) ?: return
-        repository.updateGuideline(current.copy(
+    suspend fun updateStep(stepId: Int, description: String, maxRepetitions: Int) {
+        val current = repository.getStepById(stepId) ?: return
+        repository.updateStep(current.copy(
             description        = description.trim(),
             // Clamp current so it never exceeds the new max
             currentRepetitions = current.currentRepetitions.coerceAtMost(maxRepetitions),
@@ -72,37 +72,37 @@ class GoalsService @Inject constructor(
         ))
     }
 
-    suspend fun updateGuidelineCurrentRepetitions(guidelineId: Int, currentRepetitions: Int) {
-        val current = repository.getGuidelineById(guidelineId) ?: return
-        repository.updateGuideline(current.copy(currentRepetitions = currentRepetitions))
+    suspend fun updateStepCurrentRepetitions(stepId: Int, currentRepetitions: Int) {
+        val current = repository.getStepById(stepId) ?: return
+        repository.updateStep(current.copy(currentRepetitions = currentRepetitions))
     }
 
-    suspend fun deleteGuideline(guidelineId: Int) =
-        repository.deleteGuideline(guidelineId)
+    suspend fun deleteStep(stepId: Int) =
+        repository.deleteStep(stepId)
 
-    suspend fun reorderGuidelines(orderedIds: List<Int>) {
+    suspend fun reorderSteps(orderedIds: List<Int>) {
         orderedIds.forEachIndexed { index, id ->
-            repository.updateGuidelinePosition(id, index)
+            repository.updateStepPosition(id, index)
         }
     }
 
-    // ── Linked thought ───────────────────────────────────────────────────
+    // ── Linked thought ──────────────────────────────────────────────────
 
-    suspend fun linkThought(guidelineId: Int, thoughtId: Int) {
-        val current = repository.getGuidelineById(guidelineId) ?: return
-        repository.updateGuideline(current.copy(thoughtId = thoughtId))
+    suspend fun linkThought(stepId: Int, thoughtId: Int) {
+        val current = repository.getStepById(stepId) ?: return
+        repository.updateStep(current.copy(thoughtId = thoughtId))
     }
 
     /**
-     * Unlinks the thought from the guideline.
+     * Unlinks the thought from the step.
      * If [alsoDeleteThought] is true, the underlying thought is also deleted from THOUGHTS.
      */
-    suspend fun unlinkThought(guidelineId: Int, alsoDeleteThought: Boolean) {
-        val current = repository.getGuidelineById(guidelineId) ?: return
+    suspend fun unlinkThought(stepId: Int, alsoDeleteThought: Boolean) {
+        val current = repository.getStepById(stepId) ?: return
         val linkedId = current.thoughtId ?: return
 
         // Clear FK first (avoid orphan window even though SET_NULL would handle it)
-        repository.updateGuideline(current.copy(thoughtId = null))
+        repository.updateStep(current.copy(thoughtId = null))
 
         if (alsoDeleteThought) {
             thoughtsService.deleteThoughtById(linkedId)
@@ -110,40 +110,40 @@ class GoalsService @Inject constructor(
     }
 
     /**
-     * Returns the guideline that the given thought is linked to (along with goal context),
-     * or null if no guideline references this thought.
+     * Returns the step that the given thought is linked to (along with goal context),
+     * or null if no step references this thought.
      */
-    suspend fun findGuidelineLinkedToThought(thoughtId: Int): GuidelineWithGoalDTO? {
-        val guideline = repository.findGuidelineByThoughtId(thoughtId) ?: return null
-        val goal = repository.getGoalById(guideline.goalId) ?: return null
-        return GuidelineWithGoalDTO(
-            guidelineId          = guideline.id,
-            guidelineDescription = guideline.description,
-            goalId               = goal.id,
-            goalDescription      = goal.description,
-            goalImportance       = goal.importance
+    suspend fun findStepLinkedToThought(thoughtId: Int): StepWithGoalDTO? {
+        val step = repository.findStepByThoughtId(thoughtId) ?: return null
+        val goal = repository.getGoalById(step.goalId) ?: return null
+        return StepWithGoalDTO(
+            stepId          = step.id,
+            stepDescription = step.description,
+            goalId          = goal.id,
+            goalDescription = goal.description,
+            goalImportance  = goal.importance
         )
     }
 
     /**
-     * Returns goals with their guidelines that have no linked thought yet
+     * Returns goals with their steps that have no linked thought yet
      */
-    suspend fun getAvailableGuidelinesForLink(): List<GoalDTO> =
+    suspend fun getAvailableStepsForLink(): List<GoalDTO> =
         getAllGoals()
-            .map { goal -> goal.copy(guidelines = goal.guidelines.filter { it.thoughtId == null }) }
-            .filter { it.guidelines.isNotEmpty() }
+            .map { goal -> goal.copy(steps = goal.steps.filter { it.thoughtId == null }) }
+            .filter { it.steps.isNotEmpty() }
 
     /**
-     * Links thought to guideline from the thought side.
-     * If the thought was already linked to a different guideline, the previous link is cleared first
+     * Links thought to step from the thought side.
+     * If the thought was already linked to a different step, the previous link is cleared first
      */
-    suspend fun linkThoughtToGuideline(thoughtId: Int, guidelineId: Int) {
+    suspend fun linkThoughtToStep(thoughtId: Int, stepId: Int) {
         // Clear any previous link pointing to this thought ("defensive programming" type of protection)
-        repository.findGuidelineByThoughtId(thoughtId)?.let { previous ->
-            if (previous.id != guidelineId) {
-                repository.updateGuideline(previous.copy(thoughtId = null))
+        repository.findStepByThoughtId(thoughtId)?.let { previous ->
+            if (previous.id != stepId) {
+                repository.updateStep(previous.copy(thoughtId = null))
             }
         }
-        linkThought(guidelineId, thoughtId)
+        linkThought(stepId, thoughtId)
     }
 }
