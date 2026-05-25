@@ -378,7 +378,7 @@
     <string name="settings_backup_state_no_file">Nie wybrano pliku</string>
     <string name="settings_backup_state_file_selected">Wybrany plik: %1$s</string>
     <string name="settings_backup_loaded_success">Backup wczytany pomyślnie</string>
-    <string name="settings_backup_error_loading">Błąd podczas wczytywania backupu</string>sda
+    <string name="settings_backup_error_loading">Błąd podczas wczytywania backupu</string>
 
     <string name="rich_text_removing_header">Usunąć tekst?</string>
     <string name="rich_text_removing_content">Ta operacja jest nieodwracalna</string>
