@@ -5,8 +5,8 @@ import androidx.room.ColumnInfo
 /**
  * Lightweight row for fetching thought titles only
  */
-data class ThoughtThreadRow(
+data class ThoughtSubjectRow(
     val id: Int,
-    @ColumnInfo(name = "thread")
-    val thread: String?
+    @ColumnInfo(name = "subject")
+    val subject: String?
 )

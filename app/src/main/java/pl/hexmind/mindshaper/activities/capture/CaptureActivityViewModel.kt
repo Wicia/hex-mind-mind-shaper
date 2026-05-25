@@ -50,9 +50,9 @@ class CaptureActivityViewModel @Inject constructor(
     /**
      * Update hex tags in draft (no DB save)
      */
-    fun updateHexTags(thread: String?, project: String?, soulMate: String?) {
+    fun updateHexTags(subject: String?, project: String?, soulMate: String?) {
         _draftThought.value = _draftThought.value?.copy(
-            thread = thread,
+            subject = subject,
             project = project,
             soulMate = soulMate
         )
@@ -133,9 +133,9 @@ class CaptureActivityViewModel @Inject constructor(
     fun validate(): ValidationResult {
         val draft = _draftThought.value ?: return ValidationResult.Error(R.string.common_thought_draft_notFound)
 
-        // Validate hex tags (thread, project, soulMate)
-        val threadResult = validator.validateThread(draft.thread)
-        if (threadResult is ValidationResult.Error) return threadResult
+        // Validate hex tags (subject, project, soulMate)
+        val subjectResult = validator.validateSubject(draft.subject)
+        if (subjectResult is ValidationResult.Error) return subjectResult
 
         val projectResult = validator.validateProject(draft.project)
         if (projectResult is ValidationResult.Error) return projectResult

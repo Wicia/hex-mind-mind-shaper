@@ -89,7 +89,7 @@ class StreamAdapter(
         private val photoView: HexPhotoView = itemView.findViewById(R.id.pv_photo)
 
         private val tvLabel: TextView = itemView.findViewById(R.id.tv_label)
-        private val tvThreadLabel: TextView = itemView.findViewById(R.id.tv_thread_label)
+        private val tvSubjectLabel: TextView = itemView.findViewById(R.id.tv_subject_label)
 
         private val tvTextIcon: TextView = itemView.findViewById(R.id.tv_text_icon)
 
@@ -119,7 +119,7 @@ class StreamAdapter(
             audioView.visibility = View.GONE
             photoView.visibility = View.GONE
             // extra cases
-            tvThreadLabel.visibility = View.GONE
+            tvSubjectLabel.visibility = View.GONE
             vbThoughtValue.visibility = View.GONE
             tvTextIcon.visibility = View.GONE
             // empty thought
@@ -173,10 +173,10 @@ class StreamAdapter(
         }
 
         fun updateMetadataUI(thought: ThoughtDTO, sortConfig: SortConfig) {
-            // Showing thread label basing on sorting config
-            val showThreadLabel = !thought.thread.isNullOrBlank() && sortConfig.property != SortProperty.THREAD
-            tvThreadLabel.visibility = if (showThreadLabel) View.VISIBLE else View.GONE
-            if (showThreadLabel) tvThreadLabel.text = "⧽  ".plus(thought.thread)
+            // Showing subject label basing on sorting config
+            val showSubjectLabel = !thought.subject.isNullOrBlank() && sortConfig.property != SortProperty.SUBJECT
+            tvSubjectLabel.visibility = if (showSubjectLabel) View.VISIBLE else View.GONE
+            if (showSubjectLabel) tvSubjectLabel.text = itemView.context.getString(R.string.hex_tags_subject_prefix, thought.subject)
 
             // Cases by sorting properties
             when (sortConfig.property) {
@@ -191,13 +191,13 @@ class StreamAdapter(
                 SortProperty.UPDATED_AT -> {
                     updateChangedAtCase(thought)
                 }
-                SortProperty.THREAD -> {
+                SortProperty.SUBJECT -> {
                     ivDecoratorIcon.visibility = View.VISIBLE
-                    ivDecoratorIcon.setImageResource(R.drawable.ic_hextags_thread)
+                    ivDecoratorIcon.setImageResource(R.drawable.ic_hextags_subject)
                     tvLabel.visibility = View.VISIBLE
-                    tvLabel.text = when (thought.thread.isNullOrBlank()){
+                    tvLabel.text = when (thought.subject.isNullOrBlank()){
                         true  -> {itemView.context.getString(R.string.stream_thought_metadata_empty)}
-                        false -> {thought.thread}
+                        false -> {thought.subject}
                     }
                 }
                 SortProperty.PROJECT -> {

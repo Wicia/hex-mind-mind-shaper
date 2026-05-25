@@ -23,7 +23,7 @@ fun ValidationResult.Error.resolveMessage(context: Context): String {
 }
 
 enum class ValidatedProperty {
-    T_THREAD,
+    T_SUBJECT,
     T_PROJECT,
     T_SOUL_MATES,
     T_RICH_TEXT

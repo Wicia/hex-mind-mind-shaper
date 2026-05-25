@@ -62,10 +62,10 @@ class ThoughtsService @Inject constructor(
 
     /**
      * Lightweight fetch — No BLOBs loaded
-     * @returns map of thoughtId -> thread (title)
+     * @returns map of thoughtId -> subject (title)
      */
-    suspend fun getThreadsByIds(ids: List<Int>): Map<Int, String?> =
-        repository.getThreadsByIds(ids)
+    suspend fun getSubjectsByIds(ids: List<Int>): Map<Int, String?> =
+        repository.getSubjectsByIds(ids)
 
     // === Sophisticated methods for updating specific part of thought (rich text, recording...)
 
@@ -73,7 +73,7 @@ class ThoughtsService @Inject constructor(
         val metadata = ThoughtMetadataUpdate(
             id = thought.id!!,
             domainId = thought.domainId,
-            thread = thought.thread,
+            subject = thought.subject,
             soulMate = thought.soulMate,
             project = thought.project,
             value = thought.value,

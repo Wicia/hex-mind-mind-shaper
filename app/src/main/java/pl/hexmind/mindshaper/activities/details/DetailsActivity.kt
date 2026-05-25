@@ -161,12 +161,12 @@ class DetailsActivity : ThoughtManagerActivity() {
                 viewModel.increaseValue() // for not locked thought
             }
 
-            // THREAD
-            tvThread.setOnClickListener {
-                showEditThreadDialog()
+            // SUBJECT
+            tvSubject.setOnClickListener {
+                showEditSubjectDialog()
             }
-            btnThreadPlaceholder.setOnClickListener {
-                showEditThreadDialog()
+            btnSubjectPlaceholder.setOnClickListener {
+                showEditSubjectDialog()
             }
 
             // HEX TAGS
@@ -323,17 +323,17 @@ class DetailsActivity : ThoughtManagerActivity() {
         updateAddRecordingButtonVisualState()
     }
 
-    private fun showEditThreadDialog() {
+    private fun showEditSubjectDialog() {
         val thought = viewModel.thoughtDetails.value ?: return
-        val currentText = thought.thread ?: ""
+        val currentText = thought.subject ?: ""
 
         TextEditDialog(
             context = this,
             textInput = currentText,
-            title = getString(R.string.common_hex_tag_thread),
+            title = getString(R.string.common_hex_tag_subject),
             notesStyle = false,
             onSave = { newText ->
-                viewModel.updateThread(newText)
+                viewModel.updateSubject(newText)
             }
         ).show()
     }
@@ -393,7 +393,7 @@ class DetailsActivity : ThoughtManagerActivity() {
 
     private fun updateUI(thought: ThoughtDTO) {
         updateRichTextUI(thought)
-        updateThreadUI(thought)
+        updateSubjectUI(thought)
         updateValueUI(thought)
         updateAudioUI(thought)
         updatePhotoUI(thought)
@@ -426,15 +426,15 @@ class DetailsActivity : ThoughtManagerActivity() {
         }
     }
 
-    private fun updateThreadUI(thought: ThoughtDTO) {
-        if (thought.thread.isNullOrBlank()) {
-            binding.btnThreadPlaceholder.visibility = View.VISIBLE
-            binding.tvThread.visibility = View.GONE
+    private fun updateSubjectUI(thought: ThoughtDTO) {
+        if (thought.subject.isNullOrBlank()) {
+            binding.btnSubjectPlaceholder.visibility = View.VISIBLE
+            binding.tvSubject.visibility = View.GONE
         }
         else {
-            binding.btnThreadPlaceholder.visibility = View.GONE
-            binding.tvThread.visibility = View.VISIBLE
-            binding.tvThread.text = thought.thread
+            binding.btnSubjectPlaceholder.visibility = View.GONE
+            binding.tvSubject.visibility = View.VISIBLE
+            binding.tvSubject.text = thought.subject
         }
     }
 

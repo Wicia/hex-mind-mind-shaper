@@ -16,7 +16,7 @@ data class ThoughtDTO(
 
     // Links
     var domainId: Int? = null,
-    var thread: String? = null,
+    var subject: String? = null,
     var soulMate: String? = null,
     var project: String? = null,
 
@@ -66,7 +66,7 @@ data class ThoughtDTO(
         if (createdAt != other.createdAt) return false
         if (updatedAt != other.updatedAt) return false
         if (domainId != other.domainId) return false
-        if (thread != other.thread) return false
+        if (subject != other.subject) return false
         if (richText != other.richText) return false
         if (soulMate != other.soulMate) return false
         if (project != other.project) return false
@@ -82,7 +82,7 @@ data class ThoughtDTO(
         result = 31 * result + createdAt.hashCode()
         result = 31 * result + updatedAt.hashCode()
         result = 31 * result + (domainId ?: 0)
-        result = 31 * result + (thread?.hashCode() ?: 0)
+        result = 31 * result + (subject?.hashCode() ?: 0)
         result = 31 * result + (richText?.hashCode() ?: 0)
         result = 31 * result + (soulMate?.hashCode() ?: 0)
         result = 31 * result + (project?.hashCode() ?: 0)

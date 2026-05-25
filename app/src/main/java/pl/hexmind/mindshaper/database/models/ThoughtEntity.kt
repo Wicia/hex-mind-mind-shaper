@@ -27,8 +27,8 @@ data class ThoughtEntity(
     @ColumnInfo(name = "domain_id")
     val domainId: Int?,
 
-    @ColumnInfo(name = "thread")
-    val thread: String? = null,
+    @ColumnInfo(name = "subject")
+    val subject: String? = null,
 
     @ColumnInfo(name = "created_at")
     val createdAt: Instant = Instant.now(),
@@ -72,7 +72,7 @@ data class ThoughtEntity(
 
         if (id != other.id) return false
         if (domainId != other.domainId) return false
-        if (thread != other.thread) return false
+        if (subject != other.subject) return false
         if (createdAt != other.createdAt) return false
         if (updatedAt != other.updatedAt) return false
         if (soulMate != other.soulMate) return false
@@ -91,7 +91,7 @@ data class ThoughtEntity(
     override fun hashCode(): Int {
         var result = id ?: 0
         result = 31 * result + (domainId ?: 0)
-        result = 31 * result + (thread?.hashCode() ?: 0)
+        result = 31 * result + (subject?.hashCode() ?: 0)
         result = 31 * result + createdAt.hashCode()
         result = 31 * result + updatedAt.hashCode()
         result = 31 * result + (soulMate?.hashCode() ?: 0)

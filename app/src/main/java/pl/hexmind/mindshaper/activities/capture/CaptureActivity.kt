@@ -370,7 +370,7 @@ class CaptureActivity : ThoughtManagerActivity() {
 
         // Update draft with hex tags
         viewModel.updateHexTags(
-            thread = tags.thread,
+            subject = tags.subject,
             project = tags.project,
             soulMate = tags.soulMate
         )

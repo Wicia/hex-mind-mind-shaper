@@ -38,10 +38,10 @@ class GoalDetailViewModel @Inject constructor(
                 return@launch
             }
 
-            // Fetch linked thoughts (lightweight: id + thread only, no BLOBs)
+            // Fetch linked thoughts (lightweight: id + subject only, no BLOBs)
             val thoughtIds = dto.guidelines.mapNotNull { it.thoughtId }
-            val threadsMap: Map<Int, String?> = if (thoughtIds.isEmpty()) emptyMap()
-                else thoughtsService.getThreadsByIds(thoughtIds)
+            val subjectsMap: Map<Int, String?> = if (thoughtIds.isEmpty()) emptyMap()
+                else thoughtsService.getSubjectsByIds(thoughtIds)
 
             _goal.value = Goal(
                 id             = dto.id,
@@ -55,7 +55,7 @@ class GoalDetailViewModel @Inject constructor(
                         currentRepetitions = g.currentRepetitions,
                         maxRepetitions     = g.maxRepetitions,
                         thoughtId          = g.thoughtId,
-                        thoughtThread      = g.thoughtId?.let { threadsMap[it] }
+                        thoughtSubject     = g.thoughtId?.let { subjectsMap[it] }
                     )
                 }
             )
@@ -174,10 +174,10 @@ class GoalDetailViewModel @Inject constructor(
      * Handles actions "unpin only" or "unpin + delete thought".
      */
     fun unlinkThought(guidelineId: Int, alsoDeleteThought: Boolean) {
-        // Optimistic UI: clear thoughtId + thread in the affected guideline
+        // Optimistic UI: clear thoughtId + subject in the affected guideline
         _goal.value = _goal.value?.let { goal ->
             goal.copy(subItems = goal.subItems.map {
-                if (it.id == guidelineId) it.copy(thoughtId = null, thoughtThread = null)
+                if (it.id == guidelineId) it.copy(thoughtId = null, thoughtSubject = null)
                 else it
             })
         }

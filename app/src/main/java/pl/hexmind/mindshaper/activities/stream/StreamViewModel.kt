@@ -171,7 +171,7 @@ class StreamViewModel @Inject constructor(
 
         if (!query.areCriteriaEmpty()) {
             filtered = filtered.filter { thought ->
-                matchesCriteria(thought.thread, query.thread) &&
+                matchesCriteria(thought.subject, query.subject) &&
                         matchesCriteria(thought.soulMate, query.soulMate) &&
                         matchesCriteria(thought.project, query.project)
             }
@@ -190,7 +190,7 @@ class StreamViewModel @Inject constructor(
         val comparator: Comparator<ThoughtDTO> = when (config.property) {
             SortProperty.CREATED_AT -> compareBy(nullsLast()) { it.createdAt }
             SortProperty.UPDATED_AT -> compareBy(nullsLast()) { it.updatedAt }
-            SortProperty.THREAD -> compareBy(nullsLast()) { it.thread?.lowercase() }
+            SortProperty.SUBJECT -> compareBy(nullsLast()) { it.subject?.lowercase() }
             SortProperty.SOUL_MATE -> compareBy(nullsLast()) { it.soulMate?.lowercase() }
             SortProperty.PROJECT -> compareBy(nullsLast()) { it.project?.lowercase() }
             SortProperty.VALUE -> compareBy(nullsLast()) { it.value }

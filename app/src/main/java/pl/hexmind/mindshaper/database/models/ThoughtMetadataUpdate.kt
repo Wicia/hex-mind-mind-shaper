@@ -14,8 +14,8 @@ data class ThoughtMetadataUpdate(
     @ColumnInfo(name = "domain_id")
     val domainId: Int?,
 
-    @ColumnInfo(name = "thread")
-    val thread: String?,
+    @ColumnInfo(name = "subject")
+    val subject: String?,
 
     @ColumnInfo(name = "soul_mate")
     val soulMate: String?,

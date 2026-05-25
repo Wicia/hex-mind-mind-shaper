@@ -13,7 +13,7 @@ class ThoughtValidator @Inject constructor(
     private val appSettingsStorage: AppSettingsStorage
 ) {
     companion object {
-        const val THREAD_MAX_CHARS: Int = 36
+        const val SUBJECT_MAX_CHARS: Int = 36
         const val PROJECT_MAX_CHARS: Int = 36
         const val SOUL_MATES_MAX_CHARS: Int = 36
 
@@ -43,17 +43,17 @@ class ThoughtValidator @Inject constructor(
         }
     }
 
-    fun validateThread(threadString: String?): ValidationResult {
-        val thread = threadString?.trim().orEmpty()
-        if (thread.isEmpty()) {
+    fun validateSubject(subjectString: String?): ValidationResult {
+        val subject = subjectString?.trim().orEmpty()
+        if (subject.isEmpty()) {
             return ValidationResult.Valid()
         }
 
-        return if (thread.length > THREAD_MAX_CHARS) {
+        return if (subject.length > SUBJECT_MAX_CHARS) {
             ValidationResult.Error(
-                R.string.common_thread_error_chars_exceeded,
-                THREAD_MAX_CHARS.toString(),
-                ValidatedProperty.T_THREAD
+                R.string.common_subject_error_chars_exceeded,
+                SUBJECT_MAX_CHARS.toString(),
+                ValidatedProperty.T_SUBJECT
             )
         }
         else {

@@ -229,5 +229,43 @@ class Migrations {
             }
         }
 
+        // Rename column: thread -> subject
+        val MIGRATION_11_TO_12 = object : Migration(11, 12) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE THOUGHTS_NEW (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        domain_id INTEGER,
+                        subject TEXT,
+                        created_at INTEGER NOT NULL,
+                        updated_at INTEGER NOT NULL,
+                        soul_mate TEXT,
+                        project TEXT,
+                        value INTEGER NOT NULL DEFAULT 1,
+                        rich_text TEXT,
+                        audio_data BLOB,
+                        audio_duration_ms INTEGER,
+                        photo_data BLOB,
+                        photo_file_size INTEGER,
+                        FOREIGN KEY (domain_id) REFERENCES DOMAINS(id) ON DELETE SET NULL
+                    )
+                """
+                )
+                db.execSQL(
+                    """
+                    INSERT INTO THOUGHTS_NEW
+                    SELECT id, domain_id, thread, created_at, updated_at,
+                           soul_mate, project, value, rich_text,
+                           audio_data, audio_duration_ms,
+                           photo_data, photo_file_size
+                    FROM THOUGHTS
+                """
+                )
+                db.execSQL("DROP TABLE THOUGHTS")
+                db.execSQL("ALTER TABLE THOUGHTS_NEW RENAME TO THOUGHTS")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_THOUGHTS_domain_id ON THOUGHTS(domain_id)")
+            }
+        }
     }
 }

@@ -24,7 +24,7 @@ enum class SortProperty(
     VALUE(R.string.sort_property_value, SortPropertyType.NUMBER),
     CREATED_AT(R.string.sort_property_created_at, SortPropertyType.DATE),
     UPDATED_AT(R.string.sort_property_updated_at, SortPropertyType.DATE),
-    THREAD(R.string.sort_property_thread, SortPropertyType.TEXT),
+    SUBJECT(R.string.sort_property_subject, SortPropertyType.TEXT),
     SOUL_MATE(R.string.sort_property_soul_mate, SortPropertyType.TEXT),
     PROJECT(R.string.sort_property_project, SortPropertyType.TEXT);
 }

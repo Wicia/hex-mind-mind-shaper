@@ -35,9 +35,9 @@ class ThoughtsRepository @Inject constructor(
         thoughtsDAO.deleteById(id)
     }
 
-    suspend fun getThreadsByIds(ids: List<Int>): Map<Int, String?> {
+    suspend fun getSubjectsByIds(ids: List<Int>): Map<Int, String?> {
         if (ids.isEmpty()) return emptyMap()
-        return thoughtsDAO.getThreadsByIds(ids).associate { it.id to it.thread }
+        return thoughtsDAO.getSubjectsByIds(ids).associate { it.id to it.subject }
     }
 
     suspend fun updateThoughtMetadata(metadata: ThoughtMetadataUpdate) {

@@ -17,6 +17,7 @@
     <string name="hex_tags_hint_person">Osoba lub Ekipa</string>
     <string name="hex_tags_hint_project">Projekt</string>
     <string name="hex_tags_label_domain">| Domena</string>
+    <string name="hex_tags_subject_prefix">"⧽  %s"</string>
 
     <!-- BUTTONS & ACTIONS ________________________________________________________ -->
     <string name="common_btn_save">Zapisz</string>
@@ -37,8 +38,8 @@
     <string name="common_btn_cancel_replace">Nie, zostaw</string>
 
     <!-- HEX TAGS (metadata) -->
-    <string name="common_hex_tag_thread">Wątek lub Temat</string>
-    <string name="common_thread_error_chars_exceeded">Wątek nie może przekroczyć %s znaków…</string>
+    <string name="common_hex_tag_subject">Temat</string>
+    <string name="common_subject_error_chars_exceeded">Temat nie może przekroczyć %s znaków…</string>
     <string name="common_project_error_chars_exceeded">Projekt nie może przekroczyć %s znaków…</string>
     <string name="common_soul_mates_error_chars_exceeded">Opis osób nie może przekroczyć %s znaków…</string>
 
@@ -255,7 +256,7 @@
 
     <!-- Core -->
     <string name="capture_main_label">Łapanie myśli</string>
-    <string name="capture_hex_tags_tooltip">wątek @osoba #projekt</string>
+    <string name="capture_hex_tags_tooltip">temat @osoba #projekt</string>
 
     <string name="capture_error_noContent">Potrzebujesz cos zapisać (tekst, nagranie lub obraz)</string>
 
@@ -299,7 +300,7 @@
 
     <string name="sort_property_created_at">Wiek</string>
 
-    <string name="sort_property_thread">Wątek</string>
+    <string name="sort_property_subject">Temat</string>
     <string name="sort_property_soul_mate">Osoba</string>
     <string name="sort_property_project">Projekt</string>
     <string name="sort_property_value">Wartość</string>

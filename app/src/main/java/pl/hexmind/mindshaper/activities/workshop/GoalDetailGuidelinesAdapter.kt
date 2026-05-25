@@ -127,8 +127,8 @@ class GoalDetailGuidelinesAdapter(
         }
         holder.btnLinkedThought.visibility = View.VISIBLE
 
-        // Fallback when thread is empty/null
-        holder.btnLinkedThought.text = guideline.thoughtThread
+        // Fallback when subject is empty/null
+        holder.btnLinkedThought.text = guideline.thoughtSubject
             ?.takeIf { it.isNotBlank() }
             ?: holder.btnLinkedThought.context.getString(R.string.workshop_guideline_linked_thought_fallback)
 

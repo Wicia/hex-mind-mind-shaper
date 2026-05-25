@@ -28,7 +28,7 @@ data class GoalGuideline(
 
     // Linked thought -> TODO: Change names to linkedThoughtId etc.?
     val thoughtId: Int? = null,
-    val thoughtThread: String? = null
+    val thoughtSubject: String? = null
 ) {
     // Completed when progress reaches the target; used for visual styling in the adapter
     val isCompleted: Boolean get() = currentRepetitions >= maxRepetitions

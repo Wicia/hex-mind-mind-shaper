@@ -20,8 +20,8 @@ class HexTagsUtils {
             if (soulMateIndex != -1) tags.add(Tag("soulMate", soulMateIndex))
             tags.sortBy { it.index }
 
-            // Thread - text before first tag (null if empty)
-            val thread = if (tags.isNotEmpty()) {
+            // Subject - text before first tag (null if empty)
+            val subject = if (tags.isNotEmpty()) {
                 val text = input.substring(0, tags.first().index).trim()
                 text.ifEmpty { null }
             } else {
@@ -43,18 +43,18 @@ class HexTagsUtils {
                 input.substring(start, nextTagIndex).trim().ifEmpty { null }
             } else null
 
-            return HexTags(thread = thread, soulMate = soulMate, project = project)
+            return HexTags(subject = subject, soulMate = soulMate, project = project)
         }
     }
 }
 
 @Parcelize
 data class HexTags (
-    val thread : String? = null,
+    val subject : String? = null,
     val soulMate: String? = null,
     val project: String? = null
 ) : Parcelable {
     fun areCriteriaEmpty() : Boolean{
-        return thread.isNullOrBlank() && soulMate.isNullOrBlank() && project.isNullOrBlank()
+        return subject.isNullOrBlank() && soulMate.isNullOrBlank() && project.isNullOrBlank()
     }
 }

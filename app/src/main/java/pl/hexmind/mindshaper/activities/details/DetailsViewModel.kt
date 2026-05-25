@@ -81,10 +81,10 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    fun updateThread(thread: String) {
+    fun updateSubject(subject: String) {
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
-                thought.thread = thread
+                thought.subject = subject
                 thoughtsService.updateThoughtMetadata(thought)
             }
         }
