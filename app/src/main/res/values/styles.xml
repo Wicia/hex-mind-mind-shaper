@@ -282,6 +282,13 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <!-- GHOST variant (no background) -->
+
+    <style name="SecondaryActionButton.Ghost" parent="SecondaryActionButton">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
     <!--=== AUXILIARY ===-->
 
     <style name="AuxiliaryActionButton" parent="BaseActionButton">
