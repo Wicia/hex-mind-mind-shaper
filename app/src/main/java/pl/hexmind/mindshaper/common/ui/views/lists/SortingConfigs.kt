@@ -21,12 +21,12 @@ data class SortConfig(
 enum class SortProperty(
     @StringRes val displayNameRes: Int,
     val type: SortPropertyType) : Parcelable {
-    VALUE(R.string.sort_property_value, SortPropertyType.NUMBER),
-    CREATED_AT(R.string.sort_property_created_at, SortPropertyType.DATE),
-    UPDATED_AT(R.string.sort_property_updated_at, SortPropertyType.DATE),
-    SUBJECT(R.string.sort_property_subject, SortPropertyType.TEXT),
-    SOUL_MATE(R.string.sort_property_soul_mate, SortPropertyType.TEXT),
-    PROJECT(R.string.sort_property_project, SortPropertyType.TEXT);
+    VALUE(R.string.stream_sort_property_value, SortPropertyType.NUMBER),
+    CREATED_AT(R.string.stream_sort_property_created_at, SortPropertyType.DATE),
+    UPDATED_AT(R.string.stream_sort_property_updated_at, SortPropertyType.DATE),
+    SUBJECT(R.string.stream_sort_property_subject, SortPropertyType.TEXT),
+    SOUL_MATE(R.string.stream_sort_property_soul_mate, SortPropertyType.TEXT),
+    PROJECT(R.string.stream_sort_property_project, SortPropertyType.TEXT);
 }
 
 @Parcelize
@@ -44,14 +44,14 @@ enum class SortDirection(val resSortLabelText: Int,
                          val resSortLabelNumber: Int,
                          val resSortLabelDate: Int) : Parcelable {
     ASCENDING(
-        R.string.sort_text_asc_label,
-        R.string.sort_value_asc_label,
-        R.string.sort_date_asc_label
+        R.string.stream_sort_text_asc_label,
+        R.string.stream_sort_value_asc_label,
+        R.string.stream_sort_date_asc_label
     ),
     DESCENDING(
-        R.string.sort_text_desc_label,
-        R.string.sort_value_desc_label,
-        R.string.sort_date_desc_label
+        R.string.stream_sort_text_desc_label,
+        R.string.stream_sort_value_desc_label,
+        R.string.stream_sort_date_desc_label
     );
 
     fun toggle(): SortDirection {

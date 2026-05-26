@@ -399,7 +399,7 @@ class CaptureActivity : ThoughtManagerActivity() {
         else {
             // Error - show message
             binding.tvHexTagsValidationInfo.text = result.exceptionOrNull()?.message
-                ?: getString(R.string.capture_voice_error_saving)
+                ?: getString(R.string.capture_voice_error_save_failed)
         }
     }
 

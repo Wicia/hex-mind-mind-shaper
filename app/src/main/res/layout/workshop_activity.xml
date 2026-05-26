@@ -134,7 +134,7 @@
                         android:id="@+id/tv_paths_pool_empty"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/path_pool_empty"
+                        android:text="@string/workshop_path_pool_empty"
                         android:textSize="13sp"
                         android:textColor="@color/_gray_lvl_3"
                         android:textAlignment="center"

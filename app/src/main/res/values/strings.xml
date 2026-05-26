@@ -1,69 +1,36 @@
 <resources>
 
-    <!-- [module/feature] / [component/screen] -> [message type] -> [details] -->
-    <!-- [module/feature] / [component/screen] -> label -> [element] -->
+    <!-- Naming convention: [module]_[screen]_[type]_[detail] -->
 
-    <!-- ============================================================================ -->
-    <!--    CORE / COMMON -->
-    <!-- ============================================================================ -->
+    <!-- ============================================================ -->
+    <!--    COMMON                                                    -->
+    <!-- ============================================================ -->
 
     <string name="app_name">MindShaper</string>
 
+    <!-- TODO: placeholder used in HomeActivity header - replace with proper string -->
     <string name="common_foobar">""</string>
 
-    <string name="common_thought_draft_notFound">No draft available</string>
+    <string name="common_thought_draft_not_found">No draft available</string>
+    <string name="common_in_folder">w folderze</string>
 
-    <string name="hex_tags_dialog_header">Tagowanie</string>
-    <string name="hex_tags_hint_person">Osoba lub Ekipa</string>
-    <string name="hex_tags_hint_project">Projekt</string>
-    <string name="hex_tags_label_domain">| Domena</string>
-    <string name="hex_tags_subject_prefix">"⧽  %s"</string>
-
-    <!-- BUTTONS & ACTIONS ________________________________________________________ -->
+    <!-- Buttons & Actions -->
     <string name="common_btn_save">Zapisz</string>
     <string name="common_btn_cancel">Anuluj</string>
     <string name="common_btn_cancel_not_now">Nie teraz</string>
     <string name="common_btn_confirm_ok">OK</string>
     <string name="common_btn_confirm_ok_2">Dobra</string>
-
     <string name="common_btn_add">\?</string>
     <string name="common_btn_create">+</string>
     <string name="common_btn_increase">+</string>
     <string name="common_btn_decrease">-</string>
-
-    <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
-
     <string name="common_btn_grant_permission">Przyznaj</string>
     <string name="common_btn_confirm_replace">Tak, zastąp</string>
     <string name="common_btn_cancel_replace">Nie, zostaw</string>
 
-    <!-- HEX TAGS (metadata) -->
-    <string name="common_hex_tag_subject">Temat</string>
-    <string name="common_subject_error_chars_exceeded">Temat nie może przekroczyć %s znaków…</string>
-    <string name="common_project_error_chars_exceeded">Projekt nie może przekroczyć %s znaków…</string>
-    <string name="common_soul_mates_error_chars_exceeded">Opis osób nie może przekroczyć %s znaków…</string>
+    <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
 
-    <!-- FILES -->
-    <string name="files_audio_error_file_not_accessible">Plik audio nie jest już dostępny</string>
-    <string name="file_audio_error_reading_file">Błąd odczytu pliku audio</string>
-    <string name="files_error_cannot_open_file_picker">Nie można otworzyć selektora plików</string>
-    <string name="files_error_selecting_file">Błąd podczas wyboru pliku</string>
-    <string name="files_audio_error_unknown_file">Nieznany plik audio</string>
-    <string name="files_error_unknown_file">Nieznany plik</string>
-    <string name="files_state_no_file_selected">Nie wybrano pliku</string>
-
-    <string name="photos_removing_header">Coś ważnego!</string>
-    <string name="photos_removing_file">Wywalić to zdjęcie?</string>
-    <string name="photos_no_file">Brakuje tutaj zdjęcia…</string>
-    <string name="photos_loading_error">Coś się wyburaczyło przy ładowaniu zdjęcia…</string>
-
-    <!-- FOLDERS -->
-    <string name="in_folder">w folderze</string>
-
-    <!-- PLACEHOLDERS (TODO: To be replaced later) -->
-    <string name="common_placeholder_accessibility_content_desc">PLACEHOLDER</string>
-
-    <!-- DIALOGS -->
+    <!-- Dialogs -->
     <string name="common_deletion_dialog_title">Uwaga!</string>
     <string name="common_deletion_dialog_message">Czy na pewno chcesz usunąć %s?</string>
     <string name="common_deletion_dialog_yes">Usuń</string>
@@ -72,21 +39,19 @@
     <string name="common_deletion_dialog_confirmation">%s usunięto</string>
     <string name="common_deletion_dialog_warning">Tej operacji nie można cofnąć.</string>
     <string name="common_edit_note_header">Edytuj notatkę</string>
-    <string name="common_thoughts_forms_permissions_needed">Możesz aktywować zapisywanie myśli w formie nagrań głosowych oraz zdjęć w Ustawieniach.\n\nCzy przejść do Ustawień?</string>
-
     <string name="common_list_dialog_title">Wybierz coś sobie…</string>
-
+    <string name="common_thoughts_forms_permissions_needed">Możesz aktywować zapisywanie myśli w formie nagrań głosowych oraz zdjęć w Ustawieniach.\n\nCzy przejść do Ustawień?</string>
     <string name="common_thoughts_permissions_dialog_header">Żądanie uprawnień do zasobów Androida</string>
     <string name="common_dialog_open_android_settings">Otwórz ustawienia</string>
 
-    <!-- VALIDATION -->
+    <!-- Validation -->
     <string name="common_object_type_thought">Myśl</string>
 
-    <!-- ONBOARDING & TOOLTIPS-->
+    <!-- Onboarding -->
     <string name="common_onb_dialog_header">Wskazówka</string>
 
-    <!-- Thought Age -->
-    <string name="common_thought_age_pattern">Złapano %s dni temu</string>
+    <!-- Thought age -->
+    <string name="common_thought_age_pattern">Złapano %s dni temu</string> <!-- TODO: for 'updated' words sequence is opposite -->
     <string name="common_thought_age_0">Dzisiaj złapano</string>
     <string name="common_thought_age_1">Wczoraj złapano</string>
 
@@ -96,111 +61,48 @@
     <string name="common_thought_age_level_4_icon">🌾</string>
     <string name="common_thought_age_level_5_icon">🌴</string>
 
-    <!-- WELCOME -->
-    <string name="home_capturing_button_title">Witaj w "Domu" :)</string>
+    <string name="common_thought_updated_at_0">Zmieniono dziś</string>
+    <string name="common_thought_updated_at_1">Zmieniono wczoraj</string>
+    <string name="common_thought_updated_at_pattern">Zmieniono %s dni temu</string>
+
+    <!-- Placeholder (accessibility) -->
+    <!-- TODO: replace with proper content descriptions per element -->
+    <string name="common_placeholder_accessibility_content_desc">PLACEHOLDER</string>
+
+    <!-- HexTags widget -->
+    <string name="common_hex_tags_dialog_header">Tagowanie</string>
+    <string name="common_hex_tags_hint_person">Osoba lub Ekipa</string>
+    <string name="common_hex_tags_hint_project">Projekt</string>
+    <string name="common_hex_tags_label_domain">| Domena</string>
+    <string name="common_hex_tags_subject_prefix">"⧽  %s"</string>
+    <string name="common_hex_tag_subject">Temat</string>
+    <string name="common_subject_error_chars_exceeded">Temat nie może przekroczyć %s znaków…</string>
+    <string name="common_project_error_chars_exceeded">Projekt nie może przekroczyć %s znaków…</string>
+    <string name="common_soul_mates_error_chars_exceeded">Opis osób nie może przekroczyć %s znaków…</string>
+
+    <!-- Files -->
+    <string name="files_audio_error_file_not_accessible">Plik audio nie jest już dostępny</string>
+    <string name="files_audio_error_reading">Błąd odczytu pliku audio</string>
+    <string name="files_error_cannot_open_file_picker">Nie można otworzyć selektora plików</string>
+    <string name="files_error_selecting_file">Błąd podczas wyboru pliku</string>
+    <string name="files_audio_error_unknown_file">Nieznany plik audio</string>
+    <string name="files_error_unknown_file">Nieznany plik</string>
+    <string name="files_state_no_file_selected">Nie wybrano pliku</string>
+
+    <!-- Photos -->
+    <string name="photos_removing_header">Coś ważnego!</string>
+    <string name="photos_removing_file">Wywalić to zdjęcie?</string>
+    <string name="photos_no_file">Brakuje tutaj zdjęcia…</string>
+    <string name="photos_loading_error">Coś się wyburaczyło przy ładowaniu zdjęcia…</string>
+
+    <!-- ============================================================ -->
+    <!--    HOME Activity                                             -->
+    <!-- ============================================================ -->
+
+    <string name="home_capturing_button_title">Witaj w \"Domu\" :)</string>
     <string name="home_capturing_button_tooltip">Jak ci wpadnie coś do głowy co chcesz zapisać to tapnij w przycisk na środku</string>
     <string name="home_navigation_button_title">A tymczasem… :)</string>
     <string name="home_navigation_button_tooltip">Tapnij na ikonkę z kompasem (rym!), a potem na ikonkę koła zymbatego</string>
-
-    <!-- SETTINGS -->
-    <string name="settings_entry_title_1">Ustawienia</string>
-    <string name="settings_entry_tooltip_1">
-    <![CDATA[
-        W tym kreatywnym miejscu skroisz aplikację pod siebie!\n\n
-        Tapnij na nagłówki, które Cię zainteresują…
-    ]]></string>
-    <string name="settings_entry_title_2">Zmieniaj ;)</string>
-    <string name="settings_entry_tooltip_2">Zapraszam Cię do radosnej zmiany ustawień i testów :)</string>
-
-    <string name="settings_your_name_title">Sekcja personalizacji</string>
-    <string name="settings_your_name_tooltip">[Jakiś mądry tekst, który nie istnieje a miał w tym miejscu być] </string>
-
-    <string name="settings_domains_title">Sekcja "Domeny"</string>
-    <string name="settings_domains_tooltip">Zdefiniujesz tutaj \"Domeny\" - swoje kategorie lub szufladki dla myśli</string>
-    <string name="sheet_domains_edit_title">Edytuj domenę</string>
-    <string name="sheet_domains_edit_icons_title">| Ikona</string>
-
-    <string name="settings_thought_value_title">Sekcja "Skala wartości myśli"</string>
-    <string name="settings_thought_value_tooltip">Każdej myśli możesz nadać wartość/wagę/priorytet liczbowy.\nOd ciebie zależą jego wartości… </string>
-
-    <string name="settings_backup_title_1">Sekcja "Kopia zapasowa"</string>
-    <string name="settings_backup_tooltip_1">Jeżeli chcesz mieć zarchiwizowane dane swoich myśli w pamięci telefonu, to ta opcja musi być "włączona"</string>
-    <string name="settings_backup_title_2">Jak to działa?</string>
-    <string name="settings_backup_tooltip_2">Gdy uruchomisz aplikację jej mechanizm zapisze dane twoich myśli.\n\nMoże się to wydarzyć maksymalnie raz na godzinę.</string>
-
-    <string name="settings_backup_stats">ⓘ Obecnie masz %1$d plików z kopią zapasową o wadze %2$.1f MB</string>
-    <string name="settings_backup_no_snapshots">Brak zapisanych kopii zapasowych…</string>
-
-    <string name="settings_backup_error_version_mismatch">Backup z nowszej wersji aplikacji (%1$d) nie może być załadowany (aktualna wersja: %2$d)</string>
-
-    <!-- STREAM -->
-    <string name="stream_entry_title">Twoje myśli</string>
-    <string name="stream_entry_tooltip">W tym ruchliwym miejscu przeglądniesz swoje myśli.</string>
-
-    <string name="stream_entry_searching_title">Wyszukiwanie myśli</string>
-    <string name="stream_entry_searching_tooltip"><![CDATA[
-        Widzisz pole do wyszukiwania u góry? To z pomarańczowym znakiem "?"\n
-        To wskazówka jak szybko szukać myśli - możesz ją aktywować po każdym tapnięciu na nią.
-    ]]></string>
-
-    <string name="stream_searching_title_1">Wyszukiwanie myśli</string>
-    <string name="stream_searching_tooltip_1"><![CDATA[
-        Wpisujesz do pola-szukajki specjalny tekst, a ta od razu Ci szuka:\n\n
-        wspomnienie - wyszuka myśli z etykietą \"wspomnienie\"\n\n
-        #gotowanie - wyszuka myśli z projektem \"gotowanie\"\n\n
-        @Michał - wyszuka myśli z osobą \"Michał\"
-    ]]></string>
-    <string name="stream_searching_title_2">Połączone wyszukiwanie</string>
-    <string name="stream_searching_tooltip_2"><![CDATA[
-        Możesz też połączyć kilka fraz w jedno:\n\n
-        wspomnienie @Michał #wakacje \n\n- wyszuka myśli z etykietą \"wspomnienie\"\n- oraz osobą \"Michał\" \n- oraz projektem \"wakacje\"
-    ]]></string>
-
-    <string name="stream_deleting_title">Usuwanie myśli</string>
-    <string name="stream_deleting_tooltip">Przytrzymując pomarańczowy obszar z myślą możesz go usunąć</string>
-
-    <string name="stream_details_title">Szczegóły myśli</string>
-    <string name="stream_details_tooltip">No i tapując palcem na niego wejdziesz w szczegóły… (kto by pomyślał?)</string>
-
-    <!-- DETAILS -->
-    <string name="details_entry_title">Szczegóły myśli</string>
-    <string name="details_entry_tooltip">To miejsce to warsztat, w którym rzeźbisz i rozwijasz swoją myśl</string>
-
-    <string name="details_fields_title">Edycja myśli</string>
-    <string name="details_fields_tooltip">Tapując na pomarańczowe etykiety/pola zdefiniujesz lub zmienisz zapisaną w nich treść</string>
-
-    <string name="details_value_title">Zmiana wartości myśli</string>
-    <string name="details_value_tooltip">Dodatkowo podbijesz wartość myśli tapując na nią. Możesz także podbijać i obniżać wartość innym sposobem który przypomina coś… \"naturalnego\"</string>
-
-    <string name="details_extra_forms_title">Dodatkowe formy złapanej myśli</string>
-    <string name="details_extra_forms_tooltip">No i guziorami u dołu z [+] możesz dodać dodatkowe formy zapisu myśli</string>
-
-    <string name="capturing_entry_title">Łapanie myśli</string>
-    <string name="capturing_entry_tooltip"><![CDATA[
-        Czas na złapanie swojej pierwszej myśli! :)\n\n
-        Guziorami u dołu z [+] możesz wybrać postać/formę zapisu myśli:\n
-        tekst -> dźwięk -> zdjęcie
-    ]]></string>
-    <string name="capturing_hextags_link_title">Skojarzenia lub Tagi dla myśli</string>
-    <string name="capturing_hextags_link_tooltip">Tapnij na puste pole u góry…</string>
-
-    <string name="capturing_hextags_title">Skojarzenia lub Tagi dla myśli</string>
-    <string name="capturing_hextags_tooltip"><![CDATA[
-        W tym polu możesz szybko dodać skojarzenia / tagi do myśli:\n
-        ✓ osoba (znak @)\n
-        ✓ projekt (znak #)\n
-        ✓ temat (brak znaku)\n
-    ]]></string>
-    <string name="capturing_hextags_example_title">Może mały przykład?</string>
-    <string name="capturing_hextags_example_tooltip"><![CDATA[
-        Wpisz w polu tekstowym… tekst:\n\n
-            sukces  #aplikacja  @ja\n\n
-        następnie Zapisz i zobacz szczegóły nowo złapanej myśli
-    ]]></string>
-
-    <!-- ============================================================================ -->
-    <!--    Activity: HOME -->
-    <!-- ============================================================================ -->
 
     <array name="home_greetings_values_list">
         <item>Dużo dobrego %s!</item>
@@ -216,26 +118,142 @@
         <item>Dobrze Cię widzieć %s ;)</item>
     </array>
 
-    <!-- ============================================================================ -->
-    <!--    Activity: DETAILS / EDIT -->
-    <!-- ============================================================================ -->
+    <!-- ============================================================ -->
+    <!--    CAPTURE Activity                                          -->
+    <!-- ============================================================ -->
 
+    <!-- Onboarding -->
+    <string name="capture_entry_title">Łapanie myśli</string>
+    <string name="capture_entry_tooltip"><![CDATA[
+        Czas na złapanie swojej pierwszej myśli! :)\n\n
+        Guziorami u dołu z [+] możesz wybrać postać/formę zapisu myśli:\n
+        tekst -> dźwięk -> zdjęcie
+    ]]></string>
+    <string name="capture_hex_tags_link_title">Skojarzenia lub Tagi dla myśli</string>
+    <string name="capture_hex_tags_link_tooltip">Tapnij na puste pole u góry…</string>
+    <string name="capture_hex_tags_title">Skojarzenia lub Tagi dla myśli</string>
+    <string name="capture_hex_tags_onb_tooltip"><![CDATA[
+        W tym polu możesz szybko dodać skojarzenia / tagi do myśli:\n
+        ✓ osoba (znak @)\n
+        ✓ projekt (znak #)\n
+        ✓ temat (brak znaku)\n
+    ]]></string>
+    <string name="capture_hex_tags_example_title">Może mały przykład?</string>
+    <string name="capture_hex_tags_example_tooltip"><![CDATA[
+        Wpisz w polu tekstowym… tekst:\n\n
+            sukces  #aplikacja  @ja\n\n
+        następnie Zapisz i zobacz szczegóły nowo złapanej myśli
+    ]]></string>
+
+    <!-- Core -->
+    <string name="capture_main_label">Łapanie myśli</string>
+    <string name="capture_hex_tags_tooltip">temat @osoba #projekt</string>
+    <string name="capture_error_no_content">Potrzebujesz cos zapisać (tekst, nagranie lub obraz)</string>
+
+    <!-- Rich text -->
+    <string name="capture_rich_text_error_note_empty">To wyżej nie może być puste</string>
+
+    <!-- Voice recording -->
+    <string name="capture_voice_recording_tooltip">Nagrywam…</string>
+    <string name="capture_voice_tooltip">Gotowy do nagrywania</string>
+    <string name="capture_voice_status_recording_saved">Nagranie zapisane</string>
+    <string name="capture_voice_status_max_duration_reached">Osiągnięto maksymalny czas nagrania (3 min)</string>
+    <string name="capture_voice_error_not_exists">Nagranie nie istnieje :(</string>
+    <string name="capture_voice_error_empty">Eeee… To nagranie ma 0 sekund :/</string>
+    <string name="capture_voice_error_recording">Błąd podczas nagrywania</string>
+    <string name="capture_voice_error_save_failed">Błąd podczas zapisywania do bazy</string>
+
+    <!-- ============================================================ -->
+    <!--    STREAM Activity                                           -->
+    <!-- ============================================================ -->
+
+    <!-- Onboarding -->
+    <string name="stream_entry_title">Twoje myśli</string>
+    <string name="stream_entry_tooltip">W tym ruchliwym miejscu przeglądniesz swoje myśli.</string>
+    <string name="stream_entry_searching_title">Wyszukiwanie myśli</string>
+    <string name="stream_entry_searching_tooltip"><![CDATA[
+        Widzisz pole do wyszukiwania u góry? To z pomarańczowym znakiem "?"\n
+        To wskazówka jak szybko szukać myśli - możesz ją aktywować po każdym tapnięciu na nią.
+    ]]></string>
+    <string name="stream_searching_title_1">Wyszukiwanie myśli</string>
+    <string name="stream_searching_tooltip_1"><![CDATA[
+        Wpisujesz do pola-szukajki specjalny tekst, a ta od razu Ci szuka:\n\n
+        wspomnienie - wyszuka myśli z etykietą \"wspomnienie\"\n\n
+        #gotowanie - wyszuka myśli z projektem \"gotowanie\"\n\n
+        @Michał - wyszuka myśli z osobą \"Michał\"
+    ]]></string>
+    <string name="stream_searching_title_2">Połączone wyszukiwanie</string>
+    <string name="stream_searching_tooltip_2"><![CDATA[
+        Możesz też połączyć kilka fraz w jedno:\n\n
+        wspomnienie @Michał #wakacje \n\n- wyszuka myśli z etykietą \"wspomnienie\"\n- oraz osobą \"Michał\" \n- oraz projektem \"wakacje\"
+    ]]></string>
+    <string name="stream_deleting_title">Usuwanie myśli</string>
+    <string name="stream_deleting_tooltip">Przytrzymując pomarańczowy obszar z myślą możesz go usunąć</string>
+    <string name="stream_details_title">Szczegóły myśli</string>
+    <string name="stream_details_tooltip">No i tapując palcem na niego wejdziesz w szczegóły… (kto by pomyślał?)</string>
+
+    <!-- Main -->
+    <string name="stream_title">Strumień myśli</string>
+    <string name="stream_thought_metadata_empty">\?\?\?</string>
+    <string name="stream_item_empty_thought">- ? -\n\nTa myśl jest pusta…</string>
+
+    <!-- Search -->
+    <string name="stream_searchbar_hint">Szukajka czeka na twoje polecenie…</string>
+
+    <!-- Filter -->
+    <string name="stream_filter_dialog_title">Filtruj</string>
+    <string name="stream_filter_button_none">-</string>
+    <string name="stream_filter_label_states">| Stany</string>
+    <string name="stream_filter_show_active">Aktywne myśli</string>
+    <string name="stream_filter_show_dormant">Uśpione myśli</string>
+    <string name="stream_filter_toast_count">Wybrano %1s myśli</string>
+
+    <!-- Sort -->
+    <string name="stream_sort_dialog_header">Sortowanie</string>
+    <string name="stream_sort_property_created_at">Wiek</string>
+    <string name="stream_sort_property_subject">Temat</string>
+    <string name="stream_sort_property_soul_mate">Osoba</string>
+    <string name="stream_sort_property_project">Projekt</string>
+    <string name="stream_sort_property_value">Wartość</string>
+    <string name="stream_sort_property_updated_at">Data zmiany</string>
+    <string name="stream_sort_text_desc_label">Z → A</string>
+    <string name="stream_sort_text_asc_label">A → Z</string>
+    <string name="stream_sort_value_desc_label">od Ważnych</string>
+    <string name="stream_sort_value_asc_label">od Drobnych</string>
+    <string name="stream_sort_date_desc_label">od Młodych</string>
+    <string name="stream_sort_date_asc_label">od Starych</string>
+
+    <!-- ============================================================ -->
+    <!--    DETAILS Activity                                          -->
+    <!-- ============================================================ -->
+
+    <!-- Onboarding -->
+    <string name="details_entry_title">Szczegóły myśli</string>
+    <string name="details_entry_tooltip">To miejsce to warsztat, w którym rzeźbisz i rozwijasz swoją myśl</string>
+    <string name="details_fields_title">Edycja myśli</string>
+    <string name="details_fields_tooltip">Tapując na pomarańczowe etykiety/pola zdefiniujesz lub zmienisz zapisaną w nich treść</string>
+    <string name="details_value_title">Zmiana wartości myśli</string>
+    <string name="details_value_tooltip">Dodatkowo podbijesz wartość myśli tapując na nią. Możesz także podbijać i obniżać wartość innym sposobem który przypomina coś… \"naturalnego\"</string>
+    <string name="details_extra_forms_title">Dodatkowe formy złapanej myśli</string>
+    <string name="details_extra_forms_tooltip">No i guziorami u dołu z [+] możesz dodać dodatkowe formy zapisu myśli</string>
+
+    <!-- Main -->
     <string name="details_edit_thought_invalid_id">Niepoprawne ID rekordu Myśli :/</string>
     <string name="details_edit_thought_not_found">Nie znaleziono myśli :/</string>
 
+    <!-- Dormant / warning dialogs -->
     <string name="details_warning_dialog_title">⚠️ Myśl niedługo zaśnie</string>
     <string name="details_warning_dialog_message">Tej myśli zostały 3 dni do uśpienia. Edytuj ją lub zwiększ wartość, by ją zachować.</string>
-
     <string name="details_dormant_dialog_title">🌙 Uśpiona myśl</string>
     <string name="details_dormant_dialog_message">Ta myśl jest uśpiona — ma niską wartość i nie była modyfikowana od dłuższego czasu.</string>
-
     <string name="details_dormant_dialog_wake">Obudź</string>
     <string name="details_dormant_dialog_leave">Zostaw</string>
 
+    <!-- Slow mode -->
     <string name="details_slow_mode_title">⏳ Tryb powolny aktywny…</string>
     <string name="details_slow_mode_description">Nadawanie wartości tej myśli będzie możliwe za:</string>
 
-    <!-- Linked thought - details -->
+    <!-- Linked thought -->
     <string name="details_usage_linked">Wykorzystano w celu:</string>
     <string name="details_usage_not_linked">Nie powiązano z krokiem celu</string>
     <string name="details_usage_link_button">Powiąż z krokiem celu</string>
@@ -250,111 +268,73 @@
     <string name="details_picker_title">Wybierz krok</string>
     <string name="details_picker_empty_state">Wszystkie kroki mają już podpięte myśli. Najpierw odepnij jedną.</string>
 
-    <!-- ============================================================================ -->
-    <!--    Activity: CAPTURE THOUGHT -->
-    <!-- ============================================================================ -->
+    <!-- Rich text -->
+    <string name="details_rich_text_removing_header">Usunąć tekst?</string>
+    <string name="details_rich_text_removing_content">Ta operacja jest nieodwracalna</string>
 
-    <!-- Core -->
-    <string name="capture_main_label">Łapanie myśli</string>
-    <string name="capture_hex_tags_tooltip">temat @osoba #projekt</string>
+    <!-- ============================================================ -->
+    <!--    SETTINGS Activity                                         -->
+    <!-- ============================================================ -->
 
-    <string name="capture_error_noContent">Potrzebujesz cos zapisać (tekst, nagranie lub obraz)</string>
-
-    <!-- === Type: Rich Text (Note) === -->
-    <string name="capture_rich_text_error_note_empty">To wyżej nie może być puste</string>
-
-    <!-- === Type: Voice Recording === -->
-    <string name="capture_voice_recording_tooltip">Nagrywam…</string>
-    <string name="capture_voice_tooltip">Gotowy do nagrywania</string>
-    <string name="capture_voice_status_recording_saved">Nagranie zapisane</string>
-
-    <!-- Validation / Error messages -->
-    <string name="capture_voice_error_notExists">Nagranie nie istnieje :(</string>
-    <string name="capture_voice_error_empty">Eeee… To nagranie ma 0 sekund :/</string>
-    <string name="capture_voice_status_max_duration_reached">Osiągnięto maksymalny czas nagrania (3 min)</string>
-    <string name="capture_voice_error_recording">Błąd podczas nagrywania</string>
-    <string name="capture_voice_error_saving">Błąd podczas zapisywania do bazy</string>
-
-    <!-- ============================================================================ -->
-    <!--    Activity: STREAM of thoughts  -->
-    <!-- ============================================================================ -->
-
-    <string name="thoughts_stream_title">Strumień myśli</string>
-
-    <string name="stream_thought_metadata_empty">\?\?\?</string>
-    <string name="stream_item_empty_thought">- ? -\n\nTa myśl jest pusta…</string>
-
-    <!-- Searching -->
-    <string name="stream_searchbar_hint">Szukajka czeka na twoje polecenie…</string>
-
-    <!-- Filter -->
-    <string name="stream_filter_dialog_title">Filtruj</string>
-    <string name="stream_filter_button_none">-</string>
-    <string name="stream_filter_label_states">| Stany</string>
-    <string name="stream_filter_show_active">Aktywne myśli</string>
-    <string name="stream_filter_show_dormant">Uśpione myśli</string>
-    <string name="stream_filter_toast_count">Wybrano %1s myśli</string>
-
-    <!-- Sort Properties -->
-    <string name="sort_dialog_header">Sortowanie</string>
-
-    <string name="sort_property_created_at">Wiek</string>
-
-    <string name="sort_property_subject">Temat</string>
-    <string name="sort_property_soul_mate">Osoba</string>
-    <string name="sort_property_project">Projekt</string>
-    <string name="sort_property_value">Wartość</string>
-    <string name="sort_property_updated_at">Data zmiany</string>
-
-    <string name="common_thought_updated_at_0">Zmieniono dziś</string>
-    <string name="common_thought_updated_at_1">Zmieniono wczoraj</string>
-    <string name="common_thought_updated_at_pattern">Zmieniono %s dni temu</string>
-
-    <string name="sort_text_desc_label">Z → A</string>
-    <string name="sort_text_asc_label">A → Z</string>
-
-    <string name="sort_value_desc_label">od Ważnych</string>
-    <string name="sort_value_asc_label">od Drobnych</string>
-
-    <string name="sort_date_desc_label">od Młodych</string>
-    <string name="sort_date_asc_label">od Starych</string>
-
-    <!-- ============================================================================ -->
-    <!--    Activity: SETTINGS -->
-    <!-- ============================================================================ -->
+    <!-- Onboarding -->
+    <string name="settings_entry_title_1">Ustawienia</string>
+    <string name="settings_entry_tooltip_1">
+    <![CDATA[
+        W tym kreatywnym miejscu skroisz aplikację pod siebie!\n\n
+        Tapnij na nagłówki, które Cię zainteresują…
+    ]]></string>
+    <string name="settings_entry_title_2">Zmieniaj ;)</string>
+    <string name="settings_entry_tooltip_2">Zapraszam Cię do radosnej zmiany ustawień i testów :)</string>
+    <string name="settings_your_name_title">Sekcja personalizacji</string>
+    <string name="settings_your_name_tooltip">[Jakiś mądry tekst, który nie istnieje a miał w tym miejscu być] </string>
+    <string name="settings_domains_title">Sekcja \"Domeny\"</string>
+    <string name="settings_domains_tooltip">Zdefiniujesz tutaj \"Domeny\" - swoje kategorie lub szufladki dla myśli</string>
+    <string name="settings_thought_value_title">Sekcja \"Skala wartości myśli\"</string>
+    <string name="settings_thought_value_tooltip">Każdej myśli możesz nadać wartość/wagę/priorytet liczbowy.\nOd ciebie zależą jego wartości… </string>
+    <string name="settings_backup_title_1">Sekcja \"Kopia zapasowa\"</string>
+    <string name="settings_backup_tooltip_1">Jeżeli chcesz mieć zarchiwizowane dane swoich myśli w pamięci telefonu, to ta opcja musi być \"włączona\"</string>
+    <string name="settings_backup_title_2">Jak to działa?</string>
+    <string name="settings_backup_tooltip_2">Gdy uruchomisz aplikację jej mechanizm zapisze dane twoich myśli.\n\nMoże się to wydarzyć maksymalnie raz na godzinę.</string>
 
     <!-- Header -->
     <string name="settings_header">Ustawienia</string>
 
-    <!-- Your Name Setting -->
+    <!-- Name -->
     <string name="settings_your_name_header">✒️ Twoje Prawdziwe Imię?</string>
     <string name="settings_your_name_default">Bezimienn(y/a)</string>
 
+    <!-- Value system -->
     <string name="settings_thoughts_value_header">⚖️ Skala wartości myśli</string>
     <string name="settings_thoughts_value_action_info">Zmiana skali może wymagać przeskalowania wartości wszystkich myśli</string>
     <string name="settings_thoughts_value_system_10">od 1 do 10</string>
     <string name="settings_thoughts_value_system_6">od 1 do 6</string>
 
+    <!-- Permissions -->
     <string name="settings_permissions_section">🔆 Formy zapisu myśli</string>
     <string name="settings_permissions_voice_recording">Włącz zapis w formie głosówek</string>
     <string name="settings_permissions_photo">Włącz zapis w formie zdjęć</string>
+    <string name="settings_permissions_backup">Włącz tworzenie kopii zapasowych</string>
+    <string name="settings_permissions_blockade_title">Uprawnienie zablokowane</string>
+    <string name="settings_permissions_recording_blockade_tooltip">Uprawnienie do nagrywania dźwięku zostało trwale odrzucone.\nMożesz je włączyć w ustawieniach systemu Androida.</string>
+    <string name="settings_permissions_photo_blockade_tooltip">Uprawnienie do kamery zostało trwale odrzucone.\nMożesz je włączyć w ustawieniach systemu Androida.</string>
+    <string name="settings_permissions_backup_blockade_tooltip">Uprawnienie do pamięci urządzenia zostało trwale odrzucone.\nMożesz je włączyć w ustawieniach systemu Androida.</string>
+    <string name="settings_voice_recording_info">Aby móc nagrywać dźwięk, aplikacja potrzebuje dostępu do mikrofonu.</string>
+    <string name="settings_backup_permission_info">Aby zapisywać i wczytywać kopie zapasowe, aplikacja potrzebuje dostępu do pamięci urządzenia.</string>
+    <string name="settings_permissions_photo_info">Aby móc robić zdjęcia, aplikacja potrzebuje dostępu do kamery.</string>
+
+    <!-- Default capture form -->
     <string name="settings_default_form_header">✍️ Domyślna forma zapisu myśli</string>
     <string name="settings_default_form_text">Tekst</string>
     <string name="settings_default_form_voice">Głosówka</string>
     <string name="settings_default_form_photo">Zdjęcie</string>
 
-    <string name="settings_permissions_blockade_title">Uprawnienie zablokowane</string>
-    <string name="settings_permissions_recording_blockade_tooltip">Uprawnienie do nagrywania dźwięku zostało trwale odrzucone.\nMożesz je włączyć w ustawieniach systemu Androida.</string>
-    <string name="settings_permissions_photo_blockade_tooltip">Uprawnienie do kamery zostało trwale odrzucone.\nMożesz je włączyć w ustawieniach systemu Androida.</string>
-
     <!-- Domains -->
     <string name="settings_domains_header">🌾 Domeny</string>
-
-    <string name="sheet_domain_edit_hint">Nazwa</string>
-    <string name="sheet_domain_edit_error_nameEmpty">Nazwa domeny nie może być pusta</string>
-    <string name="sheet_domain_edit_error_nameTooLong">Nazwa domeny nie może przekraczać %s znaków</string>
-
-    <string name="settings_snapshot_restore_warning">Wszystkie obecne dane zostaną zastąpione danymi wczytanymi z wybranego pliku. Kontynuować?</string>
+    <string name="settings_domain_edit_title">Edytuj domenę</string>
+    <string name="settings_domain_edit_icons_title">| Ikona</string>
+    <string name="settings_domain_edit_hint">Nazwa</string>
+    <string name="settings_domain_edit_error_name_empty">Nazwa domeny nie może być pusta</string>
+    <string name="settings_domain_edit_error_name_too_long">Nazwa domeny nie może przekraczać %s znaków</string>
 
     <string-array name="settings_domains_default_names_list">
         <item>Rozwój, Praca, Biznes</item>
@@ -367,10 +347,9 @@
         <item>Hobby, Zabawa, Odpoczynek</item>
         <item>Relacje Bliskie &amp; Dalekie</item>
         <item>Przyroda, Otoczenie, Środowisko</item>
-
     </string-array>
 
-    <!-- Backup Section -->
+    <!-- Backup -->
     <string name="settings_backup_header">💾 Kopia zapasowa twoich myśli</string>
     <string name="settings_backup_hint">Wybierz i wczytaj plik kopii zapasowej z folderu Downloads/mind_shaper</string>
     <string name="settings_backup_select">Wybierz</string>
@@ -379,70 +358,57 @@
     <string name="settings_backup_state_file_selected">Wybrany plik: %1$s</string>
     <string name="settings_backup_loaded_success">Backup wczytany pomyślnie</string>
     <string name="settings_backup_error_loading">Błąd podczas wczytywania backupu</string>
+    <string name="settings_backup_stats">ⓘ Obecnie masz %1$d plików z kopią zapasową o wadze %2$.1f MB</string>
+    <string name="settings_backup_no_snapshots">Brak zapisanych kopii zapasowych…</string>
+    <string name="settings_backup_error_version_mismatch">Backup z nowszej wersji aplikacji (%1$d) nie może być załadowany (aktualna wersja: %2$d)</string>
+    <string name="settings_snapshot_restore_warning">Wszystkie obecne dane zostaną zastąpione danymi wczytanymi z wybranego pliku. Kontynuować?</string>
 
-    <string name="rich_text_removing_header">Usunąć tekst?</string>
-    <string name="rich_text_removing_content">Ta operacja jest nieodwracalna</string>
-
-    <string name="settings_voice_recording_info">Aby móc nagrywać dźwięk, aplikacja potrzebuje dostępu do mikrofonu.</string>
-    <string name="settings_permissions_backup">Włącz tworzenie kopii zapasowych</string>
-    <string name="settings_backup_permission_info">Aby zapisywać i wczytywać kopie zapasowe, aplikacja potrzebuje dostępu do pamięci urządzenia.</string>
-    <string name="settings_permissions_backup_blockade_tooltip">Uprawnienie do pamięci urządzenia zostało trwale odrzucone.\nMożesz je włączyć w ustawieniach systemu Androida.</string>
-
-    <string name="settings_permissions_photo_info">Aby móc robić zdjęcia, aplikacja potrzebuje dostępu do kamery.</string>
-
+    <!-- Slow mode -->
     <string name="settings_slow_mode_header">⏳ Tryb powolny</string>
     <string name="settings_slow_mode_label">Włącz możliwość nadawania wartości myślom po tylu godzinach:</string>
 
+    <!-- Dormant mode -->
     <string name="settings_dormant_mode_header">🌙 Tryb uśpienia</string>
     <string name="settings_dormant_mode_switch_label">Aktywuj tryb, w którym myśli będą automatycznie ukrywane, gdy spełnią określone warunki</string>
-
     <string name="settings_dormant_mode_days_label">Myśl nie była zmieniana od</string>
     <string name="settings_dormant_mode_value_label">oraz  Wartość myśli jest ≤</string>
-
     <string name="settings_dormant_mode_value_error">Wartość myśli musi być między %1$d a %2$d</string>
     <string name="settings_dormant_mode_value_error_toast">Popraw wartość progu uśpienia przed ponownym zapisem</string>
-
     <string name="settings_dormant_mode_days_error">Liczba dni musi być między %1$d a %2$d</string>
     <string name="settings_dormant_mode_days_error_toast">Popraw liczbę dni przed ponownym zapisem</string>
 
-    <!-- ============================================================================ -->
-    <!--    Activity: WORKSHOP -->
-    <!-- ============================================================================ -->
+    <!-- ============================================================ -->
+    <!--    WORKSHOP Activity                                         -->
+    <!-- ============================================================ -->
 
     <!-- Main -->
     <string name="workshop_title">Warsztat</string>
-    <string name="workshop_section_goals">🎯 Cele lub Kierunki</string>
-    <string name="workshop_add_step">Dodaj krok</string>
 
-    <!-- Dialogs -->
+    <!-- Goals -->
+    <string name="workshop_section_goals">🎯 Cele lub Kierunki</string>
     <string name="workshop_dialog_add_goal">Nowy cel / kierunek</string>
     <string name="workshop_dialog_edit_goal">Edytuj cel / kierunek</string>
     <string name="workshop_dialog_delete_goal_title">Usunąć cel / kierunek?</string>
     <string name="workshop_dialog_delete_goal_desc">Zostaną usunięte też wszystkie kroki tego celu.</string>
 
+    <!-- Steps -->
+    <string name="workshop_step_edit_header">Edytuj krok</string>
     <string name="workshop_dialog_add_step">Nowy krok</string>
     <string name="workshop_dialog_edit_step">Edytuj krok</string>
     <string name="workshop_dialog_delete_step_title">Usunąć krok?</string>
-
-    <string name="workshop_section_paths">✨ Ścieżki doświadczeń</string>
-    <string name="path_pool_empty">Nie mam Cię już czego nauczyć…</string>
-
-    <string name="workshop_step_edit_header">Edytuj krok</string>
     <string name="workshop_step_repetitions_header">Ile razy trzeba to wykonać?</string>
     <string name="workshop_step_repetitions_label">Liczba</string>
     <string name="workshop_step_repetitions_single">Jeden raz</string>
-
     <string name="workshop_goal_repetitions_7">7 ⟳</string>
     <string name="workshop_goal_repetitions_14">14 ⟳</string>
     <string name="workshop_goal_repetitions_21">21 ⟳</string>
     <string name="workshop_goal_repetitions_31">31 ⟳</string>
+    <string name="workshop_step_description_error_no_input">Krok musi mieć jakiś opis…</string>
+    <string name="workshop_step_repetitions_error_no_input">Brak liczby</string>
+    <string name="workshop_step_repetitions_error_below_min"><![CDATA[Liczba < 0]]></string>
+    <string name="workshop_step_repetitions_error_above_max"><![CDATA[Liczba > 31]]></string>
 
-    <string name="step_description_error_noInput">Krok musi mieć jakiś opis…</string>
-    <string name="step_repetitions_error_noInput">Brak liczby</string>
-    <string name="step_repetitions_error_belowMin"><![CDATA[Liczba < 0]]></string>
-    <string name="step_repetitions_error_aboveMax"><![CDATA[Liczba > 31]]></string>
-
-    <!-- Step ⋮ menu -->
+    <!-- Step menu -->
     <string name="workshop_step_menu_move_up">Przesuń w górę</string>
     <string name="workshop_step_menu_move_down">Przesuń w dół</string>
     <string name="workshop_step_menu_link_thought">Nowa połączona myśl</string>
@@ -457,11 +423,12 @@
     <string name="workshop_step_unlink_keep_thought">Odepnij i zostaw myśl</string>
     <string name="workshop_step_unlink_delete_thought">Odepnij i usuń myśl</string>
 
-    <!--
-        PATHS ======================================================================================
-    -->
-    <!-- #! For displaying proper plural of steps cound under specific path -->
-    <plurals name="path_steps_count">
+    <!-- Paths -->
+    <string name="workshop_section_paths">✨ Ścieżki doświadczeń</string>
+    <string name="workshop_path_pool_empty">Nie mam Cię już czego nauczyć…</string>
+
+    <!-- #! For displaying proper plural of steps count under specific path -->
+    <plurals name="workshop_path_steps_count">
         <item quantity="one">%d krok</item>
         <item quantity="few">%d kroki</item>
         <item quantity="many">%d kroków</item>

@@ -150,7 +150,7 @@ class WorkshopActivity : CoreActivity() {
         val card = cardView.findViewById<View>(R.id.ll_path_card)
         val btnPathProceed = cardView.findViewById<MaterialButton>(R.id.btn_path_proceed_action)
         val tvContent = cardView.findViewById<TextView>(R.id.tv_path_content)
-        val tvStepsCount = cardView.findViewById<TextView>(R.id.tv_path_steps_count)
+        val tvStepsCount = cardView.findViewById<TextView>(R.id.tv_workshop_path_steps_count)
         val btnRepick = cardView.findViewById<MaterialButton>(R.id.btn_path_redraw)
 
         val isUnselected = path.status == PathEntity.STATUS_UNSELECTED
@@ -182,7 +182,7 @@ class WorkshopActivity : CoreActivity() {
             tvContent.text = path.category
             tvStepsCount.visibility = View.VISIBLE
             tvStepsCount.text = resources.getQuantityString(
-                R.plurals.path_steps_count, path.totalSteps, path.totalSteps
+                R.plurals.workshop_path_steps_count, path.totalSteps, path.totalSteps
             )
         }
         else {

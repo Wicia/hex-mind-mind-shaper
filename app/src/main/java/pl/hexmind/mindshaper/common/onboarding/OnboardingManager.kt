@@ -63,13 +63,13 @@ class OnboardingManager @Inject constructor(
         // === CAPTURING THOUGHTS ===
         // -> ENTRY (+ BUTTONS)
         OnboardingProgressStep.CAPTURE_ENTRY_TOOLTIP to listOf(
-            TooltipItemConfig(textRes = R.string.capturing_entry_tooltip, R.string.capturing_entry_title),
-            TooltipItemConfig(textRes = R.string.capturing_hextags_link_tooltip, R.string.capturing_hextags_link_title)
+            TooltipItemConfig(textRes = R.string.capture_entry_tooltip, R.string.capture_entry_title),
+            TooltipItemConfig(textRes = R.string.capture_hex_tags_link_tooltip, R.string.capture_hex_tags_link_title)
         ),
         // -> HEXTAGS
         OnboardingProgressStep.CAPTURE_HEXTAGS_TOOLTIP to listOf(
-            TooltipItemConfig(textRes = R.string.capturing_hextags_tooltip, R.string.capturing_hextags_title),
-            TooltipItemConfig(textRes = R.string.capturing_hextags_example_tooltip, R.string.capturing_hextags_example_title)
+            TooltipItemConfig(textRes = R.string.capture_hex_tags_onb_tooltip, R.string.capture_hex_tags_title),
+            TooltipItemConfig(textRes = R.string.capture_hex_tags_example_tooltip, R.string.capture_hex_tags_example_title)
         )
     )
 

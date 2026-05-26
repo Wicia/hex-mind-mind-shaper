@@ -131,7 +131,7 @@ class CaptureActivityViewModel @Inject constructor(
      * Returns ValidationResult with error message or Valid
      */
     fun validate(): ValidationResult {
-        val draft = _draftThought.value ?: return ValidationResult.Error(R.string.common_thought_draft_notFound)
+        val draft = _draftThought.value ?: return ValidationResult.Error(R.string.common_thought_draft_not_found)
 
         // Validate hex tags (subject, project, soulMate)
         val subjectResult = validator.validateSubject(draft.subject)
@@ -152,7 +152,7 @@ class CaptureActivityViewModel @Inject constructor(
         // Validate audio (if present)
         if (tempAudioFile != null) {
             if (!tempAudioFile!!.exists()) {
-                return ValidationResult.Error(R.string.capture_voice_error_notExists)
+                return ValidationResult.Error(R.string.capture_voice_error_not_exists)
             }
             if (tempAudioDuration == 0L) {
                 return ValidationResult.Error(R.string.capture_voice_error_empty)
@@ -165,7 +165,7 @@ class CaptureActivityViewModel @Inject constructor(
                 || tempPhotoUri != null
 
         if (!hasContent) {
-            return ValidationResult.Error(R.string.capture_error_noContent)
+            return ValidationResult.Error(R.string.capture_error_no_content)
         }
 
         return ValidationResult.Valid()

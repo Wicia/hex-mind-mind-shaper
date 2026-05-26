@@ -89,7 +89,7 @@ class MediaStorageService @Inject constructor(
                 val fileName = path.substringAfterLast("/")
                 val folderPath = path.substringBeforeLast("/")
                 if (folderPath.isNotEmpty() && fileName.isNotEmpty()) {
-                    "$fileName\n${context.getString(R.string.in_folder)}: $folderPath"
+                    "$fileName\n${context.getString(R.string.common_in_folder)}: $folderPath"
                 } else {
                     fileName.ifEmpty { context.getString(R.string.files_error_unknown_file) }
                 }

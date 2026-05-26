@@ -54,7 +54,7 @@
                     android:textColor="@color/text_secondary"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="@string/sheet_domains_edit_title"
+                    android:text="@string/settings_domain_edit_title"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="0dp" />
@@ -80,7 +80,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="4dp"
-                android:hint="@string/sheet_domain_edit_hint"
+                android:hint="@string/settings_domain_edit_hint"
                 app:hintTextColor="@color/_gray_lvl_3">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -109,7 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="@string/sheet_domains_edit_icons_title"
+                android:text="@string/settings_domain_edit_icons_title"
                 android:textSize="16sp"
                 android:fontFamily="@font/baloo2"
                 android:textColor="@color/_gray_lvl_3" />

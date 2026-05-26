@@ -122,7 +122,7 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
         fabConfirm.setOnClickListener {
             val description = etDescription.text.toString().trim()
             if (description.isEmpty()) {
-                etDescription.error = getString(R.string.step_description_error_noInput)
+                etDescription.error = getString(R.string.workshop_step_description_error_no_input)
                 return@setOnClickListener
             }
             val maxRepsText = hifRepetitions.getText()
@@ -130,15 +130,15 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
 
             // TODO Move it to validation in view model + callback here (Nice to have)
             if (maxRepetitions == null) {
-                hifRepetitions.showError(getString(R.string.step_repetitions_error_noInput))
+                hifRepetitions.showError(getString(R.string.workshop_step_repetitions_error_no_input))
                 return@setOnClickListener
             }
             else if (maxRepetitions < 1){
-                hifRepetitions.showError(getString(R.string.step_repetitions_error_belowMin))
+                hifRepetitions.showError(getString(R.string.workshop_step_repetitions_error_below_min))
                 return@setOnClickListener
             }
             else if (maxRepetitions > 31){
-                hifRepetitions.showError(getString(R.string.step_repetitions_error_aboveMax))
+                hifRepetitions.showError(getString(R.string.workshop_step_repetitions_error_above_max))
                 return@setOnClickListener
             }
             dismiss()

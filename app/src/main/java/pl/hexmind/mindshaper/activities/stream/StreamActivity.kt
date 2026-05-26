@@ -86,7 +86,7 @@ class StreamActivity : CoreActivity() {
         fabNewThought = findViewById(R.id.fab_new_thought)
         flScrollIndicator = findViewById(R.id.fl_scroll_indicator)
         vScrollProgress   = findViewById(R.id.v_scroll_progress)
-        setupHeader(R.drawable.ic_activity_stream, R.string.thoughts_stream_title)
+        setupHeader(R.drawable.ic_activity_stream, R.string.stream_title)
     }
 
     private fun setupVerticalFeed() {

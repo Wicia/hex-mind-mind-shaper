@@ -176,7 +176,7 @@ class StreamAdapter(
             // Showing subject label basing on sorting config
             val showSubjectLabel = !thought.subject.isNullOrBlank() && sortConfig.property != SortProperty.SUBJECT
             tvSubjectLabel.visibility = if (showSubjectLabel) View.VISIBLE else View.GONE
-            if (showSubjectLabel) tvSubjectLabel.text = itemView.context.getString(R.string.hex_tags_subject_prefix, thought.subject)
+            if (showSubjectLabel) tvSubjectLabel.text = itemView.context.getString(R.string.common_hex_tags_subject_prefix, thought.subject)
 
             // Cases by sorting properties
             when (sortConfig.property) {
@@ -229,7 +229,7 @@ class StreamAdapter(
             tvTextIcon.text = itemView.context.getString(ageLevel.level.iconResId)
 
             tvLabel.visibility = View.VISIBLE
-            tvLabel.text = when (ageLevel.ageInDays) { // TODO: apply mechanism witch plurals? (see: strings.xml -> path_steps_count)
+            tvLabel.text = when (ageLevel.ageInDays) { // TODO: apply mechanism witch plurals? (see: strings.xml -> workshop_path_steps_count)
                 0L -> { // Today
                     itemView.context.getString(R.string.common_thought_age_0)
                 }

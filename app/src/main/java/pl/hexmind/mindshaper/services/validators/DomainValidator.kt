@@ -15,12 +15,12 @@ class DomainValidator @Inject constructor() {
     fun validateName(name: String): ValidationResult {
         return when {
             name.trim().isEmpty() -> {
-                ValidationResult.Error(R.string.sheet_domain_edit_error_nameEmpty)
+                ValidationResult.Error(R.string.settings_domain_edit_error_name_empty)
             }
 
             name.length > NAME_MAX_CHARS -> {
                 ValidationResult.Error(
-                    R.string.sheet_domain_edit_error_nameTooLong,
+                    R.string.settings_domain_edit_error_name_too_long,
                     NAME_MAX_CHARS.toString()
                 )
             }

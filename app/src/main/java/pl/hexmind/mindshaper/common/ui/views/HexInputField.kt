@@ -20,7 +20,7 @@ import pl.hexmind.mindshaper.databinding.CommonHexInputFieldBinding
  *   <pl.hexmind.mindshaper.common.ui.views.HexInputField
  *       android:layout_width="match_parent"
  *       android:layout_height="wrap_content"
- *       app:hint="@string/hex_tags_hint_person"
+ *       app:hint="@string/common_hex_tags_hint_person"
  *       app:inputType="number"
  *       app:maxLines="1" />
  */

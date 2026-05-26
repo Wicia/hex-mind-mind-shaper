@@ -621,7 +621,7 @@ class SettingsActivity : CoreActivity() {
             }
         }
         catch (e: Exception) {
-            showBackupErrorMessage(getString(R.string.file_audio_error_reading_file))
+            showBackupErrorMessage(getString(R.string.files_audio_error_reading))
             showShortToast(R.string.files_error_selecting_file)
         }
     }
