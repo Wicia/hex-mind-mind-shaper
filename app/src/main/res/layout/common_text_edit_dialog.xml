@@ -4,14 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingTop="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="4dp">
 
     <TextView
         android:id="@+id/tv_header"
         style="@style/DialogTile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:layout_gravity="center"
         android:text=":)"
         />
@@ -28,12 +30,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine|textCapSentences"
-            android:maxLines="100"
             android:minLines="3"
+            android:maxLines="12"
             android:textColor="@color/text_primary"
             android:textColorHint="@color/text_secondary"
             android:fontFamily="@font/alegreya_regular"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            app:hintEnabled="false"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 

@@ -47,7 +47,7 @@
                         android:textColor="@color/text_secondary" />
 
                     <!-- RICH TEXT -->
-                    <pl.hexmind.mindshaper.common.ui.views.content.HexTextView
+                    <pl.hexmind.mindshaper.common.ui.views.content.MarkdownTextView
                         android:id="@+id/rich_text_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -55,7 +55,8 @@
                         android:paddingEnd="0dp"
                         android:layout_marginBottom="16dp"
                         android:visibility="gone"
-                        app:richTextMode="displayOnly" />
+                        app:richTextMode="displayOnly"
+                        />
 
                     <!-- AUDIO RECORDING -->
                     <pl.hexmind.mindshaper.common.ui.views.content.HexAudioView

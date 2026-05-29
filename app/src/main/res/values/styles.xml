@@ -310,6 +310,7 @@
     <!--    DIALOGS -->
     <!-- ====================================== -->
 
+    <!-- TODO: make separate styles for standard focus dialog and for bottom sheet dialog -->
     <!-- Common -->
     <style name="DialogTile">
         <item name="android:textSize">18sp</item>
@@ -318,7 +319,7 @@
         <item name="android:gravity">center</item>
         <item name="android:fontFamily">@font/alegreya_regular</item>
         <item name="android:textColor">@color/app_background</item>
-        <item name="android:layout_marginBottom">18dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
     </style>
 
     <style name="DialogItemText">
@@ -329,7 +330,6 @@
         <item name="android:padding">12dp</item>
     </style>
 
-    <!-- Dialogs -->
     <style name="Dialog_Header">
         <item name="android:fontFamily">@font/baloo2</item>
         <item name="android:textSize">18sp</item>

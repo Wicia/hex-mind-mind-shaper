@@ -21,7 +21,7 @@ import pl.hexmind.mindshaper.common.ui.views.content.HexAudioView
 import pl.hexmind.mindshaper.common.ui.views.lists.SortConfig
 import pl.hexmind.mindshaper.common.ui.views.lists.SortProperty
 import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
-import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
+import pl.hexmind.mindshaper.common.ui.views.content.MarkdownTextView
 import pl.hexmind.mindshaper.common.ui.views.values.ValueCloude
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
@@ -84,7 +84,7 @@ class StreamAdapter(
         private var currentAudioFile: File? = null
 
         private val nestedScrollView: NestedScrollView = itemView.findViewById(R.id.nested_scroll_view)
-        private val tvRichText: HexTextView = itemView.findViewById(R.id.rich_text_view)
+        private val tvRichText: MarkdownTextView = itemView.findViewById(R.id.rich_text_view)
         private val audioView: HexAudioView = itemView.findViewById(R.id.arv_playback)
         private val photoView: HexPhotoView = itemView.findViewById(R.id.pv_photo)
 
