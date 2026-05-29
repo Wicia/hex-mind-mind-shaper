@@ -4,6 +4,10 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import pl.hexmind.mindshaper.common.ui.views.content.HtmlConverter
 
+@Deprecated(
+    message = "Legacy code - HTML approach was replaced with Markdown",
+    replaceWith = ReplaceWith("MarkdownTextView")
+)
 class HtmlConverterTest {
 
     @Test

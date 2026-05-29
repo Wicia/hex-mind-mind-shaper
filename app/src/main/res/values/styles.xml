@@ -273,7 +273,7 @@
 
         <!-- Icons -->
         <item name="iconTint">@color/button_secondary_stateful_icon</item>
-        <item name="iconSize">28dp</item>
+        <item name="iconSize">32dp</item>
         <item name="iconPadding">0dp</item>
         <item name="iconGravity">textTop</item>
 

@@ -161,4 +161,7 @@ dependencies {
 
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
     implementation("androidx.exifinterface:exifinterface:1.3.7")
+
+    // Rich text field - handling
+    implementation("io.noties.markwon:core:4.6.2")
 }

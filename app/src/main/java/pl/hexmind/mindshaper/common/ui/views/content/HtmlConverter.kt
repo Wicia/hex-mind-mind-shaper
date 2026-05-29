@@ -1,5 +1,9 @@
 package pl.hexmind.mindshaper.common.ui.views.content
 
+@Deprecated(
+    message = "Legacy code - HTML was replaced with Markdown",
+    replaceWith = ReplaceWith("MarkdownTextView")
+)
 object HtmlConverter {
 
     private const val BULLET_POINT_CHAR = "X "

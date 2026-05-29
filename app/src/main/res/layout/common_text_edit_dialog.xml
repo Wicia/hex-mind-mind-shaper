@@ -37,6 +37,28 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Markdown toolbar (only for editing rich text notes) -->
+    <LinearLayout
+        android:id="@+id/toolbar_markdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp"
+        android:visibility="visible">
+
+        <!-- Insert bullet point at cursor position -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_insert_bullet"
+            style="@style/SecondaryActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            app:iconGravity="textStart"
+            app:icon="@drawable/ic_action_list" />
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/tv_hex_tags_validation_info"
         android:layout_width="match_parent"

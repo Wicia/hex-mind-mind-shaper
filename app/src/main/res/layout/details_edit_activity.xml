@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:layout_marginBottom="8dp"
                 android:baselineAligned="false">
 
                 <!-- LEFT: HEX TAGS -->
@@ -105,14 +106,6 @@
 
             </LinearLayout>
 
-            <View
-                android:id="@+id/tv_separator"
-                android:background="@color/separator_background"
-                android:layout_width="48dp"
-                android:layout_height="1dp"
-                android:layout_marginBottom="12dp"
-                android:layout_gravity="center" />
-
             <!-- SUBJECT ROW -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -155,7 +148,7 @@
                 android:orientation="vertical">
 
                 <!-- RICH TEXT : Note -->
-                <pl.hexmind.mindshaper.common.ui.views.content.HexTextView
+                <pl.hexmind.mindshaper.common.ui.views.content.MarkdownTextView
                     android:id="@+id/rich_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
