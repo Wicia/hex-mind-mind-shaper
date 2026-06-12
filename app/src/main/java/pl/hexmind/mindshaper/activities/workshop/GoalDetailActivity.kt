@@ -38,6 +38,7 @@ class GoalDetailActivity : CoreActivity() {
     private lateinit var cbGoalDesc: MaterialButton
     private lateinit var rvSteps: RecyclerView
     private lateinit var fabAdd: FloatingActionButton
+    private lateinit var btnQuickComplete: MaterialButton
     private lateinit var stepsAdapter: GoalDetailStepsAdapter
 
     // Step which launched CaptureActivity
@@ -71,10 +72,11 @@ class GoalDetailActivity : CoreActivity() {
     // ── Init ───────────────────────────────────────────────────────────────────
 
     private fun initViews() {
-        tvBadge      = findViewById(R.id.tv_goal_importance_badge)
-        cbGoalDesc   = findViewById(R.id.cb_goal_description)
-        rvSteps = findViewById(R.id.rv_steps)
-        fabAdd       = findViewById(R.id.fab_add_step)
+        tvBadge          = findViewById(R.id.tv_goal_importance_badge)
+        cbGoalDesc       = findViewById(R.id.cb_goal_description)
+        rvSteps          = findViewById(R.id.rv_steps)
+        fabAdd           = findViewById(R.id.fab_add_step)
+        btnQuickComplete = findViewById(R.id.btn_quick_complete)
     }
 
     private fun setupStepsList() {
@@ -99,6 +101,11 @@ class GoalDetailActivity : CoreActivity() {
 
     private fun setupFab() {
         fabAdd.setOnClickListener { showAddStepSheet() }
+        btnQuickComplete.setOnClickListener {
+            if (viewModel.quickCompleteAll()) {
+                showShortToast(R.string.workshop_goal_quick_complete_done)
+            }
+        }
     }
 
     // ── Observe ────────────────────────────────────────────────────────────────
@@ -108,7 +115,15 @@ class GoalDetailActivity : CoreActivity() {
             goal ?: return@observe
             bindHeader(goal)
             stepsAdapter.setItems(goal.subItems)
+            updateQuickCompleteButtonVisibility(goal.subItems)
         }
+    }
+
+    private fun updateQuickCompleteButtonVisibility(steps: List<GoalStep>) {
+        val shouldShow = steps.isNotEmpty()
+            && steps.all { it.maxRepetitions == 1 }
+            && steps.any { !it.isCompleted }
+        btnQuickComplete.visibility = if (shouldShow) View.VISIBLE else View.GONE
     }
 
     private fun bindHeader(goal: Goal) {

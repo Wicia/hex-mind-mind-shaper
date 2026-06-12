@@ -139,6 +139,26 @@ class GoalDetailViewModel @Inject constructor(
         }
     }
 
+    fun quickCompleteAll(): Boolean {
+        val current = _goal.value ?: return false
+        val anyChanged = current.subItems.any { !it.isCompleted }
+        if (!anyChanged) return false
+
+        _goal.value = current.copy(
+            subItems = current.subItems.map { step ->
+                step.copy(currentRepetitions = step.maxRepetitions)
+            }
+        )
+        viewModelScope.launch {
+            current.subItems
+                .filter { !it.isCompleted }
+                .forEach { step ->
+                    goalsService.updateStepCurrentRepetitions(step.id, step.maxRepetitions)
+                }
+        }
+        return true
+    }
+
     // ── Reorder steps ─────────────────────────────────────
 
     fun moveStepUp(stepId: Int) = moveStep(stepId, -1)

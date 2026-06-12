@@ -178,14 +178,14 @@
     <string name="stream_searching_title_1">Wyszukiwanie myśli</string>
     <string name="stream_searching_tooltip_1"><![CDATA[
         Wpisujesz do pola-szukajki specjalny tekst, a ta od razu Ci szuka:\n\n
-        wspomnienie - wyszuka myśli z etykietą \"wspomnienie\"\n\n
+        wspomnienie - wyszuka myśli z tematem \"wspomnienie\"\n\n
         #gotowanie - wyszuka myśli z projektem \"gotowanie\"\n\n
         @Michał - wyszuka myśli z osobą \"Michał\"
     ]]></string>
     <string name="stream_searching_title_2">Połączone wyszukiwanie</string>
     <string name="stream_searching_tooltip_2"><![CDATA[
         Możesz też połączyć kilka fraz w jedno:\n\n
-        wspomnienie @Michał #wakacje \n\n- wyszuka myśli z etykietą \"wspomnienie\"\n- oraz osobą \"Michał\" \n- oraz projektem \"wakacje\"
+        wspomnienie @Michał #wakacje \n\n- wyszuka myśli z tematem \"wspomnienie\"\n- oraz osobą \"Michał\" \n- oraz projektem \"wakacje\"
     ]]></string>
     <string name="stream_deleting_title">Usuwanie myśli</string>
     <string name="stream_deleting_tooltip">Przytrzymując pomarańczowy obszar z myślą możesz go usunąć</string>
@@ -231,7 +231,7 @@
     <string name="details_entry_title">Szczegóły myśli</string>
     <string name="details_entry_tooltip">To miejsce to warsztat, w którym rzeźbisz i rozwijasz swoją myśl</string>
     <string name="details_fields_title">Edycja myśli</string>
-    <string name="details_fields_tooltip">Tapując na pomarańczowe etykiety/pola zdefiniujesz lub zmienisz zapisaną w nich treść</string>
+    <string name="details_fields_tooltip">Tapując na pomarańczowe pola zdefiniujesz lub zmienisz zapisaną w nich treść</string>
     <string name="details_value_title">Zmiana wartości myśli</string>
     <string name="details_value_tooltip">Dodatkowo podbijesz wartość myśli tapując na nią. Możesz także podbijać i obniżać wartość innym sposobem który przypomina coś… \"naturalnego\"</string>
     <string name="details_extra_forms_title">Dodatkowe formy złapanej myśli</string>
@@ -403,6 +403,7 @@
     <string name="workshop_goal_repetitions_14">14 ⟳</string>
     <string name="workshop_goal_repetitions_21">21 ⟳</string>
     <string name="workshop_goal_repetitions_31">31 ⟳</string>
+    <string name="workshop_goal_quick_complete_done">Ukończono wszystkie kroki</string>
     <string name="workshop_step_description_error_no_input">Krok musi mieć jakiś opis…</string>
     <string name="workshop_step_repetitions_error_no_input">Brak liczby</string>
     <string name="workshop_step_repetitions_error_below_min"><![CDATA[Liczba < 0]]></string>
