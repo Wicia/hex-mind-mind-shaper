@@ -13,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.views.HexInputField
@@ -41,6 +42,9 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
 
     private lateinit var hifRepetitions: HexInputField
 
+    private lateinit var cbReminderEnabled: MaterialCheckBox
+    private lateinit var reminderView: GoalReminderView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,6 +61,7 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
         setupInitialValues()
         setupChips()
         setupRepetitionsField()
+        setupReminderToggle()
         setupConfirm()
     }
 
@@ -65,6 +70,9 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
         etDescription   = view.findViewById(R.id.et_step_description)
         hifRepetitions  = view.findViewById(R.id.hif_repetitions)
         fabConfirm      = view.findViewById(R.id.fab_step_confirm)
+
+        cbReminderEnabled = view.findViewById(R.id.cb_reminder_enabled)
+        reminderView      = view.findViewById(R.id.reminder_view)
 
         chipButtons = listOf(
             view.findViewById<MaterialButton>(R.id.chip_1x)  to 1,
@@ -92,6 +100,7 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
 
         val maxRepetitions = arguments?.getInt(ARG_MAX_REPETITIONS, 1) ?: 1
         hifRepetitions.setText(maxRepetitions.toString())
+        updateReminderLabel(maxRepetitions)
     }
 
     private fun setupChips() {
@@ -107,14 +116,28 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
 
     private fun setupRepetitionsField() {
         hifRepetitions.addTextChangedListener { text ->
-            syncChipSelection(text.trim().toIntOrNull())
+            val repetitions = text.trim().toIntOrNull()
+            syncChipSelection(repetitions)
+            updateReminderLabel(repetitions)
         }
+    }
+
+    // Reflect the entered repetitions count in the reminder checkbox label
+    private fun updateReminderLabel(repetitions: Int?) {
+        val count = repetitions ?: 0
+        cbReminderEnabled.text = getString(R.string.workshop_reminder_checkbox_label, count)
     }
 
     // Highlight chip matching [value]; deselect all if null or no match
     private fun syncChipSelection(value: Int?) {
         chipButtons.forEach { (chip, chipValue) ->
             chip.isSelected = value != null && chipValue == value
+        }
+    }
+
+    private fun setupReminderToggle() {
+        cbReminderEnabled.setOnCheckedChangeListener { _, isChecked ->
+            reminderView.visibility = if (isChecked) View.VISIBLE else View.GONE
         }
     }
 

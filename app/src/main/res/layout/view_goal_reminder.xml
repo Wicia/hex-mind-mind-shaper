@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Time section label -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/workshop_reminder_time_header"
+        android:textSize="16sp"
+        android:fontFamily="@font/baloo2"
+        android:textColor="@color/_gray_lvl_3"
+        />
+
+    <!-- Hour picker (center = selected) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_hours"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        />
+
+    <!-- Days section label -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/workshop_reminder_days_header"
+        android:textSize="16sp"
+        android:fontFamily="@font/baloo2"
+        android:textColor="@color/_gray_lvl_3"
+        />
+
+    <!-- Weekday toggles : row 1 (Mon-Thu) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:layout_marginBottom="6dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_day_mon"
+            style="@style/ChipButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            android:text="@string/workshop_reminder_day_mon"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_day_tue"
+            style="@style/ChipButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            android:text="@string/workshop_reminder_day_tue"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_day_wed"
+            style="@style/ChipButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            android:text="@string/workshop_reminder_day_wed"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_day_thu"
+            style="@style/ChipButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/workshop_reminder_day_thu"
+            />
+
+    </LinearLayout>
+
+    <!-- Weekday toggles : row 2 (Fri-Sun) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_day_fri"
+            style="@style/ChipButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            android:text="@string/workshop_reminder_day_fri"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_day_sat"
+            style="@style/ChipButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            android:text="@string/workshop_reminder_day_sat"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_day_sun"
+            style="@style/ChipButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/workshop_reminder_day_sun"
+            />
+
+    </LinearLayout>
+
+</merge>

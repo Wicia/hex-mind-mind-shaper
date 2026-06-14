@@ -7,187 +7,220 @@
     android:background="@drawable/shape_hex_content"
     android:backgroundTint="@color/app_background">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="80dp">
+        android:fillViewport="true">
 
-        <!-- Drag handle indicator -->
-        <View
-            android:layout_width="40dp"
-            android:layout_height="4dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="4dp"
-            android:background="@color/_gray_lvl_2" />
-
-        <!-- HEADER -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal"
-            android:layout_marginBottom="16dp">
+            android:orientation="vertical"
+            android:paddingBottom="80dp">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:scaleX="-1"
-                android:scaleY="-1"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                app:srcCompat="@drawable/ic_decorator_olive"
-                app:tint="@color/separator_leaf" />
+            <!-- Drag handle indicator -->
+            <View
+                android:layout_width="40dp"
+                android:layout_height="4dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp"
+                android:background="@color/_gray_lvl_2" />
 
-            <TextView
-                style="@style/DialogTile"
-                android:textColor="@color/text_secondary"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/workshop_step_edit_header"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="0dp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:layout_gravity="center_vertical"
-                android:scaleY="-1"
-                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                app:srcCompat="@drawable/ic_decorator_olive"
-                app:tint="@color/separator_leaf" />
-
-        </LinearLayout>
-
-        <!-- Description field -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            app:boxStrokeColor="@color/input_stroke_focused"
-            app:hintTextColor="@color/text_secondary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_step_description"
+            <!-- HEADER -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_edit_text"
-                android:inputType="textMultiLine|textCapSentences"
-                android:minLines="1"
-                android:maxLines="2"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"
-                android:fontFamily="@font/baloo2"
-                android:textSize="16sp" />
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="16dp">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:scaleX="-1"
+                    android:scaleY="-1"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                    app:srcCompat="@drawable/ic_decorator_olive"
+                    app:tint="@color/separator_leaf" />
 
-        <!-- Repetitions section label -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="@string/workshop_step_repetitions_header"
-            android:textSize="16sp"
-            android:fontFamily="@font/baloo2"
-            android:textColor="@color/_gray_lvl_3" />
+                <TextView
+                    style="@style/DialogTile"
+                    android:textColor="@color/text_secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/workshop_step_edit_header"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="0dp" />
 
-        <!-- Number field + chip presets row -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:layout_marginBottom="12dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center_vertical"
+                    android:scaleY="-1"
+                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                    app:srcCompat="@drawable/ic_decorator_olive"
+                    app:tint="@color/separator_leaf" />
 
-            <!-- Repetitions number -->
-            <pl.hexmind.mindshaper.common.ui.views.HexInputField
-                android:id="@+id/hif_repetitions"
-                android:layout_width="120dp"
+            </LinearLayout>
+
+            <!-- Description field -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                app:boxStrokeColor="@color/input_stroke_focused"
+                app:hintTextColor="@color/text_secondary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_step_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_edit_text"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:minLines="1"
+                    android:maxLines="2"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_secondary"
+                    android:fontFamily="@font/baloo2"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Repetitions section label -->
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                app:hint="@string/workshop_step_repetitions_label"
-                app:hexInputType="number"
-                app:maxLines="1" />
+                android:text="@string/workshop_step_repetitions_header"
+                android:textSize="16sp"
+                android:fontFamily="@font/baloo2"
+                android:textColor="@color/_gray_lvl_3" />
 
-            <!-- Chip presets -->
+            <!-- Number field + chip presets row -->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginBottom="12dp">
 
-                <!-- Row 1: 1x + 7x -->
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <!-- Repetitions number -->
+                <pl.hexmind.mindshaper.common.ui.views.HexInputField
+                    android:id="@+id/hif_repetitions"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="6dp">
+                    android:layout_margin="16dp"
+                    app:hint="@string/workshop_step_repetitions_label"
+                    app:hexInputType="number"
+                    app:maxLines="1" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/chip_1x"
-                        style="@style/ChipButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:layout_marginEnd="6dp"
-                        android:text="@string/workshop_step_repetitions_single" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/chip_7x"
-                        style="@style/ChipButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/workshop_goal_repetitions_7" />
-
-                </LinearLayout>
-
-                <!-- Row 2: 14x + 21x + 30x -->
+                <!-- Chip presets -->
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/chip_14x"
-                        style="@style/ChipButton"
-                        android:layout_width="0dp"
+                    <!-- Row 1: 1x + 7x -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="6dp"
-                        android:text="@string/workshop_goal_repetitions_14" />
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="6dp">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/chip_21x"
-                        style="@style/ChipButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="6dp"
-                        android:text="@string/workshop_goal_repetitions_21" />
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/chip_1x"
+                            style="@style/ChipButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:layout_marginEnd="6dp"
+                            android:text="@string/workshop_step_repetitions_single" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/chip_31x"
-                        style="@style/ChipButton"
-                        android:layout_width="0dp"
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/chip_7x"
+                            style="@style/ChipButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/workshop_goal_repetitions_7" />
+
+                    </LinearLayout>
+
+                    <!-- Row 2: 14x + 21x + 30x -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/workshop_goal_repetitions_31" />
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/chip_14x"
+                            style="@style/ChipButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="6dp"
+                            android:text="@string/workshop_goal_repetitions_14" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/chip_21x"
+                            style="@style/ChipButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="6dp"
+                            android:text="@string/workshop_goal_repetitions_21" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/chip_31x"
+                            style="@style/ChipButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/workshop_goal_repetitions_31" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
 
+
+            <!-- Calendar reminder toggle -->
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/cb_reminder_enabled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/workshop_reminder_checkbox_label"
+                android:fontFamily="@font/baloo2"
+                android:textSize="15sp"
+                android:textColor="@color/text_primary"
+                app:buttonIconTint="@color/_orange_lvl_3"
+                />
+
+            <!-- Reminder config : time picker + weekday toggles -->
+            <pl.hexmind.mindshaper.activities.workshop.GoalReminderView
+                android:id="@+id/reminder_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                />
+
         </LinearLayout>
 
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <!-- FAB confirm -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
