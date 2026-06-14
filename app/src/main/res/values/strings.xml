@@ -256,7 +256,7 @@
     <!-- Linked thought -->
     <string name="details_usage_linked">Wykorzystano w celu:</string>
     <string name="details_usage_not_linked">Nie powiązano z krokiem celu</string>
-    <string name="details_usage_link_button">Powiąż z krokiem celu</string>
+    <string name="details_usage_link_button">Powiąż</string>
 
     <!-- Unlink dialog -->
     <string name="details_usage_dialog_title">Powiązany krok</string>
