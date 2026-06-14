@@ -28,7 +28,10 @@ data class GoalStep(
 
     // Linked thought -> TODO: Change names to linkedThoughtId etc.?
     val thoughtId: Int? = null,
-    val thoughtSubject: String? = null
+    val thoughtSubject: String? = null,
+
+    val reminderTime: String? = null,
+    val reminderDays: String? = null
 ) {
     // Completed when progress reaches the target; used for visual styling in the adapter
     val isCompleted: Boolean get() = currentRepetitions >= maxRepetitions

@@ -42,6 +42,9 @@ class GoalReminderView @JvmOverloads constructor(
 
     private val dayButtons: List<Pair<MaterialButton, Int>>
 
+    // Target slot for the initial centering; overridden by setReminder() when editing
+    private var initialSlotIndex: Int = DEFAULT_SLOT_INDEX
+
     init {
         orientation = VERTICAL
         LayoutInflater.from(context).inflate(R.layout.view_goal_reminder, this, true)
@@ -58,12 +61,9 @@ class GoalReminderView @JvmOverloads constructor(
         })
 
         // Edge padding lets first/last slot reach center; clipToPadding=false keeps them drawn
+        rvHours.clipToPadding = false
         rvHours.doOnLayout {
-            val sidePadding = rvHours.width / 2 - dpToPx(ITEM_HALF_WIDTH_DP)
-            rvHours.setPadding(sidePadding, 0, sidePadding, 0)
-            rvHours.clipToPadding = false
-            layoutManager.scrollToPosition(DEFAULT_SLOT_INDEX)
-            rvHours.post { scaleVisibleHours() }
+            centerOnInitialSlot()
         }
 
         dayButtons = listOf(
@@ -77,6 +77,28 @@ class GoalReminderView @JvmOverloads constructor(
         )
         dayButtons.forEach { (button, _) ->
             button.setOnClickListener { button.isSelected = !button.isSelected }
+        }
+    }
+
+    // Re-center when the section becomes visible — doOnLayout in init fires while still GONE (width=0)
+    override fun onVisibilityChanged(changedView: View, visibility: Int) {
+        super.onVisibilityChanged(changedView, visibility)
+        if (visibility == VISIBLE) {
+            rvHours.doOnLayout { centerOnInitialSlot() }
+        }
+    }
+
+    // Center [initialSlotIndex] using padding + offset; needs a non-zero width to work
+    private fun centerOnInitialSlot() {
+        if (rvHours.width == 0) return
+        val sidePadding = rvHours.width / 2 - dpToPx(ITEM_HALF_WIDTH_DP)
+        if (rvHours.paddingLeft != sidePadding) {
+            rvHours.setPadding(sidePadding, 0, sidePadding, 0)
+        }
+        // Scroll after padding is applied so the offset is measured against the padded layout
+        rvHours.post {
+            layoutManager.scrollToPositionWithOffset(initialSlotIndex, 0)
+            rvHours.post { scaleVisibleHours() }
         }
     }
 
@@ -121,7 +143,6 @@ class GoalReminderView @JvmOverloads constructor(
         return bestPosition
     }
 
-    // TODO: Move it to commons?
     private fun dpToPx(dp: Int): Int = (dp * resources.displayMetrics.density).toInt()
 
     // ── Public API ────────────────────────────────────────────────
@@ -134,6 +155,27 @@ class GoalReminderView @JvmOverloads constructor(
     fun getSelectedDays(): List<Int> =
         dayButtons.filter { (button, _) -> button.isSelected }
             .map { (_, dayValue) -> dayValue }
+
+    fun hasSelectedDays(): Boolean = dayButtons.any { (button, _) -> button.isSelected }
+
+    // CSV of selected weekday numbers (e.g. "1,3,5"); null when nothing selected
+    fun getSelectedDaysCsv(): String? =
+        getSelectedDays().takeIf { it.isNotEmpty() }?.joinToString(",")
+
+    // Restore previously saved reminder: center picker on [time], re-select [daysCsv]
+    fun setReminder(time: String?, daysCsv: String?) {
+        time?.let {
+            val slotIndex = timeSlots.indexOf(it)
+            if (slotIndex >= 0) {
+                initialSlotIndex = slotIndex
+                if (rvHours.width > 0) centerOnInitialSlot()
+            }
+        }
+        val days = daysCsv?.split(",")?.mapNotNull { it.trim().toIntOrNull() }?.toSet().orEmpty()
+        dayButtons.forEach { (button, dayValue) ->
+            button.isSelected = dayValue in days
+        }
+    }
 
     companion object {
         private const val MIN_SCALE = 0.55f

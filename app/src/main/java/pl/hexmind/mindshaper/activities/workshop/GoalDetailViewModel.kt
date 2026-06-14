@@ -55,7 +55,9 @@ class GoalDetailViewModel @Inject constructor(
                         currentRepetitions = g.currentRepetitions,
                         maxRepetitions     = g.maxRepetitions,
                         thoughtId          = g.thoughtId,
-                        thoughtSubject     = g.thoughtId?.let { subjectsMap[it] }
+                        thoughtSubject     = g.thoughtId?.let { subjectsMap[it] },
+                        reminderTime       = g.reminderTime,
+                        reminderDays       = g.reminderDays
                     )
                 }
             )
@@ -110,7 +112,7 @@ class GoalDetailViewModel @Inject constructor(
         viewModelScope.launch { goalsService.updateStepCurrentRepetitions(stepId, newCurrent) }
     }
 
-    fun updateStep(stepId: Int, description: String, maxRepetitions: Int) {
+    fun updateStep(stepId: Int, description: String, maxRepetitions: Int, reminderTime: String?, reminderDays: String?) {
         _goal.value = _goal.value?.let { goal ->
             goal.copy(subItems = goal.subItems.map { step ->
                 if (step.id == stepId) step.copy(
@@ -118,11 +120,13 @@ class GoalDetailViewModel @Inject constructor(
                     // Clamp current so it never exceeds the new max
                     currentRepetitions = if (maxRepetitions < step.maxRepetitions) 0
                         else step.currentRepetitions.coerceAtMost(maxRepetitions),
-                    maxRepetitions = maxRepetitions
+                    maxRepetitions = maxRepetitions,
+                    reminderTime   = reminderTime,
+                    reminderDays   = reminderDays
                 ) else step
             })
         }
-        viewModelScope.launch { goalsService.updateStep(stepId, description, maxRepetitions) }
+        viewModelScope.launch { goalsService.updateStep(stepId, description, maxRepetitions, reminderTime, reminderDays) }
     }
 
     fun deleteStep(stepId: Int) {
@@ -132,9 +136,9 @@ class GoalDetailViewModel @Inject constructor(
         viewModelScope.launch { goalsService.deleteStep(stepId) }
     }
 
-    fun addStep(description: String, maxRepetitions: Int) {
+    fun addStep(description: String, maxRepetitions: Int, reminderTime: String?, reminderDays: String?) {
         viewModelScope.launch {
-            goalsService.addStep(goalId, description, maxRepetitions)
+            goalsService.addStep(goalId, description, maxRepetitions, reminderTime, reminderDays)
             loadGoal()
         }
     }

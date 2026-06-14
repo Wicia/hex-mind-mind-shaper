@@ -50,25 +50,41 @@ class GoalsService @Inject constructor(
 
     // ── Steps ─────────────────────────────────────────────────────────────────
 
-    suspend fun addStep(goalId: Int, description: String, maxRepetitions: Int = 1) {
+    suspend fun addStep(
+        goalId: Int,
+        description: String,
+        maxRepetitions: Int = 1,
+        reminderTime: String? = null,
+        reminderDays: String? = null
+    ) {
         val existingCount = repository.getStepsByGoalId(goalId).size
         val entity = StepEntity(
             goalId             = goalId,
             description        = description.trim(),
             position           = existingCount,
             currentRepetitions = 0,
-            maxRepetitions     = maxRepetitions
+            maxRepetitions     = maxRepetitions,
+            reminderTime       = reminderTime,
+            reminderDays       = reminderDays
         )
         repository.insertStep(entity)
     }
 
-    suspend fun updateStep(stepId: Int, description: String, maxRepetitions: Int) {
+    suspend fun updateStep(
+        stepId: Int,
+        description: String,
+        maxRepetitions: Int,
+        reminderTime: String? = null,
+        reminderDays: String? = null
+    ) {
         val current = repository.getStepById(stepId) ?: return
         repository.updateStep(current.copy(
             description        = description.trim(),
             // Clamp current so it never exceeds the new max
             currentRepetitions = current.currentRepetitions.coerceAtMost(maxRepetitions),
-            maxRepetitions     = maxRepetitions
+            maxRepetitions     = maxRepetitions,
+            reminderTime       = reminderTime,
+            reminderDays       = reminderDays
         ))
     }
 

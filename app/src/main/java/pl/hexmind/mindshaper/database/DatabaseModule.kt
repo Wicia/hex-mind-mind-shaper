@@ -41,6 +41,7 @@ object DatabaseModule {
             .addMigrations(Migrations.MIGRATION_10_TO_11)
             .addMigrations(Migrations.MIGRATION_11_TO_12)
             .addMigrations(Migrations.MIGRATION_12_TO_13)
+            .addMigrations(Migrations.MIGRATION_13_TO_14)
             //.fallbackToDestructiveMigration()
             .build()
     }

@@ -201,7 +201,9 @@ class GoalDetailActivity : CoreActivity() {
             title           = getString(R.string.workshop_dialog_add_step),
             description     = "",
             maxRepetitions  = 1
-        ) { desc, maxReps -> viewModel.addStep(desc, maxReps) }
+        ) { description, maxRepetitions, reminderTime, reminderDays ->
+            viewModel.addStep(description, maxRepetitions, reminderTime, reminderDays)
+        }
     }
 
     private fun showEditStepSheet(step: GoalStep) {
@@ -209,8 +211,12 @@ class GoalDetailActivity : CoreActivity() {
             fragmentManager = supportFragmentManager,
             title           = getString(R.string.workshop_dialog_edit_step),
             description     = step.description,
-            maxRepetitions  = step.maxRepetitions
-        ) { desc, maxReps -> viewModel.updateStep(step.id, desc, maxReps) }
+            maxRepetitions  = step.maxRepetitions,
+            reminderTime    = step.reminderTime,
+            reminderDays    = step.reminderDays
+        ) { description, maxRepetitions, reminderTime, reminderDays ->
+            viewModel.updateStep(step.id, description, maxRepetitions, reminderTime, reminderDays)
+        }
     }
 
     // ── Dialogs ────────────────────────────────────────────────────────────────

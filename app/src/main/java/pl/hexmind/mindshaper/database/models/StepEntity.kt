@@ -48,5 +48,11 @@ data class StepEntity(
     val maxRepetitions: Int = 1,                   // target count; 1 = single checkbox
 
     @ColumnInfo(name = "thought_id")
-    val thoughtId: Int? = null                     // linked thought (1:1, optional)
+    val thoughtId: Int? = null,                    // linked thought (1:1, optional)
+
+    @ColumnInfo(name = "reminder_time")
+    val reminderTime: String? = null,             // "HH:mm"; null = no reminder
+
+    @ColumnInfo(name = "reminder_days")
+    val reminderDays: String? = null              // CSV of weekday numbers 1..7 (Mon..Sun); null = no reminder
 )

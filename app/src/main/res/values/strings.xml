@@ -429,7 +429,7 @@
     <string name="workshop_path_pool_empty">Nie mam Cię już czego nauczyć…</string>
 
     <!-- Step reminder -->
-    <string name="workshop_reminder_checkbox_label">Wrzucić %d wpis(y) w kalendarz?</string>
+    <string name="workshop_reminder_checkbox_label">Wrzuć mi %d wpis(y) w kalendarz</string>
     <string name="workshop_reminder_time_header">O tej godzinie</string>
     <string name="workshop_reminder_days_header">I w te dni</string>
     <string name="workshop_reminder_day_mon">Pon</string>
@@ -439,6 +439,7 @@
     <string name="workshop_reminder_day_fri">Pt</string>
     <string name="workshop_reminder_day_sat">Sob</string>
     <string name="workshop_reminder_day_sun">Niedz</string>
+    <string name="workshop_reminder_error_no_days">Wybierz przynajmniej jeden dzień</string>
 
     <!-- #! For displaying proper plural of steps count under specific path -->
     <plurals name="workshop_path_steps_count">

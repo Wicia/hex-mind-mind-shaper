@@ -278,5 +278,13 @@ class Migrations {
             }
         }
 
+        // Add step reminder columns: reminder_time (HH:mm) + reminder_days (CSV format & 1-7).
+        // Both NULL = no reminder
+        val MIGRATION_13_TO_14 = object : Migration(13, 14) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE GOAL_STEPS ADD COLUMN reminder_time TEXT DEFAULT NULL")
+                db.execSQL("ALTER TABLE GOAL_STEPS ADD COLUMN reminder_days TEXT DEFAULT NULL")
+            }
+        }
     }
 }

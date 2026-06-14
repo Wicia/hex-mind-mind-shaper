@@ -26,12 +26,19 @@ import pl.hexmind.mindshaper.common.ui.views.HexInputField
  *       fragmentManager  = supportFragmentManager,
  *       title            = getString(R.string.workshop_dialog_add_step),
  *       description      = "",
- *       maxRepetitions   = 1
- *   ) { desc, maxReps -> viewModel.addStep(desc, maxReps) }
+ *       maxRepetitions   = 1,
+ *       reminderTime     = null,
+ *       reminderDays     = null
+ *   ) { desc, maxReps, time, days -> viewModel.addStep(desc, maxReps, time, days) }
  */
 class StepEditBottomSheet : BottomSheetDialogFragment() {
 
-    private var onConfirm: ((description: String, maxRepetitions: Int) -> Unit)? = null
+    private var onConfirm: ((
+        description: String,
+        maxRepetitions: Int,
+        reminderTime: String?,
+        reminderDays: String?
+    ) -> Unit)? = null
 
     private lateinit var etDescription: EditText
     private lateinit var fabConfirm: FloatingActionButton
@@ -101,6 +108,15 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
         val maxRepetitions = arguments?.getInt(ARG_MAX_REPETITIONS, 1) ?: 1
         hifRepetitions.setText(maxRepetitions.toString())
         updateReminderLabel(maxRepetitions)
+
+        // Restore reminder state when editing an existing step
+        val reminderTime = arguments?.getString(ARG_REMINDER_TIME)
+        val reminderDays = arguments?.getString(ARG_REMINDER_DAYS)
+        if (reminderTime != null || reminderDays != null) {
+            cbReminderEnabled.isChecked = true
+            reminderView.visibility = View.VISIBLE
+            reminderView.setReminder(reminderTime, reminderDays)
+        }
     }
 
     private fun setupChips() {
@@ -164,8 +180,26 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
                 hifRepetitions.showError(getString(R.string.workshop_step_repetitions_error_above_max))
                 return@setOnClickListener
             }
+
+            // Reminder is opt-in; when enabled at least one day must be selected
+            var reminderTime: String? = null
+            var reminderDays: String? = null
+            if (cbReminderEnabled.isChecked) {
+                if (!reminderView.hasSelectedDays()) {
+                    clearFocusAndHideKeyboard()
+                    android.widget.Toast.makeText(
+                        requireContext(),
+                        getString(R.string.workshop_reminder_error_no_days),
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
+                reminderTime = reminderView.getSelectedTime()
+                reminderDays = reminderView.getSelectedDaysCsv()
+            }
+
             dismiss()
-            onConfirm?.invoke(description, maxRepetitions.coerceAtMost(365))
+            onConfirm?.invoke(description, maxRepetitions.coerceAtMost(365), reminderTime, reminderDays)
         }
     }
 
@@ -185,19 +219,30 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
         private const val ARG_TITLE           = "arg_title"
         private const val ARG_DESCRIPTION     = "arg_description"
         private const val ARG_MAX_REPETITIONS = "arg_max_repetitions"
+        private const val ARG_REMINDER_TIME   = "arg_reminder_time"
+        private const val ARG_REMINDER_DAYS   = "arg_reminder_days"
 
         fun show(
             fragmentManager: FragmentManager,
             title: String,
             description: String = "",
             maxRepetitions: Int = 1,
-            onConfirm: (description: String, maxRepetitions: Int) -> Unit
+            reminderTime: String? = null,
+            reminderDays: String? = null,
+            onConfirm: (
+                description: String,
+                maxRepetitions: Int,
+                reminderTime: String?,
+                reminderDays: String?
+            ) -> Unit
         ) {
             StepEditBottomSheet().apply {
                 arguments = Bundle().apply {
                     putString(ARG_TITLE, title)
                     putString(ARG_DESCRIPTION, description)
                     putInt(ARG_MAX_REPETITIONS, maxRepetitions)
+                    putString(ARG_REMINDER_TIME, reminderTime)
+                    putString(ARG_REMINDER_DAYS, reminderDays)
                 }
                 this.onConfirm = onConfirm
             }.show(fragmentManager, TAG)
