@@ -2,6 +2,8 @@ package pl.hexmind.mindshaper.common.ui.dialogs
 
 import android.content.Context
 import android.graphics.Color.TRANSPARENT
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -48,6 +50,7 @@ class TextEditDialog(
             etInput.textSize = 18f
             toolbarMarkdown.visibility = View.VISIBLE
             btnInsertBullet.setOnClickListener { insertBulletAtCursor() }
+            setupBulletContinuation()
         }
         else {
             toolbarMarkdown.visibility = View.GONE
@@ -68,6 +71,49 @@ class TextEditDialog(
         } else {
             text.insert(start, "\n* ")
         }
+    }
+
+    // Auto-continue bullet lists: Enter on a "* item" line inserts a new "* ".
+    // Enter on an empty "* " line ends the list (removes the marker).
+    private fun setupBulletContinuation() {
+        etInput.addTextChangedListener(object : TextWatcher {
+            private var isReacting = false  // guard against re-entrant edits
+            private var newlineInserted = false
+
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+
+            // Detect a freshly typed newline (insertion only, never on delete)
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                newlineInserted = count == 1 && before == 0 && s.getOrNull(start) == '\n'
+            }
+
+            override fun afterTextChanged(editable: Editable) {
+                if (isReacting || !newlineInserted) return
+                newlineInserted = false
+
+                val cursor = etInput.selectionStart
+                if (cursor <= 0 || editable.getOrNull(cursor - 1) != '\n') return
+
+                // The line that was just broken (text before the new \n)
+                val prevLineEnd = cursor - 1
+                val prevLineStart = editable.lastIndexOf("\n", prevLineEnd - 1) + 1
+                val prevLine = editable.substring(prevLineStart, prevLineEnd)
+
+                if (!prevLine.trimStart().startsWith(BULLET_PREFIX)) return
+
+                isReacting = true
+                val contentAfterBullet = prevLine.trimStart().removePrefix(BULLET_PREFIX).trim()
+                if (contentAfterBullet.isEmpty()) {
+                    // Empty bullet -> end the list: drop the "* " line and its trailing newline
+                    editable.delete(prevLineStart, cursor)
+                }
+                else {
+                    // Continue the list with a fresh marker
+                    editable.insert(cursor, BULLET_PREFIX)
+                }
+                isReacting = false
+            }
+        })
     }
 
     private fun createDialog(): AlertDialog {
@@ -103,5 +149,9 @@ class TextEditDialog(
             val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(etInput, InputMethodManager.SHOW_IMPLICIT)
         }, 100)
+    }
+
+    companion object {
+        private const val BULLET_PREFIX = "* "
     }
 }
