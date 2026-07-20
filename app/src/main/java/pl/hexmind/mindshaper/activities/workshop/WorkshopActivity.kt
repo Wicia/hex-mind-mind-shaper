@@ -173,7 +173,7 @@ class WorkshopActivity : CoreActivity() {
             }
 
             val params = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
-            if (slot > 0) params.marginStart = 8
+            if (slot > 0) params.marginStart = 12
             view.layoutParams = params
             llPathsList.addView(view)
 
