@@ -287,6 +287,7 @@
     <style name="SecondaryActionButton.Ghost" parent="SecondaryActionButton">
         <item name="backgroundTint">@android:color/transparent</item>
         <item name="android:stateListAnimator">@null</item>
+        <item name="rippleColor">@color/_orange_lvl_1</item>
     </style>
 
     <!--=== AUXILIARY ===-->

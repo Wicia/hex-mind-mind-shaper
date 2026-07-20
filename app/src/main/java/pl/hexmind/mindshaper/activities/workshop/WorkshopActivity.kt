@@ -31,8 +31,12 @@ class WorkshopActivity : CoreActivity() {
     // GOALS
     private lateinit var rvGoals: RecyclerView
     private lateinit var btnAddGoal: MaterialButton
+    private lateinit var btnGoalsToggle: MaterialButton
     private lateinit var fabCapture: FloatingActionButton
     private lateinit var goalsAdapter: GoalsAdapter
+
+    private var allGoals: List<Goal> = emptyList()
+    private var isGoalsExpanded: Boolean = false
 
     // PATHS
     private lateinit var llPathsList: LinearLayout
@@ -64,12 +68,14 @@ class WorkshopActivity : CoreActivity() {
     private fun initializeViews() {
         setupHeader(R.drawable.ic_activity_workshop, R.string.workshop_title)
 
-        rvGoals    = findViewById(R.id.rv_goals)
-        btnAddGoal = findViewById(R.id.btn_add_goal)
-        fabCapture = findViewById(R.id.fab_capture)
+        rvGoals        = findViewById(R.id.rv_goals)
+        btnAddGoal     = findViewById(R.id.btn_add_goal)
+        btnGoalsToggle = findViewById(R.id.btn_goals_toggle)
+        fabCapture     = findViewById(R.id.fab_capture)
 
         btnAddGoal.visibility = View.VISIBLE
         btnAddGoal.setOnClickListener { showAddGoalDialog() }
+        btnGoalsToggle.setOnClickListener { toggleGoalsSection() }
 
         llPathsList   = findViewById(R.id.ll_paths_list)
         tvPoolEmpty   = findViewById(R.id.tv_paths_pool_empty)
@@ -101,7 +107,36 @@ class WorkshopActivity : CoreActivity() {
     }
 
     private fun observeGoals() {
-        viewModel.goals.observe(this) { goals -> goalsAdapter.submitList(goals) }
+        viewModel.goals.observe(this) { goals ->
+            allGoals = goals
+            renderGoalsList()
+        }
+    }
+
+    // Shows up to MAX_COLLAPSED_GOALS by default; toggle button reveals/hides the rest
+    private fun renderGoalsList() {
+        // Collapse again when the list shrinks below the threshold, so the state stays predictable
+        if (allGoals.size <= MAX_COLLAPSED_GOALS) isGoalsExpanded = false
+
+        val visibleGoals = if (isGoalsExpanded || allGoals.size <= MAX_COLLAPSED_GOALS)
+            allGoals
+        else
+            allGoals.take(MAX_COLLAPSED_GOALS)
+
+        goalsAdapter.submitList(visibleGoals)
+
+        btnGoalsToggle.visibility = if (allGoals.size > MAX_COLLAPSED_GOALS) View.VISIBLE else View.GONE
+        if (isGoalsExpanded) {
+            btnGoalsToggle.text = getString(R.string.workshop_goals_show_less)
+        }
+        else {
+            btnGoalsToggle.text = getString(R.string.workshop_goals_show_all, allGoals.size - MAX_COLLAPSED_GOALS)
+        }
+    }
+
+    private fun toggleGoalsSection() {
+        isGoalsExpanded = !isGoalsExpanded
+        renderGoalsList()
     }
 
     // ── Navigation ─────────────────────────────────────────────────────────────
@@ -221,5 +256,9 @@ class WorkshopActivity : CoreActivity() {
             }
             .setDismissText(getString(R.string.common_btn_cancel))
             .show()
+    }
+
+    companion object {
+        private const val MAX_COLLAPSED_GOALS = 6
     }
 }

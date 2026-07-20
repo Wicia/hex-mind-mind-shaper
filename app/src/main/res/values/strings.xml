@@ -386,6 +386,8 @@
 
     <!-- Goals -->
     <string name="workshop_section_goals">🎯 Cele lub Kierunki</string>
+    <string name="workshop_goals_show_all">Pokaż jeszcze %d…</string>
+    <string name="workshop_goals_show_less">Pokaż mniej</string>
     <string name="workshop_dialog_add_goal">Nowy cel / kierunek</string>
     <string name="workshop_dialog_edit_goal">Edytuj cel / kierunek</string>
     <string name="workshop_dialog_delete_goal_title">Usunąć cel / kierunek?</string>
