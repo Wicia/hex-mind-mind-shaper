@@ -222,7 +222,8 @@ class WorkshopActivity : CoreActivity() {
         }
         else {
             tvContent.text = path.currentStepContent
-            tvStepsCount.visibility = View.GONE
+            // INVISIBLE (not GONE) so every card keeps the same height
+            tvStepsCount.visibility = View.INVISIBLE
         }
     }
 

@@ -42,20 +42,25 @@
             android:id="@+id/tv_path_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:lines="2"
+            android:ellipsize="end"
             android:textSize="13sp"
             android:textAlignment="center"
             android:textColor="@color/text_primary"
-            android:gravity="center" />
+            android:gravity="center"
+            />
 
         <!-- Step count -->
         <TextView
             android:id="@+id/tv_workshop_path_steps_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:lines="1"
             android:textSize="13sp"
             android:textColor="@color/_gray_lvl_3"
             android:textAlignment="center"
-            android:visibility="gone" />
+            android:visibility="invisible"
+            />
 
     </LinearLayout>
 
