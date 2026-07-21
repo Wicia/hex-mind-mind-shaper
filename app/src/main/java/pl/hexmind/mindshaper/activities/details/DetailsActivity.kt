@@ -30,7 +30,7 @@ import pl.hexmind.mindshaper.common.ui.views.content.HexAudioView
 import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
 import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
 import pl.hexmind.mindshaper.common.ui.views.content.MarkdownTextView
-import pl.hexmind.mindshaper.databinding.DetailsEditActivityBinding
+import pl.hexmind.mindshaper.databinding.ThoughtDetailsActivityBinding
 import pl.hexmind.mindshaper.services.ThoughtStatusService
 import pl.hexmind.mindshaper.services.dto.StepWithGoalDTO
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
@@ -43,7 +43,7 @@ import javax.inject.Inject
 class DetailsActivity : ThoughtManagerActivity() {
 
     private val viewModel: DetailsViewModel by viewModels()
-    private lateinit var binding: DetailsEditActivityBinding
+    private lateinit var binding: ThoughtDetailsActivityBinding
 
     @Inject
     lateinit var thoughtStatusService: ThoughtStatusService
@@ -70,7 +70,7 @@ class DetailsActivity : ThoughtManagerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DetailsEditActivityBinding.inflate(layoutInflater)
+        binding = ThoughtDetailsActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val thoughtId = intent.getIntExtra(P_SELECTED_THOUGHT_ID, -1)
