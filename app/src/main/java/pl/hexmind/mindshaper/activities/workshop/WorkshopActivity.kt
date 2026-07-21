@@ -21,6 +21,7 @@ import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
+import pl.hexmind.mindshaper.common.ui.views.lists.InsetDividerDecoration
 import pl.hexmind.mindshaper.database.models.PathEntity
 
 @AndroidEntryPoint
@@ -95,6 +96,8 @@ class WorkshopActivity : CoreActivity() {
             layoutManager = LinearLayoutManager(this@WorkshopActivity)
             adapter = goalsAdapter
             isNestedScrollingEnabled = false
+            // Inset to separate lits elements
+            addItemDecoration(InsetDividerDecoration(this@WorkshopActivity, GOAL_DIVIDER_INSET_DP))
         }
     }
 
@@ -261,5 +264,6 @@ class WorkshopActivity : CoreActivity() {
 
     companion object {
         private const val MAX_COLLAPSED_GOALS = 6
+        private const val GOAL_DIVIDER_INSET_DP = 28
     }
 }
