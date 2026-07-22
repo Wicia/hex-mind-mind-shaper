@@ -110,9 +110,9 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <!--=== Thought METADATA ===-->
+    <!--=== Parent ===-->
 
-    <style name="MetadataContentButton.Used" parent="Widget.MaterialComponents.Button">
+    <style name="BaseContentButton" parent="Widget.MaterialComponents.Button">
         <!-- Min constraints -->
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
@@ -124,28 +124,19 @@
         <item name="android:insetRight">0dp</item>
 
         <!-- Padding -->
-        <item name="android:paddingLeft">0dp</item>
-        <item name="android:paddingRight">0dp</item>
-        <item name="android:paddingTop">0dp</item>
-        <item name="android:paddingBottom">0dp</item>
         <item name="android:padding">8dp</item>
 
         <!-- Background -->
-        <item name="backgroundTint">@color/button_content_filled_background</item>
+        <!-- TODO: info - shape_hex_content is ignored by MaterialButton (cornerRadius drives the corner); kept for parity, safe to drop later -->
         <item name="android:background">@drawable/shape_hex_content</item>
-        <item name="android:backgroundTint">@color/button_content_filled_background</item>
 
         <!-- Icons -->
-        <item name="iconTint">@color/button_content_filled_icon</item>
         <item name="iconPadding">0dp</item>
-        <item name="iconGravity">end</item>
 
         <!-- Corners -->
         <item name="cornerRadius">12dp</item>
 
         <!-- Texts -->
-        <item name="android:lineSpacingExtra">-1dp</item>
-        <item name="android:lineSpacingMultiplier">0.85</item>
         <item name="android:textSize">16sp</item>
         <item name="android:letterSpacing">0.0</item>
         <item name="android:textStyle">normal</item>
@@ -155,45 +146,46 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="MetadataContentButton.NotUsed" parent="Widget.MaterialComponents.Button">
-        <!-- Min constraints -->
-        <item name="android:minHeight">0dp</item>
-        <item name="android:minWidth">0dp</item>
+    <!--=== Thought METADATA ===-->
 
-        <!-- Insets -->
-        <item name="android:insetTop">0dp</item>
-        <item name="android:insetBottom">0dp</item>
-        <item name="android:insetLeft">0dp</item>
-        <item name="android:insetRight">0dp</item>
+    <style name="MetadataContentButton" parent="BaseContentButton">
+        <item name="iconGravity">end</item>
+    </style>
 
-        <!-- Padding -->
-        <item name="android:paddingLeft">0dp</item>
-        <item name="android:paddingRight">0dp</item>
-        <item name="android:paddingTop">0dp</item>
-        <item name="android:paddingBottom">0dp</item>
-        <item name="android:padding">8dp</item>
+    <style name="MetadataContentButton.Used">
+        <!-- Background -->
+        <item name="backgroundTint">@color/button_content_filled_background</item>
 
+        <!-- Icons -->
+        <item name="iconTint">@color/button_content_filled_icon</item>
+
+        <!-- Texts -->
+        <item name="android:lineSpacingExtra">-1dp</item>
+        <item name="android:lineSpacingMultiplier">0.85</item>
+    </style>
+
+    <style name="MetadataContentButton.NotUsed">
         <!-- Background -->
         <item name="backgroundTint">@color/button_content_empty_background</item>
-        <item name="android:background">@drawable/shape_hex_content</item>
-        <item name="android:backgroundTint">@color/button_content_empty_background</item>
 
         <!-- Icons -->
         <item name="iconTint">@color/button_content_empty_icon</item>
-        <item name="iconPadding">0dp</item>
-        <item name="iconGravity">end</item>
+    </style>
 
-        <!-- Corners -->
-        <item name="cornerRadius">12dp</item>
+    <!--=== Thought USAGE / LINK ===-->
 
-        <!-- Texts -->
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:letterSpacing">0.0</item>
-        <item name="android:textColor">@color/text_secondary</item>
-        <item name="android:fontFamily">@font/baloo2</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="textAllCaps">false</item>
+    <style name="ThoughtLinkButton" parent="BaseContentButton">
+        <!-- Padding -->
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">12dp</item>
+
+        <!-- Background -->
+        <item name="backgroundTint">@color/button_content_empty_background</item>
+
+        <!-- Icons -->
+        <item name="iconTint">@color/text_secondary</item>
+        <item name="iconSize">24dp</item>
+        <item name="iconGravity">textStart</item>
     </style>
 
     <style name="RecordingPlaybackView_UsedWithTint">

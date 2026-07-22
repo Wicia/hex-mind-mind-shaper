@@ -19,6 +19,7 @@ import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
 import pl.hexmind.mindshaper.common.ui.views.GoalImportanceBadge
+import pl.hexmind.mindshaper.common.ui.views.lists.InsetDividerDecoration
 
 @AndroidEntryPoint
 class GoalDetailActivity : CoreActivity() {
@@ -26,6 +27,9 @@ class GoalDetailActivity : CoreActivity() {
     companion object {
         // Intent extra key — must match SavedStateHandle key in GoalDetailViewModel
         private const val EXTRA_GOAL_ID = "goalId"
+
+        // Row padding
+        private const val STEP_DIVIDER_INSET_DP = 24
 
         fun newIntent(context: Context, goalId: Int): Intent =
             Intent(context, GoalDetailActivity::class.java)
@@ -96,6 +100,8 @@ class GoalDetailActivity : CoreActivity() {
             layoutManager = LinearLayoutManager(this@GoalDetailActivity)
             adapter = stepsAdapter
             isNestedScrollingEnabled = false
+            //TODO: info - separators consistent with the goals list in WorkshopActivity
+            addItemDecoration(InsetDividerDecoration(this@GoalDetailActivity, STEP_DIVIDER_INSET_DP))
         }
     }
 

@@ -242,18 +242,12 @@
             <!-- Empty state (no link) -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_usage_link"
-                style="@style/MetadataContentButton.NotUsed"
+                style="@style/ThoughtLinkButton"
                 android:layout_width="wrap_content"
-                android:paddingStart="8dp"
-                android:paddingEnd="12dp"
                 android:layout_height="48dp"
                 android:layout_marginBottom="90dp"
                 android:text="@string/details_usage_link_button"
-                android:textColor="@color/text_secondary"
-                app:icon="@drawable/ic_action_thought_link"
-                app:iconGravity="textStart"
-                app:iconSize="24dp"
-                app:iconTint="@color/text_secondary" />
+                app:icon="@drawable/ic_action_thought_link" />
 
             <!-- Linked state -->
             <LinearLayout

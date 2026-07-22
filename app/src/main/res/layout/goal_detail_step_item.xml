@@ -92,6 +92,8 @@
         android:layout_marginEnd="36dp"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="4dp"
+        android:maxLines="1"
+        android:ellipsize="end"
         app:icon="@drawable/ic_action_chevron_right"
         app:iconTint="@color/black"
         app:iconGravity="end"
