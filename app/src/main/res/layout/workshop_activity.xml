@@ -137,7 +137,7 @@
                         android:id="@+id/ll_paths_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         android:padding="10dp" />
 
                     <!-- Special info -->

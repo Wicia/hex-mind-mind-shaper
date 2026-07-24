@@ -19,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
+import pl.hexmind.mindshaper.common.ui.dpToPx
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
 import pl.hexmind.mindshaper.common.ui.views.lists.InsetDividerDecoration
@@ -164,23 +165,20 @@ class WorkshopActivity : CoreActivity() {
         tvPoolEmpty.visibility = View.GONE
 
         for (slot in 0 until 2) {
-            val path = paths.getOrNull(slot)
+            val path = paths.getOrNull(slot) ?: continue
 
-            val view: View = if (path != null) {
-                LayoutInflater.from(this)
-                    .inflate(R.layout.path_item, llPathsList, false)
-                    .also { bindPathCard(it, path) }
-            }
-            else {
-                View(this) // empty placeholder to preserve symmetry
-            }
+            val view: View = LayoutInflater.from(this)
+                .inflate(R.layout.path_item, llPathsList, false)
+                .also { bindPathCard(it, path) }
 
-            val params = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
-            if (slot > 0) params.marginStart = 12
+            val params = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            if (slot > 0) params.topMargin = dpToPx(8)
             view.layoutParams = params
             llPathsList.addView(view)
 
-            if (path != null) cardAnimator.onCardBuilt(view, path.pathKey)
+            cardAnimator.onCardBuilt(view, path.pathKey)
         }
     }
 
@@ -225,8 +223,7 @@ class WorkshopActivity : CoreActivity() {
         }
         else {
             tvContent.text = path.currentStepContent
-            // INVISIBLE (not GONE) so every card keeps the same height
-            tvStepsCount.visibility = View.INVISIBLE
+            tvStepsCount.visibility = View.GONE
         }
     }
 
