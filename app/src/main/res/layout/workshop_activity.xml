@@ -23,16 +23,36 @@
 
             <include layout="@layout/common_header_activity" />
 
-            <!-- === GOALS section === -->
-            <!-- TODO: choose one approach -> this or MaterialCardView in all places -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_goals"
-                style="@style/AppCardView">
+            <!-- Tabs -->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs_workshop"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@android:color/transparent"
+                app:tabBackground="@drawable/tab_background_selector"
+                app:tabIndicatorHeight="0dp"
+                app:tabMode="fixed"
+                app:tabGravity="fill"
+                app:tabPaddingStart="8dp"
+                app:tabPaddingEnd="8dp"
+                app:tabRippleColor="@null"
+                />
 
+            <!-- === GOALS section === -->
+            <!-- TODO: one approach needs to be chosen -> this or MaterialCardView in all places -->
+            <LinearLayout
+                android:id="@+id/card_goals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical">
+
+                <!-- shape_card_tab_joined draws surface, corners and outline in one drawable -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="@drawable/shape_card_tab_joined">
 
                     <LinearLayout
                         android:id="@+id/ll_goals_section_header"
@@ -44,7 +64,7 @@
 
                         <TextView
                             android:id="@+id/tv_your_name_section_header"
-                            style="@style/TextView_Header_Section"
+                            style="@style/HexCard_Header"
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -61,11 +81,6 @@
                             app:iconGravity="textStart"
                             app:iconSize="16dp" />
                     </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/_gray_lvl_1" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_goals"
@@ -88,17 +103,21 @@
 
                 </LinearLayout>
 
-            </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
             <!-- === PATHS section === -->
-            <androidx.cardview.widget.CardView
+            <LinearLayout
                 android:id="@+id/card_paths"
-                style="@style/AppCardView">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="@drawable/shape_card_tab_joined">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -108,7 +127,7 @@
                         android:padding="12dp">
 
                         <TextView
-                            style="@style/TextView_Header_Section"
+                            style="@style/HexCard_Header"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -126,11 +145,6 @@
                             app:iconSize="24dp" />
 
                     </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/_gray_lvl_1" />
 
                     <!-- Dynamic path step cards (handled in code) -->
                     <LinearLayout
@@ -154,7 +168,7 @@
 
                 </LinearLayout>
 
-            </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
         </LinearLayout>
 

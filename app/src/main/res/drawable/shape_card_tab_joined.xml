@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Card body under the tabs - continues the outline the active tab starts -->
+<!-- White layer reaches the top edge, so no line is drawn where the tab meets the card -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Border -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/_gray_lvl_2" />
+            <corners
+                android:bottomLeftRadius="12dp"
+                android:bottomRightRadius="12dp"
+                />
+        </shape>
+    </item>
+
+    <!-- Surface -->
+    <item
+        android:left="1dp"
+        android:right="1dp"
+        android:bottom="1dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/white" />
+            <corners
+                android:bottomLeftRadius="11dp"
+                android:bottomRightRadius="11dp"
+                />
+        </shape>
+    </item>
+
+</layer-list>

@@ -385,7 +385,9 @@
     <string name="workshop_title">Warsztat</string>
 
     <!-- Goals -->
-    <string name="workshop_section_goals">🎯 Cele lub Kierunki</string>
+    <string name="workshop_section_goals">Kierunki, w których zmierzasz</string>
+    <string name="workshop_tab_goals">🎯 Cele</string>
+    <string name="workshop_tab_paths">✨ Ścieżki</string>
     <string name="workshop_goals_show_all">Pokaż jeszcze %d…</string>
     <string name="workshop_goals_show_less">Pokaż mniej</string>
     <string name="workshop_dialog_add_goal">Nowy cel / kierunek</string>
@@ -427,7 +429,7 @@
     <string name="workshop_step_unlink_delete_thought">Odepnij i usuń myśl</string>
 
     <!-- Paths -->
-    <string name="workshop_section_paths">✨ Ścieżki doświadczeń</string>
+    <string name="workshop_section_paths">Drogi do doświadczenia</string>
     <string name="workshop_path_pool_empty">Nie mam Cię już czego nauczyć…</string>
 
     <!-- Step reminder -->

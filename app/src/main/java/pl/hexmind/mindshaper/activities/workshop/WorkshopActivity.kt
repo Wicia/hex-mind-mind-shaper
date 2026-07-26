@@ -14,6 +14,7 @@ import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
@@ -29,6 +30,11 @@ import pl.hexmind.mindshaper.database.models.PathEntity
 class WorkshopActivity : CoreActivity() {
 
     private val viewModel: WorkshopViewModel by viewModels()
+
+    // TABS
+    private lateinit var tabsWorkshop: TabLayout
+    private lateinit var cardGoals: View
+    private lateinit var cardPaths: View
 
     // GOALS
     private lateinit var rvGoals: RecyclerView
@@ -85,6 +91,40 @@ class WorkshopActivity : CoreActivity() {
         btnPathsToggle.setOnClickListener { togglePathsSection() }
 
         cardAnimator = PathCardAnimator(viewModel)
+
+        setupTabs()
+    }
+
+    // ── Tabs ────────────────────────────────────────────────────────────────
+
+    // both sections stay inflated; tabs only swap visibility
+    private fun setupTabs() {
+        tabsWorkshop = findViewById(R.id.tabs_workshop)
+        cardGoals    = findViewById(R.id.card_goals)
+        cardPaths    = findViewById(R.id.card_paths)
+
+        tabsWorkshop.addTab(newSectionTab(R.string.workshop_tab_goals))
+        tabsWorkshop.addTab(newSectionTab(R.string.workshop_tab_paths))
+
+        tabsWorkshop.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) = showTab(tab.position)
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
+
+        showTab(TAB_GOALS)
+    }
+
+    private fun newSectionTab(titleRes: Int): TabLayout.Tab {
+        val title = layoutInflater.inflate(R.layout.tab_section_header, tabsWorkshop, false) as TextView
+        title.setText(titleRes)
+        return tabsWorkshop.newTab().apply { customView = title }
+    }
+
+    private fun showTab(position: Int) {
+        val goalsVisible = position == TAB_GOALS
+        cardGoals.visibility = if (goalsVisible) View.VISIBLE else View.GONE
+        cardPaths.visibility = if (goalsVisible) View.GONE else View.VISIBLE
     }
 
     private fun setupGoalsList() {
@@ -262,5 +302,7 @@ class WorkshopActivity : CoreActivity() {
     companion object {
         private const val MAX_COLLAPSED_GOALS = 6
         private const val GOAL_DIVIDER_INSET_DP = 28
+
+        private const val TAB_GOALS = 0
     }
 }
