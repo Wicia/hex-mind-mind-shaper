@@ -139,6 +139,13 @@ class WorkshopViewModel @Inject constructor(
         }
     }
 
+    fun resetAllPaths() {
+        viewModelScope.launch {
+            pathsService.resetAllPaths()
+            refreshPaths()
+        }
+    }
+
     fun repickPath(pathKey: String) {
         viewModelScope.launch {
             pathsService.repickPath(pathKey)

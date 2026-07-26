@@ -24,6 +24,9 @@ class PathRepository @Inject constructor(
     suspend fun updatePath(path: PathEntity) =
         pathDAO.update(path)
 
+    suspend fun getAllPaths(): List<PathEntity> =
+        pathDAO.getAllPaths()
+
     suspend fun countSteps(pathKey: String): Int =
         pathStepDAO.countByPath(pathKey)
 

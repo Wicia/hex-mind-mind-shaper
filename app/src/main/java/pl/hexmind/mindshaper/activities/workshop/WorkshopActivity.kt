@@ -5,12 +5,10 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -49,10 +47,9 @@ class WorkshopActivity : CoreActivity() {
     // PATHS
     private lateinit var llPathsList: LinearLayout
     private lateinit var tvPoolEmpty: TextView
-    private lateinit var btnPathsToggle: MaterialButton
+    private lateinit var btnPathsReset: MaterialButton
     private lateinit var cardAnimator: PathCardAnimator
 
-    private var isPathsExpanded: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,8 +84,8 @@ class WorkshopActivity : CoreActivity() {
 
         llPathsList   = findViewById(R.id.ll_paths_list)
         tvPoolEmpty   = findViewById(R.id.tv_paths_pool_empty)
-        btnPathsToggle = findViewById(R.id.btn_paths_toggle)
-        btnPathsToggle.setOnClickListener { togglePathsSection() }
+        btnPathsReset = findViewById(R.id.btn_paths_reset)
+        btnPathsReset.setOnClickListener { showResetPathsDialog() }
 
         cardAnimator = PathCardAnimator(viewModel)
 
@@ -211,11 +208,11 @@ class WorkshopActivity : CoreActivity() {
                 .inflate(R.layout.path_item, llPathsList, false)
                 .also { bindPathCard(it, path) }
 
-            val params = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            if (slot > 0) params.topMargin = dpToPx(8)
-            view.layoutParams = params
+            // ! keeping the params from inflate: replacing them dropped the card's fixed height,
+            // and the weighted spacer in the button column then expanded to the whole viewport
+            if (slot > 0) {
+                (view.layoutParams as LinearLayout.LayoutParams).topMargin = dpToPx(8)
+            }
             llPathsList.addView(view)
 
             cardAnimator.onCardBuilt(view, path.pathKey)
@@ -267,13 +264,15 @@ class WorkshopActivity : CoreActivity() {
         }
     }
 
-    private fun togglePathsSection() {
-        isPathsExpanded = !isPathsExpanded
-        llPathsList.visibility = if (isPathsExpanded) View.VISIBLE else View.GONE
-        tvPoolEmpty.visibility = if (isPathsExpanded && llPathsList.isEmpty()) View.VISIBLE else View.GONE
-        btnPathsToggle.setIconResource(
-            if (isPathsExpanded) R.drawable.ic_section_collapse else R.drawable.ic_section_expand
-        )
+    private fun showResetPathsDialog() {
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.common_caution_dialog_title))
+            .setDescription(getString(R.string.workshop_dialog_reset_paths_title))
+            .setCautionAction(getString(R.string.common_btn_yes)) {
+                viewModel.resetAllPaths()
+            }
+            .setDismissText(getString(R.string.common_btn_no))
+            .show()
     }
 
     // ── Dialogs: goals ─────────────────────────────────────────────────────────

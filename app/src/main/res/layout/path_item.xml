@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_path_card"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="100dp"
+    android:layout_height="100dp"
     android:orientation="horizontal"
     android:padding="10dp"
     android:background="@drawable/shape_hex_content">
+
+    <!-- !
+    fixed height, not wrap+minHeight: match_parent children stretched to the whole viewport
+    under NestedScrollView fillViewport when a tab showed a single short card
+    -->
 
     <!-- Actions -->
     <LinearLayout

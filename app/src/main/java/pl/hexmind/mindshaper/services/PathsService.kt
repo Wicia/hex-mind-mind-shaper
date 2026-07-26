@@ -70,6 +70,27 @@ class PathsService @Inject constructor(
         }
     }
 
+    /**
+     * Return every COMPLETED path to the pool (progress wiped); STARTED and UNSELECTED paths
+     * are left as-is
+     */
+    suspend fun resetAllPaths() {
+        repository.getAllPaths()
+            .filter { path -> path.status == PathEntity.STATUS_COMPLETED }
+            .forEach { path ->
+                repository.updatePath(
+                    path.copy(
+                        lastDrawnDate = null,
+                        status = PathEntity.STATUS_UNSELECTED,
+                        currentStepIndex = 0
+                    )
+                )
+            }
+
+        //only back-fills a slot that was empty because the pool had run dry - it's a no-op otherwise
+        pickIfNeededOnStart()
+    }
+
     suspend fun repickPath(pathKey: String) {
         val path = repository.getPathByKey(pathKey) ?: return
         // Return to pool: clear drawn date and reset progress

@@ -20,6 +20,8 @@
     <string name="common_btn_cancel_not_now">Nie teraz</string>
     <string name="common_btn_confirm_ok">OK</string>
     <string name="common_btn_confirm_ok_2">Dobra</string>
+    <string name="common_btn_yes">Tak</string>
+    <string name="common_btn_no">Nie</string>
     <string name="common_btn_add">\?</string>
     <string name="common_btn_create">+</string>
     <string name="common_btn_increase">+</string>
@@ -31,6 +33,7 @@
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
 
     <!-- Dialogs -->
+    <string name="common_caution_dialog_title">Uwaga!</string>
     <string name="common_deletion_dialog_title">Uwaga!</string>
     <string name="common_deletion_dialog_message">Czy na pewno chcesz usunąć %s?</string>
     <string name="common_deletion_dialog_yes">Usuń</string>
@@ -430,6 +433,7 @@
 
     <!-- Paths -->
     <string name="workshop_section_paths">Drogi do doświadczenia</string>
+    <string name="workshop_dialog_reset_paths_title">Czy chcesz zresetować swój postęp we wszystkich ukończonych ścieżkach?</string>
     <string name="workshop_path_pool_empty">Nie mam Cię już czego nauczyć…</string>
 
     <!-- Step reminder -->
