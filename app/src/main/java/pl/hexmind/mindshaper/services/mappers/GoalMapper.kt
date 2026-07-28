@@ -19,6 +19,7 @@ object GoalMapper {
             id             = row.goal.id,
             description    = row.goal.description,
             importance     = row.goal.importance,
+            status         = row.goal.status,
             lastModifiedAt = row.goal.lastModifiedAt,
             steps          = row.steps
                 .sortedBy { it.position }
@@ -30,6 +31,7 @@ object GoalMapper {
             id             = entity.id,
             description    = entity.description,
             importance     = entity.importance,
+            status         = entity.status,
             lastModifiedAt = entity.lastModifiedAt
         )
 
@@ -38,6 +40,7 @@ object GoalMapper {
             id             = dto.id,
             description    = dto.description,
             importance     = dto.importance,
+            status         = dto.status,
             lastModifiedAt = dto.lastModifiedAt
         )
 

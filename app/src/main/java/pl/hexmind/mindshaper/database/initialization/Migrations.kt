@@ -286,5 +286,12 @@ class Migrations {
                 db.execSQL("ALTER TABLE GOAL_STEPS ADD COLUMN reminder_days TEXT DEFAULT NULL")
             }
         }
+
+        // Add goal status: ACTIVE (default, shown in the main list) or ARCHIVED
+        val MIGRATION_14_TO_15 = object : Migration(14, 15) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE GOALS ADD COLUMN status TEXT NOT NULL DEFAULT 'ACTIVE'")
+            }
+        }
     }
 }

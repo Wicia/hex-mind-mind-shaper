@@ -20,6 +20,12 @@ class WorkshopRepository @Inject constructor(
     suspend fun getAllGoalsWithSteps(): List<GoalWithSteps> =
         goalDao.getAllWithSteps()
 
+    suspend fun getArchivedGoalsWithSteps(): List<GoalWithSteps> =
+        goalDao.getArchivedWithSteps()
+
+    suspend fun getGoalWithSteps(goalId: Int): GoalWithSteps? =
+        goalDao.getByIdWithSteps(goalId)
+
     suspend fun insertGoal(entity: GoalEntity): Long =
         goalDao.insert(entity)
 

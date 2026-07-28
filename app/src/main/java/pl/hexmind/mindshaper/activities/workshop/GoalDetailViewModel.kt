@@ -32,7 +32,7 @@ class GoalDetailViewModel @Inject constructor(
 
     fun loadGoal() {
         viewModelScope.launch {
-            val dto = goalsService.getAllGoals().firstOrNull { it.id == goalId }
+            val dto = goalsService.getGoal(goalId)
             if (dto == null) {
                 _goal.value = null
                 return@launch

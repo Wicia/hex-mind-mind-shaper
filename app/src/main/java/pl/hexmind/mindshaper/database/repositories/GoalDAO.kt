@@ -12,13 +12,24 @@ import pl.hexmind.mindshaper.database.models.GoalWithSteps
 @Dao
 interface GoalDAO {
 
+    // ! @Relation runs two queries (1 goal -> 2 its steps) - @Transaction keeps them one snapshot
+
     @Transaction
-    @Query("SELECT * FROM GOALS ORDER BY importance DESC, last_modified_at DESC")
+    @Query("SELECT * FROM GOALS WHERE status = 'ARCHIVED' ORDER BY last_modified_at DESC")
+    suspend fun getArchivedWithSteps(): List<GoalWithSteps>
+
+    @Transaction
+    @Query("SELECT * FROM GOALS WHERE status = 'ACTIVE' ORDER BY importance DESC, last_modified_at DESC")
     suspend fun getAllWithSteps(): List<GoalWithSteps>
 
     // Needed for efficient single-entity updates (avoid full table scan)
     @Query("SELECT * FROM GOALS WHERE id = :goalId")
     suspend fun getById(goalId: Int): GoalEntity?
+
+    // Status-agnostic on purpose
+    @Transaction
+    @Query("SELECT * FROM GOALS WHERE id = :goalId")
+    suspend fun getByIdWithSteps(goalId: Int): GoalWithSteps?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(goal: GoalEntity): Long

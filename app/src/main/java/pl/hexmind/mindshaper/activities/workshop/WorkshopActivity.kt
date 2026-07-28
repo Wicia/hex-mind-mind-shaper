@@ -40,8 +40,14 @@ class WorkshopActivity : CoreActivity() {
     private lateinit var btnGoalsToggle: MaterialButton
     private lateinit var fabCapture: FloatingActionButton
     private lateinit var goalsAdapter: GoalsAdapter
+    private lateinit var llGoalsArchive: View
+    private lateinit var rvGoalsArchive: RecyclerView
+    private lateinit var btnGoalsArchiveMore: MaterialButton
+    private lateinit var archiveAdapter: GoalsAdapter
 
     private var allGoals: List<Goal> = emptyList()
+    private var allArchivedGoals: List<Goal> = emptyList()
+    private var archiveVisibleCount: Int = ARCHIVE_PAGE_SIZE
     private var isGoalsExpanded: Boolean = false
 
     // PATHS
@@ -76,11 +82,15 @@ class WorkshopActivity : CoreActivity() {
         rvGoals        = findViewById(R.id.rv_goals)
         btnAddGoal     = findViewById(R.id.btn_add_goal)
         btnGoalsToggle = findViewById(R.id.btn_goals_toggle)
+        llGoalsArchive      = findViewById(R.id.ll_goals_archive)
+        rvGoalsArchive      = findViewById(R.id.rv_goals_archive)
+        btnGoalsArchiveMore = findViewById(R.id.btn_goals_archive_more)
         fabCapture     = findViewById(R.id.fab_capture)
 
         btnAddGoal.visibility = View.VISIBLE
         btnAddGoal.setOnClickListener { showAddGoalDialog() }
         btnGoalsToggle.setOnClickListener { toggleGoalsSection() }
+        btnGoalsArchiveMore.setOnClickListener { showMoreArchivedGoals() }
 
         llPathsList   = findViewById(R.id.ll_paths_list)
         tvPoolEmpty   = findViewById(R.id.tv_paths_pool_empty)
@@ -134,7 +144,20 @@ class WorkshopActivity : CoreActivity() {
             layoutManager = LinearLayoutManager(this@WorkshopActivity)
             adapter = goalsAdapter
             isNestedScrollingEnabled = false
-            // Inset to separate lits elements
+            // Inset to separate list elements
+            addItemDecoration(InsetDividerDecoration(this@WorkshopActivity, GOAL_DIVIDER_INSET_DP))
+        }
+
+        //  same adapter class as the main list
+        archiveAdapter = GoalsAdapter(
+            onGoalTap         = { goalId -> openGoalDetail(goalId) },
+            onCycleImportance = { goalId -> viewModel.cycleGoalImportance(goalId) },
+            onGoalLongPress   = { goalId -> showArchivedGoalActions(goalId) }
+        )
+        rvGoalsArchive.apply {
+            layoutManager = LinearLayoutManager(this@WorkshopActivity)
+            adapter = archiveAdapter
+            isNestedScrollingEnabled = false
             addItemDecoration(InsetDividerDecoration(this@WorkshopActivity, GOAL_DIVIDER_INSET_DP))
         }
     }
@@ -151,6 +174,10 @@ class WorkshopActivity : CoreActivity() {
         viewModel.goals.observe(this) { goals ->
             allGoals = goals
             renderGoalsList()
+        }
+        viewModel.archivedGoals.observe(this) { goals ->
+            allArchivedGoals = goals
+            renderArchiveList()
         }
     }
 
@@ -178,6 +205,27 @@ class WorkshopActivity : CoreActivity() {
     private fun toggleGoalsSection() {
         isGoalsExpanded = !isGoalsExpanded
         renderGoalsList()
+    }
+
+    // Feed: starts at ARCHIVE_PAGE_SIZE and grows by the same step
+    private fun renderArchiveList() {
+        llGoalsArchive.visibility = if (allArchivedGoals.isEmpty()) View.GONE else View.VISIBLE
+
+        // Shrink back when the archive gets smaller, so the feed can't stay stuck open
+        archiveVisibleCount = archiveVisibleCount.coerceAtMost(
+            maxOf(ARCHIVE_PAGE_SIZE, allArchivedGoals.size)
+        )
+
+        archiveAdapter.submitList(allArchivedGoals.take(archiveVisibleCount))
+
+        val remaining = allArchivedGoals.size - archiveVisibleCount
+        btnGoalsArchiveMore.visibility = if (remaining > 0) View.VISIBLE else View.GONE
+        btnGoalsArchiveMore.text = getString(R.string.workshop_goals_archive_more)
+    }
+
+    private fun showMoreArchivedGoals() {
+        archiveVisibleCount += ARCHIVE_PAGE_SIZE
+        renderArchiveList()
     }
 
     // ── Navigation ─────────────────────────────────────────────────────────────
@@ -294,6 +342,23 @@ class WorkshopActivity : CoreActivity() {
             .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
                 viewModel.deleteGoal(goalId)
             }
+            .setStandardAction(getString(R.string.workshop_dialog_goal_archive)) {
+                viewModel.archiveGoal(goalId)
+            }
+            .setDismissText(getString(R.string.common_btn_cancel))
+            .show()
+    }
+
+    private fun showArchivedGoalActions(goalId: Int) {
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.workshop_dialog_delete_goal_title))
+            .setDescription(getString(R.string.workshop_dialog_delete_goal_desc))
+            .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
+                viewModel.deleteGoal(goalId)
+            }
+            .setStandardAction(getString(R.string.workshop_dialog_goal_restore)) {
+                viewModel.restoreGoal(goalId)
+            }
             .setDismissText(getString(R.string.common_btn_cancel))
             .show()
     }
@@ -301,6 +366,7 @@ class WorkshopActivity : CoreActivity() {
     companion object {
         private const val MAX_COLLAPSED_GOALS = 6
         private const val GOAL_DIVIDER_INSET_DP = 28
+        private const val ARCHIVE_PAGE_SIZE = 5
 
         private const val TAB_GOALS = 0
     }

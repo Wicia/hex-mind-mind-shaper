@@ -16,6 +16,14 @@ data class GoalEntity(
     @ColumnInfo(name = "importance")
     val importance: Int = 1,                   // 1..3, 3 = high importance
 
+    @ColumnInfo(name = "status")
+    val status: String = STATUS_ACTIVE,
+
     @ColumnInfo(name = "last_modified_at")
     val lastModifiedAt: Long = System.currentTimeMillis()
-)
+) {
+    companion object {
+        const val STATUS_ACTIVE      = "ACTIVE"
+        const val STATUS_ARCHIVED = "ARCHIVED"
+    }
+}

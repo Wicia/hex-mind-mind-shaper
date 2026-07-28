@@ -393,10 +393,14 @@
     <string name="workshop_tab_paths">✨ Ścieżki</string>
     <string name="workshop_goals_show_all">Pokaż jeszcze %d…</string>
     <string name="workshop_goals_show_less">Pokaż mniej</string>
+    <string name="workshop_section_goals_archive">Archiwum</string>
+    <string name="workshop_goals_archive_more">Pokaż starsze…</string>
     <string name="workshop_dialog_add_goal">Nowy cel / kierunek</string>
     <string name="workshop_dialog_edit_goal">Edytuj cel / kierunek</string>
     <string name="workshop_dialog_delete_goal_title">Usunąć cel / kierunek?</string>
     <string name="workshop_dialog_delete_goal_desc">Zostaną usunięte też wszystkie kroki tego celu.</string>
+    <string name="workshop_dialog_goal_archive">Wrzuć do archiwum</string>
+    <string name="workshop_dialog_goal_restore">Przywróć z archiwum</string>
 
     <!-- Steps -->
     <string name="workshop_step_edit_header">Edytuj krok</string>

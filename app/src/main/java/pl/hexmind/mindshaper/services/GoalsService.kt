@@ -20,6 +20,12 @@ class GoalsService @Inject constructor(
     suspend fun getAllGoals(): List<GoalDTO> =
         repository.getAllGoalsWithSteps().map { GoalMapper.entityToDTO(it) }
 
+    suspend fun getArchivedGoals(): List<GoalDTO> =
+        repository.getArchivedGoalsWithSteps().map { GoalMapper.entityToDTO(it) }
+
+    suspend fun getGoal(goalId: Int): GoalDTO? =
+        repository.getGoalWithSteps(goalId)?.let { GoalMapper.entityToDTO(it) }
+
     suspend fun addGoal(description: String, importance: Int = 1): Long {
         val entity = GoalEntity(
             description    = description.trim(),
@@ -41,6 +47,14 @@ class GoalsService @Inject constructor(
         val current = repository.getGoalById(goalId) ?: return
         repository.updateGoal(current.copy(
             importance     = importance,
+            lastModifiedAt = System.currentTimeMillis()
+        ))
+    }
+
+    suspend fun setGoalStatus(goalId: Int, status: String) {
+        val current = repository.getGoalById(goalId) ?: return
+        repository.updateGoal(current.copy(
+            status         = status,
             lastModifiedAt = System.currentTimeMillis()
         ))
     }

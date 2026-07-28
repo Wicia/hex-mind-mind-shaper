@@ -102,6 +102,58 @@
                         android:visibility="gone"
                         />
 
+                    <!-- === ARCHIVE === -->
+                    <!-- Whole block hides when nothing is archived -->
+                    <LinearLayout
+                        android:id="@+id/ll_goals_archive"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <!-- Separator -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="12dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@color/_gray_lvl_1"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_goals_archive_header"
+                            style="@style/HexCard_Header"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/workshop_section_goals_archive"
+                            />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_goals_archive"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:overScrollMode="never"
+                            tools:listitem="@layout/goal_item"
+                            />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_goals_archive_more"
+                            style="@style/SecondaryActionButton.Ghost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="4dp"
+                            android:visibility="gone"
+                            />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>

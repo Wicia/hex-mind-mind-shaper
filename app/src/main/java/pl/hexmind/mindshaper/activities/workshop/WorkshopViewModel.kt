@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import pl.hexmind.mindshaper.database.models.GoalEntity
 import pl.hexmind.mindshaper.services.GoalsService
 import pl.hexmind.mindshaper.services.PathsService
+import pl.hexmind.mindshaper.services.dto.GoalDTO
 import javax.inject.Inject
 
 // ── UI models TODO: to be moved somewhere as separate class?
@@ -63,12 +65,16 @@ class WorkshopViewModel @Inject constructor(
     private val _goals = MutableLiveData<List<Goal>>()
     val goals: LiveData<List<Goal>> = _goals
 
+    private val _archivedGoals = MutableLiveData<List<Goal>>()
+    val archivedGoals: LiveData<List<Goal>> = _archivedGoals
+
     // PATHS
     private val _pickedPaths = MutableLiveData<List<PathItem>>()
     val pickedPaths: LiveData<List<PathItem>> = _pickedPaths
 
     init {
         loadGoals()
+        loadArchivedGoals()
         loadTodayPaths()
     }
 
@@ -77,28 +83,20 @@ class WorkshopViewModel @Inject constructor(
     private fun loadGoals() {
         viewModelScope.launch {
             // DB query already sorts by importance DESC, last_modified_at DESC
-            _goals.value = goalsService.getAllGoals().map { dto ->
-                Goal(
-                    id             = dto.id,
-                    description    = dto.description,
-                    importance     = dto.importance,
-                    lastModifiedAt = dto.lastModifiedAt,
-                    subItems       = dto.steps.map { g ->
-                        GoalStep(
-                            id                 = g.id,
-                            description        = g.description,
-                            currentRepetitions = g.currentRepetitions,
-                            maxRepetitions     = g.maxRepetitions,
-                            thoughtId          = g.thoughtId
-                        )
-                    }
-                )
-            }
+            _goals.value = goalsService.getAllGoals().map { dto -> dto.toUiModel() }
+        }
+    }
+
+    private fun loadArchivedGoals() {
+        viewModelScope.launch {
+            // already sorted - newest change first
+            _archivedGoals.value = goalsService.getArchivedGoals().map { dto -> dto.toUiModel() }
         }
     }
 
     fun reload() {
         loadGoals()
+        loadArchivedGoals()
     }
 
     private fun loadTodayPaths() {
@@ -179,10 +177,45 @@ class WorkshopViewModel @Inject constructor(
 
     fun deleteGoal(goalId: Int) {
         _goals.value = _goals.value?.filter { it.id != goalId }
+        _archivedGoals.value = _archivedGoals.value?.filter { it.id != goalId }
         viewModelScope.launch { goalsService.deleteGoal(goalId) }
     }
 
+    fun archiveGoal(goalId: Int) {
+        moveGoal(goalId, GoalEntity.STATUS_ARCHIVED)
+    }
+
+    fun restoreGoal(goalId: Int) {
+        moveGoal(goalId, GoalEntity.STATUS_ACTIVE)
+    }
+
+    private fun moveGoal(goalId: Int, status: String) {
+        viewModelScope.launch {
+            goalsService.setGoalStatus(goalId, status)
+            // reload both lists when goal has changed its place
+            loadGoals()
+            loadArchivedGoals()
+        }
+    }
+
     // ── Helpers ────────────────────────────────────────────────────────────────
+
+    private fun GoalDTO.toUiModel(): Goal =
+        Goal(
+            id             = id,
+            description    = description,
+            importance     = importance,
+            lastModifiedAt = lastModifiedAt,
+            subItems       = steps.map { step ->
+                GoalStep(
+                    id                 = step.id,
+                    description        = step.description,
+                    currentRepetitions = step.currentRepetitions,
+                    maxRepetitions     = step.maxRepetitions,
+                    thoughtId          = step.thoughtId
+                )
+            }
+        )
 
     // Mirrors DB: ORDER BY importance DESC, last_modified_at DESC
     private fun sortGoals(list: List<Goal>): List<Goal> =
