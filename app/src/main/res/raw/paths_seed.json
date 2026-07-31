@@ -70,5 +70,16 @@
       "Jaki jesteś dla samego/samej siebie?",
       "Jak to wpływa na ludzi wokół Ciebie?"
     ]
+  },
+  {
+    "key": "myself_learning_1",
+    "category": "Myślenie i Zapamiętywanie",
+    "steps": [
+      "O czym nie pamiętasz? ;)",
+      "Co łatwo zapamiętujesz?",
+      "Za co podziwiasz i szanujesz swój umysł?",
+      "Przez jak długo potrafisz nie myśleć i nic nie robić?",
+      "Z czym nie potrafi poradzić sobie Twój umysł?"
+    ]
   }
 ]
