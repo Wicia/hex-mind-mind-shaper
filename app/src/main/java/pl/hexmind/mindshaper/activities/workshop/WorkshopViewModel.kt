@@ -182,16 +182,16 @@ class WorkshopViewModel @Inject constructor(
     }
 
     fun archiveGoal(goalId: Int) {
-        moveGoal(goalId, GoalEntity.STATUS_ARCHIVED)
+        moveGoal(goalId, GoalEntity.STATUS_ARCHIVED, IMPORTANCE_CLEARED)
     }
 
     fun restoreGoal(goalId: Int) {
-        moveGoal(goalId, GoalEntity.STATUS_ACTIVE)
+        moveGoal(goalId, GoalEntity.STATUS_ACTIVE, IMPORTANCE_DEFAULT)
     }
 
-    private fun moveGoal(goalId: Int, status: String) {
+    private fun moveGoal(goalId: Int, status: String, importance: Int) {
         viewModelScope.launch {
-            goalsService.setGoalStatus(goalId, status)
+            goalsService.setGoalStatus(goalId, status, importance)
             // reload both lists when goal has changed its place
             loadGoals()
             loadArchivedGoals()
@@ -220,4 +220,9 @@ class WorkshopViewModel @Inject constructor(
     // Mirrors DB: ORDER BY importance DESC, last_modified_at DESC
     private fun sortGoals(list: List<Goal>): List<Goal> =
         list.sortedWith(compareByDescending<Goal> { it.importance }.thenByDescending { it.lastModifiedAt })
+
+    companion object {
+        private const val IMPORTANCE_CLEARED = 0
+        private const val IMPORTANCE_DEFAULT = 1
+    }
 }

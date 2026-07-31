@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.common.ui.dpToPx
 import pl.hexmind.mindshaper.common.ui.views.GoalImportanceBadge
 
 /**
@@ -42,8 +43,22 @@ class GoalsAdapter(
     override fun onBindViewHolder(holder: GoalViewHolder, position: Int) {
         val goal = getItem(position)
 
+        // importance == 0 marks an archived goal (empty badge/smaller)
+        val archived = goal.importance <= 0
+        val badgeSizePx = holder.badge.context.dpToPx(if (archived) 24 else 32)
+        holder.badge.layoutParams = holder.badge.layoutParams.also {
+            it.width = badgeSizePx
+            it.height = badgeSizePx
+        }
+
         holder.badge.setImportance(goal.importance)
-        holder.badge.setOnClickListener { onCycleImportance(goal.id) }
+        if (archived) {
+            holder.badge.setOnClickListener(null)
+            holder.badge.isClickable = false
+        }
+        else {
+            holder.badge.setOnClickListener { onCycleImportance(goal.id) }
+        }
 
         // Description:
         holder.tvDescription.text = goal.description

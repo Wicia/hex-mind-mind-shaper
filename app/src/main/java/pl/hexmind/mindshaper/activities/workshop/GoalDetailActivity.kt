@@ -134,7 +134,14 @@ class GoalDetailActivity : CoreActivity() {
 
     private fun bindHeader(goal: Goal) {
         tvBadge.setImportance(goal.importance)
-        tvBadge.setOnClickListener { viewModel.cycleGoalImportance() }
+        // importance == 0 -> archived goal: badge is inert here too, mirroring the list
+        if (goal.importance <= 0) {
+            tvBadge.setOnClickListener(null)
+            tvBadge.isClickable = false
+        }
+        else {
+            tvBadge.setOnClickListener { viewModel.cycleGoalImportance() }
+        }
 
         cbGoalDesc.text = goal.description
         cbGoalDesc.setOnClickListener { showEditGoalDescriptionDialog(goal) }

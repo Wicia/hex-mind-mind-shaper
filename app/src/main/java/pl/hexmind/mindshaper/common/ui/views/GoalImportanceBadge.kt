@@ -44,6 +44,11 @@ class GoalImportanceBadge @JvmOverloads constructor(
     }
 
     fun setImportance(level: Int) {
+        // archived / importance cleared
+        if (level <= 0) {
+            setArchived()
+            return
+        }
         val safe = level.coerceIn(1, 3)
         text = safe.toString()
         val bgRes = when (safe) {
@@ -52,5 +57,11 @@ class GoalImportanceBadge @JvmOverloads constructor(
             else -> R.color.importance_low
         }
         backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, bgRes))
+    }
+
+    // Archived goal: badge: empty + gray
+    private fun setArchived() {
+        text = ""
+        backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color._gray_lvl_2))
     }
 }

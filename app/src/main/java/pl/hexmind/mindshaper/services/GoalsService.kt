@@ -51,10 +51,15 @@ class GoalsService @Inject constructor(
         ))
     }
 
-    suspend fun setGoalStatus(goalId: Int, status: String) {
+    /**
+     * Archiving clears importance (0) - a "shelved goal" has no current priority;
+     * restoring resets it to the default (1)
+     */
+    suspend fun setGoalStatus(goalId: Int, status: String, importance: Int) {
         val current = repository.getGoalById(goalId) ?: return
         repository.updateGoal(current.copy(
             status         = status,
+            importance     = importance,
             lastModifiedAt = System.currentTimeMillis()
         ))
     }

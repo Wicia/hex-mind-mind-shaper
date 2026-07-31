@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -41,6 +42,10 @@ class WorkshopActivity : CoreActivity() {
     private lateinit var fabCapture: FloatingActionButton
     private lateinit var goalsAdapter: GoalsAdapter
     private lateinit var llGoalsArchive: View
+    private lateinit var llGoalsArchiveHeader: View
+    private lateinit var llGoalsArchiveContent: View
+    private lateinit var tvGoalsArchiveHeader: TextView
+    private lateinit var ivGoalsArchiveChevron: ImageView
     private lateinit var rvGoalsArchive: RecyclerView
     private lateinit var btnGoalsArchiveMore: MaterialButton
     private lateinit var archiveAdapter: GoalsAdapter
@@ -48,6 +53,7 @@ class WorkshopActivity : CoreActivity() {
     private var allGoals: List<Goal> = emptyList()
     private var allArchivedGoals: List<Goal> = emptyList()
     private var archiveVisibleCount: Int = ARCHIVE_PAGE_SIZE
+    private var isArchiveExpanded: Boolean = false
     private var isGoalsExpanded: Boolean = false
 
     // PATHS
@@ -82,15 +88,20 @@ class WorkshopActivity : CoreActivity() {
         rvGoals        = findViewById(R.id.rv_goals)
         btnAddGoal     = findViewById(R.id.btn_add_goal)
         btnGoalsToggle = findViewById(R.id.btn_goals_toggle)
-        llGoalsArchive      = findViewById(R.id.ll_goals_archive)
-        rvGoalsArchive      = findViewById(R.id.rv_goals_archive)
-        btnGoalsArchiveMore = findViewById(R.id.btn_goals_archive_more)
+        llGoalsArchive        = findViewById(R.id.ll_goals_archive)
+        llGoalsArchiveHeader  = findViewById(R.id.ll_goals_archive_header)
+        llGoalsArchiveContent = findViewById(R.id.ll_goals_archive_content)
+        tvGoalsArchiveHeader  = findViewById(R.id.tv_goals_archive_header)
+        ivGoalsArchiveChevron = findViewById(R.id.iv_goals_archive_chevron)
+        rvGoalsArchive        = findViewById(R.id.rv_goals_archive)
+        btnGoalsArchiveMore   = findViewById(R.id.btn_goals_archive_more)
         fabCapture     = findViewById(R.id.fab_capture)
 
         btnAddGoal.visibility = View.VISIBLE
         btnAddGoal.setOnClickListener { showAddGoalDialog() }
         btnGoalsToggle.setOnClickListener { toggleGoalsSection() }
         btnGoalsArchiveMore.setOnClickListener { showMoreArchivedGoals() }
+        llGoalsArchiveHeader.setOnClickListener { toggleArchive() }
 
         llPathsList   = findViewById(R.id.ll_paths_list)
         tvPoolEmpty   = findViewById(R.id.tv_paths_pool_empty)
@@ -158,7 +169,14 @@ class WorkshopActivity : CoreActivity() {
             layoutManager = LinearLayoutManager(this@WorkshopActivity)
             adapter = archiveAdapter
             isNestedScrollingEnabled = false
-            addItemDecoration(InsetDividerDecoration(this@WorkshopActivity, GOAL_DIVIDER_INSET_DP))
+            // Darker divider fur ARCHIVED state
+            addItemDecoration(
+                InsetDividerDecoration(
+                    this@WorkshopActivity,
+                    GOAL_DIVIDER_INSET_DP,
+                    dividerColorRes = R.color._gray_lvl_2
+                )
+            )
         }
     }
 
@@ -211,7 +229,12 @@ class WorkshopActivity : CoreActivity() {
     private fun renderArchiveList() {
         llGoalsArchive.visibility = if (allArchivedGoals.isEmpty()) View.GONE else View.VISIBLE
 
-        // Shrink back when the archive gets smaller, so the feed can't stay stuck open
+        // Count shows the whole archive, not just the loaded page
+        tvGoalsArchiveHeader.text = getString(
+            R.string.workshop_section_goals_archive_count, allArchivedGoals.size
+        )
+
+        // ! Shrink back when the archive gets smaller, so the feed can't stay stuck open
         archiveVisibleCount = archiveVisibleCount.coerceAtMost(
             maxOf(ARCHIVE_PAGE_SIZE, allArchivedGoals.size)
         )
@@ -221,6 +244,19 @@ class WorkshopActivity : CoreActivity() {
         val remaining = allArchivedGoals.size - archiveVisibleCount
         btnGoalsArchiveMore.visibility = if (remaining > 0) View.VISIBLE else View.GONE
         btnGoalsArchiveMore.text = getString(R.string.workshop_goals_archive_more)
+
+        applyArchiveExpansion()
+    }
+
+    private fun toggleArchive() {
+        isArchiveExpanded = !isArchiveExpanded
+        applyArchiveExpansion()
+    }
+
+    // Chevron: collapsed / expanded
+    private fun applyArchiveExpansion() {
+        llGoalsArchiveContent.visibility = if (isArchiveExpanded) View.VISIBLE else View.GONE
+        ivGoalsArchiveChevron.rotation = if (isArchiveExpanded) 270f else 90f
     }
 
     private fun showMoreArchivedGoals() {

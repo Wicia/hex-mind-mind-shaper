@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Recessed panel for the archive, sitting on the card's white surface -->
+<!-- Radius is 11dp to match the inner (white) layer of shape_card_tab_joined, not the 12dp border -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/_gray_lvl_0" />
+    <corners
+        android:bottomLeftRadius="11dp"
+        android:bottomRightRadius="11dp"
+        />
+</shape>

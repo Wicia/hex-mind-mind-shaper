@@ -15,6 +15,7 @@
     <!-- NEUTRAL: Grayscale for text and backgrounds -->
     <color name="_white">#FFFFFF</color>
 
+    <color name="_gray_lvl_0">#F1F1F1</color>        <!-- TODO: temporary solution - to be refactored -->
     <color name="_gray_lvl_1">#E6E6E6</color>        <!-- background, cards -->
     <color name="_gray_lvl_2">#BEBEBE</color>        <!-- subtle borders, inactive elements -->
     <color name="_gray_lvl_3">#828282</color>        <!-- secondary text, icons -->

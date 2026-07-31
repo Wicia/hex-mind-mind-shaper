@@ -17,7 +17,9 @@ import pl.hexmind.mindshaper.R
 class InsetDividerDecoration(
     context: Context,
     startInsetDp: Int,
-    endInsetDp: Int = 0
+    endInsetDp: Int = 0,
+    // ! Overridable because the default tone is invisible on a _gray_lvl_1 surface (archive panel)
+    dividerColorRes: Int = R.color._gray_lvl_1
 ) : RecyclerView.ItemDecoration() {
 
     private val density = context.resources.displayMetrics.density
@@ -25,7 +27,7 @@ class InsetDividerDecoration(
     private val endInset = endInsetDp * density
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = ContextCompat.getColor(context, R.color._gray_lvl_1)
+        color = ContextCompat.getColor(context, dividerColorRes)
         strokeWidth = density  // 1dp
     }
 
