@@ -43,24 +43,32 @@ class GoalDetailViewModel @Inject constructor(
             val subjectsMap: Map<Int, String?> = if (thoughtIds.isEmpty()) emptyMap()
                 else thoughtsService.getSubjectsByIds(thoughtIds)
 
+            val loadedSteps = dto.steps.map { g ->
+                GoalStep(
+                    id                 = g.id,
+                    description        = g.description,
+                    currentRepetitions = g.currentRepetitions,
+                    maxRepetitions     = g.maxRepetitions,
+                    thoughtId          = g.thoughtId,
+                    thoughtSubject     = g.thoughtId?.let { subjectsMap[it] },
+                    reminderTime       = g.reminderTime,
+                    reminderDays       = g.reminderDays
+                )
+            }
+            // Stable sort: false < true, so unfinished steps keep their order and finished ones land last
+            val orderedSteps = loadedSteps.sortedBy { step -> step.isCompleted }
+
             _goal.value = Goal(
                 id             = dto.id,
                 description    = dto.description,
                 importance     = dto.importance,
                 lastModifiedAt = dto.lastModifiedAt,
-                subItems       = dto.steps.map { g ->
-                    GoalStep(
-                        id                 = g.id,
-                        description        = g.description,
-                        currentRepetitions = g.currentRepetitions,
-                        maxRepetitions     = g.maxRepetitions,
-                        thoughtId          = g.thoughtId,
-                        thoughtSubject     = g.thoughtId?.let { subjectsMap[it] },
-                        reminderTime       = g.reminderTime,
-                        reminderDays       = g.reminderDays
-                    )
-                }
+                subItems       = orderedSteps
             )
+
+            // Repairs order broken elsewhere: goals saved before the split, and new steps that
+            // addStep puts at the very end (below the completed block)
+            persistOrderIfChanged(loadedSteps, orderedSteps)
         }
     }
 
@@ -102,31 +110,40 @@ class GoalDetailViewModel @Inject constructor(
     }
 
     private fun updateStepCurrent(stepId: Int, newCurrent: Int) {
-        _goal.value = _goal.value?.let { goal ->
-            goal.copy(subItems = goal.subItems.map { step ->
-                if (step.id == stepId)
-                    step.copy(currentRepetitions = newCurrent)
-                else step
-            })
+        val current = _goal.value ?: return
+        val updatedSteps = current.subItems.map { step ->
+            if (step.id == stepId)
+                step.copy(currentRepetitions = newCurrent)
+            else step
         }
+        val orderedSteps = moveStepToBoundary(updatedSteps, stepId)
+
+        _goal.value = current.copy(subItems = orderedSteps)
+
         viewModelScope.launch { goalsService.updateStepCurrentRepetitions(stepId, newCurrent) }
+        persistOrderIfChanged(updatedSteps, orderedSteps)
     }
 
     fun updateStep(stepId: Int, description: String, maxRepetitions: Int, reminderTime: String?, reminderDays: String?) {
-        _goal.value = _goal.value?.let { goal ->
-            goal.copy(subItems = goal.subItems.map { step ->
-                if (step.id == stepId) step.copy(
-                    description        = description.trim(),
-                    // Clamp current so it never exceeds the new max
-                    currentRepetitions = if (maxRepetitions < step.maxRepetitions) 0
-                        else step.currentRepetitions.coerceAtMost(maxRepetitions),
-                    maxRepetitions = maxRepetitions,
-                    reminderTime   = reminderTime,
-                    reminderDays   = reminderDays
-                ) else step
-            })
+        val current = _goal.value ?: return
+        val updatedSteps = current.subItems.map { step ->
+            if (step.id == stepId) step.copy(
+                description        = description.trim(),
+                // Clamp current so it never exceeds the new max
+                currentRepetitions = if (maxRepetitions < step.maxRepetitions) 0
+                    else step.currentRepetitions.coerceAtMost(maxRepetitions),
+                maxRepetitions = maxRepetitions,
+                reminderTime   = reminderTime,
+                reminderDays   = reminderDays
+            ) else step
         }
+        // Editing maxRepetitions can flip completion, so the step may have to change block
+        val orderedSteps = moveStepToBoundary(updatedSteps, stepId)
+
+        _goal.value = current.copy(subItems = orderedSteps)
+
         viewModelScope.launch { goalsService.updateStep(stepId, description, maxRepetitions, reminderTime, reminderDays) }
+        persistOrderIfChanged(updatedSteps, orderedSteps)
     }
 
     fun deleteStep(stepId: Int) {
@@ -161,6 +178,27 @@ class GoalDetailViewModel @Inject constructor(
                 }
         }
         return true
+    }
+
+    // ── Completion order ──────────────────────────────────
+
+    /**
+     * Puts the step on the border between the unfinished and the finished block:
+     * just finished -> head of the finished ones, back in progress -> tail of the unfinished ones.
+     */
+    private fun moveStepToBoundary(steps: List<GoalStep>, stepId: Int): List<GoalStep> {
+        val movedStep = steps.firstOrNull { step -> step.id == stepId } ?: return steps
+        val remainingSteps = steps.filter { step -> step.id != stepId }
+        val boundaryIndex = remainingSteps.count { step -> !step.isCompleted }
+
+        return remainingSteps.toMutableList().apply { add(boundaryIndex, movedStep) }
+    }
+
+    private fun persistOrderIfChanged(before: List<GoalStep>, after: List<GoalStep>) {
+        val orderedIds = after.map { step -> step.id }
+        if (before.map { step -> step.id } == orderedIds) return
+
+        viewModelScope.launch { goalsService.reorderSteps(orderedIds) }
     }
 
     // ── Reorder steps ─────────────────────────────────────

@@ -69,6 +69,32 @@
                         android:overScrollMode="never"
                         tools:listitem="@layout/goal_detail_step_item" />
 
+                    <!-- Completed steps block: notched separator + list -->
+                    <LinearLayout
+                        android:id="@+id/ll_steps_completed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!-- Notched separator -->
+                        <pl.hexmind.mindshaper.common.ui.views.HexNotchSeparator
+                            android:id="@+id/v_steps_separator"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="12dp"
+                            />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_steps_completed"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:overScrollMode="never"
+                            tools:listitem="@layout/goal_detail_step_item" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
