@@ -95,7 +95,7 @@
         android:maxLines="1"
         android:ellipsize="end"
         app:icon="@drawable/ic_action_chevron_right"
-        app:iconTint="@color/black"
+        app:iconTint="@color/_black"
         app:iconGravity="end"
         app:iconSize="16dp"
         app:iconPadding="6dp"
