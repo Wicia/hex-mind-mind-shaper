@@ -1,8 +1,10 @@
 package pl.hexmind.mindshaper.common.ui.views.content
 
 import android.content.Context
+import android.text.Spannable
 import android.text.Spanned
 import android.text.style.BulletSpan
+import android.text.style.RelativeSizeSpan
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -13,6 +15,7 @@ import com.google.android.material.button.MaterialButton
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.MarkwonSpansFactory
+import io.noties.markwon.SoftBreakAddsNewLinePlugin
 import org.commonmark.node.ListItem
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
@@ -38,6 +41,8 @@ class MarkdownTextView @JvmOverloads constructor(
     }
 
     private val markwon: Markwon = Markwon.builder(context)
+        // Users writing a text expect a line break for single Enter (need to override default CommonMark's feature)
+        .usePlugin(SoftBreakAddsNewLinePlugin.create())
         .usePlugin(object : AbstractMarkwonPlugin() {
 
             override fun configureSpansFactory(builder: MarkwonSpansFactory.Builder) {
@@ -53,6 +58,10 @@ class MarkdownTextView @JvmOverloads constructor(
             override fun beforeSetText(textView: TextView, markdown: Spanned) {
                 // Apply Alegreya font after Markwon sets the text
                 textView.typeface = ResourcesCompat.getFont(textView.context, R.font.alegreya_regular)
+            }
+
+            override fun afterSetText(textView: TextView) {
+                shrinkParagraphGaps(textView)
             }
         })
         .build()
@@ -126,6 +135,22 @@ class MarkdownTextView @JvmOverloads constructor(
         applyClickBehavior()
     }
 
+    // To override CommonMark behavior - turning a single Enter into a space (users expect a line break instead)
+    private fun shrinkParagraphGaps(textView: TextView) {
+        val spannable = textView.text as? Spannable ?: return
+
+        var breakIndex = spannable.indexOf(BLOCK_SEPARATOR)
+        while (breakIndex >= 0) {
+            spannable.setSpan(
+                RelativeSizeSpan(PARAGRAPH_GAP_RATIO),
+                breakIndex + 1,
+                breakIndex + 2,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            breakIndex = spannable.indexOf(BLOCK_SEPARATOR, breakIndex + 2)
+        }
+    }
+
     /**
      * Applies click behavior configuration after Markdown rendering.
      * Must be called after setMarkdown() as it resets these properties.
@@ -155,4 +180,11 @@ class MarkdownTextView @JvmOverloads constructor(
     }
 
     fun getText(): String = originalText
+
+    companion object {
+        private const val BLOCK_SEPARATOR = "\n\n"
+
+        // 1.0 = a full empty line, which reads too airy at 18sp
+        private const val PARAGRAPH_GAP_RATIO = 0.6f
+    }
 }
