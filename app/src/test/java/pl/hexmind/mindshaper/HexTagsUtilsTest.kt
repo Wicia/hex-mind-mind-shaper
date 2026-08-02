@@ -4,7 +4,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
-import pl.hexmind.mindshaper.common.ui.views.content.HtmlConverter
 
 class HexTagsUtilsTest {
 
