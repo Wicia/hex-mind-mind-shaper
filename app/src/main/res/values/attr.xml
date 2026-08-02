@@ -65,4 +65,11 @@
         <attr name="importance" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="HexNotchSeparator">
+        <attr name="separatorColor" format="reference|color" />
+        <attr name="separatorThickness" format="dimension" />
+        <attr name="notchWidth" format="dimension" />
+        <attr name="notchDepth" format="dimension" />
+    </declare-styleable>
+
 </resources>

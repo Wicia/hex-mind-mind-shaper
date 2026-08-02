@@ -148,7 +148,7 @@
                 android:orientation="vertical">
 
                 <!-- RICH TEXT : Note -->
-                <pl.hexmind.mindshaper.common.ui.views.content.MarkdownTextView
+                <pl.hexmind.mindshaper.common.ui.views.content.HexTextView
                     android:id="@+id/rich_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -1,21 +1,28 @@
 package pl.hexmind.mindshaper.common.ui.views.content
 
 import android.content.Context
+import android.text.Spannable
+import android.text.Spanned
+import android.text.style.BulletSpan
+import android.text.style.RelativeSizeSpan
 import android.util.AttributeSet
 import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.withStyledAttributes
 import com.google.android.material.button.MaterialButton
-import org.sufficientlysecure.htmltextview.HtmlTextView
+import io.noties.markwon.AbstractMarkwonPlugin
+import io.noties.markwon.Markwon
+import io.noties.markwon.MarkwonSpansFactory
+import io.noties.markwon.SoftBreakAddsNewLinePlugin
+import org.commonmark.node.ListItem
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 
 /**
- * Universal rich text display view supporting HTML markups
+ * Rich text display view using Markdown rendering.
  */
-@Deprecated(
-    message = "Legacy code - HTML approach was replaced with Markdown",
-    replaceWith = ReplaceWith("MarkdownTextView")
-)
 class HexTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -23,8 +30,8 @@ class HexTextView @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     enum class Mode {
-        EDIT_DISPLAY,  // Edit + Display
-        DISPLAY_ONLY   // View only
+        EDIT_DISPLAY,
+        DISPLAY_ONLY
     }
 
     interface TextCallback {
@@ -32,17 +39,42 @@ class HexTextView @JvmOverloads constructor(
         fun onTextDeleted()
     }
 
-    private val htmlTextView: HtmlTextView
+    private val markwon: Markwon = Markwon.builder(context)
+        // Users writing a text expect a line break for single Enter (need to override default CommonMark's feature)
+        .usePlugin(SoftBreakAddsNewLinePlugin.create())
+        .usePlugin(object : AbstractMarkwonPlugin() {
+
+            override fun configureSpansFactory(builder: MarkwonSpansFactory.Builder) {
+                builder.setFactory(ListItem::class.java) { _, _ ->
+                    BulletSpan(
+                        24,
+                        ContextCompat.getColor(context, R.color.graphite_light),
+                        8
+                    )
+                }
+            }
+
+            override fun beforeSetText(textView: TextView, markdown: Spanned) {
+                // Apply Alegreya font after Markwon sets the text
+                textView.typeface = ResourcesCompat.getFont(textView.context, R.font.alegreya_regular)
+            }
+
+            override fun afterSetText(textView: TextView) {
+                shrinkParagraphGaps(textView)
+            }
+        })
+        .build()
+
+    private val textView: TextView
     val btnDelete: MaterialButton
 
-    // State
     private var mode: Mode = Mode.EDIT_DISPLAY
     private var callback: TextCallback? = null
 
     var originalText: String = ""
         set(value) {
             field = value
-            updateFormattedText()
+            renderMarkdown()
         }
 
     /**
@@ -57,14 +89,12 @@ class HexTextView @JvmOverloads constructor(
         }
 
     init {
-        inflate(context, R.layout.common_rich_text_view, this)
+        inflate(context, R.layout.common_markdown_text_view, this)
         orientation = VERTICAL
 
-        // Initialize UI components
-        htmlTextView = findViewById(R.id.html_text_view)
+        textView = findViewById(R.id.markdown_text_view)
         btnDelete = findViewById(R.id.btn_delete)
 
-        // Read XML attributes
         attrs?.let {
             context.withStyledAttributes(it, R.styleable.HexTextView) {
                 val modeValue = getInt(R.styleable.HexTextView_richTextMode, 0)
@@ -90,7 +120,7 @@ class HexTextView @JvmOverloads constructor(
     }
 
     private fun setupListeners() {
-        htmlTextView.setOnClickListener {
+        textView.setOnClickListener {
             callback?.onTextClicked()
         }
 
@@ -99,20 +129,35 @@ class HexTextView @JvmOverloads constructor(
         }
     }
 
-    private fun updateFormattedText() {
-        val html = HtmlConverter.convertToHtml(originalText)
-        htmlTextView.setHtml(html)
+    private fun renderMarkdown() {
+        markwon.setMarkdown(textView, originalText)
         applyClickBehavior()
     }
 
+    // To override CommonMark behavior - turning a single Enter into a space (users expect a line break instead)
+    private fun shrinkParagraphGaps(textView: TextView) {
+        val spannable = textView.text as? Spannable ?: return
+
+        var breakIndex = spannable.indexOf(BLOCK_SEPARATOR)
+        while (breakIndex >= 0) {
+            spannable.setSpan(
+                RelativeSizeSpan(PARAGRAPH_GAP_RATIO),
+                breakIndex + 1,
+                breakIndex + 2,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            breakIndex = spannable.indexOf(BLOCK_SEPARATOR, breakIndex + 2)
+        }
+    }
+
     /**
-     * Applies click behavior configuration after HTML rendering
-     * Must be called after setHtml() as it resets these properties
+     * Applies click behavior configuration after Markdown rendering.
+     * Must be called after setMarkdown() as it resets these properties.
      */
     private fun applyClickBehavior() {
-        htmlTextView.movementMethod = null
-        htmlTextView.isClickable = !propagateClickEventsToParent
-        htmlTextView.isFocusable = !propagateClickEventsToParent
+        textView.movementMethod = null
+        textView.isClickable = !propagateClickEventsToParent
+        textView.isFocusable = !propagateClickEventsToParent
     }
 
     private fun showDeleteConfirmation() {
@@ -120,13 +165,9 @@ class HexTextView @JvmOverloads constructor(
             .setTitle(context.getString(R.string.details_rich_text_removing_header))
             .setDescription(context.getString(R.string.details_rich_text_removing_content))
             .setCautionAction(context.getString(R.string.common_deletion_dialog_yes_2)) {
-                deleteText()
+                callback?.onTextDeleted()
             }
             .show()
-    }
-
-    private fun deleteText() {
-        callback?.onTextDeleted()
     }
 
     // ===========================================
@@ -137,7 +178,12 @@ class HexTextView @JvmOverloads constructor(
         this.callback = callback
     }
 
-    fun getText(): String {
-        return originalText
+    fun getText(): String = originalText
+
+    companion object {
+        private const val BLOCK_SEPARATOR = "\n\n"
+
+        // 1.0 = a full empty line, which reads too airy at 18sp
+        private const val PARAGRAPH_GAP_RATIO = 0.6f
     }
 }

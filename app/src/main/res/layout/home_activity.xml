@@ -78,4 +78,15 @@
         app:fabSize="normal"
         app:elevation="6dp" />
 
+    <!-- Build version label -->
+    <TextView
+        android:id="@+id/tv_build_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="12dp"
+        android:textSize="12sp"
+        android:textColor="@color/_gray_lvl_2"
+        />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

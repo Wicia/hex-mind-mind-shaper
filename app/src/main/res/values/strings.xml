@@ -107,6 +107,8 @@
     <string name="home_navigation_button_title">A tymczasem… :)</string>
     <string name="home_navigation_button_tooltip">Tapnij na ikonkę z kompasem (rym!), a potem na ikonkę koła zymbatego</string>
 
+    <string name="home_build_version">ver %1$s</string>
+
     <array name="home_greetings_values_list">
         <item>Dużo dobrego %s!</item>
         <item>Witaj %s ;)</item>
@@ -120,6 +122,13 @@
         <item>Siema %s!</item>
         <item>Dobrze Cię widzieć %s ;)</item>
     </array>
+
+    <!-- ============================================================ -->
+    <!--    APP SHORTCUTS (long-press launcher icon)                  -->
+    <!-- ============================================================ -->
+
+    <string name="shortcut_new_thought_short">Nowa myśl</string>
+    <string name="shortcut_new_thought_long">Złap nową myśl</string>
 
     <!-- ============================================================ -->
     <!--    CAPTURE Activity                                          -->

@@ -29,7 +29,6 @@ import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
 import pl.hexmind.mindshaper.common.ui.views.content.HexAudioView
 import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
 import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
-import pl.hexmind.mindshaper.common.ui.views.content.MarkdownTextView
 import pl.hexmind.mindshaper.databinding.ThoughtDetailsActivityBinding
 import pl.hexmind.mindshaper.services.ThoughtStatusService
 import pl.hexmind.mindshaper.services.dto.StepWithGoalDTO
@@ -254,7 +253,7 @@ class DetailsActivity : ThoughtManagerActivity() {
                 override fun onPermissionRequired() {}
             })
 
-            richTextView.setCallback(object : MarkdownTextView.TextCallback {
+            richTextView.setCallback(object : HexTextView.TextCallback {
                 override fun onTextClicked() {
                     showEditRichTextDialog()
                 }

@@ -128,9 +128,14 @@ class GoalDetailStepsAdapter(
         holder.btnLinkedThought.visibility = View.VISIBLE
 
         // Fallback when subject is empty/null
-        holder.btnLinkedThought.text = step.thoughtSubject
+        val chipText = step.thoughtSubject
             ?.takeIf { it.isNotBlank() }
             ?: holder.btnLinkedThought.context.getString(R.string.workshop_step_linked_thought_fallback)
+
+        // Character cap in linked thought pill/chip
+        holder.btnLinkedThought.text = if (chipText.length > CHIP_TEXT_MAX_CHARS)
+            chipText.take(CHIP_TEXT_MAX_CHARS).trimEnd() + "…"
+        else chipText
 
         holder.btnLinkedThought.setOnClickListener {
             step.thoughtId?.let { onThoughtChipClick(it) }
@@ -139,5 +144,9 @@ class GoalDetailStepsAdapter(
             onThoughtChipLongPress(step.id)
             true
         }
+    }
+
+    companion object {
+        private const val CHIP_TEXT_MAX_CHARS = 24
     }
 }

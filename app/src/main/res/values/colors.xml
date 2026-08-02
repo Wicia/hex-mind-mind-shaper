@@ -114,7 +114,7 @@
 <!-- ====================================== -->
 
     <!-- Separator / dividers -->
-    <color name="separator_background">@color/_orange_lvl_1</color>
+    <color name="separator_background">@color/_orange_lvl_0</color>
 
     <!-- Leafs -->
     <color name="separator_leaf">@color/_gray_lvl_2</color>

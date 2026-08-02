@@ -76,7 +76,7 @@ android {
 
     buildFeatures {
         viewBinding = true
-        compose = true
+        compose = true // TODO: All Compose is "dead" - leave it (to be implemented/planned) or delete it
         buildConfig = true
     }
 
@@ -129,7 +129,6 @@ dependencies {
     implementation(libs.androidx.viewpager2)
     implementation(libs.androidx.recyclerview)
     implementation(libs.speeddial)
-    implementation(libs.html.textview) // displaying HTML elements in TextViews
 
     // Permissions
     implementation(libs.dexter)

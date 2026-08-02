@@ -41,9 +41,13 @@ class GoalDetailActivity : CoreActivity() {
     private lateinit var tvBadge: GoalImportanceBadge
     private lateinit var cbGoalDesc: MaterialButton
     private lateinit var rvSteps: RecyclerView
+    private lateinit var rvStepsCompleted: RecyclerView
+    private lateinit var llStepsCompleted: View
+    private lateinit var vStepsSeparator: View
     private lateinit var fabAdd: FloatingActionButton
     private lateinit var btnQuickComplete: MaterialButton
     private lateinit var stepsAdapter: GoalDetailStepsAdapter
+    private lateinit var completedStepsAdapter: GoalDetailStepsAdapter
 
     // Step which launched CaptureActivity
     private var pendingLinkStepId: Int? = null
@@ -79,22 +83,16 @@ class GoalDetailActivity : CoreActivity() {
         tvBadge          = findViewById(R.id.tv_goal_importance_badge)
         cbGoalDesc       = findViewById(R.id.cb_goal_description)
         rvSteps          = findViewById(R.id.rv_steps)
+        rvStepsCompleted = findViewById(R.id.rv_steps_completed)
+        llStepsCompleted = findViewById(R.id.ll_steps_completed)
+        vStepsSeparator  = findViewById(R.id.v_steps_separator)
         fabAdd           = findViewById(R.id.fab_add_step)
         btnQuickComplete = findViewById(R.id.btn_quick_complete)
     }
 
     private fun setupStepsList() {
-        stepsAdapter = GoalDetailStepsAdapter(
-            onTapText              = { step -> showEditStepSheet(step) },
-            onLongPressText        = { id -> showDeleteStepConfirmation(id) },
-            onTapRing              = { id -> viewModel.incrementStep(id) },
-            onLongPressRing        = { id -> viewModel.decrementStep(id) },
-            onMenuClick            = { anchor, step, isFirst, isLast ->
-                showStepMenu(anchor, step, isFirst, isLast)
-            },
-            onThoughtChipClick     = { thoughtId -> openThoughtDetails(thoughtId) },
-            onThoughtChipLongPress = { id -> showUnlinkThoughtDialog(id) }
-        )
+        stepsAdapter          = buildStepsAdapter()
+        completedStepsAdapter = buildStepsAdapter()
 
         rvSteps.apply {
             layoutManager = LinearLayoutManager(this@GoalDetailActivity)
@@ -103,7 +101,27 @@ class GoalDetailActivity : CoreActivity() {
             //TODO: info - separators consistent with the goals list in WorkshopActivity
             addItemDecoration(InsetDividerDecoration(this@GoalDetailActivity, STEP_DIVIDER_INSET_DP))
         }
+
+        rvStepsCompleted.apply {
+            layoutManager = LinearLayoutManager(this@GoalDetailActivity)
+            adapter = completedStepsAdapter
+            isNestedScrollingEnabled = false
+            addItemDecoration(InsetDividerDecoration(this@GoalDetailActivity, STEP_DIVIDER_INSET_DP))
+        }
     }
+
+    // Two lists share one adapter class, so isFirst/isLast stay correct within each block
+    private fun buildStepsAdapter() = GoalDetailStepsAdapter(
+        onTapText              = { step -> showEditStepSheet(step) },
+        onLongPressText        = { id -> showDeleteStepConfirmation(id) },
+        onTapRing              = { id -> viewModel.incrementStep(id) },
+        onLongPressRing        = { id -> viewModel.decrementStep(id) },
+        onMenuClick            = { anchor, step, isFirst, isLast ->
+            showStepMenu(anchor, step, isFirst, isLast)
+        },
+        onThoughtChipClick     = { thoughtId -> openThoughtDetails(thoughtId) },
+        onThoughtChipLongPress = { id -> showUnlinkThoughtDialog(id) }
+    )
 
     private fun setupFab() {
         fabAdd.setOnClickListener { showAddStepSheet() }
@@ -120,9 +138,20 @@ class GoalDetailActivity : CoreActivity() {
         viewModel.goal.observe(this) { goal ->
             goal ?: return@observe
             bindHeader(goal)
-            stepsAdapter.setItems(goal.subItems)
+            bindSteps(goal.subItems)
             updateQuickCompleteButtonVisibility(goal.subItems)
         }
+    }
+
+    private fun bindSteps(steps: List<GoalStep>) {
+        val (completedSteps, activeSteps) = steps.partition { step -> step.isCompleted }
+
+        stepsAdapter.setItems(activeSteps)
+        completedStepsAdapter.setItems(completedSteps)
+
+        llStepsCompleted.visibility = if (completedSteps.isEmpty()) View.GONE else View.VISIBLE
+        // Nothing above it to separate when every step is done
+        vStepsSeparator.visibility = if (activeSteps.isEmpty()) View.GONE else View.VISIBLE
     }
 
     private fun updateQuickCompleteButtonVisibility(steps: List<GoalStep>) {
@@ -152,6 +181,11 @@ class GoalDetailActivity : CoreActivity() {
     private fun showStepMenu(anchor: View, step: GoalStep, isFirst: Boolean, isLast: Boolean) {
         val popup = PopupMenu(this, anchor)
         popup.menuInflater.inflate(R.menu.menu_goal_detail_step, popup.menu) // TODO: replace with more cool/fancy UI menu
+
+        // Order of the completed block is driven by completion, not by the user
+        val allowReorder = !step.isCompleted
+        popup.menu.findItem(R.id.action_move_up).isVisible = allowReorder
+        popup.menu.findItem(R.id.action_move_down).isVisible = allowReorder
 
         // Disable move up/down at list edges
         popup.menu.findItem(R.id.action_move_up).isEnabled = !isFirst

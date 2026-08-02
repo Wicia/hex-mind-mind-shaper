@@ -45,7 +45,7 @@
             android:visibility="visible"
             app:iconGravity="start"
             app:icon="@drawable/ic_action_delete"
-            app:iconTint="@color/White" />
+            app:iconTint="@color/_white" />
 
     </LinearLayout>
 
