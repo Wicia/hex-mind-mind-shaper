@@ -99,12 +99,26 @@
     <string name="photos_loading_error">Coś się wyburaczyło przy ładowaniu zdjęcia…</string>
 
     <!-- ============================================================ -->
+    <!--    WORKSHOP - Onboarding review                              -->
+    <!-- ============================================================ -->
+
+    <string name="workshop_section_onboarding">✨ Poznawanie aplikacji</string>
+    <string name="workshop_onboarding_section_home">Dom</string>
+    <string name="workshop_onboarding_section_settings">Ustawienia</string>
+    <string name="workshop_onboarding_section_capture">Łapanie myśli</string>
+    <string name="workshop_onboarding_section_stream">Strumień</string>
+    <string name="workshop_onboarding_section_details">Szczegóły myśli</string>
+    <string name="workshop_onboarding_section_counter">%1$d/%2$d</string>
+    <string name="workshop_dialog_reset_onboarding">Czy chcesz ponownie zobaczyć wszystkie wskazówki w tej sekcji?</string>
+    <string name="workshop_onboarding_no_thoughts">Najpierw złap jakąś myśl</string>
+
+    <!-- ============================================================ -->
     <!--    HOME Activity                                             -->
     <!-- ============================================================ -->
 
     <string name="home_capturing_button_title">Witaj w \"Domu\" :)</string>
     <string name="home_capturing_button_tooltip">Jak ci wpadnie coś do głowy co chcesz zapisać to tapnij w przycisk na środku</string>
-    <string name="home_navigation_button_title">A tymczasem… :)</string>
+    <string name="home_navigation_button_title">A tymczasem…</string>
     <string name="home_navigation_button_tooltip">Tapnij na ikonkę z kompasem (rym!), a potem na ikonkę koła zymbatego</string>
 
     <string name="home_build_version">ver %1$s</string>
@@ -399,7 +413,7 @@
     <!-- Goals -->
     <string name="workshop_section_goals">Kierunki, w których zmierzasz</string>
     <string name="workshop_tab_goals">🎯 Cele</string>
-    <string name="workshop_tab_paths">✨ Ścieżki</string>
+    <string name="workshop_tab_paths">♟️ Ścieżki</string>
     <string name="workshop_goals_show_all">Pokaż jeszcze %d…</string>
     <string name="workshop_goals_show_less">Pokaż mniej</string>
     <string name="workshop_section_goals_archive">Archiwum</string>

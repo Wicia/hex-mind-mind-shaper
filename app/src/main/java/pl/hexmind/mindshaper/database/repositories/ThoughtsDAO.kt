@@ -84,4 +84,10 @@ interface ThoughtsDAO {
 
     @Query("UPDATE THOUGHTS SET photo_data = NULL, photo_file_size = NULL, updated_at = :updatedAt WHERE id = :thoughtId")
     suspend fun deletePhoto(thoughtId: Long, updatedAt: Long)
+
+// ========== ONBOARDING ==========
+
+    // Single column on purpose: the whole row carries audio and photo blobs
+    @Query("SELECT id FROM thoughts ORDER BY created_at DESC LIMIT 1")
+    suspend fun getNewestThoughtId(): Int?
 }

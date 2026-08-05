@@ -126,6 +126,13 @@ class AppSettingsStorage @Inject constructor(
         }
     }
 
+    // Removing the key instead of writing false keeps the "never shown" and "reset" states identical
+    fun clearOnboardingTooltipShown(stepKey: String) {
+        sharedPreferences.edit {
+            remove(stepKey)
+        }
+    }
+
     fun isPhotoFeatureEnabled(): Boolean {
         return sharedPreferences.getBoolean(PARAM_PHOTO_FEATURE_ENABLED, true)
     }
