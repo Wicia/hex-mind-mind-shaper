@@ -91,7 +91,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="4dp"
-        android:background="@color/separator_leaf"
+        android:background="@color/_gray_lvl_1"
         />
 
     <!-- Tip rows are added here at bind time -->
