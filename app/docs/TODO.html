@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mind Shaper — TODO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600&family=Alegreya:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFF4E6;
+    --surface:#FFFFFF;
+    --orange-1:#FFE1C8;
+    --orange-2:#FFC59A;
+    --orange-3:#FFA86B;
+    --graphite:#48433F;
+    --muted:#88807A;
+    --hair:#BEBEBE;
+    --green:#A7FFCA;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:40px 20px 80px;
+    background:var(--cream);
+    color:var(--graphite);
+    font-family:"Alegreya",Georgia,serif;
+    font-size:17px; line-height:1.65;
+  }
+  .wrap{max-width:760px; margin:0 auto}
+
+  h1{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:600; font-size:30px; line-height:1.25;
+    margin:0 0 6px;
+  }
+  .lede{margin:0 0 34px; color:var(--muted); font-style:italic}
+
+  h2{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:500; font-size:20px;
+    margin:38px 0 14px; display:flex; align-items:baseline; gap:10px;
+  }
+  h2 .count{
+    font-family:"Alegreya",serif; font-size:14px; font-style:italic;
+    color:var(--muted); font-weight:400;
+  }
+
+  details.item{
+    background:var(--surface);
+    border:1px solid var(--orange-1);
+    border-radius:12px;
+    margin-bottom:10px;
+    overflow:hidden;
+  }
+  details.item[open]{border-color:var(--orange-2)}
+
+  summary{
+    list-style:none; cursor:pointer;
+    padding:14px 18px 14px 46px;
+    position:relative;
+    font-size:17px;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary:focus-visible{outline:2px solid var(--orange-3); outline-offset:-2px}
+
+  /* ring marker, echoing the step rings in the app */
+  summary::before{
+    content:""; position:absolute; left:16px; top:19px;
+    width:16px; height:16px; border-radius:50%;
+    border:4px solid var(--orange-2);
+    transition:border-color .18s ease;
+  }
+  details[open] summary::before{border-color:var(--orange-3)}
+
+  summary::after{
+    content:"▸"; position:absolute; right:16px; top:14px;
+    color:var(--hair); font-size:15px;
+    transition:transform .18s ease;
+  }
+  details[open] summary::after{transform:rotate(90deg)}
+
+  summary b{font-weight:500}
+
+  .body{padding:2px 18px 16px 46px; border-top:1px solid #F0EAE4}
+  .body ul{margin:12px 0 0; padding-left:20px}
+  .body li{margin-bottom:7px}
+  .body li::marker{color:var(--orange-2)}
+
+  code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:14px; background:var(--cream);
+    padding:1px 5px; border-radius:4px;
+  }
+
+  .gain{
+    margin-top:12px; padding:9px 13px;
+    background:var(--cream); border-left:3px solid var(--orange-3);
+    border-radius:0 6px 6px 0; font-size:15px;
+  }
+  .gain b{font-weight:500}
+
+  .where{
+    margin-top:12px; padding:10px 13px;
+    background:#FBF7F3; border:1px dashed var(--orange-2);
+    border-radius:8px; font-size:14.5px;
+  }
+  .where .lbl{
+    font-family:"Baloo 2",system-ui,sans-serif; font-weight:500;
+    font-size:13px; letter-spacing:.03em; text-transform:uppercase;
+    color:var(--muted); display:block; margin-bottom:5px;
+  }
+  .where ul{margin:0; padding-left:18px}
+  .where li{margin-bottom:4px}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Mind Shaper — TODO</h1>
+  <p class="lede">Rzeczy do sprzątnięcia i rozstrzygnięcia, wychwycone przy audycie spec ↔ kod.</p>
+
+  <h2>Sprzątanie <span class="count">12 pozycji</span></h2>
+
+  <details class="item">
+    <summary><b>Pasek nawigacji</b> — prosi o dostęp do ustawień, z którego wcale nie korzysta.</summary>
+    <div class="body">
+      <ul>
+        <li>ślad po planowanym „zapamiętywaniu stanu", którego nie dokończono</li>
+        <li>dostęp jest wstrzykiwany z zewnątrz → poprawka w 2 miejscach: sam pasek i miejsce, które go tworzy</li>
+        <li>to nie jedna linia do skasowania</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>common/ui/NavigationBarController.kt</code> — parametr konstruktora <code>appSettings: AppSettingsStorage</code> (linia 17) i jego import (13)</li><li><code>activities/CoreActivity.kt</code> — miejsce tworzenia: <code>NavigationBarController(navBar, appSettingsStorage)</code> (linia 191)</li></ul></div>
+          </div>
+  </details>
+
+  <details class="item">
+    <summary><b><code>app.rar</code></b> — 48 MB starego backupu leży w korzeniu projektu.</summary>
+    <div class="body">
+      <ul>
+        <li>plik z 11 marca, obok <code>build.gradle.kts</code> — nie jest częścią kodu</li>
+        <li>najpierw zajrzeć do środka (WinRAR/7-Zip) i potwierdzić, że to kopia</li>
+        <li>usunąć albo przenieść poza repo; jeśli śledzony przez git → <code>git rm app.rar</code> + commit</li>
+        <li>skrypt zip wyklucza już <code>*.rar</code>/<code>*.zip</code>, ale to tylko siatka — źródło i tak trzeba sprzątnąć</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li>korzeń projektu, obok <code>build.gradle.kts</code></li><li><code>.gitignore</code> — sprawdzić, czy plik jest śledzony</li></ul></div>
+          </div>
+  </details>
+
+  <details class="item">
+    <summary><b><code>common_rich_text_view.xml</code></b> — layout po starym widoku HTML, którego nikt nie inflatuje.</summary>
+    <div class="body">
+      <ul>
+        <li>brak referencji w całym projekcie (potwierdzone grepem)</li>
+        <li>w środku <code>&lt;org.sufficientlysecure.htmltextview.HtmlTextView&gt;</code></li>
+        <li>po usunięciu znika ostatnie użycie biblioteki → można wyrzucić zależność <code>org.sufficientlysecure:html-textview</code></li>
+        <li>w <code>libs.versions.toml</code> została też sierota <code>htmlTextview = "4.0"</code> bez wpisu w <code>[libraries]</code></li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>res/layout/common_rich_text_view.xml</code> — cały plik do usunięcia</li><li><code>app/build.gradle.kts</code> → <code>dependencies</code> — zależność <code>org.sufficientlysecure:html-textview</code></li><li><code>gradle/libs.versions.toml</code> → <code>[versions]</code> — sierota <code>htmlTextview = "4.0"</code></li></ul></div>
+          </div>
+  </details>
+
+  <details class="item">
+    <summary><b><code>common_onb_dialog_header</code></b> — string, który stracił rację bytu.</summary>
+    <div class="body">
+      <ul>
+        <li>był zapasowym tytułem wskazówki; zbędny, odkąd <code>titleRes</code> jest wymagany</li>
+        <li>jedyne wystąpienie to własna definicja w <code>strings.xml</code></li>
+        <li>decyzja: usunąć czy zostawić na zapas</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>res/values/strings.xml</code> — jedyne wystąpienie, sama definicja</li></ul></div>
+          </div>
+  </details>
+
+  <details class="item">
+    <summary><b>Compose</b> — cała biblioteka podpięta, a w kodzie ani jednego użycia.</summary>
+    <div class="body">
+      <ul>
+        <li>zero <code>@Composable</code>, importów <code>androidx.compose</code>, <code>setContent</code>, <code>ComponentActivity</code></li>
+        <li>do usunięcia: <code>buildFeatures { compose = true }</code> i cały blok <code>composeOptions</code></li>
+        <li>zależności: BOM ×2, activity-compose, material3, ui, ui-graphics, ui-tooling-preview, ui-tooling, ui-test-manifest, ui-test-junit4</li>
+        <li>z <code>[versions]</code>: <code>activityCompose</code>, <code>composeBom</code>; z <code>[libraries]</code>: 8 wpisów sekcji <code># Compose</code></li>
+      </ul>
+      <div class="gain"><b>Zysk:</b> <code>compose = true</code> odpala kompilator Compose przy każdym buildzie, choć nie ma czego kompilować.</div>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>app/build.gradle.kts</code> → <code>android { buildFeatures { compose = true } }</code> oraz cały blok <code>composeOptions</code></li><li><code>app/build.gradle.kts</code> → <code>dependencies</code> — sekcja <code>// Compose</code> + <code>debugImplementation</code> ui-tooling / ui-test-manifest + <code>androidTestImplementation</code> BOM i ui-test-junit4</li><li><code>gradle/libs.versions.toml</code> → <code>[versions]</code>: <code>activityCompose</code>, <code>composeBom</code>; <code>[libraries]</code>: 8 wpisów sekcji <code># Compose</code></li></ul></div>
+          </div>
+  </details>
+
+  <details class="item">
+    <summary><b>Pięć zależności</b> zadeklarowanych, ale nieużywanych.</summary>
+    <div class="body">
+      <ul>
+        <li><code>navigation-fragment-ktx</code> + <code>navigation-ui-ktx</code> — brak <code>res/navigation</code></li>
+        <li><code>dexter</code> — jest własny <code>PermissionService</code></li>
+        <li><code>androidsvg</code>, <code>preference-ktx</code>, <code>speeddial</code></li>
+        <li>zweryfikować przed usunięciem: sprawdzenie było grepem po <code>src/</code>, coś może być używane inaczej</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>app/build.gradle.kts</code> → <code>dependencies</code></li><li><code>gradle/libs.versions.toml</code> → <code>[versions]</code> i <code>[libraries]</code> — odpowiadające wpisy</li></ul></div>
+          </div>
+  </details>
+
+  <details class="item">
+    <summary><b><code>mapstruct_processor</code></b> — osierocona wersja w katalogu.</summary>
+    <div class="body">
+      <ul>
+        <li>nieużywana, bo <code>mapstruct-processor</code> odwołuje się do <code>version.ref = "mapstruct"</code></li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>gradle/libs.versions.toml</code> → <code>[versions]</code></li></ul></div>
+          </div>
+  </details>
+
+  <details class="item">
+    <summary><b>Katalog wersji</b> — trzy zależności wpisane obok konwencji.</summary>
+    <div class="body">
+      <ul>
+        <li>Markwon, PhotoView i exifinterface jako gołe stringi w <code>dependencies</code></li>
+        <li>reszta projektu idzie przez <code>libs.versions.toml</code></li>
+        <li>ujednolicić przy okazji sprzątania</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>app/build.gradle.kts</code> — końcówka <code>dependencies</code>, trzy wpisy jako gołe stringi</li><li><code>gradle/libs.versions.toml</code> — miejsce docelowe wpisów</li></ul></div>
+          </div>
+  </details>
+
+  <details class="item">
+    <summary><b><code>gradle-wrapper.jar</code></b> — brakuje go w <code>gradle/wrapper</code>.</summary>
+    <div class="body">
+      <ul>
+        <li>jest tylko <code>gradle-wrapper.properties</code></li>
+        <li>bez <code>.jar</code> polecenie <code>gradlew</code> z terminala nie zadziała</li>
+        <li>build w samym Android Studio działa, więc istotne tylko przy budowaniu z linii poleceń</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>gradle/wrapper/</code> — jest tylko <code>gradle-wrapper.properties</code></li><li>odtworzenie: <code>gradle wrapper --gradle-version 8.13</code> albo skopiowanie z nowego projektu</li></ul></div>
+          </div>
+  </details>
+
+  <details class="item">
+    <summary><b>Kanał zdarzeń dla dialogów z ViewModelu</b> — dziś dialog odpalany jest lambdą przekazaną w dół, co nie przeżywa obrotu ekranu.</summary>
+    <div class="body">
+      <ul>
+        <li>dotyczy m.in. pytania „czy usunąć całą myśl" po skasowaniu ostatniej formy — <code>deletePhoto {}</code>, <code>deleteAudioRecording {}</code>, <code>deleteRichText {}</code></li>
+        <li>lambda działa, ale prezentacja jest zaszyta w wywołaniu, a nie oddzielona od decyzji</li>
+        <li>docelowo: ViewModel emituje jednorazowe zdarzenie (<code>Channel</code> albo jednorazowa <code>LiveData</code>), Activity nasłuchuje i pokazuje dialog</li>
+        <li>zysk: dialog nie wraca po obrocie ekranu, logika „czy pusto" siedzi w jednym miejscu</li>
+        <li>świadomie odłożone — nowy wzorzec w projekcie, a przy apce offline dla jednej osoby korzyść jest niewielka</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>activities/details/DetailsViewModel.kt</code> — <code>deletePhoto()</code>, <code>deleteAudioRecording()</code>, <code>deleteRichText()</code>: parametr <code>onLastFormRemoved: () -&gt; Unit</code> do zastąpienia zdarzeniem</li><li><code>activities/details/DetailsActivity.kt</code> — <code>showDeleteEmptyThoughtDialog()</code> i trzy wywołania w callbackach widgetów</li></ul></div>
+          </div>
+  </details>
+
+  <details class="item">
+    <summary><b>Dwa dialogi pod rząd przy ostatniej formie</b> — potwierdzenie usunięcia formy i pytanie o pustą myśl pojawiają się jedno po drugim.</summary>
+    <div class="body">
+      <ul>
+        <li>docelowo jeden dialog: „Po usunięciu tej formy zapisu myśli cała myśl będzie pusta. Co zrobić?"</li>
+        <li>trzy akcje, bo scalenie odbiera możliwość wycofania się: <b>[Usuń myśl]</b>, <b>[Zostaw pustą]</b>, <b>[Anuluj]</b> — <code>ActionsDialog</code> obsługuje caution + standard + dismiss</li>
+        <li>przy nieostatniej formie zostaje obecny dialog bez zmian</li>
+      </ul>
+      <div class="gain"><b>Przeszkoda:</b> potwierdzenie siedzi wewnątrz trzech współdzielonych widgetów (<code>HexTextView</code>, <code>HexAudioView</code>, <code>HexPhotoView</code>), które nie wiedzą nic o pozostałych formach — a te same widgety działają też w Łapaniu myśli, gdzie myśl jeszcze nie istnieje.</div>
+      <ul>
+        <li><b>Gotowy plan:</b> do callbacku każdego widgetu dochodzi metoda „czy sam obsłużysz potwierdzenie?" z domyślną implementacją <code>false</code></li>
+        <li>widget pyta hosta; jeśli host przejmuje — nie pokazuje własnego dialogu</li>
+        <li>Łapanie myśli nie wymaga wtedy ani jednej linijki zmiany</li>
+        <li>odrzucone: trzymanie w widgecie flagi „jesteś ostatni" (widget poznaje reguły biznesowe, flaga może się rozjechać ze stanem); wyniesienie wszystkich potwierdzeń do ekranów (rusza działające Łapanie bez powodu)</li>
+      </ul>
+      <div class="gain"><b>Świadomie odłożone:</b> dwa dialogi są nieeleganckie, ale nie błędne — pytają o dwie różne rzeczy i zdarzają się tylko przy ostatniej formie. Zmiana dotknęłaby trzech widgetów i trzech ekranów, więc czekamy, aż to zacznie realnie drażnić.</div>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>common/ui/views/content/HexTextView.kt</code> — <code>showDeleteConfirmation()</code> (linia 163)</li><li><code>common/ui/views/content/HexPhotoView.kt</code> — <code>showDeleteConfirmation()</code> (linia 172)</li><li><code>common/ui/views/content/HexAudioView.kt</code> — <code>ActionsDialog.Builder</code> (linia 276), interfejs <code>RecordingCallback</code> (67)</li><li><code>activities/details/DetailsActivity.kt</code> — <code>showDeleteEmptyThoughtDialog()</code> + trzy callbacki widgetów</li><li>bez zmian: <code>activities/capture/CaptureActivity.kt</code> (te same widgety, myśl jeszcze nie istnieje)</li></ul></div>
+          </div>
+  </details>
+
+  <details class="item">
+    <summary><b>Refactor dialogów</b> — uporządkować układ przycisków i ujednolicić ich nazwy w 20 miejscach, gdzie tworzony jest <code>ActionsDialog</code>.</summary>
+    <div class="body">
+      <ul>
+        <li>dziś: [caution] i [standard] obok siebie po połowie szerokości, [dismiss] pod nimi na całą — trzy przyciski mieszczą się strukturalnie, problemem jest logika pokazywania</li>
+        <li>naturalny moment, by zrobić to razem ze scalonym dialogiem ostatniej formy (ten sam plik, te same przyciski)</li>
+      </ul>
+      <div class="gain"><b>Błąd do naprawy przy okazji:</b> na końcu <code>setupButtons</code> gałąź <code>else</code> ustawia <code>btnCaution</code> na widoczny nawet wtedy, gdy wcześniej został ukryty z braku akcji caution — dialog z samym [standard] i [dismiss] pokazuje pusty przycisk zabierający pół rzędu. Dotyczy trzech próśb o uprawnienia w Ustawieniach („Przyznaj" + „Nie teraz", bez caution).</div>
+      <ul>
+        <li><b>Inwentarz — 20 dialogów:</b> 4× caution+standard+cancel, 7× caution+cancel, 3× standard+cancel (bez caution), 5× jeden przycisk, 1× caution+standard bez cancel</li>
+        <li><b>Widgety nie mają cancel w ogóle:</b> <code>HexPhotoView</code> i <code>HexTextView</code> dają jedno „Kasujemy", <code>HexAudioView</code> dwa („Wywalić"/„Nadpisać") bez wyjścia — wycofać się da tylko przez X lub dotknięcie poza dialogiem</li>
+        <li><b>Nazwy się rozjeżdżają:</b> ten sam gest to raz „Anuluj", raz „Nie", raz „Nie, zostaw", raz „Zostaw"; potwierdzenie to „Usuń" / „Tak" / „Kasujemy" / „Wywalić" — ujednolicić</li>
+        <li><b>Wzorzec „usuń / zachowaj / anuluj" już istnieje</b> w 4 dialogach (m.in. „Odepnij i usuń myśl" / „Odepnij i zostaw myśl" / „Anuluj") — scalony dialog ostatniej formy wpada w ten sam schemat, nie tworzy nowego</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul>
+        <li><code>common/ui/dialogs/ActionsDialog.kt</code> — <code>setupButtons()</code> (linia 63), zwłaszcza końcowy warunek „scenariusz z jednym przyciskiem"</li>
+        <li><code>res/layout/common_actions_dialog.xml</code> — rząd z <code>btn_action_caution</code> + <code>btn_action_standard</code> (weight 1) i <code>btn_dismiss</code> pod spodem</li>
+        <li>miejsca użycia: <code>SettingsActivity</code> (7), <code>WorkshopActivity</code> (4), <code>GoalDetailActivity</code> (2), <code>DetailsActivity</code> (2), <code>StreamActivity</code> (1), <code>ThoughtManagerActivity</code> (1), <code>HexAudioView</code> / <code>HexPhotoView</code> / <code>HexTextView</code> (po 1)</li>
+        <li>napisy przycisków: <code>res/values/strings.xml</code> — <code>common_btn_*</code>, <code>common_deletion_dialog_*</code></li>
+      </ul></div>
+      <div class="gain"><b>Uwaga o zasięgu:</b> <code>ActionsDialog</code> obsługuje wszystkie potwierdzenia w apce, więc zmiana układu przemebluje każdy dialog. Kontrolowane (jeden plik + jeden layout), ale obejrzeć na kilku ekranach przed zatwierdzeniem.</div>
+    </div>
+  </details>
+
+  <h2>Do rozstrzygnięcia <span class="count">2 pozycje — czekają na decyzję, nie na sprzątanie</span></h2>
+
+  <details class="item">
+    <summary><b>Zapętlone „dalej"</b> w pop-upie wskazówek — nie ma sygnału, że to koniec.</summary>
+    <div class="body">
+      <ul>
+        <li>po ostatniej wskazówce przycisk wraca do pierwszej, zamiast zmienić się w „Zakończ"</li>
+        <li>użytkownik może krążyć w kółko</li>
+        <li>spec tego nie rozstrzyga — zdecydować, jak zachowuje się ostatnia wskazówka</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>common/ui/dialogs/GuideDialog.kt</code> — <code>currentIndex = (currentIndex + 1) % guideScreens.size</code> (linia 150)</li><li>tam też etykieta przycisku i kropki postępu (<code>currentIndex</code>, linie 33, 59, 85, 110)</li></ul></div>
+          </div>
+  </details>
+
+  <details class="item">
+    <summary><b>Sekcja z samymi ukrytymi wskazówkami</b> — zostałby pusty nagłówek.</summary>
+    <div class="body">
+      <ul>
+        <li>gdy wszystkie wskazówki sekcji dostaną <code>tracked = false</code>, zostaje nagłówek <code>0/0</code> z działającymi przyciskami</li>
+        <li>świadomie nieobsłużone — dopisać ukrywanie pustych sekcji, jeśli przypadek kiedyś wystąpi</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>common/onboarding/OnboardingManager.kt</code> — <code>getSectionTips()</code>, filtr <code>tracked</code></li><li><code>activities/workshop/OnboardingSectionsAdapter.kt</code> — <code>onBindViewHolder</code>, licznik i widoczność wiersza sekcji</li></ul></div>
+          </div>
+  </details>
+
+</div>
+</body>
+</html>
