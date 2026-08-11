@@ -254,6 +254,8 @@
     <!-- ============================================================ -->
 
     <!-- Onboarding -->
+    <string name="details_last_form_removed_message">Usunięto ostatnią formę zapisu myśli. Czy usunąć całą myśl?</string>
+
     <string name="details_entry_title">Szczegóły myśli</string>
     <string name="details_entry_tooltip">To miejsce to warsztat, w którym rzeźbisz i rozwijasz swoją myśl</string>
     <string name="details_fields_title">Edycja myśli</string>

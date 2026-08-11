@@ -176,15 +176,20 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    fun deletePhoto() {
-        viewModelScope.launch {
-            thoughtDetails.value?.let { thought ->
-                val thoughtId = thought.id ?: return@let
-                thoughtsService.deleteThoughtPhoto(thoughtId)
-                thumbnailCache.remove(thoughtId)
-                loadThought(thoughtId)
-            }
-        }
+    /**
+     * @return true - when this was the last remaining form of the thought
+     */
+    suspend fun deletePhoto(): Boolean {
+        val thought = thoughtDetails.value ?: return false
+        val thoughtId = thought.id ?: return false
+
+        thoughtsService.deleteThoughtPhoto(thoughtId)
+        thought.photoFileSize = null
+        thumbnailCache.remove(thoughtId)
+        loadThought(thoughtId)
+
+        // "emptiness" state is loaded from DTO because loadThought refreshes asynchronously
+        return thought.isEmpty
     }
 
     fun createPhotoUri(): Uri {
@@ -223,15 +228,15 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    fun deleteAudioRecording() {
-        viewModelScope.launch {
-            thoughtDetails.value?.let { thought ->
-                val thoughtId = thought.id ?: return@let
-                thoughtsService.deleteThoughtAudio(thoughtId)
-                thought.audioDurationMs = null
-                loadThought(thoughtId)  // Refresh UI
-            }
-        }
+    suspend fun deleteAudioRecording(): Boolean {
+        val thought = thoughtDetails.value ?: return false
+        val thoughtId = thought.id ?: return false
+
+        thoughtsService.deleteThoughtAudio(thoughtId)
+        thought.audioDurationMs = null
+        loadThought(thoughtId)  // Refresh UI
+
+        return thought.isEmpty
     }
 
     /**
@@ -245,13 +250,21 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    fun deleteRichText() {
+    suspend fun deleteRichText(): Boolean {
+        val thought = thoughtDetails.value ?: return false
+        val thoughtId = thought.id ?: return false
+
+        thoughtsService.updateThoughtRichText(thoughtId, null) // TODO: add new method for deletion?
+        thought.richText = null
+        loadThought(thoughtId)  // Refresh UI
+
+        return thought.isEmpty
+    }
+
+    fun deleteThought() {
         viewModelScope.launch {
-            thoughtDetails.value?.let { thought ->
-                val thoughtId = thought.id ?: return@let
-                thoughtsService.updateThoughtRichText(thoughtId, null) // TODO: add new method for deletion?
-                thought.richText = null
-                loadThought(thoughtId)  // Refresh UI
+            thoughtDetails.value?.id?.let { thoughtId ->
+                thoughtsService.deleteThoughtById(thoughtId)
             }
         }
     }
