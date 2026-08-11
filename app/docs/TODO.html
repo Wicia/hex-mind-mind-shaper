@@ -122,7 +122,7 @@
   <h1>Mind Shaper — TODO</h1>
   <p class="lede">Rzeczy do sprzątnięcia i rozstrzygnięcia, wychwycone przy audycie spec ↔ kod.</p>
 
-  <h2>Sprzątanie <span class="count">12 pozycji</span></h2>
+  <h2>Sprzątanie <span class="count">11 pozycji</span></h2>
 
   <details class="item">
     <summary><b>Pasek nawigacji</b> — prosi o dostęp do ustawień, z którego wcale nie korzysta.</summary>
@@ -133,19 +133,6 @@
         <li>to nie jedna linia do skasowania</li>
       </ul>
       <div class="where"><span class="lbl">Gdzie</span><ul><li><code>common/ui/NavigationBarController.kt</code> — parametr konstruktora <code>appSettings: AppSettingsStorage</code> (linia 17) i jego import (13)</li><li><code>activities/CoreActivity.kt</code> — miejsce tworzenia: <code>NavigationBarController(navBar, appSettingsStorage)</code> (linia 191)</li></ul></div>
-          </div>
-  </details>
-
-  <details class="item">
-    <summary><b><code>app.rar</code></b> — 48 MB starego backupu leży w korzeniu projektu.</summary>
-    <div class="body">
-      <ul>
-        <li>plik z 11 marca, obok <code>build.gradle.kts</code> — nie jest częścią kodu</li>
-        <li>najpierw zajrzeć do środka (WinRAR/7-Zip) i potwierdzić, że to kopia</li>
-        <li>usunąć albo przenieść poza repo; jeśli śledzony przez git → <code>git rm app.rar</code> + commit</li>
-        <li>skrypt zip wyklucza już <code>*.rar</code>/<code>*.zip</code>, ale to tylko siatka — źródło i tak trzeba sprzątnąć</li>
-      </ul>
-      <div class="where"><span class="lbl">Gdzie</span><ul><li>korzeń projektu, obok <code>build.gradle.kts</code></li><li><code>.gitignore</code> — sprawdzić, czy plik jest śledzony</li></ul></div>
           </div>
   </details>
 
