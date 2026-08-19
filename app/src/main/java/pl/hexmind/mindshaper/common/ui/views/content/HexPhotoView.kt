@@ -127,9 +127,12 @@ class HexPhotoView @JvmOverloads constructor(
             showDeleteConfirmation()
         }
 
-        ivPhoto.setOnClickListener {
-            if (state == State.LOADED) {
-                callback?.onPhotoClicked()
+        // // Display-only mode - no full-screen preview, let the tap reach the card (open thought details)
+        if (mode == Mode.CAPTURE_DISPLAY) {
+            ivPhoto.setOnClickListener {
+                if (state == State.LOADED) {
+                    callback?.onPhotoClicked()
+                }
             }
         }
     }

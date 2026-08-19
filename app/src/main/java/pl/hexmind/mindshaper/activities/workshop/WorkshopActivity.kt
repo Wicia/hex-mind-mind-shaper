@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -19,6 +20,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
+import pl.hexmind.mindshaper.activities.details.DetailsActivity
+import pl.hexmind.mindshaper.activities.home.HomeActivity
+import pl.hexmind.mindshaper.activities.settings.SettingsActivity
+import pl.hexmind.mindshaper.activities.stream.StreamActivity
+import kotlinx.coroutines.launch
+import pl.hexmind.mindshaper.common.onboarding.OnboardingSection
 import pl.hexmind.mindshaper.common.ui.dpToPx
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
@@ -62,6 +69,9 @@ class WorkshopActivity : CoreActivity() {
     private lateinit var btnPathsReset: MaterialButton
     private lateinit var cardAnimator: PathCardAnimator
 
+    // ONBOARDING
+    private lateinit var rvOnboardingSections: RecyclerView
+    private lateinit var onboardingAdapter: OnboardingSectionsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +79,7 @@ class WorkshopActivity : CoreActivity() {
 
         initializeViews()
         setupGoalsList()
+        setupOnboardingList()
         setupFab()
         observeGoals()
         observePaths()
@@ -78,6 +89,10 @@ class WorkshopActivity : CoreActivity() {
         super.onResume()
         // Reload goals after returning from GoalDetailActivity (goal's steps may change :)
         viewModel.reload()
+        // Tooltips may have been seen on another screen in the meantime
+        if (::onboardingAdapter.isInitialized) {
+            onboardingAdapter.notifyDataSetChanged()
+        }
     }
 
     // ── Init ───────────────────────────────────────────────────────────────────
@@ -143,6 +158,63 @@ class WorkshopActivity : CoreActivity() {
         val goalsVisible = position == TAB_GOALS
         cardGoals.visibility = if (goalsVisible) View.VISIBLE else View.GONE
         cardPaths.visibility = if (goalsVisible) View.GONE else View.VISIBLE
+    }
+
+    // ── Onboarding review ───────────────────────────────────────────────────
+
+    private fun setupOnboardingList() {
+        rvOnboardingSections = findViewById(R.id.rv_onboarding_sections)
+
+        onboardingAdapter = OnboardingSectionsAdapter(
+            onOpenScreen   = { section -> openSectionScreen(section) },
+            onResetSection = { section -> showResetOnboardingDialog(section) },
+            tipsProvider   = { section -> onboardingManager.getSectionTips(section) }
+        )
+
+        rvOnboardingSections.apply {
+            layoutManager = LinearLayoutManager(this@WorkshopActivity)
+            adapter = onboardingAdapter
+            isNestedScrollingEnabled = false
+        }
+    }
+
+    private fun showResetOnboardingDialog(section: OnboardingSection) {
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.common_caution_dialog_title))
+            .setDescription(getString(R.string.workshop_dialog_reset_onboarding))
+            .setCautionAction(getString(R.string.common_btn_yes)) {
+                onboardingManager.resetSection(section)
+                onboardingAdapter.notifyDataSetChanged()
+            }
+            .setDismissText(getString(R.string.common_btn_no))
+            .show()
+    }
+
+    private fun openSectionScreen(section: OnboardingSection) {
+        val intent = when (section) {
+            OnboardingSection.HOME     -> Intent(this, HomeActivity::class.java)
+            OnboardingSection.SETTINGS -> Intent(this, SettingsActivity::class.java)
+            OnboardingSection.CAPTURE  -> Intent(this, CaptureActivity::class.java)
+            OnboardingSection.STREAM   -> Intent(this, StreamActivity::class.java)
+            OnboardingSection.DETAILS  -> return openNewestThought() // "Go to Details" needs a thought to open
+        }
+
+        startActivity(intent)
+    }
+
+    private fun openNewestThought() {
+        lifecycleScope.launch {
+            val thoughtId = viewModel.getNewestThoughtId()
+
+            if (thoughtId == null)
+                showShortToast(R.string.workshop_onboarding_no_thoughts)
+            else {
+                val intent = Intent(this@WorkshopActivity, DetailsActivity::class.java)
+                    .putExtra(DetailsActivity.P_SELECTED_THOUGHT_ID, thoughtId)
+
+                startActivity(intent)
+            }
+        }
     }
 
     private fun setupGoalsList() {

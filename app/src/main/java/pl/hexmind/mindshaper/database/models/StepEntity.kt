@@ -54,5 +54,8 @@ data class StepEntity(
     val reminderTime: String? = null,             // "HH:mm"; null = no reminder
 
     @ColumnInfo(name = "reminder_days")
-    val reminderDays: String? = null              // CSV of weekday numbers 1..7 (Mon..Sun); null = no reminder
+    val reminderDays: String? = null,             // CSV of weekday numbers 1..7 (Mon..Sun); null = no reminder
+
+    @ColumnInfo(name = "calendar_event_id")
+    val calendarEventId: Long? = null             // Id of the recurring event in the system calendar
 )

@@ -54,7 +54,8 @@ object GoalMapper {
             maxRepetitions     = entity.maxRepetitions,
             thoughtId          = entity.thoughtId,
             reminderTime       = entity.reminderTime,
-            reminderDays       = entity.reminderDays
+            reminderDays       = entity.reminderDays,
+            calendarEventId    = entity.calendarEventId
         )
 
     fun stepDTOToEntity(dto: StepDTO): StepEntity =
@@ -67,6 +68,7 @@ object GoalMapper {
             maxRepetitions     = dto.maxRepetitions,
             thoughtId          = dto.thoughtId,
             reminderTime       = dto.reminderTime,
-            reminderDays       = dto.reminderDays
+            reminderDays       = dto.reminderDays,
+            calendarEventId    = dto.calendarEventId
         )
 }

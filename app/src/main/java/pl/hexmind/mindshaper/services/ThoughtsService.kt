@@ -60,6 +60,9 @@ class ThoughtsService @Inject constructor(
         repository.deleteThoughtById(id)
     }
 
+    suspend fun getNewestThoughtId(): Int? =
+        repository.getNewestThoughtId()
+
     /**
      * Lightweight fetch — No BLOBs loaded
      * @returns map of thoughtId -> subject (title)

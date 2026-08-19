@@ -97,13 +97,13 @@ class ActionsDialog private constructor(
             }
         }
 
-        // Scenario with only 1 button / confirmation
+        // Single-button confirmation: keep caution INVISIBLE (not GONE) so the lone button stays centered
         if(btnDismissAction == null && btnCautionAction == null){
             btnCaution.visibility = View.INVISIBLE
             btnDismiss.visibility = View.GONE
         }
         else{
-            btnCaution.visibility = View.VISIBLE
+            // btnCaution visibility was already decided above by whether its action exists - don't override it here
             btnDismiss.visibility = View.VISIBLE
         }
     }

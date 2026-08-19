@@ -293,5 +293,12 @@ class Migrations {
                 db.execSQL("ALTER TABLE GOALS ADD COLUMN status TEXT NOT NULL DEFAULT 'ACTIVE'")
             }
         }
+
+        // Added event id to link calendar entry and goal's step
+        val MIGRATION_15_TO_16 = object : Migration(15, 16) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE GOAL_STEPS ADD COLUMN calendar_event_id INTEGER")
+            }
+        }
     }
 }

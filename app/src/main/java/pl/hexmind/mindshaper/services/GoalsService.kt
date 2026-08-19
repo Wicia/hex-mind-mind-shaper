@@ -4,6 +4,7 @@ import pl.hexmind.mindshaper.database.models.GoalEntity
 import pl.hexmind.mindshaper.database.models.StepEntity
 import pl.hexmind.mindshaper.database.repositories.WorkshopRepository
 import pl.hexmind.mindshaper.services.dto.GoalDTO
+import pl.hexmind.mindshaper.services.dto.StepDTO
 import pl.hexmind.mindshaper.services.dto.StepWithGoalDTO
 import pl.hexmind.mindshaper.services.mappers.GoalMapper
 import javax.inject.Inject
@@ -74,7 +75,8 @@ class GoalsService @Inject constructor(
         description: String,
         maxRepetitions: Int = 1,
         reminderTime: String? = null,
-        reminderDays: String? = null
+        reminderDays: String? = null,
+        calendarEventId: Long? = null
     ) {
         val existingCount = repository.getStepsByGoalId(goalId).size
         val entity = StepEntity(
@@ -84,7 +86,8 @@ class GoalsService @Inject constructor(
             currentRepetitions = 0,
             maxRepetitions     = maxRepetitions,
             reminderTime       = reminderTime,
-            reminderDays       = reminderDays
+            reminderDays       = reminderDays,
+            calendarEventId    = calendarEventId
         )
         repository.insertStep(entity)
     }
@@ -94,7 +97,8 @@ class GoalsService @Inject constructor(
         description: String,
         maxRepetitions: Int,
         reminderTime: String? = null,
-        reminderDays: String? = null
+        reminderDays: String? = null,
+        calendarEventId: Long? = null
     ) {
         val current = repository.getStepById(stepId) ?: return
         repository.updateStep(current.copy(
@@ -103,7 +107,8 @@ class GoalsService @Inject constructor(
             currentRepetitions = current.currentRepetitions.coerceAtMost(maxRepetitions),
             maxRepetitions     = maxRepetitions,
             reminderTime       = reminderTime,
-            reminderDays       = reminderDays
+            reminderDays       = reminderDays,
+            calendarEventId    = calendarEventId
         ))
     }
 
@@ -111,6 +116,9 @@ class GoalsService @Inject constructor(
         val current = repository.getStepById(stepId) ?: return
         repository.updateStep(current.copy(currentRepetitions = currentRepetitions))
     }
+
+    suspend fun getStep(stepId: Int): StepDTO? =
+        repository.getStepById(stepId)?.let { entity -> GoalMapper.stepEntityToDTO(entity) }
 
     suspend fun deleteStep(stepId: Int) =
         repository.deleteStep(stepId)

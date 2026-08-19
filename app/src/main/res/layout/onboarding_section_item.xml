@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Onboarding section: screen header with actions + its tip rows -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Section header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:baselineAligned="false"
+        android:paddingStart="12dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp">
+
+        <!-- Screen icon -->
+        <ImageView
+            android:id="@+id/iv_section_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+            android:layout_marginStart="6dp"
+            app:tint="@color/text_secondary"
+            />
+
+        <!-- Label -->
+        <TextView
+            android:id="@+id/tv_section_label"
+            style="@style/TextView_Header_Section"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:textSize="15sp"
+            />
+
+        <!-- Counter -->
+        <TextView
+            android:id="@+id/tv_section_counter"
+            style="@style/TextView_Metadata"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:textSize="16sp"
+            />
+
+        <!-- Safe action first -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_section_open"
+            style="@style/SecondaryActionButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_vertical"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            app:iconSize="20dp"
+            app:icon="@drawable/ic_open_screen"
+            app:iconGravity="textStart"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_section_reset"
+            style="@style/SecondaryActionButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            app:iconSize="20dp"
+            app:icon="@drawable/ic_replace_or_renew"
+            app:iconGravity="textStart"
+            />
+
+    </LinearLayout>
+
+    <!-- Separator -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="4dp"
+        android:background="@color/_gray_lvl_1"
+        />
+
+    <!-- Tip rows are added here at bind time -->
+    <LinearLayout
+        android:id="@+id/ll_section_tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="6dp"
+        />
+
+</LinearLayout>

@@ -221,7 +221,11 @@ class DetailsActivity : ThoughtManagerActivity() {
                 }
 
                 override fun onPhotoDeleted() {
-                    viewModel.deletePhoto()
+                    lifecycleScope.launch {
+                        val wasLastForm = viewModel.deletePhoto()
+
+                        if (wasLastForm) showDeleteEmptyThoughtDialog()
+                    }
                 }
 
                 override fun onPhotoClicked() {
@@ -241,7 +245,11 @@ class DetailsActivity : ThoughtManagerActivity() {
                 }
 
                 override fun onRecordingDeleted() {
-                    viewModel.deleteAudioRecording()
+                    lifecycleScope.launch {
+                        val wasLastForm = viewModel.deleteAudioRecording()
+
+                        if (wasLastForm) showDeleteEmptyThoughtDialog()
+                    }
                 }
 
                 override fun onRecordingError(error: String) {
@@ -259,7 +267,11 @@ class DetailsActivity : ThoughtManagerActivity() {
                 }
 
                 override fun onTextDeleted() {
-                    viewModel.deleteRichText()
+                    lifecycleScope.launch {
+                        val wasLastForm = viewModel.deleteRichText()
+
+                        if (wasLastForm) showDeleteEmptyThoughtDialog()
+                    }
                 }
             })
 
@@ -297,6 +309,22 @@ class DetailsActivity : ThoughtManagerActivity() {
                 viewModel.unlinkFromStep()
             }
             .setDismissText(getString(R.string.common_btn_cancel))
+            .show()
+    }
+
+    private fun showDeleteEmptyThoughtDialog() {
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.common_deletion_dialog_title))
+            .setDescription(getString(R.string.details_last_form_removed_message))
+            .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
+                viewModel.deleteThought()
+                showShortToast(
+                    R.string.common_deletion_dialog_confirmation,
+                    getString(R.string.common_object_type_thought)
+                )
+                finish()
+            }
+            .setDismissText(getString(R.string.common_deletion_dialog_no))
             .show()
     }
 

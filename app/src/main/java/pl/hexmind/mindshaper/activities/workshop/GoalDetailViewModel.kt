@@ -7,7 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import pl.hexmind.mindshaper.services.AppSettingsStorage
+import pl.hexmind.mindshaper.services.CalendarService
 import pl.hexmind.mindshaper.services.GoalsService
+import pl.hexmind.mindshaper.services.PermissionService
 import pl.hexmind.mindshaper.services.ThoughtsService
 import javax.inject.Inject
 
@@ -15,6 +18,9 @@ import javax.inject.Inject
 class GoalDetailViewModel @Inject constructor(
     private val goalsService: GoalsService,
     private val thoughtsService: ThoughtsService,
+    private val calendarService: CalendarService,
+    private val appSettingsStorage: AppSettingsStorage,
+    private val permissionService: PermissionService,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -23,6 +29,14 @@ class GoalDetailViewModel @Inject constructor(
 
     private val _goal = MutableLiveData<Goal?>()
     val goal: LiveData<Goal?> = _goal
+
+    // Fires once when a calendar entry was actually created; the Activity clears it after showing the toast
+    private val _calendarEntryCreated = MutableLiveData<Boolean?>()
+    val calendarEntryCreated: LiveData<Boolean?> = _calendarEntryCreated
+
+    fun onCalendarEntryToastShown() {
+        _calendarEntryCreated.value = null
+    }
 
     init {
         loadGoal()
@@ -142,7 +156,14 @@ class GoalDetailViewModel @Inject constructor(
 
         _goal.value = current.copy(subItems = orderedSteps)
 
-        viewModelScope.launch { goalsService.updateStep(stepId, description, maxRepetitions, reminderTime, reminderDays) }
+        viewModelScope.launch {
+            // Recurrence rules can't be edited in place, so the old entry is replaced by a fresh one
+            deleteReminderOf(stepId)
+            val calendarEventId = createReminderIfPossible(description, maxRepetitions, reminderTime, reminderDays)
+            if (calendarEventId != null) _calendarEntryCreated.value = true
+
+            goalsService.updateStep(stepId, description, maxRepetitions, reminderTime, reminderDays, calendarEventId)
+        }
         persistOrderIfChanged(updatedSteps, orderedSteps)
     }
 
@@ -150,12 +171,47 @@ class GoalDetailViewModel @Inject constructor(
         _goal.value = _goal.value?.let { goal ->
             goal.copy(subItems = goal.subItems.filter { it.id != stepId })
         }
-        viewModelScope.launch { goalsService.deleteStep(stepId) }
+        viewModelScope.launch {
+            deleteReminderOf(stepId)
+            goalsService.deleteStep(stepId)
+        }
     }
+
+    // ── Calendar reminders ────────────────────────────────
+
+    private fun createReminderIfPossible(description: String, maxRepetitions: Int, reminderTime: String?, reminderDays: String?): Long? {
+        // Feature off or reminder incomplete (null) -> any old entry gets dropped instead of orphaned
+        if (!isCalendarReminderAllowed()) return null
+        if (reminderTime == null || reminderDays == null) return null
+
+        return calendarService.createRecurringReminder(
+            description.trim(),
+            reminderTime,
+            reminderDays,
+            maxRepetitions,
+            appSettingsStorage.getCalendarTargetId()
+        )
+    }
+
+    private suspend fun deleteReminderOf(stepId: Int) {
+        val calendarEventId = goalsService.getStep(stepId)?.calendarEventId ?: return
+
+        // the entry is removed even when the toggle is off, otherwise revoking the setting would strand events in the calendar
+        if (permissionService.isCalendarGranted()) calendarService.deleteReminder(calendarEventId)
+    }
+
+    private fun isCalendarReminderAllowed(): Boolean =
+        appSettingsStorage.isCalendarRemindersEnabled() && permissionService.isCalendarGranted()
+
+    fun hasCalendarReminder(stepId: Int): Boolean =
+        _goal.value?.subItems?.firstOrNull { step -> step.id == stepId }?.reminderTime != null
 
     fun addStep(description: String, maxRepetitions: Int, reminderTime: String?, reminderDays: String?) {
         viewModelScope.launch {
-            goalsService.addStep(goalId, description, maxRepetitions, reminderTime, reminderDays)
+            val calendarEventId = createReminderIfPossible(description, maxRepetitions, reminderTime, reminderDays)
+            if (calendarEventId != null) _calendarEntryCreated.value = true
+
+            goalsService.addStep(goalId, description, maxRepetitions, reminderTime, reminderDays, calendarEventId)
             loadGoal()
         }
     }

@@ -40,6 +40,12 @@ class AppSettingsStorage @Inject constructor(
 
         private const val PARAM_PHOTO_FEATURE_ENABLED = "photo_feature_enabled"
 
+        private const val PARAM_CALENDAR_REMINDERS_ENABLED = "calendar_reminders_enabled"
+
+        private const val PARAM_CALENDAR_TARGET_ID = "calendar_target_id"
+
+        private const val NO_CALENDAR_SELECTED = -1L // "nothing chosen yet"
+
         private const val PARAM_BACKUP_ENABLED = "param_backup_enabled"
 
         // Slow mode
@@ -126,6 +132,13 @@ class AppSettingsStorage @Inject constructor(
         }
     }
 
+    // Removing the key instead of writing false keeps the "never shown" and "reset" states identical
+    fun clearOnboardingTooltipShown(stepKey: String) {
+        sharedPreferences.edit {
+            remove(stepKey)
+        }
+    }
+
     fun isPhotoFeatureEnabled(): Boolean {
         return sharedPreferences.getBoolean(PARAM_PHOTO_FEATURE_ENABLED, true)
     }
@@ -133,6 +146,32 @@ class AppSettingsStorage @Inject constructor(
     fun setPhotoFeatureEnabled(enabled: Boolean) {
         sharedPreferences.edit {
             putBoolean(PARAM_PHOTO_FEATURE_ENABLED, enabled)
+        }
+    }
+
+    // === CALENDAR REMINDERS ===
+
+    fun isCalendarRemindersEnabled(): Boolean {
+        return sharedPreferences.getBoolean(PARAM_CALENDAR_REMINDERS_ENABLED, false)
+    }
+
+    fun setCalendarRemindersEnabled(enabled: Boolean) {
+        sharedPreferences.edit {
+            putBoolean(PARAM_CALENDAR_REMINDERS_ENABLED, enabled)
+        }
+    }
+
+
+    fun getCalendarTargetId(): Long? {
+        val stored = sharedPreferences.getLong(PARAM_CALENDAR_TARGET_ID, NO_CALENDAR_SELECTED)
+
+        // null = no choice stored yet
+        return if (stored == NO_CALENDAR_SELECTED) null else stored
+    }
+
+    fun setCalendarTargetId(calendarId: Long) {
+        sharedPreferences.edit {
+            putLong(PARAM_CALENDAR_TARGET_ID, calendarId)
         }
     }
 

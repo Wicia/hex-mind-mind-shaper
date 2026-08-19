@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Active tab - same white as the card below, so the two read as one surface -->
-<!-- Border is a gray layer showing through 1dp on three sides; the white layer reaches
-     the bottom edge, leaving the seam with the card open -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Border -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/_gray_lvl_2" />
+            <solid android:color="@android:color/white" />
             <corners
                 android:topLeftRadius="16dp"
                 android:topRightRadius="16dp"
