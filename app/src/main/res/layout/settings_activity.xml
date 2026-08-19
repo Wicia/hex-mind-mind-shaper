@@ -24,7 +24,7 @@
             <!-- Header -->
             <include layout="@layout/common_header_activity" />
 
-            <!-- === YOUR NAME === -->
+            <!-- === PERSONALISATION === -->
             <androidx.cardview.widget.CardView
                 style="@style/AppCardView">
 
@@ -34,6 +34,7 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
+                    <!-- Your name -->
                     <TextView
                         android:id="@+id/tv_your_name_section_header"
                         style="@style/TextView_Header_Section"
@@ -58,11 +59,28 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <!-- Domains -->
+                    <TextView
+                        android:id="@+id/tv_domains_section_header"
+                        style="@style/TextView_Header_Section"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_domains_header" />
+
+                    <GridLayout
+                        android:id="@+id/gl_domains"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:alignmentMode="alignBounds"
+                        android:columnCount="2"
+                        android:columnOrderPreserved="false"
+                        android:rowCount="4" />
+
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
-            <!-- === THOUGHTS === -->
+            <!-- === THOUGHTS FORMS === -->
             <androidx.cardview.widget.CardView
                 style="@style/AppCardView">
 
@@ -105,11 +123,24 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/AppCardView">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
                     <TextView
                         android:id="@+id/tv_thought_value_scale_section_header"
                         style="@style/TextView_Header_Section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="@string/settings_thoughts_value_header" />
 
                     <TextView
@@ -315,15 +346,6 @@
                         android:layout_marginTop="4dp"
                         android:text="@string/settings_calendar_reminders_hint" />
 
-                    <TextView
-                        android:id="@+id/tv_calendar_choice_label"
-                        style="@style/TextView_Section_Info"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/settings_calendar_choice_label"
-                        android:visibility="gone" />
-
                     <!-- Calendars list (radio buttons) -->
                     <RadioGroup
                         android:id="@+id/rg_calendar_choice"
@@ -337,39 +359,8 @@
                         style="@style/TextView_Section_Info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/settings_calendar_reminders_sync_hint" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <!-- === DOMAINS === -->
-            <androidx.cardview.widget.CardView
-                style="@style/AppCardView">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:id="@+id/tv_domains_section_header"
-                        style="@style/TextView_Header_Section"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/settings_domains_header" />
-
-                    <GridLayout
-                        android:id="@+id/gl_domains"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:alignmentMode="alignBounds"
-                        android:columnCount="2"
-                        android:columnOrderPreserved="false"
-                        android:rowCount="4" />
+                        android:text="@string/settings_calendar_reminders_sync_hint" />
 
                 </LinearLayout>
 

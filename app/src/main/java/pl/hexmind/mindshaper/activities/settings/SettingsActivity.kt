@@ -363,14 +363,12 @@ class SettingsActivity : CoreActivity() {
 
     private fun renderCalendarChoice(remindersActive: Boolean) {
         val reminderWidgetVisibility = if (remindersActive) View.VISIBLE else View.GONE
-        binding.tvCalendarChoiceLabel.visibility = reminderWidgetVisibility
         binding.rgCalendarChoice.visibility = reminderWidgetVisibility
 
         if (!remindersActive) return
 
         val calendars = calendarService.getWritableCalendars()
         if (calendars.isEmpty()) {
-            binding.tvCalendarChoiceLabel.visibility = View.GONE
             binding.rgCalendarChoice.visibility = View.GONE
             return
         }
