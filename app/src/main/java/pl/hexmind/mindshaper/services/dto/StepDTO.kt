@@ -9,5 +9,6 @@ data class StepDTO(
     val maxRepetitions: Int = 1,
     val thoughtId: Int? = null,
     val reminderTime: String? = null,
-    val reminderDays: String? = null
+    val reminderDays: String? = null,
+    val calendarEventId: Long? = null
 )

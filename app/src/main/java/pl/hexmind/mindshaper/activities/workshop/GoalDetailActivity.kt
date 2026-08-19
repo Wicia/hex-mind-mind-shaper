@@ -135,6 +135,13 @@ class GoalDetailActivity : CoreActivity() {
     // ── Observe ────────────────────────────────────────────────────────────────
 
     private fun observeGoal() {
+        viewModel.calendarEntryCreated.observe(this) { created ->
+            if (created == true) {
+                showShortToast(R.string.workshop_calendar_entry_created)
+                viewModel.onCalendarEntryToastShown()
+            }
+        }
+
         viewModel.goal.observe(this) { goal ->
             goal ?: return@observe
             bindHeader(goal)
@@ -247,7 +254,8 @@ class GoalDetailActivity : CoreActivity() {
             fragmentManager = supportFragmentManager,
             title           = getString(R.string.workshop_dialog_add_step),
             description     = "",
-            maxRepetitions  = 1
+            maxRepetitions  = 1,
+            calendarRemindersEnabled = isCalendarRemindersEnabled()
         ) { description, maxRepetitions, reminderTime, reminderDays ->
             viewModel.addStep(description, maxRepetitions, reminderTime, reminderDays)
         }
@@ -260,7 +268,8 @@ class GoalDetailActivity : CoreActivity() {
             description     = step.description,
             maxRepetitions  = step.maxRepetitions,
             reminderTime    = step.reminderTime,
-            reminderDays    = step.reminderDays
+            reminderDays    = step.reminderDays,
+            calendarRemindersEnabled = isCalendarRemindersEnabled()
         ) { description, maxRepetitions, reminderTime, reminderDays ->
             viewModel.updateStep(step.id, description, maxRepetitions, reminderTime, reminderDays)
         }
@@ -277,10 +286,17 @@ class GoalDetailActivity : CoreActivity() {
         ).show()
     }
 
+    private fun isCalendarRemindersEnabled(): Boolean =
+        appSettingsStorage.isCalendarRemindersEnabled() && permissionsService.isCalendarGranted()
+
     private fun showDeleteStepConfirmation(stepId: Int) {
+        val warning = if (viewModel.hasCalendarReminder(stepId))
+            getString(R.string.workshop_dialog_delete_step_calendar_warning)
+        else getString(R.string.common_deletion_dialog_warning)
+
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.workshop_dialog_delete_step_title))
-            .setDescription(getString(R.string.common_deletion_dialog_warning))
+            .setDescription(warning)
             .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
                 viewModel.deleteStep(stepId)
             }

@@ -109,6 +109,14 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
         hifRepetitions.setText(maxRepetitions.toString())
         updateReminderLabel(maxRepetitions)
 
+        // Hide config details when feature is off
+        val calendarEnabled = arguments?.getBoolean(ARG_CALENDAR_ENABLED, false) ?: false
+        if (!calendarEnabled) {
+            cbReminderEnabled.visibility = View.GONE
+            reminderView.visibility = View.GONE
+            return
+        }
+
         // Restore reminder state when editing an existing step
         val reminderTime = arguments?.getString(ARG_REMINDER_TIME)
         val reminderDays = arguments?.getString(ARG_REMINDER_DAYS)
@@ -221,6 +229,7 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
         private const val ARG_MAX_REPETITIONS = "arg_max_repetitions"
         private const val ARG_REMINDER_TIME   = "arg_reminder_time"
         private const val ARG_REMINDER_DAYS   = "arg_reminder_days"
+        private const val ARG_CALENDAR_ENABLED = "arg_calendar_enabled"
 
         fun show(
             fragmentManager: FragmentManager,
@@ -229,6 +238,7 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
             maxRepetitions: Int = 1,
             reminderTime: String? = null,
             reminderDays: String? = null,
+            calendarRemindersEnabled: Boolean = false,
             onConfirm: (
                 description: String,
                 maxRepetitions: Int,
@@ -243,6 +253,7 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
                     putInt(ARG_MAX_REPETITIONS, maxRepetitions)
                     putString(ARG_REMINDER_TIME, reminderTime)
                     putString(ARG_REMINDER_DAYS, reminderDays)
+                    putBoolean(ARG_CALENDAR_ENABLED, calendarRemindersEnabled)
                 }
                 this.onConfirm = onConfirm
             }.show(fragmentManager, TAG)

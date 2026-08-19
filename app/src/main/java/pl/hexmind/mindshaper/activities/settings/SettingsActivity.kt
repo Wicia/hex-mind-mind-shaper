@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.RadioButton
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -25,13 +26,14 @@ import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.database.initialization.DataSnapshotManager
 import pl.hexmind.mindshaper.databinding.SettingsActivityBinding
+import pl.hexmind.mindshaper.services.CalendarService
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.DomainIconsService
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.MediaStorageService
+import pl.hexmind.mindshaper.services.WritableCalendar
 import pl.hexmind.mindshaper.services.dto.DomainDTO
 import pl.hexmind.mindshaper.services.validators.DomainValidator
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -54,6 +56,9 @@ class SettingsActivity : CoreActivity() {
 
     @Inject
     lateinit var dataSnapshotManager: DataSnapshotManager
+
+    @Inject
+    lateinit var calendarService: CalendarService
 
     private lateinit var binding: SettingsActivityBinding
 
@@ -91,6 +96,7 @@ class SettingsActivity : CoreActivity() {
         // Sync of permissions related widgets
         syncVoiceRecordingToggleWithPermissions()
         syncPhotoToggleWithPermissions()
+        syncCalendarToggleWithPermissions()
         syncBackupToggleWithPermissions()
         refreshSnapshotStats()
     }
@@ -151,6 +157,7 @@ class SettingsActivity : CoreActivity() {
 
         setupVoiceRecordingFeatureToggle()
         setupPhotoFeatureToggle()
+        setupCalendarRemindersToggle()
         setupBackupFeatureToggle()
         setupSlowModeListeners()
         setupDormantModeListeners()
@@ -319,6 +326,135 @@ class SettingsActivity : CoreActivity() {
                 openAppSettings()
             }
             .setDismissAction { binding.switchPhotoFeature.isChecked = false }
+            .show()
+    }
+
+    private fun setupCalendarRemindersToggle() {
+        binding.switchCalendarReminders.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                when {
+                    permissionsService.isCalendarGranted() -> {
+                        appSettingsStorage.setCalendarRemindersEnabled(true)
+                        binding.switchCalendarReminders.isChecked = true
+                        renderCalendarChoice(true)
+                    }
+                    else -> {
+                        showCalendarPermissionExplanationDialog()
+                    }
+                }
+            }
+            else {
+                appSettingsStorage.setCalendarRemindersEnabled(false)
+                renderCalendarChoice(false)
+            }
+        }
+
+        syncCalendarToggleWithPermissions()
+    }
+
+    private fun syncCalendarToggleWithPermissions() {
+        val hasPermission = permissionsService.isCalendarGranted()
+        val wantsReminders = appSettingsStorage.isCalendarRemindersEnabled()
+        val remindersActive = wantsReminders && hasPermission
+
+        binding.switchCalendarReminders.isChecked = remindersActive
+        renderCalendarChoice(remindersActive)
+    }
+
+    private fun renderCalendarChoice(remindersActive: Boolean) {
+        val reminderWidgetVisibility = if (remindersActive) View.VISIBLE else View.GONE
+        binding.tvCalendarChoiceLabel.visibility = reminderWidgetVisibility
+        binding.rgCalendarChoice.visibility = reminderWidgetVisibility
+
+        if (!remindersActive) return
+
+        val calendars = calendarService.getWritableCalendars()
+        if (calendars.isEmpty()) {
+            binding.tvCalendarChoiceLabel.visibility = View.GONE
+            binding.rgCalendarChoice.visibility = View.GONE
+            return
+        }
+
+        buildCalendarRadioButtons(calendars)
+    }
+
+    private fun buildCalendarRadioButtons(calendars: List<WritableCalendar>) {
+        binding.rgCalendarChoice.removeAllViews()
+        binding.rgCalendarChoice.setOnCheckedChangeListener(null)
+
+        // Default to the account's primary when nothing was chosen yet
+        val storedId = appSettingsStorage.getCalendarTargetId()
+        val selectedId = storedId ?: calendars.firstOrNull { it.isPrimary }?.id ?: calendars.first().id
+
+        val onlyAvailableCalendar = calendars.size == 1
+
+        calendars.forEach { calendar ->
+            val button = RadioButton(this).apply {
+                id = View.generateViewId()
+                text = calendar.displayName
+                isChecked = calendar.id == selectedId
+                isEnabled = !onlyAvailableCalendar
+                tag = calendar.id
+            }
+            binding.rgCalendarChoice.addView(button)
+        }
+
+        // Persist the resolved default so the service and UI agree from the first render
+        appSettingsStorage.setCalendarTargetId(selectedId)
+
+        binding.rgCalendarChoice.setOnCheckedChangeListener { group, checkedId ->
+            val calendarId = group.findViewById<RadioButton>(checkedId)?.tag as? Long ?: return@setOnCheckedChangeListener
+            appSettingsStorage.setCalendarTargetId(calendarId)
+        }
+    }
+
+    private val requestCalendarPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { grants ->
+        // Read and write are one calendar group, but each must actually be granted
+        val allGranted = grants.values.all { granted -> granted }
+
+        if (allGranted) {
+            appSettingsStorage.setCalendarRemindersEnabled(true)
+            binding.switchCalendarReminders.isChecked = true
+        }
+        else {
+            appSettingsStorage.setCalendarRemindersEnabled(false)
+            binding.switchCalendarReminders.isChecked = false
+
+            // Handling permissions "blockade"
+            // READ and WRITE_CALENDAR are one permission group - a permanent denial hits both, so checking WRITE tells us about READ too
+            if (!shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CALENDAR)) {
+                showCalendarPermanentDenialDialog()
+            }
+        }
+    }
+
+    private fun showCalendarPermissionExplanationDialog() {
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
+            .setDescription(getString(R.string.settings_calendar_permission_info))
+            .setStandardAction(getString(R.string.common_btn_grant_permission)) {
+                requestCalendarPermissionLauncher.launch(
+                    arrayOf(
+                        Manifest.permission.READ_CALENDAR,
+                        Manifest.permission.WRITE_CALENDAR
+                    )
+                )
+            }
+            .setDismissText(getString(R.string.common_btn_cancel_not_now))
+            .setDismissAction { binding.switchCalendarReminders.isChecked = false }
+            .show()
+    }
+
+    private fun showCalendarPermanentDenialDialog() {
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.settings_permissions_blockade_title))
+            .setDescription(getString(R.string.settings_calendar_blockade_tooltip))
+            .setCautionAction(getString(R.string.common_dialog_open_android_settings)) {
+                openAppSettings()
+            }
+            .setDismissAction { binding.switchCalendarReminders.isChecked = false }
             .show()
     }
 

@@ -357,6 +357,17 @@
     <string name="settings_default_form_photo">Zdjęcie</string>
 
     <!-- Domains -->
+    <string name="workshop_calendar_entry_created">Wrzucono w Twój kalendarz</string>
+    <string name="workshop_dialog_delete_step_calendar_warning">Krok, który chcesz usunąć, ma przypomnienie w kalendarzu, które usuniemy wraz z nim. Kontynuować?</string>
+
+    <string name="settings_calendar_section">🐣 Przypomnienia w kalendarzu</string>
+    <string name="settings_calendar_reminders_switch_label">Włącz wpisy do kalendarza</string>
+    <string name="settings_calendar_choice_label">Do tego kalendarza aplikacja wrzuci przypomnienia</string>
+    <string name="settings_calendar_reminders_hint">Kroki celu z ustawionym przypomnieniem trafią do Twojego kalendarza jako cykliczne wydarzenia</string>
+    <string name="settings_calendar_reminders_sync_hint">ⓘ Aby wpisy pojawiły się w aplikacji Kalendarz Google, potrzebne jest połączenie z siecią — synchronizacja wyśle je do chmury.</string>
+    <string name="settings_calendar_permission_info">Aby dodawać przypomnienia do kalendarza, aplikacja potrzebuje dostępu do niego. Bez tego nie da się włączyć tej opcji.</string>
+    <string name="settings_calendar_blockade_tooltip">Dostęp do kalendarza został zablokowany. Możesz go przywrócić w ustawieniach Androida.</string>
+
     <string name="settings_domains_header">🌾 Domeny</string>
     <string name="settings_domain_edit_title">Edytuj domenę</string>
     <string name="settings_domain_edit_icons_title">| Ikona</string>

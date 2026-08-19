@@ -282,6 +282,68 @@
 
             </androidx.cardview.widget.CardView>
 
+            <!-- === CALENDAR REMINDERS === -->
+            <androidx.cardview.widget.CardView
+                style="@style/AppCardView">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tv_calendar_section_header"
+                        style="@style/TextView_Header_Section"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/settings_calendar_section" />
+
+                    <!-- Turn on/off reminders (toogle) -->
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_calendar_reminders"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_calendar_reminders_switch_label" />
+
+                    <!-- Hint shown under the switch -->
+                    <TextView
+                        style="@style/TextView_Section_Info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/settings_calendar_reminders_hint" />
+
+                    <TextView
+                        android:id="@+id/tv_calendar_choice_label"
+                        style="@style/TextView_Section_Info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/settings_calendar_choice_label"
+                        android:visibility="gone" />
+
+                    <!-- Calendars list (radio buttons) -->
+                    <RadioGroup
+                        android:id="@+id/rg_calendar_choice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:visibility="gone" />
+
+                    <!-- Extra sync info -->
+                    <TextView
+                        style="@style/TextView_Section_Info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/settings_calendar_reminders_sync_hint" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
             <!-- === DOMAINS === -->
             <androidx.cardview.widget.CardView
                 style="@style/AppCardView">
