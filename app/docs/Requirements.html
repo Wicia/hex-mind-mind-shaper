@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind Shaper — Wymagania</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Alegreya:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --cream:#FFF4E6;
+            --surface:#FFFFFF;
+            --orange-1:#FFE1C8;
+            --orange-2:#FFC59A;
+            --orange-3:#FFA86B;
+            --orange-ink:#C2610A;
+            --graphite:#3A3A3A;
+            --muted:#8A7A6C;
+            --graphite-soft:#5C574F;
+            --line:#EAD9C6;
+        }
+        *{box-sizing:border-box;}
+        body{
+            margin:0;
+            background:var(--cream);
+            color:var(--graphite);
+            font-family:'Alegreya',Georgia,serif;
+            font-size:17px;
+            line-height:1.5;
+        }
+        header{
+            padding:28px 32px 20px;
+            border-bottom:2px solid var(--line);
+        }
+        h1{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-weight:700;
+            font-size:26px;
+            margin:0 0 4px;
+            color:var(--orange-ink);
+        }
+        .subtitle{
+            color:var(--muted);
+            font-size:15px;
+            margin:0;
+        }
+
+        /* ── Tab bar ─────────────────────────────── */
+        .tabs{
+            display:flex;
+            flex-direction:column;
+            gap:5px;
+            padding:16px 32px 12px;
+            position:sticky;
+            top:0;
+            background:var(--cream);
+            z-index:10;
+            border-bottom:2px solid var(--line);
+        }
+        .tab-row{
+            display:flex;
+            flex-wrap:wrap;
+            gap:6px;
+        }
+        .tab{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-weight:600;
+            font-size:14px;
+            padding:9px 16px;
+            border:none;
+            border-radius:10px;
+            background:var(--orange-1);
+            color:var(--orange-ink);
+            cursor:pointer;
+            transition:background .15s;
+            white-space:nowrap;
+        }
+        .tab:hover{background:var(--orange-2);}
+        .tab.active{
+            background:var(--orange-3);
+            color:#fff;
+        }
+
+        /* ── Panels ──────────────────────────────── */
+        .panel{display:none;padding:24px 32px 64px;max-width:820px;}
+        .panel.active{display:block;}
+
+        .panel-intro{
+            color:var(--muted);
+            font-style:italic;
+            margin:0 0 20px;
+        }
+
+        .group{
+            background:var(--surface);
+            border:1px solid var(--line);
+            border-radius:14px;
+            padding:18px 22px;
+            margin-bottom:16px;
+        }
+        .group h2{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-weight:600;
+            font-size:18px;
+            margin:0 0 12px;
+            color:var(--orange-ink);
+        }
+
+        /* Each requirement is one <li> — keep it a single line for clean git diffs */
+        ul.reqs{
+            margin:0;
+            padding:0;
+            list-style:none;
+        }
+        ul.reqs li{
+            padding:7px 0 7px 26px;
+            position:relative;
+            border-bottom:1px solid var(--line);
+        }
+        ul.reqs li:last-child{border-bottom:none;}
+        ul.reqs li::before{
+            content:"◆";
+            position:absolute;
+            left:4px;
+            top:7px;
+            color:var(--orange-3);
+            font-size:12px;
+        }
+        .req-note{
+            display:block;
+            color:var(--muted);
+            font-size:14px;
+            margin-top:2px;
+        }
+        .status{
+            display:inline-block;
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-size:11px;
+            font-weight:600;
+            padding:1px 8px;
+            border-radius:20px;
+            margin-left:8px;
+            vertical-align:middle;
+        }
+        .status.done{background:#DFF0D8;color:#3C763D;}
+        .status.wip{background:var(--orange-1);color:var(--orange-ink);}
+        .status.planned{background:#E8E2DB;color:var(--muted);}
+
+
+        /* ── Requirement as an expandable spec card ── */
+        details.req{
+            border:1px solid var(--line);
+            border-radius:12px;
+            margin-bottom:12px;
+            background:var(--surface);
+            overflow:hidden;
+        }
+        details.req>summary{
+            list-style:none;
+            cursor:pointer;
+            padding:14px 18px;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-weight:600;
+            font-size:16px;
+            color:var(--graphite);
+            background:var(--orange-1);
+        }
+        details.req>summary::-webkit-details-marker{display:none;}
+        details.req>summary::before{
+            content:"▸";
+            color:var(--orange-3);
+            font-size:20px;
+            transition:transform .15s;
+        }
+        details.req[open]>summary::before{transform:rotate(90deg);}
+        details.req[open]>summary{border-bottom:1px solid var(--line);}
+        .req-title{flex:1;}
+        .req-alt{
+            display:block;
+            font-family:'Alegreya',serif;
+            font-weight:400;
+            font-style:italic;
+            font-size:15px;
+            color:var(--graphite-soft);
+            margin-top:3px;
+        }
+        .check{
+            display:flex;
+            flex-direction:column;
+            align-items:flex-end;
+            white-space:nowrap;
+        }
+        .check-main{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-size:12px;
+            font-weight:600;
+            color:#3C763D;
+        }
+        .check-main.verify{
+            background:#FCEFC7;
+            color:#8A6D00;
+            padding:1px 9px;
+            border-radius:20px;
+        }
+        .check-main.done{
+            background:#DFF0D8;
+            color:#3C763D;
+            padding:1px 9px;
+            border-radius:20px;
+        }
+        .check-ago{
+            font-family:'Alegreya',serif;
+            font-style:italic;
+            font-size:12px;
+            color:var(--muted);
+            margin-top:1px;
+        }
+        .spec-body{padding:4px 18px 18px 18px;}
+        .spec-section{margin-top:14px;}
+        .spec-section>h3{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-weight:600;
+            font-size:16px;
+            text-transform:uppercase;
+            letter-spacing:.04em;
+            color:var(--orange-ink);
+            margin:0 0 6px;
+        }
+        .spec-section ul{
+            margin:0;
+            padding-left:32px;
+            list-style:none;
+        }
+        .spec-section li{
+            padding:2px 0;
+            line-height:1.45;
+            position:relative;
+        }
+        /* Level 1 — filled orange */
+        .spec-section>ul>li::before{
+            content:"";
+            position:absolute;
+            left:-16px;
+            top:11px;
+            width:7px;
+            height:7px;
+            border-radius:50%;
+            background:var(--orange-3);
+        }
+        /* Level 2 — filled black */
+        .spec-section ul ul{
+            margin-top:2px;
+            padding-left:28px;
+        }
+        .spec-section ul ul li{color:var(--graphite-soft);font-size:16px;}
+        .spec-section ul ul>li::before{
+            content:"";
+            position:absolute;
+            left:-15px;
+            top:11px;
+            width:6px;
+            height:6px;
+            border-radius:50%;
+            background:var(--graphite);
+        }
+        /* Level 3 — hollow ring */
+        .spec-section ul ul ul>li::before{
+            background:transparent;
+            border:1.5px solid var(--graphite);
+            width:6px;
+            height:6px;
+            top:10px;
+        }
+        .bracket{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-size:13px;
+            font-weight:600;
+            color:var(--graphite);
+            background:var(--orange-1);
+            padding:1px 7px;
+            border-radius:6px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Mind Shaper — Specyfikacja wymagań</h1>
+    <p class="subtitle">Dokumentacja modułów aplikacji.</p>
+</header>
+
+<nav class="tabs" id="tabbar"><!-- tabs injected by JS from panels --></nav>
+
+<!-- ══ Each panel = one app module (level-1). Requirements inside = level-2 items. ══ -->
+
+<section class="panel" data-tab="Wspólne / Core" data-row="1">
+    <p class="panel-intro">Elementy wspólne dla całej aplikacji.</p>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Panel nawigacyjny</span>
+            <span class="check" data-date="04/08">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Wejścia, Dane, Stany</h3>
+                <ul>
+                    <li>Główny pasek nawigacji — przyciski do pozostałych ekranów</li>
+                    <li>Zwijanie/rozwijanie z animacją</li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Procesy, Opcje, Integracje</h3>
+                <ul>
+                    <li>Widoczny na wszystkich ekranach</li>
+                    <li>Zaznaczanie / eksponowanie aktywnej aktywności
+                        <ul>
+                            <li>Przycisk nawigacyjny w trybie „filled"</li>
+                        </ul>
+                    </li>
+                    <li>Auto-zwijanie przy wyborze</li>
+                    <li>Poprawne wyświetlanie paska w różnych trybach nawigacji Android
+                        <ul>
+                            <li>nawigacja 3-przyciskowa (classic)</li>
+                            <li>nawigacja gestami (od Android 10)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Onboarding<span class="req-alt">Inaczej: „Poznawanie aplikacji" / „Onboarding review"</span></span>
+            <span class="check" data-date="05/08">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>Zaprezentowanie wszystkich ekranów oraz funkcji aplikacji w sposób
+                        <ul>
+                            <li>lekki / nienachalny</li>
+                            <li>praktyczny — możliwy do szybkiego wypróbowania po zobaczeniu wskazówki („zrób coś" od razu)</li>
+                            <li>przejrzysty / zrozumiały</li>
+                        </ul>
+                    </li>
+                    <li>Powrót do pominiętej wiedzy — wskazówka pokazuje się raz i znika; bez tego panelu nie da się jej odzyskać ani sprawdzić, czego się nie widziało</li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Wejścia, Dane, Stany</h3>
+                <ul>
+                    <li>Na każdym wejściu / ekranie — pop-up ze wskazówkami
+                        <ul>
+                            <li>treść tekstowa, ikona/zasób do wyświetlenia</li>
+                            <li><span class="bracket">Zakończ / Zaakceptuj</span></li>
+                            <li><span class="bracket">Kolejna wskazówka</span> + indicator (ile wskazówek w zestawie)</li>
+                        </ul>
+                    </li>
+                    <li>Karta „Poznawanie aplikacji" — w Warsztacie / pod Ścieżkami Doświadczeń
+                        <ul>
+                            <li>Sekcje = ekrany aplikacji
+                                <ul>
+                                    <li>stała kolejność: Dom, Ustawienia, Łapanie myśli, Strumień, Szczegóły myśli</li>
+                                    <li>ikona ekranu, nazwa, licznik zobaczonych wskazówek (ile / ze wszystkich)</li>
+                                </ul>
+                            </li>
+                            <li>Wiersz wskazówki — pierścień stanu (zobaczona/nie), tytuł</li>
+                            <li>Wspólny stan w obrębie kroku — jeden krok onboardingu może mieć kilka wskazówek; wszystkie dzielą oznaczenie „zobaczono/nie"</li>
+                            <li>Wskazówki pominięte w przeglądzie — nie trafiają na listę (rozszerzają inną wskazówkę / są dodatkową częścią procesu), ale są nadal widoczne na ekranie, którego dotyczą
+                                <ul>
+                                    <li>reset sekcji obejmuje je mimo ukrycia</li>
+                                    <li>nie wliczają się do licznika „zobaczenia"</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Procesy, Opcje, Integracje</h3>
+                <ul>
+                    <li>Ekrany aplikacji — pokazywanie każdego pop-upu tylko raz</li>
+                    <li>Karta „Poznawanie aplikacji"
+                        <ul>
+                            <li><span class="bracket">Idź do</span> — przechodzi do ekranu z nagłówka; dla Szczegółów myśli otwiera ostatnio utworzoną myśl, a przy jej braku pokazuje odpowiedni komunikat</li>
+                            <li><span class="bracket">Resetuj</span> — przywraca wskazówki tej sekcji do ponownego zobaczenia
+                                <ul>
+                                    <li>reset działa tylko na swoją sekcję</li>
+                                    <li>potwierdzenie dialogiem</li>
+                                    <li>po potwierdzeniu wskazówki sekcji znów pojawią się w określonych miejscach</li>
+                                </ul>
+                            </li>
+                            <li>Odświeżanie po powrocie — wejście do Warsztatu przelicza oznaczenia</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </details>
+</section>
+
+<section class="panel" data-tab="Ustawienia i Personalizacja" data-row="1">
+    <p class="panel-intro">Konfiguracja aplikacji, dane oraz przełączniki funkcji.</p>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Konfigurowanie domen</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Robienie kopii zapasowej danych</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Głosówki — Włącz/wyłącz robienie/dodawanie</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Zdjęcia — Włącz/wyłącz robienie/dodawanie</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+</section>
+
+<section class="panel" data-tab="Ekran Startowy" data-row="1">
+    <p class="panel-intro">Pierwszy ekran po uruchomieniu aplikacji.</p>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Powitanie</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Data wersji</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+</section>
+
+<section class="panel" data-tab="Łapanie Myśli" data-row="2">
+    <p class="panel-intro">Zapisywanie myśli w różnych formach.</p>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Zapis w formie Notatki (Rich text)</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Zapis w formie Głosówki</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Zapis w formie Zdjęcia</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Wybieranie domyślnej formy zapisu myśli</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Skrót aplikacji „Nowa myśl"</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+</section>
+
+<section class="panel" data-tab="Przeglądanie Myśli" data-row="2">
+    <p class="panel-intro">Odnajdywanie i porządkowanie zapisanych myśli.</p>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">„Strumień" — Przeglądanie myśli</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Wyszukiwanie i sortowanie myśli</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Filtrowanie myśli</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+</section>
+
+<section class="panel" data-tab="Myśli / Szczegóły" data-row="2">
+    <p class="panel-intro">Podgląd i edycja pojedynczej myśli.</p>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Podgląd i edycja szczegółów myśli</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Usunięcie ostatniej formy zapisu myśli</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+</section>
+
+<section class="panel" data-tab="Wartościowanie Myśli" data-row="2">
+    <p class="panel-intro">Nadawanie myślom wartości i ocen.</p>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Wybieranie skali ocen dla myśli</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Wyświetlanie i zmiana wartości myśli</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+</section>
+
+<section class="panel" data-tab="Mój Warsztat" data-row="3">
+    <p class="panel-intro">Cele, kroki i ścieżki rozwoju.</p>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Ogólne</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Cele i kierunki (Lista)</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Kroki (Szczegóły)</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Ścieżki doświadczeń</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Cele / Archiwum</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+</section>
+
+<section class="panel" data-tab="Kształtowanie Umysłu" data-row="1">
+    <p class="panel-intro">Tryby pracy i przypomnienia wspierające nawyki.</p>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Tryb „Powolny"</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Tryb „Uśpienia"</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Przypomnienia kroków w kalendarzu</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+</section>
+
+<script>
+    // Build the tab bar from the panels, so adding a module = adding one <section>
+    (function(){
+        var panels = document.querySelectorAll('.panel');
+        var tabbar = document.getElementById('tabbar');
+        var rowEls = {};
+        var buttons = [];
+
+        panels.forEach(function(panel){
+            var row = panel.getAttribute('data-row') || '1';
+            if(!rowEls[row]){
+                rowEls[row] = document.createElement('div');
+                rowEls[row].className = 'tab-row';
+                tabbar.appendChild(rowEls[row]);
+            }
+            var btn = document.createElement('button');
+            btn.className = 'tab';
+            btn.textContent = panel.getAttribute('data-tab');
+            // Pair each button with its own panel, so grouping into rows can't desync indexes
+            btn.addEventListener('click', function(){ activate(panel, btn); });
+            rowEls[row].appendChild(btn);
+            buttons.push(btn);
+        });
+
+        function activate(activePanel, activeBtn){
+            buttons.forEach(function(b){ b.classList.toggle('active', b === activeBtn); });
+            panels.forEach(function(p){ p.classList.toggle('active', p === activePanel); });
+        }
+
+        activate(panels[0], buttons[0]);
+
+        // Fill in "how long ago" for each checked date (format DD/MM, year assumed)
+        document.querySelectorAll('.check[data-date]').forEach(function(el){
+            var ago = el.querySelector('.check-ago');
+            if(!ago) return;
+
+            var parts = el.getAttribute('data-date').split('/');
+            var day = parseInt(parts[0], 10);
+            var month = parseInt(parts[1], 10);
+            if(isNaN(day) || isNaN(month)) return;
+
+            var now = new Date();
+            var checked = new Date(now.getFullYear(), month - 1, day);
+            // A date that lands in the future means it belongs to the previous year
+            if(checked > now) checked.setFullYear(now.getFullYear() - 1);
+
+            var days = Math.floor((now - checked) / 86400000);
+            ago.textContent = agoLabel(days);
+        });
+
+        function agoLabel(days){
+            if(days <= 0) return 'dzisiaj';
+            if(days === 1) return 'wczoraj';
+            return days + ' dni temu';
+        }
+    })();
+</script>
+
+</body>
+</html>

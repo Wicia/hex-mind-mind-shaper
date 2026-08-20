@@ -102,7 +102,7 @@
     <!--    WORKSHOP - Onboarding review                              -->
     <!-- ============================================================ -->
 
-    <string name="workshop_section_onboarding">✨ Poznawanie aplikacji</string>
+    <string name="workshop_section_onboarding">Moje poznawanie aplikacji</string>
     <string name="workshop_onboarding_section_home">Dom</string>
     <string name="workshop_onboarding_section_settings">Ustawienia</string>
     <string name="workshop_onboarding_section_capture">Łapanie myśli</string>
