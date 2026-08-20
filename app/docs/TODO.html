@@ -122,7 +122,7 @@
   <h1>Mind Shaper — TODO</h1>
   <p class="lede">Rzeczy do sprzątnięcia i rozstrzygnięcia, wychwycone przy audycie spec ↔ kod.</p>
 
-  <h2>Sprzątanie <span class="count">11 pozycji</span></h2>
+  <h2>Sprzątanie / Refactoring</h2>
 
   <details class="item">
     <summary><b>Pasek nawigacji</b> — prosi o dostęp do ustawień, z którego wcale nie korzysta.</summary>
@@ -280,7 +280,7 @@
     </div>
   </details>
 
-  <h2>Do rozstrzygnięcia <span class="count">2 pozycje — czekają na decyzję, nie na sprzątanie</span></h2>
+  <h2>Decyzje desingowe UX/UI do rozstrzygnięcia</h2>
 
   <details class="item">
     <summary><b>Zapętlone „dalej"</b> w pop-upie wskazówek — nie ma sygnału, że to koniec.</summary>
@@ -304,6 +304,59 @@
       <div class="where"><span class="lbl">Gdzie</span><ul><li><code>common/onboarding/OnboardingManager.kt</code> — <code>getSectionTips()</code>, filtr <code>tracked</code></li><li><code>activities/workshop/OnboardingSectionsAdapter.kt</code> — <code>onBindViewHolder</code>, licznik i widoczność wiersza sekcji</li></ul></div>
           </div>
   </details>
+
+  <h2>Sprawdzenie i ew. naprawa</h2>
+
+  <details class="item">
+    <summary><b>Domyślne ikony domen</b> — spec mówi „domyślne nazwy i ikony", seed nie ustawia ikony.</summary>
+    <div class="body">
+      <ul>
+        <li>seed daje <code>DomainEntity(assetsIconId = null)</code> — 10 domyślnych domen startuje bez ikony</li>
+        <li>mapper mapuje <code>assetsIconId: Int?</code> → <code>iconId: Int</code> (non-null), więc <code>null</code> jest unboxowany do prymitywu</li>
+        <li>skutek na UI: albo domeny pokazują pustą ikonę <code>ic_domain_none</code> (fallback dla id 0), albo — mniej prawdopodobne — crash przy pierwszym starcie (NPE z unboxingu)</li>
+        <li>do sprawdzenia na urządzeniu: wyczyść dane, wejdź w Ustawienia → jaka ikona przy domenach; pusta „none" = wariant 0, crash = wariant NPE</li>
+        <li>fix: seed powinien nadać domyślną ikonę zamiast <code>null</code> — spełnia spec i usuwa ryzyko <code>null → Int</code></li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>database/initialization/DatabaseInitializer.kt</code> — <code>seedDomains()</code>, <code>DomainEntity(name = ..., assetsIconId = null)</code></li><li><code>services/mappers/DomainMapper.kt</code> — <code>assetsIconId → iconId</code></li><li><code>services/dto/DomainDTO.kt</code> — <code>iconId: Int</code> (non-null)</li><li><code>services/DomainIconsService.kt</code> — <code>getIconResourceId</code>, fallback <code>ic_domain_none</code></li></ul></div>
+    </div>
+  </details>
+
+<details class="item">
+    <summary><b>Wynik <code>createSnapshot()</code> ignorowany na starcie</b> — cichy błąd zapisu backupu.</summary>
+    <div class="body">
+      <ul>
+        <li><code>createSnapshot()</code> zwraca <code>Result&lt;File&gt;</code>, ale wywołanie na starcie apki nie sprawdza wyniku</li>
+        <li>skutek: jeśli zapis się wywali (brak miejsca, cofnięte uprawnienie, błąd IO), użytkownik jest przekonany, że ma backup, a pliku nie ma</li>
+        <li>do rozważenia: log/telemetria przy porażce, albo odzwierciedlenie stanu w metadanych sekcji</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>ApplicationMain.kt</code> — <code>if (isBackupEnabled()) snapshotManager.createSnapshot()</code> (wynik nieużyty)</li><li><code>database/initialization/DataSnapshotManager.kt</code> — <code>createSnapshot(): Result&lt;File&gt;</code></li></ul></div>
+    </div>
+  </details>
+
+  <details class="item">
+    <summary><b><code>checkAndRequestPermissions</code> w środku <code>restoreSnapshot</code></b> — może przerwać wczytywanie.</summary>
+    <div class="body">
+      <ul>
+        <li>na Androidzie 11+ metoda robi <code>startActivity</code> do ustawień systemowych, gdy brak uprawnienia — wywoływana na początku <code>restoreSnapshot</code></li>
+        <li>skutek: jeśli uprawnienia brak, restore nie tyle prosi i czeka, co wyrzuca użytkownika do ustawień w trakcie operacji; sam odczyt pliku i tak potem poleci (albo rzuci wyjątek)</li>
+        <li>do sprawdzenia na urządzeniu: wczytanie backupu przy cofniętym uprawnieniu — czy flow jest zrozumiały, czy restore realnie się wykonuje po powrocie z ustawień</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>database/initialization/DataSnapshotManager.kt</code> — <code>restoreSnapshot()</code> woła <code>checkAndRequestPermissions(context)</code> na starcie; <code>checkAndRequestPermissions</code> robi <code>startActivity</code> dla <code>MANAGE_APP_ALL_FILES_ACCESS</code></li></ul></div>
+    </div>
+  </details>
+
+  <details class="item">
+    <summary><b>Pole <code>guidelines</code> w JSON zamiast <code>steps</code></b> — rozjazd nazwy pola z tabelą.</summary>
+    <div class="body">
+      <ul>
+        <li>snapshot trzyma kroki pod kluczem <code>guidelines</code>, choć źródłem jest <code>stepDao().getAllSteps()</code> i encja to <code>StepEntity</code></li>
+        <li>nazwa zachowana świadomie „dla kompatybilności wstecznej JSON" (dwa TODO w kodzie) — starsze pliki backupu mają ten klucz</li>
+        <li>do rozstrzygnięcia: zostawić na zawsze (koszt: myląca nazwa), czy zmigrować format i odczytywać oba klucze przez jakiś czas</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>database/initialization/DataSnapshotManager.kt</code> — <code>DatabaseSnapshot.guidelines</code> (pole), <code>createSnapshot</code> (linia ~60) i <code>restoreSnapshot</code> (~130), oba z TODO</li></ul></div>
+    </div>
+  </details>
+
 
 </div>
 </body>
