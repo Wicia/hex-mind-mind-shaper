@@ -15,6 +15,8 @@
             --orange-2:#FFC59A;
             --orange-3:#FFA86B;
             --orange-ink:#C2610A;
+            --tab-ink:#7A2E12;
+            --coffee:#6F4E37;
             --graphite:#3A3A3A;
             --muted:#8A7A6C;
             --graphite-soft:#5C574F;
@@ -70,13 +72,13 @@
             padding:9px 16px;
             border:none;
             border-radius:10px;
-            background:var(--orange-1);
-            color:var(--orange-ink);
+            background:var(--orange-2);
+            color:var(--tab-ink);
             cursor:pointer;
             transition:background .15s;
             white-space:nowrap;
         }
-        .tab:hover{background:var(--orange-2);}
+        .tab:hover{background:var(--orange-3);}
         .tab.active{
             background:var(--orange-3);
             color:#fff;
@@ -147,7 +149,6 @@
         .status.wip{background:var(--orange-1);color:var(--orange-ink);}
         .status.planned{background:#E8E2DB;color:var(--muted);}
 
-
         /* ── Requirement as an expandable spec card ── */
         details.req{
             border:1px solid var(--line);
@@ -159,7 +160,7 @@
         details.req>summary{
             list-style:none;
             cursor:pointer;
-            padding:14px 18px;
+            padding:12px 18px;
             display:flex;
             align-items:center;
             gap:10px;
@@ -297,120 +298,46 @@
 
 <!-- ══ Each panel = one app module (level-1). Requirements inside = level-2 items. ══ -->
 
-<section class="panel" data-tab="Wspólne / Core" data-row="1">
-    <p class="panel-intro">Elementy wspólne dla całej aplikacji.</p>
+<section class="panel" data-tab="Ekran Startowy" data-row="1">
+    <p class="panel-intro">Pierwszy ekran po uruchomieniu aplikacji.</p>
 
     <details class="req">
         <summary>
-            <span class="req-title">Panel nawigacyjny</span>
-            <span class="check" data-date="04/08">
-                <span class="check-main done">🟢 Sprawdzone</span>
-                <span class="check-ago"></span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <div class="spec-section">
-                <h3>Wejścia, Dane, Stany</h3>
-                <ul>
-                    <li>Główny pasek nawigacji — przyciski do pozostałych ekranów</li>
-                    <li>Zwijanie/rozwijanie z animacją</li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Procesy, Opcje, Integracje</h3>
-                <ul>
-                    <li>Widoczny na wszystkich ekranach</li>
-                    <li>Zaznaczanie / eksponowanie aktywnej aktywności
-                        <ul>
-                            <li>Przycisk nawigacyjny w trybie „filled"</li>
-                        </ul>
-                    </li>
-                    <li>Auto-zwijanie przy wyborze</li>
-                    <li>Poprawne wyświetlanie paska w różnych trybach nawigacji Android
-                        <ul>
-                            <li>nawigacja 3-przyciskowa (classic)</li>
-                            <li>nawigacja gestami (od Android 10)</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </details>
-
-    <details class="req">
-        <summary>
-            <span class="req-title">Onboarding<span class="req-alt">Inaczej: „Poznawanie aplikacji" / „Onboarding review"</span></span>
-            <span class="check" data-date="05/08">
-                <span class="check-main done">🟢 Sprawdzone</span>
-                <span class="check-ago"></span>
+            <span class="req-title">Powitanie</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
             </span>
         </summary>
         <div class="spec-body">
             <div class="spec-section">
                 <h3>Potrzeba i Cel</h3>
                 <ul>
-                    <li>Zaprezentowanie wszystkich ekranów oraz funkcji aplikacji w sposób
-                        <ul>
-                            <li>lekki / nienachalny</li>
-                            <li>praktyczny — możliwy do szybkiego wypróbowania po zobaczeniu wskazówki („zrób coś" od razu)</li>
-                            <li>przejrzysty / zrozumiały</li>
-                        </ul>
-                    </li>
-                    <li>Powrót do pominiętej wiedzy — wskazówka pokazuje się raz i znika; bez tego panelu nie da się jej odzyskać ani sprawdzić, czego się nie widziało</li>
+                    <li>—</li>
                 </ul>
             </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Data wersji</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
             <div class="spec-section">
-                <h3>Wejścia, Dane, Stany</h3>
+                <h3>Potrzeba i Cel</h3>
                 <ul>
-                    <li>Na każdym wejściu / ekranie — pop-up ze wskazówkami
-                        <ul>
-                            <li>treść tekstowa, ikona/zasób do wyświetlenia</li>
-                            <li><span class="bracket">Zakończ / Zaakceptuj</span></li>
-                            <li><span class="bracket">Kolejna wskazówka</span> + indicator (ile wskazówek w zestawie)</li>
-                        </ul>
-                    </li>
-                    <li>Karta „Poznawanie aplikacji" — w Warsztacie / pod Ścieżkami Doświadczeń
-                        <ul>
-                            <li>Sekcje = ekrany aplikacji
-                                <ul>
-                                    <li>stała kolejność: Dom, Ustawienia, Łapanie myśli, Strumień, Szczegóły myśli</li>
-                                    <li>ikona ekranu, nazwa, licznik zobaczonych wskazówek (ile / ze wszystkich)</li>
-                                </ul>
-                            </li>
-                            <li>Wiersz wskazówki — pierścień stanu (zobaczona/nie), tytuł</li>
-                            <li>Wspólny stan w obrębie kroku — jeden krok onboardingu może mieć kilka wskazówek; wszystkie dzielą oznaczenie „zobaczono/nie"</li>
-                            <li>Wskazówki pominięte w przeglądzie — nie trafiają na listę (rozszerzają inną wskazówkę / są dodatkową częścią procesu), ale są nadal widoczne na ekranie, którego dotyczą
-                                <ul>
-                                    <li>reset sekcji obejmuje je mimo ukrycia</li>
-                                    <li>nie wliczają się do licznika „zobaczenia"</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Procesy, Opcje, Integracje</h3>
-                <ul>
-                    <li>Ekrany aplikacji — pokazywanie każdego pop-upu tylko raz</li>
-                    <li>Karta „Poznawanie aplikacji"
-                        <ul>
-                            <li><span class="bracket">Idź do</span> — przechodzi do ekranu z nagłówka; dla Szczegółów myśli otwiera ostatnio utworzoną myśl, a przy jej braku pokazuje odpowiedni komunikat</li>
-                            <li><span class="bracket">Resetuj</span> — przywraca wskazówki tej sekcji do ponownego zobaczenia
-                                <ul>
-                                    <li>reset działa tylko na swoją sekcję</li>
-                                    <li>potwierdzenie dialogiem</li>
-                                    <li>po potwierdzeniu wskazówki sekcji znów pojawią się w określonych miejscach</li>
-                                </ul>
-                            </li>
-                            <li>Odświeżanie po powrocie — wejście do Warsztatu przelicza oznaczenia</li>
-                        </ul>
-                    </li>
+                    <li>—</li>
                 </ul>
             </div>
         </div>
     </details>
 </section>
+
 
 <section class="panel" data-tab="Ustawienia i Personalizacja" data-row="1">
     <p class="panel-intro">Konfiguracja aplikacji, dane oraz przełączniki funkcji.</p>
@@ -541,46 +468,6 @@
     <details class="req">
         <summary>
             <span class="req-title">Zdjęcia — Włącz/wyłącz robienie/dodawanie</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>—</li>
-                </ul>
-            </div>
-        </div>
-    </details>
-</section>
-
-<section class="panel" data-tab="Ekran Startowy" data-row="1">
-    <p class="panel-intro">Pierwszy ekran po uruchomieniu aplikacji.</p>
-
-    <details class="req">
-        <summary>
-            <span class="req-title">Powitanie</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>—</li>
-                </ul>
-            </div>
-        </div>
-    </details>
-
-    <details class="req">
-        <summary>
-            <span class="req-title">Data wersji</span>
             <span class="check">
                 <span class="check-main verify">🟡 Weryfikacja</span>
                 <span class="check-ago">-</span>
@@ -923,7 +810,7 @@
     </details>
 </section>
 
-<section class="panel" data-tab="Kształtowanie Umysłu" data-row="1">
+<section class="panel" data-tab="Kształtowanie Umysłu" data-row="3">
     <p class="panel-intro">Tryby pracy i przypomnienia wspierające nawyki.</p>
 
     <details class="req">
@@ -975,6 +862,121 @@
                 <h3>Potrzeba i Cel</h3>
                 <ul>
                     <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+</section>
+
+<section class="panel" data-tab="Wspólne / Core" data-row="4">
+    <p class="panel-intro">Elementy wspólne dla całej aplikacji.</p>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Panel nawigacyjny</span>
+            <span class="check" data-date="04/08">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Wejścia, Dane, Stany</h3>
+                <ul>
+                    <li>Główny pasek nawigacji — przyciski do pozostałych ekranów</li>
+                    <li>Zwijanie/rozwijanie z animacją</li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Procesy, Opcje, Integracje</h3>
+                <ul>
+                    <li>Widoczny na wszystkich ekranach</li>
+                    <li>Zaznaczanie / eksponowanie aktywnej aktywności
+                        <ul>
+                            <li>Przycisk nawigacyjny w trybie „filled"</li>
+                        </ul>
+                    </li>
+                    <li>Auto-zwijanie przy wyborze</li>
+                    <li>Poprawne wyświetlanie paska w różnych trybach nawigacji Android
+                        <ul>
+                            <li>nawigacja 3-przyciskowa (classic)</li>
+                            <li>nawigacja gestami (od Android 10)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Onboarding<span class="req-alt">Inaczej: „Poznawanie aplikacji" / „Onboarding review"</span></span>
+            <span class="check" data-date="05/08">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>Zaprezentowanie wszystkich ekranów oraz funkcji aplikacji w sposób
+                        <ul>
+                            <li>lekki / nienachalny</li>
+                            <li>praktyczny — możliwy do szybkiego wypróbowania po zobaczeniu wskazówki („zrób coś" od razu)</li>
+                            <li>przejrzysty / zrozumiały</li>
+                        </ul>
+                    </li>
+                    <li>Powrót do pominiętej wiedzy — wskazówka pokazuje się raz i znika; bez tego panelu nie da się jej odzyskać ani sprawdzić, czego się nie widziało</li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Wejścia, Dane, Stany</h3>
+                <ul>
+                    <li>Na każdym wejściu / ekranie — pop-up ze wskazówkami
+                        <ul>
+                            <li>treść tekstowa, ikona/zasób do wyświetlenia</li>
+                            <li><span class="bracket">Zakończ / Zaakceptuj</span></li>
+                            <li><span class="bracket">Kolejna wskazówka</span> + indicator (ile wskazówek w zestawie)</li>
+                        </ul>
+                    </li>
+                    <li>Karta „Poznawanie aplikacji" — w Warsztacie / pod Ścieżkami Doświadczeń
+                        <ul>
+                            <li>Sekcje = ekrany aplikacji
+                                <ul>
+                                    <li>stała kolejność: Dom, Ustawienia, Łapanie myśli, Strumień, Szczegóły myśli</li>
+                                    <li>ikona ekranu, nazwa, licznik zobaczonych wskazówek (ile / ze wszystkich)</li>
+                                </ul>
+                            </li>
+                            <li>Wiersz wskazówki — pierścień stanu (zobaczona/nie), tytuł</li>
+                            <li>Wspólny stan w obrębie kroku — jeden krok onboardingu może mieć kilka wskazówek; wszystkie dzielą oznaczenie „zobaczono/nie"</li>
+                            <li>Wskazówki pominięte w przeglądzie — nie trafiają na listę (rozszerzają inną wskazówkę / są dodatkową częścią procesu), ale są nadal widoczne na ekranie, którego dotyczą
+                                <ul>
+                                    <li>reset sekcji obejmuje je mimo ukrycia</li>
+                                    <li>nie wliczają się do licznika „zobaczenia"</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Procesy, Opcje, Integracje</h3>
+                <ul>
+                    <li>Ekrany aplikacji — pokazywanie każdego pop-upu tylko raz</li>
+                    <li>Karta „Poznawanie aplikacji"
+                        <ul>
+                            <li><span class="bracket">Idź do</span> — przechodzi do ekranu z nagłówka; dla Szczegółów myśli otwiera ostatnio utworzoną myśl, a przy jej braku pokazuje odpowiedni komunikat</li>
+                            <li><span class="bracket">Resetuj</span> — przywraca wskazówki tej sekcji do ponownego zobaczenia
+                                <ul>
+                                    <li>reset działa tylko na swoją sekcję</li>
+                                    <li>potwierdzenie dialogiem</li>
+                                    <li>po potwierdzeniu wskazówki sekcji znów pojawią się w określonych miejscach</li>
+                                </ul>
+                            </li>
+                            <li>Odświeżanie po powrocie — wejście do Warsztatu przelicza oznaczenia</li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
