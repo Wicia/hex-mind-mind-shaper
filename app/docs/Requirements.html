@@ -462,16 +462,59 @@
     <details class="req">
         <summary>
             <span class="req-title">Robienie kopii zapasowej danych</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="20/08">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
             <div class="spec-section">
                 <h3>Potrzeba i Cel</h3>
                 <ul>
-                    <li>—</li>
+                    <li>zachowanie kluczowych danych między wydaniami / wersjami aplikacji do ponownego wgrania</li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Wejścia, Dane, Stany</h3>
+                <ul>
+                    <li>Sekcja „Kopia zapasowa danych" (Ustawienia)
+                        <ul>
+                            <li>włącz / wyłącz robienie backupu (domyślnie wyłączony)</li>
+                            <li>metadane backupu
+                                <ul>
+                                    <li>liczba plików backupu</li>
+                                    <li>ich wielkość w MB</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Procesy, Opcje, Integracje</h3>
+                <ul>
+                    <li>Włączanie ustawienia
+                        <ul>
+                            <li>powiadomienia dla użytkownika o wymaganych uprawnieniach</li>
+                            <li>prośba o uprawnienie do zapisu plików (Android)</li>
+                            <li>możliwosć przejścia do ustawień Andruta po odrzuceniu 2 krotnym</li>
+                            <li>stan ustawienia zapisywanie automatyczne po jego zmianie</li>
+                        </ul>
+                    </li>
+                    <li>Synchronizacja opcji i metadanych — na podstawie zapisanego ustawienia oraz przyznanych uprawnień
+                        <ul>
+                            <li>podczas startu aktywności</li>
+                            <li>podczas powrotu do aktywności</li>
+                        </ul>
+                    </li>
+                    <li>Robienie backupu
+                        <ul>
+                            <li>przy starcie aplikacji, tylko gdy opcja włączona</li>
+                            <li>max 1 plik dziennie (nadpisywanie)</li>
+                            <li>backup starszy niż aktualna wersja DB może być wczytany; nowszy nie</li>
+                            <li>nowe zasoby z nowej wersji aplikacji (np. ikony) są doseedowane po wczytaniu backupu oraz przy każdym starcie</li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>

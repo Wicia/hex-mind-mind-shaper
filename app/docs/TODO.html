@@ -321,6 +321,43 @@
     </div>
   </details>
 
+<details class="item">
+    <summary><b>Wynik <code>createSnapshot()</code> ignorowany na starcie</b> — cichy błąd zapisu backupu.</summary>
+    <div class="body">
+      <ul>
+        <li><code>createSnapshot()</code> zwraca <code>Result&lt;File&gt;</code>, ale wywołanie na starcie apki nie sprawdza wyniku</li>
+        <li>skutek: jeśli zapis się wywali (brak miejsca, cofnięte uprawnienie, błąd IO), użytkownik jest przekonany, że ma backup, a pliku nie ma</li>
+        <li>do rozważenia: log/telemetria przy porażce, albo odzwierciedlenie stanu w metadanych sekcji</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>ApplicationMain.kt</code> — <code>if (isBackupEnabled()) snapshotManager.createSnapshot()</code> (wynik nieużyty)</li><li><code>database/initialization/DataSnapshotManager.kt</code> — <code>createSnapshot(): Result&lt;File&gt;</code></li></ul></div>
+    </div>
+  </details>
+
+  <details class="item">
+    <summary><b><code>checkAndRequestPermissions</code> w środku <code>restoreSnapshot</code></b> — może przerwać wczytywanie.</summary>
+    <div class="body">
+      <ul>
+        <li>na Androidzie 11+ metoda robi <code>startActivity</code> do ustawień systemowych, gdy brak uprawnienia — wywoływana na początku <code>restoreSnapshot</code></li>
+        <li>skutek: jeśli uprawnienia brak, restore nie tyle prosi i czeka, co wyrzuca użytkownika do ustawień w trakcie operacji; sam odczyt pliku i tak potem poleci (albo rzuci wyjątek)</li>
+        <li>do sprawdzenia na urządzeniu: wczytanie backupu przy cofniętym uprawnieniu — czy flow jest zrozumiały, czy restore realnie się wykonuje po powrocie z ustawień</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>database/initialization/DataSnapshotManager.kt</code> — <code>restoreSnapshot()</code> woła <code>checkAndRequestPermissions(context)</code> na starcie; <code>checkAndRequestPermissions</code> robi <code>startActivity</code> dla <code>MANAGE_APP_ALL_FILES_ACCESS</code></li></ul></div>
+    </div>
+  </details>
+
+  <details class="item">
+    <summary><b>Pole <code>guidelines</code> w JSON zamiast <code>steps</code></b> — rozjazd nazwy pola z tabelą.</summary>
+    <div class="body">
+      <ul>
+        <li>snapshot trzyma kroki pod kluczem <code>guidelines</code>, choć źródłem jest <code>stepDao().getAllSteps()</code> i encja to <code>StepEntity</code></li>
+        <li>nazwa zachowana świadomie „dla kompatybilności wstecznej JSON" (dwa TODO w kodzie) — starsze pliki backupu mają ten klucz</li>
+        <li>do rozstrzygnięcia: zostawić na zawsze (koszt: myląca nazwa), czy zmigrować format i odczytywać oba klucze przez jakiś czas</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>database/initialization/DataSnapshotManager.kt</code> — <code>DatabaseSnapshot.guidelines</code> (pole), <code>createSnapshot</code> (linia ~60) i <code>restoreSnapshot</code> (~130), oba z TODO</li></ul></div>
+    </div>
+  </details>
+
+
 </div>
 </body>
 </html>
