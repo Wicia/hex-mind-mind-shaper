@@ -295,7 +295,25 @@
             color:var(--graphite-soft);
             line-height:1.5;
         }
-        .doc-note b{color:var(--tab-ink);}
+        .doc-note>summary{
+            list-style:none;
+            cursor:pointer;
+            display:flex;
+            align-items:center;
+            gap:8px;
+            color:var(--graphite);
+        }
+        .doc-note>summary::-webkit-details-marker{display:none;}
+        .doc-note>summary::before{
+            content:"▸";
+            color:var(--orange-3);
+            font-size:18px;
+            transition:transform .15s;
+        }
+        .doc-note[open]>summary::before{transform:rotate(90deg);}
+        .doc-note b{color:var(--graphite);}
+        .doc-note ul{margin:10px 0 0;padding-left:20px;}
+        .doc-note li{padding:2px 0;}
 </style>
 </head>
 <body>
@@ -304,9 +322,14 @@
     <h1>Mind Shaper — Specyfikacja wymagań</h1>
     <p class="subtitle">Dokumentacja modułów aplikacji.</p>
 
-    <div class="doc-note">
-        <b>Jak czytać:</b> każdy feature jest opisany w jednym miejscu — tam, gdzie jego cel biznesowy. Jeśli część feature'u pojawia się na innym ekranie (np. przełącznik w Ustawieniach), jest tam tylko wzmiankowana, a pełny opis zostaje w karcie feature'u.
-    </div>
+    <details class="doc-note">
+        <summary><b>Jak czytać i rozwijać dokumentację?</b></summary>
+        <ul>
+            <li>Klikalne zakładki (poniżej) to grupy celów biznesowych/moduły głównych funkcji, nie ekrany w aplikacji (chociaż takie odwzorowanie/mapowanie może wystąpić)</li>
+            <li>Każdy feature jest opisany w jednym miejscu — tam, gdzie jego cel biznesowy</li>
+            <li>Jeśli część feature'u pojawia się na innym ekranie (np. przełącznik w Ustawieniach), jest tam tylko wzmiankowana, a pełny opis zostaje w karcie feature'u</li>
+        </ul>
+    </details>
 
 </header>
 
@@ -465,24 +488,6 @@
 
     <details class="req">
         <summary>
-            <span class="req-title">Głosówki — Włącz/wyłącz robienie/dodawanie</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>—</li>
-                </ul>
-            </div>
-        </div>
-    </details>
-
-    <details class="req">
-        <summary>
             <span class="req-title">Zdjęcia — Włącz/wyłącz robienie/dodawanie</span>
             <span class="check">
                 <span class="check-main verify">🟡 Weryfikacja</span>
@@ -559,20 +564,56 @@
     <details class="req">
         <summary>
             <span class="req-title">Zapis w formie Głosówki</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="21/08">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
             <div class="spec-section">
                 <h3>Potrzeba i Cel</h3>
                 <ul>
-                    <li>—</li>
+                    <li>możliwość zapisania myśli jako nagranie głosowe — dla momentów, gdy szybciej powiedzieć niż napisać + chcesz uchwycić bardziej emocje</li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Wejścia, Dane, Stany</h3>
+                <ul>
+                    <li>Włączanie/wyłączanie funkcji — toggle „Włącz nagrania dźwiękowe" (w Ustawieniach)</li>
+                    <li>Przycisk „Nowe nagranie głosowe" — stan wg włączenia funkcji (Łapanie myśli / Szczegóły myśli)
+                        <ul>
+                            <li>włączona = aktywny</li>
+                            <li>wyłączona = nieaktywny (szary) + info z możliwością przejścia do ustawień</li>
+                        </ul>
+                    </li>
+                    <li>Widoczność nagrania na innych ekranach
+                        <ul>
+                            <li>Strumień — nagranie ukryte na podglądzie gdy funkcja wyłączona</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Procesy, Opcje, Integracje</h3>
+                <ul>
+                    <li>Włączanie funkcji
+                        <ul>
+                            <li>powiadomienie o wymaganych uprawnieniach</li>
+                            <li>prośba o uprawnienie do mikrofonu, a przy uporczywej odmowie — przekierowanie do ustawień Androida</li>
+                            <li>zapisywanie ustawienia automatyczne — bez tapania „Zapisz"</li>
+                        </ul>
+                    </li>
+                    <li>Auto-synchronizacja stanu funkcji
+                        <ul>
+                            <li>na podstawie zapisanego ustawienia oraz przyznanych uprawnień</li>
+                            <li>podczas startu i powrotu do aktywności</li>
+                        </ul>
+                    </li>
+                    <li>Info dla użytkownika, gdy przycisk (funkcja) wyłączona — z opcją <span class="bracket">Idź do ustawień</span></li>
                 </ul>
             </div>
         </div>
-    </details>
+        </details>
 
     <details class="req">
         <summary>
