@@ -506,16 +506,51 @@
     <details class="req">
         <summary>
             <span class="req-title">Zapis w formie Notatki (Rich text)</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="21/08">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
             <div class="spec-section">
                 <h3>Potrzeba i Cel</h3>
                 <ul>
-                    <li>—</li>
+                    <li>możliwość zapisania myśli w wersji tekstowej — podstawowa i najszybsza forma</li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Wejścia, Dane, Stany</h3>
+                <ul>
+                    <li>Home → <span class="bracket">dodaj</span></li>
+                    <li>Formularz łapania myśli
+                        <ul>
+                            <li>Notatka (Rich Text)</li>
+                            <li>Hex Tags</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Procesy, Opcje, Integracje</h3>
+                <ul>
+                    <li>Notatka (Rich Text)
+                        <ul>
+                            <li>nie może być pusta</li>
+                            <li>mechanizm formatowania wzięty z Markdowna
+                                <ul>
+                                    <li>punktory / bullet-pointy</li>
+                                    <li>dzielenie akapitów (1 enter odstępu pomiędzy)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Zapisywanie (parsowanie) Hex Tagów
+                        <ul>
+                            <li>@tekst → pole „osoba" (max. dł. 36)</li>
+                            <li>#tekst → pole „projekt" (max. dł. 36)</li>
+                            <li>tekst → pole „temat" (max. dł. 36)</li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
