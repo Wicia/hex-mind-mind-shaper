@@ -285,13 +285,29 @@
             padding:1px 7px;
             border-radius:6px;
         }
-    </style>
+            .doc-note{
+            margin:16px 8px 0;
+            padding:12px 16px;
+            background:var(--ribbon);
+            border-left:3px solid var(--orange-3);
+            border-radius:8px;
+            font-size:15px;
+            color:var(--graphite-soft);
+            line-height:1.5;
+        }
+        .doc-note b{color:var(--tab-ink);}
+</style>
 </head>
 <body>
 
 <header>
     <h1>Mind Shaper — Specyfikacja wymagań</h1>
     <p class="subtitle">Dokumentacja modułów aplikacji.</p>
+
+    <div class="doc-note">
+        <b>Jak czytać:</b> każdy feature jest opisany w jednym miejscu — tam, gdzie jego cel biznesowy. Jeśli część feature'u pojawia się na innym ekranie (np. przełącznik w Ustawieniach), jest tam tylko wzmiankowana, a pełny opis zostaje w karcie feature'u.
+    </div>
+
 </header>
 
 <nav class="tabs" id="tabbar"><!-- tabs injected by JS from panels --></nav>
