@@ -79,6 +79,7 @@
             transition:background .15s;
             white-space:nowrap;
         }
+        .tab-core{color:var(--graphite);}
         .tab:hover{background:var(--orange-3);}
         .tab.active{
             background:var(--orange-3);
@@ -379,7 +380,7 @@
 </section>
 
 
-<section class="panel" data-tab="Ustawienia i Personalizacja" data-row="1">
+<section class="panel" data-tab="Ustawienia" data-row="1">
     <p class="panel-intro">Konfiguracja aplikacji, dane oraz przełączniki funkcji.</p>
 
     <details class="req">
@@ -489,6 +490,28 @@
     <details class="req">
         <summary>
             <span class="req-title">Zdjęcia — Włącz/wyłącz robienie/dodawanie</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>—</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+</section>
+
+<section class="panel" data-tab="Personalizacja" data-row="1">
+    <p class="panel-intro">Dostosowanie wyglądu i zachowania aplikacji do preferencji użytkownika.</p>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">—</span>
             <span class="check">
                 <span class="check-main verify">🟡 Weryfikacja</span>
                 <span class="check-ago">-</span>
@@ -960,7 +983,7 @@
     </details>
 </section>
 
-<section class="panel" data-tab="Wspólne / Core" data-row="4">
+<section class="panel" data-tab="* Wspólne / Core" data-row="4">
     <p class="panel-intro">Elementy wspólne dla całej aplikacji.</p>
 
     <details class="req">
@@ -1092,7 +1115,9 @@
             }
             var btn = document.createElement('button');
             btn.className = 'tab';
-            btn.textContent = panel.getAttribute('data-tab');
+            var label = panel.getAttribute('data-tab');
+            if(label.charAt(0) === '*') btn.classList.add('tab-core');
+            btn.textContent = label;
             // Pair each button with its own panel, so grouping into rows can't desync indexes
             btn.addEventListener('click', function(){ activate(panel, btn); });
             rowEls[row].appendChild(btn);
