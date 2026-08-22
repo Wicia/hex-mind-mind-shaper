@@ -18,10 +18,13 @@
             --tab-ink:#7A2E12;
             --coffee:#6F4E37;
             --ribbon:#FFF0E2;
+            --ribbon-bg:#E8D5C4;
             --graphite:#3A3A3A;
             --muted:#8A7A6C;
             --graphite-soft:#5C574F;
             --line:#EAD9C6;
+            --loc-bg:#DCE8F2;
+            --loc-ink:#2F5C82;
         }
         *{box-sizing:border-box;}
         body{
@@ -33,7 +36,7 @@
             line-height:1.5;
         }
         header{
-            padding:28px 32px 20px;
+            padding:28px 32px 20px 64px;
             border-bottom:2px solid var(--line);
         }
         h1{
@@ -54,7 +57,7 @@
             display:flex;
             flex-direction:column;
             gap:5px;
-            padding:16px 32px 12px;
+            padding:16px 32px 12px 64px;
             position:sticky;
             top:0;
             background:var(--cream);
@@ -70,7 +73,7 @@
             font-family:'Baloo 2',system-ui,sans-serif;
             font-weight:600;
             font-size:14px;
-            padding:9px 16px;
+            padding:9px 10px;
             border:none;
             border-radius:10px;
             background:var(--orange-2);
@@ -78,6 +81,8 @@
             cursor:pointer;
             transition:background .15s;
             white-space:nowrap;
+            width:190px;
+            text-align:center;
         }
         .tab-core{color:var(--graphite);}
         .tab:hover{background:var(--orange-3);}
@@ -87,7 +92,7 @@
         }
 
         /* ── Panels ──────────────────────────────── */
-        .panel{display:none;padding:24px 32px 64px;max-width:820px;}
+        .panel{display:none;padding:24px 32px 64px 64px;max-width:820px;}
         .panel.active{display:block;}
 
         .panel-intro{
@@ -170,16 +175,20 @@
             font-weight:600;
             font-size:16px;
             color:var(--graphite);
-            background:var(--orange-1);
+            background:var(--ribbon-bg);
         }
         details.req>summary::-webkit-details-marker{display:none;}
         details.req>summary::before{
-            content:"▸";
-            color:var(--orange-3);
-            font-size:20px;
+            content:"";
+            width:20px;
+            height:20px;
+            flex:0 0 20px;
+            background-color:#514757;
+            -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;
+            mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;
             transition:transform .15s;
         }
-        details.req[open]>summary::before{transform:rotate(90deg);}
+        details.req[open]>summary::before{transform:rotate(180deg);}
         details.req[open]>summary{border-bottom:1px solid var(--line);}
         .req-title{flex:1;}
         .req-alt{
@@ -216,11 +225,11 @@
             border-radius:20px;
         }
         .check-ago{
-            font-family:'Alegreya',serif;
-            font-style:italic;
+            font-family:'Baloo 2',system-ui,sans-serif;
             font-size:12px;
             color:var(--muted);
             margin-top:1px;
+            margin-right:8px;
         }
         .spec-body{padding:4px 18px 18px 18px;}
         .spec-section{margin-top:14px;}
@@ -281,13 +290,25 @@
         .bracket{
             font-family:'Baloo 2',system-ui,sans-serif;
             font-size:13px;
-            font-weight:600;
+            font-weight:500;
             color:var(--graphite);
             background:var(--orange-1);
             padding:1px 7px;
             border-radius:6px;
         }
-            .doc-note{
+        /* Location/screen marker — cool blue tag with an arrow notch on the left */
+        .location{
+            display:inline-block;
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-size:13px;
+            font-weight:500;
+            color:var(--loc-ink);
+            background:var(--loc-bg);
+            padding:1px 8px 1px 14px;
+            border-radius:0 5px 5px 0;
+            clip-path:polygon(6px 0, 100% 0, 100% 100%, 6px 100%, 0 50%);
+        }
+        .doc-note{
             margin:16px 8px 0;
             padding:12px 16px;
             background:var(--ribbon);
@@ -316,7 +337,7 @@
         .doc-note b{color:var(--graphite);}
         .doc-note ul{margin:10px 0 0;padding-left:20px;}
         .doc-note li{padding:2px 0;}
-</style>
+    </style>
 </head>
 <body>
 
@@ -487,23 +508,6 @@
         </div>
     </details>
 
-    <details class="req">
-        <summary>
-            <span class="req-title">Zdjęcia — Włącz/wyłącz robienie/dodawanie</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>—</li>
-                </ul>
-            </div>
-        </div>
-    </details>
 </section>
 
 <section class="panel" data-tab="Personalizacja" data-row="1">
@@ -528,7 +532,7 @@
     </details>
 </section>
 
-<section class="panel" data-tab="Łapanie Myśli" data-row="2">
+<section class="panel" data-tab="Łapanie myśli" data-row="2">
     <p class="panel-intro">Zapisywanie myśli w różnych formach.</p>
 
     <details class="req">
@@ -549,7 +553,7 @@
             <div class="spec-section">
                 <h3>Wejścia, Dane, Stany</h3>
                 <ul>
-                    <li>Home → <span class="bracket">dodaj</span></li>
+                    <li><span class="location">Home</span> → <span class="bracket">dodaj</span></li>
                     <li>Formularz łapania myśli
                         <ul>
                             <li>Notatka (Rich Text)</li>
@@ -602,16 +606,24 @@
             <div class="spec-section">
                 <h3>Wejścia, Dane, Stany</h3>
                 <ul>
-                    <li>Włączanie/wyłączanie funkcji — toggle „Włącz nagrania dźwiękowe" (w Ustawieniach)</li>
-                    <li>Przycisk „Nowe nagranie głosowe" — stan wg włączenia funkcji (Łapanie myśli / Szczegóły myśli)
+                    <li>Włączanie/wyłączanie funkcji — <span class="bracket">Włącz nagrania dźwiękowe</span> (toggle) <span class="location">Ustawienia</span></li>
+                    <li>W formularzu — stan wg włączenia funkcji <span class="location">Łapanie myśli</span> <span class="location">Szczegóły myśli</span>
                         <ul>
-                            <li>włączona = aktywny</li>
-                            <li>wyłączona = nieaktywny (szary) + info z możliwością przejścia do ustawień</li>
+                            <li><span class="bracket">Dodaj nagranie głosowe</span> — gdy myśl nie ma jeszcze nagrania</li>
+                            <li>Widget do nagrań — gdy myśl ma już podpięte nagranie</li>
+                            <li>gdy funkcja włączona = aktywny; wyłączona = nieaktywny (szary) + info z możliwością przejścia do ustawień</li>
+                        </ul>
+                    </li>
+                    <li>Widget do nagrań dźwiękowych — oś z wizualizacją
+                        <ul>
+                            <li>gdy brak nagrania: <span class="bracket">nagrywaj</span></li>
+                            <li>gdy nagranie jest / pauza: <span class="bracket">odtwórz nagranie</span>, <span class="bracket">usuń / ponów nagranie</span></li>
+                            <li>gdy odtwarzam istniejące: <span class="bracket">przesuń nagranie</span> (-5/+5 sek), <span class="bracket">stop</span></li>
                         </ul>
                     </li>
                     <li>Widoczność nagrania na innych ekranach
                         <ul>
-                            <li>Strumień — nagranie ukryte na podglądzie gdy funkcja wyłączona</li>
+                            <li><span class="location">Strumień</span> — nagranie ukryte na podglądzie gdy funkcja wyłączona; gdy widoczne — <span class="bracket">odtwarzanie</span></li>
                         </ul>
                     </li>
                 </ul>
@@ -619,6 +631,25 @@
             <div class="spec-section">
                 <h3>Procesy, Opcje, Integracje</h3>
                 <ul>
+                    <li>Nagrywanie myśli
+                        <ul>
+                            <li>max 180 sek</li>
+                            <li>dobra jakość dźwięku, wyraźne</li>
+                        </ul>
+                    </li>
+                    <li>Odtwarzanie zapisanej głosówki
+                        <ul>
+                            <li>wizualizacja nagrania na osi poziomej</li>
+                            <li>licznik z informacją o momencie odtwarzania</li>
+                            <li><span class="bracket">przesuń o 5 sek</span> / <span class="bracket">cofnij o 5 sek</span></li>
+                        </ul>
+                    </li>
+                    <li>„Ponawianie" nagrywania myśli (pop-up z info)
+                        <ul>
+                            <li>nadpisywanie</li>
+                            <li>usunięcie nagrania</li>
+                        </ul>
+                    </li>
                     <li>Włączanie funkcji
                         <ul>
                             <li>powiadomienia o wymaganych uprawnieniach do użycia funkcji</li>
@@ -636,21 +667,66 @@
                 </ul>
             </div>
         </div>
-        </details>
+    </details>
 
     <details class="req">
         <summary>
             <span class="req-title">Zapis w formie Zdjęcia</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="21/08">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
             <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
+                <h3>Wejścia, Dane, Stany</h3>
                 <ul>
-                    <li>—</li>
+                    <li>Włączanie/wyłączanie funkcji — <span class="bracket">Włącz robienie zdjęć</span> (toggle) <span class="location">Ustawienia</span></li>
+                    <li>W formularzu — stan wg włączenia funkcji <span class="location">Łapanie myśli</span> <span class="location">Szczegóły myśli</span>
+                        <ul>
+                            <li><span class="bracket">Dodaj zdjęcie</span> — gdy myśl nie ma jeszcze zdjęcia</li>
+                            <li>Widget do zdjęć — gdy myśl ma już podpięte zdjęcie</li>
+                            <li>gdy funkcja włączona = aktywny; wyłączona = nieaktywny (szary) + info z możliwością przejścia do ustawień</li>
+                        </ul>
+                    </li>
+                    <li>Widget do zdjęć — wyświetlanie miniaturki
+                        <ul>
+                            <li>gdy brak zdjęcia: <span class="bracket">zrób zdjęcie</span>, <span class="bracket">wgraj zdjęcie z galerii</span></li>
+                            <li>gdy zdjęcie jest: <span class="bracket">wyświetl w pełnym rozmiarze</span>, <span class="bracket">usuń</span></li>
+                        </ul>
+                    </li>
+                    <li>Widoczność zdjęcia na innych ekranach
+                        <ul>
+                            <li><span class="location">Strumień</span> — zdjęcie ukryte na podglądzie gdy funkcja wyłączona; gdy widoczne — tylko miniaturka</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Procesy, Opcje, Integracje</h3>
+                <ul>
+                    <li>Zrób zdjęcie
+                        <ul>
+                            <li>🔴 poziomo</li>
+                            <li>pionowo</li>
+                        </ul>
+                    </li>
+                    <li>Wgraj zdjęcie z galerii</li>
+                    <li>Usuń zdjęcie</li>
+                    <li>Włączanie funkcji
+                        <ul>
+                            <li>powiadomienia o wymaganych uprawnieniach do użycia funkcji</li>
+                            <li>prośba o uprawnienie do aparatu, a w przypadku uporczywej odmowy — możliwość zmiany w ustawieniach Androida</li>
+                            <li>stan ustawienia zapisywany automatycznie po zmianie</li>
+                        </ul>
+                    </li>
+                    <li>Auto-synchronizacja stanu funkcji
+                        <ul>
+                            <li>na podstawie zapisanego ustawienia oraz przyznanych uprawnień</li>
+                            <li>podczas startu i powrotu do aktywności</li>
+                        </ul>
+                    </li>
+                    <li>Info dla użytkownika, gdy przycisk (funkcja) wyłączona — z opcją <span class="bracket">Idź do ustawień</span></li>
                 </ul>
             </div>
         </div>
@@ -693,7 +769,7 @@
     </details>
 </section>
 
-<section class="panel" data-tab="Przeglądanie Myśli" data-row="2">
+<section class="panel" data-tab="Przeglądanie myśli" data-row="2">
     <p class="panel-intro">Odnajdywanie i porządkowanie zapisanych myśli.</p>
 
     <details class="req">
@@ -751,7 +827,7 @@
     </details>
 </section>
 
-<section class="panel" data-tab="Myśli / Szczegóły" data-row="2">
+<section class="panel" data-tab="Edycja i szczegóły myśli" data-row="2">
     <p class="panel-intro">Podgląd i edycja pojedynczej myśli.</p>
 
     <details class="req">
@@ -791,7 +867,7 @@
     </details>
 </section>
 
-<section class="panel" data-tab="Wartościowanie Myśli" data-row="2">
+<section class="panel" data-tab="Wartościowanie myśli" data-row="2">
     <p class="panel-intro">Nadawanie myślom wartości i ocen.</p>
 
     <details class="req">
@@ -831,7 +907,7 @@
     </details>
 </section>
 
-<section class="panel" data-tab="Mój Warsztat" data-row="3">
+<section class="panel" data-tab="Mój warsztat" data-row="3">
     <p class="panel-intro">Cele, kroki i ścieżki rozwoju.</p>
 
     <details class="req">
