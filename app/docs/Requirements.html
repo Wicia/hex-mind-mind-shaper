@@ -36,7 +36,7 @@
             line-height:1.5;
         }
         header{
-            padding:28px 32px 20px;
+            padding:28px 32px 20px 64px;
             border-bottom:2px solid var(--line);
         }
         h1{
@@ -57,7 +57,7 @@
             display:flex;
             flex-direction:column;
             gap:5px;
-            padding:16px 32px 12px;
+            padding:16px 32px 12px 64px;
             position:sticky;
             top:0;
             background:var(--cream);
@@ -73,7 +73,7 @@
             font-family:'Baloo 2',system-ui,sans-serif;
             font-weight:600;
             font-size:14px;
-            padding:9px 16px;
+            padding:9px 10px;
             border:none;
             border-radius:10px;
             background:var(--orange-2);
@@ -81,6 +81,8 @@
             cursor:pointer;
             transition:background .15s;
             white-space:nowrap;
+            width:190px;
+            text-align:center;
         }
         .tab-core{color:var(--graphite);}
         .tab:hover{background:var(--orange-3);}
@@ -90,7 +92,7 @@
         }
 
         /* ── Panels ──────────────────────────────── */
-        .panel{display:none;padding:24px 32px 64px;max-width:820px;}
+        .panel{display:none;padding:24px 32px 64px 64px;max-width:820px;}
         .panel.active{display:block;}
 
         .panel-intro{
@@ -177,12 +179,16 @@
         }
         details.req>summary::-webkit-details-marker{display:none;}
         details.req>summary::before{
-            content:"▸";
-            color:var(--orange-3);
-            font-size:20px;
+            content:"";
+            width:20px;
+            height:20px;
+            flex:0 0 20px;
+            background-color:#514757;
+            -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;
+            mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;
             transition:transform .15s;
         }
-        details.req[open]>summary::before{transform:rotate(90deg);}
+        details.req[open]>summary::before{transform:rotate(180deg);}
         details.req[open]>summary{border-bottom:1px solid var(--line);}
         .req-title{flex:1;}
         .req-alt{
@@ -526,7 +532,7 @@
     </details>
 </section>
 
-<section class="panel" data-tab="Łapanie Myśli" data-row="2">
+<section class="panel" data-tab="Łapanie myśli" data-row="2">
     <p class="panel-intro">Zapisywanie myśli w różnych formach.</p>
 
     <details class="req">
@@ -547,7 +553,7 @@
             <div class="spec-section">
                 <h3>Wejścia, Dane, Stany</h3>
                 <ul>
-                    <li>Home → <span class="bracket">dodaj</span></li>
+                    <li><span class="location">Home</span> → <span class="bracket">dodaj</span></li>
                     <li>Formularz łapania myśli
                         <ul>
                             <li>Notatka (Rich Text)</li>
@@ -600,8 +606,8 @@
             <div class="spec-section">
                 <h3>Wejścia, Dane, Stany</h3>
                 <ul>
-                    <li>Włączanie/wyłączanie funkcji — toggle „Włącz nagrania dźwiękowe" <span class="location">Ustawienia</span></li>
-                    <li>Przycisk „Nowe nagranie głosowe" — stan wg włączenia funkcji (Łapanie myśli / Szczegóły myśli)
+                    <li>Włączanie/wyłączanie funkcji — <span class="bracket">Włącz nagrania dźwiękowe</span> (toggle) <span class="location">Ustawienia</span></li>
+                    <li><span class="bracket">Nowe nagranie głosowe</span> — stan wg włączenia funkcji <span class="location">Łapanie myśli</span> <span class="location">Szczegóły myśli</span>
                         <ul>
                             <li>włączona = aktywny</li>
                             <li>wyłączona = nieaktywny (szary) + info z możliwością przejścia do ustawień</li>
@@ -609,7 +615,7 @@
                     </li>
                     <li>Widoczność nagrania na innych ekranach
                         <ul>
-                            <li>Strumień — nagranie ukryte na podglądzie gdy funkcja wyłączona</li>
+                            <li><span class="location">Strumień</span> — nagranie ukryte na podglądzie gdy funkcja wyłączona</li>
                         </ul>
                     </li>
                 </ul>
@@ -721,7 +727,7 @@
     </details>
 </section>
 
-<section class="panel" data-tab="Przeglądanie Myśli" data-row="2">
+<section class="panel" data-tab="Przeglądanie myśli" data-row="2">
     <p class="panel-intro">Odnajdywanie i porządkowanie zapisanych myśli.</p>
 
     <details class="req">
@@ -779,7 +785,7 @@
     </details>
 </section>
 
-<section class="panel" data-tab="Myśli / Szczegóły" data-row="2">
+<section class="panel" data-tab="Edycja i szczegóły myśli" data-row="2">
     <p class="panel-intro">Podgląd i edycja pojedynczej myśli.</p>
 
     <details class="req">
@@ -819,7 +825,7 @@
     </details>
 </section>
 
-<section class="panel" data-tab="Wartościowanie Myśli" data-row="2">
+<section class="panel" data-tab="Wartościowanie myśli" data-row="2">
     <p class="panel-intro">Nadawanie myślom wartości i ocen.</p>
 
     <details class="req">
@@ -859,7 +865,7 @@
     </details>
 </section>
 
-<section class="panel" data-tab="Mój Warsztat" data-row="3">
+<section class="panel" data-tab="Mój warsztat" data-row="3">
     <p class="panel-intro">Cele, kroki i ścieżki rozwoju.</p>
 
     <details class="req">
