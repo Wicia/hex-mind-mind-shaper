@@ -18,10 +18,13 @@
             --tab-ink:#7A2E12;
             --coffee:#6F4E37;
             --ribbon:#FFF0E2;
+            --ribbon-bg:#E8D5C4;
             --graphite:#3A3A3A;
             --muted:#8A7A6C;
             --graphite-soft:#5C574F;
             --line:#EAD9C6;
+            --loc-bg:#DCE8F2;
+            --loc-ink:#2F5C82;
         }
         *{box-sizing:border-box;}
         body{
@@ -170,7 +173,7 @@
             font-weight:600;
             font-size:16px;
             color:var(--graphite);
-            background:var(--orange-1);
+            background:var(--ribbon-bg);
         }
         details.req>summary::-webkit-details-marker{display:none;}
         details.req>summary::before{
@@ -287,6 +290,18 @@
             padding:1px 7px;
             border-radius:6px;
         }
+        /* Location/screen marker — cool blue tag with an arrow notch on the left */
+        .location{
+            display:inline-block;
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-size:13px;
+            font-weight:600;
+            color:var(--loc-ink);
+            background:var(--loc-bg);
+            padding:1px 8px 1px 14px;
+            border-radius:0 5px 5px 0;
+            clip-path:polygon(6px 0, 100% 0, 100% 100%, 6px 100%, 0 50%);
+        }
             .doc-note{
             margin:16px 8px 0;
             padding:12px 16px;
@@ -316,7 +331,7 @@
         .doc-note b{color:var(--graphite);}
         .doc-note ul{margin:10px 0 0;padding-left:20px;}
         .doc-note li{padding:2px 0;}
-</style>
+    </style>
 </head>
 <body>
 
@@ -487,23 +502,6 @@
         </div>
     </details>
 
-    <details class="req">
-        <summary>
-            <span class="req-title">Zdjęcia — Włącz/wyłącz robienie/dodawanie</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>—</li>
-                </ul>
-            </div>
-        </div>
-    </details>
 </section>
 
 <section class="panel" data-tab="Personalizacja" data-row="1">
@@ -602,7 +600,7 @@
             <div class="spec-section">
                 <h3>Wejścia, Dane, Stany</h3>
                 <ul>
-                    <li>Włączanie/wyłączanie funkcji — toggle „Włącz nagrania dźwiękowe" (w Ustawieniach)</li>
+                    <li>Włączanie/wyłączanie funkcji — toggle „Włącz nagrania dźwiękowe" <span class="location">Ustawienia</span></li>
                     <li>Przycisk „Nowe nagranie głosowe" — stan wg włączenia funkcji (Łapanie myśli / Szczegóły myśli)
                         <ul>
                             <li>włączona = aktywny</li>
@@ -636,21 +634,51 @@
                 </ul>
             </div>
         </div>
-        </details>
+    </details>
 
     <details class="req">
         <summary>
             <span class="req-title">Zapis w formie Zdjęcia</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="21/08">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
             <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
+                <h3>Wejścia, Dane, Stany</h3>
                 <ul>
-                    <li>—</li>
+                    <li>Włączanie/wyłączanie funkcji — <span class="bracket">Włącz robienie zdjęć</span> (toggle) <span class="location">Ustawienia</span></li>
+                    <li><span class="bracket">Nowe zdjęcie</span> — stan wg włączenia funkcji <span class="location">Łapanie myśli</span> <span class="location">Szczegóły myśli</span>
+                        <ul>
+                            <li>włączona = aktywny</li>
+                            <li>wyłączona = nieaktywny (szary) + info z możliwością przejścia do ustawień</li>
+                        </ul>
+                    </li>
+                    <li>Widoczność zdjęcia na innych ekranach
+                        <ul>
+                            <li><span class="location">Strumień</span> — zdjęcie ukryte na podglądzie gdy funkcja wyłączona</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Procesy, Opcje, Integracje</h3>
+                <ul>
+                    <li>Włączanie funkcji
+                        <ul>
+                            <li>powiadomienia o wymaganych uprawnieniach do użycia funkcji</li>
+                            <li>prośba o uprawnienie do aparatu, a w przypadku uporczywej odmowy — możliwość zmiany w ustawieniach Androida</li>
+                            <li>stan ustawienia zapisywany automatycznie po zmianie</li>
+                        </ul>
+                    </li>
+                    <li>Auto-synchronizacja stanu funkcji
+                        <ul>
+                            <li>na podstawie zapisanego ustawienia oraz przyznanych uprawnień</li>
+                            <li>podczas startu i powrotu do aktywności</li>
+                        </ul>
+                    </li>
+                    <li>Info dla użytkownika, gdy przycisk (funkcja) wyłączona — z opcją <span class="bracket">Idź do ustawień</span></li>
                 </ul>
             </div>
         </div>
