@@ -64,14 +64,16 @@
   summary::-webkit-details-marker{display:none}
   summary:focus-visible{outline:2px solid var(--orange-3); outline-offset:-2px}
 
-  /* ring marker, echoing the step rings in the app */
+  /* chevron marker (matches Requirements ribbons) */
   summary::before{
-    content:""; position:absolute; left:16px; top:19px;
-    width:16px; height:16px; border-radius:50%;
-    border:4px solid var(--orange-2);
-    transition:border-color .18s ease;
+    content:""; position:absolute; left:15px; top:16px;
+    width:20px; height:20px;
+    background-color:#7a2e12;
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;
+    mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;
+    transition:transform .15s ease;
   }
-  details[open] summary::before{border-color:var(--orange-3)}
+  details[open] summary::before{transform:rotate(180deg)}
 
   summary::after{
     content:"▸"; position:absolute; right:16px; top:14px;
@@ -83,6 +85,17 @@
   summary b{font-weight:500}
 
   .body{padding:2px 18px 16px 46px; border-top:1px solid #F0EAE4}
+  .prio{
+    display:inline-block;
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-size:11px; font-weight:600;
+    padding:2px 10px; border-radius:20px;
+    margin-right:8px;
+    vertical-align:middle;
+  }
+  .prio.crit{background:#F8D7D5; color:#9B2C22}
+  .prio.imp{background:#FCEFC7; color:#8A6D00}
+  .prio.minor{background:#DFF0D8; color:#3C763D}
   .body ul{margin:12px 0 0; padding-left:20px}
   .body li{margin-bottom:7px}
   .body li::marker{color:var(--orange-2)}
@@ -125,7 +138,7 @@
   <h2>Sprzątanie / Refactoring</h2>
 
   <details class="item">
-    <summary><b>Pasek nawigacji</b> — prosi o dostęp do ustawień, z którego wcale nie korzysta.</summary>
+    <summary><span class="prio minor">Drobny</span> <b>Pasek nawigacji</b> — prosi o dostęp do ustawień, z którego wcale nie korzysta.</summary>
     <div class="body">
       <ul>
         <li>ślad po planowanym „zapamiętywaniu stanu", którego nie dokończono</li>
@@ -137,7 +150,7 @@
   </details>
 
   <details class="item">
-    <summary><b><code>common_rich_text_view.xml</code></b> — layout po starym widoku HTML, którego nikt nie inflatuje.</summary>
+    <summary><span class="prio minor">Drobny</span> <b><code>common_rich_text_view.xml</code></b> — layout po starym widoku HTML, którego nikt nie inflatuje.</summary>
     <div class="body">
       <ul>
         <li>brak referencji w całym projekcie (potwierdzone grepem)</li>
@@ -150,7 +163,7 @@
   </details>
 
   <details class="item">
-    <summary><b><code>common_onb_dialog_header</code></b> — string, który stracił rację bytu.</summary>
+    <summary><span class="prio minor">Drobny</span> <b><code>common_onb_dialog_header</code></b> — string, który stracił rację bytu.</summary>
     <div class="body">
       <ul>
         <li>był zapasowym tytułem wskazówki; zbędny, odkąd <code>titleRes</code> jest wymagany</li>
@@ -162,7 +175,7 @@
   </details>
 
   <details class="item">
-    <summary><b>Compose</b> — cała biblioteka podpięta, a w kodzie ani jednego użycia.</summary>
+    <summary><span class="prio minor">Drobny</span> <b>Compose</b> — cała biblioteka podpięta, a w kodzie ani jednego użycia.</summary>
     <div class="body">
       <ul>
         <li>zero <code>@Composable</code>, importów <code>androidx.compose</code>, <code>setContent</code>, <code>ComponentActivity</code></li>
@@ -176,7 +189,7 @@
   </details>
 
   <details class="item">
-    <summary><b>Pięć zależności</b> zadeklarowanych, ale nieużywanych.</summary>
+    <summary><span class="prio minor">Drobny</span> <b>Pięć zależności</b> zadeklarowanych, ale nieużywanych.</summary>
     <div class="body">
       <ul>
         <li><code>navigation-fragment-ktx</code> + <code>navigation-ui-ktx</code> — brak <code>res/navigation</code></li>
@@ -189,7 +202,7 @@
   </details>
 
   <details class="item">
-    <summary><b><code>mapstruct_processor</code></b> — osierocona wersja w katalogu.</summary>
+    <summary><span class="prio minor">Drobny</span> <b><code>mapstruct_processor</code></b> — osierocona wersja w katalogu.</summary>
     <div class="body">
       <ul>
         <li>nieużywana, bo <code>mapstruct-processor</code> odwołuje się do <code>version.ref = "mapstruct"</code></li>
@@ -199,7 +212,7 @@
   </details>
 
   <details class="item">
-    <summary><b>Katalog wersji</b> — trzy zależności wpisane obok konwencji.</summary>
+    <summary><span class="prio minor">Drobny</span> <b>Katalog wersji</b> — trzy zależności wpisane obok konwencji.</summary>
     <div class="body">
       <ul>
         <li>Markwon, PhotoView i exifinterface jako gołe stringi w <code>dependencies</code></li>
@@ -211,7 +224,7 @@
   </details>
 
   <details class="item">
-    <summary><b><code>gradle-wrapper.jar</code></b> — brakuje go w <code>gradle/wrapper</code>.</summary>
+    <summary><span class="prio imp">Istotny</span> <b><code>gradle-wrapper.jar</code></b> — brakuje go w <code>gradle/wrapper</code>.</summary>
     <div class="body">
       <ul>
         <li>jest tylko <code>gradle-wrapper.properties</code></li>
@@ -223,7 +236,7 @@
   </details>
 
   <details class="item">
-    <summary><b>Kanał zdarzeń dla dialogów z ViewModelu</b> — dziś dialog odpalany jest lambdą przekazaną w dół, co nie przeżywa obrotu ekranu.</summary>
+    <summary><span class="prio imp">Istotny</span> <b>Kanał zdarzeń dla dialogów z ViewModelu</b> — dziś dialog odpalany jest lambdą przekazaną w dół, co nie przeżywa obrotu ekranu.</summary>
     <div class="body">
       <ul>
         <li>dotyczy m.in. pytania „czy usunąć całą myśl" po skasowaniu ostatniej formy — <code>deletePhoto {}</code>, <code>deleteAudioRecording {}</code>, <code>deleteRichText {}</code></li>
@@ -237,7 +250,7 @@
   </details>
 
   <details class="item">
-    <summary><b>Dwa dialogi pod rząd przy ostatniej formie</b> — potwierdzenie usunięcia formy i pytanie o pustą myśl pojawiają się jedno po drugim.</summary>
+    <summary><span class="prio imp">Istotny</span> <b>Dwa dialogi pod rząd przy ostatniej formie</b> — potwierdzenie usunięcia formy i pytanie o pustą myśl pojawiają się jedno po drugim.</summary>
     <div class="body">
       <ul>
         <li>docelowo jeden dialog: „Po usunięciu tej formy zapisu myśli cała myśl będzie pusta. Co zrobić?"</li>
@@ -257,7 +270,7 @@
   </details>
 
   <details class="item">
-    <summary><b>Refactor dialogów</b> — uporządkować układ przycisków i ujednolicić ich nazwy w 20 miejscach, gdzie tworzony jest <code>ActionsDialog</code>.</summary>
+    <summary><span class="prio imp">Istotny</span> <b>Refactor dialogów</b> — uporządkować układ przycisków i ujednolicić ich nazwy w 20 miejscach, gdzie tworzony jest <code>ActionsDialog</code>.</summary>
     <div class="body">
       <ul>
         <li>dziś: [caution] i [standard] obok siebie po połowie szerokości, [dismiss] pod nimi na całą — trzy przyciski mieszczą się strukturalnie, problemem jest logika pokazywania</li>
@@ -283,7 +296,7 @@
   <h2>Decyzje desingowe UX/UI do rozstrzygnięcia</h2>
 
   <details class="item">
-    <summary><b>Zapętlone „dalej"</b> w pop-upie wskazówek — nie ma sygnału, że to koniec.</summary>
+    <summary><span class="prio imp">Istotny</span> <b>Zapętlone „dalej"</b> w pop-upie wskazówek — nie ma sygnału, że to koniec.</summary>
     <div class="body">
       <ul>
         <li>po ostatniej wskazówce przycisk wraca do pierwszej, zamiast zmienić się w „Zakończ"</li>
@@ -295,7 +308,7 @@
   </details>
 
   <details class="item">
-    <summary><b>Sekcja z samymi ukrytymi wskazówkami</b> — zostałby pusty nagłówek.</summary>
+    <summary><span class="prio minor">Drobny</span> <b>Sekcja z samymi ukrytymi wskazówkami</b> — zostałby pusty nagłówek.</summary>
     <div class="body">
       <ul>
         <li>gdy wszystkie wskazówki sekcji dostaną <code>tracked = false</code>, zostaje nagłówek <code>0/0</code> z działającymi przyciskami</li>
@@ -308,7 +321,7 @@
   <h2>Sprawdzenie i ew. naprawa</h2>
 
   <details class="item">
-    <summary><b>Domyślne ikony domen</b> — spec mówi „domyślne nazwy i ikony", seed nie ustawia ikony.</summary>
+    <summary><span class="prio imp">Istotny</span> <b>Domyślne ikony domen</b> — spec mówi „domyślne nazwy i ikony", seed nie ustawia ikony.</summary>
     <div class="body">
       <ul>
         <li>seed daje <code>DomainEntity(assetsIconId = null)</code> — 10 domyślnych domen startuje bez ikony</li>
@@ -322,7 +335,7 @@
   </details>
 
 <details class="item">
-    <summary><b>Wynik <code>createSnapshot()</code> ignorowany na starcie</b> — cichy błąd zapisu backupu.</summary>
+    <summary><span class="prio crit">Krytyczny</span> <b>Wynik <code>createSnapshot()</code> ignorowany na starcie</b> — cichy błąd zapisu backupu.</summary>
     <div class="body">
       <ul>
         <li><code>createSnapshot()</code> zwraca <code>Result&lt;File&gt;</code>, ale wywołanie na starcie apki nie sprawdza wyniku</li>
@@ -334,7 +347,7 @@
   </details>
 
   <details class="item">
-    <summary><b><code>checkAndRequestPermissions</code> w środku <code>restoreSnapshot</code></b> — może przerwać wczytywanie.</summary>
+    <summary><span class="prio imp">Istotny</span> <b><code>checkAndRequestPermissions</code> w środku <code>restoreSnapshot</code></b> — może przerwać wczytywanie.</summary>
     <div class="body">
       <ul>
         <li>na Androidzie 11+ metoda robi <code>startActivity</code> do ustawień systemowych, gdy brak uprawnienia — wywoływana na początku <code>restoreSnapshot</code></li>
@@ -346,7 +359,7 @@
   </details>
 
   <details class="item">
-    <summary><b>Pole <code>guidelines</code> w JSON zamiast <code>steps</code></b> — rozjazd nazwy pola z tabelą.</summary>
+    <summary><span class="prio minor">Drobny</span> <b>Pole <code>guidelines</code> w JSON zamiast <code>steps</code></b> — rozjazd nazwy pola z tabelą.</summary>
     <div class="body">
       <ul>
         <li>snapshot trzyma kroki pod kluczem <code>guidelines</code>, choć źródłem jest <code>stepDao().getAllSteps()</code> i encja to <code>StepEntity</code></li>
@@ -357,6 +370,20 @@
     </div>
   </details>
 
+
+
+  <details class="item">
+    <summary><span class="prio crit">Krytyczny</span> <b>Robienie zdjęcia poziomo anuluje proces</b> — obrót ekranu resetuje aktywność i przerywa capture.</summary>
+    <div class="body">
+      <ul>
+        <li>obrót telefonu do poziomu w trakcie robienia zdjęcia niszczy i odtwarza <code>CaptureActivity</code> (domyślne zachowanie Androida przy zmianie konfiguracji)</li>
+        <li><code>currentPhotoUri</code> trzymane jako pole aktywności — ginie przy odtworzeniu, więc powracający wynik z kamery nie ma gdzie trafić → proces anulowany</li>
+        <li>efekt: nie da się zrobić zdjęcia w orientacji poziomej</li>
+        <li>możliwe kierunki naprawy: zachować URI w <code>onSaveInstanceState</code> / <code>ViewModel</code> (przeżywa odtworzenie), albo dodać <code>android:configChanges</code> dla orientacji, albo tymczasowo zablokować orientację aktywności na czas capture</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>AndroidManifest.xml</code> — wpis <code>CaptureActivity</code> (brak <code>configChanges</code> / <code>screenOrientation</code>)</li><li><code>activities/capture/CaptureActivity.kt</code> — <code>takePhoto()</code>, <code>currentPhotoUri</code> jako pole; <code>getTempPhotoUri()</code> przy powrocie</li></ul></div>
+    </div>
+  </details>
 
 </div>
 </body>

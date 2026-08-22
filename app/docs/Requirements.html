@@ -607,15 +607,23 @@
                 <h3>Wejścia, Dane, Stany</h3>
                 <ul>
                     <li>Włączanie/wyłączanie funkcji — <span class="bracket">Włącz nagrania dźwiękowe</span> (toggle) <span class="location">Ustawienia</span></li>
-                    <li><span class="bracket">Nowe nagranie głosowe</span> — stan wg włączenia funkcji <span class="location">Łapanie myśli</span> <span class="location">Szczegóły myśli</span>
+                    <li>W formularzu — stan wg włączenia funkcji <span class="location">Łapanie myśli</span> <span class="location">Szczegóły myśli</span>
                         <ul>
-                            <li>włączona = aktywny</li>
-                            <li>wyłączona = nieaktywny (szary) + info z możliwością przejścia do ustawień</li>
+                            <li><span class="bracket">Dodaj nagranie głosowe</span> — gdy myśl nie ma jeszcze nagrania</li>
+                            <li>Widget do nagrań — gdy myśl ma już podpięte nagranie</li>
+                            <li>gdy funkcja włączona = aktywny; wyłączona = nieaktywny (szary) + info z możliwością przejścia do ustawień</li>
+                        </ul>
+                    </li>
+                    <li>Widget do nagrań dźwiękowych — oś z wizualizacją
+                        <ul>
+                            <li>gdy brak nagrania: <span class="bracket">nagrywaj</span></li>
+                            <li>gdy nagranie jest / pauza: <span class="bracket">odtwórz nagranie</span>, <span class="bracket">usuń / ponów nagranie</span></li>
+                            <li>gdy odtwarzam istniejące: <span class="bracket">przesuń nagranie</span> (-5/+5 sek), <span class="bracket">stop</span></li>
                         </ul>
                     </li>
                     <li>Widoczność nagrania na innych ekranach
                         <ul>
-                            <li><span class="location">Strumień</span> — nagranie ukryte na podglądzie gdy funkcja wyłączona</li>
+                            <li><span class="location">Strumień</span> — nagranie ukryte na podglądzie gdy funkcja wyłączona; gdy widoczne — <span class="bracket">odtwarzanie</span></li>
                         </ul>
                     </li>
                 </ul>
@@ -623,6 +631,25 @@
             <div class="spec-section">
                 <h3>Procesy, Opcje, Integracje</h3>
                 <ul>
+                    <li>Nagrywanie myśli
+                        <ul>
+                            <li>max 180 sek</li>
+                            <li>dobra jakość dźwięku, wyraźne</li>
+                        </ul>
+                    </li>
+                    <li>Odtwarzanie zapisanej głosówki
+                        <ul>
+                            <li>wizualizacja nagrania na osi poziomej</li>
+                            <li>licznik z informacją o momencie odtwarzania</li>
+                            <li><span class="bracket">przesuń o 5 sek</span> / <span class="bracket">cofnij o 5 sek</span></li>
+                        </ul>
+                    </li>
+                    <li>„Ponawianie" nagrywania myśli (pop-up z info)
+                        <ul>
+                            <li>nadpisywanie</li>
+                            <li>usunięcie nagrania</li>
+                        </ul>
+                    </li>
                     <li>Włączanie funkcji
                         <ul>
                             <li>powiadomienia o wymaganych uprawnieniach do użycia funkcji</li>
@@ -655,15 +682,22 @@
                 <h3>Wejścia, Dane, Stany</h3>
                 <ul>
                     <li>Włączanie/wyłączanie funkcji — <span class="bracket">Włącz robienie zdjęć</span> (toggle) <span class="location">Ustawienia</span></li>
-                    <li><span class="bracket">Nowe zdjęcie</span> — stan wg włączenia funkcji <span class="location">Łapanie myśli</span> <span class="location">Szczegóły myśli</span>
+                    <li>W formularzu — stan wg włączenia funkcji <span class="location">Łapanie myśli</span> <span class="location">Szczegóły myśli</span>
                         <ul>
-                            <li>włączona = aktywny</li>
-                            <li>wyłączona = nieaktywny (szary) + info z możliwością przejścia do ustawień</li>
+                            <li><span class="bracket">Dodaj zdjęcie</span> — gdy myśl nie ma jeszcze zdjęcia</li>
+                            <li>Widget do zdjęć — gdy myśl ma już podpięte zdjęcie</li>
+                            <li>gdy funkcja włączona = aktywny; wyłączona = nieaktywny (szary) + info z możliwością przejścia do ustawień</li>
+                        </ul>
+                    </li>
+                    <li>Widget do zdjęć — wyświetlanie miniaturki
+                        <ul>
+                            <li>gdy brak zdjęcia: <span class="bracket">zrób zdjęcie</span>, <span class="bracket">wgraj zdjęcie z galerii</span></li>
+                            <li>gdy zdjęcie jest: <span class="bracket">wyświetl w pełnym rozmiarze</span>, <span class="bracket">usuń</span></li>
                         </ul>
                     </li>
                     <li>Widoczność zdjęcia na innych ekranach
                         <ul>
-                            <li><span class="location">Strumień</span> — zdjęcie ukryte na podglądzie gdy funkcja wyłączona</li>
+                            <li><span class="location">Strumień</span> — zdjęcie ukryte na podglądzie gdy funkcja wyłączona; gdy widoczne — tylko miniaturka</li>
                         </ul>
                     </li>
                 </ul>
@@ -671,6 +705,14 @@
             <div class="spec-section">
                 <h3>Procesy, Opcje, Integracje</h3>
                 <ul>
+                    <li>Zrób zdjęcie
+                        <ul>
+                            <li>🔴 poziomo</li>
+                            <li>pionowo</li>
+                        </ul>
+                    </li>
+                    <li>Wgraj zdjęcie z galerii</li>
+                    <li>Usuń zdjęcie</li>
                     <li>Włączanie funkcji
                         <ul>
                             <li>powiadomienia o wymaganych uprawnieniach do użycia funkcji</li>
