@@ -907,20 +907,66 @@
     <details class="req">
         <summary>
             <span class="req-title">Wybieranie domyślnej formy zapisu myśli</span>
-            <span class="check">
+            <span class="check" data-date="23/08">
                 <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>—</li>
-                </ul>
-            </div>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>przyśpieszenie zapisywania myśli — otwarcie od razu w preferowanej formie</p>
+            <table class="mech-table">
+                <thead>
+                    <tr>
+                        <th>Funkcja</th>
+                        <th>Wejścia, Dane, Stany</th>
+                        <th>Procesy, Opcje, Integracje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="mech-name">Wybór domyślnej formy</td>
+                        <td><ul class="cell">
+                            <li>domyślna forma zapisu myśli <span class="location">Ustawienia</span>
+                                <ul>
+                                    <li>tekstowa (default)</li>
+                                    <li>głosowa</li>
+                                    <li>zdjęciowa</li>
+                                </ul>
+                            </li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>zapis wybranej formy jako ustawienie</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Synchronizacja z formami zapisu</td>
+                        <td><ul class="cell">
+                            <li>stan opcji wg włączenia poszczególnych form (głosówki / zdjęcia)</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>nie można wybrać domyślnej formy jeżeli powiązana opcja zapisu jest wyłączona (np. głosowa niedostępna, gdy nagrania są off)</li>
+                            <li>powrót do „tekst" przy odznaczeniu dezaktywowanej opcji</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Otwarcie formularza w domyślnej formie</td>
+                        <td><ul class="cell">
+                            <li><span class="location">Łapanie myśli</span> — start wg wybranej formy</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>natychmiastowe przekazanie odpowiedniego widgetu wg wybranej opcji
+                                <ul>
+                                    <li>tekst → edycja notatki</li>
+                                    <li>zdjęcie → widget otwiera się i od razu uruchamia aparat</li>
+                                    <li>głos → nagrywajka od razu rozpoczyna nagrywanie</li>
+                                </ul>
+                            </li>
+                        </ul></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </details>
+        </details>
 
     <details class="req">
         <summary>

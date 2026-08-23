@@ -253,14 +253,13 @@ class CaptureActivity : ThoughtManagerActivity() {
         binding.btnRecordingAdd.visibility = View.GONE
         binding.audioRecordingPlayback.visibility = View.VISIBLE
         binding.audioRecordingPlayback.switchToRecordPlaybackMode()
-        binding.audioRecordingPlayback.showStatus(
-            getString(R.string.capture_voice_tooltip),
-            R.color.validation_success
-        )
+        // Start recording right away - default voice form means the user wants to record now
+        binding.audioRecordingPlayback.startRecordingProgrammatically()
     }
 
     /**
-     * Expands the photo widget as if the user tapped the add-photo button.
+     * Opens the photo widget and launches the camera immediately,
+     * as if the user tapped add-photo and then the shutter.
      */
     private fun autoOpenPhoto() {
         if (!appSettingsStorage.isPhotoFeatureEnabled()) {
@@ -270,10 +269,9 @@ class CaptureActivity : ThoughtManagerActivity() {
 
         binding.btnPhotoAdd.visibility = View.GONE
         binding.photoDisplayView.visibility = View.VISIBLE
-        binding.photoDisplayView.showStatus(
-            R.string.photos_no_file,
-            R.color.validation_success
-        )
+        // Launch the camera right away - default photo form means the user wants to shoot now.
+        // Photo feature can only be ON when camera permission is granted, so takePhoto() is safe here.
+        takePhoto()
     }
 
     private fun setupUI() {
