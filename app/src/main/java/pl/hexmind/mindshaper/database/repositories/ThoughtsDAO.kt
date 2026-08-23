@@ -17,7 +17,14 @@ interface ThoughtsDAO {
     @Query("SELECT * FROM thoughts where id = :id")
     suspend fun getById(id: Long): ThoughtEntity
 
-    @Query("SELECT * FROM thoughts WHERE id = :id")
+    // exclude heavy BLOBs (photo_data, audio_data) to stay under the ~2MB CursorWindow row limit
+    @Query("""
+        SELECT id, domain_id, subject, created_at, updated_at,
+               soul_mate, project, value, rich_text,
+               audio_duration_ms, photo_file_size
+        FROM thoughts
+        WHERE id = :id
+    """)
     fun getThoughtByIdLive(id: Long): LiveData<ThoughtEntity?>
 
     // Basic CRUD operations
@@ -43,7 +50,14 @@ interface ThoughtsDAO {
     suspend fun getSubjectsByIds(ids: List<Int>): List<ThoughtSubjectRow>
 
     // Basic queries
-    @Query("SELECT * FROM thoughts ORDER BY created_at DESC")
+    // exclude heavy BLOBs (photo_data, audio_data) to stay under the ~2MB CursorWindow row limit
+    @Query("""
+        SELECT id, domain_id, subject, created_at, updated_at,
+               soul_mate, project, value, rich_text,
+               audio_duration_ms, photo_file_size
+        FROM thoughts
+        ORDER BY created_at DESC
+    """)
     fun getAllThoughtsLive(): LiveData<List<ThoughtEntity>>
 
     @Query("SELECT * FROM thoughts ORDER BY created_at DESC")
