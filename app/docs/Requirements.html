@@ -23,7 +23,7 @@
             --muted:#8A7A6C;
             --graphite-soft:#5C574F;
             --line:#EAD9C6;
-            --col-head:#F3ECE4;
+            --col-head:#eee9e3;
             --loc-bg:#DCE8F2;
             --loc-ink:#2F5C82;
         }
@@ -37,7 +37,10 @@
             line-height:1.5;
         }
         header{
-            padding:28px 32px 20px 64px;
+            padding:28px 32px 20px;
+            max-width:920px;
+            margin:0 auto;
+            width:100%;
             border-bottom:2px solid var(--line);
         }
         h1{
@@ -58,13 +61,37 @@
             display:flex;
             flex-direction:column;
             gap:5px;
-            padding:16px 32px 12px 64px;
+            padding:16px 32px 12px;
+            max-width:920px;
+            margin:0 auto;
+            width:100%;
             position:sticky;
             top:0;
             background:var(--cream);
             z-index:10;
             border-bottom:2px solid var(--line);
         }
+        /* Collapsed sticky bar (shrinks on scroll) */
+        .tabs .tabs-toggle{
+            display:none;
+            align-self:flex-start;
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-weight:600;
+            font-size:13px;
+            padding:6px 14px;
+            border:none;
+            border-radius:10px;
+            background:var(--orange-2);
+            color:var(--tab-ink);
+            cursor:pointer;
+        }
+        .tabs.collapsed{padding-top:8px;padding-bottom:8px;}
+        /* When collapsed and NOT force-expanded: hide all rows, show only the toggle (with active label) */
+        .tabs.collapsed:not(.force-open) .tab-row{display:none;}
+        .tabs.collapsed:not(.force-open) .tabs-toggle{display:inline-flex;align-items:center;gap:8px;}
+        .tabs .tabs-toggle::after{content:"▾";font-size:14px;}
+        .tabs.force-open .tabs-toggle::after{content:"▴";}
+        .tabs.collapsed.force-open .tabs-toggle{display:inline-flex;align-items:center;gap:8px;margin-bottom:6px;}
         .tab-row{
             display:flex;
             flex-wrap:wrap;
@@ -93,7 +120,7 @@
         }
 
         /* ── Panels ──────────────────────────────── */
-        .panel{display:none;padding:24px 32px 64px 64px;max-width:984px;}
+        .panel{display:none;padding:24px 32px 64px;max-width:920px;margin:0 auto;width:100%;}
         .panel.active{display:block;}
 
         .panel-intro{
@@ -1345,12 +1372,34 @@
             buttons.push(btn);
         });
 
+        // Toggle button shown only when the bar is collapsed on scroll
+        var toggle = document.createElement('button');
+        toggle.className = 'tabs-toggle';
+        toggle.addEventListener('click', function(){
+            tabbar.classList.toggle('force-open');
+        });
+        tabbar.insertBefore(toggle, tabbar.firstChild);
+
         function activate(activePanel, activeBtn){
             buttons.forEach(function(b){ b.classList.toggle('active', b === activeBtn); });
             panels.forEach(function(p){ p.classList.toggle('active', p === activePanel); });
+            // reflect active label on the collapsed toggle
+            toggle.firstChild && toggle.removeChild(toggle.firstChild);
+            toggle.insertBefore(document.createTextNode(activeBtn.textContent), toggle.firstChild);
+            // choosing a tab in force-open mode closes the expanded list again
+            tabbar.classList.remove('force-open');
         }
 
         activate(panels[0], buttons[0]);
+
+        // Shrink the sticky bar to one line once the user scrolls past the header
+        var collapseAt = 60;
+        function onScroll(){
+            if(window.scrollY > collapseAt) tabbar.classList.add('collapsed');
+            else { tabbar.classList.remove('collapsed'); tabbar.classList.remove('force-open'); }
+        }
+        window.addEventListener('scroll', onScroll, {passive:true});
+        onScroll();
 
         // Fill in "how long ago" for each checked date (format DD/MM, year assumed)
         document.querySelectorAll('.check[data-date]').forEach(function(el){
