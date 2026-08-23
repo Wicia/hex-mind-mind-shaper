@@ -243,6 +243,18 @@ class HexAudioView @JvmOverloads constructor(
         setMode(Mode.RECORD_PLAYBACK)
     }
 
+    /**
+     * Starts recording immediately, as if the user tapped the record button.
+     * Used for auto-starting when voice is the default capture form.
+     * Safe to call without a recording present; startRecording() checks the
+     * microphone permission itself and aborts via onPermissionRequired() if missing.
+     */
+    fun startRecordingProgrammatically() {
+        if (mode == Mode.RECORD_PLAYBACK && audioFile?.exists() != true) {
+            startRecording()
+        }
+    }
+
     private fun setMode(newMode: Mode) {
         mode = newMode
         setupUIForMode()
@@ -433,7 +445,7 @@ class HexAudioView @JvmOverloads constructor(
             callback?.onRecordingDeleted()
         }
     }
-    
+
     fun getCurrentRecording(): Recording = Recording(audioFile, currentRecordingDuration)
 
     // ===========================================
