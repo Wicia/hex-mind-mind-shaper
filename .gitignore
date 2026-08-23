@@ -103,3 +103,6 @@ lint-results.xml
 lint-results.html
 .idea/misc.xml
 /.idea
+
+# task lists
+app/docs/TODO*
