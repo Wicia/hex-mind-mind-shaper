@@ -52,15 +52,25 @@
             </intent-filter>
         </activity>
 
+        <!--
+            configChanges - handle rotation in-place;
+                prevents losing capture-in-progress on screen rotation
+        -->
         <activity
             android:name="pl.hexmind.mindshaper.activities.details.DetailsActivity"
             android:exported="false"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity"
             android:theme="@style/Theme.MindShaper.NoActionBar" />
 
+        <!--
+            configChanges - handle rotation in-place;
+                prevents losing capture-in-progress on screen rotation
+        -->
         <activity
             android:name="pl.hexmind.mindshaper.activities.capture.CaptureActivity"
             android:exported="false"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity"
             android:theme="@style/Theme.MindShaper.NoActionBar" />
 
