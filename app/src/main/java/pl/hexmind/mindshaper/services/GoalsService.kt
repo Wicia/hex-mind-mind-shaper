@@ -10,6 +10,16 @@ import pl.hexmind.mindshaper.services.mappers.GoalMapper
 import javax.inject.Inject
 import javax.inject.Singleton
 
+// Carries the step's progress numbers
+sealed class StepProgressResult {
+    data class Incremented(val current: Int, val max: Int) : StepProgressResult()
+    object AlreadyComplete : StepProgressResult()
+    object NotFound : StepProgressResult()
+
+    val isStepFinished: Boolean
+        get() = this is Incremented && current >= max
+}
+
 @Singleton
 class GoalsService @Inject constructor(
     private val repository: WorkshopRepository,
@@ -77,7 +87,7 @@ class GoalsService @Inject constructor(
         reminderTime: String? = null,
         reminderDays: String? = null,
         calendarEventId: Long? = null
-    ) {
+    ): Int {
         val existingCount = repository.getStepsByGoalId(goalId).size
         val entity = StepEntity(
             goalId             = goalId,
@@ -89,7 +99,12 @@ class GoalsService @Inject constructor(
             reminderDays       = reminderDays,
             calendarEventId    = calendarEventId
         )
-        repository.insertStep(entity)
+        return repository.insertStep(entity).toInt()
+    }
+
+    suspend fun attachCalendarEventId(stepId: Int, calendarEventId: Long) {
+        val current = repository.getStepById(stepId) ?: return
+        repository.updateStep(current.copy(calendarEventId = calendarEventId))
     }
 
     suspend fun updateStep(
@@ -115,6 +130,16 @@ class GoalsService @Inject constructor(
     suspend fun updateStepCurrentRepetitions(stepId: Int, currentRepetitions: Int) {
         val current = repository.getStepById(stepId) ?: return
         repository.updateStep(current.copy(currentRepetitions = currentRepetitions))
+    }
+
+    suspend fun incrementStepProgress(stepId: Int): StepProgressResult {
+        val step = repository.getStepById(stepId) ?: return StepProgressResult.NotFound
+
+        if (step.currentRepetitions >= step.maxRepetitions) return StepProgressResult.AlreadyComplete
+
+        val bumped = step.currentRepetitions + 1
+        repository.updateStep(step.copy(currentRepetitions = bumped))
+        return StepProgressResult.Incremented(bumped, step.maxRepetitions)
     }
 
     suspend fun getStep(stepId: Int): StepDTO? =

@@ -100,6 +100,30 @@
             android:theme="@style/Theme.MindShaper.NoActionBar"
             android:parentActivityName="pl.hexmind.mindshaper.activities.workshop.WorkshopActivity" />
 
+        <!-- Calendar deep link handler for steps completion -->
+        <activity
+            android:name="pl.hexmind.mindshaper.activities.deeplink.CompleteStepActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:theme="@style/Theme.MindShaper.Transparent">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"
+                    />
+                <category android:name="android.intent.category.DEFAULT"
+                    />
+                <category android:name="android.intent.category.BROWSABLE"
+                    />
+                <data
+                    android:scheme="https"
+                    android:host="mindshaper.app"
+                    android:pathPrefix="/step"
+                    />
+            </intent-filter>
+        </activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

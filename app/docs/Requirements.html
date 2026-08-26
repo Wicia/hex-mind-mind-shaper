@@ -120,7 +120,7 @@
         }
 
         /* ── Panels ──────────────────────────────── */
-        .panel{display:none;padding:24px 32px 64px;max-width:920px;margin:0 auto;width:100%;}
+        .panel{display:none;padding:24px 32px 64px;max-width:920px;margin:0 auto;width:100%;min-height:100vh;}
         .panel.active{display:block;}
 
         .panel-intro{
@@ -183,6 +183,8 @@
         .status.done{background:#DFF0D8;color:#3C763D;}
         .status.wip{background:var(--orange-1);color:var(--orange-ink);}
         .status.planned{background:#E8E2DB;color:var(--muted);}
+        .spec-new{color:#1E8E3E;}
+        .mech-table.spec-new td{color:#1E8E3E;}
 
         /* ── Requirement as an expandable spec card ── */
         details.req{
@@ -336,6 +338,25 @@
             border-radius:0 5px 5px 0;
             clip-path:polygon(6px 0, 100% 0, 100% 100%, 6px 100%, 0 50%);
         }
+        /* Cross-reference to an extracted, abstract pattern/module (own family — not a screen/location) */
+        .req-link{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-size:13px;
+            font-weight:500;
+            background:#EDE3DA;
+            padding:1px 8px;
+            border-radius:6px;
+            cursor:pointer;
+            text-decoration:none;
+            border-bottom:1px dashed var(--coffee);
+        }
+        .req-link::before{content:"\21B3";margin-right:4px;opacity:.8;}
+        /* higher specificity so the coffee survives inside .spec-mod (red) and .mech-table.spec-new (green) cells */
+        .spec-body a.req-link{color:var(--coffee);}
+        .spec-body a.req-link:hover{background:#E4D6C8;}
+        /* User-facing messages/toasts — gray + italic, no bracket */
+        .msg{color:var(--muted);font-style:italic;}
+        .mech-table.spec-new td .msg{color:var(--muted);}
         /* ── Mechanisms table (new spec format) ── */
         .feature-goal{
             color:var(--graphite-soft);
@@ -725,15 +746,7 @@
                             <li>domyślnie wyłączona</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>powiadomienia o wymaganych uprawnieniach do użycia funkcji</li>
-                            <li>prośba o uprawnienie do mikrofonu, a w przypadku uporczywej odmowy — możliwość zmiany w ustawieniach Androida</li>
-                            <li>stan ustawienia zapisywany automatycznie po zmianie</li>
-                            <li>auto-synchronizacja stanu funkcji
-                                <ul>
-                                    <li>na podstawie zapisanego ustawienia oraz przyznanych uprawnień</li>
-                                    <li>podczas startu i powrotu do aktywności</li>
-                                </ul>
-                            </li>
+                            <li class="spec-mod">żądanie uprawnienia do mikrofonu — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
                         </ul></td>
                     </tr>
                     <tr>
@@ -838,15 +851,7 @@
                             <li>domyślnie wyłączona</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>powiadomienia o wymaganych uprawnieniach do użycia funkcji</li>
-                            <li>prośba o uprawnienie do aparatu, a w przypadku uporczywej odmowy — możliwość zmiany w ustawieniach Androida</li>
-                            <li>stan ustawienia zapisywany automatycznie po zmianie</li>
-                            <li>auto-synchronizacja stanu funkcji
-                                <ul>
-                                    <li>na podstawie zapisanego ustawienia oraz przyznanych uprawnień</li>
-                                    <li>podczas startu i powrotu do aktywności</li>
-                                </ul>
-                            </li>
+                            <li class="spec-mod">żądanie uprawnienia do aparatu — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
                         </ul></td>
                     </tr>
                     <tr>
@@ -908,7 +913,7 @@
         <summary>
             <span class="req-title">Wybieranie domyślnej formy zapisu myśli</span>
             <span class="check" data-date="23/08">
-                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-main done">🟢 Sprawdzone</span>
                 <span class="check-ago"></span>
             </span>
         </summary>
@@ -1267,18 +1272,133 @@
             </span>
         </summary>
         <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>—</li>
-                </ul>
-            </div>
+            <p class="feature-goal"><b>Potrzeba i Cel
+                </b>wykonywanie kroków do celu wymaga wsparcia poprzez przypomnienia poza aplikacją
+            </p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Włączanie funkcji</td>
+                    <td><ul class="cell">
+                        <li><span class="bracket">Włącz wpisy do kalendarza</span> (toggle) <span class="location">Ustawienia</span></li>
+                        <li>domyślnie wyłączona</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>żądanie uprawnienia do kalendarza — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Wybór kalendarza</td>
+                    <td><ul class="cell">
+                        <li>lista kalendarzy do wyboru (gdy funkcja włączona)</li>
+                        <li>domyślnie główny kalendarz konta</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>zapisanie wybranego kalendarza w ustawieniach</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Ustawianie przypomnienia</td>
+                    <td><ul class="cell">
+                        <li>w formularzu kroku: godzina + dni tygodnia</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>po zapisaniu kroku z przypomnieniem — komunikat <span class="msg">Wrzucono w Twój kalendarz</span></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Wpis w kalendarzu</td>
+                    <td><ul class="cell">
+                        <li>tytuł wpisu jest nazwą kroku</li>
+                        <li>* kolor zbliżony do pomarańczy aplikacji (o ile kalendarz konta ma własną paletę)</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>wydarzenie cykliczne — powtarza się w wybrane dni
+                            <ul>
+                                <li>liczba powtórzeń ograniczona planowaną liczbą wykonań kroku</li>
+                            </ul>
+                        </li>
+                        <li>domyślne powiadomienie na ok. 30 min przed godziną wykonania kroku (wysyłanie powiadomień jest po stronie aplikacji kalendarza)</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Realizacja kroków z kalendarza (deep links)</td>
+                    <td><ul class="cell">
+                        <li>opis wydarzenia zawiera link do ukończenia powtórzenia danego kroku <span class="bracket">Oznacz krok jako ukończony</span></li>
+                        <li>link jest umieszczony na każdym wpisie (kroku) w kalendarzu</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>tapnięcie zalicza jedno wykonanie/powtórzenie kroku i zamyka podgląd wydarzenia</li>
+                        <li>wykonując kolejne powtórzenia wyświetaj komunikat <span class="msg">Zaliczono: X/Y</span>, a przy ostatnim wykonaniu — <span class="msg">Krok ukończony! 🎉</span></li>
+                        <li>gdy osiągnięto maksymalną liczbę wykonań kroku wóczas nic nie rób i pokaż komunikat <span class="msg">Krok już ukończony</span></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Edycja / usunięcie kroku</td>
+                    <td><ul class="cell">
+                        <li>krok z ustawionym przypomnieniem</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>kasowanie kroku z przypomniniem kasuje powiązane z nim wpisy w kalendarzu (po potwierdzeniu w istniejącym oknie)</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Synchronizacja wpisów w kalendarzu</td>
+                    <td><ul class="cell">
+                        <li>—</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>w aplikacji Kalendarz Google wpis pojawia się dopiero po synchronizacji (wymaga dostępu do sieci)</li>
+                        <li>aplikacja posiada mechanim, który próbuje przyśpieszyć synchronizację</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </details>
 </section>
 
 <section class="panel" data-tab="* Wspólne / Core" data-row="4">
     <p class="panel-intro">Elementy wspólne dla całej aplikacji.</p>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Żądanie Uprawnień<span class="req-alt">Wzorzec współdzielony przez funkcje zależne od uprawnień (mikrofon, aparat, kalendarz…)</span></span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul class="spec-new">
+                    <li>Funkcje zależne od uprawnień Androida potrzebują jednego, powtarzalnego sposobu proszenia o zgodę i utrzymania stanu funkcji</li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Procesy, Opcje, Integracje</h3>
+                <ul class="spec-new">
+                    <li>powiadomienia o wymaganych uprawnieniach do użycia funkcji</li>
+                    <li>prośba o uprawnienie do danego zasobu (mikrofon / aparat / kalendarz / …), a w przypadku uporczywej odmowy — możliwość zmiany w ustawieniach Androida</li>
+                    <li>stan ustawienia zapisywany automatycznie po zmianie</li>
+                    <li>auto-synchronizacja stanu funkcji
+                        <ul>
+                            <li>na podstawie zapisanego ustawienia oraz przyznanych uprawnień</li>
+                            <li>podczas startu i powrotu do aktywności</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </details>
 
     <details class="req">
         <summary>
@@ -1474,5 +1594,34 @@
     })();
 </script>
 
+<script>
+    // Cross-reference links: jump to another panel's requirement and open it
+    (function(){
+        function go(tabLabel, reqTitle){
+            var tabs = document.querySelectorAll('#tabbar .tab');
+            for(var i=0;i<tabs.length;i++){
+                if(tabs[i].textContent === tabLabel){ tabs[i].click(); break; }
+            }
+            if(!reqTitle) return;
+            var panel = document.querySelector('.panel[data-tab="'+tabLabel+'"]');
+            if(!panel) return;
+            var reqs = panel.querySelectorAll('details.req');
+            for(var j=0;j<reqs.length;j++){
+                var title = reqs[j].querySelector('.req-title');
+                if(title && title.textContent.indexOf(reqTitle) === 0){
+                    reqs[j].open = true;
+                    reqs[j].scrollIntoView({behavior:'smooth', block:'start'});
+                    break;
+                }
+            }
+        }
+        document.querySelectorAll('.req-link').forEach(function(link){
+            link.addEventListener('click', function(e){
+                e.preventDefault();
+                go(link.getAttribute('data-target-tab'), link.getAttribute('data-target-req'));
+            });
+        });
+    })();
+</script>
 </body>
 </html>
