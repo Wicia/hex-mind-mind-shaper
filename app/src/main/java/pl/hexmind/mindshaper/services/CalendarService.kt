@@ -7,6 +7,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.os.Bundle
 import android.provider.CalendarContract
+import pl.hexmind.mindshaper.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Calendar
 import java.util.TimeZone
@@ -77,20 +78,25 @@ class CalendarService @Inject constructor(
         timeHHmm: String,
         daysCsv: String,
         repetitions: Int,
-        calendarId: Long?
+        calendarId: Long?,
+        stepId: Int
     ): Long? {
         val targetCalendarId = calendarId ?: findWritableCalendarId() ?: return null
         val startMillis = nextOccurrenceMillis(timeHHmm, daysCsv) ?: return null
 
         val values = ContentValues().apply {
             put(CalendarContract.Events.CALENDAR_ID, targetCalendarId)
-            put(CalendarContract.Events.TITLE, title)
+            put(CalendarContract.Events.TITLE, "$TITLE_PREFIX$title")
+            put(CalendarContract.Events.DESCRIPTION, buildDescription(stepId))
             put(CalendarContract.Events.DTSTART, startMillis)
             // Recurring events must declare DURATION instead of DTEND
             put(CalendarContract.Events.DURATION, "PT${REMINDER_MINUTES}M")
             put(CalendarContract.Events.RRULE, buildWeeklyRule(daysCsv, repetitions))
             put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().id)
             put(CalendarContract.Events.HAS_ALARM, 1)
+
+            // event color is a per-account palette KEY, not a raw RGB - look it up or the calendar ignores it
+            mangoColorKey(targetCalendarId)?.let { key -> put(CalendarContract.Events.EVENT_COLOR_KEY, key) }
         }
 
         val uri = context.contentResolver.insert(CalendarContract.Events.CONTENT_URI, values)
@@ -125,6 +131,57 @@ class CalendarService @Inject constructor(
             putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true)
         }
         ContentResolver.requestSync(account, CalendarContract.AUTHORITY, extras)
+    }
+
+    // TODO: leave this feature or delete it?
+    // Finds the account's color key whose RGB is closest to Google's "Mango"
+    // returns null if the account exposes no event colors
+    private fun mangoColorKey(calendarId: Long): String? {
+        val account = accountOf(calendarId) ?: return null
+
+        val projection = arrayOf(
+            CalendarContract.Colors.COLOR_KEY,
+            CalendarContract.Colors.COLOR
+        )
+        val selection = "${CalendarContract.Colors.ACCOUNT_NAME} = ? AND " +
+            "${CalendarContract.Colors.ACCOUNT_TYPE} = ? AND " +
+            "${CalendarContract.Colors.COLOR_TYPE} = ?"
+        val selectionArgs = arrayOf(
+            account.name,
+            account.type,
+            CalendarContract.Colors.TYPE_EVENT.toString()
+        )
+
+        var bestKey: String? = null
+        var bestDistance = Int.MAX_VALUE
+
+        context.contentResolver.query(
+            CalendarContract.Colors.CONTENT_URI,
+            projection,
+            selection,
+            selectionArgs,
+            null
+        )?.use { cursor ->
+            while (cursor.moveToNext()) {
+                val key = cursor.getString(0) ?: continue
+                val color = cursor.getInt(1)
+                val distance = colorDistance(color, MANGO_RGB)
+
+                if (distance < bestDistance) {
+                    bestDistance = distance
+                    bestKey = key
+                }
+            }
+        }
+
+        return bestKey
+    }
+
+    private fun colorDistance(a: Int, b: Int): Int {
+        val dr = ((a shr 16) and 0xFF) - ((b shr 16) and 0xFF)
+        val dg = ((a shr 8) and 0xFF) - ((b shr 8) and 0xFF)
+        val db = (a and 0xFF) - (b and 0xFF)
+        return dr * dr + dg * dg + db * db
     }
 
     private fun accountOf(calendarId: Long): Account? {
@@ -223,6 +280,12 @@ class CalendarService @Inject constructor(
         return null
     }
 
+    private fun buildDescription(stepId: Int): String {
+        // calendar apps only make https links tappable, not custom schemes
+        val completeUrl = "https://$DEEP_LINK_HOST/step/$stepId/complete"
+        return context.getString(R.string.deeplink_step_complete_description, completeUrl)
+    }
+
     private fun buildWeeklyRule(daysCsv: String, repetitions: Int): String {
         val byDay = parseDays(daysCsv)
             .sorted()
@@ -255,6 +318,14 @@ class CalendarService @Inject constructor(
         if (calendarDay == Calendar.SUNDAY) 7 else calendarDay - 1
 
     companion object {
+        // host is just a label our intent-filter matches on
+        private const val DEEP_LINK_HOST = "mindshaper.app"
+
+        // Google Calendar's "Mango" swatch
+        private const val MANGO_RGB = 0xF09300
+
+        private const val TITLE_PREFIX = "✨ "
+
         // Event length in the calendar, unrelated to when the notification fires
         private const val REMINDER_MINUTES = 30
 

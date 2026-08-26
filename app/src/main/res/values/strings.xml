@@ -497,4 +497,10 @@
         <item quantity="other">%d kroki</item>
     </plurals>
 
+    <!-- Deep link for steps completion -->
+    <string name="deeplink_step_complete_description">✅ Oznacz ten krok jako ukończony:\n%1$s</string>
+    <string name="deeplink_step_already_complete">Krok już ukończony</string>
+    <string name="deeplink_step_counted">Realizowano %1$d z %2$d powtórzeń kroku</string>
+    <string name="deeplink_step_finished">Krok ukończony! 🎉</string>
+
 </resources>

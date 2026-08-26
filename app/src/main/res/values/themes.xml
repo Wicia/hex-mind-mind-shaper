@@ -53,4 +53,12 @@
         <item name="android:windowFullscreen">false</item>
     </style>
 
+    <!-- Deep-link handler theme (intentionally invisible — no UI) -->
+    <style name="Theme.MindShaper.Transparent" parent="Theme.MindShaper.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
 </resources>
