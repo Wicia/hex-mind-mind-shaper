@@ -1,81 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/navigationBar"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:background="@drawable/nav_bar"
-    android:padding="8dp"
-    android:clipToPadding="false"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:clipChildren="false"
-    android:gravity="center_vertical">
+    android:clipToPadding="false">
 
-    <!-- Navigation (toggle) button -->
+    <View
+        android:id="@+id/navDrawerScrim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#66000000"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/navDrawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:background="@drawable/nav_drawer_gradient"
+        android:paddingStart="64dp"
+        android:paddingEnd="44dp"
+        android:elevation="12dp"
+        android:visibility="gone"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <LinearLayout
+            android:id="@+id/navButtonsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:clipChildren="false"
+            android:clipToPadding="false">
+
+            <pl.hexmind.mindshaper.common.ui.HexNavItemView
+                android:id="@+id/navHome"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="?attr/selectableItemBackground"
+                app:hexNavLabel="@string/home_title"
+                app:hexNavIcon="@drawable/ic_activity_home" />
+
+            <pl.hexmind.mindshaper.common.ui.HexNavItemView
+                android:id="@+id/navStream"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="?attr/selectableItemBackground"
+                app:hexNavLabel="@string/stream_title"
+                app:hexNavIcon="@drawable/ic_activity_stream" />
+
+            <pl.hexmind.mindshaper.common.ui.HexNavItemView
+                android:id="@+id/navWorkshop"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="?attr/selectableItemBackground"
+                app:hexNavLabel="@string/workshop_title"
+                app:hexNavIcon="@drawable/ic_activity_workshop" />
+
+            <pl.hexmind.mindshaper.common.ui.HexNavItemView
+                android:id="@+id/navSettings"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="?attr/selectableItemBackground"
+                app:hexNavLabel="@string/settings_title"
+                app:hexNavIcon="@drawable/ic_activity_settings" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Single navigation button: opens/closes the drawer. -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnToggle"
         style="@style/AuxiliaryActionButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_gravity="center_vertical"
-        app:icon="@drawable/ic_nav_expand"
-        />
+        android:layout_gravity="bottom|start"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="16dp"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+        app:icon="@drawable/ic_nav_expand" />
 
-    <!-- Container for navigation buttons -->
-    <LinearLayout
-        android:id="@+id/navButtonsContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_vertical"
-        android:visibility="gone"
-        android:clipChildren="false"
-        android:clipToPadding="false">
-
-        <!-- Button 1: Home -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/navHome"
-            style="@style/AuxiliaryActionButton"
-            app:icon="@drawable/ic_capture_thought"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            />
-
-        <!-- Button 2: Stream -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/navStream"
-            style="@style/AuxiliaryActionButton"
-            app:icon="@drawable/ic_activity_stream"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="12dp"
-            />
-
-        <!-- Button 3: Workshop -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/navWorkshop"
-            style="@style/AuxiliaryActionButton"
-            app:icon="@drawable/ic_activity_workshop"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="12dp"
-            />
-
-        <!-- Button 4: SETTINGS -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/navSettings"
-            style="@style/AuxiliaryActionButton"
-            app:icon="@drawable/ic_activity_settings"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="12dp"
-            />
-
-    </LinearLayout>
-
-</LinearLayout>
+</FrameLayout>

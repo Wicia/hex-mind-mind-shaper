@@ -116,6 +116,8 @@
     <!--    HOME Activity                                             -->
     <!-- ============================================================ -->
 
+    <string name="home_title">Dom</string>
+
     <string name="home_capturing_button_title">Witaj w \"Domu\" :)</string>
     <string name="home_capturing_button_tooltip">Jak ci wpadnie coś do głowy co chcesz zapisać to tapnij w przycisk na środku</string>
     <string name="home_navigation_button_title">A tymczasem…</string>
@@ -325,7 +327,7 @@
     <string name="settings_backup_tooltip_2">Gdy uruchomisz aplikację jej mechanizm zapisze dane twoich myśli.\n\nMoże się to wydarzyć maksymalnie raz na godzinę.</string>
 
     <!-- Header -->
-    <string name="settings_header">Ustawienia</string>
+    <string name="settings_title">Ustawienia</string>
 
     <!-- Name -->
     <string name="settings_your_name_header">✒️ Twoje Prawdziwe Imię?</string>

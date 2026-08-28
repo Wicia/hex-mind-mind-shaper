@@ -1403,37 +1403,73 @@
     <details class="req">
         <summary>
             <span class="req-title">Panel nawigacyjny</span>
-            <span class="check" data-date="04/08">
+            <span class="check" data-date="28/08">
                 <span class="check-main done">🟢 Sprawdzone</span>
                 <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
-            <div class="spec-section">
-                <h3>Wejścia, Dane, Stany</h3>
-                <ul>
-                    <li>Główny pasek nawigacji — przyciski do pozostałych ekranów</li>
-                    <li>Zwijanie/rozwijanie z animacją</li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Procesy, Opcje, Integracje</h3>
-                <ul>
-                    <li>Widoczny na wszystkich ekranach</li>
-                    <li>Zaznaczanie / eksponowanie aktywnej aktywności
-                        <ul>
-                            <li>Przycisk nawigacyjny w trybie „filled"</li>
-                        </ul>
-                    </li>
-                    <li>Auto-zwijanie przy wyborze</li>
-                    <li>Poprawne wyświetlanie paska w różnych trybach nawigacji Android
-                        <ul>
-                            <li>nawigacja 3-przyciskowa (classic)</li>
-                            <li>nawigacja gestami (od Android 10)</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>szybkie przejście do dowolnego ekranu z każdego miejsca aplikacji, bez zabierania stałego miejsca na ekranie</p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Przycisk nawigacji</td>
+                    <td><ul class="cell">
+                        <li class="spec-mod">pojedynczy przycisk w lewym dolnym rogu</li>
+                        <li>widoczny na wszystkich ekranach</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li class="spec-new">jeden przycisk otwiera i zamyka panel — zostaje widoczny także przy otwartym panelu</li>
+                        <li class="spec-new">zmienia wygląd wg stanu — wyróżniony przy otwartym panelu, stonowany przy zamkniętym</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Pokazywanie i chowanie panelu</td>
+                    <td><ul class="cell">
+                        <li class="spec-mod">wysuwany panel przy lewej krawędzi</li>
+                        <li>pozycje do pozostałych ekranów: <span class="location">Dom</span> <span class="location">Strumień myśli</span> <span class="location">Warsztat</span> <span class="location">Ustawienia</span></li>
+                        <li class="spec-new">każda pozycja to ikona + podpis</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li class="spec-new">panel wysuwa się z lewej i chowa z powrotem — z animacją</li>
+                        <li class="spec-new">wsuwa się pod przyciskiem nawigacji</li>
+                        <li>auto-zamykanie po wyborze pozycji, tapnięcie w tło również go zamyka</li>
+
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Zaznaczenie aktywnego ekranu</td>
+                    <td><ul class="cell">
+                        <li>pozycja odpowiadająca bieżącemu ekranowi</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>ikona w trybie „filled"</li>
+                        <li class="spec-new">podpis w kolorze wyróżnienia, pozostałe stonowane</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Zgodność z systemem</td>
+                    <td><ul class="cell">
+                        <li>tryby nawigacji Androida
+                            <ul>
+                                <li>nawigacja 3-przyciskowa (classic)</li>
+                                <li>nawigacja gestami (od Android 10)</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>poprawne wyświetlanie w obu trybach</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </details>
 

@@ -105,7 +105,7 @@ class SettingsActivity : CoreActivity() {
      * Initialize UI components and click listeners
      */
     private fun setupUI() {
-        setupHeader(R.drawable.ic_activity_settings, R.string.settings_header)
+        setupHeader(R.drawable.ic_activity_settings, R.string.settings_title)
 
         // ! Keep sequence: initDefaultCaptureFormConfig MUST be before setupListeners
         // so that tile states are ready before syncDefaultCaptureFormTileStates fires
