@@ -151,8 +151,8 @@ open class CoreActivity : AppCompatActivity() {
                 .inflate(R.layout.common_navigation_bar, null, false)
 
             val params = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
             ).apply {
                 gravity = Gravity.BOTTOM or Gravity.START
                 bottomMargin = 0
