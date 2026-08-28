@@ -63,7 +63,9 @@ class NavigationBarController(
     }
 
     private fun hiddenDrawerX(): Float {
-        val fallback = 260f * navDrawer.resources.displayMetrics.density
+        // before the first layout width is 0 - fall back to screen width, never a fixed dp
+        // (the drawer is match_parent, so a smaller guess leaves it partly on screen)
+        val fallback = navDrawer.resources.displayMetrics.widthPixels.toFloat()
         return if (navDrawer.width > 0) -navDrawer.width.toFloat() else -fallback
     }
 
