@@ -188,7 +188,8 @@ class HexPhotoView @JvmOverloads constructor(
     //      Public API Methods
     // ===========================================
 
-    fun loadPhoto(photoData: ByteArray) {
+    // onLoaded lets a host stay hidden until there's something to show, instead of reserving an empty frame
+    fun loadPhoto(photoData: ByteArray, onLoaded: (Boolean) -> Unit = {}) {
         viewScope.launch {
             try {
                 state = State.LOADING
@@ -205,14 +206,17 @@ class HexPhotoView @JvmOverloads constructor(
 
                     state = State.LOADED
                     updateUIForState()
+                    onLoaded(true)
                 }
                 else {
                     showError(context.getString(R.string.photos_loading_error))
+                    onLoaded(false)
                 }
             }
             catch (e: Exception) {
                 Timber.tag(TAG).e(e, "Error loading photo")
                 showError(context.getString(R.string.photos_loading_error))
+                onLoaded(false)
             }
         }
     }
@@ -351,6 +355,7 @@ class HexPhotoView @JvmOverloads constructor(
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        cleanupResources()
+        // no cleanup here (cleanupResources()) - RecyclerView detaches rows on scroll, which killed
+        // the decode mid-load; recycling hosts clean up on rebind
     }
 }

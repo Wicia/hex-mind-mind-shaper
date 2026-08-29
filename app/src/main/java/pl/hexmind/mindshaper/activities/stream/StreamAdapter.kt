@@ -83,6 +83,9 @@ class StreamAdapter(
 
         private var currentAudioFile: File? = null
 
+        // media callbacks can return after a rebind - check against this before touching views
+        private var boundThoughtId: Int? = null
+
         private val nestedScrollView: NestedScrollView = itemView.findViewById(R.id.nested_scroll_view)
         private val tvRichText: HexTextView = itemView.findViewById(R.id.rich_text_view)
         private val audioView: HexAudioView = itemView.findViewById(R.id.arv_playback)
@@ -112,16 +115,22 @@ class StreamAdapter(
          */
         fun bind(thought: ThoughtDTO, sortConfig: SortConfig) {
             viewedThoughtDTO = thought
+            boundThoughtId = thought.id
             setViewOnTouchListener()
+
+            // The view no longer clears itself on detach, so rebind must drop the old photo
+            photoView.cleanupResources()
 
             // Reset all fields to GONE first
             tvRichText.visibility = View.GONE
             audioView.visibility = View.GONE
             photoView.visibility = View.GONE
+
             // extra cases
             tvSubjectLabel.visibility = View.GONE
             vbThoughtValue.visibility = View.GONE
             tvTextIcon.visibility = View.GONE
+
             // empty thought
             tvEmptyThought.visibility = View.GONE
 
@@ -138,7 +147,7 @@ class StreamAdapter(
             if (thought.hasAudio && appSettingsStorage.isVoiceRecordingEnabled()) {
                 thought.id?.let { thoughtId ->
                     onLoadAudio(thoughtId) { audioFile ->
-                        if (audioFile.exists() && audioFile.length() > 0) {
+                        if (audioFile.exists() && audioFile.length() > 0 && boundThoughtId == thoughtId) {
                             audioView.visibility = View.VISIBLE
                             audioView.switchToPlaybackOnlyMode()
                             currentAudioFile = audioFile
@@ -153,9 +162,12 @@ class StreamAdapter(
             if (thought.hasPhoto && appSettingsStorage.isPhotoFeatureEnabled()) {
                 thought.id?.let { thoughtId ->
                     onLoadPhoto(thoughtId) { photoData ->
-                        if (photoData.isNotEmpty()) {
-                            photoView.visibility = View.VISIBLE
-                            photoView.loadPhoto(photoData)
+                        if (photoData.isNotEmpty() && boundThoughtId == thoughtId) {
+                            photoView.loadPhoto(photoData) { loaded ->
+                                if (loaded && boundThoughtId == thoughtId) {
+                                    photoView.visibility = View.VISIBLE
+                                }
+                            }
                         }
                     }
                 }
