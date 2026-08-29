@@ -57,6 +57,14 @@ class StreamViewModel @Inject constructor(
     private val _domainsWithIcons = MutableLiveData<List<CommonIconsListItem>>(emptyList())
     val domainsWithIcons: LiveData<List<CommonIconsListItem>> = _domainsWithIcons
 
+    // counted over ALL thoughts, not the filtered list (shows how much is there to reveal)
+    // ! plain functions - a mapped LiveData stays cold until observed, so .value would always be 0
+    fun countActiveThoughts(): Int =
+        allThoughts.value.orEmpty().count { thought -> thoughtStatusService.computeState(thought) != ThoughtState.DORMANT }
+
+    fun countDormantThoughts(): Int =
+        allThoughts.value.orEmpty().count { thought -> thoughtStatusService.computeState(thought) == ThoughtState.DORMANT }
+
     // Combine filter and sort using MediatorLiveData
     val filteredThoughts: MediatorLiveData<List<ThoughtDTO>> = MediatorLiveData<List<ThoughtDTO>>().apply {
         var currentThoughts: List<ThoughtDTO>? = null

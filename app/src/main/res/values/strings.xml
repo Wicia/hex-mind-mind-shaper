@@ -234,6 +234,7 @@
     <string name="stream_filter_label_states">| Stany</string>
     <string name="stream_filter_show_active">Aktywne myśli</string>
     <string name="stream_filter_show_dormant">Uśpione myśli</string>
+    <string name="stream_filter_label_with_count">%1$s (%2$d)</string>
     <string name="stream_filter_toast_count">Wybrano %1s myśli</string>
 
     <!-- Sort -->

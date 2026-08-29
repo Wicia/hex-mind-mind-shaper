@@ -235,7 +235,9 @@ class StreamActivity : CoreActivity() {
             showDormant          = viewModel.showDormant.value ?: false,
             selectedDomainId     = viewModel.selectedDomainId.value,
             domainItems          = domainGridItems,
-            isDormantModeEnabled = appSettingsStorage.isDormantModeEnabled()
+            isDormantModeEnabled = appSettingsStorage.isDormantModeEnabled(),
+            activeCount          = viewModel.countActiveThoughts(),
+            dormantCount         = viewModel.countDormantThoughts()
         )
     }
 

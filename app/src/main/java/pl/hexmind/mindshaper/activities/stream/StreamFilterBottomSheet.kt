@@ -2,6 +2,8 @@ package pl.hexmind.mindshaper.activities.stream
 
 import android.os.Build
 import android.os.Bundle
+import androidx.annotation.StringRes
+import pl.hexmind.mindshaper.R
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +38,8 @@ class StreamFilterBottomSheet : BottomSheetDialogFragment() {
         val showDormant      = arguments?.getBoolean(ARG_SHOW_DORMANT, false) ?: false
         val selectedDomainId = arguments?.getInt(ARG_SELECTED_DOMAIN_ID, -1)?.takeIf { it != -1 }
         val isDormantEnabled = arguments?.getBoolean(ARG_DORMANT_ENABLED, false) ?: false
+        val activeCount      = arguments?.getInt(ARG_ACTIVE_COUNT, 0) ?: 0
+        val dormantCount     = arguments?.getInt(ARG_DORMANT_COUNT, 0) ?: 0
 
         @Suppress("DEPRECATION")
         val iconItems: List<IconsGridItem> = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -53,6 +57,9 @@ class StreamFilterBottomSheet : BottomSheetDialogFragment() {
         if (isDormantEnabled) {
             binding.cbShowActive.isChecked  = showActive
             binding.cbShowDormant.isChecked = showDormant
+
+            binding.cbShowActive.text  = getThoughtCountLabel(R.string.stream_filter_show_active, activeCount)
+            binding.cbShowDormant.text = getThoughtCountLabel(R.string.stream_filter_show_dormant, dormantCount)
         }
 
         // Domain grid — track selection manually to support deselect
@@ -88,6 +95,10 @@ class StreamFilterBottomSheet : BottomSheetDialogFragment() {
         _binding = null
     }
 
+    // To keep the wording in one string only
+    private fun getThoughtCountLabel(@StringRes labelRes: Int, count: Int): String =
+        getString(R.string.stream_filter_label_with_count, getString(labelRes), count)
+
     companion object {
         private const val TAG                    = "StreamFilterBottomSheet"
         private const val ARG_SHOW_ACTIVE        = "arg_show_active"
@@ -95,6 +106,8 @@ class StreamFilterBottomSheet : BottomSheetDialogFragment() {
         private const val ARG_SELECTED_DOMAIN_ID = "arg_selected_domain_id"
         private const val ARG_DOMAIN_ITEMS       = "arg_domain_items"
         private const val ARG_DORMANT_ENABLED    = "arg_dormant_enabled"
+        private const val ARG_ACTIVE_COUNT       = "arg_active_count"
+        private const val ARG_DORMANT_COUNT      = "arg_dormant_count"
 
         const val REQUEST_KEY         = "stream_filter_request"
         const val RESULT_SHOW_ACTIVE  = "result_show_active"
@@ -107,7 +120,9 @@ class StreamFilterBottomSheet : BottomSheetDialogFragment() {
             showDormant          : Boolean,
             selectedDomainId     : Int?,
             domainItems          : List<IconsGridItem>,
-            isDormantModeEnabled : Boolean
+            isDormantModeEnabled : Boolean,
+            activeCount          : Int,
+            dormantCount         : Int
         ) {
             StreamFilterBottomSheet().apply {
                 arguments = Bundle().apply {
@@ -116,6 +131,8 @@ class StreamFilterBottomSheet : BottomSheetDialogFragment() {
                     putInt(ARG_SELECTED_DOMAIN_ID, selectedDomainId ?: -1)
                     putParcelableArrayList(ARG_DOMAIN_ITEMS, ArrayList(domainItems))
                     putBoolean(ARG_DORMANT_ENABLED, isDormantModeEnabled)
+                    putInt(ARG_ACTIVE_COUNT,  activeCount)
+                    putInt(ARG_DORMANT_COUNT, dormantCount)
                 }
             }.show(fragmentManager, TAG)
         }
