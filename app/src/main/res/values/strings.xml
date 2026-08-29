@@ -143,8 +143,9 @@
     <!--    APP SHORTCUTS (long-press launcher icon)                  -->
     <!-- ============================================================ -->
 
-    <string name="shortcut_new_thought_short">Nowa myśl</string>
-    <string name="shortcut_new_thought_long">Złap nową myśl</string>
+    <string name="shortcut_new_text">Złap notatkę</string>
+    <string name="shortcut_new_voice">Złap głosówkę</string>
+    <string name="shortcut_new_photo">Złap zdjęcie</string>
 
     <!-- ============================================================ -->
     <!--    CAPTURE Activity                                          -->
