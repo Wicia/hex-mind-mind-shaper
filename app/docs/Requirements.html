@@ -26,6 +26,7 @@
             --col-head:#eee9e3;
             --loc-bg:#DCE8F2;
             --loc-ink:#2F5C82;
+            --sidebar-w:230px;
         }
         *{box-sizing:border-box;}
         body{
@@ -39,7 +40,6 @@
         header{
             padding:28px 32px 20px;
             max-width:920px;
-            margin:0 auto;
             width:100%;
             border-bottom:2px solid var(--line);
         }
@@ -56,71 +56,79 @@
             margin:0;
         }
 
-        /* ── Tab bar ─────────────────────────────── */
+        /* ── Side bar (modules) — mirrors the app's left drawer ── */
         .tabs{
             display:flex;
             flex-direction:column;
-            gap:5px;
-            padding:16px 32px 12px;
-            max-width:920px;
-            margin:0 auto;
-            width:100%;
-            position:sticky;
+            gap:14px;
+            padding:22px 14px 28px;
+            width:var(--sidebar-w);
+            position:fixed;
             top:0;
-            background:var(--cream);
-            z-index:10;
-            border-bottom:2px solid var(--line);
+            left:0;
+            bottom:0;
+            overflow-y:auto;
+            background:linear-gradient(to right, #12100F 0%, #12100F 72%, #1E1A17 100%);
+            z-index:20;
         }
-        /* Collapsed sticky bar (shrinks on scroll) */
-        .tabs .tabs-toggle{
-            display:none;
-            align-self:flex-start;
-            font-family:'Baloo 2',system-ui,sans-serif;
-            font-weight:600;
-            font-size:13px;
-            padding:6px 14px;
-            border:none;
-            border-radius:10px;
-            background:var(--orange-2);
-            color:var(--tab-ink);
-            cursor:pointer;
-        }
-        .tabs.collapsed{padding-top:8px;padding-bottom:8px;}
-        /* When collapsed and NOT force-expanded: hide all rows, show only the toggle (with active label) */
-        .tabs.collapsed:not(.force-open) .tab-row{display:none;}
-        .tabs.collapsed:not(.force-open) .tabs-toggle{display:inline-flex;align-items:center;gap:8px;}
-        .tabs .tabs-toggle::after{content:"▾";font-size:14px;}
-        .tabs.force-open .tabs-toggle::after{content:"▴";}
-        .tabs.collapsed.force-open .tabs-toggle{display:inline-flex;align-items:center;gap:8px;margin-bottom:6px;}
+        /* Groups of modules keep the data-row grouping, now stacked vertically */
         .tab-row{
             display:flex;
-            flex-wrap:wrap;
-            gap:6px;
+            flex-direction:column;
+            gap:4px;
+            padding-bottom:12px;
+            border-bottom:1px solid rgba(255,255,255,.08);
         }
+        .tab-row:last-child{border-bottom:none;}
         .tab{
             font-family:'Baloo 2',system-ui,sans-serif;
-            font-weight:600;
+            font-weight:500;
             font-size:14px;
-            padding:9px 10px;
+            padding:10px 12px;
             border:none;
-            border-radius:10px;
-            background:var(--orange-2);
-            color:var(--tab-ink);
+            border-radius:9px;
+            background:transparent;
+            color:#E8DFD6;
             cursor:pointer;
-            transition:background .15s;
-            white-space:nowrap;
-            width:190px;
-            text-align:center;
+            transition:background .15s,color .15s;
+            width:100%;
+            text-align:left;
+            line-height:1.3;
         }
-        .tab-core{color:var(--graphite);}
-        .tab:hover{background:var(--orange-3);}
+        .tab-core{color:var(--orange-2);}
+        .tab:hover{background:rgba(255,255,255,.07);}
         .tab.active{
             background:var(--orange-3);
-            color:#fff;
+            color:#2A1B10;
+            font-weight:600;
+        }
+
+        /* Content sits next to the sidebar */
+        header,
+        .panel{margin-left:var(--sidebar-w);}
+
+        /* Narrow screens: sidebar becomes a top strip again */
+        @media (max-width:900px){
+            .tabs{
+                position:static;
+                width:100%;
+                flex-direction:column;
+                padding:14px 16px;
+                background:#12100F;
+            }
+            .tab-row{
+                flex-direction:row;
+                flex-wrap:wrap;
+                gap:6px;
+                padding-bottom:8px;
+            }
+            .tab{width:auto;text-align:center;}
+            header,
+            .panel{margin-left:0;}
         }
 
         /* ── Panels ──────────────────────────────── */
-        .panel{display:none;padding:24px 32px 64px;max-width:920px;margin:0 auto;width:100%;min-height:100vh;}
+        .panel{display:none;padding:24px 32px 64px;max-width:920px;width:100%;min-height:100vh;}
         .panel.active{display:block;}
 
         .panel-intro{
@@ -183,8 +191,6 @@
         .status.done{background:#DFF0D8;color:#3C763D;}
         .status.wip{background:var(--orange-1);color:var(--orange-ink);}
         .status.planned{background:#E8E2DB;color:var(--muted);}
-        .spec-new{color:#1E8E3E;}
-        .mech-table.spec-new td{color:#1E8E3E;}
 
         /* ── Requirement as an expandable spec card ── */
         details.req{
@@ -351,12 +357,11 @@
             border-bottom:1px dashed var(--coffee);
         }
         .req-link::before{content:"\21B3";margin-right:4px;opacity:.8;}
-        /* higher specificity so the coffee survives inside .spec-mod (red) and .mech-table.spec-new (green) cells */
+        /* higher specificity so the coffee survives inside table cells */
         .spec-body a.req-link{color:var(--coffee);}
         .spec-body a.req-link:hover{background:#E4D6C8;}
         /* User-facing messages/toasts — gray + italic, no bracket */
         .msg{color:var(--muted);font-style:italic;}
-        .mech-table.spec-new td .msg{color:var(--muted);}
         /* ── Mechanisms table (new spec format) ── */
         .feature-goal{
             color:var(--graphite-soft);
@@ -746,7 +751,7 @@
                             <li>domyślnie wyłączona</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li class="spec-mod">żądanie uprawnienia do mikrofonu — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
+                            <li>✴️ żądanie uprawnienia do mikrofonu — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
                         </ul></td>
                     </tr>
                     <tr>
@@ -851,7 +856,7 @@
                             <li>domyślnie wyłączona</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li class="spec-mod">żądanie uprawnienia do aparatu — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
+                            <li>✴️ żądanie uprawnienia do aparatu — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
                         </ul></td>
                     </tr>
                     <tr>
@@ -995,12 +1000,12 @@
                 <tr>
                     <td class="mech-name">Otwieranie formy</td>
                     <td><ul class="cell">
-                        <li class="spec-mod">trzy skróty, po jednym na formę zapisu — <span class="bracket">Złap notatkę</span>, <span class="bracket">Złap głosówkę</span>, <span class="bracket">Złap zdjęcie</span></li>
+                        <li>✴️ trzy skróty, po jednym na formę zapisu — <span class="bracket">Złap notatkę</span>, <span class="bracket">Złap głosówkę</span>, <span class="bracket">Złap zdjęcie</span></li>
                         <li>widoczne po przytrzymaniu ikony aplikacji</li>
                     </ul></td>
                     <td><ul class="cell">
                         <li>wybrany skrót otwiera <span class="location">Łapanie myśli</span></li>
-                        <li class="spec-new">forma wskazana przez skrót ma pierwszeństwo przed domyślną formą z ustawień</li>
+                        <li>✳️ forma wskazana przez skrót ma pierwszeństwo przed domyślną formą z ustawień</li>
                         <li>forma otwiera się od razu — aparat rusza, nagrywanie startuje, notatka czeka na tekst</li>
                         <li>gdy potrzebna funkcja jest wyłączona — informacja z możliwością jej włączenia</li>
                     </ul></td>
@@ -1025,19 +1030,151 @@
 
     <details class="req">
         <summary>
-            <span class="req-title">Wyszukiwanie myśli</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="req-title">Przeglądanie myśli / „Strumień"</span>
+            <span class="check" data-date="05/09">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>—</li>
-                </ul>
-            </div>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>spokojne wracanie do zapisanych myśli — jedna myśl na ekranie, bez natłoku listy</p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Karta myśli</td>
+                    <td><ul class="cell">
+                        <li>temat myśli (gdy jest)</li>
+                        <li>zapisane formy: notatka, nagranie, zdjęcie</li>
+                        <li>oznaczenie stanu myśli</li>
+                        <ul>
+                            <li>uśpiona</li>
+                            <li>wymaga uwagi</li>
+                            <li>zablokowana w trybie powolnym</li>
+                        </ul>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>jedna myśl zajmuje cały ekran</li>
+                        <li>myśl bez żadnej formy — informacja, że jest pusta</li>
+                        <li>myśl aktywna nie dostaje żadnego oznaczenia stanu</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Metadane na karcie</td>
+                    <td><ul class="cell">
+                        <li>pojedyncza informacja dobrana do kryterium sortowania
+                            <ul>
+                                <li>wartość — ocena myśli</li>
+                                <li>daty — jak dawno utworzona / zmieniona</li>
+                                <li>temat, osoba, projekt — dany tag z ikoną</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>gdy myśl nie ma tagu, po którym aktualnie sortujesz — oznaczenie braku zamiast wartości</li>
+                        <li>temat pokazywany osobno u góry karty, chyba że to on jest kryterium sortowania (wtedy bez powtarzania)</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Przeglądanie</td>
+                    <td><ul class="cell">
+                        <li><span class="location">Strumień</span> — wejście z panelu nawigacji</li>
+                        <li>wskaźnik określający postęp przechodzenia po myślach / ich położenia w strumieniu</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>przesunięcie w górę — następna myśl; w dół — poprzednia</li>
+                        <li>możliwość przewijania treści myśli w ramach pojedynczej karty (wewnątrz karty), bez przeskakiwania do sąsiedniej myśli</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Wejście w szczegóły</td>
+                    <td><ul class="cell">
+                        <li>tapnięcie w kartę</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>otwiera <span class="location">Szczegóły myśli</span> dla wybranej myśli</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Usuwanie myśli</td>
+                    <td><ul class="cell">
+                        <li>przytrzymanie karty</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>pytanie o potwierdzenie przed usunięciem</li>
+                        <li>po usunięciu — komunikat potwierdzający, strumień przechodzi do kolejnej myśli</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Wyszukiwanie myśli</span>
+            <span class="check" data-date="05/09">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <p class="feature-goal"><b>Potrzeba i Cel</b>odnalezienie myśli po tym, czego się o niej pamięta — temacie, osobie lub projekcie</p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Szukajka</td>
+                    <td><ul class="cell">
+                        <li>pole tekstowe na Hex Tagi <span class="location">Strumień</span></li>
+                        <li>możliwość wyczyszczenia wpisanego tekstu</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>strumień zawęża się na bieżąco, w trakcie pisania</li>
+                        <li>wyczyszczenie pola przywraca pełny strumień (brak kryteriów)</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Szukanie po Hex Tagach</td>
+                    <td><ul class="cell">
+                        <li>wpisany tekst rozbijany na tagi
+                            <ul>
+                                <li>tekst bez znaku — temat</li>
+                                <li>@tekst — dobra dusza</li>
+                                <li>#tekst — projekt</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>tagi można łączyć w jednym wpisie</li>
+                        <ul>
+                            <li>np. <span class="bracket">samochód #zakupy @ja</span></li>
+                        </ul>
+                        <li>kolejność tagów dowolna; temat to część przed pierwszym znakiem (hex tag bez symbolu z klawiatury)</li>
+                        <li>dopasowanie po fragmencie</li>
+                        <ul>
+                            <li>wystarczy część słowa</li>
+                            <li>wielkość liter bez znaczenia</li>
+                        </ul>
+                        <li>przy kilku tagach naraz myśl musi pasować do każdego z nich</li>
+                        <li>myśl bez danego tagu nie trafia do wyników, gdy ten tag jest szukany</li>
+                        <li>szukanie łączy się z filtrem — myśl musi spełnić oba warunki</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </details>
 
@@ -1490,20 +1627,20 @@
         <div class="spec-body">
             <div class="spec-section">
                 <h3>Potrzeba i Cel</h3>
-                <ul class="spec-new">
-                    <li>Funkcje zależne od uprawnień Androida potrzebują jednego, powtarzalnego sposobu proszenia o zgodę i utrzymania stanu funkcji</li>
+                <ul>
+                    <li>✳️ Funkcje zależne od uprawnień Androida potrzebują jednego, powtarzalnego sposobu proszenia o zgodę i utrzymania stanu funkcji</li>
                 </ul>
             </div>
             <div class="spec-section">
                 <h3>Procesy, Opcje, Integracje</h3>
-                <ul class="spec-new">
-                    <li>powiadomienia o wymaganych uprawnieniach do użycia funkcji</li>
-                    <li>prośba o uprawnienie do danego zasobu (mikrofon / aparat / kalendarz / …), a w przypadku uporczywej odmowy — możliwość zmiany w ustawieniach Androida</li>
-                    <li>stan ustawienia zapisywany automatycznie po zmianie</li>
-                    <li>auto-synchronizacja stanu funkcji
+                <ul>
+                    <li>✳️ powiadomienia o wymaganych uprawnieniach do użycia funkcji</li>
+                    <li>✳️ prośba o uprawnienie do danego zasobu (mikrofon / aparat / kalendarz / …), a w przypadku uporczywej odmowy — możliwość zmiany w ustawieniach Androida</li>
+                    <li>✳️ stan ustawienia zapisywany automatycznie po zmianie</li>
+                    <li>✳️ auto-synchronizacja stanu funkcji
                         <ul>
-                            <li>na podstawie zapisanego ustawienia oraz przyznanych uprawnień</li>
-                            <li>podczas startu i powrotu do aktywności</li>
+                            <li>✳️ na podstawie zapisanego ustawienia oraz przyznanych uprawnień</li>
+                            <li>✳️ podczas startu i powrotu do aktywności</li>
                         </ul>
                     </li>
                 </ul>
@@ -1533,24 +1670,24 @@
                 <tr>
                     <td class="mech-name">Przycisk nawigacji</td>
                     <td><ul class="cell">
-                        <li class="spec-mod">pojedynczy przycisk w lewym dolnym rogu</li>
+                        <li>✴️ pojedynczy przycisk w lewym dolnym rogu</li>
                         <li>widoczny na wszystkich ekranach</li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li class="spec-new">jeden przycisk otwiera i zamyka panel — zostaje widoczny także przy otwartym panelu</li>
-                        <li class="spec-new">zmienia wygląd wg stanu — wyróżniony przy otwartym panelu, stonowany przy zamkniętym</li>
+                        <li>✳️ jeden przycisk otwiera i zamyka panel — zostaje widoczny także przy otwartym panelu</li>
+                        <li>✳️ zmienia wygląd wg stanu — wyróżniony przy otwartym panelu, stonowany przy zamkniętym</li>
                     </ul></td>
                 </tr>
                 <tr>
                     <td class="mech-name">Pokazywanie i chowanie panelu</td>
                     <td><ul class="cell">
-                        <li class="spec-mod">wysuwany panel przy lewej krawędzi</li>
+                        <li>✴️ wysuwany panel przy lewej krawędzi</li>
                         <li>pozycje do pozostałych ekranów: <span class="location">Dom</span> <span class="location">Strumień myśli</span> <span class="location">Warsztat</span> <span class="location">Ustawienia</span></li>
-                        <li class="spec-new">każda pozycja to ikona + podpis</li>
+                        <li>✳️ każda pozycja to ikona + podpis</li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li class="spec-new">panel wysuwa się z lewej i chowa z powrotem — z animacją</li>
-                        <li class="spec-new">wsuwa się pod przyciskiem nawigacji</li>
+                        <li>✳️ panel wysuwa się z lewej i chowa z powrotem — z animacją</li>
+                        <li>✳️ wsuwa się pod przyciskiem nawigacji</li>
                         <li>auto-zamykanie po wyborze pozycji, tapnięcie w tło również go zamyka</li>
                     </ul></td>
                 </tr>
@@ -1561,7 +1698,7 @@
                     </ul></td>
                     <td><ul class="cell">
                         <li>ikona w trybie „filled"</li>
-                        <li class="spec-new">podpis w kolorze wyróżnienia, pozostałe stonowane</li>
+                        <li>✳️ podpis w kolorze wyróżnienia, pozostałe stonowane</li>
                     </ul></td>
                 </tr>
                 <tr>
@@ -1684,34 +1821,12 @@
             buttons.push(btn);
         });
 
-        // Toggle button shown only when the bar is collapsed on scroll
-        var toggle = document.createElement('button');
-        toggle.className = 'tabs-toggle';
-        toggle.addEventListener('click', function(){
-            tabbar.classList.toggle('force-open');
-        });
-        tabbar.insertBefore(toggle, tabbar.firstChild);
-
         function activate(activePanel, activeBtn){
             buttons.forEach(function(b){ b.classList.toggle('active', b === activeBtn); });
             panels.forEach(function(p){ p.classList.toggle('active', p === activePanel); });
-            // reflect active label on the collapsed toggle
-            toggle.firstChild && toggle.removeChild(toggle.firstChild);
-            toggle.insertBefore(document.createTextNode(activeBtn.textContent), toggle.firstChild);
-            // choosing a tab in force-open mode closes the expanded list again
-            tabbar.classList.remove('force-open');
         }
 
         activate(panels[0], buttons[0]);
-
-        // Shrink the sticky bar to one line once the user scrolls past the header
-        var collapseAt = 60;
-        function onScroll(){
-            if(window.scrollY > collapseAt) tabbar.classList.add('collapsed');
-            else { tabbar.classList.remove('collapsed'); tabbar.classList.remove('force-open'); }
-        }
-        window.addEventListener('scroll', onScroll, {passive:true});
-        onScroll();
 
         // Fill in "how long ago" for each checked date (format DD/MM, year assumed)
         document.querySelectorAll('.check[data-date]').forEach(function(el){
