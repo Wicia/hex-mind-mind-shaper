@@ -234,7 +234,11 @@ class CaptureActivity : ThoughtManagerActivity() {
      * Auto-opens the default capture dialog / widget based on user's preference in Settings.
      */
     private fun autoOpenDefaultFormIfNeeded() {
-        when (appSettingsStorage.getDefaultCaptureForm()) {
+        // A launcher shortcut names the form explicitly; without it we fall back to the stored default
+        val requestedForm = intent.getStringExtra(EXTRA_CAPTURE_FORM)
+            ?.let { formName -> runCatching { DefaultCaptureForm.valueOf(formName) }.getOrNull() }
+
+        when (requestedForm ?: appSettingsStorage.getDefaultCaptureForm()) {
             DefaultCaptureForm.TEXT  -> showEditRichTextDialog()
             DefaultCaptureForm.VOICE -> autoOpenVoiceRecording()
             DefaultCaptureForm.PHOTO -> autoOpenPhoto()
@@ -487,5 +491,6 @@ class CaptureActivity : ThoughtManagerActivity() {
 
     companion object {
         const val EXTRA_THOUGHT_ID = "EXTRA_THOUGHT_ID"
+        const val EXTRA_CAPTURE_FORM = "EXTRA_CAPTURE_FORM"
     }
 }

@@ -143,8 +143,9 @@
     <!--    APP SHORTCUTS (long-press launcher icon)                  -->
     <!-- ============================================================ -->
 
-    <string name="shortcut_new_thought_short">Nowa myśl</string>
-    <string name="shortcut_new_thought_long">Złap nową myśl</string>
+    <string name="shortcut_new_text">Złap notatkę</string>
+    <string name="shortcut_new_voice">Złap głosówkę</string>
+    <string name="shortcut_new_photo">Złap zdjęcie</string>
 
     <!-- ============================================================ -->
     <!--    CAPTURE Activity                                          -->
@@ -234,6 +235,7 @@
     <string name="stream_filter_label_states">| Stany</string>
     <string name="stream_filter_show_active">Aktywne myśli</string>
     <string name="stream_filter_show_dormant">Uśpione myśli</string>
+    <string name="stream_filter_label_with_count">%1$s (%2$d)</string>
     <string name="stream_filter_toast_count">Wybrano %1s myśli</string>
 
     <!-- Sort -->

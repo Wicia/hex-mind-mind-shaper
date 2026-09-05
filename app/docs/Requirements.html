@@ -975,19 +975,47 @@
 
     <details class="req">
         <summary>
-            <span class="req-title">Skrót aplikacji „Nowa myśl"</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="req-title">Skróty aplikacji<span class="req-alt">Wcześniej: pojedynczy skrót „Nowa myśl"</span></span>
+            <span class="check" data-date="29/08">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>—</li>
-                </ul>
-            </div>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>złapanie myśli w wybranej formie bez wchodzenia w aplikację — prosto z ekranu głównego telefonu</p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Otwieranie formy</td>
+                    <td><ul class="cell">
+                        <li class="spec-mod">trzy skróty, po jednym na formę zapisu — <span class="bracket">Złap notatkę</span>, <span class="bracket">Złap głosówkę</span>, <span class="bracket">Złap zdjęcie</span></li>
+                        <li>widoczne po przytrzymaniu ikony aplikacji</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>wybrany skrót otwiera <span class="location">Łapanie myśli</span></li>
+                        <li class="spec-new">forma wskazana przez skrót ma pierwszeństwo przed domyślną formą z ustawień</li>
+                        <li>forma otwiera się od razu — aparat rusza, nagrywanie startuje, notatka czeka na tekst</li>
+                        <li>gdy potrzebna funkcja jest wyłączona — informacja z możliwością jej włączenia</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Powrót z poziomu skrótu</td>
+                    <td><ul class="cell">
+                        <li>wejście do aplikacji przy zamkniętej aplikacji</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>cofnięcie prowadzi do <span class="location">Dom</span>, nie wyrzuca z aplikacji</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </details>
 </section>
@@ -997,7 +1025,7 @@
 
     <details class="req">
         <summary>
-            <span class="req-title">„Strumień" — Przeglądanie myśli</span>
+            <span class="req-title">Wyszukiwanie myśli</span>
             <span class="check">
                 <span class="check-main verify">🟡 Weryfikacja</span>
                 <span class="check-ago">-</span>
@@ -1015,37 +1043,120 @@
 
     <details class="req">
         <summary>
-            <span class="req-title">Wyszukiwanie i sortowanie myśli</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="req-title">Sortowanie myśli</span>
+            <span class="check" data-date="05/09">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>—</li>
-                </ul>
-            </div>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>ustawienie myśli w kolejności, która teraz pomaga — od najnowszych, najstarszych, po nazwie czy wartości</p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Ustawianie sortowania</td>
+                    <td><ul class="cell">
+                        <li><span class="bracket">Sortuj</span> <span class="location">Strumień</span> — otwiera okno wyboru</li>
+                        <li>kryterium: data utworzenia, data zmiany, temat, osoba, projekt, wartość</li>
+                        <li>kierunek: od młodych / od starych (dla dat), rosnąco / malejąco (dla reszty)</li>
+                        <li>domyślnie: data zmiany, od młodych</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>przycisk pokazuje aktualne kryterium i kierunek</li>
+                        <li>myśli bez wartości danego pola lądują na końcu, niezależnie od kierunku</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Przeglądanie po zmianie</td>
+                    <td><ul class="cell">
+                        <li>lista przestawiona w nowej kolejności</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>po zmianie sortowania przeglądanie zaczyna się od pierwszej myśli w nowej kolejności (góra listy)</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </details>
 
     <details class="req">
         <summary>
             <span class="req-title">Filtrowanie myśli</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="05/09">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>—</li>
-                </ul>
-            </div>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>zawężenie strumienia do myśli, które teraz interesują — wg stanu myśli i domeny</p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Otwieranie filtra</td>
+                    <td><ul class="cell">
+                        <li><span class="bracket">Filtruj</span> <span class="location">Strumień</span> — otwiera panel wysuwany z dołu</li>
+                        <li>przycisk pokazuje liczbę aktywnych kryteriów</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>panel startuje z bieżącymi ustawieniami filtra</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Filtrowanie po stanie</td>
+                    <td><ul class="cell">
+                        <li>sekcja <span class="bracket">Stany</span> — dwa niezależne zaznaczenia
+                            <ul>
+                                <li><span class="bracket">Aktywne myśli</span> — domyślnie włączone</li>
+                                <li><span class="bracket">Uśpione myśli</span> — domyślnie wyłączone</li>
+                            </ul>
+                        </li>
+                        <li>pokazywanie ile jest myśli danego rodzaju</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>sekcja ukryta, gdy tryb uśpienia jest wyłączony i pokaż wszystkie myśli</li>
+                        <li>liczby dotyczą wszystkich myśli, nie tylko przefiltrowanych — pokazują, ile jest do odsłonięcia</li>
+                        <ul>
+                            <li>liczby ustalane w chwili otwarcia panelu</li>
+                        </ul>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Filtrowanie po domenie</td>
+                    <td><ul class="cell">
+                        <li>siatka ikon domen — jedna do wyboru</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>ponowne tapnięcie wybranej domeny odznacza ją (anulowanie filtra)</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Zatwierdzanie</td>
+                    <td><ul class="cell">
+                        <li><span class="bracket">Zastosuj</span></li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>kryteria działają łącznie — myśl musi spełnić stan i domenę naraz</li>
+                        <li>filtr łączy się też z wyszukiwaniem</li>
+                        <li>ustawienia filtra przeżywają obrót ekranu</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </details>
 </section>
@@ -1441,7 +1552,6 @@
                         <li class="spec-new">panel wysuwa się z lewej i chowa z powrotem — z animacją</li>
                         <li class="spec-new">wsuwa się pod przyciskiem nawigacji</li>
                         <li>auto-zamykanie po wyborze pozycji, tapnięcie w tło również go zamyka</li>
-
                     </ul></td>
                 </tr>
                 <tr>
