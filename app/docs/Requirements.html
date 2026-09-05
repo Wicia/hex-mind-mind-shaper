@@ -1025,7 +1025,7 @@
 
     <details class="req">
         <summary>
-            <span class="req-title">„Strumień" — Przeglądanie myśli</span>
+            <span class="req-title">Wyszukiwanie myśli</span>
             <span class="check">
                 <span class="check-main verify">🟡 Weryfikacja</span>
                 <span class="check-ago">-</span>
@@ -1043,28 +1043,56 @@
 
     <details class="req">
         <summary>
-            <span class="req-title">Wyszukiwanie i sortowanie myśli</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="req-title">Sortowanie myśli</span>
+            <span class="check" data-date="05/09">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>—</li>
-                </ul>
-            </div>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>ustawienie myśli w kolejności, która teraz pomaga — od najnowszych, najstarszych, po nazwie czy wartości</p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Ustawianie sortowania</td>
+                    <td><ul class="cell">
+                        <li><span class="bracket">Sortuj</span> <span class="location">Strumień</span> — otwiera okno wyboru</li>
+                        <li>kryterium: data utworzenia, data zmiany, temat, osoba, projekt, wartość</li>
+                        <li>kierunek: od młodych / od starych (dla dat), rosnąco / malejąco (dla reszty)</li>
+                        <li>domyślnie: data zmiany, od młodych</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>przycisk pokazuje aktualne kryterium i kierunek</li>
+                        <li>myśli bez wartości danego pola lądują na końcu, niezależnie od kierunku</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Przeglądanie po zmianie</td>
+                    <td><ul class="cell">
+                        <li>lista przestawiona w nowej kolejności</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>po zmianie sortowania przeglądanie zaczyna się od pierwszej myśli w nowej kolejności (góra listy)</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </details>
 
     <details class="req">
         <summary>
             <span class="req-title">Filtrowanie myśli</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="05/09">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
@@ -1097,12 +1125,14 @@
                                 <li><span class="bracket">Uśpione myśli</span> — domyślnie wyłączone</li>
                             </ul>
                         </li>
-                        <li class="spec-new">pokazywanie ile jest myśli danego rodzaju</li>
+                        <li>pokazywanie ile jest myśli danego rodzaju</li>
                     </ul></td>
                     <td><ul class="cell">
                         <li>sekcja ukryta, gdy tryb uśpienia jest wyłączony i pokaż wszystkie myśli</li>
-                        <li class="spec-new">liczby dotyczą wszystkich myśli, nie tylko przefiltrowanych — pokazują, ile jest do odsłonięcia</li>
-                        <li class="spec-new">liczby ustalane w chwili otwarcia panelu</li>
+                        <li>liczby dotyczą wszystkich myśli, nie tylko przefiltrowanych — pokazują, ile jest do odsłonięcia</li>
+                        <ul>
+                            <li>liczby ustalane w chwili otwarcia panelu</li>
+                        </ul>
                     </ul></td>
                 </tr>
                 <tr>

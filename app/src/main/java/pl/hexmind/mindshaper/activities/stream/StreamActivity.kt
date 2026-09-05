@@ -42,6 +42,9 @@ class StreamActivity : CoreActivity() {
     private val viewModel: StreamViewModel by viewModels()
 
     private lateinit var viewPager: ViewPager2
+
+    // Raised on sort change, consumed once the new order is committed
+    private var isSortResetPending = false
     private lateinit var adapter: StreamAdapter
 
     private lateinit var btnSort: MaterialButton
@@ -255,6 +258,8 @@ class StreamActivity : CoreActivity() {
         val currentConfig = viewModel.sortConfig.value ?: SortConfig()
 
         val dialog = SortDialogFragment(currentConfig) { newConfig ->
+            // ! raise BEFORE the value changes - the VM's mediator rebuilds the list before this Activity's sortConfig observer runs
+            isSortResetPending = true
             viewModel.updateSortConfig(newConfig)
         }
 
@@ -286,7 +291,13 @@ class StreamActivity : CoreActivity() {
     private fun setupReactiveDataObserver() {
         viewModel.filteredThoughts.observe(this) { thoughtsDTO ->
             // Submit to adapter - will automatically animate changes with DiffUtil
-            adapter.submitList(thoughtsDTO)
+            adapter.submitList(thoughtsDTO) {
+                // ! commit callback, not a timer - resetting before the diff lands moves the OLD position 0
+                if (isSortResetPending) {
+                    isSortResetPending = false
+                    viewPager.setCurrentItem(0, false)
+                }
+            }
         }
 
         viewModel.sortConfig.observe(this) { sortConfig ->
@@ -316,9 +327,6 @@ class StreamActivity : CoreActivity() {
             .scaleY(0.95f)
             .setDuration(150)
             .withEndAction {
-                // Reset to first item
-                viewPager.setCurrentItem(0, false)
-
                 // Fade in and scale up
                 viewPager.animate()
                     .alpha(1f)
