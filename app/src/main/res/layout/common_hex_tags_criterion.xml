@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="34dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/shape_hex_criterion"
+    android:paddingStart="10dp"
+    android:paddingEnd="4dp"
+    android:layout_marginEnd="6dp"
+    >
+
+    <!-- Hex tag type -->
+    <ImageView
+        android:id="@+id/iv_criterion_icon"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginEnd="6dp"
+        android:contentDescription="@null"
+        />
+
+    <!-- Entered value -->
+    <TextView
+        android:id="@+id/tv_criterion_value"
+        style="@style/TextView_Metadata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_primary"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:maxEms="10"
+        />
+
+    <ImageView
+        android:id="@+id/iv_criterion_remove"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:padding="5dp"
+        android:src="@drawable/ic_close"
+        android:contentDescription="@string/stream_searcher_remove_criterion"
+        />
+
+</LinearLayout>

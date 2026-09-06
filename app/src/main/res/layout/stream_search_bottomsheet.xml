@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_hex_content"
+    android:backgroundTint="@color/app_background">
+
+    <!-- NestedScrollView keeps every field reachable once the keyboard shrinks the sheet -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="80dp">
+
+            <!-- DRAG HANDLE -->
+            <View
+                android:layout_width="40dp"
+                android:layout_height="4dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp"
+                android:background="@color/_gray_lvl_2" />
+
+            <!-- HEADER -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                    android:scaleX="-1"
+                    android:scaleY="-1"
+                    app:srcCompat="@drawable/ic_decorator_olive"
+                    app:tint="@color/separator_leaf" />
+
+                <TextView
+                    android:id="@+id/tv_search_title"
+                    style="@style/DialogTile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="0dp"
+                    android:text="@string/stream_searcher_sheet_title"
+                    android:textColor="@color/text_secondary" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                    android:scaleY="-1"
+                    app:srcCompat="@drawable/ic_decorator_olive"
+                    app:tint="@color/separator_leaf" />
+
+            </LinearLayout>
+
+            <!-- Hex tag criteria -->
+            <pl.hexmind.mindshaper.common.ui.views.HexInputField
+                android:id="@+id/hif_subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="4dp"
+                app:hint="@string/common_hex_tag_hint_subject" />
+
+            <pl.hexmind.mindshaper.common.ui.views.HexInputField
+                android:id="@+id/hif_soul_mate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="4dp"
+                app:hint="@string/common_hex_tags_hint_person" />
+
+            <pl.hexmind.mindshaper.common.ui.views.HexInputField
+                android:id="@+id/hif_project"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="4dp"
+                app:hint="@string/common_hex_tags_hint_project" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_search_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_search_add"
+        app:maxImageSize="32dp"
+        app:backgroundTint="@color/button_primary_enabled_background"
+        app:fabSize="normal"
+        app:elevation="6dp"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
