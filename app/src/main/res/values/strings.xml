@@ -76,9 +76,9 @@
     <string name="common_hex_tags_dialog_header">Tagowanie</string>
     <string name="common_hex_tags_hint_person">Osoba lub Ekipa</string>
     <string name="common_hex_tags_hint_project">Projekt</string>
+    <string name="common_hex_tag_hint_subject">Temat</string>
     <string name="common_hex_tags_label_domain">| Domena</string>
     <string name="common_hex_tags_subject_prefix">"⧽  %s"</string>
-    <string name="common_hex_tag_subject">Temat</string>
     <string name="common_subject_error_chars_exceeded">Temat nie może przekroczyć %s znaków…</string>
     <string name="common_project_error_chars_exceeded">Projekt nie może przekroczyć %s znaków…</string>
     <string name="common_soul_mates_error_chars_exceeded">Opis osób nie może przekroczyć %s znaków…</string>
@@ -226,7 +226,10 @@
     <string name="stream_thought_metadata_empty">\?\?\?</string>
     <string name="stream_item_empty_thought">- ? -\n\nTa myśl jest pusta…</string>
 
-    <!-- Search -->
+    <!-- Szukajka (Hex Tagi) -->
+    <string name="stream_searcher_sheet_title">Czego szukasz?</string>
+    <string name="stream_searcher_open">Szukaj myśli</string>
+    <string name="stream_searcher_remove_criterion">Usuń kryterium</string>
     <string name="stream_searchbar_hint">Szukajka czeka na twoje polecenie…</string>
 
     <!-- Filter -->

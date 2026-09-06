@@ -357,7 +357,7 @@ class DetailsActivity : ThoughtManagerActivity() {
         TextEditDialog(
             context = this,
             textInput = currentText,
-            title = getString(R.string.common_hex_tag_subject),
+            title = getString(R.string.common_hex_tag_hint_subject),
             notesStyle = false,
             onSave = { newText ->
                 viewModel.updateSubject(newText)

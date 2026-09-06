@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Opens the search sheet. Plain ImageView, not MaterialButton: the filled button style
+         carries an elevation shadow that stays visible once the background goes transparent -->
+    <ImageView
+        android:id="@+id/btn_open_search"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="4dp"
+        android:padding="6dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/stream_searcher_open"
+        android:src="@drawable/ic_search_add"
+        app:tint="@color/_orange_lvl_2"
+        />
+
+    <!-- Chosen criteria; horizontal scroll keeps the bar one row high -->
+    <HorizontalScrollView
+        android:id="@+id/hsv_criteria"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:scrollbars="none"
+        android:fillViewport="true"
+        >
+
+        <LinearLayout
+            android:id="@+id/ll_criteria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            />
+
+    </HorizontalScrollView>
+
+    <!-- Shown instead of the criteria when nothing is picked -->
+    <TextView
+        android:id="@+id/tv_searcher_hint"
+        style="@style/TextView_Metadata"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="@string/stream_searchbar_hint"
+        />
+
+</merge>
