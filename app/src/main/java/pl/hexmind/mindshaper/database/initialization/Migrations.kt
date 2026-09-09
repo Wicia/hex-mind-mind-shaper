@@ -2,6 +2,8 @@ package pl.hexmind.mindshaper.database.initialization
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import java.util.Locale
+import pl.hexmind.mindshaper.common.regex.HexTagNormalizer
 
 class Migrations {
 
@@ -298,6 +300,86 @@ class Migrations {
         val MIGRATION_15_TO_16 = object : Migration(15, 16) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("ALTER TABLE GOAL_STEPS ADD COLUMN calendar_event_id INTEGER")
+            }
+        }
+
+        // Hex tags move out of THOUGHTS into a dictionary + link table, so a thought can carry several
+        // tags of one type. The subject column stays put - it is a headline, not a shared label.
+        val MIGRATION_16_TO_17 = object : Migration(16, 17) {
+
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS HEX_TAGS (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        display_name TEXT NOT NULL,
+                        normalized_name TEXT NOT NULL,
+                        type TEXT NOT NULL
+                    )
+                """)
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_HEX_TAGS_display_name_type ON HEX_TAGS(display_name, type)")
+
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS THOUGHT_HEX_TAGS (
+                        thought_id INTEGER NOT NULL,
+                        hex_tag_id INTEGER NOT NULL,
+                        PRIMARY KEY(thought_id, hex_tag_id),
+                        FOREIGN KEY(thought_id) REFERENCES THOUGHTS(id) ON DELETE CASCADE,
+                        FOREIGN KEY(hex_tag_id) REFERENCES HEX_TAGS(id) ON DELETE CASCADE
+                    )
+                """)
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_THOUGHT_HEX_TAGS_thought_id ON THOUGHT_HEX_TAGS(thought_id)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_THOUGHT_HEX_TAGS_hex_tag_id ON THOUGHT_HEX_TAGS(hex_tag_id)")
+
+                migrateColumn(db, column = "soul_mate", tagType = "PERSON")
+                migrateColumn(db, column = "project",   tagType = "PROJECT")
+            }
+
+            /**
+             * Generic rules only: lower case and split on commas. Anything beyond that (merging
+             * synonyms, shortening multi-word names) is a per-database cleanup and stays out of here.
+             */
+            private fun migrateColumn(db: SupportSQLiteDatabase, column: String, tagType: String) {
+                db.query("SELECT id, $column FROM THOUGHTS WHERE $column IS NOT NULL AND TRIM($column) != ''")
+                    .use { cursor ->
+                        while (cursor.moveToNext()) {
+                            val thoughtId = cursor.getInt(0)
+                            val oldValue  = cursor.getString(1)
+
+                            splitIntoNames(oldValue).forEach { tagName ->
+                                linkTag(db, thoughtId, insertTag(db, tagName, tagType))
+                            }
+                        }
+                    }
+            }
+
+            // ! Done in Kotlin, not SQL - SQLite's LOWER() leaves non-ASCII letters untouched
+            private fun splitIntoNames(oldValue: String): List<String> =
+                oldValue.split(",")
+                    .map { part -> part.trim().lowercase(Locale.ROOT) }
+                    .filter { part -> part.isNotEmpty() }
+                    .distinct()
+
+            private fun insertTag(db: SupportSQLiteDatabase, displayName: String, tagType: String): Long {
+                db.execSQL(
+                    "INSERT OR IGNORE INTO HEX_TAGS (display_name, normalized_name, type) VALUES (?, ?, ?)",
+                    arrayOf(displayName, HexTagNormalizer.normalize(displayName), tagType)
+                )
+
+                db.query(
+                    "SELECT id FROM HEX_TAGS WHERE display_name = ? AND type = ?",
+                    arrayOf(displayName, tagType)
+                ).use { cursor ->
+                    return if (cursor.moveToFirst()) cursor.getLong(0) else -1L
+                }
+            }
+
+            private fun linkTag(db: SupportSQLiteDatabase, thoughtId: Int, tagId: Long) {
+                if (tagId == -1L) return
+
+                db.execSQL(
+                    "INSERT OR IGNORE INTO THOUGHT_HEX_TAGS (thought_id, hex_tag_id) VALUES (?, ?)",
+                    arrayOf(thoughtId, tagId)
+                )
             }
         }
     }
