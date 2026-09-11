@@ -216,22 +216,25 @@ class StreamAdapter(
                     ivDecoratorIcon.visibility = View.VISIBLE
                     ivDecoratorIcon.setImageResource(R.drawable.ic_hextags_project)
                     tvLabel.visibility = View.VISIBLE
-                    tvLabel.text = when (thought.project.isNullOrBlank()){
-                        true -> {itemView.context.getString(R.string.stream_thought_metadata_empty)}
-                        false -> {thought.project}
-                    }
+                    tvLabel.text = tagsLabel(thought.projects)
                 }
                 SortProperty.SOUL_MATE -> {
                     ivDecoratorIcon.visibility = View.VISIBLE
                     ivDecoratorIcon.setImageResource(R.drawable.ic_hextags_soul_mates)
                     tvLabel.visibility = View.VISIBLE
-                    tvLabel.text = when (thought.soulMate.isNullOrBlank()){
-                        true -> {itemView.context.getString(R.string.stream_thought_metadata_empty)}
-                        false -> {thought.soulMate}
-                    }
+                    tvLabel.text = tagsLabel(thought.soulMates)
                 }
             }
         }
+
+        // Several tags share one label slot; no tags shows the "missing value" marker
+        private fun tagsLabel(tagNames: List<String>): String =
+            if (tagNames.isEmpty()) {
+                itemView.context.getString(R.string.stream_thought_metadata_empty)
+            }
+            else {
+                tagNames.joinToString(", ")
+            }
 
         fun updateCreatedAtCase(thought : ThoughtDTO){
             val ageLevel = ThoughtGrowthStage.newThoughtGrowthStage(thought.createdAt)

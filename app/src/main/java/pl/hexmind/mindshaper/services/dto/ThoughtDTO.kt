@@ -17,8 +17,13 @@ data class ThoughtDTO(
     // Links
     var domainId: Int? = null,
     var subject: String? = null,
+
+    // TODO: the strings are the WRITE path (input screens still edit one field per type); the lists are the READ path used by the stream, search and sorting. Stage 4 drops the strings.
     var soulMate: String? = null,
     var project: String? = null,
+
+    var soulMates: List<String> = emptyList(),
+    var projects: List<String> = emptyList(),
 
     var value: Int = 1,
 
@@ -73,6 +78,8 @@ data class ThoughtDTO(
         if (richText != other.richText) return false
         if (soulMate != other.soulMate) return false
         if (project != other.project) return false
+        if (soulMates != other.soulMates) return false
+        if (projects != other.projects) return false
         if (value != other.value) return false
         if (audioDurationMs != other.audioDurationMs) return false
         if (tempAudioFilePath != other.tempAudioFilePath) return false
@@ -89,6 +96,8 @@ data class ThoughtDTO(
         result = 31 * result + (richText?.hashCode() ?: 0)
         result = 31 * result + (soulMate?.hashCode() ?: 0)
         result = 31 * result + (project?.hashCode() ?: 0)
+        result = 31 * result + soulMates.hashCode()
+        result = 31 * result + projects.hashCode()
         result = 31 * result + value
         result = 31 * result + (audioDurationMs?.hashCode() ?: 0)
         result = 31 * result + (tempAudioFilePath?.hashCode() ?: 0)

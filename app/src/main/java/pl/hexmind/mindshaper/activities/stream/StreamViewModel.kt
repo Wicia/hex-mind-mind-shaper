@@ -180,12 +180,25 @@ class StreamViewModel @Inject constructor(
         if (!query.areCriteriaEmpty()) {
             filtered = filtered.filter { thought ->
                 matchesCriteria(thought.subject, query.subject) &&
-                        matchesCriteria(thought.soulMate, query.soulMate) &&
-                        matchesCriteria(thought.project, query.project)
+                        matchesAnyTag(thought.soulMates, query.soulMate) &&
+                        matchesAnyTag(thought.projects, query.project)
             }
         }
 
         return filtered
+    }
+
+    /**
+     * A thought matches when ANY of its tags of that type contains the query.
+     *
+     * Matching per tag, not on the joined text - searching "kamil" must find a thought tagged
+     * "ja" and "kamil", while "ja, kam" must not match anything just because the words sit next
+     * to each other in one string.
+     */
+    private fun matchesAnyTag(tagNames: List<String>, searchQuery: String?): Boolean {
+        if (searchQuery.isNullOrBlank()) return true
+
+        return tagNames.any { tagName -> tagName.contains(searchQuery, ignoreCase = true) }
     }
 
     private fun matchesCriteria(fieldValue: String?, searchQuery: String?): Boolean {
@@ -199,8 +212,8 @@ class StreamViewModel @Inject constructor(
             SortProperty.CREATED_AT -> compareBy(nullsLast()) { it.createdAt }
             SortProperty.UPDATED_AT -> compareBy(nullsLast()) { it.updatedAt }
             SortProperty.SUBJECT -> compareBy(nullsLast()) { it.subject?.lowercase() }
-            SortProperty.SOUL_MATE -> compareBy(nullsLast()) { it.soulMate?.lowercase() }
-            SortProperty.PROJECT -> compareBy(nullsLast()) { it.project?.lowercase() }
+            SortProperty.SOUL_MATE -> compareBy(nullsLast()) { firstTagAlphabetically(it.soulMates) }
+            SortProperty.PROJECT -> compareBy(nullsLast()) { firstTagAlphabetically(it.projects) }
             SortProperty.VALUE -> compareBy(nullsLast()) { it.value }
         }
 
@@ -256,4 +269,10 @@ class StreamViewModel @Inject constructor(
             }
         }
     }
+
+    // Thoughts with several tags sort by the one that comes first alphabetically; no tags sorts last
+    private fun firstTagAlphabetically(tagNames: List<String>): String? =
+        tagNames.map { tagName -> tagName.lowercase() }
+            .minOrNull()
+
 }

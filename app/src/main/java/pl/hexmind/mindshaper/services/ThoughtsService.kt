@@ -56,10 +56,11 @@ class ThoughtsService @Inject constructor(
     private fun toDtoWithTags(thoughtWithTags: ThoughtWithHexTags): ThoughtDTO {
         val dto = ThoughtsMapper.INSTANCE.entityToDTO(thoughtWithTags.thought)
 
-        dto.soulMate = thoughtWithTags.tagNamesOfType(HexTagType.PERSON).joinToString(TAG_SEPARATOR)
-            .ifBlank { null }
-        dto.project = thoughtWithTags.tagNamesOfType(HexTagType.PROJECT).joinToString(TAG_SEPARATOR)
-            .ifBlank { null }
+        dto.soulMates = thoughtWithTags.tagNamesOfType(HexTagType.PERSON)
+        dto.projects = thoughtWithTags.tagNamesOfType(HexTagType.PROJECT)
+
+        dto.soulMate = dto.soulMates.joinToString(TAG_SEPARATOR).ifBlank { null }
+        dto.project = dto.projects.joinToString(TAG_SEPARATOR).ifBlank { null }
 
         return dto
     }
