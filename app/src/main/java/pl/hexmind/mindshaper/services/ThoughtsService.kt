@@ -11,6 +11,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.database.models.ThoughtEntity
 import pl.hexmind.mindshaper.database.models.ThoughtMetadataUpdate
 import pl.hexmind.mindshaper.database.repositories.ThoughtsRepository
+import java.util.Locale
+import pl.hexmind.mindshaper.database.models.HexTagType
+import pl.hexmind.mindshaper.database.models.ThoughtWithHexTags
+import pl.hexmind.mindshaper.database.repositories.HexTagDAO
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.mappers.ThoughtsMapper
 import java.io.File
@@ -26,6 +30,7 @@ import java.time.Instant
 @Singleton
 class ThoughtsService @Inject constructor(
     private val repository: ThoughtsRepository,
+    private val hexTagDAO: HexTagDAO,
     @ApplicationContext
     private val context : Context
 ) {
@@ -33,27 +38,49 @@ class ThoughtsService @Inject constructor(
     /**
      * Get all thoughts (reactive/LiveData)
      */
-    fun getAllThoughts(): LiveData<List<ThoughtDTO>> {
-        val result = repository.getAllThoughtsLive()
-        return entityLiveDataToDtoLiveData(result)
+    fun getAllThoughts(): LiveData<List<ThoughtDTO>> =
+        repository.getAllThoughtsWithTagsLive().map { list ->
+            list.map { thoughtWithTags -> toDtoWithTags(thoughtWithTags) }
+        }
+
+    fun getThoughtByIdLive(id: Int): LiveData<ThoughtDTO?> =
+        repository.getThoughtWithTagsByIdLive(id.toLong()).map { thoughtWithTags ->
+            thoughtWithTags?.let { toDtoWithTags(it) }
+        }
+
+    /**
+     * Bridge between the tag tables and the DTO, which still carries one string per tag type.
+     *
+     * TODO: drop this once the DTO exposes tag lists and the screens can render several tags
+     */
+    private fun toDtoWithTags(thoughtWithTags: ThoughtWithHexTags): ThoughtDTO {
+        val dto = ThoughtsMapper.INSTANCE.entityToDTO(thoughtWithTags.thought)
+
+        dto.soulMate = thoughtWithTags.tagNamesOfType(HexTagType.PERSON).joinToString(TAG_SEPARATOR)
+            .ifBlank { null }
+        dto.project = thoughtWithTags.tagNamesOfType(HexTagType.PROJECT).joinToString(TAG_SEPARATOR)
+            .ifBlank { null }
+
+        return dto
     }
 
-    fun getThoughtByIdLive(id: Int): LiveData<ThoughtDTO?> {
-        val entityLiveData = repository.getThoughtByIdLive(id.toLong())
-        return entityLiveData.map { entityThought ->
-            entityThought?.let { ThoughtsMapper.INSTANCE.entityToDTO(it) }
-        }
+    private suspend fun saveTags(thoughtId: Int, thought: ThoughtDTO) {
+        hexTagDAO.replaceTagsOfType(thoughtId, HexTagType.PERSON.name, splitTagNames(thought.soulMate))
+        hexTagDAO.replaceTagsOfType(thoughtId, HexTagType.PROJECT.name, splitTagNames(thought.project))
     }
 
-    private fun entityLiveDataToDtoLiveData(entities: LiveData<List<ThoughtEntity>>): LiveData<List<ThoughtDTO>> {
-        return entities.map { list ->
-            ThoughtsMapper.INSTANCE.entityListToDtoList(list)
-        }
-    }
+    private fun splitTagNames(value: String?): List<String> =
+        value?.split(TAG_SEPARATOR_PATTERN)
+            ?.map { name -> name.trim().lowercase(Locale.ROOT) }
+            ?.filter { name -> name.isNotEmpty() }
+            .orEmpty()
 
     suspend fun addThought(thought: ThoughtDTO) : Long {
         val entity = ThoughtsMapper.INSTANCE.dtoToEntity(thought)
-        return repository.insertThought(entity)
+        val thoughtId = repository.insertThought(entity)
+
+        saveTags(thoughtId.toInt(), thought)
+        return thoughtId
     }
 
     suspend fun deleteThoughtById(id: Int) {
@@ -77,12 +104,12 @@ class ThoughtsService @Inject constructor(
             id = thought.id!!,
             domainId = thought.domainId,
             subject = thought.subject,
-            soulMate = thought.soulMate,
-            project = thought.project,
             value = thought.value,
             updatedAt = Instant.now().toEpochMilli()
         )
         repository.updateThoughtMetadata(metadata)
+
+        saveTags(thought.id!!, thought)
     }
 
     suspend fun updateThoughtRichText(thoughtId: Int, richText: String?) {
@@ -257,4 +284,11 @@ class ThoughtsService @Inject constructor(
             bitmap
         }
     }
+
+    private companion object {
+        // Several tags of one type still reach the DTO as one string - split on comma, join with ", "
+        const val TAG_SEPARATOR = ", "
+        val TAG_SEPARATOR_PATTERN = Regex(",")
+    }
+
 }

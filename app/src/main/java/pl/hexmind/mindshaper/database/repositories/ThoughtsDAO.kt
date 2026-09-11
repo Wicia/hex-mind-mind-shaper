@@ -6,8 +6,10 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import pl.hexmind.mindshaper.database.models.ThoughtEntity
+import pl.hexmind.mindshaper.database.models.ThoughtWithHexTags
 import pl.hexmind.mindshaper.database.models.ThoughtMetadataUpdate
 import pl.hexmind.mindshaper.database.models.ThoughtSubjectRow
 
@@ -20,7 +22,7 @@ interface ThoughtsDAO {
     // exclude heavy BLOBs (photo_data, audio_data) to stay under the ~2MB CursorWindow row limit
     @Query("""
         SELECT id, domain_id, subject, created_at, updated_at,
-               soul_mate, project, value, rich_text,
+               value, rich_text,
                audio_duration_ms, photo_file_size
         FROM thoughts
         WHERE id = :id
@@ -53,7 +55,7 @@ interface ThoughtsDAO {
     // exclude heavy BLOBs (photo_data, audio_data) to stay under the ~2MB CursorWindow row limit
     @Query("""
         SELECT id, domain_id, subject, created_at, updated_at,
-               soul_mate, project, value, rich_text,
+               value, rich_text,
                audio_duration_ms, photo_file_size
         FROM thoughts
         ORDER BY created_at DESC
@@ -62,6 +64,29 @@ interface ThoughtsDAO {
 
     @Query("SELECT * FROM thoughts ORDER BY created_at DESC")
     suspend fun getAllThoughts(): List<ThoughtEntity>
+
+    // === With hex tags (one query for the thoughts, one for their tags) ===
+
+    // exclude heavy BLOBs (photo_data, audio_data) to stay under the ~2MB CursorWindow row limit
+    @Transaction
+    @Query("""
+        SELECT id, domain_id, subject, created_at, updated_at,
+               value, rich_text,
+               audio_duration_ms, photo_file_size
+        FROM thoughts
+        ORDER BY created_at DESC
+    """)
+    fun getAllThoughtsWithTagsLive(): LiveData<List<ThoughtWithHexTags>>
+
+    @Transaction
+    @Query("""
+        SELECT id, domain_id, subject, created_at, updated_at,
+               value, rich_text,
+               audio_duration_ms, photo_file_size
+        FROM thoughts
+        WHERE id = :id
+    """)
+    fun getThoughtWithTagsByIdLive(id: Long): LiveData<ThoughtWithHexTags?>
 
     @Query("SELECT * FROM thoughts WHERE domain_id = :domainId")
     suspend fun getThoughtByDomainId(domainId: Int): ThoughtEntity?

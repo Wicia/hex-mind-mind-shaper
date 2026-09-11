@@ -2,6 +2,7 @@ package pl.hexmind.mindshaper.database.repositories
 
 import androidx.lifecycle.LiveData
 import pl.hexmind.mindshaper.database.models.ThoughtEntity
+import pl.hexmind.mindshaper.database.models.ThoughtWithHexTags
 import pl.hexmind.mindshaper.database.models.ThoughtMetadataUpdate
 import java.io.File
 import java.time.Instant
@@ -29,6 +30,10 @@ class ThoughtsRepository @Inject constructor(
     suspend fun updateThought(thought: ThoughtEntity) {
         thoughtsDAO.update(thought)
     }
+
+    fun getAllThoughtsWithTagsLive(): LiveData<List<ThoughtWithHexTags>> = thoughtsDAO.getAllThoughtsWithTagsLive()
+
+    fun getThoughtWithTagsByIdLive(id: Long): LiveData<ThoughtWithHexTags?> = thoughtsDAO.getThoughtWithTagsByIdLive(id)
 
     suspend fun deleteThoughtById(id: Int) {
         require(id > 0) { "Thought ID must be positive" }

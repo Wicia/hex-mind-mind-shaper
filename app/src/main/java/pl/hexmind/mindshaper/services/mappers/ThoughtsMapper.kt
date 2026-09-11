@@ -18,6 +18,9 @@ interface ThoughtsMapper {
         val INSTANCE: ThoughtsMapper = Mappers.getMapper(ThoughtsMapper::class.java)
     }
 
+    // ! Tags left to the service - they live in HEX_TAGS now, not on the entity
+    @Mapping(target = "soulMate", ignore = true)
+    @Mapping(target = "project", ignore = true)
     @Mapping(target = "tempAudioFilePath", ignore = true) // Only used during recording
     @Mapping(target = "tempPhotoFilePath", ignore = true) // Only used during taking a photo
     fun entityToDTO(entity: ThoughtEntity): ThoughtDTO

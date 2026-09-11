@@ -382,5 +382,43 @@ class Migrations {
                 )
             }
         }
+
+        // The tag columns are gone from ThoughtEntity, so the table is rebuilt without them.
+        // ! SQLite before 3.35 has no DROP COLUMN, and minSdk 30 ships older versions than that.
+        val MIGRATION_17_TO_18 = object : Migration(17, 18) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("""
+                    CREATE TABLE THOUGHTS_NEW (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        domain_id INTEGER,
+                        subject TEXT,
+                        created_at INTEGER NOT NULL,
+                        updated_at INTEGER NOT NULL,
+                        value INTEGER NOT NULL,
+                        rich_text TEXT,
+                        audio_data BLOB,
+                        audio_duration_ms INTEGER,
+                        photo_data BLOB,
+                        photo_file_size INTEGER,
+                        FOREIGN KEY(domain_id) REFERENCES DOMAINS(id) ON DELETE SET NULL
+                    )
+                """)
+
+                db.execSQL("""
+                    INSERT INTO THOUGHTS_NEW (
+                        id, domain_id, subject, created_at, updated_at, value,
+                        rich_text, audio_data, audio_duration_ms, photo_data, photo_file_size
+                    )
+                    SELECT
+                        id, domain_id, subject, created_at, updated_at, value,
+                        rich_text, audio_data, audio_duration_ms, photo_data, photo_file_size
+                    FROM THOUGHTS
+                """)
+
+                db.execSQL("DROP TABLE THOUGHTS")
+                db.execSQL("ALTER TABLE THOUGHTS_NEW RENAME TO THOUGHTS")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_THOUGHTS_domain_id ON THOUGHTS(domain_id)")
+            }
+        }
     }
 }

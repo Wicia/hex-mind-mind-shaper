@@ -51,6 +51,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun hexTagDao(): HexTagDAO
 
     companion object {
-        const val DB_VERSION = 17
+        const val DB_VERSION = 18
     }
 }
