@@ -19,9 +19,9 @@ interface ThoughtsMapper {
     }
 
     // ! Tags left to the service - they live in HEX_TAGS now, not on the entity
-    @Mapping(target = "soulMate", ignore = true)
+    @Mapping(target = "person", ignore = true)
     @Mapping(target = "project", ignore = true)
-    @Mapping(target = "soulMates", ignore = true)
+    @Mapping(target = "people", ignore = true)
     @Mapping(target = "projects", ignore = true)
     @Mapping(target = "tempAudioFilePath", ignore = true) // Only used during recording
     @Mapping(target = "tempPhotoFilePath", ignore = true) // Only used during taking a photo

@@ -79,7 +79,7 @@
                 app:hint="@string/common_hex_tag_hint_subject" />
 
             <pl.hexmind.mindshaper.common.ui.views.HexInputField
-                android:id="@+id/hif_soul_mate"
+                android:id="@+id/hif_person"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -87,9 +87,9 @@
                 android:layout_marginBottom="4dp"
                 app:hint="@string/common_hex_tags_hint_person" />
 
-            <!-- Suggestions for soul mate -->
+            <!-- Suggestions for person -->
             <HorizontalScrollView
-                android:id="@+id/hsv_suggestions_soul_mate"
+                android:id="@+id/hsv_suggestions_person"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -99,7 +99,7 @@
                 android:visibility="gone">
 
                 <LinearLayout
-                    android:id="@+id/ll_suggestions_soul_mate"
+                    android:id="@+id/ll_suggestions_person"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"

@@ -218,11 +218,11 @@ class StreamAdapter(
                     tvLabel.visibility = View.VISIBLE
                     tvLabel.text = tagsLabel(thought.projects)
                 }
-                SortProperty.SOUL_MATE -> {
+                SortProperty.PERSON -> {
                     ivDecoratorIcon.visibility = View.VISIBLE
-                    ivDecoratorIcon.setImageResource(R.drawable.ic_hextags_soul_mates)
+                    ivDecoratorIcon.setImageResource(R.drawable.ic_hextags_people)
                     tvLabel.visibility = View.VISIBLE
-                    tvLabel.text = tagsLabel(thought.soulMates)
+                    tvLabel.text = tagsLabel(thought.people)
                 }
             }
         }

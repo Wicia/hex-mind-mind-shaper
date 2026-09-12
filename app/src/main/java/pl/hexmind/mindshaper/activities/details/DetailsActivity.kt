@@ -429,7 +429,7 @@ class DetailsActivity : ThoughtManagerActivity() {
 
     private fun updateHexTagsUI(thought: ThoughtDTO) {
         val count = listOfNotNull(
-            thought.soulMate?.takeIf { it.isNotBlank() },
+            thought.person?.takeIf { it.isNotBlank() },
             thought.project?.takeIf { it.isNotBlank() },
             thought.domainId
         ).size
@@ -662,7 +662,7 @@ class DetailsActivity : ThoughtManagerActivity() {
 
         val tags = HexTags(
             domainId = viewModel.thoughtDetails.value?.domainId,
-            person = viewModel.thoughtDetails.value?.soulMate,
+            person = viewModel.thoughtDetails.value?.person,
             project = viewModel.thoughtDetails.value?.project
         )
 

@@ -25,7 +25,7 @@ enum class SortProperty(
     CREATED_AT(R.string.stream_sort_property_created_at, SortPropertyType.DATE),
     UPDATED_AT(R.string.stream_sort_property_updated_at, SortPropertyType.DATE),
     SUBJECT(R.string.stream_sort_property_subject, SortPropertyType.TEXT),
-    SOUL_MATE(R.string.stream_sort_property_soul_mate, SortPropertyType.TEXT),
+    PERSON(R.string.stream_sort_property_person, SortPropertyType.TEXT),
     PROJECT(R.string.stream_sort_property_project, SortPropertyType.TEXT);
 }
 

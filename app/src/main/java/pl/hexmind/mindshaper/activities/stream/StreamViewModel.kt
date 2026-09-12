@@ -180,7 +180,7 @@ class StreamViewModel @Inject constructor(
         if (!query.areCriteriaEmpty()) {
             filtered = filtered.filter { thought ->
                 matchesCriteria(thought.subject, query.subject) &&
-                        matchesAnyTag(thought.soulMates, query.soulMate) &&
+                        matchesAnyTag(thought.people, query.person) &&
                         matchesAnyTag(thought.projects, query.project)
             }
         }
@@ -212,7 +212,7 @@ class StreamViewModel @Inject constructor(
             SortProperty.CREATED_AT -> compareBy(nullsLast()) { it.createdAt }
             SortProperty.UPDATED_AT -> compareBy(nullsLast()) { it.updatedAt }
             SortProperty.SUBJECT -> compareBy(nullsLast()) { it.subject?.lowercase() }
-            SortProperty.SOUL_MATE -> compareBy(nullsLast()) { firstTagAlphabetically(it.soulMates) }
+            SortProperty.PERSON -> compareBy(nullsLast()) { firstTagAlphabetically(it.people) }
             SortProperty.PROJECT -> compareBy(nullsLast()) { firstTagAlphabetically(it.projects) }
             SortProperty.VALUE -> compareBy(nullsLast()) { it.value }
         }

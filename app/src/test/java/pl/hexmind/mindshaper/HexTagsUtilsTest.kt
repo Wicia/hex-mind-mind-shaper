@@ -13,7 +13,7 @@ class HexTagsUtilsTest {
         val output = HexTagsUtils.parseInput(input)
         assertEquals("zaczelo sie od tego", output.subject)
         assertEquals("a ten tekst jest projektem", output.project)
-        assertEquals("a ten jest dobrą duszą", output.soulMate)
+        assertEquals("a ten jest dobrą duszą", output.person)
     }
 
     @Test
@@ -22,7 +22,7 @@ class HexTagsUtilsTest {
         val output = HexTagsUtils.parseInput(input)
         assertNull(output.subject)
         assertEquals("zaraz za nim jest projekt", output.project)
-        assertEquals("dobre dusze", output.soulMate)
+        assertEquals("dobre dusze", output.person)
     }
 
     @Test
@@ -31,15 +31,15 @@ class HexTagsUtilsTest {
         val output = HexTagsUtils.parseInput(input)
         assertEquals("tekst", output.subject)
         assertEquals("projekt", output.project)
-        assertNull(output.soulMate)
+        assertNull(output.person)
     }
 
     @Test
-    fun `tylko soulmate`() {
+    fun `tylko person`() {
         val input = "tekst @osoba"
         val output = HexTagsUtils.parseInput(input)
         assertEquals("tekst", output.subject)
         assertNull(output.project)
-        assertEquals("osoba", output.soulMate)
+        assertEquals("osoba", output.person)
     }
 }

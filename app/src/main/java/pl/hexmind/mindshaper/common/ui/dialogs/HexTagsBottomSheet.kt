@@ -275,7 +275,7 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
     private fun showExternalError(error: ValidationResult.Error) {
         val errorMessage : String = error.resolveMessage(requireContext())
         when (error.refProperty) {
-            ValidatedProperty.T_SOUL_MATES -> binding.hifPerson.showError(errorMessage)
+            ValidatedProperty.T_PEOPLE -> binding.hifPerson.showError(errorMessage)
             ValidatedProperty.T_PROJECT    -> binding.hifProject.showError(errorMessage)
             else -> { }
         }

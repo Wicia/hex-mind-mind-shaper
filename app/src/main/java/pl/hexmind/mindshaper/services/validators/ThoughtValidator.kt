@@ -18,7 +18,7 @@ class ThoughtValidator @Inject constructor(
 
         // Per TAG, not per field - a field may hold several tags separated by spaces or commas
         const val PROJECT_MAX_CHARS: Int = 16
-        const val SOUL_MATES_MAX_CHARS: Int = 16
+        const val PEOPLE_MAX_CHARS: Int = 16
 
         const val VOICE_RECORDING_MAX_DURATION_MS = 180_000L
     }
@@ -82,17 +82,17 @@ class ThoughtValidator @Inject constructor(
         }
     }
 
-    fun validateSoulMates(soulMatesString: String?): ValidationResult {
-        val soulMates = soulMatesString?.trim().orEmpty()
-        if (soulMates.isEmpty()) {
+    fun validatePeople(peopleString: String?): ValidationResult {
+        val people = peopleString?.trim().orEmpty()
+        if (people.isEmpty()) {
             return ValidationResult.Valid()
         }
 
-        return if (longestTagLength(soulMates) > SOUL_MATES_MAX_CHARS) {
+        return if (longestTagLength(people) > PEOPLE_MAX_CHARS) {
             ValidationResult.Error(
                 R.string.common_hex_tag_error_chars_exceeded,
-                SOUL_MATES_MAX_CHARS.toString(),
-                ValidatedProperty.T_SOUL_MATES
+                PEOPLE_MAX_CHARS.toString(),
+                ValidatedProperty.T_PEOPLE
             )
         }
         else {

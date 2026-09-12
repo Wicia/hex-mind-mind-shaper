@@ -387,7 +387,7 @@ class CaptureActivity : ThoughtManagerActivity() {
         viewModel.updateHexTags(
             subject = tags.subject,
             project = tags.project,
-            soulMate = tags.soulMate
+            person = tags.person
         )
 
         // Validate
@@ -509,7 +509,7 @@ class CaptureActivity : ThoughtManagerActivity() {
         // Marker plus two characters - enough to narrow the list without flashing it on every "@"
         private const val SUGGESTION_MIN_CHARS = 2
 
-        private const val SOUL_MATE_MARKER = '@'
+        private const val PERSON_MARKER = '@'
         private const val PROJECT_MARKER = '#'
     }
 
@@ -564,10 +564,10 @@ class CaptureActivity : ThoughtManagerActivity() {
         val caret = binding.etHexTags.selectionStart.coerceIn(0, text.length)
         val before = text.substring(0, caret)
 
-        val markerIndex = maxOf(before.lastIndexOf(SOUL_MATE_MARKER), before.lastIndexOf(PROJECT_MARKER))
+        val markerIndex = maxOf(before.lastIndexOf(PERSON_MARKER), before.lastIndexOf(PROJECT_MARKER))
         if (markerIndex == -1) return null
 
-        val tagType = if (before[markerIndex] == SOUL_MATE_MARKER) HexTagType.PERSON else HexTagType.PROJECT
+        val tagType = if (before[markerIndex] == PERSON_MARKER) HexTagType.PERSON else HexTagType.PROJECT
 
         // A separator after the marker means the tag is already finished and a new one has begun
         val afterMarker = before.substring(markerIndex + 1)

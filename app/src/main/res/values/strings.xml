@@ -250,7 +250,7 @@
     <string name="stream_sort_dialog_header">Sortowanie</string>
     <string name="stream_sort_property_created_at">Wiek</string>
     <string name="stream_sort_property_subject">Temat</string>
-    <string name="stream_sort_property_soul_mate">Osoba</string>
+    <string name="stream_sort_property_person">Osoba</string>
     <string name="stream_sort_property_project">Projekt</string>
     <string name="stream_sort_property_value">Wartość</string>
     <string name="stream_sort_property_updated_at">Data zmiany</string>

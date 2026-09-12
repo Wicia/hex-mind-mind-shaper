@@ -66,7 +66,7 @@ class StreamSearchBottomSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.hifSubject.setText(arguments?.getString(ARG_SUBJECT))
-        binding.hifSoulMate.setText(arguments?.getString(ARG_SOUL_MATE))
+        binding.hifPerson.setText(arguments?.getString(ARG_PERSON))
         binding.hifProject.setText(arguments?.getString(ARG_PROJECT))
 
         setupSuggestions()
@@ -75,7 +75,7 @@ class StreamSearchBottomSheet : BottomSheetDialogFragment() {
             onConfirm?.invoke(
                 HexTags(
                     subject  = binding.hifSubject.getText().ifBlank { null },
-                    soulMate = binding.hifSoulMate.getText().ifBlank { null },
+                    person = binding.hifPerson.getText().ifBlank { null },
                     project  = binding.hifProject.getText().ifBlank { null }
                 )
             )
@@ -86,9 +86,9 @@ class StreamSearchBottomSheet : BottomSheetDialogFragment() {
     // Only tags get suggestions - the subject is a headline of one thought, never reused
     private fun setupSuggestions() {
         bindSuggestions(
-            field          = binding.hifSoulMate,
-            scrollView     = binding.hsvSuggestionsSoulMate,
-            chipsContainer = binding.llSuggestionsSoulMate,
+            field          = binding.hifPerson,
+            scrollView     = binding.hsvSuggestionsPerson,
+            chipsContainer = binding.llSuggestionsPerson,
             tagType        = HexTagType.PERSON
         )
 
@@ -166,7 +166,7 @@ class StreamSearchBottomSheet : BottomSheetDialogFragment() {
         const val TAG = "StreamSearchBottomSheet"
 
         private const val ARG_SUBJECT    = "arg_subject"
-        private const val ARG_SOUL_MATE  = "arg_soul_mate"
+        private const val ARG_PERSON  = "arg_person"
         private const val ARG_PROJECT   = "arg_project"
 
         fun show(
@@ -177,7 +177,7 @@ class StreamSearchBottomSheet : BottomSheetDialogFragment() {
             StreamSearchBottomSheet().apply {
                 arguments = Bundle().apply {
                     putString(ARG_SUBJECT, currentTags.subject)
-                    putString(ARG_SOUL_MATE, currentTags.soulMate)
+                    putString(ARG_PERSON, currentTags.person)
                     putString(ARG_PROJECT, currentTags.project)
                 }
                 this.onConfirm = onConfirm

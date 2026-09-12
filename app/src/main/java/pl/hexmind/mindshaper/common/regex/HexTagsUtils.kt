@@ -12,14 +12,14 @@ class HexTagsUtils {
             // ! Every marker counts, not just the first one - with "@ja @michal" the second "@" has to
             // end the first tag, otherwise its marker stays glued to the name and becomes part of it
             val markers = text.mapIndexedNotNull { index, character ->
-                if (character == SOUL_MATE_MARKER || character == PROJECT_MARKER) index to character else null
+                if (character == PERSON_MARKER || character == PROJECT_MARKER) index to character else null
             }
 
             // Subject - whatever comes before the first marker
             val subjectText = if (markers.isEmpty()) text else text.substring(0, markers.first().first)
             val subject = subjectText.trim().ifEmpty { null }
 
-            val soulMates = mutableListOf<String>()
+            val people = mutableListOf<String>()
             val projects  = mutableListOf<String>()
 
             markers.forEachIndexed { position, (markerIndex, marker) ->
@@ -27,8 +27,8 @@ class HexTagsUtils {
                 val value = text.substring(markerIndex + 1, nextMarkerIndex).trim()
                 if (value.isEmpty()) return@forEachIndexed
 
-                if (marker == SOUL_MATE_MARKER) {
-                    soulMates += value
+                if (marker == PERSON_MARKER) {
+                    people += value
                 }
                 else {
                     projects += value
@@ -37,12 +37,12 @@ class HexTagsUtils {
 
             return HexTags(
                 subject  = subject,
-                soulMate = soulMates.joinToString(" ").ifEmpty { null },
+                person = people.joinToString(" ").ifEmpty { null },
                 project  = projects.joinToString(" ").ifEmpty { null }
             )
         }
 
-        private const val SOUL_MATE_MARKER = '@'
+        private const val PERSON_MARKER = '@'
         private const val PROJECT_MARKER = '#'
     }
 }
@@ -50,10 +50,10 @@ class HexTagsUtils {
 @Parcelize
 data class HexTags (
     val subject : String? = null,
-    val soulMate: String? = null,
+    val person: String? = null,
     val project: String? = null
 ) : Parcelable {
     fun areCriteriaEmpty() : Boolean{
-        return subject.isNullOrBlank() && soulMate.isNullOrBlank() && project.isNullOrBlank()
+        return subject.isNullOrBlank() && person.isNullOrBlank() && project.isNullOrBlank()
     }
 }

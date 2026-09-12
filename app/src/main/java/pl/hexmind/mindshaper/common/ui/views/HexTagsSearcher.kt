@@ -70,7 +70,7 @@ class HexTagsSearcher @JvmOverloads constructor(
         criteriaContainer.removeAllViews()
 
         addCriterionIfPresent(currentTags.subject,  R.drawable.ic_hextags_subject)   { currentTags.copy(subject = null) }
-        addCriterionIfPresent(currentTags.soulMate, R.drawable.ic_hextags_soul_mates) { currentTags.copy(soulMate = null) }
+        addCriterionIfPresent(currentTags.person, R.drawable.ic_hextags_people) { currentTags.copy(person = null) }
         addCriterionIfPresent(currentTags.project,  R.drawable.ic_hextags_project)    { currentTags.copy(project = null) }
 
         val hasCriteria = criteriaContainer.childCount > 0
