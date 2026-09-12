@@ -287,9 +287,10 @@ class ThoughtsService @Inject constructor(
     }
 
     private companion object {
-        // Several tags of one type still reach the DTO as one string - split on comma, join with ", "
-        const val TAG_SEPARATOR = ", "
-        val TAG_SEPARATOR_PATTERN = Regex(",")
+        // Several tags of one type still reach the DTO as one string.
+        // A tag is a single word, so a space separates just as well as a comma - both are accepted.
+        const val TAG_SEPARATOR = " "
+        val TAG_SEPARATOR_PATTERN = Regex("[,\\s]+")
     }
 
 }

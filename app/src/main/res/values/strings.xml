@@ -74,14 +74,19 @@
 
     <!-- HexTags widget -->
     <string name="common_hex_tags_dialog_header">Tagowanie</string>
+    <!-- Hex Tagi: podpowiedzi i warianty -->
+    <string name="common_hex_tags_similar_title">Podobny tag już istnieje</string>
+    <string name="common_hex_tags_similar_description">W Twoich myślach jest już tag „%1$s". Użyć go zamiast tworzyć nowy?</string>
+    <string name="common_hex_tags_similar_use">Użyj „%1$s"</string>
+    <string name="common_hex_tags_similar_keep_mine">Chcę swój tag</string>
+
     <string name="common_hex_tags_hint_person">Osoba lub Ekipa</string>
     <string name="common_hex_tags_hint_project">Projekt</string>
     <string name="common_hex_tag_hint_subject">Temat</string>
     <string name="common_hex_tags_label_domain">| Domena</string>
     <string name="common_hex_tags_subject_prefix">"⧽  %s"</string>
     <string name="common_subject_error_chars_exceeded">Temat nie może przekroczyć %s znaków…</string>
-    <string name="common_project_error_chars_exceeded">Projekt nie może przekroczyć %s znaków…</string>
-    <string name="common_soul_mates_error_chars_exceeded">Opis osób nie może przekroczyć %s znaków…</string>
+    <string name="common_hex_tag_error_chars_exceeded">Pojedynczy tag nie może mieć więcej niż %s znaków…</string>
 
     <!-- Files -->
     <string name="files_audio_error_file_not_accessible">Plik audio nie jest już dostępny</string>

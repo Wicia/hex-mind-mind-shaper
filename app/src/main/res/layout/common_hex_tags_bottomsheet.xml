@@ -77,6 +77,26 @@
             android:layout_marginBottom="12dp"
             app:hint="@string/common_hex_tags_hint_person" />
 
+        <!-- Suggestions for person -->
+        <HorizontalScrollView
+            android:id="@+id/hsv_suggestions_person"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:scrollbars="none"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/ll_suggestions_person"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+        </HorizontalScrollView>
+
+
         <pl.hexmind.mindshaper.common.ui.views.HexInputField
             android:id="@+id/hif_project"
             android:layout_width="match_parent"
@@ -85,6 +105,26 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             app:hint="@string/common_hex_tags_hint_project" />
+
+        <!-- Suggestions for project -->
+        <HorizontalScrollView
+            android:id="@+id/hsv_suggestions_project"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:scrollbars="none"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/ll_suggestions_project"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+        </HorizontalScrollView>
+
 
         <!-- === ICONS GRID === -->
         <TextView

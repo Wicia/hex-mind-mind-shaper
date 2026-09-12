@@ -83,6 +83,41 @@ interface HexTagDAO {
     """)
     suspend fun unlinkTagsOfType(thoughtId: Int, type: String)
 
+    // ===========================================
+    //      Suggestions
+    // ===========================================
+
+    @Query("""
+        SELECT t.display_name FROM HEX_TAGS t
+        INNER JOIN THOUGHT_HEX_TAGS link ON link.hex_tag_id = t.id
+        WHERE t.type = :type
+        GROUP BY t.id
+        ORDER BY COUNT(link.thought_id) DESC, t.display_name ASC
+        LIMIT :limit
+    """)
+    suspend fun getMostUsedTagNames(type: String, limit: Int): List<String>
+
+    @Query("""
+        SELECT t.display_name FROM HEX_TAGS t
+        INNER JOIN THOUGHT_HEX_TAGS link ON link.hex_tag_id = t.id
+        INNER JOIN THOUGHTS th ON th.id = link.thought_id
+        WHERE t.type = :type
+        GROUP BY t.id
+        ORDER BY MAX(th.updated_at) DESC
+        LIMIT :limit
+    """)
+    suspend fun getRecentTagNames(type: String, limit: Int): List<String>
+
+    /** Tags whose name contains the typed fragment - powers the list from the third character on. */
+    @Query("""
+        SELECT display_name FROM HEX_TAGS
+        WHERE type = :type AND normalized_name LIKE '%' || :normalizedFragment || '%'
+        ORDER BY LENGTH(display_name) ASC, display_name ASC
+        LIMIT :limit
+    """)
+    suspend fun findTagNamesContaining(type: String, normalizedFragment: String, limit: Int): List<String>
+
+
     /** Replaces every tag of one type on a thought - the shape most edits take. */
     @Transaction
     suspend fun replaceTagsOfType(thoughtId: Int, type: String, displayNames: List<String>) {

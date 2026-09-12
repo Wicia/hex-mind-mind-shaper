@@ -10,6 +10,17 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import pl.hexmind.mindshaper.common.regex.HexTags
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.common.ui.views.HexInputField
+import pl.hexmind.mindshaper.database.models.HexTagType
+import pl.hexmind.mindshaper.services.HexTagsService
+import javax.inject.Inject
 import pl.hexmind.mindshaper.databinding.StreamSearchBottomsheetBinding
 
 /**
@@ -18,7 +29,11 @@ import pl.hexmind.mindshaper.databinding.StreamSearchBottomsheetBinding
  * All three fields are shown at once; the user picks whichever one they want to type in.
  * Leaving a field empty clears that criterion.
  */
+@AndroidEntryPoint
 class StreamSearchBottomSheet : BottomSheetDialogFragment() {
+
+    @Inject
+    lateinit var hexTagsService: HexTagsService
 
     private var _binding: StreamSearchBottomsheetBinding? = null
     private val binding get() = _binding!!
@@ -54,6 +69,8 @@ class StreamSearchBottomSheet : BottomSheetDialogFragment() {
         binding.hifSoulMate.setText(arguments?.getString(ARG_SOUL_MATE))
         binding.hifProject.setText(arguments?.getString(ARG_PROJECT))
 
+        setupSuggestions()
+
         binding.fabSearchConfirm.setOnClickListener {
             onConfirm?.invoke(
                 HexTags(
@@ -64,6 +81,79 @@ class StreamSearchBottomSheet : BottomSheetDialogFragment() {
             )
             dismiss()
         }
+    }
+
+    // Only tags get suggestions - the subject is a headline of one thought, never reused
+    private fun setupSuggestions() {
+        bindSuggestions(
+            field          = binding.hifSoulMate,
+            scrollView     = binding.hsvSuggestionsSoulMate,
+            chipsContainer = binding.llSuggestionsSoulMate,
+            tagType        = HexTagType.PERSON
+        )
+
+        bindSuggestions(
+            field          = binding.hifProject,
+            scrollView     = binding.hsvSuggestionsProject,
+            chipsContainer = binding.llSuggestionsProject,
+            tagType        = HexTagType.PROJECT
+        )
+    }
+
+    private fun bindSuggestions(
+        field         : HexInputField,
+        scrollView    : View,
+        chipsContainer: LinearLayout,
+        tagType       : HexTagType
+    ) {
+        field.setOnFocusChangeListener { hasFocus ->
+            if (hasFocus) {
+                refreshSuggestions(field, scrollView, chipsContainer, tagType)
+            }
+            else {
+                scrollView.isVisible = false
+            }
+        }
+
+        field.addTextChangedListener {
+            if (field.hasFocus()) {
+                refreshSuggestions(field, scrollView, chipsContainer, tagType)
+            }
+        }
+    }
+
+    private fun refreshSuggestions(
+        field         : HexInputField,
+        scrollView    : View,
+        chipsContainer: LinearLayout,
+        tagType       : HexTagType
+    ) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val names = hexTagsService.getSuggestions(tagType, field.getRawText())
+
+            chipsContainer.removeAllViews()
+            names.forEach { name -> chipsContainer.addView(buildChip(name, field, scrollView, chipsContainer)) }
+            scrollView.isVisible = names.isNotEmpty()
+        }
+    }
+
+    // One criterion per type here, so a chip replaces the whole field instead of appending
+    private fun buildChip(
+        name          : String,
+        field         : HexInputField,
+        scrollView    : View,
+        chipsContainer: LinearLayout
+    ): TextView {
+        val chip = LayoutInflater.from(requireContext())
+            .inflate(R.layout.common_hex_tags_suggestion, chipsContainer, false) as TextView
+
+        chip.text = name
+        chip.setOnClickListener {
+            field.setText(name)
+            scrollView.isVisible = false
+        }
+
+        return chip
     }
 
     override fun onDestroyView() {

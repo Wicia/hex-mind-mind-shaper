@@ -69,10 +69,21 @@ class HexInputField @JvmOverloads constructor(
 
     // ── Public API ────────────────────────────────────────────────
 
+    fun setOnFocusChangeListener(listener: (Boolean) -> Unit) {
+        binding.etInput.setOnFocusChangeListener { _, hasFocus -> listener(hasFocus) }
+    }
+
     fun getText(): String = binding.etInput.text?.toString()?.trim().orEmpty()
+
+    /** Untrimmed, so a trailing separator stays visible - suggestions need it to spot a new tag. */
+    fun getRawText(): String = binding.etInput.text?.toString().orEmpty()
 
     fun setText(value: String?) {
         binding.etInput.setText(value)
+
+        // ! setText parks the cursor at position 0 - without this, picking a suggestion throws the
+        // user back to the start of the field mid-typing
+        binding.etInput.setSelection(binding.etInput.text?.length ?: 0)
     }
 
     fun showError(message: String) {

@@ -23,6 +23,11 @@ import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.common.validation.resolveMessage
 import pl.hexmind.mindshaper.databinding.CaptureActivityBinding
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
+import android.widget.TextView
+import pl.hexmind.mindshaper.database.models.HexTagType
+import pl.hexmind.mindshaper.services.HexTagsService
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.DefaultCaptureForm
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
@@ -37,6 +42,9 @@ class CaptureActivity : ThoughtManagerActivity() {
 
     @Inject
     lateinit var thoughtsService: ThoughtsService
+
+    @Inject
+    lateinit var hexTagsService: HexTagsService
 
     private var currentPhotoUri: Uri? = null
 
@@ -94,7 +102,12 @@ class CaptureActivity : ThoughtManagerActivity() {
                         this@CaptureActivity
                     )
                 }
+                else {
+                    hsvTagSuggestions.isVisible = false
+                }
             }
+
+            etHexTags.addTextChangedListener { refreshTagSuggestions() }
 
             // SAVE BUTTON
             btnSave.setOnClickListener {
@@ -492,5 +505,85 @@ class CaptureActivity : ThoughtManagerActivity() {
     companion object {
         const val EXTRA_THOUGHT_ID = "EXTRA_THOUGHT_ID"
         const val EXTRA_CAPTURE_FORM = "EXTRA_CAPTURE_FORM"
+
+        // Marker plus two characters - enough to narrow the list without flashing it on every "@"
+        private const val SUGGESTION_MIN_CHARS = 2
+
+        private const val SOUL_MATE_MARKER = '@'
+        private const val PROJECT_MARKER = '#'
     }
+
+    // ===========================================
+    //      Tag suggestions
+    // ===========================================
+
+    /**
+     * Suggestions follow the tag being typed right now: the marker before the caret says whether it
+     * is a person or a project, so one field can serve both.
+     */
+    private fun refreshTagSuggestions() {
+        val typedTag = typedTagUnderCaret()
+
+        if (typedTag == null || typedTag.fragment.length < SUGGESTION_MIN_CHARS) {
+            binding.hsvTagSuggestions.isVisible = false
+            return
+        }
+
+        lifecycleScope.launch {
+            val names = hexTagsService.getSuggestions(typedTag.tagType, typedTag.fragment)
+
+            binding.llTagSuggestions.removeAllViews()
+            names.forEach { name -> binding.llTagSuggestions.addView(buildSuggestionChip(name, typedTag)) }
+            binding.hsvTagSuggestions.isVisible = names.isNotEmpty()
+        }
+    }
+
+    private fun buildSuggestionChip(name: String, typedTag: TypedTag): TextView {
+        val chip = layoutInflater
+            .inflate(R.layout.common_hex_tags_suggestion, binding.llTagSuggestions, false) as TextView
+
+        chip.text = name
+        chip.setOnClickListener { applySuggestion(name, typedTag) }
+        return chip
+    }
+
+    private fun applySuggestion(chosenName: String, typedTag: TypedTag) {
+        val text = binding.etHexTags.text?.toString().orEmpty()
+        val tagEnd = typedTag.startIndex + typedTag.fragment.length
+
+        val updated = text.substring(0, typedTag.startIndex) + chosenName + " " + text.substring(tagEnd)
+
+        binding.etHexTags.setText(updated)
+        binding.etHexTags.setSelection((typedTag.startIndex + chosenName.length + 1).coerceAtMost(updated.length))
+        binding.hsvTagSuggestions.isVisible = false
+    }
+
+    /** The unfinished tag before the caret, or null when the caret is not inside one. */
+    private fun typedTagUnderCaret(): TypedTag? {
+        val text = binding.etHexTags.text?.toString().orEmpty()
+        val caret = binding.etHexTags.selectionStart.coerceIn(0, text.length)
+        val before = text.substring(0, caret)
+
+        val markerIndex = maxOf(before.lastIndexOf(SOUL_MATE_MARKER), before.lastIndexOf(PROJECT_MARKER))
+        if (markerIndex == -1) return null
+
+        val tagType = if (before[markerIndex] == SOUL_MATE_MARKER) HexTagType.PERSON else HexTagType.PROJECT
+
+        // A separator after the marker means the tag is already finished and a new one has begun
+        val afterMarker = before.substring(markerIndex + 1)
+        val separatorIndex = afterMarker.indexOfLast { character -> character.isWhitespace() || character == ',' }
+
+        return TypedTag(
+            tagType    = tagType,
+            fragment   = afterMarker.substring(separatorIndex + 1),
+            startIndex = markerIndex + 1 + separatorIndex + 1
+        )
+    }
+
+    private data class TypedTag(
+        val tagType   : HexTagType,
+        val fragment  : String,
+        val startIndex: Int
+    )
+
 }

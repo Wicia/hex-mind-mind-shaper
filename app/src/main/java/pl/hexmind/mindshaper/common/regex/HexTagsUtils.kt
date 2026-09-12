@@ -7,44 +7,43 @@ class HexTagsUtils {
 
     companion object {
         fun parseInput(input: String?): HexTags {
-            val input = input.orEmpty()
+            val text = input.orEmpty()
 
-            // Find tag positions
-            val projectIndex = input.indexOf("#")
-            val soulMateIndex = input.indexOf("@")
-
-            // List of tags with positions (sorted)
-            data class Tag(val type: String, val index: Int)
-            val tags = mutableListOf<Tag>()
-            if (projectIndex != -1) tags.add(Tag("project", projectIndex))
-            if (soulMateIndex != -1) tags.add(Tag("soulMate", soulMateIndex))
-            tags.sortBy { it.index }
-
-            // Subject - text before first tag (null if empty)
-            val subject = if (tags.isNotEmpty()) {
-                val text = input.substring(0, tags.first().index).trim()
-                text.ifEmpty { null }
-            } else {
-                val text = input.trim()
-                text.ifEmpty { null }
+            // ! Every marker counts, not just the first one - with "@ja @michal" the second "@" has to
+            // end the first tag, otherwise its marker stays glued to the name and becomes part of it
+            val markers = text.mapIndexedNotNull { index, character ->
+                if (character == SOUL_MATE_MARKER || character == PROJECT_MARKER) index to character else null
             }
 
-            // Project - text after # (until next tag or end)
-            val project = if (projectIndex != -1) {
-                val start = projectIndex + 1
-                val nextTagIndex = tags.firstOrNull { it.index > projectIndex }?.index ?: input.length
-                input.substring(start, nextTagIndex).trim().ifEmpty { null }
-            } else null
+            // Subject - whatever comes before the first marker
+            val subjectText = if (markers.isEmpty()) text else text.substring(0, markers.first().first)
+            val subject = subjectText.trim().ifEmpty { null }
 
-            // SoulMate - text after @ (until next tag or end)
-            val soulMate = if (soulMateIndex != -1) {
-                val start = soulMateIndex + 1
-                val nextTagIndex = tags.firstOrNull { it.index > soulMateIndex }?.index ?: input.length
-                input.substring(start, nextTagIndex).trim().ifEmpty { null }
-            } else null
+            val soulMates = mutableListOf<String>()
+            val projects  = mutableListOf<String>()
 
-            return HexTags(subject = subject, soulMate = soulMate, project = project)
+            markers.forEachIndexed { position, (markerIndex, marker) ->
+                val nextMarkerIndex = markers.getOrNull(position + 1)?.first ?: text.length
+                val value = text.substring(markerIndex + 1, nextMarkerIndex).trim()
+                if (value.isEmpty()) return@forEachIndexed
+
+                if (marker == SOUL_MATE_MARKER) {
+                    soulMates += value
+                }
+                else {
+                    projects += value
+                }
+            }
+
+            return HexTags(
+                subject  = subject,
+                soulMate = soulMates.joinToString(" ").ifEmpty { null },
+                project  = projects.joinToString(" ").ifEmpty { null }
+            )
         }
+
+        private const val SOUL_MATE_MARKER = '@'
+        private const val PROJECT_MARKER = '#'
     }
 }
 

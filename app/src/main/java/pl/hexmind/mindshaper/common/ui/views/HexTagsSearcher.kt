@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -42,7 +43,11 @@ class HexTagsSearcher @JvmOverloads constructor(
         scrollView        = findViewById(R.id.hsv_criteria)
         hintView          = findViewById(R.id.tv_searcher_hint)
 
-        findViewById<View>(R.id.btn_open_search).setOnClickListener { onOpenRequested?.invoke() }
+        // The whole bar opens the sheet, not just the icon - the hint text reads like an invitation to tap
+        val openSearch = OnClickListener { onOpenRequested?.invoke() }
+        findViewById<View>(R.id.btn_open_search).setOnClickListener(openSearch)
+        hintView.setOnClickListener(openSearch)
+        setOnClickListener(openSearch)
 
         renderCriteria()
     }

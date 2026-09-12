@@ -46,6 +46,24 @@
                     android:minLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Tag suggestions -->
+            <HorizontalScrollView
+                android:id="@+id/hsv_tag_suggestions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:scrollbars="none"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/ll_tag_suggestions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    />
+
+            </HorizontalScrollView>
+
             <!-- VALIDATION INFO -->
             <TextView
                 android:id="@+id/tv_hex_tags_validation_info"
