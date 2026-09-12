@@ -45,9 +45,14 @@ class HexTagsService @Inject constructor(
         val typedName = typedText.trim().lowercase(Locale.ROOT)
         if (typedName.isEmpty()) return emptyList()
 
-        return hexTagDAO.findSimilarTags(tagType.name, HexTagNormalizer.normalize(typedName))
-            .map { hexTag -> hexTag.displayName }
-            .filter { displayName -> displayName != typedName }
+        val similarTags = hexTagDAO.findSimilarTags(tagType.name, HexTagNormalizer.normalize(typedName))
+
+        // ! Nothing to warn about when the tag already exists - the user is reusing it, not creating
+        // a variant. Without this, editing a thought tagged "powieść" kept offering "powiesc".
+        val tagAlreadyExists = similarTags.any { hexTag -> hexTag.displayName == typedName }
+        if (tagAlreadyExists) return emptyList()
+
+        return similarTags.map { hexTag -> hexTag.displayName }
     }
 
     // Recent first so the shortlist reacts to what the user is doing now, then filled with favourites

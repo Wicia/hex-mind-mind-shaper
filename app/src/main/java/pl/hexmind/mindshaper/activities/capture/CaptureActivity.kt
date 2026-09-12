@@ -555,7 +555,6 @@ class CaptureActivity : ThoughtManagerActivity() {
 
         binding.etHexTags.setText(updated)
         binding.etHexTags.setSelection((typedTag.startIndex + chosenName.length + 1).coerceAtMost(updated.length))
-        binding.hsvTagSuggestions.isVisible = false
     }
 
     /** The unfinished tag before the caret, or null when the caret is not inside one. */

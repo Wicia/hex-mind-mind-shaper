@@ -137,7 +137,6 @@ class StreamSearchBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    // One criterion per type here, so a chip replaces the whole field instead of appending
     private fun buildChip(
         name          : String,
         field         : HexInputField,
@@ -148,13 +147,30 @@ class StreamSearchBottomSheet : BottomSheetDialogFragment() {
             .inflate(R.layout.common_hex_tags_suggestion, chipsContainer, false) as TextView
 
         chip.text = name
-        chip.setOnClickListener {
-            field.setText(name)
-            scrollView.isVisible = false
-        }
+
+        // ! Do not hide the row here - setText triggers a refresh that shows it again, and the
+        // sheet visibly jumps as its height collapses and expands within one frame
+        chip.setOnClickListener { appendChosenTag(field, name) }
 
         return chip
     }
+
+    /**
+     * Several criteria of one type narrow the stream further ("maciek kamil" = thoughts about both),
+     * so a chip completes the tag being typed and leaves room for the next one.
+     */
+    private fun appendChosenTag(field: HexInputField, chosenName: String) {
+        val rawText      = field.getRawText()
+        val finishedTags = rawText.dropLast(typedPart(rawText).length).trim()
+
+        field.setText(
+            if (finishedTags.isEmpty()) "$chosenName " else "$finishedTags $chosenName "
+        )
+    }
+
+    /** The unfinished word after the last separator - a tag ends at a space or a comma. */
+    private fun typedPart(text: String): String =
+        text.takeLastWhile { character -> !character.isWhitespace() && character != ',' }
 
     override fun onDestroyView() {
         super.onDestroyView()

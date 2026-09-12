@@ -3,6 +3,7 @@ package pl.hexmind.mindshaper.activities.stream
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.view.doOnPreDraw
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.button.MaterialButton
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
@@ -38,8 +39,8 @@ class StreamActivity : CoreActivity() {
 
     private lateinit var viewPager: ViewPager2
 
-    // Raised on sort change, consumed once the new order is committed
-    private var isSortResetPending = false
+    // Raised when the order or the criteria change, consumed once the new list is committed
+    private var isListResetPending = false
     private lateinit var adapter: StreamAdapter
 
     private lateinit var btnSort: MaterialButton
@@ -155,6 +156,9 @@ class StreamActivity : CoreActivity() {
 //        }
 
         searcher.onTagsChanged = { hexTags ->
+            // A different set of criteria is a different stream - start reading it from the top
+            isListResetPending = true
+
             if (hexTags.areCriteriaEmpty()) {
                 viewModel.clearSearch()
             }
@@ -246,7 +250,7 @@ class StreamActivity : CoreActivity() {
 
         val dialog = SortDialogFragment(currentConfig) { newConfig ->
             // ! raise BEFORE the value changes - the VM's mediator rebuilds the list before this Activity's sortConfig observer runs
-            isSortResetPending = true
+            isListResetPending = true
             viewModel.updateSortConfig(newConfig)
         }
 
@@ -280,9 +284,12 @@ class StreamActivity : CoreActivity() {
             // Submit to adapter - will automatically animate changes with DiffUtil
             adapter.submitList(thoughtsDTO) {
                 // ! commit callback, not a timer - resetting before the diff lands moves the OLD position 0
-                if (isSortResetPending) {
-                    isSortResetPending = false
-                    viewPager.setCurrentItem(0, false)
+                if (isListResetPending) {
+                    isListResetPending = false
+
+                    // ! doOnPreDraw, not a plain call - at commit time the pager still sits on the OLD item count,
+                    // so "go to 0" does nothing until the inserted rows shift the current thought down
+                    viewPager.doOnPreDraw { viewPager.setCurrentItem(0, false) }
                 }
             }
         }

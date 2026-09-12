@@ -180,8 +180,8 @@ class StreamViewModel @Inject constructor(
         if (!query.areCriteriaEmpty()) {
             filtered = filtered.filter { thought ->
                 matchesCriteria(thought.subject, query.subject) &&
-                        matchesAnyTag(thought.people, query.person) &&
-                        matchesAnyTag(thought.projects, query.project)
+                        matchesEveryQueryTag(thought.people, query.person) &&
+                        matchesEveryQueryTag(thought.projects, query.project)
             }
         }
 
@@ -189,16 +189,20 @@ class StreamViewModel @Inject constructor(
     }
 
     /**
-     * A thought matches when ANY of its tags of that type contains the query.
+     * The query may name several tags, and the thought has to satisfy EVERY one of them -
+     * "maciek kamil" means thoughts about both, not about either.
      *
-     * Matching per tag, not on the joined text - searching "kamil" must find a thought tagged
-     * "ja" and "kamil", while "ja, kam" must not match anything just because the words sit next
-     * to each other in one string.
+     * ! Tags match EXACTLY, unlike the subject. A criterion is picked from suggestions, so it is a
+     * finished tag name - partial matching would quietly pull in "kamila" when asked for "kamil".
      */
-    private fun matchesAnyTag(tagNames: List<String>, searchQuery: String?): Boolean {
+    private fun matchesEveryQueryTag(tagNames: List<String>, searchQuery: String?): Boolean {
         if (searchQuery.isNullOrBlank()) return true
 
-        return tagNames.any { tagName -> tagName.contains(searchQuery, ignoreCase = true) }
+        return searchQuery.split(QUERY_SEPARATOR_PATTERN)
+            .filter { queryTag -> queryTag.isNotBlank() }
+            .all { queryTag ->
+                tagNames.any { tagName -> tagName.equals(queryTag, ignoreCase = true) }
+            }
     }
 
     private fun matchesCriteria(fieldValue: String?, searchQuery: String?): Boolean {
@@ -274,5 +278,10 @@ class StreamViewModel @Inject constructor(
     private fun firstTagAlphabetically(tagNames: List<String>): String? =
         tagNames.map { tagName -> tagName.lowercase() }
             .minOrNull()
+
+
+    private companion object {
+        val QUERY_SEPARATOR_PATTERN = Regex("[,\\s]+")
+    }
 
 }
