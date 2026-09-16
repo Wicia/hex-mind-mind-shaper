@@ -24,6 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.views.HexInputField
+import pl.hexmind.mindshaper.common.ui.views.HexTagsInputView
 import pl.hexmind.mindshaper.database.models.HexTagType
 import pl.hexmind.mindshaper.services.HexTagsService
 import javax.inject.Inject
@@ -49,6 +50,7 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
 
     @Inject
     lateinit var hexTagsService: HexTagsService
+
 
     private var _binding: CommonHexTagsBottomsheetBinding? = null
     private val binding get() = _binding!!
@@ -84,8 +86,8 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
         val currentProject = arguments?.getString(ARG_PROJECT)
 
         // Pre-fill fields with existing values
-        currentPerson?.let { binding.hifPerson.setText(it) }
-        currentProject?.let { binding.hifProject.setText(it) }
+        setupTagInput(binding.htvPerson, HexTagType.PERSON, R.string.common_hex_tags_hint_person, splitTags(currentPerson))
+        setupTagInput(binding.htvProject, HexTagType.PROJECT, R.string.common_hex_tags_hint_project, splitTags(currentProject))
 
         @Suppress("DEPRECATION")
         val iconItems: List<IconsGridItem> = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -99,12 +101,10 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
             selectedId = selectedDomainId
         )
 
-        setupSuggestions()
-
         binding.fabConfirm.setOnClickListener {
             val result = HexTags(
-                person = binding.hifPerson.getText().takeIf { it.isNotEmpty() },
-                project = binding.hifProject.getText().takeIf { it.isNotEmpty() },
+                person = binding.htvPerson.getTags().joinToString(" ").takeIf { it.isNotEmpty() },
+                project = binding.htvProject.getTags().joinToString(" ").takeIf { it.isNotEmpty() },
                 domainId = binding.igvDomains.selectedItemId
             )
 
@@ -117,82 +117,18 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    private fun setupSuggestions() {
-        bindSuggestions(
-            field          = binding.hifPerson,
-            scrollView     = binding.hsvSuggestionsPerson,
-            chipsContainer = binding.llSuggestionsPerson,
-            tagType        = HexTagType.PERSON
-        )
-
-        bindSuggestions(
-            field          = binding.hifProject,
-            scrollView     = binding.hsvSuggestionsProject,
-            chipsContainer = binding.llSuggestionsProject,
-            tagType        = HexTagType.PROJECT
-        )
-    }
-
-    /** Chips appear on focus and follow what is typed, so the sheet stays compact until it is needed. */
-    private fun bindSuggestions(
-        field         : HexInputField,
-        scrollView    : View,
-        chipsContainer: LinearLayout,
-        tagType       : HexTagType
+    private fun setupTagInput(
+        view       : HexTagsInputView,
+        tagType    : HexTagType,
+        hintRes    : Int,
+        initialTags: List<String>
     ) {
-        field.setOnFocusChangeListener { hasFocus ->
-            if (hasFocus) {
-                refreshSuggestions(field, scrollView, chipsContainer, tagType)
-            }
-            else {
-                scrollView.isVisible = false
-            }
-        }
+        view.setHint(hintRes)
+        view.setTags(initialTags)
 
-        field.addTextChangedListener {
-            if (field.hasFocus()) {
-                refreshSuggestions(field, scrollView, chipsContainer, tagType)
-            }
-        }
+        view.suggestionsProvider = { typedText -> hexTagsService.getSuggestions(tagType, typedText) }
+        view.queryRunner = { block -> viewLifecycleOwner.lifecycleScope.launch { block() } }
     }
-
-    private fun refreshSuggestions(
-        field         : HexInputField,
-        scrollView    : View,
-        chipsContainer: LinearLayout,
-        tagType       : HexTagType
-    ) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            // Only the tag being typed matters, not the ones already finished before a separator
-            val names = hexTagsService.getSuggestions(tagType, field.getRawText())
-
-            chipsContainer.removeAllViews()
-            names.forEach { name -> chipsContainer.addView(buildChip(name, field, chipsContainer)) }
-            scrollView.isVisible = names.isNotEmpty()
-        }
-    }
-
-    private fun buildChip(name: String, field: HexInputField, chipsContainer: LinearLayout): TextView {
-        val chip = LayoutInflater.from(requireContext())
-            .inflate(R.layout.common_hex_tags_suggestion, chipsContainer, false) as TextView
-
-        chip.text = name
-        chip.setOnClickListener { replaceTypedTag(field, name) }
-        return chip
-    }
-
-    // Swaps only the tag under the cursor, so picking a chip never wipes the earlier ones
-    private fun replaceTypedTag(field: HexInputField, chosenName: String) {
-        val finishedTags = field.getRawText().dropLast(typedPart(field.getRawText()).length).trim()
-
-        field.setText(
-            if (finishedTags.isEmpty()) "$chosenName " else "$finishedTags $chosenName "
-        )
-    }
-
-    /** The unfinished word after the last separator - a tag ends at a space or a comma. */
-    private fun typedPart(text: String): String =
-        text.takeLastWhile { character -> !character.isWhitespace() && character != ',' }
 
     /**
      * A tag spelled almost like an existing one is usually a slip, so the user gets a choice instead
@@ -275,8 +211,8 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
     private fun showExternalError(error: ValidationResult.Error) {
         val errorMessage : String = error.resolveMessage(requireContext())
         when (error.refProperty) {
-            ValidatedProperty.T_PEOPLE -> binding.hifPerson.showError(errorMessage)
-            ValidatedProperty.T_PROJECT    -> binding.hifProject.showError(errorMessage)
+            ValidatedProperty.T_PEOPLE,
+            ValidatedProperty.T_PROJECT -> android.widget.Toast.makeText(requireContext(), errorMessage, android.widget.Toast.LENGTH_SHORT).show()
             else -> { }
         }
     }

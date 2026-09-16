@@ -5,9 +5,11 @@ import android.text.InputType
 import android.transition.AutoTransition
 import android.transition.TransitionManager
 import android.util.AttributeSet
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.databinding.CommonHexInputFieldBinding
@@ -55,6 +57,10 @@ class HexInputField @JvmOverloads constructor(
                 binding.etInput.maxLines = maxLines
                 if (maxLines > 1) binding.etInput.isSingleLine = false
 
+                // Tick shown only where the field commits tags; hidden in plain inputs
+                binding.ivConfirm.isVisible =
+                    typedArray.getBoolean(R.styleable.HexInputField_showConfirmIcon, false)
+
             } finally {
                 typedArray.recycle()
             }
@@ -69,8 +75,26 @@ class HexInputField @JvmOverloads constructor(
 
     // ── Public API ────────────────────────────────────────────────
 
+    /** Key events from the inner field - the chip editor needs backspace on an empty input. */
+    fun setOnKeyListener(listener: (Int, KeyEvent) -> Boolean) {
+        binding.etInput.setOnKeyListener { _, keyCode, event -> listener(keyCode, event) }
+    }
+
+    /** The confirm tick commits the typed text as a tag - same effect as ending with a space. */
+    fun setOnConfirmClickListener(listener: () -> Unit) {
+        binding.ivConfirm.setOnClickListener { listener() }
+    }
+
     fun setOnFocusChangeListener(listener: (Boolean) -> Unit) {
         binding.etInput.setOnFocusChangeListener { _, hasFocus -> listener(hasFocus) }
+    }
+
+    fun setHint(hint: String) {
+        binding.tilInput.hint = hint
+    }
+
+    fun requestFocusOnField() {
+        binding.etInput.requestFocus()
     }
 
     fun getText(): String = binding.etInput.text?.toString()?.trim().orEmpty()

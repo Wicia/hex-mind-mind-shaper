@@ -4,6 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!-- Field + optional confirm tick overlaid on its right edge -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_input"
         app:boxBackgroundMode="none"
@@ -19,6 +24,7 @@
             android:layout_marginTop="8dp"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
+            android:paddingEnd="44dp"
             android:background="@drawable/shape_edit_text"
             android:inputType="textCapWords"
             android:maxLines="1"
@@ -26,6 +32,23 @@
             android:textColorHint="@color/_gray_lvl_3" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Confirm tick -->
+        <ImageView
+            android:id="@+id/iv_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:padding="6dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/common_hex_tags_add_tag_content_desc"
+            android:src="@drawable/ic_action_approve"
+            android:visibility="gone"
+            app:tint="@color/app_primary" />
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/tv_error"
@@ -35,6 +58,6 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="0dp"
-        android:visibility="invisible" />
+        android:visibility="gone" />
 
 </merge>
