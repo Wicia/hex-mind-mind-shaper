@@ -385,6 +385,8 @@
     <string name="settings_domain_edit_title">Edytuj domenę</string>
     <string name="settings_domain_edit_icons_title">| Ikona</string>
     <string name="settings_domain_edit_hint">Nazwa</string>
+    <string name="settings_domain_edit_hint_placeholder">Wpisz nazwę domeny</string>
+    <string name="settings_domain_edit_hint_floating">Nazwa domeny</string>
     <string name="settings_domain_edit_error_name_empty">Nazwa domeny nie może być pusta</string>
     <string name="settings_domain_edit_error_name_too_long">Nazwa domeny nie może przekraczać %s znaków</string>
 

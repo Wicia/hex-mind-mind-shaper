@@ -36,13 +36,25 @@ class HexInputField @JvmOverloads constructor(
         LayoutInflater.from(context), this
     )
 
+    // two-state hint - resting placeholder swaps to the floating-label text once
+    // the field is focused or non-empty; both fall back to app:hint when the paired attr is absent
+    private var restingHint: String? = null
+    private var floatingHint: String? = null
+    private var twoStateHint = false
+    private var externalFocusListener: ((Boolean) -> Unit)? = null
+
     init {
         orientation = VERTICAL
 
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(it, R.styleable.HexInputField)
             try {
-                binding.tilInput.hint = typedArray.getString(R.styleable.HexInputField_hint)
+                val hint = typedArray.getString(R.styleable.HexInputField_hint)
+                restingHint = typedArray.getString(R.styleable.HexInputField_hintPlaceholder) ?: hint
+                floatingHint = typedArray.getString(R.styleable.HexInputField_hintFloating) ?: hint
+                // Two-state only when the two texts actually differ; otherwise a plain single hint
+                twoStateHint = restingHint != floatingHint
+                binding.tilInput.hint = restingHint
 
                 // Apply hexInputType enum: all_chars=0 (default), text=1, number=2
                 val hexInputType = typedArray.getInt(R.styleable.HexInputField_hexInputType, 0)
@@ -67,6 +79,16 @@ class HexInputField @JvmOverloads constructor(
         }
 
         binding.etInput.addTextChangedListener { clearError() }
+
+        // swap resting <-> floating hint; "floated" = focused OR non-empty, so a filled field keeps the floating text after focus leaves
+        if (twoStateHint) {
+            binding.etInput.addTextChangedListener { applyStatefulHint() }
+        }
+        // Tone focus listener owns the view slot (a View has only one) - it does the hint swap AND forwards to the listener stored via setOnFocusChangeListener
+        binding.etInput.setOnFocusChangeListener { _, hasFocus ->
+            if (twoStateHint) applyStatefulHint()
+            externalFocusListener?.invoke(hasFocus)
+        }
     }
 
     fun addTextChangedListener(listener: (String) -> Unit) {
@@ -75,22 +97,27 @@ class HexInputField @JvmOverloads constructor(
 
     // ── Public API ────────────────────────────────────────────────
 
-    /** Key events from the inner field - the chip editor needs backspace on an empty input. */
-    fun setOnKeyListener(listener: (Int, KeyEvent) -> Boolean) {
-        binding.etInput.setOnKeyListener { _, keyCode, event -> listener(keyCode, event) }
-    }
-
-    /** The confirm tick commits the typed text as a tag - same effect as ending with a space. */
+    /** The "confirm tick" commits the typed text as a tag - same effect as ending with a space. */
     fun setOnConfirmClickListener(listener: () -> Unit) {
         binding.ivConfirm.setOnClickListener { listener() }
     }
 
     fun setOnFocusChangeListener(listener: (Boolean) -> Unit) {
-        binding.etInput.setOnFocusChangeListener { _, hasFocus -> listener(hasFocus) }
+        // stored, not set directly - the init focus listener owns the slot and forwards here, so the two-state hint swap is not clobbered
+        externalFocusListener = listener
     }
 
     fun setHint(hint: String) {
+        // programmatic single hint overrides any two-state config
+        restingHint = hint
+        floatingHint = hint
+        twoStateHint = false
         binding.tilInput.hint = hint
+    }
+
+    private fun applyStatefulHint() {
+        val floated = binding.etInput.hasFocus() || !binding.etInput.text.isNullOrEmpty()
+        binding.tilInput.hint = if (floated) floatingHint else restingHint
     }
 
     fun requestFocusOnField() {

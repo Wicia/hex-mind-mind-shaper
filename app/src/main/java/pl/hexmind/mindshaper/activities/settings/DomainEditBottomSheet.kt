@@ -68,7 +68,7 @@ class DomainEditBottomSheet(
         val domainName = arguments?.getString(ARG_DOMAIN_NAME)
         val selectedIconId = arguments?.getInt(ARG_SELECTED_ICON_ID, -1)?.takeIf { it != -1 }
 
-        domainName?.let { binding.etDomainName.setText(it) }
+        domainName?.let { binding.hifDomainName.setText(it) }
 
         @Suppress("DEPRECATION")
         val iconItems: List<IconsGridItem> = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -83,7 +83,7 @@ class DomainEditBottomSheet(
         )
 
         binding.fabConfirm.setOnClickListener {
-            val name = binding.etDomainName.text?.toString()?.trim() ?: ""
+            val name = binding.hifDomainName.getText()
             val iconId = binding.igvDomainIcons.selectedItemId
 
             // Validate name — icon selection is optional (keeps current if null)

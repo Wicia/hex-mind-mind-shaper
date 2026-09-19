@@ -60,6 +60,8 @@
         </attr>
         <attr name="maxLines" format="integer" />
         <attr name="showConfirmIcon" format="boolean" />
+        <attr name="hintPlaceholder" format="string|reference" />
+        <attr name="hintFloating" format="string|reference" />
     </declare-styleable>
 
     <declare-styleable name="GoalImportanceBadge">
