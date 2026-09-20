@@ -7,6 +7,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem
 import pl.hexmind.mindshaper.services.dto.DefaultCaptureForm
+import pl.hexmind.mindshaper.services.dto.StartScreen
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -37,6 +38,9 @@ class AppSettingsStorage @Inject constructor(
 
         // Default capture form
         private const val PARAM_DEFAULT_CAPTURE_FORM = "param_default_capture_form"
+
+        // Start screen
+        private const val PARAM_START_SCREEN = "param_start_screen"
 
         private const val PARAM_PHOTO_FEATURE_ENABLED = "photo_feature_enabled"
 
@@ -198,6 +202,19 @@ class AppSettingsStorage @Inject constructor(
     fun getDefaultCaptureForm(): DefaultCaptureForm {
         val value = sharedPreferences.getString(PARAM_DEFAULT_CAPTURE_FORM, "")
         return if (!value.isNullOrBlank()) DefaultCaptureForm.valueOf(value) else DefaultCaptureForm.TEXT
+    }
+
+    // === START SCREEN ===
+
+    fun setStartScreen(screen: StartScreen) {
+        sharedPreferences.edit {
+            putString(PARAM_START_SCREEN, screen.name)
+        }
+    }
+
+    fun getStartScreen(): StartScreen {
+        val value = sharedPreferences.getString(PARAM_START_SCREEN, "")
+        return if (!value.isNullOrBlank()) StartScreen.valueOf(value) else StartScreen.HOME
     }
 
     // === SLOW MODE ===

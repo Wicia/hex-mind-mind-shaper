@@ -76,6 +76,24 @@
                         android:columnOrderPreserved="false"
                         android:rowCount="4" />
 
+                    <!-- Start screen -->
+                    <TextView
+                        android:id="@+id/tv_start_screen_section_header"
+                        style="@style/TextView_Header_Section"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/settings_start_screen_header"
+                        />
+
+                    <!-- Start screen tiles -->
+                    <pl.hexmind.mindshaper.activities.settings.widgets.StartScreenTiles
+                        android:id="@+id/tiles_start_screen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        />
+
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>

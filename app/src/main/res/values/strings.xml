@@ -382,6 +382,10 @@
     <string name="settings_calendar_blockade_tooltip">Dostęp do kalendarza został zablokowany. Możesz go przywrócić w ustawieniach Androida.</string>
 
     <string name="settings_domains_header">🌾 Moje Domeny</string>
+    <string name="settings_start_screen_header">🧭 Ekran startowy</string>
+    <string name="settings_start_screen_home">Home</string>
+    <string name="settings_start_screen_stream">Strumień</string>
+    <string name="settings_start_screen_workshop">Warsztat</string>
     <string name="settings_domain_edit_title">Edytuj domenę</string>
     <string name="settings_domain_edit_icons_title">| Ikona</string>
     <string name="settings_domain_edit_hint">Nazwa</string>

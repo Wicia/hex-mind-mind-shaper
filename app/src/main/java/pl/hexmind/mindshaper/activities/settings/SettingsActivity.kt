@@ -111,6 +111,7 @@ class SettingsActivity : CoreActivity() {
         // so that tile states are ready before syncDefaultCaptureFormTileStates fires
         initDefaultCaptureFormConfig()
         initThoughtsValuesSystemConfig()
+        initStartScreenConfig()
         initSlowModeConfig()
         initDormantModeConfig()
         setupListeners()
@@ -558,6 +559,12 @@ class SettingsActivity : CoreActivity() {
         binding.tilesValueSystem.setSelected(appSettingsStorage.getThoughtValueSystem())
     }
 
+    // ========== START SCREEN ==========
+
+    private fun initStartScreenConfig() {
+        binding.tilesStartScreen.setSelected(appSettingsStorage.getStartScreen())
+    }
+
     // ========== SLOW MODE ==========
 
     private fun initSlowModeConfig() {
@@ -821,6 +828,8 @@ class SettingsActivity : CoreActivity() {
         appSettingsStorage.setDefaultCaptureForm(binding.tilesDefaultCaptureForm.getSelected())
 
         appSettingsStorage.setThoughtValueSystemId(binding.tilesValueSystem.getSelected())
+
+        appSettingsStorage.setStartScreen(binding.tilesStartScreen.getSelected())
 
         // Slow mode
         appSettingsStorage.setSlowModeEnabled(binding.switchSlowMode.isChecked)
