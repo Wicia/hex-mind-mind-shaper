@@ -679,7 +679,7 @@
                         <td class="mech-name">Wejście do formularza</td>
                         <td><ul class="cell">
                             <li><span class="location">Home</span> → <span class="bracket">dodaj</span></li>
-                            <li>formularz łapania myśli: Notatka (Rich Text) + Hex Tags</li>
+                            <li>formularz łapania myśli: Notatka (Rich Text) + metadane</li>
                         </ul></td>
                         <td><ul class="cell">
                             <li>otwarcie formularza w domyślnej formie tekstowej</li>
@@ -704,26 +704,67 @@
                             </li>
                         </ul></td>
                     </tr>
+                </tbody>
+            </table>
+        </div>
+        </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Dodawanie metadanych myśli</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <p class="feature-goal"><b>Potrzeba i Cel</b>✳️ powiązanie zapisywanej myśli z jej metadanymi — tytułem i hex tagami; wszystko wpisywane w jednym polu, w treści</p>
+            <table class="mech-table">
+                <thead>
+                    <tr>
+                        <th>Funkcja</th>
+                        <th>Wejścia, Dane, Stany</th>
+                        <th>Procesy, Opcje, Integracje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="mech-name">Tytuł (temat)</td>
+                        <td><ul class="cell">
+                            <li>✳️ tekst przed pierwszym markerem (max 36 zn.)</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>✳️ nagłówek/streszczenie myśli — nie jest tagiem, nie trafia do słownika tagów</li>
+                        </ul></td>
+                    </tr>
                     <tr>
                         <td class="mech-name">Hex Tagi</td>
                         <td><ul class="cell">
-                            <li>wpisywanie tekstu zawierającego w treści tagi tekstowe</li>
+                            <li>✳️ markery w treści: @tekst → osoba, #tekst → projekt (max 16 zn. na tag)</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>parsowanie Hex Tagów przy zapise myśli
+                            <li>✳️ parsowanie przy zapisie
                                 <ul>
-                                    <li>@tekst → pole „osoba" (max. dł. 36)</li>
-                                    <li>#tekst → pole „projekt" (max. dł. 36)</li>
-                                    <li>tekst → pole „temat" (max. dł. 36)</li>
+                                    <li>każdy marker zaczyna nowy tag: @ja @michal → dwie osoby</li>
+                                    <li>kilka tagów jednego rodzaju dozwolone; spacja lub przecinek rozdziela</li>
                                 </ul>
                             </li>
-                            <li>automatyczne kojarzenie jej z tagami opisującymi temat, osobę lub projekt</li>
+                            <li>automatyczne skojarzenie myśli z jej tagami</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Domena</td>
+                        <td><ul class="cell">
+                            <li>✳️ w Łapaniu nie ustawiana</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>✳️ przypisywana później w <span class="location">Edycja i szczegóły myśli</span></li>
                         </ul></td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        </details>
+    </details>
 
     <details class="req">
         <summary>
@@ -1316,6 +1357,89 @@
 
 <section class="panel" data-tab="Edycja i szczegóły myśli" data-row="2">
     <p class="panel-intro">Podgląd i edycja pojedynczej myśli.</p>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Dodawanie metadanych myśli</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <p class="feature-goal"><b>Potrzeba i Cel</b>✳️ przypisanie i poprawianie metadanych zapisanej myśli — tytułu, domeny i hex tagów (osoby, projekty); inaczej niż w <span class="location">Łapanie myśli</span>, gdzie powstają z markerów w treści</p>
+            <table class="mech-table">
+                <thead>
+                    <tr>
+                        <th>Funkcja</th>
+                        <th>Wejścia, Dane, Stany</th>
+                        <th>Procesy, Opcje, Integracje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="mech-name">Tytuł (temat)</td>
+                        <td><ul class="cell">
+                            <li>✳️ tap na temat → dialog edycji (max 36 zn.)</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>✳️ nagłówek/streszczenie myśli — nie jest tagiem</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Domena</td>
+                        <td><ul class="cell">
+                            <li>✳️ siatka ikon domen w arkuszu; jedna domena na myśl</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>✳️ wybór/zmiana podmienia dotychczasową</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Pola tagów</td>
+                        <td><ul class="cell">
+                            <li>✳️ osobne pole na osoby (Osoba lub Ekipa) i na projekty (Projekt lub Zajawka)</li>
+                            <li>✳️ podpowiedź w polu nazywa jego rodzaj — ta sama przed i po wejściu w pole</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>✳️ oba pola działają identycznie</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Dodawanie tagu</td>
+                        <td><ul class="cell">
+                            <li>✳️ wpisany tekst → chip po spacji albo <span class="bracket">✔</span> obok pola</li>
+                            <li>✳️ kilka tagów jednego rodzaju dozwolone</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>✳️ przecinek działa jak spacja; powtórzenie tej samej wartości nie tworzy duplikatu</li>
+                            <li>✳️ limit 16 znaków na tag</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Podpowiedzi</td>
+                        <td><ul class="cell">
+                            <li>✳️ pokazują się po tapnięciu w pole</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>✳️ domyślnie ostatnie + najczęstsze tagi; od 3 znaków dopasowane do wpisanego fragmentu</li>
+                            <li>✳️ wybór z podpowiedzi nie wywołuje ostrzeżenia</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Wariant istniejącego tagu</td>
+                        <td><ul class="cell">
+                            <li>✳️ wpisanie odmiany istniejącego tagu (np. powiesc obok powieść)</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>✳️ ostrzeżenie z wyborem: użyć istniejącego czy zostawić swój — warianty nigdy nie scalają się same</li>
+                            <li>✳️ osobne słowa zostają osobnymi tagami (sad ≠ sąd)</li>
+                        </ul></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </details>
 
     <details class="req">
         <summary>
