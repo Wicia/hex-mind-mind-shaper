@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import pl.hexmind.mindshaper.common.regex.HexTagNormalizer
 import pl.hexmind.mindshaper.database.models.HexTagEntity
+import pl.hexmind.mindshaper.database.models.HexTagUsage
 import pl.hexmind.mindshaper.database.models.ThoughtHexTagEntity
 
 @Dao
@@ -18,6 +19,23 @@ interface HexTagDAO {
 
     @Query("SELECT * FROM HEX_TAGS WHERE type = :type ORDER BY display_name ASC")
     suspend fun getTagsByType(type: String): List<HexTagEntity>
+
+    /**
+     * Every tag of a type with its usage count.
+     * LEFT JOIN so a tag linked to nothing still returns (count 0) - a never-used tag must stay listable.
+     */
+    @Query("""
+        SELECT t.display_name AS name, COUNT(link.thought_id) AS usage_count
+        FROM HEX_TAGS t
+        LEFT JOIN THOUGHT_HEX_TAGS link ON link.hex_tag_id = t.id
+        WHERE t.type = :type
+        GROUP BY t.id
+        ORDER BY usage_count DESC, t.display_name ASC
+    """)
+    suspend fun getTagsWithUsageByType(type: String): List<HexTagUsage>
+
+    @Query("UPDATE HEX_TAGS SET display_name = :displayName, normalized_name = :normalizedName WHERE id = :tagId")
+    suspend fun renameTag(tagId: Int, displayName: String, normalizedName: String)
 
     @Query("SELECT * FROM HEX_TAGS WHERE type = :type AND display_name = :displayName LIMIT 1")
     suspend fun findTag(type: String, displayName: String): HexTagEntity?

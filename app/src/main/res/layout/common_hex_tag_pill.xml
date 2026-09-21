@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hex tag pill (tappable) -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/TextView_Metadata"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/hex_tag_pill_spacing"
+    android:minWidth="80dp"
+    android:background="@drawable/ripple_hex_tag_pill"
+    android:paddingStart="18dp"
+    android:paddingEnd="18dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:maxLines="1"
+    android:ellipsize="end"
+    android:maxEms="12"
+    android:textColor="@color/text_primary"
+    />

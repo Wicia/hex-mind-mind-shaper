@@ -23,6 +23,7 @@ import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.common.ui.NavigationBarController
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
+import pl.hexmind.mindshaper.activities.metadata.MetadataActivity
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
 import pl.hexmind.mindshaper.activities.stream.StreamActivity
 import pl.hexmind.mindshaper.activities.workshop.GoalDetailActivity
@@ -60,7 +61,8 @@ open class CoreActivity : AppCompatActivity() {
              DetailsActivity::class.simpleName      to 1, // Highlight Stream icon when in Thought Details
             WorkshopActivity::class.java.simpleName to 2,
           GoalDetailActivity::class.java.simpleName to 2, // Highlight Workshop icon when in Goal Details
-            SettingsActivity::class.java.simpleName to 3
+            MetadataActivity::class.java.simpleName to 3,
+            SettingsActivity::class.java.simpleName to 4
         )
     }
 
@@ -194,7 +196,8 @@ open class CoreActivity : AppCompatActivity() {
                     0 -> navigateToHome()
                     1 -> navigateToStream()
                     2 -> navigateToWorkshop()
-                    3 -> navigateToSettings()
+                    3 -> navigateToMetadata()
+                    4 -> navigateToSettings()
                 }
             }
         }
@@ -243,6 +246,15 @@ open class CoreActivity : AppCompatActivity() {
     private fun navigateToWorkshop() {
         if (this::class.java.simpleName != WorkshopActivity::class.java.simpleName) {
             val intent = Intent(this, WorkshopActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            overrideTransitions()
+        }
+    }
+
+    private fun navigateToMetadata() {
+        if (this::class.java.simpleName != MetadataActivity::class.java.simpleName) {
+            val intent = Intent(this, MetadataActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
             overrideTransitions()

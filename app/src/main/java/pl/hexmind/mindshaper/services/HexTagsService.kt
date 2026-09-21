@@ -3,6 +3,7 @@ package pl.hexmind.mindshaper.services
 import pl.hexmind.mindshaper.common.regex.HexTagNormalizer
 import java.util.Locale
 import pl.hexmind.mindshaper.database.models.HexTagType
+import pl.hexmind.mindshaper.database.models.HexTagUsage
 import pl.hexmind.mindshaper.database.repositories.HexTagDAO
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -55,6 +56,49 @@ class HexTagsService @Inject constructor(
         return similarTags.map { hexTag -> hexTag.displayName }
     }
 
+    /**
+     * Tags of one type for the Metadata list: the self tag "ja" first (a core tag), then the rest
+     * most-used to least-used. Count 0 is kept, so a never-linked tag still shows.
+     */
+    suspend fun getTagsWithUsage(tagType: HexTagType): List<HexTagUsage> {
+        val tags = hexTagDAO.getTagsWithUsageByType(tagType.name)
+
+        // "ja" is stored lower case, so an exact match is safe; pull it out and pin it so it is not
+        // listed twice regardless of its own count
+        val selfTag = tags.firstOrNull { hexTag -> hexTag.name == SELF_TAG_NAME }
+        if (selfTag == null) {
+            return tags
+        }
+
+        return listOf(selfTag) + tags.filter { hexTag -> hexTag.name != SELF_TAG_NAME }
+    }
+
+    /**
+     * Renames a tag in the dictionary. A name already held by another tag of the same type is
+     * rejected (combining the two is a separate merge feature), so the caller can warn instead of
+     * hitting the unique (display_name, type) index.
+     */
+    suspend fun renameTag(tagType: HexTagType, currentName: String, newName: String): RenameOutcome {
+        val displayName = newName.trim().lowercase(Locale.ROOT)
+        if (displayName.isEmpty()) {
+            return RenameOutcome.NOT_FOUND
+        }
+
+        val currentTag = hexTagDAO.findTag(tagType.name, currentName)
+            ?: return RenameOutcome.NOT_FOUND
+        if (displayName == currentTag.displayName) {
+            return RenameOutcome.UNCHANGED
+        }
+
+        val clashingTag = hexTagDAO.findTag(tagType.name, displayName)
+        if (clashingTag != null) {
+            return RenameOutcome.NAME_TAKEN
+        }
+
+        hexTagDAO.renameTag(currentTag.id!!, displayName, HexTagNormalizer.normalize(displayName))
+        return RenameOutcome.RENAMED
+    }
+
     // Recent first so the shortlist reacts to what the user is doing now, then filled with favourites
     private suspend fun defaultSuggestions(tagType: HexTagType): List<String> {
         val recent   = hexTagDAO.getRecentTagNames(tagType.name, RECENT_COUNT)
@@ -83,5 +127,15 @@ class HexTagsService @Inject constructor(
         const val SUGGESTIONS_LIMIT = 5
 
         const val FRAGMENT_MIN_CHARS = 3
+
+        // The self / core person tag, pinned to the front of the Metadata list
+        const val SELF_TAG_NAME = "ja"
     }
+}
+
+enum class RenameOutcome {
+    RENAMED,
+    NAME_TAKEN,
+    UNCHANGED,
+    NOT_FOUND
 }
