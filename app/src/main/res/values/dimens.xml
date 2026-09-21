@@ -1,2 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <!-- Space around hex tag pills (Metadata lists) - the single "wszech-margin" knob -->
+    <dimen name="hex_tag_pill_spacing">12dp</dimen>
+</resources>

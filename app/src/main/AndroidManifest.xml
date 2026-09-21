@@ -95,6 +95,12 @@
             android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity" />
 
         <activity
+            android:name="pl.hexmind.mindshaper.activities.metadata.MetadataActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MindShaper.NoActionBar"
+            android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity" />
+
+        <activity
             android:name="pl.hexmind.mindshaper.activities.workshop.GoalDetailActivity"
             android:exported="false"
             android:theme="@style/Theme.MindShaper.NoActionBar"

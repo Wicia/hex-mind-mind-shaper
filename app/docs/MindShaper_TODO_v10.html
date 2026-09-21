@@ -1,0 +1,1084 @@
+<style>:root{
+    --cream:#FFF4E6;
+    --surface:#FFFFFF;
+    --orange-1:#FFE1C8;
+    --orange-2:#FFC59A;
+    --orange-3:#FFA86B;
+    --graphite:#48433F;
+    --muted:#88807A;
+    --hair:#BEBEBE;
+    --green:#A7FFCA;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:40px 20px 80px;
+    background:var(--cream);
+    color:var(--graphite);
+    font-family:"Alegreya",Georgia,serif;
+    font-size:17px; line-height:1.65;
+  }
+  .wrap{max-width:760px; margin:0 auto}
+  h1{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:600; font-size:30px; line-height:1.25;
+    margin:0 0 6px;
+  }
+  .lede{margin:0 0 34px; color:var(--muted); font-style:italic}
+  h2{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:500; font-size:20px;
+    margin:38px 0 14px; display:flex; align-items:baseline; gap:10px;
+  }
+  h2 .count{
+    font-family:"Alegreya",serif; font-size:14px; font-style:italic;
+    color:var(--muted); font-weight:400;
+  }
+  details.item{
+    background:var(--surface);
+    border:1px solid var(--orange-1);
+    border-radius:12px;
+    margin-bottom:10px;
+    overflow:hidden;
+  }
+  details.item[open]{border-color:var(--orange-2)}
+  summary{
+    list-style:none; cursor:pointer;
+    padding:14px 18px 14px 46px;
+    position:relative;
+    font-size:17px;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary:focus-visible{outline:2px solid var(--orange-3); outline-offset:-2px}
+  /* chevron marker (matches Requirements ribbons) */
+  summary::before{
+    content:""; position:absolute; left:15px; top:16px;
+    width:20px; height:20px;
+    background-color:#7a2e12;
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;
+    mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;
+    transition:transform .15s ease;
+  }
+  details[open] summary::before{transform:rotate(180deg)}
+  summary::after{
+    content:"▸"; position:absolute; right:16px; top:14px;
+    color:var(--hair); font-size:15px;
+    transition:transform .18s ease;
+  }
+  details[open] summary::after{transform:rotate(90deg)}
+  summary b{font-weight:500}
+  .body{padding:2px 18px 16px 46px; border-top:1px solid #F0EAE4}
+  .prio{
+    display:inline-block;
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-size:11px; font-weight:600;
+    padding:2px 10px; border-radius:20px;
+    margin-right:8px;
+    vertical-align:middle;
+  }
+  .prio.crit{background:#F8D7D5; color:#9B2C22}
+  .prio.imp{background:#FCEFC7; color:#8A6D00}
+  .prio.minor{background:#DFF0D8; color:#3C763D}
+  .body ul{margin:12px 0 0; padding-left:20px}
+  .body li{margin-bottom:7px}
+  .body li::marker{color:var(--orange-2)}
+  code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:14px; background:var(--cream);
+    padding:1px 5px; border-radius:4px;
+  }
+  .gain{
+    margin-top:12px; padding:9px 13px;
+    background:var(--cream); border-left:3px solid var(--orange-3);
+    border-radius:0 6px 6px 0; font-size:15px;
+  }
+  .gain b{font-weight:500}
+  .where{
+    margin-top:12px; padding:10px 13px;
+    background:#FBF7F3; border:1px dashed var(--orange-2);
+    border-radius:8px; font-size:14.5px;
+  }
+  .where .lbl{
+    font-family:"Baloo 2",system-ui,sans-serif; font-weight:500;
+    font-size:13px; letter-spacing:.03em; text-transform:uppercase;
+    color:var(--muted); display:block; margin-bottom:5px;
+  }
+  .where ul{margin:0; padding-left:18px}
+  .where li{margin-bottom:4px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}</style>
+<div class="wrap">
+  <h1>Mind Shaper — TODO</h1>
+  <p class="lede">Rzeczy do sprzątnięcia i rozstrzygnięcia, wychwycone przy audycie spec ↔ kod.</p>
+  <h2>Kolejne funkcje i kroki</h2>
+    <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span> 
+      <strong>Deep link „Ukończ" na Androidzie 12+</strong> — sprawdzić, czy tap w wydarzeniu kalendarza faktycznie otwiera aplikację.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>od Androida 12 (API 31) niezweryfikowane linki https domyślnie otwierają przeglądarkę, nie aplikację</li>
+        <li>przetestować realnie na urządzeniu z Android 12+ — dotychczasowy test mógł być na starszym systemie lub z ręcznie włączonymi „obsługiwanymi linkami"</li>
+        <li>jeśli nie działa: albo pełna weryfikacja App Links (wymaga realnej domeny hostującej plik weryfikacyjny), albo podpowiedź dla użytkownika, by włączył „Otwieraj obsługiwane linki" w ustawieniach aplikacji</li>
+        <li>zakres decyzji zależy od tego, czy kiedykolwiek powstanie realna domena 
+          <code>mindshaper.app</code>
+        </li>
+      </ul>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span> 
+      <strong>Kolor „Mango" wydarzeń — czy zostaje</strong> — rozstrzygnąć, czy w ogóle robić ten feature.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>działa tylko na kontach z własną paletą kolorów (Google); kalendarze lokalne dostają kolor domyślny → efekt niespójny między kontami</li>
+        <li>wymaga dodatkowego zapytania do dostawcy kalendarza o paletę przy każdym tworzeniu wpisu — koszt vs korzyść czysto kosmetyczna</li>
+        <li>alternatywy: stały kolor z palety wydarzeń, albo rezygnacja i poleganie na prefiksie ✨ w tytule jako jedynym wyróżniku</li>
+        <li>decyzja: zostawić / uprościć / wyciąć</li>
+      </ul>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span> 
+      <strong>Zamykanie panelu nawigacji przyciskiem „wstecz"</strong> — systemowy back wychodzi z ekranu zamiast schować wysunięty panel.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>panel jest własny (nie 
+          <code>DrawerLayout</code>), więc nie dostaje tego zachowania za darmo
+        </li>
+        <li>użytkownicy odruchowo oczekują, że „wstecz" najpierw zamknie wysunięty panel</li>
+        <li>rozwiązanie: 
+          <code>OnBackPressedCallback</code> aktywny tylko przy otwartym panelu — wywołuje zamknięcie zamiast wyjścia z ekranu
+        </li>
+        <li>przy okazji rozważyć otwieranie gestem przeciągnięcia od lewej krawędzi (druga rzecz, którą 
+          <code>DrawerLayout</code> dawał sam)
+        </li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>common/ui/NavigationBarController.kt</code> — stan 
+            <code>isExpanded</code> i 
+            <code>closeDrawer()</code>
+          </li>
+          <li>
+            <code>activities/CoreActivity.kt</code> — rejestracja callbacku obok tworzenia kontrolera nawigacji
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio crit">Krytyczny</span> 
+      <b>Rozszerzenie filtrowania myśli</b> — dołożyć kryteria obok stanu i domeny.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>
+          <b>Domena</b> — wybór jednej 
+          <b>lub wielu</b> domen naraz (dziś tylko jedna)
+        </li>
+        <li>
+          <b>Czas utworzenia</b>
+          <ul>
+            <li>Dzisiaj</li>
+            <li>Wczoraj</li>
+            <li>Ostatni tydzień</li>
+            <li>Ostatni miesiąc</li>
+          </ul>
+        </li>
+        <li>
+          <b>Wartość</b>
+          <ul>
+            <li>większa lub równa X (np. &gt;= 3)</li>
+            <li>mniejsza lub równa X</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </details>
+<details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span> 
+      <strong>Przeglądanie tagów</strong> — lista Ludzi/Ekip i Projektów z licznikami, z możliwością edycji.
+    </summary>
+    <div class="body">
+      <ul>
+        <li><strong>Filtr u góry</strong> — dwa chipy: <code>Ludzie/Ekipy</code> oraz <code>Projekty</code>; wybór przełącza listę</li>
+        <li><strong>Sortowanie (MVP)</strong> — od najczęściej używanych do najrzadszych
+          <ul>
+            <li>liczba = ile myśli ma dany tag (w obrębie jego typu)</li>
+          </ul>
+        </li>
+        <li><strong>Element listy</strong> — nazwa tagu + ikona kategorii + liczba, wg której sortujemy + ikona tej liczby</li>
+        <li><strong>Edycja tagu</strong> — zmiana nazwy działa wszędzie tam, gdzie tag jest użyty
+          <ul>
+            <li>to jedyny sposób, by naprawić literówkę bez grzebania w bazie</li>
+            <li>docelowo też scalanie dwóch tagów w jeden</li>
+          </ul>
+        </li>
+        <li><strong>Opcja (do rozważenia): dane kontaktowe przy tagu osoby</strong>
+          <ul>
+            <li>oprócz nazwy: numer telefonu, e-mail albo nazwa w komunikatorze (Messenger / WhatsApp / Discord / SMS)</li>
+            <li>tap w telefon/SMS otwiera domyślną aplikację albo kontakt</li>
+            <li>tap w komunikator próbuje go otworzyć</li>
+            <li><strong>Zanim to zaprojektujesz:</strong> od Androida 11 sprawdzenie „czy komunikator jest zainstalowany" wymaga wpisu <code>&lt;queries&gt;</code> w manifeście — bez niego wykrycie zawsze zwróci fałsz i przycisk wygląda na zepsuty. Telefon i SMS przez intencję są bez uprawnień; bezpośrednie dzwonienie (<code>CALL_PHONE</code>) już je wymaga</li>
+          </ul>
+        </li>
+      </ul>
+      <div class="gain"><b>Po co:</b> dziś duplikatów i literówek w tagach nie da się naprawić z poziomu aplikacji — trzeba grzebać w bazie. Lista tagów to też miejsce na scalanie i zmianę nazwy (do dorobienia po MVP).</div>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>HEX_TAGS</code> + <code>THOUGHT_HEX_TAGS</code> — liczniki gotowe zapytaniem <code>GROUP BY</code></li><li><code>services/HexTagsService.kt</code> — dołożyć listowanie z licznikami</li><li>nowy ekran + ewentualne pole kontaktowe w <code>HexTagEntity</code></li></ul></div>
+    </div>
+  </details>
+
+<details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span> 
+      <strong>Auto-tagowanie z treści notatki</strong> — markery w tekście notatki tworzą tagi w Hex Tagach.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>gdy w treści notatki pojawi się <code>@nazwa</code> → dodaj tag osoby, <code>#nazwa</code> → tag projektu</li>
+        <li>tylko jeśli takiego tagu jeszcze nie ma na myśli (bez duplikatów)</li>
+        <li>działa w tle przy zapisie notatki — użytkownik nie musi otwierać arkusza tagów</li>
+      </ul>
+      <div class="gain"><b>Po co:</b> piszesz „spotkanie z @seba w #powiesc" i tagi tworzą się same z treści, zamiast wpisywać je drugi raz w arkuszu.</div>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>HexTagsUtils.parseInput()</code> — ten sam parser markerów już istnieje</li><li>zapis notatki w <code>ThoughtsService</code> — po zapisie treści wyciągnij markery i dopnij brakujące tagi przez <code>replaceTagsOfType</code></li></ul></div>
+    </div>
+  </details>
+
+    <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span> 
+      <strong>Kryteria szukania jako pigułki w arkuszu</strong> — pokazywać wybrane kryteria jako pigułki oznaczone typem (osoba / projekt), a nie surowy tekst.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>pigułka per kryterium, z wizualnym oznaczeniem rodzaju (osoba vs projekt) — np. ikona typu, jak na karcie w Strumieniu</li>
+        <li>szukanie po wielu tagach już działa (np. dwie osoby naraz) — brakuje tylko czytelnej reprezentacji wybranych kryteriów</li>
+        <li>spójność wizualna z chipami tagów w Szczegółach (ten sam język: wypełniona pigułka = aktywne kryterium)</li>
+      </ul>
+      <div class="gain"><b>Po co:</b> filtrujesz po dwóch osobach naraz — chcesz od razu widzieć dwie pigułki-osoby, zamiast czytać surowy tekst i domyślać się, po czym właściwie szukasz.</div>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li>arkusz szukajki — <code>StreamSearchBottomSheet</code> / <code>stream_search_bottomsheet.xml</code></li></ul></div>
+    </div>
+  </details>
+
+
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span> 
+      <strong>Scalanie tagów przez drag &amp; drop</strong> — przeciągnięcie jednej piguły na drugą łączy oba tagi w jeden.
+    </summary>
+    <div class="body">
+      <ul>
+        <li><strong>Gest</strong> — chwyt piguły <code>AAA (2)</code> i upuszczenie na <code>BBB (3)</code>; upuszczenie na samą siebie ignorowane</li>
+        <li><strong>Bottom sheet</strong> — pole nazwy domyślnie <code>AAA / BBB</code>; user ustala finalną nazwę (wzór z <code>HexTagEditBottomSheet</code>)</li>
+        <li><strong>Liczba</strong> — <code>3 + 2 = 5</code> tylko gdy zbiory myśli rozłączne; realnie liczba <strong>unikalnych</strong> myśli (myśl z oboma tagami liczona raz), bo klucz <code>THOUGHT_HEX_TAGS(thought_id, hex_tag_id)</code> dedupuje</li>
+        <li><strong>UI drag</strong> — piguły to dzieci wiersza, nie itemy RecyclerView → <code>View.startDragAndDrop</code> + <code>OnDragListener</code>, nie <code>ItemTouchHelper</code></li>
+        <li><strong>Edge</strong> — finalna nazwa = trzeci istniejący tag → scalanie 3-drożne (reuse <code>getOrCreateTagId</code>)</li>
+      </ul>
+      <div class="gain"><b>Po co:</b> duplikaty i warianty tej samej osoby („kasia" / „kaśka") łączysz jednym gestem, zamiast czyścić bazę ręcznie.</div>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>services/HexTagsService.kt</code> + <code>HexTagDAO</code> — scalenie w <code>@Transaction</code> (<code>UPDATE OR IGNORE</code> re-link + sprzątnięcie kolizji + usunięcie taga)</li><li><code>activities/metadata/</code> — adapter (drag) + bottom sheet scalania</li></ul></div>
+    </div>
+  </details>
+
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span> 
+      <strong>Seed startowych tagów (Osoba + Projekt)</strong> — zestaw tagów istnieje od pierwszego uruchomienia, nie dopiero gdy user je stworzy.
+    </summary>
+    <div class="body">
+      <ul>
+        <li><strong>Zakres</strong> — obie kategorie: Osoba (PERSON) i Projekt (PROJECT) dostają własny zestaw seedowanych tagów (listy do ustalenia); <code>ja</code> to element seeda Osoby</li>
+        <li><strong>Migracja</strong> — <code>INSERT OR IGNORE INTO HEX_TAGS(display_name, normalized_name, type) VALUES(...)</code> dla wszystkich seedów; łapie istniejące bazy przy update (bump <code>DB_VERSION</code> + nowa migracja)</li>
+        <li><strong>Świeże instalacje</strong> — <code>RoomDatabase.Callback.onCreate</code> przez <code>.addCallback(...)</code>; dziś brak jakiegokolwiek callbacku/seedu w <code>DatabaseModule</code></li>
+        <li><strong>Do rozważenia</strong> — czy seedowane core-tagi (np. <code>ja</code>) mają być nieusuwalne / oznaczone</li>
+      </ul>
+      <div class="gain"><b>Po co:</b> lista Metadanych nie startuje pusta — <code>ja</code> i podstawowe tagi są od razu, spójnie u nowych i istniejących instalacji.</div>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>database/DatabaseModule.kt</code> (builder + callback), <code>database/initialization/Migrations.kt</code> (migracja), <code>AppDatabase.kt</code> (<code>DB_VERSION</code>)</li></ul></div>
+    </div>
+  </details>
+
+  <h2>Sprzątanie / Refactoring</h2>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span> 
+      <strong>Pasek nawigacji</strong> — prosi o dostęp do ustawień, z którego wcale nie korzysta.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>ślad po planowanym „zapamiętywaniu stanu", którego nie dokończono</li>
+        <li>dostęp jest wstrzykiwany z zewnątrz → poprawka w 2 miejscach: sam pasek i miejsce, które go tworzy</li>
+        <li>to nie jedna linia do skasowania</li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>common/ui/NavigationBarController.kt</code> — parametr konstruktora 
+            <code>appSettings: AppSettingsStorage</code> (linia 17) i jego import (13)
+          </li>
+          <li>
+            <code>activities/CoreActivity.kt</code> — miejsce tworzenia: 
+            <code>NavigationBarController(navBar, appSettingsStorage)</code> (linia 191)
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span> 
+      <strong>
+        <code>common_rich_text_view.xml</code>
+      </strong> — layout po starym widoku HTML, którego nikt nie inflatuje.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>brak referencji w całym projekcie (potwierdzone grepem)</li>
+        <li>w środku 
+          <code>&lt;org.sufficientlysecure.htmltextview.HtmlTextView&gt;</code>
+        </li>
+        <li>po usunięciu znika ostatnie użycie biblioteki → można wyrzucić zależność 
+          <code>org.sufficientlysecure:html-textview</code>
+        </li>
+        <li>w 
+          <code>libs.versions.toml</code> została też sierota 
+          <code>htmlTextview = "4.0"</code> bez wpisu w 
+          <code>[libraries]</code>
+        </li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>res/layout/common_rich_text_view.xml</code> — cały plik do usunięcia
+          </li>
+          <li>
+            <code>app/build.gradle.kts</code> → 
+            <code>dependencies</code> — zależność 
+            <code>org.sufficientlysecure:html-textview</code>
+          </li>
+          <li>
+            <code>gradle/libs.versions.toml</code> → 
+            <code>[versions]</code> — sierota 
+            <code>htmlTextview = "4.0"</code>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span> 
+      <strong>
+        <code>common_onb_dialog_header</code>
+      </strong> — string, który stracił rację bytu.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>był zapasowym tytułem wskazówki; zbędny, odkąd 
+          <code>titleRes</code> jest wymagany
+        </li>
+        <li>jedyne wystąpienie to własna definicja w 
+          <code>strings.xml</code>
+        </li>
+        <li>decyzja: usunąć czy zostawić na zapas</li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>res/values/strings.xml</code> — jedyne wystąpienie, sama definicja
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span> 
+      <strong>Compose</strong> — cała biblioteka podpięta, a w kodzie ani jednego użycia.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>zero 
+          <code>@Composable</code>, importów 
+          <code>androidx.compose</code>, 
+          <code>setContent</code>, 
+          <code>ComponentActivity</code>
+        </li>
+        <li>do usunięcia: 
+          <code>buildFeatures { compose = true }</code> i cały blok 
+          <code>composeOptions</code>
+        </li>
+        <li>zależności: BOM ×2, activity-compose, material3, ui, ui-graphics, ui-tooling-preview, ui-tooling, ui-test-manifest, ui-test-junit4</li>
+        <li>z 
+          <code>[versions]</code>: 
+          <code>activityCompose</code>, 
+          <code>composeBom</code>; z 
+          <code>[libraries]</code>: 8 wpisów sekcji 
+          <code># Compose</code>
+        </li>
+      </ul>
+      <div class="gain">
+        <strong>Zysk:</strong> 
+        <code>compose = true</code> odpala kompilator Compose przy każdym buildzie, choć nie ma czego kompilować.
+      </div>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>app/build.gradle.kts</code> → 
+            <code>android { buildFeatures { compose = true } }</code> oraz cały blok 
+            <code>composeOptions</code>
+          </li>
+          <li>
+            <code>app/build.gradle.kts</code> → 
+            <code>dependencies</code> — sekcja 
+            <code>// Compose</code> + 
+            <code>debugImplementation</code> ui-tooling / ui-test-manifest + 
+            <code>androidTestImplementation</code> BOM i ui-test-junit4
+          </li>
+          <li>
+            <code>gradle/libs.versions.toml</code> → 
+            <code>[versions]</code>: 
+            <code>activityCompose</code>, 
+            <code>composeBom</code>; 
+            <code>[libraries]</code>: 8 wpisów sekcji 
+            <code># Compose</code>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span> 
+      <strong>Pięć zależności</strong> zadeklarowanych, ale nieużywanych.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>
+          <code>navigation-fragment-ktx</code> + 
+          <code>navigation-ui-ktx</code> — brak 
+          <code>res/navigation</code>
+        </li>
+        <li>
+          <code>dexter</code> — jest własny 
+          <code>PermissionService</code>
+        </li>
+        <li>
+          <code>androidsvg</code>, 
+          <code>preference-ktx</code>, 
+          <code>speeddial</code>
+        </li>
+        <li>zweryfikować przed usunięciem: sprawdzenie było grepem po 
+          <code>src/</code>, coś może być używane inaczej
+        </li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>app/build.gradle.kts</code> → 
+            <code>dependencies</code>
+          </li>
+          <li>
+            <code>gradle/libs.versions.toml</code> → 
+            <code>[versions]</code> i 
+            <code>[libraries]</code> — odpowiadające wpisy
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span> 
+      <strong>
+        <code>mapstruct_processor</code>
+      </strong> — osierocona wersja w katalogu.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>nieużywana, bo 
+          <code>mapstruct-processor</code> odwołuje się do 
+          <code>version.ref = "mapstruct"</code>
+        </li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>gradle/libs.versions.toml</code> → 
+            <code>[versions]</code>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span> 
+      <strong>Katalog wersji</strong> — trzy zależności wpisane obok konwencji.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>Markwon, PhotoView i exifinterface jako gołe stringi w 
+          <code>dependencies</code>
+        </li>
+        <li>reszta projektu idzie przez 
+          <code>libs.versions.toml</code>
+        </li>
+        <li>ujednolicić przy okazji sprzątania</li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>app/build.gradle.kts</code> — końcówka 
+            <code>dependencies</code>, trzy wpisy jako gołe stringi
+          </li>
+          <li>
+            <code>gradle/libs.versions.toml</code> — miejsce docelowe wpisów
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span> 
+      <strong>
+        <code>gradle-wrapper.jar</code>
+      </strong> — brakuje go w 
+      <code>gradle/wrapper</code>.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>jest tylko 
+          <code>gradle-wrapper.properties</code>
+        </li>
+        <li>bez 
+          <code>.jar</code> polecenie 
+          <code>gradlew</code> z terminala nie zadziała
+        </li>
+        <li>build w samym Android Studio działa, więc istotne tylko przy budowaniu z linii poleceń</li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>gradle/wrapper/</code> — jest tylko 
+            <code>gradle-wrapper.properties</code>
+          </li>
+          <li>odtworzenie: 
+            <code>gradle wrapper --gradle-version 8.13</code> albo skopiowanie z nowego projektu
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span> 
+      <strong>Kanał zdarzeń dla dialogów z ViewModelu</strong> — dziś dialog odpalany jest lambdą przekazaną w dół, co nie przeżywa obrotu ekranu.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>dotyczy m.in. pytania „czy usunąć całą myśl" po skasowaniu ostatniej formy — 
+          <code>deletePhoto {}</code>, 
+          <code>deleteAudioRecording {}</code>, 
+          <code>deleteRichText {}</code>
+        </li>
+        <li>lambda działa, ale prezentacja jest zaszyta w wywołaniu, a nie oddzielona od decyzji</li>
+        <li>docelowo: ViewModel emituje jednorazowe zdarzenie ( 
+          <code>Channel</code> albo jednorazowa 
+          <code>LiveData</code>), Activity nasłuchuje i pokazuje dialog
+        </li>
+        <li>zysk: dialog nie wraca po obrocie ekranu, logika „czy pusto" siedzi w jednym miejscu</li>
+        <li>świadomie odłożone — nowy wzorzec w projekcie, a przy apce offline dla jednej osoby korzyść jest niewielka</li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>activities/details/DetailsViewModel.kt</code> — 
+            <code>deletePhoto()</code>, 
+            <code>deleteAudioRecording()</code>, 
+            <code>deleteRichText()</code>: parametr 
+            <code>onLastFormRemoved: () -&gt; Unit</code> do zastąpienia zdarzeniem
+          </li>
+          <li>
+            <code>activities/details/DetailsActivity.kt</code> — 
+            <code>showDeleteEmptyThoughtDialog()</code> i trzy wywołania w callbackach widgetów
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span> 
+      <strong>Dwa dialogi pod rząd przy ostatniej formie</strong> — potwierdzenie usunięcia formy i pytanie o pustą myśl pojawiają się jedno po drugim.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>docelowo jeden dialog: „Po usunięciu tej formy zapisu myśli cała myśl będzie pusta. Co zrobić?"</li>
+        <li>trzy akcje, bo scalenie odbiera możliwość wycofania się: 
+          <strong>[Usuń myśl]</strong>, 
+          <strong>[Zostaw pustą]</strong>, 
+          <strong>[Anuluj]</strong> — 
+          <code>ActionsDialog</code> obsługuje caution + standard + dismiss
+        </li>
+        <li>przy nieostatniej formie zostaje obecny dialog bez zmian</li>
+      </ul>
+      <div class="gain">
+        <strong>Przeszkoda:</strong> potwierdzenie siedzi wewnątrz trzech współdzielonych widgetów ( 
+        <code>HexTextView</code>, 
+        <code>HexAudioView</code>, 
+        <code>HexPhotoView</code>), które nie wiedzą nic o pozostałych formach — a te same widgety działają też w Łapaniu myśli, gdzie myśl jeszcze nie istnieje.
+      </div>
+      <ul>
+        <li>
+          <strong>Gotowy plan:</strong> do callbacku każdego widgetu dochodzi metoda „czy sam obsłużysz potwierdzenie?" z domyślną implementacją 
+          <code>false</code>
+        </li>
+        <li>widget pyta hosta; jeśli host przejmuje — nie pokazuje własnego dialogu</li>
+        <li>Łapanie myśli nie wymaga wtedy ani jednej linijki zmiany</li>
+        <li>odrzucone: trzymanie w widgecie flagi „jesteś ostatni" (widget poznaje reguły biznesowe, flaga może się rozjechać ze stanem); wyniesienie wszystkich potwierdzeń do ekranów (rusza działające Łapanie bez powodu)</li>
+      </ul>
+      <div class="gain">
+        <strong>Świadomie odłożone:</strong> dwa dialogi są nieeleganckie, ale nie błędne — pytają o dwie różne rzeczy i zdarzają się tylko przy ostatniej formie. Zmiana dotknęłaby trzech widgetów i trzech ekranów, więc czekamy, aż to zacznie realnie drażnić.
+      </div>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>common/ui/views/content/HexTextView.kt</code> — 
+            <code>showDeleteConfirmation()</code> (linia 163)
+          </li>
+          <li>
+            <code>common/ui/views/content/HexPhotoView.kt</code> — 
+            <code>showDeleteConfirmation()</code> (linia 172)
+          </li>
+          <li>
+            <code>common/ui/views/content/HexAudioView.kt</code> — 
+            <code>ActionsDialog.Builder</code> (linia 276), interfejs 
+            <code>RecordingCallback</code> (67)
+          </li>
+          <li>
+            <code>activities/details/DetailsActivity.kt</code> — 
+            <code>showDeleteEmptyThoughtDialog()</code> + trzy callbacki widgetów
+          </li>
+          <li>bez zmian: 
+            <code>activities/capture/CaptureActivity.kt</code> (te same widgety, myśl jeszcze nie istnieje)
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span> 
+      <strong>Refactor dialogów</strong> — uporządkować układ przycisków i ujednolicić ich nazwy w 20 miejscach, gdzie tworzony jest 
+      <code>ActionsDialog</code>.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>dziś: [caution] i [standard] obok siebie po połowie szerokości, [dismiss] pod nimi na całą — trzy przyciski mieszczą się strukturalnie, problemem jest logika pokazywania</li>
+        <li>naturalny moment, by zrobić to razem ze scalonym dialogiem ostatniej formy (ten sam plik, te same przyciski)</li>
+      </ul>
+      <div class="gain">
+        <strong>Błąd do naprawy przy okazji:</strong> na końcu 
+        <code>setupButtons</code> gałąź 
+        <code>else</code> ustawia 
+        <code>btnCaution</code> na widoczny nawet wtedy, gdy wcześniej został ukryty z braku akcji caution — dialog z samym [standard] i [dismiss] pokazuje pusty przycisk zabierający pół rzędu. Dotyczy trzech próśb o uprawnienia w Ustawieniach („Przyznaj" + „Nie teraz", bez caution).
+      </div>
+      <ul>
+        <li>
+          <strong>Inwentarz — 20 dialogów:</strong> 4× caution+standard+cancel, 7× caution+cancel, 3× standard+cancel (bez caution), 5× jeden przycisk, 1× caution+standard bez cancel
+        </li>
+        <li>
+          <strong>Widgety nie mają cancel w ogóle:</strong> 
+          <code>HexPhotoView</code> i 
+          <code>HexTextView</code> dają jedno „Kasujemy", 
+          <code>HexAudioView</code> dwa („Wywalić"/„Nadpisać") bez wyjścia — wycofać się da tylko przez X lub dotknięcie poza dialogiem
+        </li>
+        <li>
+          <strong>Nazwy się rozjeżdżają:</strong> ten sam gest to raz „Anuluj", raz „Nie", raz „Nie, zostaw", raz „Zostaw"; potwierdzenie to „Usuń" / „Tak" / „Kasujemy" / „Wywalić" — ujednolicić
+        </li>
+        <li>
+          <strong>Wzorzec „usuń / zachowaj / anuluj" już istnieje</strong> w 4 dialogach (m.in. „Odepnij i usuń myśl" / „Odepnij i zostaw myśl" / „Anuluj") — scalony dialog ostatniej formy wpada w ten sam schemat, nie tworzy nowego
+        </li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>common/ui/dialogs/ActionsDialog.kt</code> — 
+            <code>setupButtons()</code> (linia 63), zwłaszcza końcowy warunek „scenariusz z jednym przyciskiem"
+          </li>
+          <li>
+            <code>res/layout/common_actions_dialog.xml</code> — rząd z 
+            <code>btn_action_caution</code> + 
+            <code>btn_action_standard</code> (weight 1) i 
+            <code>btn_dismiss</code> pod spodem
+          </li>
+          <li>miejsca użycia: 
+            <code>SettingsActivity</code> (7), 
+            <code>WorkshopActivity</code> (4), 
+            <code>GoalDetailActivity</code> (2), 
+            <code>DetailsActivity</code> (2), 
+            <code>StreamActivity</code> (1), 
+            <code>ThoughtManagerActivity</code> (1), 
+            <code>HexAudioView</code> / 
+            <code>HexPhotoView</code> / 
+            <code>HexTextView</code> (po 1)
+          </li>
+          <li>napisy przycisków: 
+            <code>res/values/strings.xml</code> — 
+            <code>common_btn_*</code>, 
+            <code>common_deletion_dialog_*</code>
+          </li>
+        </ul>
+      </div>
+      <div class="gain">
+        <strong>Uwaga o zasięgu:</strong> 
+        <code>ActionsDialog</code> obsługuje wszystkie potwierdzenia w apce, więc zmiana układu przemebluje każdy dialog. Kontrolowane (jeden plik + jeden layout), ale obejrzeć na kilku ekranach przed zatwierdzeniem.
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span> 
+      <strong>Dorzucić spec tech/impl: kalendarz</strong> — dokumentacja z poprzedniej sesji nie jest jeszcze w repo.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>notatka tech o wysyłaniu wpisów i powiadomień do kalendarza (z wcześniejszej sesji) — do dołączenia do 
+          <code>docs/</code>
+        </li>
+        <li>obejmuje mechanizm dodawania wydarzeń i przypomnień kroków w kalendarzu</li>
+      </ul>
+    </div>
+  </details>
+  <h2>Ujednolicanie widgetów UI — pola typu input</h2>
+
+    <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span> 
+      <strong>Zastąpić domyślny TextInputLayout komponentem HexInputField</strong> — pola input oparte o goły Material TIL przełożyć na własny HexInputField: jeden komponent, jedno miejsce prawdy.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>✅ zrobione: domena (<code>domain_edit_bottomsheet</code>) → HexInputField z dwustanowym hintem</li>
+        <li>do migracji (goły TIL): <code>step_edit_bottom_sheet</code> (opis kroku), <code>capture_activity</code>, <code>common_text_edit_dialog</code>, <code>settings_activity</code> (imię)</li>
+        <li>blokery w komponencie przed pełną migracją:
+          <ul>
+            <li>opis kroku ma bespoke styling (baloo2, 16sp, text_primary, <b>multiline</b>) — HexInputField tego nie odwzorowuje → dodać atrybuty czcionki/rozmiaru/koloru/multiline</li>
+            <li>pola „czyste" (capture, text-edit-dialog, settings) nie floatują — HexInputField potrzebuje trybu <b>plain / no-float</b>, inaczej migracja doda im pływającą labelkę</li>
+          </ul>
+        </li>
+      </ul>
+      <div class="gain"><b>Po co:</b> jeden komponent = spójny wygląd i zmiany (kolory hintów, padding, zachowanie) w jednym miejscu — koniec z rozjazdami per-pole.</div>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>HexInputField</code> / <code>common_hex_input_field</code>; kandydaci wg listy migracji</li></ul></div>
+    </div>
+  </details>
+
+    <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span> 
+      <strong>HexInputField — rozbudowa (warunek migracji pozostałych pól)</strong> — komponent nie odwzorowuje kilku rzeczy, przez co część pól nie da się zmigrować 1:1.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>tryb <b>plain / no-float</b> — dla pól „czystych" (bez pływającej labelki); inaczej migracja doda im floating hint</li>
+        <li>atrybuty stylu tekstu: <code>fontFamily</code>, <code>textSize</code>, <code>textColor</code> (dziś zahardkodowane: czarny, domyślna czcionka/rozmiar)</li>
+        <li><b>multiline</b> (<code>textMultiLine</code>) — potrzebne dla opisu kroku</li>
+        <li>padding 44dp z prawej — dziś <b>zawsze</b> rezerwowany (miejsce na fajkę), nawet gdy tick ukryty → zrobić warunkowy</li>
+        <li>błędy — ujednolicić <code>showError()</code> vs natywne <code>EditText.error</code></li>
+      </ul>
+    </div>
+  </details>
+
+    <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span> 
+      <strong>Migracja pozostałych pól input na HexInputField</strong> — po rozbudowie komponentu przełożyć cztery pozostałe pola z gołego TIL.
+    </summary>
+    <div class="body">
+      <ul>
+        <li><code>step_edit_bottom_sheet</code> — opis kroku (wymaga: multiline + baloo2 + 16sp)</li>
+        <li><code>capture_activity</code> — pole metadanych (wymaga: tryb plain)</li>
+        <li><code>common_text_edit_dialog</code> — <b>reużywalny</b> dialog (tryb plain; dotknie wielu miejsc, które go wołają)</li>
+        <li><code>settings_activity</code> — imię (tryb plain albo dodać hint)</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li>lista kandydatów wg wcześniejszej analizy; domena już zrobiona</li></ul></div>
+    </div>
+  </details>
+
+    <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span> 
+      <strong>Standaryzacja kolorów hintów (odłożone)</strong> — dziś rozjazd: cztery różne kolory hinta w apce + hardcode'y (#FF8C42, #FFAF7A).
+    </summary>
+    <div class="body">
+      <ul>
+        <li>styl <code>InputLayout_NoBox.Floating</code>: placeholder = <code>graphite_dark</code>, floating = <code>graphite_medium</code></li>
+        <li>podpiąć pod pola floating (styl już przygotowany w paczce, świadomie wstrzymany)</li>
+      </ul>
+    </div>
+  </details>
+
+    <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span> 
+      <strong>Sprzątanie leftovers po migracji pól</strong> — martwe zasoby zostawione świadomie.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>osierocony string <code>settings_domain_edit_hint</code> („Nazwa") — po migracji domeny</li>
+        <li>martwy <code>app:hintTextColor="#FF8C42"</code> w <code>settings_activity</code> (TIL bez hinta)</li>
+      </ul>
+    </div>
+  </details>
+
+  <h2>Decyzje desingowe UX/UI do rozstrzygnięcia</h2>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span> 
+      <strong>Zapętlone „dalej"</strong> w pop-upie wskazówek — nie ma sygnału, że to koniec.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>po ostatniej wskazówce przycisk wraca do pierwszej, zamiast zmienić się w „Zakończ"</li>
+        <li>użytkownik może krążyć w kółko</li>
+        <li>spec tego nie rozstrzyga — zdecydować, jak zachowuje się ostatnia wskazówka</li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>common/ui/dialogs/GuideDialog.kt</code> — 
+            <code>currentIndex = (currentIndex + 1) % guideScreens.size</code> (linia 150)
+          </li>
+          <li>tam też etykieta przycisku i kropki postępu ( 
+            <code>currentIndex</code>, linie 33, 59, 85, 110)
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span> 
+      <strong>Sekcja z samymi ukrytymi wskazówkami</strong> — zostałby pusty nagłówek.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>gdy wszystkie wskazówki sekcji dostaną 
+          <code>tracked = false</code>, zostaje nagłówek 
+          <code>0/0</code> z działającymi przyciskami
+        </li>
+        <li>świadomie nieobsłużone — dopisać ukrywanie pustych sekcji, jeśli przypadek kiedyś wystąpi</li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>common/onboarding/OnboardingManager.kt</code> — 
+            <code>getSectionTips()</code>, filtr 
+            <code>tracked</code>
+          </li>
+          <li>
+            <code>activities/workshop/OnboardingSectionsAdapter.kt</code> — 
+            <code>onBindViewHolder</code>, licznik i widoczność wiersza sekcji
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+<details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span> 
+      <strong>Wpisywanie Hex Tagów zamiast arkusza</strong> — opcja w Ustawieniach dla tych, którym szybciej się pisze.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>dziś kryteria wybiera się wyłącznie przez arkusz z polami; wpisywanie 
+          <code>samochód #zakupy @ja</code> wprost w pasek zniknęło
+        </li>
+        <li>przełącznik w Ustawieniach wybierałby tryb szukajki: arkusz (domyślnie) albo pole tekstowe</li>
+        <li>do rozstrzygnięcia: czy dwa tryby są warte utrzymania, czy arkusz wystarcza</li>
+        <li>kod starej szukajki jest w historii repo — dostępny przez <strong>06/09/2026</strong>, potem trzeba by pisać od nowa</li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>common/ui/views/HexTagsSearcher.kt</code> — dodatkowy tryb widoku
+          </li>
+          <li>
+            <code>services/AppSettingsStorage.kt</code> — nowe ustawienie trybu szukajki
+          </li>
+          <li>
+            <code>common/regex/HexTagsUtils.kt</code> — 
+            <code>parseInput()</code> nadal gotowy do parsowania wpisanego tekstu
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+
+  <h2>Sprawdzenie i ew. naprawa</h2>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span> 
+      <strong>Domyślne ikony domen</strong> — spec mówi „domyślne nazwy i ikony", seed nie ustawia ikony.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>seed daje 
+          <code>DomainEntity(assetsIconId = null)</code> — 10 domyślnych domen startuje bez ikony
+        </li>
+        <li>mapper mapuje 
+          <code>assetsIconId: Int?</code> → 
+          <code>iconId: Int</code> (non-null), więc 
+          <code>null</code> jest unboxowany do prymitywu
+        </li>
+        <li>skutek na UI: albo domeny pokazują pustą ikonę 
+          <code>ic_domain_none</code> (fallback dla id 0), albo — mniej prawdopodobne — crash przy pierwszym starcie (NPE z unboxingu)
+        </li>
+        <li>do sprawdzenia na urządzeniu: wyczyść dane, wejdź w Ustawienia → jaka ikona przy domenach; pusta „none" = wariant 0, crash = wariant NPE</li>
+        <li>fix: seed powinien nadać domyślną ikonę zamiast 
+          <code>null</code> — spełnia spec i usuwa ryzyko 
+          <code>null → Int</code>
+        </li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>database/initialization/DatabaseInitializer.kt</code> — 
+            <code>seedDomains()</code>, 
+            <code>DomainEntity(name = ..., assetsIconId = null)</code>
+          </li>
+          <li>
+            <code>services/mappers/DomainMapper.kt</code> — 
+            <code>assetsIconId → iconId</code>
+          </li>
+          <li>
+            <code>services/dto/DomainDTO.kt</code> — 
+            <code>iconId: Int</code> (non-null)
+          </li>
+          <li>
+            <code>services/DomainIconsService.kt</code> — 
+            <code>getIconResourceId</code>, fallback 
+            <code>ic_domain_none</code>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio crit">Krytyczny</span> 
+      <strong>Wynik 
+        <code>createSnapshot()</code> ignorowany na starcie
+      </strong> — cichy błąd zapisu backupu.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>
+          <code>createSnapshot()</code> zwraca 
+          <code>Result&lt;File&gt;</code>, ale wywołanie na starcie apki nie sprawdza wyniku
+        </li>
+        <li>skutek: jeśli zapis się wywali (brak miejsca, cofnięte uprawnienie, błąd IO), użytkownik jest przekonany, że ma backup, a pliku nie ma</li>
+        <li>do rozważenia: log/telemetria przy porażce, albo odzwierciedlenie stanu w metadanych sekcji</li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>ApplicationMain.kt</code> — 
+            <code>if (isBackupEnabled()) snapshotManager.createSnapshot()</code> (wynik nieużyty)
+          </li>
+          <li>
+            <code>database/initialization/DataSnapshotManager.kt</code> — 
+            <code>createSnapshot(): Result&lt;File&gt;</code>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span> 
+      <strong>
+        <code>checkAndRequestPermissions</code> w środku 
+        <code>restoreSnapshot</code>
+      </strong> — może przerwać wczytywanie.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>na Androidzie 11+ metoda robi 
+          <code>startActivity</code> do ustawień systemowych, gdy brak uprawnienia — wywoływana na początku 
+          <code>restoreSnapshot</code>
+        </li>
+        <li>skutek: jeśli uprawnienia brak, restore nie tyle prosi i czeka, co wyrzuca użytkownika do ustawień w trakcie operacji; sam odczyt pliku i tak potem poleci (albo rzuci wyjątek)</li>
+        <li>do sprawdzenia na urządzeniu: wczytanie backupu przy cofniętym uprawnieniu — czy flow jest zrozumiały, czy restore realnie się wykonuje po powrocie z ustawień</li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>database/initialization/DataSnapshotManager.kt</code> — 
+            <code>restoreSnapshot()</code> woła 
+            <code>checkAndRequestPermissions(context)</code> na starcie; 
+            <code>checkAndRequestPermissions</code> robi 
+            <code>startActivity</code> dla 
+            <code>MANAGE_APP_ALL_FILES_ACCESS</code>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span> 
+      <strong>Pole 
+        <code>guidelines</code> w JSON zamiast 
+        <code>steps</code>
+      </strong> — rozjazd nazwy pola z tabelą.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>snapshot trzyma kroki pod kluczem 
+          <code>guidelines</code>, choć źródłem jest 
+          <code>stepDao().getAllSteps()</code> i encja to 
+          <code>StepEntity</code>
+        </li>
+        <li>nazwa zachowana świadomie „dla kompatybilności wstecznej JSON" (dwa TODO w kodzie) — starsze pliki backupu mają ten klucz</li>
+        <li>do rozstrzygnięcia: zostawić na zawsze (koszt: myląca nazwa), czy zmigrować format i odczytywać oba klucze przez jakiś czas</li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>database/initialization/DataSnapshotManager.kt</code> — 
+            <code>DatabaseSnapshot.guidelines</code> (pole), 
+            <code>createSnapshot</code> (linia ~60) i 
+            <code>restoreSnapshot</code> (~130), oba z TODO
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+</div>

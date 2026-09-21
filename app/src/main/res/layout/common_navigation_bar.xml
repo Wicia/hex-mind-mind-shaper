@@ -63,6 +63,14 @@
                 app:hexNavIcon="@drawable/ic_activity_workshop" />
 
             <pl.hexmind.mindshaper.common.ui.HexNavItemView
+                android:id="@+id/navMetadata"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="?attr/selectableItemBackground"
+                app:hexNavLabel="@string/metadata_title"
+                app:hexNavIcon="@drawable/ic_activity_metadata" />
+
+            <pl.hexmind.mindshaper.common.ui.HexNavItemView
                 android:id="@+id/navSettings"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"

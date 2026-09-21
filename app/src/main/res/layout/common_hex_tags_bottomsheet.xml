@@ -68,23 +68,22 @@
         </LinearLayout>
 
         <!-- === TEXT FIELDS === -->
-        <pl.hexmind.mindshaper.common.ui.views.HexInputField
-            android:id="@+id/hif_person"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="12dp"
-            app:hint="@string/common_hex_tags_hint_person" />
 
-        <pl.hexmind.mindshaper.common.ui.views.HexInputField
-            android:id="@+id/hif_project"
+        <pl.hexmind.mindshaper.common.ui.views.HexTagsInputView
+            android:id="@+id/htv_person"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            app:hint="@string/common_hex_tags_hint_project" />
+            android:layout_marginBottom="12dp" />
+
+        <pl.hexmind.mindshaper.common.ui.views.HexTagsInputView
+            android:id="@+id/htv_project"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="12dp" />
 
         <!-- === ICONS GRID === -->
         <TextView

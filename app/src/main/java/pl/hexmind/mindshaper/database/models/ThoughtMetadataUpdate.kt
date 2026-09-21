@@ -17,12 +17,6 @@ data class ThoughtMetadataUpdate(
     @ColumnInfo(name = "subject")
     val subject: String?,
 
-    @ColumnInfo(name = "soul_mate")
-    val soulMate: String?,
-
-    @ColumnInfo(name = "project")
-    val project: String?,
-
     @ColumnInfo(name = "value")
     val value: Int,
 

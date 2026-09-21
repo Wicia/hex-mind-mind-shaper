@@ -36,12 +36,6 @@ data class ThoughtEntity(
     @ColumnInfo(name = "updated_at")
     val updatedAt: Instant = Instant.now(),
 
-    @ColumnInfo(name = "soul_mate")
-    val soulMate: String? = null,
-
-    @ColumnInfo(name = "project")
-    val project: String? = null,
-
     @ColumnInfo(name = "value")
     val value: Int = 1,
 
@@ -75,8 +69,6 @@ data class ThoughtEntity(
         if (subject != other.subject) return false
         if (createdAt != other.createdAt) return false
         if (updatedAt != other.updatedAt) return false
-        if (soulMate != other.soulMate) return false
-        if (project != other.project) return false
         if (value != other.value) return false
         if (richText != other.richText) return false
         if (audioDurationMs != other.audioDurationMs) return false
@@ -94,8 +86,6 @@ data class ThoughtEntity(
         result = 31 * result + (subject?.hashCode() ?: 0)
         result = 31 * result + createdAt.hashCode()
         result = 31 * result + updatedAt.hashCode()
-        result = 31 * result + (soulMate?.hashCode() ?: 0)
-        result = 31 * result + (project?.hashCode() ?: 0)
         result = 31 * result + value
         result = 31 * result + (richText?.hashCode() ?: 0)
         result = 31 * result + (audioDurationMs?.hashCode() ?: 0)

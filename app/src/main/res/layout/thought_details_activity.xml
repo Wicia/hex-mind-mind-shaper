@@ -32,16 +32,11 @@
                 android:baselineAligned="false">
 
                 <!-- LEFT: HEX TAGS -->
-                <com.google.android.material.button.MaterialButton
+                <include
                     android:id="@+id/btn_hex_tags"
-                    style="@style/MetadataContentButton.Used"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:text="@string/common_btn_create"
-                    android:textColor="@color/_orange_lvl_3"
-                    app:icon="@drawable/ic_hex_tags"
-                    app:iconGravity="textEnd"
-                    app:iconSize="36dp" />
+                    layout="@layout/view_bookmark_number"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp" />
 
                 <!-- CENTER: value -->
                 <LinearLayout

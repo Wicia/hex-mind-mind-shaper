@@ -169,7 +169,7 @@ class DetailsActivity : ThoughtManagerActivity() {
             }
 
             // HEX TAGS
-            btnHexTags.setOnClickListener {
+            btnHexTags.root.setOnClickListener { // root - to access parts inside <include>
                 showHexTagsBottomSheet()
             }
 
@@ -428,17 +428,16 @@ class DetailsActivity : ThoughtManagerActivity() {
     }
 
     private fun updateHexTagsUI(thought: ThoughtDTO) {
-        val count = listOfNotNull(
-            thought.soulMate?.takeIf { it.isNotBlank() },
-            thought.project?.takeIf { it.isNotBlank() },
-            thought.domainId
-        ).size
+        val count = thought.people.size + thought.projects.size +
+            (if (thought.domainId != null) 1 else 0)
 
-        binding.btnHexTags.text =
-            if (count > 0)
+        binding.btnHexTags.bookmarkNumber.text =
+            if (count > 0) {
                 count.toString()
-            else
+            }
+            else {
                 getString(R.string.common_btn_create)
+            }
     }
 
     private fun updateRichTextUI(thought: ThoughtDTO) {
@@ -662,7 +661,7 @@ class DetailsActivity : ThoughtManagerActivity() {
 
         val tags = HexTags(
             domainId = viewModel.thoughtDetails.value?.domainId,
-            person = viewModel.thoughtDetails.value?.soulMate,
+            person = viewModel.thoughtDetails.value?.person,
             project = viewModel.thoughtDetails.value?.project
         )
 

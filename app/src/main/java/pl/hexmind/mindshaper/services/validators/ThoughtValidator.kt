@@ -14,8 +14,11 @@ class ThoughtValidator @Inject constructor(
 ) {
     companion object {
         const val SUBJECT_MAX_CHARS: Int = 36
-        const val PROJECT_MAX_CHARS: Int = 36
-        const val SOUL_MATES_MAX_CHARS: Int = 36
+        val TAG_SEPARATOR_PATTERN = Regex("[,\\s]+")
+
+        // Per TAG, not per field - a field may hold several tags separated by spaces or commas
+        const val PROJECT_MAX_CHARS: Int = 16
+        const val PEOPLE_MAX_CHARS: Int = 16
 
         const val VOICE_RECORDING_MAX_DURATION_MS = 180_000L
     }
@@ -67,9 +70,9 @@ class ThoughtValidator @Inject constructor(
             return ValidationResult.Valid()
         }
 
-        return if (project.length > PROJECT_MAX_CHARS) {
+        return if (longestTagLength(project) > PROJECT_MAX_CHARS) {
             ValidationResult.Error(
-                R.string.common_project_error_chars_exceeded,
+                R.string.common_hex_tag_error_chars_exceeded,
                 PROJECT_MAX_CHARS.toString(),
                 ValidatedProperty.T_PROJECT
             )
@@ -79,23 +82,30 @@ class ThoughtValidator @Inject constructor(
         }
     }
 
-    fun validateSoulMates(soulMatesString: String?): ValidationResult {
-        val soulMates = soulMatesString?.trim().orEmpty()
-        if (soulMates.isEmpty()) {
+    fun validatePeople(peopleString: String?): ValidationResult {
+        val people = peopleString?.trim().orEmpty()
+        if (people.isEmpty()) {
             return ValidationResult.Valid()
         }
 
-        return if (soulMates.length > SOUL_MATES_MAX_CHARS) {
+        return if (longestTagLength(people) > PEOPLE_MAX_CHARS) {
             ValidationResult.Error(
-                R.string.common_soul_mates_error_chars_exceeded,
-                SOUL_MATES_MAX_CHARS.toString(),
-                ValidatedProperty.T_SOUL_MATES
+                R.string.common_hex_tag_error_chars_exceeded,
+                PEOPLE_MAX_CHARS.toString(),
+                ValidatedProperty.T_PEOPLE
             )
         }
         else {
             ValidationResult.Valid()
         }
     }
+
+    // The field carries several tags, so the limit applies to the longest one, not the whole text
+    private fun longestTagLength(tagsText: String): Int =
+        tagsText.split(TAG_SEPARATOR_PATTERN)
+            .filter { tagName -> tagName.isNotBlank() }
+            .maxOfOrNull { tagName -> tagName.length }
+            ?: 0
 
     fun getValidThoughtValue(newPotentialValue : Int) : Int {
         return newPotentialValue.coerceIn(getThoughtValueMin(), getThoughtValueMax())

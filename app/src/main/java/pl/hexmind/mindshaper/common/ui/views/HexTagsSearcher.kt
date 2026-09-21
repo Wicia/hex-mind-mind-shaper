@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -42,7 +43,11 @@ class HexTagsSearcher @JvmOverloads constructor(
         scrollView        = findViewById(R.id.hsv_criteria)
         hintView          = findViewById(R.id.tv_searcher_hint)
 
-        findViewById<View>(R.id.btn_open_search).setOnClickListener { onOpenRequested?.invoke() }
+        // The whole bar opens the sheet, not just the icon - the hint text reads like an invitation to tap
+        val openSearch = OnClickListener { onOpenRequested?.invoke() }
+        findViewById<View>(R.id.btn_open_search).setOnClickListener(openSearch)
+        hintView.setOnClickListener(openSearch)
+        setOnClickListener(openSearch)
 
         renderCriteria()
     }
@@ -64,13 +69,34 @@ class HexTagsSearcher @JvmOverloads constructor(
     private fun renderCriteria() {
         criteriaContainer.removeAllViews()
 
-        addCriterionIfPresent(currentTags.subject,  R.drawable.ic_hextags_subject)   { currentTags.copy(subject = null) }
-        addCriterionIfPresent(currentTags.soulMate, R.drawable.ic_hextags_soul_mates) { currentTags.copy(soulMate = null) }
-        addCriterionIfPresent(currentTags.project,  R.drawable.ic_hextags_project)    { currentTags.copy(project = null) }
+        // Subject is one phrase, tags come one pill each - removing "kamil" must not drop "maciek"
+        addCriterionIfPresent(currentTags.subject, R.drawable.ic_hextags_subject) { currentTags.copy(subject = null) }
+
+        addTagCriteria(currentTags.person, R.drawable.ic_hextags_people) { remaining ->
+            currentTags.copy(person = remaining)
+        }
+
+        addTagCriteria(currentTags.project, R.drawable.ic_hextags_project) { remaining ->
+            currentTags.copy(project = remaining)
+        }
 
         val hasCriteria = criteriaContainer.childCount > 0
         scrollView.isVisible = hasCriteria
         hintView.isVisible   = !hasCriteria
+    }
+
+    private fun addTagCriteria(fieldValue: String?, iconRes: Int, withoutThisTag: (String?) -> HexTags) {
+        val tagNames = fieldValue?.split(TAG_SEPARATOR_PATTERN)
+            ?.map { tagName -> tagName.trim() }
+            ?.filter { tagName -> tagName.isNotEmpty() }
+            .orEmpty()
+
+        tagNames.forEach { tagName ->
+            addCriterionIfPresent(tagName, iconRes) {
+                val remaining = tagNames.filter { other -> other != tagName }
+                withoutThisTag(remaining.joinToString(" ").ifEmpty { null })
+            }
+        }
     }
 
     private fun addCriterionIfPresent(value: String?, iconRes: Int, withoutThisTag: () -> HexTags) {
@@ -85,4 +111,9 @@ class HexTagsSearcher @JvmOverloads constructor(
 
         criteriaContainer.addView(pill)
     }
+
+    private companion object {
+        val TAG_SEPARATOR_PATTERN = Regex("[,\\s]+")
+    }
+
 }

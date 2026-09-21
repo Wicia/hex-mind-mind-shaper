@@ -54,7 +54,7 @@ class DetailsViewModel @Inject constructor(
     }
 
     fun validateTags(tags: HexTags): ValidationResult {
-        val personResult = validator.validateSoulMates(tags.person)
+        val personResult = validator.validatePeople(tags.person)
         if (personResult is ValidationResult.Error) return personResult
 
         val projectResult = validator.validateProject(tags.project)
@@ -66,7 +66,7 @@ class DetailsViewModel @Inject constructor(
     fun updateHexTags(tags: HexTags) {
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
-                thought.soulMate = tags.person ?: ""
+                thought.person = tags.person ?: ""
                 thought.project = tags.project ?: ""
                 thought.domainId = tags.domainId
                 thoughtsService.updateThoughtMetadata(thought)

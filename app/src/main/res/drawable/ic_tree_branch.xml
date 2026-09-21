@@ -1,0 +1,15 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="16dp"
+    android:height="20dp"
+    android:viewportWidth="16"
+    android:viewportHeight="20">
+
+    <!-- TODO: maybe replace it with already existing resource ? -->
+    <!-- "L" connector: down from the field, then right into the first suggestion -->
+    <path
+        android:strokeColor="@color/_orange_lvl_2"
+        android:strokeWidth="1.5"
+        android:fillColor="@android:color/transparent"
+        android:strokeLineCap="round"
+        android:pathData="M4,2 L4,14 L13,14" />
+</vector>

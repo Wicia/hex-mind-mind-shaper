@@ -50,11 +50,11 @@ class CaptureActivityViewModel @Inject constructor(
     /**
      * Update hex tags in draft (no DB save)
      */
-    fun updateHexTags(subject: String?, project: String?, soulMate: String?) {
+    fun updateHexTags(subject: String?, project: String?, person: String?) {
         _draftThought.value = _draftThought.value?.copy(
             subject = subject,
             project = project,
-            soulMate = soulMate
+            person = person
         )
     }
 
@@ -133,15 +133,15 @@ class CaptureActivityViewModel @Inject constructor(
     fun validate(): ValidationResult {
         val draft = _draftThought.value ?: return ValidationResult.Error(R.string.common_thought_draft_not_found)
 
-        // Validate hex tags (subject, project, soulMate)
+        // Validate hex tags (subject, project, person)
         val subjectResult = validator.validateSubject(draft.subject)
         if (subjectResult is ValidationResult.Error) return subjectResult
 
         val projectResult = validator.validateProject(draft.project)
         if (projectResult is ValidationResult.Error) return projectResult
 
-        val soulMateResult = validator.validateSoulMates(draft.soulMate)
-        if (soulMateResult is ValidationResult.Error) return soulMateResult
+        val personResult = validator.validatePeople(draft.person)
+        if (personResult is ValidationResult.Error) return personResult
 
         // Validate rich text (if present)
         if (!draft.richText.isNullOrBlank()) {

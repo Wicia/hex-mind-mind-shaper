@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
+    android:fillViewport="true"
+    tools:context=".activities.metadata.MetadataActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="80dp">
+
+        <!-- Activity header (icon + title) -->
+        <include layout="@layout/common_header_activity" />
+
+        <!-- Person tags list -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_person_tags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="12dp"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
+            />
+
+        <!-- Empty state -->
+        <TextView
+            android:id="@+id/tv_person_tags_empty"
+            style="@style/TextView_Metadata"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:gravity="center"
+            android:text="@string/metadata_persons_empty"
+            android:visibility="gone"
+            />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

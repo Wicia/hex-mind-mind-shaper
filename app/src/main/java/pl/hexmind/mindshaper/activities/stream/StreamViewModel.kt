@@ -180,12 +180,29 @@ class StreamViewModel @Inject constructor(
         if (!query.areCriteriaEmpty()) {
             filtered = filtered.filter { thought ->
                 matchesCriteria(thought.subject, query.subject) &&
-                        matchesCriteria(thought.soulMate, query.soulMate) &&
-                        matchesCriteria(thought.project, query.project)
+                        matchesEveryQueryTag(thought.people, query.person) &&
+                        matchesEveryQueryTag(thought.projects, query.project)
             }
         }
 
         return filtered
+    }
+
+    /**
+     * The query may name several tags, and the thought has to satisfy EVERY one of them -
+     * "maciek kamil" means thoughts about both, not about either.
+     *
+     * ! Tags match EXACTLY, unlike the subject. A criterion is picked from suggestions, so it is a
+     * finished tag name - partial matching would quietly pull in "kamila" when asked for "kamil".
+     */
+    private fun matchesEveryQueryTag(tagNames: List<String>, searchQuery: String?): Boolean {
+        if (searchQuery.isNullOrBlank()) return true
+
+        return searchQuery.split(QUERY_SEPARATOR_PATTERN)
+            .filter { queryTag -> queryTag.isNotBlank() }
+            .all { queryTag ->
+                tagNames.any { tagName -> tagName.equals(queryTag, ignoreCase = true) }
+            }
     }
 
     private fun matchesCriteria(fieldValue: String?, searchQuery: String?): Boolean {
@@ -199,8 +216,8 @@ class StreamViewModel @Inject constructor(
             SortProperty.CREATED_AT -> compareBy(nullsLast()) { it.createdAt }
             SortProperty.UPDATED_AT -> compareBy(nullsLast()) { it.updatedAt }
             SortProperty.SUBJECT -> compareBy(nullsLast()) { it.subject?.lowercase() }
-            SortProperty.SOUL_MATE -> compareBy(nullsLast()) { it.soulMate?.lowercase() }
-            SortProperty.PROJECT -> compareBy(nullsLast()) { it.project?.lowercase() }
+            SortProperty.PERSON -> compareBy(nullsLast()) { firstTagAlphabetically(it.people) }
+            SortProperty.PROJECT -> compareBy(nullsLast()) { firstTagAlphabetically(it.projects) }
             SortProperty.VALUE -> compareBy(nullsLast()) { it.value }
         }
 
@@ -256,4 +273,15 @@ class StreamViewModel @Inject constructor(
             }
         }
     }
+
+    // Thoughts with several tags sort by the one that comes first alphabetically; no tags sorts last
+    private fun firstTagAlphabetically(tagNames: List<String>): String? =
+        tagNames.map { tagName -> tagName.lowercase() }
+            .minOrNull()
+
+
+    private companion object {
+        val QUERY_SEPARATOR_PATTERN = Regex("[,\\s]+")
+    }
+
 }

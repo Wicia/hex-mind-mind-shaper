@@ -13,6 +13,7 @@ import pl.hexmind.mindshaper.database.repositories.GoalDAO
 import pl.hexmind.mindshaper.database.repositories.StepDAO
 import pl.hexmind.mindshaper.database.repositories.IconDAO
 import pl.hexmind.mindshaper.database.repositories.PathDAO
+import pl.hexmind.mindshaper.database.repositories.HexTagDAO
 import pl.hexmind.mindshaper.database.repositories.PathStepDAO
 import pl.hexmind.mindshaper.database.repositories.ThoughtsDAO
 import javax.inject.Singleton
@@ -44,6 +45,8 @@ object DatabaseModule {
             .addMigrations(Migrations.MIGRATION_13_TO_14)
             .addMigrations(Migrations.MIGRATION_14_TO_15)
             .addMigrations(Migrations.MIGRATION_15_TO_16)
+            .addMigrations(Migrations.MIGRATION_16_TO_17)
+            .addMigrations(Migrations.MIGRATION_17_TO_18)
             //.fallbackToDestructiveMigration()
             .build()
     }
@@ -55,4 +58,5 @@ object DatabaseModule {
     @Provides fun provideStepDao(db: AppDatabase): StepDAO = db.stepDao()
     @Provides fun providePathDao(db: AppDatabase): PathDAO = db.pathDao()
     @Provides fun providePathStepDao(db: AppDatabase): PathStepDAO = db.pathStepDao()
+    @Provides fun provideHexTagDao(db: AppDatabase): HexTagDAO = db.hexTagDao()
 }

@@ -16,6 +16,18 @@ import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
 import pl.hexmind.mindshaper.common.validation.ValidatedProperty
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.common.validation.resolveMessage
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.common.ui.views.HexInputField
+import pl.hexmind.mindshaper.common.ui.views.HexTagsInputView
+import pl.hexmind.mindshaper.database.models.HexTagType
+import pl.hexmind.mindshaper.services.HexTagsService
+import javax.inject.Inject
 import pl.hexmind.mindshaper.databinding.CommonHexTagsBottomsheetBinding
 
 /**
@@ -33,7 +45,12 @@ import pl.hexmind.mindshaper.databinding.CommonHexTagsBottomsheetBinding
  *       // handle result.person, result.project, result.domainId
  *   }
  */
+@AndroidEntryPoint
 class HexTagsBottomSheet : BottomSheetDialogFragment() {
+
+    @Inject
+    lateinit var hexTagsService: HexTagsService
+
 
     private var _binding: CommonHexTagsBottomsheetBinding? = null
     private val binding get() = _binding!!
@@ -69,8 +86,8 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
         val currentProject = arguments?.getString(ARG_PROJECT)
 
         // Pre-fill fields with existing values
-        currentPerson?.let { binding.hifPerson.setText(it) }
-        currentProject?.let { binding.hifProject.setText(it) }
+        setupTagInput(binding.htvPerson, HexTagType.PERSON, R.string.common_hex_tags_hint_person, splitTags(currentPerson))
+        setupTagInput(binding.htvProject, HexTagType.PROJECT, R.string.common_hex_tags_hint_project, splitTags(currentProject))
 
         @Suppress("DEPRECATION")
         val iconItems: List<IconsGridItem> = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -86,8 +103,8 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
 
         binding.fabConfirm.setOnClickListener {
             val result = HexTags(
-                person = binding.hifPerson.getText().takeIf { it.isNotEmpty() },
-                project = binding.hifProject.getText().takeIf { it.isNotEmpty() },
+                person = binding.htvPerson.getTags().joinToString(" ").takeIf { it.isNotEmpty() },
+                project = binding.htvProject.getTags().joinToString(" ").takeIf { it.isNotEmpty() },
                 domainId = binding.igvDomains.selectedItemId
             )
 
@@ -95,17 +112,107 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
             if (validationResult is ValidationResult.Error) {
                 showExternalError(validationResult)
             } else {
-                dismiss()
-                onConfirm?.invoke(result)
+                confirmUnlessSimilarTagExists(result)
             }
         }
     }
 
+    private fun setupTagInput(
+        view       : HexTagsInputView,
+        tagType    : HexTagType,
+        hintRes    : Int,
+        initialTags: List<String>
+    ) {
+        view.setHint(hintRes)
+        view.setTags(initialTags)
+
+        view.suggestionsProvider = { typedText -> hexTagsService.getSuggestions(tagType, typedText) }
+        view.queryRunner = { block -> viewLifecycleOwner.lifecycleScope.launch { block() } }
+    }
+
+    /**
+     * A tag spelled almost like an existing one is usually a slip, so the user gets a choice instead
+     * of a silent second entry in the dictionary.
+     */
+    private fun confirmUnlessSimilarTagExists(result: HexTags) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val similarTag = firstSimilarTag(result)
+
+            if (similarTag == null) {
+                dismiss()
+                onConfirm?.invoke(result)
+                return@launch
+            }
+
+            ActionsDialog.Builder(requireContext())
+                .setTitle(getString(R.string.common_hex_tags_similar_title))
+                .setDescription(
+                    getString(R.string.common_hex_tags_similar_description, similarTag.suggestion)
+                )
+                .setStandardAction(
+                    getString(R.string.common_hex_tags_similar_use, similarTag.suggestion)
+                ) {
+                    applySimilarTag(result, similarTag)
+                }
+                .setDismissText(getString(R.string.common_hex_tags_similar_keep_mine))
+                .setDismissAction {
+                    dismiss()
+                    onConfirm?.invoke(result)
+                }
+                .show()
+        }
+    }
+
+    /**
+     * ! Checked tag by tag, not on the whole field - "ja powiesc" holds two tags, and normalizing
+     * the field as one string would find nothing and then overwrite both with a single name.
+     */
+    private suspend fun firstSimilarTag(result: HexTags): SimilarTag? =
+        firstSimilarTagOfType(HexTagType.PERSON, result.person)
+            ?: firstSimilarTagOfType(HexTagType.PROJECT, result.project)
+
+    private suspend fun firstSimilarTagOfType(tagType: HexTagType, fieldText: String?): SimilarTag? {
+        splitTags(fieldText).forEach { typedTag ->
+            val suggestion = hexTagsService.findSimilarTagNames(tagType, typedTag).firstOrNull()
+            if (suggestion != null) return SimilarTag(tagType, typedTag, suggestion)
+        }
+
+        return null
+    }
+
+    /** Swaps one tag inside the field, leaving the others as they were. */
+    private fun applySimilarTag(result: HexTags, similarTag: SimilarTag) {
+        val corrected = when (similarTag.tagType) {
+            HexTagType.PERSON  -> result.copy(person = replaceTag(result.person, similarTag))
+            HexTagType.PROJECT -> result.copy(project = replaceTag(result.project, similarTag))
+        }
+
+        dismiss()
+        onConfirm?.invoke(corrected)
+    }
+
+    private fun replaceTag(fieldText: String?, similarTag: SimilarTag): String =
+        splitTags(fieldText)
+            .map { tagName -> if (tagName == similarTag.typedTag) similarTag.suggestion else tagName }
+            .joinToString(" ")
+
+    private fun splitTags(fieldText: String?): List<String> =
+        fieldText?.split(TAG_SEPARATOR_PATTERN)
+            ?.map { tagName -> tagName.trim().lowercase() }
+            ?.filter { tagName -> tagName.isNotEmpty() }
+            .orEmpty()
+
+    private data class SimilarTag(
+        val tagType   : HexTagType,
+        val typedTag  : String,
+        val suggestion: String
+    )
+
     private fun showExternalError(error: ValidationResult.Error) {
         val errorMessage : String = error.resolveMessage(requireContext())
         when (error.refProperty) {
-            ValidatedProperty.T_SOUL_MATES -> binding.hifPerson.showError(errorMessage)
-            ValidatedProperty.T_PROJECT    -> binding.hifProject.showError(errorMessage)
+            ValidatedProperty.T_PEOPLE,
+            ValidatedProperty.T_PROJECT -> android.widget.Toast.makeText(requireContext(), errorMessage, android.widget.Toast.LENGTH_SHORT).show()
             else -> { }
         }
     }
@@ -119,6 +226,8 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
         val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.root.windowToken, 0)
     }
+
+    private val TAG_SEPARATOR_PATTERN = Regex("[,\\s]+")
 
     companion object {
         private const val TAG = "HexTagsBottomSheet"

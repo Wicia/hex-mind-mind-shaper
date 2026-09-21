@@ -74,14 +74,21 @@
 
     <!-- HexTags widget -->
     <string name="common_hex_tags_dialog_header">Tagowanie</string>
+    <!-- Hex Tagi: podpowiedzi i warianty -->
+    <string name="common_hex_tags_hint_idle">Wpisz tag i zatwierdź spacją</string>
+    <string name="common_hex_tags_similar_title">Podobny tag już istnieje</string>
+    <string name="common_hex_tags_similar_description">W Twoich myślach jest już tag [%1$s]. Użyć go, zamiast tworzyć nowy?</string>
+    <string name="common_hex_tags_similar_use">Użyj [%1$s]</string>
+    <string name="common_hex_tags_similar_keep_mine">Chcę swój tag</string>
+
     <string name="common_hex_tags_hint_person">Osoba lub Ekipa</string>
-    <string name="common_hex_tags_hint_project">Projekt</string>
+    <string name="common_hex_tags_hint_project">Projekt lub Zajawka</string>
+    <string name="common_hex_tags_add_tag_content_desc">Dodaj tag</string>
     <string name="common_hex_tag_hint_subject">Temat</string>
     <string name="common_hex_tags_label_domain">| Domena</string>
     <string name="common_hex_tags_subject_prefix">"⧽  %s"</string>
     <string name="common_subject_error_chars_exceeded">Temat nie może przekroczyć %s znaków…</string>
-    <string name="common_project_error_chars_exceeded">Projekt nie może przekroczyć %s znaków…</string>
-    <string name="common_soul_mates_error_chars_exceeded">Opis osób nie może przekroczyć %s znaków…</string>
+    <string name="common_hex_tag_error_chars_exceeded">Pojedynczy tag nie może mieć więcej niż %s znaków…</string>
 
     <!-- Files -->
     <string name="files_audio_error_file_not_accessible">Plik audio nie jest już dostępny</string>
@@ -245,7 +252,7 @@
     <string name="stream_sort_dialog_header">Sortowanie</string>
     <string name="stream_sort_property_created_at">Wiek</string>
     <string name="stream_sort_property_subject">Temat</string>
-    <string name="stream_sort_property_soul_mate">Osoba</string>
+    <string name="stream_sort_property_person">Osoba</string>
     <string name="stream_sort_property_project">Projekt</string>
     <string name="stream_sort_property_value">Wartość</string>
     <string name="stream_sort_property_updated_at">Data zmiany</string>
@@ -306,6 +313,21 @@
     <!-- Rich text -->
     <string name="details_rich_text_removing_header">Usunąć tekst?</string>
     <string name="details_rich_text_removing_content">Ta operacja jest nieodwracalna</string>
+
+    <!-- ============================================================ -->
+    <!--    METADATA Activity                                         -->
+    <!-- ============================================================ -->
+
+    <!-- Header -->
+    <string name="metadata_title">Metadane</string>
+    <string name="metadata_placeholder">Ekran w budowie</string>
+    <string name="metadata_persons_empty">Brak osób w tagach</string>
+
+    <string name="metadata_tag_edit_title">Edytuj tag</string>
+    <string name="metadata_tag_edit_hint_placeholder">Nazwa tagu</string>
+    <string name="metadata_tag_edit_hint_floating">Nazwa tagu</string>
+    <string name="metadata_tag_edit_empty">Podaj nazwę</string>
+    <string name="metadata_tag_edit_exists">Taki tag już istnieje</string>
 
     <!-- ============================================================ -->
     <!--    SETTINGS Activity                                         -->
@@ -375,9 +397,15 @@
     <string name="settings_calendar_blockade_tooltip">Dostęp do kalendarza został zablokowany. Możesz go przywrócić w ustawieniach Androida.</string>
 
     <string name="settings_domains_header">🌾 Moje Domeny</string>
+    <string name="settings_start_screen_header">🧭 Ekran startowy</string>
+    <string name="settings_start_screen_home">Home</string>
+    <string name="settings_start_screen_stream">Strumień</string>
+    <string name="settings_start_screen_workshop">Warsztat</string>
     <string name="settings_domain_edit_title">Edytuj domenę</string>
     <string name="settings_domain_edit_icons_title">| Ikona</string>
     <string name="settings_domain_edit_hint">Nazwa</string>
+    <string name="settings_domain_edit_hint_placeholder">Wpisz nazwę domeny</string>
+    <string name="settings_domain_edit_hint_floating">Nazwa domeny</string>
     <string name="settings_domain_edit_error_name_empty">Nazwa domeny nie może być pusta</string>
     <string name="settings_domain_edit_error_name_too_long">Nazwa domeny nie może przekraczać %s znaków</string>
 

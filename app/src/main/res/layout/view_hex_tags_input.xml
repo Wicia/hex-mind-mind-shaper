@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <pl.hexmind.mindshaper.common.ui.views.HexInputField
+        android:id="@+id/hif_tag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:showConfirmIcon="true" />
+
+    <!-- Connector + suggestions on one line -->
+    <LinearLayout
+        android:id="@+id/ll_suggestions_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:visibility="gone">
+
+        <!-- decorator -->
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="6dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_tree_branch" />
+
+        <HorizontalScrollView
+            android:id="@+id/hsv_suggestions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/ll_suggestions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+        </HorizontalScrollView>
+
+    </LinearLayout>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cg_tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:chipSpacingHorizontal="0dp"
+        app:chipSpacingVertical="0dp"
+        app:singleLine="false" />
+
+</merge>

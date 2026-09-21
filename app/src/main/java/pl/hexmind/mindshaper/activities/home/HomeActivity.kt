@@ -10,9 +10,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
+import pl.hexmind.mindshaper.activities.stream.StreamActivity
+import pl.hexmind.mindshaper.activities.workshop.WorkshopActivity
 import pl.hexmind.mindshaper.common.formatting.setColoredText
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.services.GreetingsService
+import pl.hexmind.mindshaper.services.dto.StartScreen
 
 /**
  * Main activity handling FAB menu and swipe gestures for  access
@@ -36,6 +39,10 @@ class HomeActivity : CoreActivity() {
         onboardingManager.showTooltipForStep(
             OnboardingProgressStep.HOME_TOOLTIP, this
         )
+
+        // Start-screen routing: Home is the launcher, so on a cold launch push the user-chosen
+        // entry screen on top (Home stays as root -> BACK returns here)
+        openChosenStartScreenIfNeeded(savedInstanceState)
     }
 
     private fun initViews() {
@@ -70,5 +77,30 @@ class HomeActivity : CoreActivity() {
             val intent = Intent(this, CaptureActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    /**
+     * Pushes the user-chosen start screen on top of Home on a genuine cold launch from the launcher icon.
+     * Home is left in the stack (no finish), so BACK from Stream/Workshop lands on a fully rendered Home.
+     */
+    private fun openChosenStartScreenIfNeeded(savedInstanceState: Bundle?) {
+        // Only a real cold launch reroutes: nav-bar navigation to Home carries no MAIN/LAUNCHER intent,
+        // and a config-change recreation (e.g. rotation) has a non-null savedInstanceState
+        val isColdLaunchFromLauncher = savedInstanceState == null
+                && isTaskRoot
+                && intent.action == Intent.ACTION_MAIN
+                && intent.hasCategory(Intent.CATEGORY_LAUNCHER)
+
+        if (!isColdLaunchFromLauncher) {
+            return
+        }
+
+        val targetScreen = when (appSettingsStorage.getStartScreen()) {
+            StartScreen.STREAM   -> StreamActivity::class.java
+            StartScreen.WORKSHOP -> WorkshopActivity::class.java
+            StartScreen.HOME     -> return
+        }
+
+        startActivity(Intent(this, targetScreen))
     }
 }

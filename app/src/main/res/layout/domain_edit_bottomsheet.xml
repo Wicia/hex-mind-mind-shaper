@@ -73,27 +73,15 @@
             </LinearLayout>
 
             <!-- === DOMAIN NAME === -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/til_domain_name"
+            <pl.hexmind.mindshaper.common.ui.views.HexInputField
+                android:id="@+id/hif_domain_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="4dp"
-                android:hint="@string/settings_domain_edit_hint"
-                app:hintTextColor="@color/_gray_lvl_3">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_domain_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/shape_edit_text"
-                    android:inputType="textCapWords"
-                    android:maxLines="1"
-                    android:textColor="@android:color/black"
-                    android:textColorHint="@color/_gray_lvl_3" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                app:hintPlaceholder="@string/settings_domain_edit_hint_placeholder"
+                app:hintFloating="@string/settings_domain_edit_hint_floating" />
 
             <!-- === VALIDATION === -->
             <TextView
