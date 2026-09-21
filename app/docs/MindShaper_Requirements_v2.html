@@ -696,6 +696,56 @@
     </details>
 </section>
 
+<section class="panel" data-tab="Metadane" data-row="1">
+    <p class="panel-intro">Przegląd metadanych myśli — hex tagi.</p>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Lista tagów Osoby<span class="req-alt">Ekran „Metadane"</span></span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>✳️ Przegląd wszystkich osób (hex tagów Osoby) w jednym miejscu — wraz z tym, jak często każda się pojawia</li>
+                    <li>✳️ Szybka korekta nazwy taga bez wchodzenia w myśli</li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Wejścia, Dane, Stany</h3>
+                <ul>
+                    <li>✳️ Nowe wejście <span class="location">Metadane</span> w nawigacji — między <span class="location">Warsztat</span> a <span class="location">Ustawienia</span></li>
+                    <li>✳️ Lista pigułek — każdy tag Osoby jako pigułka: nazwa + liczba użyć, po maks. 2 w wierszu
+                        <ul>
+                            <li>nieparzysta liczba tagów → ostatni wiersz z jedną pigułką</li>
+                        </ul>
+                    </li>
+                    <li>✳️ Kolejność — tag „ja" zawsze pierwszy (tag rdzeniowy), dalej od najczęściej do najrzadziej używanego (remis → alfabetycznie)</li>
+                    <li>✳️ Pusty stan — <span class="msg">Brak osób w tagach</span></li>
+                    <li>✳️ Bottom sheet edycji taga — pole nazwy wypełnione obecną nazwą</li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Procesy, Opcje, Integracje</h3>
+                <ul>
+                    <li>✳️ Tap pigułki (z efektem tapnięcia) → otwiera bottom sheet edycji</li>
+                    <li>✳️ <span class="bracket">Zapisz</span> → zmiana nazwy taga
+                        <ul>
+                            <li>pusta nazwa → nie zapisuje, prosi o nazwę</li>
+                            <li>nazwa zajęta przez inny tag → blokada + <span class="msg">Taki tag już istnieje</span>; łączenie tagów to osobna funkcja (przeciągnięcie pigułki na pigułkę)</li>
+                        </ul>
+                    </li>
+                    <li>✳️ Lista odświeża się po zmianie nazwy oraz po powrocie na ekran</li>
+                </ul>
+            </div>
+        </div>
+    </details>
+</section>
+
 <section class="panel" data-tab="Łapanie myśli" data-row="2">
     <p class="panel-intro">Zapisywanie myśli w różnych formach.</p>
 
