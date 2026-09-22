@@ -57,11 +57,25 @@ android {
                 if (this is com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
                     val dateFormat = SimpleDateFormat("yyyy-MM-dd")
                     val date = dateFormat.format(Date())
-                    outputFileName = "MindShaper-v${versionCode}-${date}.apk"
+
+                    outputFileName = "MindShaper-${name}-v${versionCode}-${date}.apk"
                 }
             }
         }
     }
+
+    flavorDimensions += "distribution"
+    productFlavors {
+        // Extra side-by-side install with its own applicationId, debug-signed - no keystore needed
+        create("standard") {
+            dimension = "distribution"
+        }
+        create("sandbox") {
+            dimension = "distribution"
+            applicationIdSuffix = ".sandbox"
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
