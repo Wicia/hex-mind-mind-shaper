@@ -10,11 +10,10 @@ plugins {
     id("kotlin-parcelize")
 }
 
-// Run Unit Tests in every build configuration
-tasks.whenTaskAdded {
-    if (name.startsWith("assemble")) {
-        dependsOn("testDebugUnitTest")
-    }
+// assemble<Variant> now depends on its OWN unit-test task - flavors split "testDebugUnitTest" into per-variant names
+tasks.matching { it.name.startsWith("assemble") }.configureEach {
+    val unitTestTask = "test${name.removePrefix("assemble")}UnitTest"
+    dependsOn(unitTestTask)
 }
 
 android {
