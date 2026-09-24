@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializer
+import pl.hexmind.mindshaper.BuildConfig
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.database.AppDatabase
 import pl.hexmind.mindshaper.database.models.DomainEntity
@@ -176,9 +177,14 @@ class DataSnapshotManager @Inject constructor(
     }
 
     private fun getBackupDirectory(): File {
+        // non-standard flavors get their own dir / "standard" flavors keeps the legacy dir + its old backups
+        val flavorSuffix = BuildConfig.FLAVOR
+            .takeIf { flavor -> flavor.isNotBlank() && flavor != "standard" }
+            ?.let { flavor -> "_$flavor" }
+            ?: ""
         return File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-            "mindshaper_backup"
+            "mindshaper_backup$flavorSuffix"
         )
     }
 
