@@ -75,4 +75,20 @@
         <attr name="notchDepth" format="dimension" />
     </declare-styleable>
 
+    <!-- notchWidth/notchDepth are shared with HexNotchSeparator - declared there, referenced here -->
+    <declare-styleable name="HexTabSwitch">
+        <attr name="tabHeight" format="dimension" />
+        <attr name="tabCornerRadius" format="dimension" />
+        <attr name="tabActiveColor" format="reference|color" />
+        <attr name="tabInactiveColor" format="reference|color" />
+        <attr name="tabActiveLift" format="dimension" />
+        <attr name="tabActiveStrokeWidth" format="dimension" />
+        <attr name="tabActiveStrokeColor" format="reference|color" />
+        <attr name="tabActiveTextColor" format="reference|color" />
+        <attr name="tabInactiveTextColor" format="reference|color" />
+        <attr name="tabTextSize" format="dimension" />
+        <attr name="notchWidth" />
+        <attr name="notchDepth" />
+    </declare-styleable>
+
 </resources>

@@ -322,6 +322,11 @@
     <string name="metadata_title">Metadane</string>
     <string name="metadata_placeholder">Ekran w budowie</string>
     <string name="metadata_persons_empty">Brak osób w tagach</string>
+    <string name="metadata_projects_empty">Brak projektów w tagach</string>
+
+    <!-- Osoby / Projekty switch -->
+    <string name="metadata_tab_persons">Osoby</string>
+    <string name="metadata_tab_projects">Projekty</string>
 
     <string name="metadata_tag_edit_title">Edytuj tag</string>
     <string name="metadata_tag_edit_hint_placeholder">Nazwa tagu</string>
