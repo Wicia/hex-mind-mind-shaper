@@ -18,9 +18,17 @@
         <!-- Activity header (icon + title) -->
         <include layout="@layout/common_header_activity" />
 
-        <!-- Person tags list -->
+        <!-- Tag type switch (Osoby / Projekty) -->
+        <pl.hexmind.mindshaper.common.ui.views.HexTabSwitch
+            android:id="@+id/tabs_tag_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            />
+
+        <!-- Tags list -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_person_tags"
+            android:id="@+id/rv_tags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -31,7 +39,7 @@
 
         <!-- Empty state -->
         <TextView
-            android:id="@+id/tv_person_tags_empty"
+            android:id="@+id/tv_tags_empty"
             style="@style/TextView_Metadata"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

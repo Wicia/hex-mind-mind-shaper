@@ -75,6 +75,10 @@ interface HexTagDAO {
     @Query("DELETE FROM HEX_TAGS WHERE id NOT IN (SELECT hex_tag_id FROM THOUGHT_HEX_TAGS)")
     suspend fun deleteOrphanedTags()
 
+    // Links go with it via ON DELETE CASCADE, so thoughts simply stop carrying this tag
+    @Query("DELETE FROM HEX_TAGS WHERE id = :tagId")
+    suspend fun deleteTag(tagId: Int)
+
 
     // ===========================================
     //      Thought links
@@ -149,4 +153,28 @@ interface HexTagDAO {
                 linkTag(ThoughtHexTagEntity(thoughtId = thoughtId, hexTagId = tagId))
             }
     }
+
+
+    // ===========================================
+    //      Snapshot (backup / restore)
+    // ===========================================
+
+    @Query("SELECT * FROM HEX_TAGS")
+    suspend fun getAllTags(): List<HexTagEntity>
+
+    @Query("SELECT * FROM THOUGHT_HEX_TAGS")
+    suspend fun getAllThoughtHexTagLinks(): List<ThoughtHexTagEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrReplaceTags(tags: List<HexTagEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrReplaceLinks(links: List<ThoughtHexTagEntity>)
+
+    // Split per table: one DAO owns two tables, so a single clearAll()/insertOrReplace() would clash
+    @Query("DELETE FROM HEX_TAGS")
+    suspend fun clearAllTags()
+
+    @Query("DELETE FROM THOUGHT_HEX_TAGS")
+    suspend fun clearAllLinks()
 }

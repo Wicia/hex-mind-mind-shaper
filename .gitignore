@@ -60,6 +60,8 @@ obj/
 *.tar.gz
 *.rar
 
+!gradle/wrapper/gradle-wrapper.jar
+
 # Virtual machine crash logs
 hs_err_pid*
 replay_pid*

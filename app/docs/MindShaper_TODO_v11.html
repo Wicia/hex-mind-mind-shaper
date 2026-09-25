@@ -937,6 +937,37 @@
     </div>
   </details>
 
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span> 
+      <strong>Przełącznik Osoby/Projekty w Metadanych — docelowa forma</strong> — rozstrzygnąć, czy zostają dwa przyciski, czy przejść na TabLayout jak w Workshopie.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>obecnie: dwa 
+          <code>MaterialButton</code> (Osoby/Projekty), jedna lista przebudowywana przy każdym przełączeniu
+        </li>
+        <li>scroll wraca na górę po przełączeniu — akceptowalne przy krótkich listach; przy długich rozważyć dwie listy + swap widoczności (retencja scrolla per typ)</li>
+        <li>opcja spójności z resztą apki: prawdziwy 
+          <code>TabLayout</code> z drawable'ami taba z Workshopa (
+          <code>tab_background_selector</code> itd.)
+        </li>
+        <li>decyzja: zostawić przyciski / TabLayout / dwie listy</li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>activities/metadata/MetadataActivity.kt</code> — 
+            <code>selectTagType()</code>
+          </li>
+          <li>
+            <code>res/layout/metadata_activity.xml</code> — wiersz przełącznika
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
   <h2>Sprawdzenie i ew. naprawa</h2>
   <details class="item">
     <summary>
@@ -1076,6 +1107,45 @@
             <code>DatabaseSnapshot.guidelines</code> (pole), 
             <code>createSnapshot</code> (linia ~60) i 
             <code>restoreSnapshot</code> (~130), oba z TODO
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span> 
+      <strong>Backup tagów a wersje DB / stare snapshoty</strong> — zweryfikować restore tagów między wersjami bazy i dla starych backupów bez tagów.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>sprawdzić w migracjach, od której 
+          <code>DB_VERSION</code> istnieją 
+          <code>HEX_TAGS</code> + 
+          <code>THOUGHT_HEX_TAGS</code>
+        </li>
+        <li>restore snapshotu ze starszą 
+          <code>version</code> nie odtworzy tagów (pola 
+          <code>null</code> → 
+          <code>?.apply</code> pomija) — samo w sobie OK
+        </li>
+        <li>ale 
+          <code>clearAll()</code> na 
+          <code>THOUGHTS</code> kasuje istniejące powiązania przez FK CASCADE → restore starego backupu (bez tagów) wyczyści aktualne linki myśl↔tag, a słownik 
+          <code>HEX_TAGS</code> zostaje osierocony
+        </li>
+        <li>rozstrzygnąć: guard/komunikat („ten backup nie zawiera tagów — powiązania zostaną utracone") czy świadomy trade-off</li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>database/initialization/DataSnapshotManager.kt</code> — 
+            <code>restoreSnapshot()</code>
+          </li>
+          <li>
+            <code>database/AppDatabase.kt</code> — lista migracji / 
+            <code>DB_VERSION</code>
           </li>
         </ul>
       </div>

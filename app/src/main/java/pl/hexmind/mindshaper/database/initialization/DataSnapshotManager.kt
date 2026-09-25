@@ -10,15 +10,18 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializer
+import pl.hexmind.mindshaper.BuildConfig
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.database.AppDatabase
 import pl.hexmind.mindshaper.database.models.DomainEntity
 import pl.hexmind.mindshaper.database.models.GoalEntity
+import pl.hexmind.mindshaper.database.models.HexTagEntity
 import pl.hexmind.mindshaper.database.models.StepEntity
 import pl.hexmind.mindshaper.database.models.IconEntity
 import pl.hexmind.mindshaper.database.models.PathEntity
 import pl.hexmind.mindshaper.database.models.PathStepEntity
 import pl.hexmind.mindshaper.database.models.ThoughtEntity
+import pl.hexmind.mindshaper.database.models.ThoughtHexTagEntity
 import java.io.File
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -60,6 +63,8 @@ class DataSnapshotManager @Inject constructor(
                 guidelines = database.stepDao().getAllSteps(),  // TODO: field name kept for JSON backward compat
                 paths = database.pathDao().getAllPaths(),
                 pathSteps = database.pathStepDao().getAllSteps(),
+                hexTags = database.hexTagDao().getAllTags(),
+                thoughtHexTags = database.hexTagDao().getAllThoughtHexTagLinks(),
             )
 
             val backupDir = getBackupDirectory()
@@ -120,6 +125,13 @@ class DataSnapshotManager @Inject constructor(
                     restoredCount++
                 }
 
+                // HEX_TAGS is a dictionary parent (no FK) - safe alongside the other parents
+                snapshot.hexTags?.apply {
+                    database.hexTagDao().clearAllTags()
+                    database.hexTagDao().insertOrReplaceTags(this)
+                    restoredCount++
+                }
+
                 // 2. CHILDREN tables with foreign keys
                 snapshot.domains?.apply {
                     database.domainDAO().clearAll()
@@ -144,6 +156,13 @@ class DataSnapshotManager @Inject constructor(
                     database.thoughtsDao().insertOrReplace(this)
                     restoredCount++
                 }
+
+                // Join table depends on BOTH thoughts and hex_tags - must be the last insert
+                snapshot.thoughtHexTags?.apply {
+                    database.hexTagDao().clearAllLinks()
+                    database.hexTagDao().insertOrReplaceLinks(this)
+                    restoredCount++
+                }
             }
 
             // ! Seed entries added in newer app versions that may be missing from the snapshot
@@ -158,9 +177,14 @@ class DataSnapshotManager @Inject constructor(
     }
 
     private fun getBackupDirectory(): File {
+        // non-standard flavors get their own dir / "standard" flavors keeps the legacy dir + its old backups
+        val flavorSuffix = BuildConfig.FLAVOR
+            .takeIf { flavor -> flavor.isNotBlank() && flavor != "standard" }
+            ?.let { flavor -> "_$flavor" }
+            ?: ""
         return File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-            "mindshaper_backup"
+            "mindshaper_backup$flavorSuffix"
         )
     }
 
@@ -198,6 +222,8 @@ data class DatabaseSnapshot(
     val guidelines: List<StepEntity>?,  // TODO: "guidelines" key preserved for JSON snapshot backward compat
     val paths: List<PathEntity>?,
     val pathSteps: List<PathStepEntity>?,
+    val hexTags: List<HexTagEntity>?,
+    val thoughtHexTags: List<ThoughtHexTagEntity>?,
 )
 
 data class SnapshotStats(

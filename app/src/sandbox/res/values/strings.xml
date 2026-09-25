@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+"sandbox" flavor override of main's app_name - keeps the side-by-side install distinguishable
+on the launcher (separate applicationId already splits the data)
+-->
+<resources>
+    <string name="app_name">MindShaper SB</string>
+</resources>
