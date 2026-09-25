@@ -30,8 +30,14 @@
   - pusta nazwa → *Podaj nazwę*, zmiana nie zostaje zapisana
   - nazwa zajęta przez inny tag tego samego rodzaju → *Taki tag już istnieje*, zmiana nie zostaje zapisana
   - nazwy nie kolidują między rodzajami — ten sam tekst może być osobno Osobą i Projektem
+- **Usunięcie tagu** — przytrzymanie kafelka pyta o potwierdzenie; zatwierdzenie kasuje tag **razem z jego użyciem we wszystkich myślach**.
+  - ostrzeżenie mówi wprost, że tag zniknie ze wszystkich myśli, które go używają
+  - [Usuń] kasuje, [Nie, zostaw] zamyka bez zmian
+  - po usunięciu komunikat *<nazwa> usunięto*
+  - same myśli zostają nietknięte — tracą tylko ten tag
+  - operacji nie można cofnąć
 - **Kopia zapasowa** — tagi i ich powiązania z myślami wchodzą do kopii zapasowej i wracają przy jej wczytaniu.
 
 ---
 
-**Poza zakresem (stan obecny):** usuwanie tagów z poziomu listy; tag, który przestał być używany, pozostaje widoczny z licznikiem `0`.
+**Poza zakresem (stan obecny):** łączenie dwóch tagów w jeden; tag, który przestał być używany, nie znika sam — zostaje na liście z licznikiem `0`.
