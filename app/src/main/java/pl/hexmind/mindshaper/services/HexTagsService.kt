@@ -99,6 +99,15 @@ class HexTagsService @Inject constructor(
         return RenameOutcome.RENAMED
     }
 
+    /**
+     * Removes a tag from the dictionary. Its links die with it through ON DELETE CASCADE, so the
+     * thoughts stay untouched and simply no longer carry this tag.
+     */
+    suspend fun deleteTag(tagType: HexTagType, tagName: String) {
+        val tag = hexTagDAO.findTag(tagType.name, tagName) ?: return
+        hexTagDAO.deleteTag(tag.id!!)
+    }
+
     // Recent first so the shortlist reacts to what the user is doing now, then filled with favourites
     private suspend fun defaultSuggestions(tagType: HexTagType): List<String> {
         val recent   = hexTagDAO.getRecentTagNames(tagType.name, RECENT_COUNT)

@@ -75,6 +75,10 @@ interface HexTagDAO {
     @Query("DELETE FROM HEX_TAGS WHERE id NOT IN (SELECT hex_tag_id FROM THOUGHT_HEX_TAGS)")
     suspend fun deleteOrphanedTags()
 
+    // Links go with it via ON DELETE CASCADE, so thoughts simply stop carrying this tag
+    @Query("DELETE FROM HEX_TAGS WHERE id = :tagId")
+    suspend fun deleteTag(tagId: Int)
+
 
     // ===========================================
     //      Thought links

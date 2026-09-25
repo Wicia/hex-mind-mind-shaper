@@ -36,6 +36,13 @@ class MetadataViewModel @Inject constructor(
         }
     }
 
+    fun deleteTag(tagName: String) {
+        viewModelScope.launch {
+            hexTagsService.deleteTag(currentType, tagName)
+            _tagRows.value = hexTagsService.getTagsWithUsage(currentType).chunked(ROW_MAX)
+        }
+    }
+
     fun renameTag(currentName: String, newName: String) {
         viewModelScope.launch {
             val outcome = hexTagsService.renameTag(currentType, currentName, newName)

@@ -9,7 +9,8 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.database.models.HexTagUsage
 
 class MetadataTagRowAdapter(
-    private val onTagTap: (tagName: String) -> Unit = {}
+    private val onTagTap: (tagName: String) -> Unit = {},
+    private val onTagLongPress: (tagName: String) -> Unit = {}
 ) : RecyclerView.Adapter<MetadataTagRowAdapter.RowViewHolder>() {
 
     private var rows: List<List<HexTagUsage>> = emptyList()
@@ -38,6 +39,10 @@ class MetadataTagRowAdapter(
 
             pill.text = "${personTag.name}$USAGE_SEPARATOR${personTag.usageCount}"
             pill.setOnClickListener { onTagTap(personTag.name) }
+            pill.setOnLongClickListener {
+                onTagLongPress(personTag.name)
+                true
+            }
             rowContainer.addView(pill)
         }
     }

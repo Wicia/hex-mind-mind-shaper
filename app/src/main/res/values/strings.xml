@@ -334,6 +334,9 @@
     <string name="metadata_tag_edit_empty">Podaj nazwę</string>
     <string name="metadata_tag_edit_exists">Taki tag już istnieje</string>
 
+    <!-- Long press deletion -->
+    <string name="metadata_tag_delete_message">Czy usunąć tag „%1$s”? Zniknie ze wszystkich myśli, które go używają.</string>
+
     <!-- ============================================================ -->
     <!--    SETTINGS Activity                                         -->
     <!-- ============================================================ -->
