@@ -42,4 +42,47 @@ class HexTagsUtilsTest {
         assertNull(output.project)
         assertEquals("osoba", output.person)
     }
+
+    @Test
+    fun `markery w tekscie notatki - tylko pojedyncze slowo po markerze`() {
+        val input = "Spotkanie z @Michałem dotyczące #ProjektuX było owocne"
+        val output = HexTagsUtils.extractEmbeddedTags(input)
+        assertEquals("Michałem", output.person)
+        assertEquals("ProjektuX", output.project)
+        assertNull(output.subject)
+    }
+
+    @Test
+    fun `markery w tekscie notatki - wiele tagow tego samego typu`() {
+        val input = "Rozmowa z @Michałem i @Anią o #pracy i #domu"
+        val output = HexTagsUtils.extractEmbeddedTags(input)
+        assertEquals("Michałem Anią", output.person)
+        assertEquals("pracy domu", output.project)
+    }
+
+    @Test
+    fun `markery w tekscie notatki - marker w srodku slowa nie jest tagiem`() {
+        val input = "@Ania napisala na cos@poczta.pl w sprawie abc#123"
+        val output = HexTagsUtils.extractEmbeddedTags(input)
+        assertEquals("Ania", output.person)
+        assertNull(output.project)
+    }
+
+    @Test
+    fun `markery w tekscie notatki - brak markerow`() {
+        val output = HexTagsUtils.extractEmbeddedTags("zwykly tekst bez tagow")
+        assertNull(output.person)
+        assertNull(output.project)
+    }
+
+    @Test
+    fun `mergeTagNames - dokleja nowe tagi bez duplikatow`() {
+        val merged = HexTagsUtils.mergeTagNames("michal ania", "Michal krzysiek")
+        assertEquals("michal ania krzysiek", merged)
+    }
+
+    @Test
+    fun `mergeTagNames - oba puste`() {
+        assertNull(HexTagsUtils.mergeTagNames(null, null))
+    }
 }

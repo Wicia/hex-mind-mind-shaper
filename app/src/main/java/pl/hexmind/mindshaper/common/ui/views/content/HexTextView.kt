@@ -1,10 +1,14 @@
 package pl.hexmind.mindshaper.common.ui.views.content
 
 import android.content.Context
+import android.graphics.Typeface
 import android.text.Spannable
+import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.BulletSpan
+import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
+import android.text.style.StyleSpan
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -18,6 +22,7 @@ import io.noties.markwon.MarkwonSpansFactory
 import io.noties.markwon.SoftBreakAddsNewLinePlugin
 import org.commonmark.node.ListItem
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 
 /**
@@ -61,6 +66,7 @@ class HexTextView @JvmOverloads constructor(
 
             override fun afterSetText(textView: TextView) {
                 shrinkParagraphGaps(textView)
+                emphasizeInlineTags(textView)
             }
         })
         .build()
@@ -148,6 +154,30 @@ class HexTextView @JvmOverloads constructor(
             )
             breakIndex = spannable.indexOf(BLOCK_SEPARATOR, breakIndex + 2)
         }
+    }
+
+    /**
+     * Renders inline @person / #project tags as bold, colored words without their markers.
+     * Only the displayed text changes - [originalText] (edited in the editor) keeps the markers.
+     */
+    private fun emphasizeInlineTags(textView: TextView) {
+        val rendered = textView.text
+        val matches = HexTagsUtils.EMBEDDED_TAG_PATTERN.findAll(rendered).toList()
+        if (matches.isEmpty()) return
+
+        val builder = SpannableStringBuilder(rendered)
+        val tagColor = ContextCompat.getColor(context, R.color.rich_text_inline_tag)
+
+        // ! Go backwards - deleting a marker shifts every index after it
+        matches.asReversed().forEach { match ->
+            val start = match.range.first
+            val end = match.range.last + 1
+            builder.setSpan(StyleSpan(Typeface.BOLD), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            builder.setSpan(ForegroundColorSpan(tagColor), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            builder.delete(start, start + 1)
+        }
+
+        textView.text = builder
     }
 
     /**

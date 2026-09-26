@@ -103,6 +103,9 @@
 
     <color name="card_section_header">@color/_black</color>
 
+    <!-- Inline @person / #project tags in rich text -->
+    <color name="rich_text_inline_tag">@color/graphite_light</color>
+
 <!-- ====================================== -->
 <!--    LIST ITEMS -->
 <!-- ====================================== -->
