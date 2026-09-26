@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.doOnPreDraw
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.button.MaterialButton
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
@@ -16,6 +17,7 @@ import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.common.ui.views.lists.SortConfig
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.ui.dialogs.GuideDialog
+import pl.hexmind.mindshaper.common.ui.dpToPx
 import pl.hexmind.mindshaper.common.ui.views.HexTagsSearcher
 import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
 import pl.hexmind.mindshaper.services.ThoughtStatusService
@@ -109,6 +111,12 @@ class StreamActivity : CoreActivity() {
         viewPager.adapter = adapter
         viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL // VERTICAL feed!
         viewPager.offscreenPageLimit = 3
+
+        // Feather the top/bottom edges so a card sliding between pages fades out instead of being cut
+        (viewPager.getChildAt(0) as? RecyclerView)?.apply {
+            isVerticalFadingEdgeEnabled = true
+            setFadingEdgeLength(dpToPx(FADING_EDGE_DP))
+        }
 
         // Smooth page change callback
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -330,5 +338,9 @@ class StreamActivity : CoreActivity() {
                     .start()
             }
             .start()
+    }
+
+    companion object {
+        private const val FADING_EDGE_DP = 16
     }
 }
