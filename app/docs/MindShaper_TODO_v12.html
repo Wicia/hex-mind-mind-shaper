@@ -1144,8 +1144,104 @@
             <code>restoreSnapshot()</code>
           </li>
           <li>
-            <code>database/AppDatabase.kt</code> — lista migracji / 
+            <code>database/AppDatabase.kt</code> — lista migracji /
             <code>DB_VERSION</code>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span>
+      <strong>Tag w formatowaniu Markdown (
+        <code>**@vdv**</code>)
+      </strong> — wyświetlany jako tag, ale nie zapisywany jako tag.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>tagi są wyciągane z <strong>surowego</strong> tekstu notatki, a pogrubiane w tekście <strong>już wyrenderowanym</strong> przez Markwon</li>
+        <li>wzorzec wymaga spacji (albo początku tekstu) przed markerem — w surowym tekście przed
+          <code>@</code> stoi
+          <code>*</code>, więc tag nie powstaje; po renderowaniu gwiazdki znikają i widok pokazuje tag
+        </li>
+        <li>te same rozjazdy:
+          <code>_@vdv_</code>,
+          <code>*@vdv*</code>,
+          <code>(@vdv)</code> (w surowym i renderowanym tekście jednakowo nie-tag — do decyzji, czy ma być tagiem)
+        </li>
+        <li>kod inline
+          <code>`@vdv`</code> — widok zdejmuje marker i pogrubia nawet wewnątrz kodu; prawdopodobnie kod powinien zostać nietknięty
+        </li>
+        <li>fix: dopuścić przed markerem też znaki formatowania / nawias otwierający (
+          <code>*</code>,
+          <code>_</code>,
+          <code>(</code>) — jedna zmiana wzorca poprawia zapis i wyświetlanie naraz; kod inline pominąć przy renderowaniu
+        </li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>common/regex/HexTagsUtils.kt</code> —
+            <code>EMBEDDED_TAG_PATTERN</code>
+          </li>
+          <li>
+            <code>common/ui/views/content/HexTextView.kt</code> —
+            <code>emphasizeInlineTags()</code>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span>
+      <strong>Tagi w tekście notatki — przypadki brzegowe do sprawdzenia</strong> — lista do przeklikania na urządzeniu.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>kilka tagów w jednej linii, tag na samym początku i na samym końcu tekstu — czy pogrubienie nie przesuwa się o znak</li>
+        <li>tag jako pierwsze słowo punktu listy (
+          <code>- @vdv</code>) i zaraz po pustej linii — czy punktor i odstęp akapitu zostają na miejscu
+        </li>
+        <li>
+          <code>#projekt</code> na początku linii = tag, a
+          <code># Tytuł</code> (ze spacją) = nagłówek, nie tag
+        </li>
+        <li>strumień: przewinąć listę tam i z powrotem — przy ponownym użyciu wierszy żadna notatka nie może dostać cudzego pogrubienia</li>
+        <li>edytor: markery widoczne przy edycji; po zapisie widok znów bez markerów</li>
+        <li>kropka w nazwie:
+          <code>#v1.2</code> daje tag
+          <code>v1</code> — do decyzji, czy to OK
+        </li>
+        <li>podwójny marker
+          <code>@@vdv</code> /
+          <code>##projekt</code> nie daje tagu — do decyzji, czy to OK
+        </li>
+        <li>usunięcie
+          <code>@vdv</code> z tekstu nie zdejmuje tagu z myśli (scalanie tylko dokłada) — do decyzji, czy to OK
+        </li>
+        <li>czytelność koloru tagu (
+          <code>graphite_light</code>) na tle karty w strumieniu i na tle ekranu
+        </li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>
+            <code>common/regex/HexTagsUtils.kt</code> —
+            <code>extractEmbeddedTags()</code>,
+            <code>mergeTagNames()</code>
+          </li>
+          <li>
+            <code>common/ui/views/content/HexTextView.kt</code> —
+            <code>emphasizeInlineTags()</code>
+          </li>
+          <li>
+            <code>activities/details/DetailsViewModel.kt</code> —
+            <code>updateRichText()</code>;
+            <code>activities/capture/CaptureActivity.kt</code> — zapis tagów
           </li>
         </ul>
       </div>
