@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <style>:root{
     --cream:#FFF4E6;
     --surface:#FFFFFF;
@@ -236,22 +237,6 @@
     </div>
   </details>
 
-<details class="item">
-    <summary>
-      <span class="prio imp">Istotny</span> 
-      <strong>Auto-tagowanie z treści notatki</strong> — markery w tekście notatki tworzą tagi w Hex Tagach.
-    </summary>
-    <div class="body">
-      <ul>
-        <li>gdy w treści notatki pojawi się <code>@nazwa</code> → dodaj tag osoby, <code>#nazwa</code> → tag projektu</li>
-        <li>tylko jeśli takiego tagu jeszcze nie ma na myśli (bez duplikatów)</li>
-        <li>działa w tle przy zapisie notatki — użytkownik nie musi otwierać arkusza tagów</li>
-      </ul>
-      <div class="gain"><b>Po co:</b> piszesz „spotkanie z @seba w #powiesc" i tagi tworzą się same z treści, zamiast wpisywać je drugi raz w arkuszu.</div>
-      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>HexTagsUtils.parseInput()</code> — ten sam parser markerów już istnieje</li><li>zapis notatki w <code>ThoughtsService</code> — po zapisie treści wyciągnij markery i dopnij brakujące tagi przez <code>replaceTagsOfType</code></li></ul></div>
-    </div>
-  </details>
-
     <details class="item">
     <summary>
       <span class="prio minor">Drobny</span> 
@@ -326,75 +311,6 @@
           <li>
             <code>activities/CoreActivity.kt</code> — miejsce tworzenia: 
             <code>NavigationBarController(navBar, appSettingsStorage)</code> (linia 191)
-          </li>
-        </ul>
-      </div>
-    </div>
-  </details>
-  <details class="item">
-    <summary>
-      <span class="prio minor">Drobny</span> 
-      <strong>
-        <code>common_rich_text_view.xml</code>
-      </strong> — layout po starym widoku HTML, którego nikt nie inflatuje.
-    </summary>
-    <div class="body">
-      <ul>
-        <li>brak referencji w całym projekcie (potwierdzone grepem)</li>
-        <li>w środku 
-          <code>&lt;org.sufficientlysecure.htmltextview.HtmlTextView&gt;</code>
-        </li>
-        <li>po usunięciu znika ostatnie użycie biblioteki → można wyrzucić zależność 
-          <code>org.sufficientlysecure:html-textview</code>
-        </li>
-        <li>w 
-          <code>libs.versions.toml</code> została też sierota 
-          <code>htmlTextview = "4.0"</code> bez wpisu w 
-          <code>[libraries]</code>
-        </li>
-      </ul>
-      <div class="where">
-        <span class="lbl">Gdzie</span>
-        <ul>
-          <li>
-            <code>res/layout/common_rich_text_view.xml</code> — cały plik do usunięcia
-          </li>
-          <li>
-            <code>app/build.gradle.kts</code> → 
-            <code>dependencies</code> — zależność 
-            <code>org.sufficientlysecure:html-textview</code>
-          </li>
-          <li>
-            <code>gradle/libs.versions.toml</code> → 
-            <code>[versions]</code> — sierota 
-            <code>htmlTextview = "4.0"</code>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </details>
-  <details class="item">
-    <summary>
-      <span class="prio minor">Drobny</span> 
-      <strong>
-        <code>common_onb_dialog_header</code>
-      </strong> — string, który stracił rację bytu.
-    </summary>
-    <div class="body">
-      <ul>
-        <li>był zapasowym tytułem wskazówki; zbędny, odkąd 
-          <code>titleRes</code> jest wymagany
-        </li>
-        <li>jedyne wystąpienie to własna definicja w 
-          <code>strings.xml</code>
-        </li>
-        <li>decyzja: usunąć czy zostawić na zapas</li>
-      </ul>
-      <div class="where">
-        <span class="lbl">Gdzie</span>
-        <ul>
-          <li>
-            <code>res/values/strings.xml</code> — jedyne wystąpienie, sama definicja
           </li>
         </ul>
       </div>
@@ -547,39 +463,6 @@
           </li>
           <li>
             <code>gradle/libs.versions.toml</code> — miejsce docelowe wpisów
-          </li>
-        </ul>
-      </div>
-    </div>
-  </details>
-  <details class="item">
-    <summary>
-      <span class="prio imp">Istotny</span> 
-      <strong>
-        <code>gradle-wrapper.jar</code>
-      </strong> — brakuje go w 
-      <code>gradle/wrapper</code>.
-    </summary>
-    <div class="body">
-      <ul>
-        <li>jest tylko 
-          <code>gradle-wrapper.properties</code>
-        </li>
-        <li>bez 
-          <code>.jar</code> polecenie 
-          <code>gradlew</code> z terminala nie zadziała
-        </li>
-        <li>build w samym Android Studio działa, więc istotne tylko przy budowaniu z linii poleceń</li>
-      </ul>
-      <div class="where">
-        <span class="lbl">Gdzie</span>
-        <ul>
-          <li>
-            <code>gradle/wrapper/</code> — jest tylko 
-            <code>gradle-wrapper.properties</code>
-          </li>
-          <li>odtworzenie: 
-            <code>gradle wrapper --gradle-version 8.13</code> albo skopiowanie z nowego projektu
           </li>
         </ul>
       </div>
