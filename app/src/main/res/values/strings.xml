@@ -50,9 +50,6 @@
     <!-- Validation -->
     <string name="common_object_type_thought">Myśl</string>
 
-    <!-- Onboarding -->
-    <string name="common_onb_dialog_header">Wskazówka</string>
-
     <!-- Thought age -->
     <string name="common_thought_age_pattern">Złapano %s dni temu</string> <!-- TODO: for 'updated' words sequence is opposite -->
     <string name="common_thought_age_0">Dzisiaj złapano</string>
