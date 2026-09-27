@@ -10,6 +10,7 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.common.ui.dialogs.HexTags
 import pl.hexmind.mindshaper.common.ui.views.lists.CommonIconsListItem
 import pl.hexmind.mindshaper.common.validation.ValidationResult
@@ -135,8 +136,17 @@ class DetailsViewModel @Inject constructor(
 
     fun updateRichText(richText: String) {
         viewModelScope.launch {
-            thoughtDetails.value?.id?.let { id ->
-                thoughtsService.updateThoughtRichText(id, richText)
+            thoughtDetails.value?.let { thought ->
+                val thoughtId = thought.id ?: return@let
+                thoughtsService.updateThoughtRichText(thoughtId, richText)
+
+                // Fold @/# markers typed inline in the note text into this thought's hex tags
+                val embeddedTags = HexTagsUtils.extractEmbeddedTags(richText)
+                if (embeddedTags.person != null || embeddedTags.project != null) {
+                    thought.person = HexTagsUtils.mergeTagNames(thought.person, embeddedTags.person)
+                    thought.project = HexTagsUtils.mergeTagNames(thought.project, embeddedTags.project)
+                    thoughtsService.updateThoughtMetadata(thought)
+                }
             }
         }
     }

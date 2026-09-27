@@ -383,11 +383,14 @@ class CaptureActivity : ThoughtManagerActivity() {
         val hexTagsInput = binding.etHexTags.text?.toString().orEmpty()
         val tags = HexTagsUtils.parseInput(hexTagsInput)
 
+        // Pick up @/# markers typed inline in the note text and fold them into the same tags
+        val embeddedTags = HexTagsUtils.extractEmbeddedTags(viewModel.draftThought.value?.richText)
+
         // Update draft with hex tags
         viewModel.updateHexTags(
             subject = tags.subject,
-            project = tags.project,
-            person = tags.person
+            project = HexTagsUtils.mergeTagNames(tags.project, embeddedTags.project),
+            person = HexTagsUtils.mergeTagNames(tags.person, embeddedTags.person)
         )
 
         // Validate
