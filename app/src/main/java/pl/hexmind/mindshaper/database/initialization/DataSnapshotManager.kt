@@ -21,6 +21,7 @@ import pl.hexmind.mindshaper.database.models.IconEntity
 import pl.hexmind.mindshaper.database.models.PathEntity
 import pl.hexmind.mindshaper.database.models.PathStepEntity
 import pl.hexmind.mindshaper.database.models.ThoughtEntity
+import pl.hexmind.mindshaper.database.models.ThoughtFlashcardEntity
 import pl.hexmind.mindshaper.database.models.ThoughtHexTagEntity
 import java.io.File
 import java.text.SimpleDateFormat
@@ -65,6 +66,7 @@ class DataSnapshotManager @Inject constructor(
                 pathSteps = database.pathStepDao().getAllSteps(),
                 hexTags = database.hexTagDao().getAllTags(),
                 thoughtHexTags = database.hexTagDao().getAllThoughtHexTagLinks(),
+                thoughtFlashcards = database.thoughtFlashcardDao().getAllFlashcards(),
             )
 
             val backupDir = getBackupDirectory()
@@ -163,6 +165,13 @@ class DataSnapshotManager @Inject constructor(
                     database.hexTagDao().insertOrReplaceLinks(this)
                     restoredCount++
                 }
+
+                // Child of thoughts - snapshots older than DB v19 have no flashcards at all (null)
+                snapshot.thoughtFlashcards?.apply {
+                    database.thoughtFlashcardDao().clearAll()
+                    database.thoughtFlashcardDao().insertOrReplace(this)
+                    restoredCount++
+                }
             }
 
             // ! Seed entries added in newer app versions that may be missing from the snapshot
@@ -224,6 +233,7 @@ data class DatabaseSnapshot(
     val pathSteps: List<PathStepEntity>?,
     val hexTags: List<HexTagEntity>?,
     val thoughtHexTags: List<ThoughtHexTagEntity>?,
+    val thoughtFlashcards: List<ThoughtFlashcardEntity>?,
 )
 
 data class SnapshotStats(

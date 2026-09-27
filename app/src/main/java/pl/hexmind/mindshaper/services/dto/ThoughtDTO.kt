@@ -44,7 +44,11 @@ data class ThoughtDTO(
     var photoFileSize: Long? = null,
 
     @Transient
-    var tempPhotoFilePath: String? = null
+    var tempPhotoFilePath: String? = null,
+
+// ========= FLASHCARDS =========
+
+    var flashcards: List<FlashcardDTO> = emptyList()
 
 ) : Parcelable {
 
@@ -60,8 +64,11 @@ data class ThoughtDTO(
     val hasText: Boolean
         get() = !richText.isNullOrBlank()
 
+    val hasFlashcards: Boolean
+        get() = flashcards.isNotEmpty()
+
     val isEmpty: Boolean
-        get() = !hasPhoto && !hasAudio && !hasText
+        get() = !hasPhoto && !hasAudio && !hasText && !hasFlashcards
 
     // ! Needed for ByteArray in data class
     override fun equals(other: Any?): Boolean {
@@ -83,6 +90,7 @@ data class ThoughtDTO(
         if (value != other.value) return false
         if (audioDurationMs != other.audioDurationMs) return false
         if (tempAudioFilePath != other.tempAudioFilePath) return false
+        if (flashcards != other.flashcards) return false
 
         return true
     }
@@ -101,6 +109,7 @@ data class ThoughtDTO(
         result = 31 * result + value
         result = 31 * result + (audioDurationMs?.hashCode() ?: 0)
         result = 31 * result + (tempAudioFilePath?.hashCode() ?: 0)
+        result = 31 * result + flashcards.hashCode()
         return result
     }
 }

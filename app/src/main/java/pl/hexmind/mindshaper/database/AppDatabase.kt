@@ -13,6 +13,7 @@ import pl.hexmind.mindshaper.database.models.PathEntity
 import pl.hexmind.mindshaper.database.models.HexTagEntity
 import pl.hexmind.mindshaper.database.models.PathStepEntity
 import pl.hexmind.mindshaper.database.models.ThoughtEntity
+import pl.hexmind.mindshaper.database.models.ThoughtFlashcardEntity
 import pl.hexmind.mindshaper.database.models.ThoughtHexTagEntity
 import pl.hexmind.mindshaper.database.repositories.DomainDAO
 import pl.hexmind.mindshaper.database.repositories.GoalDAO
@@ -21,6 +22,7 @@ import pl.hexmind.mindshaper.database.repositories.IconDAO
 import pl.hexmind.mindshaper.database.repositories.PathDAO
 import pl.hexmind.mindshaper.database.repositories.HexTagDAO
 import pl.hexmind.mindshaper.database.repositories.PathStepDAO
+import pl.hexmind.mindshaper.database.repositories.ThoughtFlashcardDAO
 import pl.hexmind.mindshaper.database.repositories.ThoughtsDAO
 
 @Database(
@@ -33,7 +35,8 @@ import pl.hexmind.mindshaper.database.repositories.ThoughtsDAO
         PathEntity::class,
         PathStepEntity::class,
         HexTagEntity::class,
-        ThoughtHexTagEntity::class
+        ThoughtHexTagEntity::class,
+        ThoughtFlashcardEntity::class
     ],
     version = DB_VERSION,
     exportSchema = true
@@ -49,8 +52,9 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun pathDao(): PathDAO
     abstract fun pathStepDao(): PathStepDAO
     abstract fun hexTagDao(): HexTagDAO
+    abstract fun thoughtFlashcardDao(): ThoughtFlashcardDAO
 
     companion object {
-        const val DB_VERSION = 18
+        const val DB_VERSION = 19
     }
 }

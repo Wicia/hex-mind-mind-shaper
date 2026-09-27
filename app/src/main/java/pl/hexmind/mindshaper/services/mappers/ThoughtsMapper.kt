@@ -25,6 +25,7 @@ interface ThoughtsMapper {
     @Mapping(target = "projects", ignore = true)
     @Mapping(target = "tempAudioFilePath", ignore = true) // Only used during recording
     @Mapping(target = "tempPhotoFilePath", ignore = true) // Only used during taking a photo
+    @Mapping(target = "flashcards", ignore = true) // Separate table - filled by the service
     fun entityToDTO(entity: ThoughtEntity): ThoughtDTO
 
     @Mapping(target = "audioData", ignore = true)

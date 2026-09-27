@@ -420,5 +420,22 @@ class Migrations {
                 db.execSQL("CREATE INDEX IF NOT EXISTS index_THOUGHTS_domain_id ON THOUGHTS(domain_id)")
             }
         }
+
+        // Flashcards - a new form of a thought: an ordered list of front / back pairs
+        val MIGRATION_18_TO_19 = object : Migration(18, 19) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS THOUGHT_FLASHCARDS (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        thought_id INTEGER NOT NULL,
+                        position INTEGER NOT NULL,
+                        front TEXT NOT NULL,
+                        back TEXT NOT NULL,
+                        FOREIGN KEY(thought_id) REFERENCES THOUGHTS(id) ON DELETE CASCADE
+                    )
+                """)
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_THOUGHT_FLASHCARDS_thought_id ON THOUGHT_FLASHCARDS(thought_id)")
+            }
+        }
     }
 }

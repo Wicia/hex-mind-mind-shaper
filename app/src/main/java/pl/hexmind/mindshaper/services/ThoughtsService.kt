@@ -9,12 +9,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.database.models.ThoughtEntity
+import pl.hexmind.mindshaper.database.models.ThoughtFlashcardEntity
 import pl.hexmind.mindshaper.database.models.ThoughtMetadataUpdate
 import pl.hexmind.mindshaper.database.repositories.ThoughtsRepository
 import java.util.Locale
 import pl.hexmind.mindshaper.database.models.HexTagType
 import pl.hexmind.mindshaper.database.models.ThoughtWithHexTags
 import pl.hexmind.mindshaper.database.repositories.HexTagDAO
+import pl.hexmind.mindshaper.services.dto.FlashcardDTO
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.mappers.ThoughtsMapper
 import java.io.File
@@ -62,6 +64,10 @@ class ThoughtsService @Inject constructor(
         dto.person = dto.people.joinToString(TAG_SEPARATOR).ifBlank { null }
         dto.project = dto.projects.joinToString(TAG_SEPARATOR).ifBlank { null }
 
+        dto.flashcards = thoughtWithTags.flashcards
+            .sortedBy { flashcard -> flashcard.position }
+            .map { flashcard -> FlashcardDTO(front = flashcard.front, back = flashcard.back) }
+
         return dto
     }
 
@@ -81,6 +87,9 @@ class ThoughtsService @Inject constructor(
         val thoughtId = repository.insertThought(entity)
 
         saveTags(thoughtId.toInt(), thought)
+        if (thought.hasFlashcards) {
+            updateThoughtFlashcards(thoughtId.toInt(), thought.flashcards)
+        }
         return thoughtId
     }
 
@@ -115,6 +124,19 @@ class ThoughtsService @Inject constructor(
 
     suspend fun updateThoughtRichText(thoughtId: Int, richText: String?) {
         repository.updateRichText(thoughtId, richText)
+    }
+
+    /** Replaces the whole list - an empty list removes the flashcards form from the thought. */
+    suspend fun updateThoughtFlashcards(thoughtId: Int, flashcards: List<FlashcardDTO>) {
+        val entities = flashcards.mapIndexed { index, flashcard ->
+            ThoughtFlashcardEntity(
+                thoughtId = thoughtId,
+                position  = index,
+                front     = flashcard.front,
+                back      = flashcard.back
+            )
+        }
+        repository.replaceFlashcards(thoughtId, entities)
     }
 
     suspend fun updateThoughtRecording(thoughtId : Long, audioFile: File, duration : Long) {
