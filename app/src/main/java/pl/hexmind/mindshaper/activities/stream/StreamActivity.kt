@@ -3,6 +3,7 @@ package pl.hexmind.mindshaper.activities.stream
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.content.IntentCompat
 import androidx.core.view.doOnPreDraw
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -16,6 +17,7 @@ import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.common.ui.views.lists.SortConfig
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
+import pl.hexmind.mindshaper.common.regex.HexTags
 import pl.hexmind.mindshaper.common.ui.dialogs.GuideDialog
 import pl.hexmind.mindshaper.common.ui.dpToPx
 import pl.hexmind.mindshaper.common.ui.views.HexTagsSearcher
@@ -71,6 +73,11 @@ class StreamActivity : CoreActivity() {
         setupReactiveDataObserver()
 
         viewModel.loadDomains()
+
+        // Only on the first creation - after a recreation the ViewModel already holds this (or a newer) search
+        if (savedInstanceState == null) {
+            applyLaunchSearchCriteria()
+        }
 
         onboardingManager.showTooltipForStep(
             OnboardingProgressStep.STREAM_TOOLTIP, this
@@ -174,6 +181,12 @@ class StreamActivity : CoreActivity() {
                 viewModel.updateSearchQuery(hexTags)
             }
         }
+    }
+
+    // Criteria passed by the caller (e.g. a Metadata tag pill) replace the current search
+    private fun applyLaunchSearchCriteria() {
+        val criteria = IntentCompat.getParcelableExtra(intent, P_SEARCH_CRITERIA, HexTags::class.java) ?: return
+        searcher.setTags(criteria)
     }
 
     // TODO: to be used when "traditional" searching will be brought back as alternative (like setting config)
@@ -341,6 +354,8 @@ class StreamActivity : CoreActivity() {
     }
 
     companion object {
+        const val P_SEARCH_CRITERIA = "search_criteria"
+
         private const val FADING_EDGE_DP = 16
     }
 }

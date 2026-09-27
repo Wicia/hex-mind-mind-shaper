@@ -334,6 +334,9 @@
     <!-- Long press deletion -->
     <string name="metadata_tag_delete_message">Czy usunąć tag „%1$s”? Zniknie ze wszystkich myśli, które go używają.</string>
 
+    <!-- Pill count part - opens Stream searched by the tag -->
+    <string name="metadata_tag_search">Szukaj myśli z tym tagiem</string>
+
     <!-- ============================================================ -->
     <!--    SETTINGS Activity                                         -->
     <!-- ============================================================ -->

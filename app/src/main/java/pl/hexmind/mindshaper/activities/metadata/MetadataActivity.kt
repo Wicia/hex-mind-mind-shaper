@@ -1,5 +1,6 @@
 package pl.hexmind.mindshaper.activities.metadata
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -9,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
+import pl.hexmind.mindshaper.activities.stream.StreamActivity
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
+import pl.hexmind.mindshaper.common.regex.HexTags
 import pl.hexmind.mindshaper.common.ui.views.HexTabSwitch
 import pl.hexmind.mindshaper.database.models.HexTagType
 import pl.hexmind.mindshaper.services.RenameOutcome
@@ -25,7 +28,8 @@ class MetadataActivity : CoreActivity() {
 
     private val tagsAdapter = MetadataTagRowAdapter(
         onTagTap = { tagName -> showTagEditSheet(tagName) },
-        onTagLongPress = { tagName -> showTagDeleteDialog(tagName) }
+        onTagLongPress = { tagName -> showTagDeleteDialog(tagName) },
+        onTagSearch = { tagName -> openStreamSearchedBy(tagName) }
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,6 +115,20 @@ class MetadataActivity : CoreActivity() {
             }
             .setDismissText(getString(R.string.common_deletion_dialog_no))
             .show()
+    }
+
+    // ! No CLEAR_TOP, unlike the nav bar - Stream lands on top of this screen, so Back returns here
+    private fun openStreamSearchedBy(tagName: String) {
+        val criteria = if (viewModel.currentType == HexTagType.PERSON) {
+            HexTags(person = tagName)
+        }
+        else {
+            HexTags(project = tagName)
+        }
+
+        val intent = Intent(this, StreamActivity::class.java)
+        intent.putExtra(StreamActivity.P_SEARCH_CRITERIA, criteria)
+        startActivity(intent)
     }
 
     private fun showTagEditSheet(tagName: String) {
