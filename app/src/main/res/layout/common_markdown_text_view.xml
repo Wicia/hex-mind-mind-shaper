@@ -20,6 +20,7 @@
         android:letterSpacing="0.0"
         android:textStyle="normal"
         android:textColor="@color/text_primary"
+        android:textColorLink="@color/rich_text_link"
         android:fontFamily="@font/alegreya_regular"
         android:textAllCaps="false"
         android:visibility="visible" />
