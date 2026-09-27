@@ -292,6 +292,27 @@
   <h2>Sprzątanie / Refactoring</h2>
   <details class="item">
     <summary>
+      <span class="prio minor">Drobny</span>
+      <strong>Standaryzacja przycisków „Zapisz" / „Anuluj"</strong> — w bottom sheetach i dialogach oba przyciski mają stać w jednej linii.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>jeden układ dla wszystkich okien z parą „Zapisz" + „Anuluj": przyciski obok siebie w jednym wierszu, bez zawijania jeden pod drugi</li>
+        <li>stała kolejność i wyrównanie w całej apce (np. „Anuluj" z lewej, „Zapisz" z prawej)</li>
+        <li>przy okazji ustalić, czy bottom sheety zostają przy FAB-ie zatwierdzania, czy przechodzą na tę samą parę przycisków co dialogi</li>
+      </ul>
+      <div class="gain"><b>Po co:</b> ten sam układ akcji wszędzie = użytkownik nie szuka „Zapisz" w każdym oknie od nowa.</div>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>dialogi z parą „Zapisz" / „Anuluj": <code>TextEditDialog</code>, <code>FlashcardsEditDialog</code>, <code>common_icons_list_dialog</code></li>
+          <li>bottom sheety z FAB-em zatwierdzania: <code>common_hex_tags_bottomsheet</code>, <code>domain_edit_bottomsheet</code>, <code>hex_tag_edit_bottomsheet</code>, <code>step_edit_bottom_sheet</code>, <code>stream_filter_bottomsheet</code>, <code>stream_search_bottomsheet</code></li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
       <span class="prio minor">Drobny</span> 
       <strong>Pasek nawigacji</strong> — prosi o dostęp do ustawień, z którego wcale nie korzysta.
     </summary>
