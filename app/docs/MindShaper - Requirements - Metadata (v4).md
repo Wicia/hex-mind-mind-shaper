@@ -11,7 +11,10 @@
   - w danym momencie widoczna jest **tylko jedna** lista
   - **Osoby** — ludzie, o których myśl mówi lub których dotyczy
   - **Projekty** — sprawy i przedsięwzięcia, do których myśl się odnosi
-- **Kafelek tagu** — nazwa tagu + licznik myśli, które go używają.
+- **Kafelek tagu** — dwie części: `nazwa | licznik 🔍`.
+  - części rozdziela pionowa szczelina przez całą wysokość kafelka, w kolorze tła ekranu
+  - część 1: nazwa tagu
+  - część 2: licznik myśli, które go używają, z ikoną lupy
   - kolejność: od najczęściej używanych
   - układ: po dwa kafelki w rzędzie
   - tag bez powiązanych myśli zostaje na liście z licznikiem `0`
@@ -26,11 +29,15 @@
 ## Procesy, Opcje, Integracje
 
 - **Przełączanie zakładek** — dotknięcie zakładki podmienia listę na tagi tego rodzaju.
-- **Zmiana nazwy tagu** — dotknięcie kafelka otwiera edycję nazwy; zatwierdzenie zmienia nazwę **we wszystkich myślach** korzystających z tego tagu.
+- **Zmiana nazwy tagu** — dotknięcie nazwy na kafelku otwiera edycję nazwy; zatwierdzenie zmienia nazwę **we wszystkich myślach** korzystających z tego tagu.
   - pusta nazwa → *Podaj nazwę*, zmiana nie zostaje zapisana
   - nazwa zajęta przez inny tag tego samego rodzaju → *Taki tag już istnieje*, zmiana nie zostaje zapisana
   - nazwy nie kolidują między rodzajami — ten sam tekst może być osobno Osobą i Projektem
-- **Usunięcie tagu** — przytrzymanie kafelka pyta o potwierdzenie; zatwierdzenie kasuje tag **razem z jego użyciem we wszystkich myślach**.
+- **Szukanie myśli z tagiem** — dotknięcie licznika na kafelku przenosi do Strumienia wyszukanego po tym tagu.
+  - tag trafia do wyszukiwarki jako kryterium swojego rodzaju (Osoba / Projekt)
+  - kryterium **zastępuje** dotychczasowe wyszukiwanie w Strumieniu
+  - Wstecz ze Strumienia wraca do Metadanych
+- **Usunięcie tagu** — przytrzymanie kafelka (dowolnej części) pyta o potwierdzenie; zatwierdzenie kasuje tag **razem z jego użyciem we wszystkich myślach**.
   - ostrzeżenie mówi wprost, że tag zniknie ze wszystkich myśli, które go używają
   - [Usuń] kasuje, [Nie, zostaw] zamyka bez zmian
   - po usunięciu komunikat *<nazwa> usunięto*
