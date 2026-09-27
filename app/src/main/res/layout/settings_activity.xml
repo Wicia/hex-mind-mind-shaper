@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_background">
@@ -29,19 +30,12 @@
                 style="@style/AppCardView">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    style="@style/AppCardView_Content">
 
                     <!-- Your name -->
                     <TextView
                         android:id="@+id/tv_your_name_section_header"
-                        style="@style/TextView_Header_Section"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="4dp"
+                        style="@style/AppCardView_Header"
                         android:text="@string/settings_your_name_header" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -59,12 +53,12 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
+
                     <!-- Domains -->
                     <TextView
                         android:id="@+id/tv_domains_section_header"
-                        style="@style/TextView_Header_Section"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/AppCardView_Header"
                         android:text="@string/settings_domains_header" />
 
                     <GridLayout
@@ -76,23 +70,18 @@
                         android:columnOrderPreserved="false"
                         android:rowCount="4" />
 
+                    <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
+
                     <!-- Start screen -->
                     <TextView
                         android:id="@+id/tv_start_screen_section_header"
-                        style="@style/TextView_Header_Section"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/settings_start_screen_header"
-                        />
+                        style="@style/AppCardView_Header"
+                        android:text="@string/settings_start_screen_header" />
 
-                    <!-- Start screen tiles -->
                     <pl.hexmind.mindshaper.activities.settings.widgets.StartScreenTiles
                         android:id="@+id/tiles_start_screen"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        />
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
@@ -103,37 +92,28 @@
                 style="@style/AppCardView">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    style="@style/AppCardView_Content">
 
                     <TextView
-                        style="@style/TextView_Header_Section"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        style="@style/AppCardView_Header"
                         android:text="@string/settings_permissions_section" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/switch_voice_recording_feature"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/Settings_Switch"
                         android:text="@string/settings_permissions_voice_recording" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/switch_photo_feature"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/Settings_Switch"
                         android:text="@string/settings_permissions_photo" />
+
+                    <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
 
                     <!-- Default way to capture thoughts -->
                     <TextView
                         android:id="@+id/tv_default_capture_form_section_header"
-                        style="@style/TextView_Header_Section"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
+                        style="@style/AppCardView_Header"
                         android:text="@string/settings_default_form_header" />
 
                     <pl.hexmind.mindshaper.activities.settings.widgets.DefaultCaptureFormTiles
@@ -144,28 +124,23 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- === THOUGHTS VALUE / LIFECYCLE === -->
             <androidx.cardview.widget.CardView
                 style="@style/AppCardView">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    style="@style/AppCardView_Content">
 
                     <TextView
                         android:id="@+id/tv_thought_value_scale_section_header"
-                        style="@style/TextView_Header_Section"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        style="@style/AppCardView_Header"
                         android:text="@string/settings_thoughts_value_header" />
 
                     <TextView
-                        style="@style/TextView_Info_Success"
+                        style="@style/TextView_Section_Info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="0dp"
                         android:text="@string/settings_thoughts_value_action_info" />
 
                     <pl.hexmind.mindshaper.activities.settings.widgets.ThoughtValueSystemTiles
@@ -173,18 +148,24 @@
                         android:layout_width="220dp"
                         android:layout_height="wrap_content" />
 
-                    <!-- Slow mode section -->
+                    <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
+
+                    <!-- Slow mode -->
                     <TextView
                         android:id="@+id/tv_slow_mode_section_header"
-                        style="@style/TextView_Header_Section"
+                        style="@style/AppCardView_Header"
+                        android:text="@string/settings_slow_mode_header" />
+
+                    <TextView
+                        style="@style/TextView_Section_Info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/settings_slow_mode_header" />
+                        android:layout_marginTop="0dp"
+                        android:text="@string/settings_slow_mode_info" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/switch_slow_mode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/Settings_Switch"
                         android:text="@string/settings_slow_mode_label" />
 
                     <LinearLayout
@@ -192,8 +173,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:baselineAligned="false"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:gravity="end"
+                            android:text="@string/settings_slow_mode_hours_prefix"
+                            android:textSize="14sp" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_slow_mode_decrease"
@@ -208,7 +198,7 @@
                             android:layout_width="40dp"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="1"
+                            tools:text="1"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -224,24 +214,29 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6dp"
-                            android:text="h"
+                            android:text="@string/common_unit_hours"
                             android:textSize="14sp" />
 
                     </LinearLayout>
 
-                    <!-- Dormant mode section -->
+                    <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
+
+                    <!-- Dormant mode -->
                     <TextView
                         android:id="@+id/tv_dormant_mode_section_header"
-                        style="@style/TextView_Header_Section"
+                        style="@style/AppCardView_Header"
+                        android:text="@string/settings_dormant_mode_header" />
+
+                    <TextView
+                        style="@style/TextView_Section_Info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/settings_dormant_mode_header" />
+                        android:layout_marginTop="0dp"
+                        android:text="@string/settings_dormant_mode_info" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/switch_dormant_mode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="4dp"
+                        style="@style/Settings_Switch"
                         android:text="@string/settings_dormant_mode_switch_label" />
 
                     <LinearLayout
@@ -256,6 +251,8 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:baselineAligned="false"
+                            android:gravity="center_vertical"
                             android:orientation="horizontal">
 
                             <TextView
@@ -281,7 +278,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="6dp"
-                                android:text="dni"
+                                android:text="@string/common_unit_days"
                                 android:textSize="14sp" />
 
                         </LinearLayout>
@@ -291,6 +288,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            android:baselineAligned="false"
+                            android:gravity="center_vertical"
                             android:orientation="horizontal">
 
                             <TextView
@@ -336,27 +335,18 @@
                 style="@style/AppCardView">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    style="@style/AppCardView_Content">
 
                     <TextView
                         android:id="@+id/tv_calendar_section_header"
-                        style="@style/TextView_Header_Section"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        style="@style/AppCardView_Header"
                         android:text="@string/settings_calendar_section" />
 
-                    <!-- Turn on/off reminders (toogle) -->
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/switch_calendar_reminders"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/Settings_Switch"
                         android:text="@string/settings_calendar_reminders_switch_label" />
 
-                    <!-- Hint shown under the switch -->
                     <TextView
                         style="@style/TextView_Section_Info"
                         android:layout_width="match_parent"
@@ -372,12 +362,10 @@
                         android:layout_marginTop="4dp"
                         android:visibility="gone" />
 
-                    <!-- Extra sync info -->
                     <TextView
                         style="@style/TextView_Section_Info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:text="@string/settings_calendar_reminders_sync_hint" />
 
                 </LinearLayout>
@@ -389,41 +377,34 @@
                 style="@style/AppCardView">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    style="@style/AppCardView_Content">
 
                     <TextView
                         android:id="@+id/tv_backup_section_header"
-                        style="@style/TextView_Header_Section"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        style="@style/AppCardView_Header"
                         android:text="@string/settings_backup_header" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/switch_backup_feature"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/Settings_Switch"
                         android:text="@string/settings_permissions_backup" />
 
                     <TextView
-                        style="@style/TextView_Info_Success"
+                        style="@style/TextView_Section_Info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/settings_backup_hint" />
 
                     <TextView
                         android:id="@+id/tv_snapshot_stats"
-                        style="@style/TextView_Info_Success"
+                        style="@style/TextView_Section_Info"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp" />
+                        android:layout_height="wrap_content" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
 
@@ -450,7 +431,7 @@
 
                     <TextView
                         android:id="@+id/tv_selected_backup"
-                        style="@style/TextView_Info_Success"
+                        style="@style/TextView_Section_Info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"

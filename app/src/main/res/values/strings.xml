@@ -50,6 +50,10 @@
     <!-- Validation -->
     <string name="common_object_type_thought">Myśl</string>
 
+    <!-- Units -->
+    <string name="common_unit_hours">godz.</string>
+    <string name="common_unit_days">dni</string>
+
     <!-- Thought age -->
     <string name="common_thought_age_pattern">Złapano %s dni temu</string> <!-- TODO: for 'updated' words sequence is opposite -->
     <string name="common_thought_age_0">Dzisiaj złapano</string>
@@ -365,7 +369,7 @@
     <string name="settings_title">Ustawienia</string>
 
     <!-- Name -->
-    <string name="settings_your_name_header">✒️ Twoje Prawdziwe Imię?</string>
+    <string name="settings_your_name_header">✒️ Moje Prawdziwe Imię?</string>
     <string name="settings_your_name_default">Bezimienn(y/a)</string>
 
     <!-- Value system -->
@@ -446,13 +450,16 @@
 
     <!-- Slow mode -->
     <string name="settings_slow_mode_header">⏳ Tryb powolny</string>
-    <string name="settings_slow_mode_label">Włącz możliwość nadawania wartości myślom po tylu godzinach:</string>
+    <string name="settings_slow_mode_info">Włącz możliwość nadawania wartości myślom po określonej liczbie godzin</string>
+    <string name="settings_slow_mode_label">Aktywuj tryb Powolny</string>
+    <string name="settings_slow_mode_hours_prefix">Odblokuj nadawanie\nwartości po</string>
 
     <!-- Dormant mode -->
     <string name="settings_dormant_mode_header">🌙 Tryb uśpienia</string>
-    <string name="settings_dormant_mode_switch_label">Aktywuj tryb, w którym myśli będą automatycznie ukrywane, gdy spełnią określone warunki</string>
-    <string name="settings_dormant_mode_days_label">Myśl nie była zmieniana od</string>
-    <string name="settings_dormant_mode_value_label">oraz  Wartość myśli jest ≤</string>
+    <string name="settings_dormant_mode_info">Aktywuj tryb, w którym myśli będą automatycznie ukrywane, gdy spełnią określone warunki</string>
+    <string name="settings_dormant_mode_switch_label">Aktywuj tryb Uśpienia</string>
+    <string name="settings_dormant_mode_days_label">Ukryj myśli niezmieniane od</string>
+    <string name="settings_dormant_mode_value_label">oraz których wartość jest ≤</string>
     <string name="settings_dormant_mode_value_error">Wartość myśli musi być między %1$d a %2$d</string>
     <string name="settings_dormant_mode_value_error_toast">Popraw wartość progu uśpienia przed ponownym zapisem</string>
     <string name="settings_dormant_mode_days_error">Liczba dni musi być między %1$d a %2$d</string>
