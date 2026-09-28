@@ -274,6 +274,21 @@
 
   <details class="item">
     <summary>
+      <span class="prio minor">Drobny</span>
+      <strong>Dialog „aktywuj formę zapisu" — tylko nieaktywna forma</strong> — komunikat wymienia dziś wszystkie formy naraz, niezależnie od tego, którą user próbował dodać.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>dziś stały tekst: <em>„Możesz aktywować zapisywanie myśli w formie nagrań głosowych, zdjęć oraz fiszek w Ustawieniach. Czy przejść do Ustawień?"</em></li>
+        <li>docelowo wstawiana tylko forma, która nie została aktywowana (ta, którą user próbował dodać), np. <em>„Możesz aktywować zapisywanie myśli w formie fiszek w Ustawieniach. Czy przejść do Ustawień?"</em></li>
+        <li>string z parametrem (<code>%1$s</code>) + nazwa formy w dopełniaczu (<em>nagrań głosowych</em> / <em>zdjęć</em> / <em>fiszek</em>) przekazywana z przycisku, który wywołał dialog</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>res/values/strings.xml</code> — <code>common_thoughts_forms_permissions_needed</code></li><li><code>activities/ThoughtManagerActivity.kt</code> — <code>showEnableAdditionalFeaturesDialog()</code> (dołożyć parametr formy)</li><li>wywołania z przycisków dodawania formy w <code>CaptureActivity</code> i <code>DetailsActivity</code></li></ul></div>
+    </div>
+  </details>
+
+  <details class="item">
+    <summary>
       <span class="prio minor">Drobny</span> 
       <strong>Seed startowych tagów (Osoba + Projekt)</strong> — zestaw tagów istnieje od pierwszego uruchomienia, nie dopiero gdy user je stworzy.
     </summary>

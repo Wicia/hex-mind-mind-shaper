@@ -108,6 +108,11 @@
                         style="@style/Settings_Switch"
                         android:text="@string/settings_permissions_photo" />
 
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_flashcards_feature"
+                        style="@style/Settings_Switch"
+                        android:text="@string/settings_permissions_flashcards" />
+
                     <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
 
                     <!-- Default way to capture thoughts -->
