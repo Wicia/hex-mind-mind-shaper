@@ -158,6 +158,7 @@ class SettingsActivity : CoreActivity() {
 
         setupVoiceRecordingFeatureToggle()
         setupPhotoFeatureToggle()
+        setupFlashcardsFeatureToggle()
         setupCalendarRemindersToggle()
         setupBackupFeatureToggle()
         setupSlowModeListeners()
@@ -254,6 +255,16 @@ class SettingsActivity : CoreActivity() {
             }
             .setDismissAction { binding.switchVoiceRecordingFeature.isChecked = false }
             .show()
+    }
+
+    // ========== FLASHCARDS FEATURE ==========
+
+    // No permission to ask for - the switch writes straight to the preferences
+    private fun setupFlashcardsFeatureToggle() {
+        binding.switchFlashcardsFeature.isChecked = appSettingsStorage.isFlashcardsFeatureEnabled()
+        binding.switchFlashcardsFeature.setOnCheckedChangeListener { _, isChecked ->
+            appSettingsStorage.setFlashcardsFeatureEnabled(isChecked)
+        }
     }
 
     // ========== PHOTO FEATURE ==========

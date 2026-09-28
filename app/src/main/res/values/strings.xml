@@ -43,7 +43,7 @@
     <string name="common_deletion_dialog_warning">Tej operacji nie można cofnąć.</string>
     <string name="common_edit_note_header">Edytuj notatkę</string>
     <string name="common_list_dialog_title">Wybierz coś sobie…</string>
-    <string name="common_thoughts_forms_permissions_needed">Możesz aktywować zapisywanie myśli w formie nagrań głosowych oraz zdjęć w Ustawieniach.\n\nCzy przejść do Ustawień?</string>
+    <string name="common_thoughts_forms_permissions_needed">Możesz aktywować zapisywanie myśli w formie nagrań głosowych, zdjęć oraz fiszek w Ustawieniach.\n\nCzy przejść do Ustawień?</string>
     <string name="common_thoughts_permissions_dialog_header">Żądanie uprawnień do zasobów Androida</string>
     <string name="common_dialog_open_android_settings">Otwórz ustawienia</string>
 
@@ -105,6 +105,24 @@
     <string name="photos_removing_file">Wywalić to zdjęcie?</string>
     <string name="photos_no_file">Brakuje tutaj zdjęcia…</string>
     <string name="photos_loading_error">Coś się wyburaczyło przy ładowaniu zdjęcia…</string>
+
+    <!-- Flashcards -->
+    <string name="flashcards_edit_header">Edycja zestawu fiszek</string>
+    <string name="flashcards_front_hint">Awers (pytanie)</string>
+    <string name="flashcards_back_hint">Rewers (odpowiedź)</string>
+    <string name="flashcards_row_label">Fiszka #%1$d</string>
+    <string name="flashcards_error_incomplete">Każda fiszka potrzebuje awersu i rewersu</string>
+    <plurals name="flashcards_start_title">
+        <item quantity="one">%d fiszka</item>
+        <item quantity="few">%d fiszki</item>
+        <item quantity="many">%d fiszek</item>
+        <item quantity="other">%d fiszki</item>
+    </plurals>
+    <string name="flashcards_start_subtitle">do powtórzenia dzisiaj</string>
+    <string name="flashcards_end_title">Wszystkie fiszki zostały ogarnięte ;)</string>
+    <string name="flashcards_mastery">Utrwalono %1$d%% fiszek</string>
+    <string name="flashcards_removing_header">Usunąć wszystkie fiszki?</string>
+    <string name="flashcards_removing_content">Ta operacja jest nieodwracalna</string>
 
     <!-- ============================================================ -->
     <!--    WORKSHOP - Onboarding review                              -->
@@ -185,7 +203,7 @@
     <!-- Core -->
     <string name="capture_main_label">Łapanie myśli</string>
     <string name="capture_hex_tags_tooltip">temat @osoba #projekt</string>
-    <string name="capture_error_no_content">Potrzebujesz cos zapisać (tekst, nagranie lub obraz)</string>
+    <string name="capture_error_no_content">Potrzebujesz cos zapisać (tekst, nagranie, obraz lub fiszki)</string>
 
     <!-- Rich text -->
     <string name="capture_rich_text_error_note_empty">To wyżej nie może być puste</string>
@@ -382,6 +400,7 @@
     <string name="settings_permissions_section">🔆 Formy zapisu myśli</string>
     <string name="settings_permissions_voice_recording">Włącz zapis w formie głosówek</string>
     <string name="settings_permissions_photo">Włącz zapis w formie zdjęć</string>
+    <string name="settings_permissions_flashcards">Włącz zapis w formie fiszek</string>
     <string name="settings_permissions_backup">Włącz tworzenie kopii zapasowych</string>
     <string name="settings_permissions_blockade_title">Uprawnienie zablokowane</string>
     <string name="settings_permissions_recording_blockade_tooltip">Uprawnienie do nagrywania dźwięku zostało trwale odrzucone.\nMożesz je włączyć w ustawieniach systemu Androida.</string>
