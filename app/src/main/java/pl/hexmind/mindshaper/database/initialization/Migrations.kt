@@ -437,5 +437,15 @@ class Migrations {
                 db.execSQL("CREATE INDEX IF NOT EXISTS index_THOUGHT_FLASHCARDS_thought_id ON THOUGHT_FLASHCARDS(thought_id)")
             }
         }
+
+        // Flashcards review: answer counters + the state of the current review session
+        val MIGRATION_19_TO_20 = object : Migration(19, 20) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE THOUGHT_FLASHCARDS ADD COLUMN correct_count INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE THOUGHT_FLASHCARDS ADD COLUMN wrong_count INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE THOUGHT_FLASHCARDS ADD COLUMN session_state TEXT DEFAULT NULL")
+                db.execSQL("ALTER TABLE THOUGHT_FLASHCARDS ADD COLUMN session_order INTEGER DEFAULT NULL")
+            }
+        }
     }
 }

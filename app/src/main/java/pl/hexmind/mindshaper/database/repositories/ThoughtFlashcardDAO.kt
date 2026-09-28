@@ -5,7 +5,9 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import pl.hexmind.mindshaper.database.models.ThoughtFlashcardEntity
+import pl.hexmind.mindshaper.database.models.ThoughtFlashcardSessionUpdate
 
 @Dao
 interface ThoughtFlashcardDAO {
@@ -22,6 +24,9 @@ interface ThoughtFlashcardDAO {
         deleteByThoughtId(thoughtId)
         if (flashcards.isNotEmpty()) insertAll(flashcards)
     }
+
+    @Update(entity = ThoughtFlashcardEntity::class)
+    suspend fun updateSession(updates: List<ThoughtFlashcardSessionUpdate>)
 
     // ===========================================
     //      Snapshot (backup / restore)

@@ -10,6 +10,7 @@ import androidx.lifecycle.map
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.database.models.ThoughtEntity
 import pl.hexmind.mindshaper.database.models.ThoughtFlashcardEntity
+import pl.hexmind.mindshaper.database.models.ThoughtFlashcardSessionUpdate
 import pl.hexmind.mindshaper.database.models.ThoughtMetadataUpdate
 import pl.hexmind.mindshaper.database.repositories.ThoughtsRepository
 import java.util.Locale
@@ -17,6 +18,7 @@ import pl.hexmind.mindshaper.database.models.HexTagType
 import pl.hexmind.mindshaper.database.models.ThoughtWithHexTags
 import pl.hexmind.mindshaper.database.repositories.HexTagDAO
 import pl.hexmind.mindshaper.services.dto.FlashcardDTO
+import pl.hexmind.mindshaper.services.dto.FlashcardSessionState
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.mappers.ThoughtsMapper
 import java.io.File
@@ -66,7 +68,17 @@ class ThoughtsService @Inject constructor(
 
         dto.flashcards = thoughtWithTags.flashcards
             .sortedBy { flashcard -> flashcard.position }
-            .map { flashcard -> FlashcardDTO(front = flashcard.front, back = flashcard.back) }
+            .map { flashcard ->
+                FlashcardDTO(
+                    id           = flashcard.id,
+                    front        = flashcard.front,
+                    back         = flashcard.back,
+                    correctCount = flashcard.correctCount,
+                    wrongCount   = flashcard.wrongCount,
+                    sessionState = flashcard.sessionState?.let { state -> FlashcardSessionState.valueOf(state) },
+                    sessionOrder = flashcard.sessionOrder
+                )
+            }
 
         return dto
     }
@@ -126,17 +138,40 @@ class ThoughtsService @Inject constructor(
         repository.updateRichText(thoughtId, richText)
     }
 
-    /** Replaces the whole list - an empty list removes the flashcards form from the thought. */
+    /**
+     * Replaces the whole list - an empty list removes the flashcards form from the thought.
+     * ! Kept flashcards come back with their id - the answer counters and session state stay with them
+     */
     suspend fun updateThoughtFlashcards(thoughtId: Int, flashcards: List<FlashcardDTO>) {
         val entities = flashcards.mapIndexed { index, flashcard ->
             ThoughtFlashcardEntity(
-                thoughtId = thoughtId,
-                position  = index,
-                front     = flashcard.front,
-                back      = flashcard.back
+                id           = flashcard.id,
+                thoughtId    = thoughtId,
+                position     = index,
+                front        = flashcard.front,
+                back         = flashcard.back,
+                correctCount = flashcard.correctCount,
+                wrongCount   = flashcard.wrongCount,
+                sessionState = flashcard.sessionState?.name,
+                sessionOrder = flashcard.sessionOrder
             )
         }
         repository.replaceFlashcards(thoughtId, entities)
+    }
+
+    /** Review progress only (counters + session state) - content and order of the flashcards stay. */
+    suspend fun updateFlashcardsSession(flashcards: List<FlashcardDTO>) {
+        val updates = flashcards.mapNotNull { flashcard ->
+            val id = flashcard.id ?: return@mapNotNull null
+            ThoughtFlashcardSessionUpdate(
+                id           = id,
+                correctCount = flashcard.correctCount,
+                wrongCount   = flashcard.wrongCount,
+                sessionState = flashcard.sessionState?.name,
+                sessionOrder = flashcard.sessionOrder
+            )
+        }
+        repository.updateFlashcardsSession(updates)
     }
 
     suspend fun updateThoughtRecording(thoughtId : Long, audioFile: File, duration : Long) {

@@ -37,5 +37,20 @@ data class ThoughtFlashcardEntity(
     val front: String,
 
     @ColumnInfo(name = "back")
-    val back: String
+    val back: String,
+
+    // Answers given over all review sessions (thumb up / thumb down)
+    @ColumnInfo(name = "correct_count", defaultValue = "0")
+    val correctCount: Int = 0,
+
+    @ColumnInfo(name = "wrong_count", defaultValue = "0")
+    val wrongCount: Int = 0,
+
+    // Review session: FlashcardSessionState name - null = not part of any session yet
+    @ColumnInfo(name = "session_state")
+    val sessionState: String? = null,
+
+    // Review session: place in the queue - skipping a flashcard moves it to the end
+    @ColumnInfo(name = "session_order")
+    val sessionOrder: Int? = null
 )
