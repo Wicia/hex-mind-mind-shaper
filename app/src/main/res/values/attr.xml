@@ -62,6 +62,11 @@
         <attr name="showConfirmIcon" format="boolean" />
         <attr name="hintPlaceholder" format="string|reference" />
         <attr name="hintFloating" format="string|reference" />
+        <!-- true = plain placeholder inside the field, gone on focus - no floating label -->
+        <attr name="inlineHint" format="boolean" />
+        <attr name="hexMaxLength" format="integer" />
+        <!-- true = slimmer resting height (smaller vertical padding) -->
+        <attr name="compact" />
     </declare-styleable>
 
     <declare-styleable name="GoalImportanceBadge">
