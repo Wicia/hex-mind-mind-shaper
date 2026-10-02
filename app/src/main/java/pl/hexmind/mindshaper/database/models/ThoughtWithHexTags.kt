@@ -5,7 +5,7 @@ import androidx.room.Junction
 import androidx.room.Relation
 
 /**
- * A thought together with its hex tags and flashcards, fetched in one go.
+ * A thought together with its hex tags, fetched in one go.
  *
  * Room resolves the junction itself, so a list of thoughts costs two queries instead of one per row.
  */
@@ -23,13 +23,7 @@ data class ThoughtWithHexTags(
             entityColumn = "hex_tag_id"
         )
     )
-    val hexTags: List<HexTagEntity>,
-
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "thought_id"
-    )
-    val flashcards: List<ThoughtFlashcardEntity>
+    val hexTags: List<HexTagEntity>
 ) {
 
     fun tagNamesOfType(type: HexTagType): List<String> =

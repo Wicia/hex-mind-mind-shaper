@@ -7,27 +7,27 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 /**
- * One flashcard (front + back) of a thought. A thought holds an ordered list of them.
+ * One flashcard (front + back) of a set. A set holds an ordered list of them.
  */
 @Entity(
-    tableName = "THOUGHT_FLASHCARDS",
+    tableName = "FLASHCARDS",
     foreignKeys = [
         ForeignKey(
-            entity = ThoughtEntity::class,
+            entity = FlashcardSetEntity::class,
             parentColumns = ["id"],
-            childColumns = ["thought_id"],
-            onDelete = ForeignKey.CASCADE // Flashcards live and die with their thought
+            childColumns = ["set_id"],
+            onDelete = ForeignKey.CASCADE // Flashcards live and die with their set
         )
     ],
-    indices = [Index(value = ["thought_id"])]
+    indices = [Index(value = ["set_id"])]
 )
-data class ThoughtFlashcardEntity(
+data class FlashcardEntity(
 
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
 
-    @ColumnInfo(name = "thought_id")
-    val thoughtId: Int,
+    @ColumnInfo(name = "set_id")
+    val setId: Int,
 
     // Order in which the user entered the flashcards
     @ColumnInfo(name = "position")

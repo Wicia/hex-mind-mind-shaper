@@ -102,12 +102,6 @@ interface ThoughtsDAO {
     @Query("UPDATE THOUGHTS SET rich_text = :richText, updated_at = :updatedAt WHERE id = :thoughtId")
     suspend fun updateRichText(thoughtId: Int, richText: String?, updatedAt: Long)
 
-// ========== FLASHCARDS ==========
-
-    // Flashcards live in their own table - editing them still counts as editing the thought
-    @Query("UPDATE THOUGHTS SET updated_at = :updatedAt WHERE id = :thoughtId")
-    suspend fun touchUpdatedAt(thoughtId: Int, updatedAt: Long)
-
 // ========== AUDIO RECORDINGS ==========
 
     @Query("SELECT audio_data FROM thoughts WHERE id = :id")

@@ -4,7 +4,7 @@ import pl.hexmind.mindshaper.services.dto.FlashcardDTO
 import pl.hexmind.mindshaper.services.dto.FlashcardSessionState
 
 /**
- * Review session of one thought's flashcards - pure operations on the list, the caller stores the result.
+ * Review session of one set's flashcards - pure operations on the list, the caller stores the result.
  * The whole session state lives in the flashcards themselves (state + queue order), so it survives
  * leaving the screen: a revealed but unanswered flashcard is shown again, revealed, until answered.
  *

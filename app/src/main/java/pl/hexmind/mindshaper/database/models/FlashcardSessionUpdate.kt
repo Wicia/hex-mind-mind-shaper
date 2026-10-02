@@ -6,7 +6,7 @@ import androidx.room.ColumnInfo
  * For Room Partial Update mechanism
  * It allows to store the review progress of a flashcard without touching its content
  */
-data class ThoughtFlashcardSessionUpdate(
+data class FlashcardSessionUpdate(
 
     @ColumnInfo(name = "id")
     val id: Int,

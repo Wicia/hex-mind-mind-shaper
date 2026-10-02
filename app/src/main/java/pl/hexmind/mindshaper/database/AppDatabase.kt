@@ -6,6 +6,8 @@ import androidx.room.TypeConverters
 import pl.hexmind.mindshaper.database.AppDatabase.Companion.DB_VERSION
 import pl.hexmind.mindshaper.database.mappers.CommonTypesConverters
 import pl.hexmind.mindshaper.database.models.DomainEntity
+import pl.hexmind.mindshaper.database.models.FlashcardEntity
+import pl.hexmind.mindshaper.database.models.FlashcardSetEntity
 import pl.hexmind.mindshaper.database.models.GoalEntity
 import pl.hexmind.mindshaper.database.models.StepEntity
 import pl.hexmind.mindshaper.database.models.IconEntity
@@ -13,16 +15,15 @@ import pl.hexmind.mindshaper.database.models.PathEntity
 import pl.hexmind.mindshaper.database.models.HexTagEntity
 import pl.hexmind.mindshaper.database.models.PathStepEntity
 import pl.hexmind.mindshaper.database.models.ThoughtEntity
-import pl.hexmind.mindshaper.database.models.ThoughtFlashcardEntity
 import pl.hexmind.mindshaper.database.models.ThoughtHexTagEntity
 import pl.hexmind.mindshaper.database.repositories.DomainDAO
+import pl.hexmind.mindshaper.database.repositories.FlashcardDAO
 import pl.hexmind.mindshaper.database.repositories.GoalDAO
 import pl.hexmind.mindshaper.database.repositories.StepDAO
 import pl.hexmind.mindshaper.database.repositories.IconDAO
 import pl.hexmind.mindshaper.database.repositories.PathDAO
 import pl.hexmind.mindshaper.database.repositories.HexTagDAO
 import pl.hexmind.mindshaper.database.repositories.PathStepDAO
-import pl.hexmind.mindshaper.database.repositories.ThoughtFlashcardDAO
 import pl.hexmind.mindshaper.database.repositories.ThoughtsDAO
 
 @Database(
@@ -36,7 +37,8 @@ import pl.hexmind.mindshaper.database.repositories.ThoughtsDAO
         PathStepEntity::class,
         HexTagEntity::class,
         ThoughtHexTagEntity::class,
-        ThoughtFlashcardEntity::class
+        FlashcardSetEntity::class,
+        FlashcardEntity::class
     ],
     version = DB_VERSION,
     exportSchema = true
@@ -52,9 +54,9 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun pathDao(): PathDAO
     abstract fun pathStepDao(): PathStepDAO
     abstract fun hexTagDao(): HexTagDAO
-    abstract fun thoughtFlashcardDao(): ThoughtFlashcardDAO
+    abstract fun flashcardDao(): FlashcardDAO
 
     companion object {
-        const val DB_VERSION = 20
+        const val DB_VERSION = 21
     }
 }

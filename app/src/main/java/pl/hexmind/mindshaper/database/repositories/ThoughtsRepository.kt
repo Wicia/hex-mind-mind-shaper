@@ -2,8 +2,6 @@ package pl.hexmind.mindshaper.database.repositories
 
 import androidx.lifecycle.LiveData
 import pl.hexmind.mindshaper.database.models.ThoughtEntity
-import pl.hexmind.mindshaper.database.models.ThoughtFlashcardEntity
-import pl.hexmind.mindshaper.database.models.ThoughtFlashcardSessionUpdate
 import pl.hexmind.mindshaper.database.models.ThoughtWithHexTags
 import pl.hexmind.mindshaper.database.models.ThoughtMetadataUpdate
 import java.io.File
@@ -13,8 +11,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ThoughtsRepository @Inject constructor(
-    private val thoughtsDAO: ThoughtsDAO,
-    private val thoughtFlashcardDAO: ThoughtFlashcardDAO
+    private val thoughtsDAO: ThoughtsDAO
 ) {
 
     fun getThoughtByIdLive(id: Long): LiveData<ThoughtEntity?> {
@@ -60,18 +57,6 @@ class ThoughtsRepository @Inject constructor(
 
     suspend fun updateRichText(thoughtId: Int, richText: String?) {
         thoughtsDAO.updateRichText(thoughtId, richText, Instant.now().toEpochMilli())
-    }
-
-// ========== FLASHCARDS ==========
-
-    suspend fun replaceFlashcards(thoughtId: Int, flashcards: List<ThoughtFlashcardEntity>) {
-        thoughtFlashcardDAO.replaceFlashcards(thoughtId, flashcards)
-        thoughtsDAO.touchUpdatedAt(thoughtId, Instant.now().toEpochMilli())
-    }
-
-    // ! Reviewing is not editing - updated_at stays, so the thought does not jump in the Stream order
-    suspend fun updateFlashcardsSession(updates: List<ThoughtFlashcardSessionUpdate>) {
-        thoughtFlashcardDAO.updateSession(updates)
     }
 
 // ========== AUDIO RECORDINGS ==========

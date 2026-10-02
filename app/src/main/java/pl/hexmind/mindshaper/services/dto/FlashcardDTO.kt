@@ -4,8 +4,8 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 /**
- * One flashcard of a thought - the list order is the order the user entered them in.
- * id == null - not saved yet (Capture draft, a row just added in the edit dialog)
+ * One flashcard of a set - the list order is the order the user entered them in.
+ * id == null - not saved yet (a row just added in the edit dialog)
  */
 @Parcelize
 data class FlashcardDTO(
@@ -19,7 +19,7 @@ data class FlashcardDTO(
 ) : Parcelable
 
 /**
- * Where a flashcard is in the review session of its thought.
+ * Where a flashcard is in the review session of its set.
  * PASSED / FAILED stay after the session ends - the start card shows the last result from them.
  */
 enum class FlashcardSessionState {
