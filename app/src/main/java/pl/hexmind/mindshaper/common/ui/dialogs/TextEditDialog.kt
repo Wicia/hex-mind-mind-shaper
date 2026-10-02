@@ -1,18 +1,15 @@
 package pl.hexmind.mindshaper.common.ui.dialogs
 
 import android.content.Context
-import android.graphics.Color.TRANSPARENT
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.toDrawable
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import pl.hexmind.mindshaper.R
@@ -116,25 +113,15 @@ class TextEditDialog(
         })
     }
 
-    private fun createDialog(): AlertDialog {
-        val builder = AlertDialog.Builder(context)
-            .setView(dialogView)
-            .setPositiveButton(context.getString(R.string.common_btn_save)) { _, _ ->
+    private fun createDialog(): AlertDialog =
+        ScrimDialogs.create(
+            context, dialogView,
+            positiveText = context.getString(R.string.common_btn_save),
+            onPositive = { dialog ->
                 handleSave()
-            }
-            .setNegativeButton(context.getString(R.string.common_btn_cancel)) { dialog, _ ->
                 dialog.dismiss()
             }
-
-        return builder.create()
-            .apply { // Setup window parameters for custom dim
-                window?.apply {
-                    setBackgroundDrawable(TRANSPARENT.toDrawable())
-                    setDimAmount(0.9f)
-                    addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-                }
-            }
-    }
+        )
 
     private fun handleSave() {
         val text = etInput.text.toString()
