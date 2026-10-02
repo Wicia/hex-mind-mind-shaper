@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One flashcard in the set's preview: number, front (bold) and back - tap = FlashcardEditDialog, long press = delete -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/shape_hex_content"
+    android:backgroundTint="@color/flashcard_background"
+    android:foreground="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/tv_preview_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="@color/text_secondary"
+        tools:text="Fiszka #1" />
+
+    <TextView
+        android:id="@+id/tv_preview_front"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:fontFamily="@font/alegreya_regular"
+        tools:text="Stolica Mongolii?" />
+
+    <!-- Back: a bar on its left tells the answer apart from the question -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal">
+
+        <!-- match_parent - the bar grows with a multi-line answer -->
+        <View
+            android:layout_width="@dimen/flashcard_back_bar_width"
+            android:layout_height="match_parent"
+            android:background="@color/flashcard_back_bar" />
+
+        <TextView
+            android:id="@+id/tv_preview_back"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary"
+            android:fontFamily="@font/alegreya_regular"
+            tools:text="Ułan Bator" />
+
+    </LinearLayout>
+
+</LinearLayout>

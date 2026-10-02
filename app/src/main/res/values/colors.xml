@@ -107,6 +107,16 @@
     <!-- Inline @person / #project tags in rich text -->
     <color name="rich_text_inline_tag">@color/graphite_light</color>
 
+    <!-- Flashcards: one color for both sides; not gray - gray means disabled in the app -->
+    <color name="flashcard_background">@color/_orange_lvl_1</color>
+    <!-- Bar left of the back text - tells the answer apart from the question -->
+    <color name="flashcard_back_bar">@color/_orange_lvl_3</color>
+    <!-- ! Ghost buttons ripple in _orange_lvl_1 = the card color, so the ripple was invisible -->
+    <color name="flashcard_ripple">@color/_orange_lvl_2</color>
+    <!-- Done part of the review progress bar -->
+    <color name="flashcard_accent">@color/_orange_lvl_3</color>
+    <color name="flashcard_progress_track">@color/_gray_lvl_2</color>
+
     <!-- Web links in rich text -->
     <color name="rich_text_link">#5B86B5</color>
 

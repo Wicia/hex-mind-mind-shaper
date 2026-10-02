@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_flashcards_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Flipping card = the whole widget, no extra frame around it -->
+    <!-- One card for the whole review: flashcards (front / back) -> end card -->
+    <!-- ! Actions sit in a bottom row, not a side column: a weighted vertical spacer blew up
+         under NestedScrollView fillViewport (see path_item.xml) -->
+    <!-- ! No padding here - the progress bar runs along the very bottom edge (clipped to the corners in code) -->
+    <LinearLayout
+        android:id="@+id/ll_flashcard_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="120dp"
+        android:orientation="vertical"
+        android:background="@drawable/shape_hex_content"
+        android:backgroundTint="@color/flashcard_background">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <!-- Top spacer - balances the actions row below, so the text sits in the middle of the card -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="34dp" />
+
+            <!-- Flashcard: front or back text -->
+            <TextView
+                android:id="@+id/tv_flashcard_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:lineSpacingMultiplier="0.85"
+                android:textColor="@color/text_primary"
+                android:fontFamily="@font/alegreya_regular"
+                tools:text="Stolica Mongolii?" />
+
+            <!-- End card: headline + the session's result - not a flashcard of the set -->
+            <!-- ! marginTop only: the rows around are uneven (top 34dp vs bottom 4dp + 36dp) - with 4dp / 4dp the text sat too high -->
+            <LinearLayout
+                android:id="@+id/ll_flashcard_summary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tv_flashcard_summary_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:fontFamily="@font/alegreya_regular"
+                    tools:text="3 fiszki" />
+
+                <!-- Same look as the headline, just not bold -->
+                <TextView
+                    android:id="@+id/tv_flashcard_mastery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_primary"
+                    android:fontFamily="@font/alegreya_regular"
+                    tools:text="Utrwalono 67% fiszek" />
+
+            </LinearLayout>
+
+            <!-- Actions: left (reveal / thumb up), right (skip / thumb down / close) -->
+            <!-- Same size as the delete button of the rich text (48dp, 32dp icon) -->
+            <!-- ! Extra side padding - at the card padding alone the icons hugged the edges -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="8dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_flashcard_left"
+                    style="@style/SecondaryActionButton.Ghost"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="8dp"
+                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                    app:icon="@drawable/ic_path_reveal"
+                    app:iconGravity="textStart"
+                    app:iconSize="32dp"
+                    app:rippleColor="@color/flashcard_ripple" />
+
+                <!-- How many times this flashcard was answered this way - over all sessions -->
+                <TextView
+                    android:id="@+id/tv_flashcard_left_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"
+                    tools:text="3" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/tv_flashcard_right_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_secondary"
+                    tools:text="2" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_flashcard_right"
+                    style="@style/SecondaryActionButton.Ghost"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="8dp"
+                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                    app:icon="@drawable/ic_replace_or_renew"
+                    app:iconGravity="textStart"
+                    app:iconSize="32dp"
+                    app:rippleColor="@color/flashcard_ripple" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Session progress: answered out of all the session's flashcards (weights set in code) -->
+        <LinearLayout
+            android:id="@+id/ll_flashcard_progress"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/flashcard_progress_height"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <View
+                android:id="@+id/v_flashcard_progress_done"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@color/flashcard_accent"
+                tools:layout_weight="0.33" />
+
+            <View
+                android:id="@+id/v_flashcard_progress_left"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@color/flashcard_progress_track"
+                tools:layout_weight="0.67" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Scrim = the root (dim comes from the window) - tap on it pauses the session -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fl_flashcards_session_scrim"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- ! clickable: taps on the card itself (between its buttons) must not reach the scrim and close it -->
+    <pl.hexmind.mindshaper.common.ui.views.content.HexFlashcardView
+        android:id="@+id/flashcards_session_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="24dp"
+        android:clickable="true"
+        android:focusable="false" />
+
+</FrameLayout>

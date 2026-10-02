@@ -313,6 +313,12 @@
     <!--    DIALOGS -->
     <!-- ====================================== -->
 
+    <!-- Flashcards review on the scrim (FlashcardsSessionDialog) -->
+    <style name="FlashcardsSessionAnimation">
+        <item name="android:windowEnterAnimation">@anim/flashcards_session_enter</item>
+        <item name="android:windowExitAnimation">@anim/flashcards_session_exit</item>
+    </style>
+
     <!-- TODO: make separate styles for standard focus dialog and for bottom sheet dialog -->
     <!-- Common -->
     <style name="DialogTile">

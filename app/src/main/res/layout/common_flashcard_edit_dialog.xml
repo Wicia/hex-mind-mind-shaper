@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One flashcard: edit an existing one or add new ones in a series (FlashcardEditDialog) -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="4dp">
+
+    <!-- "Fiszka #3" / "Nowa fiszka #13" -->
+    <TextView
+        android:id="@+id/tv_header"
+        style="@style/DialogTile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <!-- Series only: how many were added so far - hidden until the first one -->
+    <TextView
+        android:id="@+id/tv_flashcard_added_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/app_background"
+        android:visibility="gone"
+        tools:text="Dodano: 3"
+        tools:visibility="visible" />
+
+    <pl.hexmind.mindshaper.common.ui.views.FlashcardEditRow
+        android:id="@+id/flashcard_edit_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/tv_flashcard_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/flashcards_error_incomplete_single"
+        android:textColor="@color/graphite_beige"
+        android:visibility="gone" />
+
+</LinearLayout>

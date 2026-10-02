@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- New flashcard set - name first, the flashcards come next in a series (FlashcardSetNameDialog) -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="4dp">
+
+    <TextView
+        style="@style/DialogTile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/flashcards_create_header" />
+
+    <pl.hexmind.mindshaper.common.ui.views.HexInputField
+        android:id="@+id/hif_flashcards_set_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:hint="@string/flashcards_set_name_hint"
+        app:inlineHint="true"
+        app:compact="true"
+        app:hexInputType="text"
+        app:hexMaxLength="100"
+        app:maxLines="1" />
+
+</LinearLayout>

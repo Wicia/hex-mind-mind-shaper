@@ -107,21 +107,35 @@
     <string name="photos_loading_error">Coś się wyburaczyło przy ładowaniu zdjęcia…</string>
 
     <!-- Flashcards -->
+    <string name="flashcards_title">Utrwalanie</string>
+    <string name="flashcards_sets_empty">Nie masz jeszcze żadnego zestawu fiszek…
+Dodaj pierwszy przyciskiem +</string>
+    <string name="flashcards_set_no_flashcards">Ten zestaw nie ma jeszcze fiszek</string>
+    <string name="flashcards_create_header">Nowy zestaw fiszek</string>
     <string name="flashcards_edit_header">Edycja zestawu fiszek</string>
+    <string name="flashcards_set_name_hint">Nazwa zestawu</string>
     <string name="flashcards_front_hint">Awers (pytanie)</string>
     <string name="flashcards_back_hint">Rewers (odpowiedź)</string>
     <string name="flashcards_row_label">Fiszka #%1$d</string>
+    <string name="flashcards_error_no_name">Zestaw potrzebuje nazwy</string>
     <string name="flashcards_error_incomplete">Każda fiszka potrzebuje awersu i rewersu</string>
-    <plurals name="flashcards_start_title">
+    <string name="flashcards_error_incomplete_single">Fiszka potrzebuje awersu i rewersu</string>
+    <string name="flashcards_new_header">Nowa fiszka #%1$d</string>
+    <string name="flashcards_added_count">Dodano: %1$d</string>
+    <string name="flashcards_btn_add_next">Dodaj kolejną</string>
+    <string name="flashcards_btn_finish">Zakończ</string>
+    <string name="flashcards_btn_create_set">Utwórz</string>
+    <plurals name="flashcards_count">
         <item quantity="one">%d fiszka</item>
         <item quantity="few">%d fiszki</item>
         <item quantity="many">%d fiszek</item>
         <item quantity="other">%d fiszki</item>
     </plurals>
-    <string name="flashcards_start_subtitle">do powtórzenia dzisiaj</string>
+    <string name="flashcards_session_paused">Sesja wstrzymana - zostało: %1$d</string>
     <string name="flashcards_end_title">Wszystkie fiszki zostały ogarnięte ;)</string>
     <string name="flashcards_mastery">Utrwalono %1$d%% fiszek</string>
-    <string name="flashcards_removing_header">Usunąć wszystkie fiszki?</string>
+    <string name="flashcards_removing_header">Usunąć zestaw fiszek?</string>
+    <string name="flashcard_removing_header">Usunąć fiszkę?</string>
     <string name="flashcards_removing_content">Ta operacja jest nieodwracalna</string>
 
     <!-- ============================================================ -->
@@ -400,7 +414,7 @@
     <string name="settings_permissions_section">🔆 Formy zapisu myśli</string>
     <string name="settings_permissions_voice_recording">Włącz zapis w formie głosówek</string>
     <string name="settings_permissions_photo">Włącz zapis w formie zdjęć</string>
-    <string name="settings_permissions_flashcards">Włącz zapis w formie fiszek</string>
+    <string name="settings_permissions_flashcards">Włącz fiszki (widok Utrwalanie)</string>
     <string name="settings_permissions_backup">Włącz tworzenie kopii zapasowych</string>
     <string name="settings_permissions_blockade_title">Uprawnienie zablokowane</string>
     <string name="settings_permissions_recording_blockade_tooltip">Uprawnienie do nagrywania dźwięku zostało trwale odrzucone.\nMożesz je włączyć w ustawieniach systemu Androida.</string>
