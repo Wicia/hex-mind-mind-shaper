@@ -9,19 +9,19 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.android.material.button.MaterialButton
 import pl.hexmind.mindshaper.R
-import pl.hexmind.mindshaper.services.FlashcardsSession
+import pl.hexmind.mindshaper.services.FlashcardsReview
 import pl.hexmind.mindshaper.services.dto.FlashcardDTO
-import pl.hexmind.mindshaper.services.dto.FlashcardSessionState
+import pl.hexmind.mindshaper.services.dto.FlashcardRating
 
 /**
- * Review of a set's flashcards on the scrim (FlashcardsSessionDialog): flashcards one by one -> end card.
+ * Review session on the scrim (FlashcardsSessionDialog): flashcards of the queue one by one -> end card.
  *
  * - front:       reveal (flip) / skip (to the end of the queue)
- * - back:        thumb up / thumb down (with the answer counters) - both go to the next flashcard
- * - end card:    result of the session, tick = close the scrim
+ * - back:        good (thumb up) / ok (tilde) / bad (thumb down) - each goes to the next flashcard
+ * - end card:    the session's ratings, tick = close the scrim
  *
- * The session state lives in the flashcards (see FlashcardsSession) - every change goes out through
- * the callback to be stored, so a revealed but unanswered flashcard waits until it is answered.
+ * Every rating goes out through the callback right away to be stored - the queue itself is not stored,
+ * the next session builds it again from the flashcards' progress (see FlashcardsReview).
  */
 class HexFlashcardView @JvmOverloads constructor(
     context: Context,
@@ -35,8 +35,8 @@ class HexFlashcardView @JvmOverloads constructor(
     }
 
     interface FlashcardsCallback {
-        /** Session moved on (revealed / skipped / answered) - the list is to be stored. */
-        fun onSessionChanged(flashcards: List<FlashcardDTO>) {}
+        /** Flashcard rated - its progress is to be stored. */
+        fun onRated(flashcard: FlashcardDTO, rating: FlashcardRating) {}
 
         /** Tick on the end card. */
         fun onSessionClosed() {}
@@ -46,10 +46,9 @@ class HexFlashcardView @JvmOverloads constructor(
     private val tvText: TextView
     private val llSummary: LinearLayout
     private val tvSummaryTitle: TextView
-    private val tvMastery: TextView
+    private val tvSummaryResult: TextView
     private val btnLeft: MaterialButton
-    private val tvLeftCount: TextView
-    private val tvRightCount: TextView
+    private val btnMiddle: MaterialButton
     private val btnRight: MaterialButton
     private val llProgress: LinearLayout
     private val vProgressDone: View
@@ -57,9 +56,13 @@ class HexFlashcardView @JvmOverloads constructor(
 
     private var callback: FlashcardsCallback? = null
 
-    private var flashcards: List<FlashcardDTO> = emptyList()
+    // Head = the flashcard on the card; rated ones leave the queue, skipped ones go to its end
+    private var queue: List<FlashcardsReview.Card> = emptyList()
+    private var sessionSize = 0
+    private var isRevealed = false
+    private val ratings = mutableMapOf<FlashcardRating, Int>()
 
-    // One animation at a time - a second tap mid-flip would change the session twice
+    // One animation at a time - a second tap mid-flip would rate twice
     private var isAnimating = false
 
     init {
@@ -70,10 +73,9 @@ class HexFlashcardView @JvmOverloads constructor(
         tvText = findViewById(R.id.tv_flashcard_text)
         llSummary = findViewById(R.id.ll_flashcard_summary)
         tvSummaryTitle = findViewById(R.id.tv_flashcard_summary_title)
-        tvMastery = findViewById(R.id.tv_flashcard_mastery)
+        tvSummaryResult = findViewById(R.id.tv_flashcard_summary_result)
         btnLeft = findViewById(R.id.btn_flashcard_left)
-        tvLeftCount = findViewById(R.id.tv_flashcard_left_count)
-        tvRightCount = findViewById(R.id.tv_flashcard_right_count)
+        btnMiddle = findViewById(R.id.btn_flashcard_middle)
         btnRight = findViewById(R.id.btn_flashcard_right)
         llProgress = findViewById(R.id.ll_flashcard_progress)
         vProgressDone = findViewById(R.id.v_flashcard_progress_done)
@@ -90,28 +92,24 @@ class HexFlashcardView @JvmOverloads constructor(
 
     private fun setupListeners() {
         btnLeft.setOnClickListener {
-            val index = currentIndex() ?: return@setOnClickListener
-            if (isRevealed(index)) answer(index, isCorrect = true) else reveal(index)
+            if (phase() != Phase.FLASHCARD) return@setOnClickListener
+            if (isRevealed) rate(FlashcardRating.GOOD) else reveal()
+        }
+
+        btnMiddle.setOnClickListener {
+            if (phase() == Phase.FLASHCARD && isRevealed) rate(FlashcardRating.OK)
         }
 
         btnRight.setOnClickListener {
             when (phase()) {
-                Phase.FLASHCARD -> {
-                    val index = currentIndex() ?: return@setOnClickListener
-                    if (isRevealed(index)) answer(index, isCorrect = false) else skip(index)
-                }
+                Phase.FLASHCARD -> if (isRevealed) rate(FlashcardRating.BAD) else skip()
                 Phase.END       -> callback?.onSessionClosed()
             }
         }
     }
 
     private fun phase(): Phase =
-        if (FlashcardsSession.isInProgress(flashcards)) Phase.FLASHCARD else Phase.END
-
-    private fun currentIndex(): Int? = FlashcardsSession.currentIndex(flashcards)
-
-    private fun isRevealed(index: Int): Boolean =
-        flashcards[index].sessionState == FlashcardSessionState.REVEALED
+        if (queue.isNotEmpty()) Phase.FLASHCARD else Phase.END
 
     // ===========================================
     //      Rendering
@@ -125,38 +123,29 @@ class HexFlashcardView @JvmOverloads constructor(
     }
 
     private fun renderFlashcard() {
-        val index = currentIndex() ?: return
-        val flashcard = flashcards[index]
-        val isRevealed = isRevealed(index)
+        val current = queue.first()
 
         tvText.visibility = VISIBLE
         llSummary.visibility = GONE
-        tvText.text = if (isRevealed) flashcard.back else flashcard.front
+        tvText.text = if (isRevealed) current.flashcard.back else current.flashcard.front
 
         if (isRevealed) {
             // Not approve / close icons - in the app those mean "save" and "delete"
             btnLeft.setIconResource(R.drawable.ic_thumb_up)
             btnRight.setIconResource(R.drawable.ic_thumb_down)
-            tvLeftCount.text = flashcard.correctCount.toString()
-            tvRightCount.text = flashcard.wrongCount.toString()
-            tvLeftCount.visibility = VISIBLE
-            tvRightCount.visibility = VISIBLE
+            btnMiddle.visibility = VISIBLE
             btnRight.visibility = VISIBLE
         }
         else {
             btnLeft.setIconResource(R.drawable.ic_path_reveal)
             btnRight.setIconResource(R.drawable.ic_replace_or_renew)
-            tvLeftCount.visibility = GONE
-            tvRightCount.visibility = GONE
+            btnMiddle.visibility = INVISIBLE
             // Nothing to skip to when it is the last one in the queue - INVISIBLE keeps the row height
-            btnRight.visibility = if (FlashcardsSession.queuedCount(flashcards) > 1) VISIBLE else INVISIBLE
+            btnRight.visibility = if (queue.size > 1) VISIBLE else INVISIBLE
         }
         btnLeft.visibility = VISIBLE
 
-        showProgress(
-            done = FlashcardsSession.answeredCount(flashcards),
-            total = FlashcardsSession.sessionSize(flashcards)
-        )
+        showProgress(done = sessionSize - queue.size, total = sessionSize)
     }
 
     private fun renderEndCard() {
@@ -164,13 +153,19 @@ class HexFlashcardView @JvmOverloads constructor(
         llSummary.visibility = VISIBLE
         tvSummaryTitle.text = context.getString(R.string.flashcards_end_title)
 
-        val mastery = FlashcardsSession.masteryPercent(flashcards)
-        tvMastery.visibility = if (mastery != null) VISIBLE else GONE
-        mastery?.let { tvMastery.text = context.getString(R.string.flashcards_mastery, it) }
+        val bad = ratings[FlashcardRating.BAD] ?: 0
+        val result = context.getString(
+            R.string.flashcards_end_ratings,
+            ratings[FlashcardRating.GOOD] ?: 0,
+            ratings[FlashcardRating.OK] ?: 0,
+            bad
+        )
+        tvSummaryResult.text =
+            if (bad > 0) result + "\n" + context.getString(R.string.flashcards_end_frozen_info)
+            else result
 
         btnLeft.visibility = INVISIBLE
-        tvLeftCount.visibility = GONE
-        tvRightCount.visibility = GONE
+        btnMiddle.visibility = INVISIBLE
         btnRight.setIconResource(R.drawable.ic_action_approve)
         btnRight.visibility = VISIBLE
 
@@ -189,23 +184,22 @@ class HexFlashcardView @JvmOverloads constructor(
     //      Session actions
     // ===========================================
 
-    private fun reveal(index: Int) {
-        changeSession(flip = true) { FlashcardsSession.reveal(flashcards, index) }
+    private fun reveal() {
+        animateCardChange(flip = true) { isRevealed = true }
     }
 
-    private fun skip(index: Int) {
-        changeSession(flip = false) { FlashcardsSession.skip(flashcards, index) }
+    /** Moves the flashcard to the end of the queue - it comes back once the others are done. */
+    private fun skip() {
+        animateCardChange(flip = false) { queue = queue.drop(1) + queue.first() }
     }
 
-    private fun answer(index: Int, isCorrect: Boolean) {
-        changeSession(flip = false) { FlashcardsSession.answer(flashcards, index, isCorrect) }
-    }
-
-    /** Swaps the list while the card is hidden mid-animation and hands it over to be stored. */
-    private fun changeSession(flip: Boolean, change: () -> List<FlashcardDTO>) {
-        animateCardChange(flip) {
-            flashcards = change()
-            callback?.onSessionChanged(flashcards)
+    private fun rate(rating: FlashcardRating) {
+        animateCardChange(flip = false) {
+            val current = queue.first()
+            ratings[rating] = (ratings[rating] ?: 0) + 1
+            queue = queue.drop(1)
+            isRevealed = false
+            callback?.onRated(current.flashcard, rating)
         }
     }
 
@@ -265,15 +259,13 @@ class HexFlashcardView @JvmOverloads constructor(
         this.callback = callback
     }
 
-    /**
-     * Shows the session exactly where it was left.
-     * ! The same list again changes nothing - otherwise every stored step would restart the animation.
-     */
-    fun setFlashcards(newFlashcards: List<FlashcardDTO>) {
-        if (newFlashcards == flashcards) return
-
+    /** New session - the queue as FlashcardsReview planned it */
+    fun setQueue(newQueue: List<FlashcardsReview.Card>) {
         resetCardAnimation()
-        flashcards = newFlashcards
+        queue = newQueue
+        sessionSize = newQueue.size
+        isRevealed = false
+        ratings.clear()
         render()
     }
 

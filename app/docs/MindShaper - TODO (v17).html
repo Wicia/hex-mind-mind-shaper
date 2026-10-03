@@ -304,6 +304,102 @@
     </div>
   </details>
 
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span>
+      <strong>Fiszki — rozbicie stanu D widżetu „Dzisiejsza sesja”</strong> — „Na dziś wszystko powtórzone :)” skleja 4 różne sytuacje i czasem mówi nieprawdę.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>D1 — naprawdę koniec na dziś; D2 — limit nowych wykorzystany; D3 — zamrożone wrócą za &lt; 1h; D4 — wszystko opanowane</li>
+        <li>propozycja tekstów: D3 <i>„Drugie szanse: 2 - wrócą o 14:35”</i>; D1/D2 <i>„Na dziś wszystko powtórzone :)”</i> + <i>„Następna powtórka: jutro (8)”</i>; D4 <i>„Wszystkie fiszki opanowane 🎉”</i></li>
+        <li>do decyzji: teksty i czy przy D2 pokazać, ile nowych czeka</li>
+      </ul>
+      <div class="gain"><b>Po co:</b> widżet nie wprowadza w błąd — po sesji z wpadkami nie twierdzi, że na dziś koniec, choć za godzinę wrócą drugie szanse.</div>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>activities/flashcards/FlashcardsActivity.kt</code> — <code>renderReviewToday()</code></li><li><code>services/FlashcardsReview.kt</code> — <code>Plan</code> (dane do D1–D4: najbliższa druga szansa, następny termin, czy wszystko opanowane)</li><li><code>Requirements - Flashcards &amp; Repetitions</code> — „Stany widżetu”, „Znany problem”</li></ul></div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span>
+      <strong>Fiszki — odświeżanie w czasie</strong> — liczniki i rakiety nie reagują same na upływ czasu, gdy ekran jest otwarty.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>druga szansa odblokowuje się godzinę po ocenie — widżet, rakiety zestawów i podglądu zestawu pokażą ją dopiero po powrocie na ekran albo zmianie danych</li>
+        <li>to samo o północy — nowy dzień (nowe powtórki, reset limitu nowych) widać dopiero po powrocie na ekran</li>
+        <li>rozwiązanie: odświeżenie zaplanowane na najbliższy z momentów: odblokowanie drugiej szansy / północ — tylko gdy ekran widoczny</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>activities/flashcards/FlashcardsActivity.kt</code>, <code>FlashcardSetActivity.kt</code> — <code>render()</code></li></ul></div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span>
+      <strong>Fiszki — przywracanie opanowanych kart do nauki</strong> — opanowane już nie wracają w powtórkach; brak drogi powrotu.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>podgląd jest: w podglądzie zestawu opanowana karta ma gwiazdę zamiast liczby poziomu</li>
+        <li>do ustalenia: skąd przywracać (np. przytrzymanie / menu karty w podglądzie zestawu, później filtr „opanowane” w przeglądaniu wszystkich fiszek)</li>
+        <li>do ustalenia: na jaki stan wraca — np. poziom 3 z powtórką jutro, czy od zera jako <i>nowa</i></li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>activities/flashcards/FlashcardSetActivity.kt</code></li><li><code>services/FlashcardsService.kt</code>, <code>FlashcardsScheduler.kt</code></li></ul></div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span>
+      <strong>Fiszki — przypomnienie o zamrożonych przed końcem dnia</strong> — gdy są jeszcze karty czekające na drugą szansę.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>w projekcie nie ma jeszcze żadnych powiadomień — potrzebne: mechanizm (rekomendacja: <code>AlarmManager</code> z niedokładnym alarmem, obsługa restartu telefonu; alternatywa WorkManager), uprawnienie <code>POST_NOTIFICATIONS</code>, kanał, tap = otwarcie <i>Utrwalania</i></li>
+        <li>Ustawienia: przełącznik + godzina „końca dnia” (np. 21:00)</li>
+        <li>treść np. <i>„Drugie szanse czekają: 3”</i>, tylko gdy o tej godzinie są zamrożone karty</li>
+        <li>do decyzji: czy przypominać też o zwykłych zaległościach („Powtórki na dziś: 8”)</li>
+      </ul>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span>
+      <strong>Fiszki — przeglądanie wszystkich fiszek</strong> — jedna lista ze wszystkich zestawów z wyszukiwaniem i filtrami.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>filtry: zestaw, status (nowa / aktywna / zamrożona / opanowana)</li>
+        <li>do ustalenia: jak połączyć z sesją (np. sesja z przefiltrowanych)</li>
+        <li>naturalne miejsce na przywracanie opanowanych (filtr „opanowane”)</li>
+      </ul>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span>
+      <strong>Fiszki — krok D: karty ścieżek w Warsztacie na wspólnym widżecie fiszki</strong> — tylko wygląd, zachowanie ścieżek bez zmian.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>przepiąć <code>path_item.xml</code>, <code>PathCardAnimator</code>, <code>WorkshopActivity.bindPathCard</code> na wspólny widżet fiszki</li>
+      </ul>
+      <div class="gain"><b>Po co:</b> jeden wygląd kart w aplikacji, jedno miejsce do zmian.</div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span>
+      <strong>Fiszki — później / do ustalenia</strong> — rzeczy odłożone, bez decyzji.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>sortowanie / filtry / wyszukiwanie zestawów na liście</li>
+        <li>import kart (ew. z separatorem <code> - </code>; odrzucony import naprzemiennymi liniami — kruchy)</li>
+        <li>treść: obraz / audio na fiszce; karty dwukierunkowe</li>
+      </ul>
+    </div>
+  </details>
+
   <h2>Sprzątanie / Refactoring</h2>
   <details class="item">
     <summary>
@@ -772,6 +868,20 @@
   <h2>Decyzje desingowe UX/UI do rozstrzygnięcia</h2>
   <details class="item">
     <summary>
+      <span class="prio minor">Drobny</span>
+      <strong>Fiszki — „Powtórki” vs „Do powtórzenia”</strong> — karta zestawu i widżet nazywają to samo inaczej.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>widżet <i>„Dzisiejsza sesja”</i>: <i>„Do powtórzenia: N · Nowe: M”</i></li>
+        <li>karta zestawu: <i>„Powtórki: N · Nowe: M · Opanowane: K”</i></li>
+        <li>do decyzji: ujednolicić (dłuższy tekst na karcie zestawu) czy zostawić</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>res/values/strings.xml</code> — <code>flashcards_set_stats</code>, <code>flashcards_review_today_counts</code></li></ul></div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
       <span class="prio crit">Krytyczny</span> 
       <strong>Strumień myśli jako ciągły feed</strong> — pozbyć się karty myśli i uprościć ekran.
     </summary>
@@ -919,6 +1029,24 @@
     </div>
   </details>
   <h2>Sprawdzenie i ew. naprawa</h2>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span>
+      <strong>Fiszki — testy jednostkowe planowania sesji</strong> — <code>FlashcardsReview.plan</code> nie ma żadnego testu.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>dzienny limit nowych (z uwzględnieniem wprowadzonych dziś)</li>
+        <li>próg zaległości: wstrzymanie nowych i liczba „do nadrobienia”</li>
+        <li>kolejność: drugie szanse → planowe (najniższy poziom, potem termin) → nowe (starsze zestawy, kolejność w zestawie)</li>
+        <li>sesja zestawu: kolejka zawężona, limit i próg liczone globalnie</li>
+        <li>granice: termin = dziś, <code>frozenUntil</code> = teraz, opanowane i puste zestawy pomijane</li>
+        <li><code>FlashcardsScheduler</code> ma już <code>FlashcardsSchedulerTest</code> (14 testów)</li>
+      </ul>
+      <div class="gain"><b>Po co:</b> najbardziej złożona logika fiszek — błąd w niej po cichu psuje każdą sesję.</div>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>services/FlashcardsReview.kt</code></li><li><code>src/test/.../FlashcardsReviewTest.kt</code> (nowy)</li></ul></div>
+    </div>
+  </details>
   <details class="item">
     <summary>
       <span class="prio imp">Istotny</span> 

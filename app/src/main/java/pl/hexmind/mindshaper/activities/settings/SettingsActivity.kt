@@ -66,6 +66,9 @@ class SettingsActivity : CoreActivity() {
 
     private var slowModeHours: Int = 1
 
+    private var flashcardsNewPerDay: Int = AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_DEFAULT
+    private var flashcardsBacklogThreshold: Int = AppSettingsStorage.FLASHCARDS_BACKLOG_DEFAULT
+
     // Activity result launcher for backup file selection
     private val backupPickerLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -260,11 +263,50 @@ class SettingsActivity : CoreActivity() {
     // ========== FLASHCARDS FEATURE ==========
 
     // No permission to ask for - the switch writes straight to the preferences
+    // Repetitions params are stored with the rest on save - same as Slow mode hours
     private fun setupFlashcardsFeatureToggle() {
         binding.switchFlashcardsFeature.isChecked = appSettingsStorage.isFlashcardsFeatureEnabled()
         binding.switchFlashcardsFeature.setOnCheckedChangeListener { _, isChecked ->
             appSettingsStorage.setFlashcardsFeatureEnabled(isChecked)
+            syncFlashcardsParamsPickerState()
         }
+
+        flashcardsNewPerDay = appSettingsStorage.getFlashcardsNewPerDay()
+        flashcardsBacklogThreshold = appSettingsStorage.getFlashcardsBacklogThreshold()
+
+        binding.btnFlashcardsNewPerDayDecrease.setOnClickListener {
+            flashcardsNewPerDay = (flashcardsNewPerDay - 1).coerceAtLeast(AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MIN)
+            syncFlashcardsParamsPickerState()
+        }
+        binding.btnFlashcardsNewPerDayIncrease.setOnClickListener {
+            flashcardsNewPerDay = (flashcardsNewPerDay + 1).coerceAtMost(AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MAX)
+            syncFlashcardsParamsPickerState()
+        }
+        binding.btnFlashcardsBacklogDecrease.setOnClickListener {
+            flashcardsBacklogThreshold = (flashcardsBacklogThreshold - AppSettingsStorage.FLASHCARDS_BACKLOG_STEP)
+                .coerceAtLeast(AppSettingsStorage.FLASHCARDS_BACKLOG_MIN)
+            syncFlashcardsParamsPickerState()
+        }
+        binding.btnFlashcardsBacklogIncrease.setOnClickListener {
+            flashcardsBacklogThreshold = (flashcardsBacklogThreshold + AppSettingsStorage.FLASHCARDS_BACKLOG_STEP)
+                .coerceAtMost(AppSettingsStorage.FLASHCARDS_BACKLOG_MAX)
+            syncFlashcardsParamsPickerState()
+        }
+
+        syncFlashcardsParamsPickerState()
+    }
+
+    private fun syncFlashcardsParamsPickerState() {
+        val enabled = binding.switchFlashcardsFeature.isChecked
+        binding.llFlashcardsParamsPicker.alpha = if (enabled) 1f else 0.4f
+
+        binding.tvFlashcardsNewPerDay.text = flashcardsNewPerDay.toString()
+        binding.btnFlashcardsNewPerDayDecrease.isEnabled = enabled && flashcardsNewPerDay > AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MIN
+        binding.btnFlashcardsNewPerDayIncrease.isEnabled = enabled && flashcardsNewPerDay < AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MAX
+
+        binding.tvFlashcardsBacklog.text = flashcardsBacklogThreshold.toString()
+        binding.btnFlashcardsBacklogDecrease.isEnabled = enabled && flashcardsBacklogThreshold > AppSettingsStorage.FLASHCARDS_BACKLOG_MIN
+        binding.btnFlashcardsBacklogIncrease.isEnabled = enabled && flashcardsBacklogThreshold < AppSettingsStorage.FLASHCARDS_BACKLOG_MAX
     }
 
     // ========== PHOTO FEATURE ==========
@@ -845,6 +887,10 @@ class SettingsActivity : CoreActivity() {
         // Slow mode
         appSettingsStorage.setSlowModeEnabled(binding.switchSlowMode.isChecked)
         appSettingsStorage.setSlowModeHours(slowModeHours)
+
+        // Flashcards - Repetitions System
+        appSettingsStorage.setFlashcardsNewPerDay(flashcardsNewPerDay)
+        appSettingsStorage.setFlashcardsBacklogThreshold(flashcardsBacklogThreshold)
 
         // Dormant mode
         if (binding.switchDormantMode.isChecked && !validateDormantDaysInput()) {

@@ -109,13 +109,20 @@
 
     <!-- Flashcards: one color for both sides; not gray - gray means disabled in the app -->
     <color name="flashcard_background">@color/_orange_lvl_1</color>
-    <!-- Bar left of the back text - tells the answer apart from the question -->
-    <color name="flashcard_back_bar">@color/_orange_lvl_3</color>
     <!-- ! Ghost buttons ripple in _orange_lvl_1 = the card color, so the ripple was invisible -->
     <color name="flashcard_ripple">@color/_orange_lvl_2</color>
     <!-- Done part of the review progress bar -->
     <color name="flashcard_accent">@color/_orange_lvl_3</color>
     <color name="flashcard_progress_track">@color/_gray_lvl_2</color>
+    <!-- "Do powtórki" frame (HexWavyFrameView): soft glow of _orange_lvl_2, 1 = sharp line, 5 = faintest - not a button look -->
+    <!-- ! _orange_lvl_3 (flashcard_accent) was too strong for a frame -->
+    <color name="flashcard_review_glow_1">#B3FFC59A</color>
+    <color name="flashcard_review_glow_2">#4DFFC59A</color>
+    <color name="flashcard_review_glow_3">#26FFC59A</color>
+    <color name="flashcard_review_glow_4">#14FFC59A</color>
+    <color name="flashcard_review_glow_5">#0DFFC59A</color>
+    <!-- Rocket of "Do powtórki" - same orange as its frame -->
+    <color name="flashcard_review_rocket">@color/_orange_lvl_2</color>
 
     <!-- Web links in rich text -->
     <color name="rich_text_link">#5B86B5</color>

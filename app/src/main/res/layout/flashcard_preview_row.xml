@@ -1,58 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- One flashcard in the set's preview: number, front (bold) and back - tap = FlashcardEditDialog, long press = delete -->
+<!-- One flashcard in the set's preview: front (bold) and back, level bar on the right - tap = FlashcardEditDialog, long press = delete -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="16dp"
+    android:clipChildren="false"
     android:background="@drawable/shape_hex_content"
     android:backgroundTint="@color/flashcard_background"
     android:foreground="?attr/selectableItemBackground">
 
-    <TextView
-        android:id="@+id/tv_preview_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:textColor="@color/text_secondary"
-        tools:text="Fiszka #1" />
-
-    <TextView
-        android:id="@+id/tv_preview_front"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/text_primary"
-        android:fontFamily="@font/alegreya_regular"
-        tools:text="Stolica Mongolii?" />
-
-    <!-- Back: a bar on its left tells the answer apart from the question -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:orientation="horizontal">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <!-- match_parent - the bar grows with a multi-line answer -->
-        <View
-            android:layout_width="@dimen/flashcard_back_bar_width"
-            android:layout_height="match_parent"
-            android:background="@color/flashcard_back_bar" />
+        <TextView
+            android:id="@+id/tv_preview_front"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:fontFamily="@font/alegreya_regular"
+            tools:text="Stolica Mongolii?" />
 
         <TextView
             android:id="@+id/tv_preview_back"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
             android:textSize="16sp"
             android:textColor="@color/text_primary"
             android:fontFamily="@font/alegreya_regular"
             tools:text="Ułan Bator" />
+
+    </LinearLayout>
+
+    <!-- Level: number on top (mastered = star sending out a signal), vertical bar below filling up from the bottom (weights set in code)
+         ! clipChildren off here and on the row - the signal ring grows past its bounds -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:layout_marginStart="12dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clipChildren="false">
+
+            <!-- Signal of the mastered star: ring growing out of it and fading (animated in code) -->
+            <View
+                android:id="@+id/v_preview_level_signal"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_star_signal"
+                android:alpha="0"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_preview_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="15sp"
+                android:textColor="@color/text_secondary"
+                tools:text="2" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="@dimen/flashcard_level_bar_width"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="2dp"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <View
+                android:id="@+id/v_preview_level_left"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/flashcard_progress_track"
+                tools:layout_weight="0.6" />
+
+            <View
+                android:id="@+id/v_preview_level_done"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/flashcard_accent"
+                tools:layout_weight="0.4" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

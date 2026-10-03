@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.button.MaterialButton
 import pl.hexmind.mindshaper.common.ui.views.FlashcardEditRow
@@ -123,6 +124,9 @@ class FlashcardsEditDialog(
             return
         }
 
+        if (filledRows.any { row -> row.isLearnedContentChanged() }) {
+            Toast.makeText(context, R.string.flashcards_edit_progress_info, Toast.LENGTH_LONG).show()
+        }
         onSave(name, filledRows.map { row -> row.getFlashcard() })
         dialog.dismiss()
     }

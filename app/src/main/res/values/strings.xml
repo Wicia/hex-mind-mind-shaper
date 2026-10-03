@@ -125,15 +125,18 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="flashcards_btn_add_next">Dodaj kolejną</string>
     <string name="flashcards_btn_finish">Zakończ</string>
     <string name="flashcards_btn_create_set">Utwórz</string>
-    <plurals name="flashcards_count">
-        <item quantity="one">%d fiszka</item>
-        <item quantity="few">%d fiszki</item>
-        <item quantity="many">%d fiszek</item>
-        <item quantity="other">%d fiszki</item>
-    </plurals>
-    <string name="flashcards_session_paused">Sesja wstrzymana - zostało: %1$d</string>
+    <string name="flashcards_set_name_with_count">%1$s (%2$d)</string>
     <string name="flashcards_end_title">Wszystkie fiszki zostały ogarnięte ;)</string>
-    <string name="flashcards_mastery">Utrwalono %1$d%% fiszek</string>
+    <string name="flashcards_end_ratings">"Dobrze: %1$d  ·  Średnio: %2$d  ·  Kiepsko: %3$d"</string>
+    <string name="flashcards_end_frozen_info">Zamrożone wrócą na drugą szansę za godzinę</string>
+    <string name="flashcards_set_stats">"Powtórki: %1$d  ·  Nowe: %2$d  ·  Opanowane: %3$d"</string>
+    <string name="flashcards_review_today">Dzisiejsza sesja</string>
+    <string name="flashcards_sets_label">Zestawy</string>
+    <string name="flashcards_review_today_counts">"Do powtórzenia: %1$d  ·  Nowe: %2$d"</string>
+    <string name="flashcards_review_today_done">Na dziś wszystko powtórzone :)</string>
+    <string name="flashcards_new_paused">Nowe fiszki wstrzymane - do nadrobienia: %1$d</string>
+    <string name="flashcards_level_mastered">★</string>
+    <string name="flashcards_edit_progress_info">Postęp nauki zostaje, ale zmiana treści może wpłynąć na naukę</string>
     <string name="flashcards_removing_header">Usunąć zestaw fiszek?</string>
     <string name="flashcard_removing_header">Usunąć fiszkę?</string>
     <string name="flashcards_removing_content">Ta operacja jest nieodwracalna</string>
@@ -415,6 +418,8 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="settings_permissions_voice_recording">Włącz zapis w formie głosówek</string>
     <string name="settings_permissions_photo">Włącz zapis w formie zdjęć</string>
     <string name="settings_permissions_flashcards">Włącz fiszki (widok Utrwalanie)</string>
+    <string name="settings_flashcards_new_per_day_label">Nowych fiszek\ndziennie</string>
+    <string name="settings_flashcards_backlog_label">Wstrzymaj nowe przy\nzaległościach powyżej</string>
     <string name="settings_permissions_backup">Włącz tworzenie kopii zapasowych</string>
     <string name="settings_permissions_blockade_title">Uprawnienie zablokowane</string>
     <string name="settings_permissions_recording_blockade_tooltip">Uprawnienie do nagrywania dźwięku zostało trwale odrzucone.\nMożesz je włączyć w ustawieniach systemu Androida.</string>

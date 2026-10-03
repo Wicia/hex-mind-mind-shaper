@@ -5,8 +5,8 @@
 
     <!-- Review progress bar along the bottom edge of the flashcard -->
     <dimen name="flashcard_progress_height">4dp</dimen>
+    <!-- Level bar in the set preview (vertical twin of the session progress) -->
+    <dimen name="flashcard_level_bar_width">4dp</dimen>
     <!-- Gap between the flashcard rows in the set edit dialog -->
     <dimen name="flashcards_edit_row_spacing">12dp</dimen>
-    <!-- Bar left of the back text in the set preview -->
-    <dimen name="flashcard_back_bar_width">2dp</dimen>
 </resources>

@@ -27,20 +27,11 @@
             android:id="@+id/tv_set_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
             android:fontFamily="@font/alegreya_regular"
-            tools:text="Stolice Azji" />
-
-        <TextView
-            android:id="@+id/tv_set_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@color/text_primary"
-            android:fontFamily="@font/alegreya_regular"
-            tools:text="12 fiszek" />
+            tools:text="Stolice Azji (12)" />
 
         <!-- Paused session (what is left of it) or the last session's result - gone when neither -->
         <TextView
@@ -63,7 +54,7 @@
         android:layout_height="48dp"
         android:padding="8dp"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-        app:icon="@drawable/z_ic_domain_rocket_48px"
+        app:icon="@drawable/ic_activity_home"
         app:iconGravity="textStart"
         app:iconSize="32dp"
         app:rippleColor="@color/flashcard_ripple" />

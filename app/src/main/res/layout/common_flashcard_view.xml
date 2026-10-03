@@ -27,8 +27,8 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <!-- Top spacer - balances the actions row below, so the text sits in the middle of the card -->
-            <View
+            <!-- Top spacer - same height as the actions row below, so the text sits in the middle of the card -->
+            <Space
                 android:layout_width="match_parent"
                 android:layout_height="34dp" />
 
@@ -77,17 +77,19 @@
 
                 <!-- Same look as the headline, just not bold -->
                 <TextView
-                    android:id="@+id/tv_flashcard_mastery"
+                    android:id="@+id/tv_flashcard_summary_result"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAlignment="center"
                     android:textSize="16sp"
                     android:textColor="@color/text_primary"
                     android:fontFamily="@font/alegreya_regular"
-                    tools:text="Utrwalono 67% fiszek" />
+                    tools:text="Dobrze: 5 · Średnio: 2 · Kiepsko: 1" />
 
             </LinearLayout>
 
-            <!-- Actions: left (reveal / thumb up), right (skip / thumb down / close) -->
+            <!-- Actions: left (reveal / good), middle (ok - back only), right (skip / bad / close) -->
             <!-- Same size as the delete button of the rich text (48dp, 32dp icon) -->
             <!-- ! Extra side padding - at the card padding alone the icons hugged the edges -->
             <LinearLayout
@@ -110,29 +112,30 @@
                     app:iconSize="32dp"
                     app:rippleColor="@color/flashcard_ripple" />
 
-                <!-- How many times this flashcard was answered this way - over all sessions -->
-                <TextView
-                    android:id="@+id/tv_flashcard_left_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary"
-                    tools:text="3" />
-
                 <View
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_weight="1" />
 
-                <TextView
-                    android:id="@+id/tv_flashcard_right_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="2dp"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary"
-                    tools:text="2" />
+                <!-- INVISIBLE on the front / end card - keeps the row height -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_flashcard_middle"
+                    style="@style/SecondaryActionButton.Ghost"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="8dp"
+                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                    android:visibility="invisible"
+                    app:icon="@drawable/ic_rating_ok"
+                    app:iconGravity="textStart"
+                    app:iconSize="32dp"
+                    app:rippleColor="@color/flashcard_ripple"
+                    tools:visibility="visible" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_flashcard_right"
@@ -150,7 +153,7 @@
 
         </LinearLayout>
 
-        <!-- Session progress: answered out of all the session's flashcards (weights set in code) -->
+        <!-- Session progress: rated out of all the session's flashcards (weights set in code) -->
         <LinearLayout
             android:id="@+id/ll_flashcard_progress"
             android:layout_width="match_parent"

@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.databinding.CommonFlashcardEditRowBinding
 import pl.hexmind.mindshaper.services.dto.FlashcardDTO
+import pl.hexmind.mindshaper.services.dto.FlashcardStatus
 
 /**
  * Front + back fields of one flashcard - shared by the single flashcard dialog and the whole set dialog.
@@ -55,15 +56,20 @@ class FlashcardEditRow @JvmOverloads constructor(
 
     fun isChanged(): Boolean = getFlashcard() != original
 
+    /** Content of an already reviewed flashcard changed - its progress stays, but the learning may be off */
+    fun isLearnedContentChanged(): Boolean {
+        val flashcard = original ?: return false
+        return flashcard.status != FlashcardStatus.NEW && isChanged()
+    }
+
     fun getFlashcard(): FlashcardDTO {
         val front = binding.hifFlashcardFront.getText()
         val back = binding.hifFlashcardBack.getText()
         val flashcard = original
         return when {
             flashcard == null                                     -> FlashcardDTO(front = front, back = back)
-            flashcard.front == front && flashcard.back == back    -> flashcard
-            // Changed content = a different question - the old answers do not count for it
-            else -> FlashcardDTO(id = flashcard.id, front = front, back = back)
+            // ! Editing keeps the repetition progress (Repetitions System) - the user gets a heads-up instead
+            else -> flashcard.copy(front = front, back = back)
         }
     }
 }

@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import pl.hexmind.mindshaper.services.FlashcardsReview
 import pl.hexmind.mindshaper.services.FlashcardsService
 import pl.hexmind.mindshaper.services.dto.FlashcardDTO
+import pl.hexmind.mindshaper.services.dto.FlashcardRating
 import pl.hexmind.mindshaper.services.dto.FlashcardSetDTO
 import javax.inject.Inject
 
@@ -22,6 +24,12 @@ class FlashcardSetViewModel @Inject constructor(
 
     // null = the set is gone (deleted)
     val set: LiveData<FlashcardSetDTO?> = flashcardsService.getSetByIdLive(setId)
+
+    // The set's own session follows the limits counted over all the sets (new per day, backlog)
+    val allSets: LiveData<List<FlashcardSetDTO>> = flashcardsService.getAllSetsLive()
+
+    fun planReview(sets: List<FlashcardSetDTO>): FlashcardsReview.Plan =
+        flashcardsService.planReview(sets, setId)
 
     fun updateSet(name: String, flashcards: List<FlashcardDTO>) {
         viewModelScope.launch {
@@ -49,9 +57,9 @@ class FlashcardSetViewModel @Inject constructor(
         }
     }
 
-    fun updateSession(flashcards: List<FlashcardDTO>) {
+    fun rate(flashcard: FlashcardDTO, rating: FlashcardRating) {
         viewModelScope.launch {
-            flashcardsService.updateSession(flashcards)
+            flashcardsService.rate(flashcard, rating)
         }
     }
 

@@ -11,18 +11,19 @@ import android.view.Window
 import android.view.WindowManager
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.views.content.HexFlashcardView
-import pl.hexmind.mindshaper.services.FlashcardsSession
+import pl.hexmind.mindshaper.services.FlashcardsReview
 import pl.hexmind.mindshaper.services.dto.FlashcardDTO
+import pl.hexmind.mindshaper.services.dto.FlashcardRating
 
 /**
- * Review session of a set on a scrim: flashcards one by one -> end card (tick = close).
- * Tap on the scrim / back = pause - the session is stored step by step, the rocket of the set resumes it.
- * Opened with [open] - it decides between a new session and resuming the paused one.
+ * Review session on a scrim: the planned queue one by one -> end card (tick = close).
+ * Tap on the scrim / back = break off - every rating is stored right away, the next session picks up the rest.
+ * Opened with [open] - nothing to review = no scrim.
  */
 class FlashcardsSessionDialog(
     context: Context,
-    private val flashcards: List<FlashcardDTO>,
-    private val onSessionChanged: (List<FlashcardDTO>) -> Unit
+    private val queue: List<FlashcardsReview.Card>,
+    private val onRated: (FlashcardDTO, FlashcardRating) -> Unit
 ) : Dialog(context) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,10 +44,10 @@ class FlashcardsSessionDialog(
         findViewById<View>(R.id.fl_flashcards_session_scrim).setOnClickListener { dismiss() }
 
         findViewById<HexFlashcardView>(R.id.flashcards_session_view).apply {
-            setFlashcards(flashcards)
+            setQueue(queue)
             setCallback(object : HexFlashcardView.FlashcardsCallback {
-                override fun onSessionChanged(flashcards: List<FlashcardDTO>) {
-                    this@FlashcardsSessionDialog.onSessionChanged(flashcards)
+                override fun onRated(flashcard: FlashcardDTO, rating: FlashcardRating) {
+                    this@FlashcardsSessionDialog.onRated(flashcard, rating)
                 }
 
                 override fun onSessionClosed() {
@@ -60,18 +61,9 @@ class FlashcardsSessionDialog(
         // Same dim as FlashcardsEditDialog / TextEditDialog
         private const val SCRIM_DIM_AMOUNT = 0.9f
 
-        /** A paused session is resumed where it was left, a new one only when there is none in progress. */
-        fun open(context: Context, flashcards: List<FlashcardDTO>, onSessionChanged: (List<FlashcardDTO>) -> Unit) {
-            if (flashcards.isEmpty()) return
-
-            val session = if (FlashcardsSession.isInProgress(flashcards)) {
-                flashcards
-            }
-            else {
-                // Stored right away - closing the scrim before the first answer still keeps the session
-                FlashcardsSession.start(flashcards).also(onSessionChanged)
-            }
-            FlashcardsSessionDialog(context, session, onSessionChanged).show()
+        fun open(context: Context, plan: FlashcardsReview.Plan, onRated: (FlashcardDTO, FlashcardRating) -> Unit) {
+            if (plan.isEmpty) return
+            FlashcardsSessionDialog(context, plan.queue, onRated).show()
         }
     }
 }

@@ -34,12 +34,13 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_set_delete"
                     style="@style/SecondaryActionButton"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="0dp"
                     android:contentDescription="@string/common_placeholder_accessibility_content_desc"
                     app:icon="@drawable/ic_close"
                     app:iconGravity="textStart"
-                    app:iconSize="16dp" />
+                    app:iconSize="20dp" />
 
                 <View
                     android:layout_width="0dp"
@@ -49,23 +50,25 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_set_edit"
                     style="@style/SecondaryActionButton"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="0dp"
                     android:contentDescription="@string/common_placeholder_accessibility_content_desc"
                     app:icon="@drawable/ic_action_edit"
                     app:iconGravity="textStart"
-                    app:iconSize="16dp" />
+                    app:iconSize="20dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_set_review"
                     style="@style/SecondaryActionButton"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginStart="8dp"
+                    android:padding="0dp"
                     android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                    app:icon="@drawable/z_ic_domain_rocket_48px"
+                    app:icon="@drawable/ic_activity_home"
                     app:iconGravity="textStart"
-                    app:iconSize="24dp" />
+                    app:iconSize="28dp" />
 
             </LinearLayout>
 
