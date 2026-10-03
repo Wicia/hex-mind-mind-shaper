@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import java.time.Instant
 
 /**
  * One flashcard (front + back) of a set. A set holds an ordered list of them.
@@ -39,18 +40,27 @@ data class FlashcardEntity(
     @ColumnInfo(name = "back")
     val back: String,
 
-    // Answers given over all review sessions (thumb up / thumb down)
-    @ColumnInfo(name = "correct_count", defaultValue = "0")
-    val correctCount: Int = 0,
+    // Repetitions System progress - FlashcardStatus name (NEW / ACTIVE / FROZEN / MASTERED)
+    @ColumnInfo(name = "status")
+    val status: String = STATUS_NEW,
 
-    @ColumnInfo(name = "wrong_count", defaultValue = "0")
-    val wrongCount: Int = 0,
+    // 1-5 once reviewed, 0 = never reviewed
+    @ColumnInfo(name = "level")
+    val level: Int = 0,
 
-    // Review session: FlashcardSessionState name - null = not part of any session yet
-    @ColumnInfo(name = "session_state")
-    val sessionState: String? = null,
+    // ACTIVE: day of the next planned review (epoch day)
+    @ColumnInfo(name = "due_on")
+    val dueOn: Long? = null,
 
-    // Review session: place in the queue - skipping a flashcard moves it to the end
-    @ColumnInfo(name = "session_order")
-    val sessionOrder: Int? = null
-)
+    // FROZEN: second chance not before this moment
+    @ColumnInfo(name = "frozen_until")
+    val frozenUntil: Instant? = null,
+
+    // Day of the first review (epoch day) - counts towards the daily limit of new flashcards
+    @ColumnInfo(name = "introduced_on")
+    val introducedOn: Long? = null
+) {
+    companion object {
+        const val STATUS_NEW = "NEW"
+    }
+}

@@ -5,21 +5,24 @@ import androidx.lifecycle.map
 import androidx.room.withTransaction
 import pl.hexmind.mindshaper.database.AppDatabase
 import pl.hexmind.mindshaper.database.models.FlashcardEntity
-import pl.hexmind.mindshaper.database.models.FlashcardSessionUpdate
+import pl.hexmind.mindshaper.database.models.FlashcardProgressUpdate
 import pl.hexmind.mindshaper.database.models.FlashcardSetEntity
 import pl.hexmind.mindshaper.database.models.FlashcardSetWithCards
 import pl.hexmind.mindshaper.database.repositories.FlashcardDAO
 import pl.hexmind.mindshaper.services.dto.FlashcardDTO
-import pl.hexmind.mindshaper.services.dto.FlashcardSessionState
+import pl.hexmind.mindshaper.services.dto.FlashcardRating
 import pl.hexmind.mindshaper.services.dto.FlashcardSetDTO
+import pl.hexmind.mindshaper.services.dto.FlashcardStatus
 import java.time.Instant
+import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class FlashcardsService @Inject constructor(
     private val database: AppDatabase,
-    private val flashcardDAO: FlashcardDAO
+    private val flashcardDAO: FlashcardDAO,
+    private val appSettingsStorage: AppSettingsStorage
 ) {
 
     fun getAllSetsLive(): LiveData<List<FlashcardSetDTO>> =
@@ -27,6 +30,26 @@ class FlashcardsService @Inject constructor(
 
     fun getSetByIdLive(setId: Int): LiveData<FlashcardSetDTO?> =
         flashcardDAO.getSetByIdLive(setId).map { set -> set?.let { toDto(it) } }
+
+    /**
+     * What is up for review right now - with the user's limits (Settings).
+     * @param sets all the sets - the daily limit of new flashcards and the backlog count over all of them
+     * @param setId null = one session over all the sets
+     */
+    fun planReview(sets: List<FlashcardSetDTO>, setId: Int? = null): FlashcardsReview.Plan =
+        FlashcardsReview.plan(
+            sets   = sets,
+            params = FlashcardsReview.Params(
+                newPerDay        = appSettingsStorage.getFlashcardsNewPerDay(),
+                backlogThreshold = appSettingsStorage.getFlashcardsBacklogThreshold()
+            ),
+            today  = LocalDate.now(),
+            now    = Instant.now(),
+            setId  = setId
+        )
+
+    fun statsOf(set: FlashcardSetDTO): FlashcardsReview.SetStats =
+        FlashcardsReview.statsOf(set, LocalDate.now(), Instant.now())
 
     /** @return id of the new set */
     suspend fun addSet(name: String, flashcards: List<FlashcardDTO>): Int =
@@ -38,7 +61,7 @@ class FlashcardsService @Inject constructor(
 
     /**
      * Name + the whole list at once.
-     * ! Kept flashcards come back with their id - the answer counters and session state stay with them
+     * ! Kept flashcards come back with their id and progress - editing does not reset the repetitions
      */
     suspend fun updateSet(setId: Int, name: String, flashcards: List<FlashcardDTO>) {
         database.withTransaction {
@@ -56,22 +79,11 @@ class FlashcardsService @Inject constructor(
         }
     }
 
-    /**
-     * One flashcard - the rest of the set stays untouched.
-     * ! Counters and session state are taken from the dto - a changed question comes with them reset
-     */
+    /** Content only - the rest of the set and the flashcard's repetition progress stay untouched */
     suspend fun updateFlashcard(setId: Int, flashcard: FlashcardDTO) {
         val id = flashcard.id ?: return
         database.withTransaction {
-            flashcardDAO.updateContent(
-                id           = id,
-                front        = flashcard.front,
-                back         = flashcard.back,
-                correctCount = flashcard.correctCount,
-                wrongCount   = flashcard.wrongCount,
-                sessionState = flashcard.sessionState?.name,
-                sessionOrder = flashcard.sessionOrder
-            )
+            flashcardDAO.updateContent(id, flashcard.front, flashcard.back)
             flashcardDAO.touchSet(setId, Instant.now().toEpochMilli())
         }
     }
@@ -88,22 +100,27 @@ class FlashcardsService @Inject constructor(
         flashcardDAO.deleteSet(setId)
     }
 
+    /** Rating in a review session -> the flashcard's next level / review date (FlashcardsScheduler) */
+    suspend fun rate(flashcard: FlashcardDTO, rating: FlashcardRating) {
+        updateProgress(FlashcardsScheduler.rate(flashcard, rating, LocalDate.now(), Instant.now()))
+    }
+
     /**
-     * Review progress only (counters + session state) - content and order of the flashcards stay.
+     * Repetition progress only - content and place of the flashcard stay.
      * ! Reviewing is not editing - updated_at stays, so the set does not jump in the list order
      */
-    suspend fun updateSession(flashcards: List<FlashcardDTO>) {
-        val updates = flashcards.mapNotNull { flashcard ->
-            val id = flashcard.id ?: return@mapNotNull null
-            FlashcardSessionUpdate(
+    private suspend fun updateProgress(flashcard: FlashcardDTO) {
+        val id = flashcard.id ?: return
+        flashcardDAO.updateProgress(
+            FlashcardProgressUpdate(
                 id           = id,
-                correctCount = flashcard.correctCount,
-                wrongCount   = flashcard.wrongCount,
-                sessionState = flashcard.sessionState?.name,
-                sessionOrder = flashcard.sessionOrder
+                status       = flashcard.status.name,
+                level        = flashcard.level,
+                dueOn        = flashcard.dueOn?.toEpochDay(),
+                frozenUntil  = flashcard.frozenUntil,
+                introducedOn = flashcard.introducedOn?.toEpochDay()
             )
-        }
-        flashcardDAO.updateSession(updates)
+        )
     }
 
     private fun toDto(setWithCards: FlashcardSetWithCards): FlashcardSetDTO =
@@ -119,10 +136,11 @@ class FlashcardsService @Inject constructor(
                         id           = flashcard.id,
                         front        = flashcard.front,
                         back         = flashcard.back,
-                        correctCount = flashcard.correctCount,
-                        wrongCount   = flashcard.wrongCount,
-                        sessionState = flashcard.sessionState?.let { state -> FlashcardSessionState.valueOf(state) },
-                        sessionOrder = flashcard.sessionOrder
+                        status       = FlashcardStatus.valueOf(flashcard.status),
+                        level        = flashcard.level,
+                        dueOn        = flashcard.dueOn?.let { day -> LocalDate.ofEpochDay(day) },
+                        frozenUntil  = flashcard.frozenUntil,
+                        introducedOn = flashcard.introducedOn?.let { day -> LocalDate.ofEpochDay(day) }
                     )
                 }
         )
@@ -137,9 +155,10 @@ class FlashcardsService @Inject constructor(
             position     = position,
             front        = flashcard.front,
             back         = flashcard.back,
-            correctCount = flashcard.correctCount,
-            wrongCount   = flashcard.wrongCount,
-            sessionState = flashcard.sessionState?.name,
-            sessionOrder = flashcard.sessionOrder
+            status       = flashcard.status.name,
+            level        = flashcard.level,
+            dueOn        = flashcard.dueOn?.toEpochDay(),
+            frozenUntil  = flashcard.frozenUntil,
+            introducedOn = flashcard.introducedOn?.toEpochDay()
         )
 }

@@ -173,7 +173,7 @@ class DataSnapshotManager @Inject constructor(
                 // instead (turned into sets here), older ones none at all (null)
                 val flashcardSets = snapshot.flashcardSets
                     ?: snapshot.thoughtFlashcards?.let { legacy -> legacySetsOf(legacy, snapshot.thoughts.orEmpty()) }
-                val flashcards = snapshot.flashcards
+                val flashcards = snapshot.flashcards?.map { flashcard -> withProgressDefaults(flashcard) }
                     ?: snapshot.thoughtFlashcards?.map { legacy -> legacy.toFlashcard() }
 
                 if (flashcardSets != null && flashcards != null) {
@@ -212,6 +212,14 @@ class DataSnapshotManager @Inject constructor(
             )
         }
     }
+
+    /**
+     * Same as Migrations.MIGRATION_21_TO_22: snapshots before v22 have no repetition progress - the flashcard starts as NEW.
+     * ! Gson skips Kotlin defaults - a missing "status" key comes as null despite the non-null type
+     */
+    @Suppress("SENSELESS_COMPARISON")
+    private fun withProgressDefaults(flashcard: FlashcardEntity): FlashcardEntity =
+        if (flashcard.status == null) flashcard.copy(status = FlashcardEntity.STATUS_NEW, level = 0) else flashcard
 
     private fun getBackupDirectory(): File {
         // non-standard flavors get their own dir / "standard" flavors keeps the legacy dir + its old backups
@@ -266,28 +274,23 @@ data class DatabaseSnapshot(
     val thoughtFlashcards: List<LegacyThoughtFlashcard>?, // Snapshots v19-v20: flashcards were a form of a thought
 )
 
-/** Flashcard of a thought as stored by snapshots v19-v20 (THOUGHT_FLASHCARDS) - same JSON keys. */
+/**
+ * Flashcard of a thought as stored by snapshots v19-v20 (THOUGHT_FLASHCARDS) - same JSON keys.
+ * Its answer counters / session state are not read - the Repetitions System starts it as NEW (see MIGRATION_21_TO_22)
+ */
 data class LegacyThoughtFlashcard(
     val id: Int?,
     val thoughtId: Int,
     val position: Int,
     val front: String,
-    val back: String,
-    val correctCount: Int = 0,
-    val wrongCount: Int = 0,
-    val sessionState: String? = null,
-    val sessionOrder: Int? = null
+    val back: String
 ) {
     fun toFlashcard() = FlashcardEntity(
-        id           = id,
-        setId        = thoughtId,
-        position     = position,
-        front        = front,
-        back         = back,
-        correctCount = correctCount,
-        wrongCount   = wrongCount,
-        sessionState = sessionState,
-        sessionOrder = sessionOrder
+        id       = id,
+        setId    = thoughtId,
+        position = position,
+        front    = front,
+        back     = back
     )
 }
 

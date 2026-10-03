@@ -511,6 +511,39 @@ class Migrations {
             }
         }
 
+        // Repetitions System: answer counters + per-set session -> level / status / review dates
+        // ! Old progress is dropped - every flashcard starts again as NEW
+        // ! Table rebuilt instead of DROP COLUMN - SQLite below 3.35 (Android < 14) has no DROP COLUMN
+        val MIGRATION_21_TO_22 = object : Migration(21, 22) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS FLASHCARDS_NEW (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        set_id INTEGER NOT NULL,
+                        position INTEGER NOT NULL,
+                        front TEXT NOT NULL,
+                        back TEXT NOT NULL,
+                        status TEXT NOT NULL,
+                        level INTEGER NOT NULL,
+                        due_on INTEGER,
+                        frozen_until INTEGER,
+                        introduced_on INTEGER,
+                        FOREIGN KEY(set_id) REFERENCES FLASHCARD_SETS(id) ON DELETE CASCADE
+                    )
+                """)
+
+                db.execSQL("""
+                    INSERT INTO FLASHCARDS_NEW (id, set_id, position, front, back, status, level)
+                    SELECT id, set_id, position, front, back, 'NEW', 0
+                    FROM FLASHCARDS
+                """)
+
+                db.execSQL("DROP TABLE FLASHCARDS")
+                db.execSQL("ALTER TABLE FLASHCARDS_NEW RENAME TO FLASHCARDS")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_FLASHCARDS_set_id ON FLASHCARDS(set_id)")
+            }
+        }
+
         // Fallback name of a set made from a thought without a subject (+ " #<id>")
         const val LEGACY_SET_NAME = "Zestaw fiszek"
     }

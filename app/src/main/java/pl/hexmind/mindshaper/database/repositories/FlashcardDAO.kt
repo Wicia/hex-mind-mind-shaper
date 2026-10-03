@@ -8,7 +8,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import pl.hexmind.mindshaper.database.models.FlashcardEntity
-import pl.hexmind.mindshaper.database.models.FlashcardSessionUpdate
+import pl.hexmind.mindshaper.database.models.FlashcardProgressUpdate
 import pl.hexmind.mindshaper.database.models.FlashcardSetEntity
 import pl.hexmind.mindshaper.database.models.FlashcardSetWithCards
 
@@ -56,23 +56,9 @@ interface FlashcardDAO {
     @Query("SELECT COALESCE(MAX(position), -1) FROM FLASHCARDS WHERE set_id = :setId")
     suspend fun getLastPosition(setId: Int): Int
 
-    /** One flashcard edited on its own - its place in the set stays */
-    @Query("""
-        UPDATE FLASHCARDS
-        SET front = :front, back = :back,
-            correct_count = :correctCount, wrong_count = :wrongCount,
-            session_state = :sessionState, session_order = :sessionOrder
-        WHERE id = :id
-    """)
-    suspend fun updateContent(
-        id: Int,
-        front: String,
-        back: String,
-        correctCount: Int,
-        wrongCount: Int,
-        sessionState: String?,
-        sessionOrder: Int?
-    )
+    /** One flashcard edited on its own - its place in the set and its repetition progress stay */
+    @Query("UPDATE FLASHCARDS SET front = :front, back = :back WHERE id = :id")
+    suspend fun updateContent(id: Int, front: String, back: String)
 
     /** The whole list is edited at once, so it is swapped at once - no per-card diffing. */
     @Transaction
@@ -82,7 +68,7 @@ interface FlashcardDAO {
     }
 
     @Update(entity = FlashcardEntity::class)
-    suspend fun updateSession(updates: List<FlashcardSessionUpdate>)
+    suspend fun updateProgress(update: FlashcardProgressUpdate)
 
     // ===========================================
     //      Snapshot (backup / restore)
