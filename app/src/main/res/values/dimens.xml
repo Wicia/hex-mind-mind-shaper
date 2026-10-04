@@ -9,4 +9,12 @@
     <dimen name="flashcard_level_bar_width">4dp</dimen>
     <!-- Gap between the flashcard rows in the set edit dialog -->
     <dimen name="flashcards_edit_row_spacing">12dp</dimen>
+    <!-- Text buttons at the bottom right of dialogs (Anuluj / Zapisz ...) - one size everywhere -->
+    <dimen name="dialog_text_button_size">14sp</dimen>
+    <!-- Gap between those buttons -->
+    <dimen name="dialog_text_buttons_gap">12dp</dimen>
+    <!-- Content's action at the left end of the dialog button bar (ScrimDialogs leadingAction) -->
+    <dimen name="dialog_leading_action_height">40dp</dimen>
+    <dimen name="dialog_leading_action_icon_size">20dp</dimen>
+    <dimen name="dialog_leading_action_margin_start">12dp</dimen>
 </resources>

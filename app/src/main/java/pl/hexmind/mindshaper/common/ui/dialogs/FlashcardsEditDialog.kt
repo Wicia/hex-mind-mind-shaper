@@ -47,7 +47,8 @@ class FlashcardsEditDialog(
 
         hifName.setText(set.name)
 
-        dialogView.findViewById<MaterialButton>(R.id.btn_flashcard_add).setOnClickListener {
+        val btnAdd = dialogView.findViewById<MaterialButton>(R.id.btn_flashcard_add)
+        btnAdd.setOnClickListener {
             rowToReveal = addRow()
         }
 
@@ -59,7 +60,9 @@ class FlashcardsEditDialog(
         dialog = ScrimDialogs.create(
             context, dialogView,
             positiveText = context.getString(R.string.common_btn_save),
-            onPositive = { handleSave() }
+            onPositive = { handleSave() },
+            // "+" in one row with Cancel / Save
+            leadingAction = btnAdd
         )
     }
 

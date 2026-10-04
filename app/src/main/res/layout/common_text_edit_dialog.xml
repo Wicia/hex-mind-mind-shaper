@@ -55,10 +55,11 @@
             android:id="@+id/btn_insert_bullet"
             style="@style/SecondaryActionButton"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_height="@dimen/dialog_leading_action_height"
             android:focusable="false"
             android:focusableInTouchMode="false"
             app:iconGravity="textStart"
+            app:iconSize="@dimen/dialog_leading_action_icon_size"
             app:icon="@drawable/ic_action_list" />
 
     </LinearLayout>

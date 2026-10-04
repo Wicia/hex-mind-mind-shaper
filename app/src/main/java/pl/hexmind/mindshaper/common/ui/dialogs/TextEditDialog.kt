@@ -120,7 +120,9 @@ class TextEditDialog(
             onPositive = { dialog ->
                 handleSave()
                 dialog.dismiss()
-            }
+            },
+            // Bullet button in one row with Cancel / Save
+            leadingAction = toolbarMarkdown
         )
 
     private fun handleSave() {
