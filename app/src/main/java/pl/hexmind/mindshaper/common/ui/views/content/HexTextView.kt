@@ -299,7 +299,7 @@ class HexTextView @JvmOverloads constructor(
         ActionsDialog.Builder(context)
             .setTitle(context.getString(R.string.details_rich_text_removing_header))
             .setDescription(context.getString(R.string.details_rich_text_removing_content))
-            .setCautionAction(context.getString(R.string.common_deletion_dialog_yes_2)) {
+            .setPrimaryAction(context.getString(R.string.common_deletion_dialog_yes_2), caution = true) {
                 callback?.onTextDeleted()
             }
             .show()

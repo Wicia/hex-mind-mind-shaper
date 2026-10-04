@@ -286,17 +286,17 @@ class HexAudioView @JvmOverloads constructor(
 
     private fun showRecordingOptionsDialog() {
         ActionsDialog.Builder(context)
-            .setTitle("Co chcesz zrobić z nagraniem?")
-            .setCautionAction("Wywalić") {
+            .setTitle(context.getString(R.string.capture_voice_dialog_title))
+            .setSecondaryAction(context.getString(R.string.capture_voice_dialog_overwrite)) {
+                deleteCurrentRecording(deleteFromDatabase = true)  // Delete from DB
+                startRecording()
+            }
+            .setPrimaryAction(context.getString(R.string.capture_voice_dialog_delete), caution = true) {
                 deleteCurrentRecording(deleteFromDatabase = true)  // Delete from DB
                 showStatus(
                     context.getString(R.string.capture_voice_tooltip),
                     R.color.text_secondary
                 )
-            }
-            .setStandardAction("Nadpisać") {
-                deleteCurrentRecording(deleteFromDatabase = true)  // Delete from DB
-                startRecording()
             }
             .show()
     }

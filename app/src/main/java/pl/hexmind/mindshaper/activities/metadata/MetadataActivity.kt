@@ -109,11 +109,10 @@ class MetadataActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_deletion_dialog_title))
             .setDescription(getString(R.string.metadata_tag_delete_message, tagName))
-            .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
+            .setPrimaryAction(getString(R.string.common_deletion_dialog_yes), caution = true) {
                 viewModel.deleteTag(tagName)
                 showShortToast(R.string.common_deletion_dialog_confirmation, tagName)
             }
-            .setDismissText(getString(R.string.common_deletion_dialog_no))
             .show()
     }
 

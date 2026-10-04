@@ -282,10 +282,9 @@ class StreamActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_deletion_dialog_title))
             .setDescription(getString(R.string.common_deletion_dialog_message, getString(R.string.common_object_type_thought)))
-            .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
+            .setPrimaryAction(getString(R.string.common_deletion_dialog_yes), caution = true) {
                 deleteThought(thought)
             }
-            .setDismissText(getString(R.string.common_deletion_dialog_no))
             .show()
     }
 

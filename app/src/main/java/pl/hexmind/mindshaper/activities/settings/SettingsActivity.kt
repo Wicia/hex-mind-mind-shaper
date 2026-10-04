@@ -241,11 +241,10 @@ class SettingsActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
             .setDescription(getString(R.string.settings_voice_recording_info))
-            .setStandardAction(getString(R.string.common_btn_grant_permission)) {
+            .setPrimaryAction(getString(R.string.common_btn_grant_permission)) {
                 requestVoiceRecordingPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
             }
-            .setDismissText(getString(R.string.common_btn_cancel_not_now))
-            .setDismissAction { binding.switchVoiceRecordingFeature.isChecked = false }
+            .setOnCancel { binding.switchVoiceRecordingFeature.isChecked = false }
             .show()
     }
 
@@ -253,10 +252,10 @@ class SettingsActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.settings_permissions_blockade_title))
             .setDescription(getString(R.string.settings_permissions_recording_blockade_tooltip))
-            .setCautionAction(getString(R.string.common_dialog_open_android_settings)) {
+            .setPrimaryAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
-            .setDismissAction { binding.switchVoiceRecordingFeature.isChecked = false }
+            .setOnCancel { binding.switchVoiceRecordingFeature.isChecked = false }
             .show()
     }
 
@@ -364,11 +363,10 @@ class SettingsActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
             .setDescription(getString(R.string.settings_permissions_photo_info))
-            .setStandardAction(getString(R.string.common_btn_grant_permission)) {
+            .setPrimaryAction(getString(R.string.common_btn_grant_permission)) {
                 requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
             }
-            .setDismissText(getString(R.string.common_btn_cancel_not_now))
-            .setDismissAction { binding.switchPhotoFeature.isChecked = false }
+            .setOnCancel { binding.switchPhotoFeature.isChecked = false }
             .show()
     }
 
@@ -376,10 +374,10 @@ class SettingsActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.settings_permissions_blockade_title))
             .setDescription(getString(R.string.settings_permissions_photo_blockade_tooltip))
-            .setCautionAction(getString(R.string.common_dialog_open_android_settings)) {
+            .setPrimaryAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
-            .setDismissAction { binding.switchPhotoFeature.isChecked = false }
+            .setOnCancel { binding.switchPhotoFeature.isChecked = false }
             .show()
     }
 
@@ -486,7 +484,7 @@ class SettingsActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
             .setDescription(getString(R.string.settings_calendar_permission_info))
-            .setStandardAction(getString(R.string.common_btn_grant_permission)) {
+            .setPrimaryAction(getString(R.string.common_btn_grant_permission)) {
                 requestCalendarPermissionLauncher.launch(
                     arrayOf(
                         Manifest.permission.READ_CALENDAR,
@@ -494,8 +492,7 @@ class SettingsActivity : CoreActivity() {
                     )
                 )
             }
-            .setDismissText(getString(R.string.common_btn_cancel_not_now))
-            .setDismissAction { binding.switchCalendarReminders.isChecked = false }
+            .setOnCancel { binding.switchCalendarReminders.isChecked = false }
             .show()
     }
 
@@ -503,10 +500,10 @@ class SettingsActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.settings_permissions_blockade_title))
             .setDescription(getString(R.string.settings_calendar_blockade_tooltip))
-            .setCautionAction(getString(R.string.common_dialog_open_android_settings)) {
+            .setPrimaryAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
-            .setDismissAction { binding.switchCalendarReminders.isChecked = false }
+            .setOnCancel { binding.switchCalendarReminders.isChecked = false }
             .show()
     }
 
@@ -587,11 +584,10 @@ class SettingsActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
             .setDescription(getString(R.string.settings_backup_permission_info))
-            .setStandardAction(getString(R.string.common_btn_grant_permission)) {
+            .setPrimaryAction(getString(R.string.common_btn_grant_permission)) {
                 requestStoragePermissionLauncher.launch(permissionsService.getStoragePermission())
             }
-            .setDismissText(getString(R.string.common_btn_cancel_not_now))
-            .setDismissAction { binding.switchBackupFeature.isChecked = false }
+            .setOnCancel { binding.switchBackupFeature.isChecked = false }
             .show()
     }
 
@@ -599,10 +595,10 @@ class SettingsActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.settings_permissions_blockade_title))
             .setDescription(getString(R.string.settings_permissions_backup_blockade_tooltip))
-            .setCautionAction(getString(R.string.common_dialog_open_android_settings)) {
+            .setPrimaryAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
-            .setDismissAction { binding.switchBackupFeature.isChecked = false }
+            .setOnCancel { binding.switchBackupFeature.isChecked = false }
             .show()
     }
 
@@ -824,10 +820,9 @@ class SettingsActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_deletion_dialog_title))
             .setDescription(getString(R.string.settings_snapshot_restore_warning))
-            .setCautionAction(getString(R.string.common_btn_confirm_replace)) {
+            .setPrimaryAction(getString(R.string.common_btn_confirm_replace), caution = true) {
                 loadBackupFile()
             }
-            .setDismissText(getString(R.string.common_btn_cancel_replace))
             .show()
     }
 

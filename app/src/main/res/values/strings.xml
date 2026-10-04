@@ -17,18 +17,17 @@
     <!-- Buttons & Actions -->
     <string name="common_btn_save">Zapisz</string>
     <string name="common_btn_cancel">Anuluj</string>
-    <string name="common_btn_cancel_not_now">Nie teraz</string>
     <string name="common_btn_confirm_ok">OK</string>
     <string name="common_btn_confirm_ok_2">Dobra</string>
     <string name="common_btn_yes">Tak</string>
-    <string name="common_btn_no">Nie</string>
     <string name="common_btn_add">\?</string>
     <string name="common_btn_create">+</string>
     <string name="common_btn_increase">+</string>
     <string name="common_btn_decrease">-</string>
     <string name="common_btn_grant_permission">Przyznaj</string>
     <string name="common_btn_confirm_replace">Tak, zastąp</string>
-    <string name="common_btn_cancel_replace">Nie, zostaw</string>
+    <string name="common_guide_btn_next">Mów dalej...</string>
+    <string name="common_guide_btn_dismiss">Dzięki</string>
 
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
 
@@ -38,11 +37,11 @@
     <string name="common_deletion_dialog_message">Czy na pewno chcesz usunąć %s?</string>
     <string name="common_deletion_dialog_yes">Usuń</string>
     <string name="common_deletion_dialog_yes_2">Kasujemy</string>
-    <string name="common_deletion_dialog_no">Nie, zostaw</string>
     <string name="common_deletion_dialog_confirmation">%s usunięto</string>
     <string name="common_deletion_dialog_warning">Tej operacji nie można cofnąć.</string>
     <string name="common_edit_note_header">Edytuj notatkę</string>
     <string name="common_list_dialog_title">Wybierz coś sobie…</string>
+    <string name="common_thoughts_forms_inactive_header">Nieaktywna forma zapisu myśli</string>
     <string name="common_thoughts_forms_permissions_needed">Możesz aktywować zapisywanie myśli w formie nagrań głosowych, zdjęć oraz fiszek w Ustawieniach.\n\nCzy przejść do Ustawień?</string>
     <string name="common_thoughts_permissions_dialog_header">Żądanie uprawnień do zasobów Androida</string>
     <string name="common_dialog_open_android_settings">Otwórz ustawienia</string>
@@ -234,6 +233,9 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="capture_voice_error_empty">Eeee… To nagranie ma 0 sekund :/</string>
     <string name="capture_voice_error_recording">Błąd podczas nagrywania</string>
     <string name="capture_voice_error_save_failed">Błąd podczas zapisywania do bazy</string>
+    <string name="capture_voice_dialog_title">Co chcesz zrobić z nagraniem?</string>
+    <string name="capture_voice_dialog_delete">Wywalić</string>
+    <string name="capture_voice_dialog_overwrite">Nadpisać</string>
 
     <!-- ============================================================ -->
     <!--    STREAM Activity                                           -->
@@ -325,7 +327,6 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="details_dormant_dialog_title">🌙 Uśpiona myśl</string>
     <string name="details_dormant_dialog_message">Ta myśl jest uśpiona — ma niską wartość i nie była modyfikowana od dłuższego czasu.</string>
     <string name="details_dormant_dialog_wake">Obudź</string>
-    <string name="details_dormant_dialog_leave">Zostaw</string>
 
     <!-- Slow mode -->
     <string name="details_slow_mode_title">⏳ Tryb powolny aktywny…</string>

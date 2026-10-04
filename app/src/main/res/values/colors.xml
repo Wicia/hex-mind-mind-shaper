@@ -37,6 +37,9 @@
     <color name="validation_error">#5B0E0E</color>
     <color name="validation_error_frame">#8B1313</color>
 
+    <!-- Dialog action with serious consequences (ActionsDialog caution) -->
+    <color name="action_caution">#8B1313</color>
+
 <!-- ====================================== -->
 <!--    APP THEME MAPPINGS -->
 <!-- ====================================== -->

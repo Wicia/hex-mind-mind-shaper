@@ -19,7 +19,7 @@ object FlashcardsDeletion {
         ActionsDialog.Builder(context)
             .setTitle(context.getString(headerRes))
             .setDescription(context.getString(R.string.flashcards_removing_content))
-            .setCautionAction(context.getString(R.string.common_deletion_dialog_yes_2)) { onDelete() }
+            .setPrimaryAction(context.getString(R.string.common_deletion_dialog_yes_2), caution = true) { onDelete() }
             .show()
     }
 }
