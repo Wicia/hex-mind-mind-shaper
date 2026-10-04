@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Content of FlashcardEditRow (vertical LinearLayout) -->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:orientation="vertical"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <!-- Remove left (app standard: the X always sits on the left), flashcard number right.
+         Hidden until FlashcardEditRow.setOnRemoveClickListener -->
+    <LinearLayout
+        android:id="@+id/ll_flashcard_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:visibility="gone">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_flashcard_remove"
+            style="@style/SecondaryActionButton.Ghost"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+            app:icon="@drawable/ic_close"
+            app:iconGravity="textStart"
+            app:iconSize="20dp"
+            app:iconTint="@color/app_background" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/tv_flashcard_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_background"
+            android:textStyle="bold"
+            tools:text="Fiszka #1" />
+
+    </LinearLayout>
+
+    <pl.hexmind.mindshaper.common.ui.views.HexInputField
+        android:id="@+id/hif_flashcard_front"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hint="@string/flashcards_front_hint"
+        app:inlineHint="true"
+        app:hexInputType="text"
+        app:hexMaxLength="500"
+        app:maxLines="3" />
+
+    <pl.hexmind.mindshaper.common.ui.views.HexInputField
+        android:id="@+id/hif_flashcard_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:hint="@string/flashcards_back_hint"
+        app:inlineHint="true"
+        app:hexInputType="text"
+        app:hexMaxLength="500"
+        app:maxLines="5" />
+
+</merge>

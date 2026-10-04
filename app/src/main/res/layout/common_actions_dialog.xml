@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Actions dialog: 1 action = [Cancel | Primary]; 2 actions = [Secondary | Primary] + Cancel below -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -14,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Tu idzie pierońsko ważny nagłówek"
+        tools:text="Tu idzie pierońsko ważny nagłówek"
         />
 
     <TextView
@@ -22,47 +24,57 @@
         style="@style/Dialog_Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="A tu jakiś mądry tekst..."
+        tools:text="A tu jakiś mądry tekst..."
         />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="12dp"
         android:clipChildren="false"
         android:clipToPadding="false">
 
+        <!-- Left slot: Cancel (1 action) or secondary action (2 actions) -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_action_caution"
+            android:id="@+id/btn_cancel_inline"
+            style="@style/AuxiliaryActionButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            android:text="@string/common_btn_cancel"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_action_secondary"
             style="@style/SecondaryActionButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginEnd="6dp"
-            android:text="Ważna akcja"
-            android:textStyle="bold"
+            tools:text="Druga akcja"
             />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_action_standard"
+            android:id="@+id/btn_action_primary"
             style="@style/SecondaryActionButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="6dp"
-            android:text="Normalna akcja"
+            tools:text="Akcja główna"
             />
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_dismiss"
+        android:id="@+id/btn_cancel_below"
         style="@style/AuxiliaryActionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:insetLeft="36dp"
         android:insetRight="36dp"
-        android:text="Anuluj = bez decyzji"
+        android:text="@string/common_btn_cancel"
         />
 
 </LinearLayout>

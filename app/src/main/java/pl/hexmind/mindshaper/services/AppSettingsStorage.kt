@@ -44,6 +44,8 @@ class AppSettingsStorage @Inject constructor(
 
         private const val PARAM_PHOTO_FEATURE_ENABLED = "photo_feature_enabled"
 
+        private const val PARAM_FLASHCARDS_FEATURE_ENABLED = "param_flashcards_feature_enabled"
+
         private const val PARAM_CALENDAR_REMINDERS_ENABLED = "calendar_reminders_enabled"
 
         private const val PARAM_CALENDAR_TARGET_ID = "calendar_target_id"
@@ -58,6 +60,19 @@ class AppSettingsStorage @Inject constructor(
 
         const val SLOW_MODE_HOURS_MIN = 1 // TODO: Move to validator when there will be more business logic related to validating settings
         const val SLOW_MODE_HOURS_MAX = 72
+
+        // Flashcards - Repetitions System
+        private const val PARAM_FLASHCARDS_NEW_PER_DAY       = "param_flashcards_new_per_day"
+        private const val PARAM_FLASHCARDS_BACKLOG_THRESHOLD = "param_flashcards_backlog_threshold"
+
+        const val FLASHCARDS_NEW_PER_DAY_DEFAULT = 10
+        const val FLASHCARDS_NEW_PER_DAY_MIN     = 1
+        const val FLASHCARDS_NEW_PER_DAY_MAX     = 50
+
+        const val FLASHCARDS_BACKLOG_DEFAULT = 30
+        const val FLASHCARDS_BACKLOG_MIN     = 5
+        const val FLASHCARDS_BACKLOG_MAX     = 200
+        const val FLASHCARDS_BACKLOG_STEP    = 5
 
         // Dormant mode
         private const val PARAM_DORMANT_MODE_ENABLED    = "param_dormant_mode_enabled"
@@ -151,6 +166,33 @@ class AppSettingsStorage @Inject constructor(
         sharedPreferences.edit {
             putBoolean(PARAM_PHOTO_FEATURE_ENABLED, enabled)
         }
+    }
+
+    // No system permission behind it - a plain on/off preference
+    fun isFlashcardsFeatureEnabled(): Boolean {
+        return sharedPreferences.getBoolean(PARAM_FLASHCARDS_FEATURE_ENABLED, false)
+    }
+
+    fun setFlashcardsFeatureEnabled(enabled: Boolean) {
+        sharedPreferences.edit {
+            putBoolean(PARAM_FLASHCARDS_FEATURE_ENABLED, enabled)
+        }
+    }
+
+    /** Most new flashcards a day in the review session */
+    fun getFlashcardsNewPerDay(): Int =
+        sharedPreferences.getInt(PARAM_FLASHCARDS_NEW_PER_DAY, FLASHCARDS_NEW_PER_DAY_DEFAULT)
+
+    fun setFlashcardsNewPerDay(count: Int) {
+        sharedPreferences.edit { putInt(PARAM_FLASHCARDS_NEW_PER_DAY, count) }
+    }
+
+    /** Due reviews above this number hold the new flashcards back */
+    fun getFlashcardsBacklogThreshold(): Int =
+        sharedPreferences.getInt(PARAM_FLASHCARDS_BACKLOG_THRESHOLD, FLASHCARDS_BACKLOG_DEFAULT)
+
+    fun setFlashcardsBacklogThreshold(count: Int) {
+        sharedPreferences.edit { putInt(PARAM_FLASHCARDS_BACKLOG_THRESHOLD, count) }
     }
 
     // === CALENDAR REMINDERS ===

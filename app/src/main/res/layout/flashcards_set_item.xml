@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One set on the Utrwalanie list - same card look as the flashcard itself (color + Alegreya) -->
+<!-- Tap = preview of the set's flashcards, rocket = start / resume the review -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_set_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingVertical="12dp"
+    android:paddingStart="20dp"
+    android:paddingEnd="12dp"
+    android:background="@drawable/shape_hex_content"
+    android:backgroundTint="@color/flashcard_background"
+    android:foreground="?attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_set_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:fontFamily="@font/alegreya_regular"
+            tools:text="Stolice Azji (12)" />
+
+        <!-- Paused session (what is left of it) or the last session's result - gone when neither -->
+        <TextView
+            android:id="@+id/tv_set_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:visibility="gone"
+            tools:text="Utrwalono 67% fiszek"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
+    <!-- Same size as the flashcard's action buttons (48dp, 32dp icon) -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_set_review"
+        style="@style/SecondaryActionButton.Ghost"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="8dp"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+        app:icon="@drawable/ic_activity_home"
+        app:iconGravity="textStart"
+        app:iconSize="32dp"
+        app:rippleColor="@color/flashcard_ripple" />
+
+</LinearLayout>

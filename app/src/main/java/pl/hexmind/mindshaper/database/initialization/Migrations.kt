@@ -420,5 +420,131 @@ class Migrations {
                 db.execSQL("CREATE INDEX IF NOT EXISTS index_THOUGHTS_domain_id ON THOUGHTS(domain_id)")
             }
         }
+
+        // Flashcards - a new form of a thought: an ordered list of front / back pairs
+        val MIGRATION_18_TO_19 = object : Migration(18, 19) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS THOUGHT_FLASHCARDS (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        thought_id INTEGER NOT NULL,
+                        position INTEGER NOT NULL,
+                        front TEXT NOT NULL,
+                        back TEXT NOT NULL,
+                        FOREIGN KEY(thought_id) REFERENCES THOUGHTS(id) ON DELETE CASCADE
+                    )
+                """)
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_THOUGHT_FLASHCARDS_thought_id ON THOUGHT_FLASHCARDS(thought_id)")
+            }
+        }
+
+        // Flashcards review: answer counters + the state of the current review session
+        val MIGRATION_19_TO_20 = object : Migration(19, 20) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE THOUGHT_FLASHCARDS ADD COLUMN correct_count INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE THOUGHT_FLASHCARDS ADD COLUMN wrong_count INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE THOUGHT_FLASHCARDS ADD COLUMN session_state TEXT DEFAULT NULL")
+                db.execSQL("ALTER TABLE THOUGHT_FLASHCARDS ADD COLUMN session_order INTEGER DEFAULT NULL")
+            }
+        }
+
+        // Flashcards are no longer a form of a thought - they live in named sets of their own.
+        // Every thought with flashcards becomes a set (named after the thought's subject), keeping the
+        // answer counters and the session state; thoughts that had nothing but flashcards are deleted.
+        val MIGRATION_20_TO_21 = object : Migration(20, 21) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS FLASHCARD_SETS (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        name TEXT NOT NULL,
+                        created_at INTEGER NOT NULL,
+                        updated_at INTEGER NOT NULL
+                    )
+                """)
+
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS FLASHCARDS (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        set_id INTEGER NOT NULL,
+                        position INTEGER NOT NULL,
+                        front TEXT NOT NULL,
+                        back TEXT NOT NULL,
+                        correct_count INTEGER NOT NULL DEFAULT 0,
+                        wrong_count INTEGER NOT NULL DEFAULT 0,
+                        session_state TEXT,
+                        session_order INTEGER,
+                        FOREIGN KEY(set_id) REFERENCES FLASHCARD_SETS(id) ON DELETE CASCADE
+                    )
+                """)
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_FLASHCARDS_set_id ON FLASHCARDS(set_id)")
+
+                // Set id = thought id - the flashcards keep pointing at the right parent without a lookup
+                db.execSQL("""
+                    INSERT INTO FLASHCARD_SETS (id, name, created_at, updated_at)
+                    SELECT id, COALESCE(NULLIF(TRIM(subject), ''), '$LEGACY_SET_NAME #' || id), created_at, updated_at
+                    FROM THOUGHTS
+                    WHERE id IN (SELECT DISTINCT thought_id FROM THOUGHT_FLASHCARDS)
+                """)
+
+                db.execSQL("""
+                    INSERT INTO FLASHCARDS (
+                        id, set_id, position, front, back, correct_count, wrong_count, session_state, session_order
+                    )
+                    SELECT id, thought_id, position, front, back, correct_count, wrong_count, session_state, session_order
+                    FROM THOUGHT_FLASHCARDS
+                """)
+
+                // Thoughts left with no form at all (same rule as ThoughtDTO.isEmpty)
+                // ! Foreign keys are off during migrations - the children are cleaned up by hand
+                val flashcardsOnlyThoughts = """
+                    SELECT id FROM THOUGHTS
+                    WHERE id IN (SELECT DISTINCT thought_id FROM THOUGHT_FLASHCARDS)
+                      AND TRIM(COALESCE(rich_text, ''), ' ' || char(9) || char(10) || char(13)) = ''
+                      AND COALESCE(audio_duration_ms, 0) <= 0
+                      AND COALESCE(photo_file_size, 0) <= 0
+                """
+                db.execSQL("DELETE FROM THOUGHT_HEX_TAGS WHERE thought_id IN ($flashcardsOnlyThoughts)")
+                db.execSQL("UPDATE GOAL_STEPS SET thought_id = NULL WHERE thought_id IN ($flashcardsOnlyThoughts)")
+                db.execSQL("DELETE FROM THOUGHTS WHERE id IN ($flashcardsOnlyThoughts)")
+
+                db.execSQL("DROP TABLE THOUGHT_FLASHCARDS")
+            }
+        }
+
+        // Repetitions System: answer counters + per-set session -> level / status / review dates
+        // ! Old progress is dropped - every flashcard starts again as NEW
+        // ! Table rebuilt instead of DROP COLUMN - SQLite below 3.35 (Android < 14) has no DROP COLUMN
+        val MIGRATION_21_TO_22 = object : Migration(21, 22) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS FLASHCARDS_NEW (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        set_id INTEGER NOT NULL,
+                        position INTEGER NOT NULL,
+                        front TEXT NOT NULL,
+                        back TEXT NOT NULL,
+                        status TEXT NOT NULL,
+                        level INTEGER NOT NULL,
+                        due_on INTEGER,
+                        frozen_until INTEGER,
+                        introduced_on INTEGER,
+                        FOREIGN KEY(set_id) REFERENCES FLASHCARD_SETS(id) ON DELETE CASCADE
+                    )
+                """)
+
+                db.execSQL("""
+                    INSERT INTO FLASHCARDS_NEW (id, set_id, position, front, back, status, level)
+                    SELECT id, set_id, position, front, back, 'NEW', 0
+                    FROM FLASHCARDS
+                """)
+
+                db.execSQL("DROP TABLE FLASHCARDS")
+                db.execSQL("ALTER TABLE FLASHCARDS_NEW RENAME TO FLASHCARDS")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_FLASHCARDS_set_id ON FLASHCARDS(set_id)")
+            }
+        }
+
+        // Fallback name of a set made from a thought without a subject (+ " #<id>")
+        const val LEGACY_SET_NAME = "Zestaw fiszek"
     }
 }

@@ -237,13 +237,12 @@ class GoalDetailActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.workshop_step_unlink_title))
             .setDescription(getString(R.string.workshop_step_unlink_description))
-            .setStandardAction(getString(R.string.workshop_step_unlink_keep_thought)) {
+            .setSecondaryAction(getString(R.string.workshop_step_unlink_keep_thought)) {
                 viewModel.unlinkThought(stepId, alsoDeleteThought = false)
             }
-            .setCautionAction(getString(R.string.workshop_step_unlink_delete_thought)) {
+            .setPrimaryAction(getString(R.string.workshop_step_unlink_delete_thought), caution = true) {
                 viewModel.unlinkThought(stepId, alsoDeleteThought = true)
             }
-            .setDismissText(getString(R.string.common_btn_cancel))
             .show()
     }
 
@@ -297,10 +296,9 @@ class GoalDetailActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.workshop_dialog_delete_step_title))
             .setDescription(warning)
-            .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
+            .setPrimaryAction(getString(R.string.common_deletion_dialog_yes), caution = true) {
                 viewModel.deleteStep(stepId)
             }
-            .setDismissText(getString(R.string.common_btn_cancel))
             .show()
     }
 }

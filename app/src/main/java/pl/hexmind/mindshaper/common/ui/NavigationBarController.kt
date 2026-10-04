@@ -38,6 +38,7 @@ class NavigationBarController(
     private val navButtons = listOf(
         NavButton(R.id.navHome, "Home", R.drawable.ic_activity_home, R.drawable.ic_activity_home_filled),
         NavButton(R.id.navStream, "Stream", R.drawable.ic_activity_stream, R.drawable.ic_activity_stream_filled),
+        NavButton(R.id.navFlashcards, "Flashcards", R.drawable.ic_activity_flashcards, R.drawable.ic_activity_flashcards),
         NavButton(R.id.navWorkshop, "Workshop", R.drawable.ic_activity_workshop, R.drawable.ic_activity_workshop_filled),
         NavButton(R.id.navMetadata, "Metadata", R.drawable.ic_activity_metadata, R.drawable.ic_activity_metadata),
         NavButton(R.id.navSettings, "Settings", R.drawable.ic_activity_settings, R.drawable.ic_activity_settings_filled)
@@ -59,6 +60,7 @@ class NavigationBarController(
         navDrawerScrim.visibility = View.GONE
 
         setupNavButtons()
+        setupFeatureButtons()
         setupToggleButton()
         setupScrim()
     }
@@ -81,6 +83,12 @@ class NavigationBarController(
                 }
             }
         }
+    }
+
+    // Screens of features that are off in Settings - the drawer is built per screen, so a toggle applies on the next one
+    private fun setupFeatureButtons() {
+        navigationBar.findViewById<View>(R.id.navFlashcards).visibility =
+            if (appSettings.isFlashcardsFeatureEnabled()) View.VISIBLE else View.GONE
     }
 
     private fun setupToggleButton() {

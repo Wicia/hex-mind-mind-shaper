@@ -300,15 +300,14 @@ class DetailsActivity : ThoughtManagerActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.details_usage_dialog_title))
             .setDescription(getString(R.string.details_usage_dialog_description))
-            .setStandardAction(getString(R.string.details_usage_dialog_change)) {
+            .setSecondaryAction(getString(R.string.details_usage_dialog_change)) {
                 // Swap flow
                 viewModel.unlinkFromStep()
                 openStepPicker()
             }
-            .setCautionAction(getString(R.string.details_usage_dialog_unlink)) {
+            .setPrimaryAction(getString(R.string.details_usage_dialog_unlink)) {
                 viewModel.unlinkFromStep()
             }
-            .setDismissText(getString(R.string.common_btn_cancel))
             .show()
     }
 
@@ -316,7 +315,7 @@ class DetailsActivity : ThoughtManagerActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_deletion_dialog_title))
             .setDescription(getString(R.string.details_last_form_removed_message))
-            .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
+            .setPrimaryAction(getString(R.string.common_deletion_dialog_yes), caution = true) {
                 viewModel.deleteThought()
                 showShortToast(
                     R.string.common_deletion_dialog_confirmation,
@@ -324,7 +323,6 @@ class DetailsActivity : ThoughtManagerActivity() {
                 )
                 finish()
             }
-            .setDismissText(getString(R.string.common_deletion_dialog_no))
             .show()
     }
 
@@ -610,10 +608,9 @@ class DetailsActivity : ThoughtManagerActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.details_dormant_dialog_title))
             .setDescription(getString(R.string.details_dormant_dialog_message))
-            .setCautionAction(getString(R.string.details_dormant_dialog_wake)) {
+            .setPrimaryAction(getString(R.string.details_dormant_dialog_wake)) {
                 viewModel.restoreFromDormant()
             }
-            .setDismissText(getString(R.string.details_dormant_dialog_leave))
             .show()
     }
 

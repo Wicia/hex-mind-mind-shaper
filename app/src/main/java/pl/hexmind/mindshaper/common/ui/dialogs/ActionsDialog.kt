@@ -1,17 +1,22 @@
 package pl.hexmind.mindshaper.common.ui.dialogs
 
 import android.content.Context
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.hexmind.mindshaper.R
 
 /**
- * Reusable dialog with two action buttons (caution + standard) and cancel/dismiss button
+ * Decision dialog - Cancel is always present, layout depends on the number of actions:
+ * - 1 action:  [Cancel | Primary]
+ * - 2 actions: [Secondary | Primary] + Cancel below
+ * Primary (right) may be a caution action (serious consequences) - secondary is always standard.
  */
 class ActionsDialog private constructor(
     // core
@@ -22,14 +27,15 @@ class ActionsDialog private constructor(
     private val description: String?,
 
     // actions = buttons
-    private val btnStandardText: String?,
-    private val btnStandardAction: (() -> Unit)?,
+    private val primaryText: String,
+    private val primaryCaution: Boolean,
+    private val primaryAction: () -> Unit,
 
-    private val btnCautionText: String?,
-    private val btnCautionAction: (() -> Unit)?,
+    private val secondaryText: String?,
+    private val secondaryAction: (() -> Unit)?,
 
-    private val btnDismissText: String,
-    private val btnDismissAction: (() -> Unit)?
+    // Cancel button, tap outside and back
+    private val onCancel: (() -> Unit)?
 ) {
 
     fun show() {
@@ -37,6 +43,7 @@ class ActionsDialog private constructor(
 
         val dialog = MaterialAlertDialogBuilder(context)
             .setView(dialogView)
+            .setOnCancelListener { onCancel?.invoke() }
             .create()
 
         dialogView.findViewById<TextView>(R.id.tv_info_header).text = title
@@ -61,62 +68,48 @@ class ActionsDialog private constructor(
     }
 
     private fun setupButtons(dialogView : View, dialog : AlertDialog) {
-        // Caution
-        val btnCaution = dialogView.findViewById<MaterialButton>(R.id.btn_action_caution)
-        if (btnCautionText != null && btnCautionAction != null) {
-            btnCaution.text = btnCautionText
-            btnCaution.setOnClickListener {
-                btnCautionAction.invoke()
-                dialog.dismiss()
+        // Primary (right)
+        dialogView.findViewById<MaterialButton>(R.id.btn_action_primary).apply {
+            text = primaryText
+            if (primaryCaution) {
+                setTextColor(ContextCompat.getColor(context, R.color.action_caution))
+                setTypeface(typeface, Typeface.BOLD)
             }
-        }
-        else {
-            btnCaution.visibility = View.GONE
-        }
-
-        // Standard
-        val btnStandard = dialogView.findViewById<MaterialButton>(R.id.btn_action_standard)
-        if (btnStandardText != null && btnStandardAction != null) {
-            btnStandard.text = btnStandardText
-            btnStandard.setOnClickListener {
-                btnStandardAction.invoke()
-                dialog.dismiss()
-            }
-        }
-        else {
-            btnStandard.visibility = View.GONE
-        }
-
-        // Dismiss
-        val btnDismiss = dialogView.findViewById<MaterialButton>(R.id.btn_dismiss)
-        btnDismiss.apply {
-            text = btnDismissText
             setOnClickListener {
-                btnDismissAction?.invoke()
+                primaryAction.invoke()
                 dialog.dismiss()
             }
         }
 
-        // Single-button confirmation: keep caution INVISIBLE (not GONE) so the lone button stays centered
-        if(btnDismissAction == null && btnCautionAction == null){
-            btnCaution.visibility = View.INVISIBLE
-            btnDismiss.visibility = View.GONE
+        // Secondary (left) - with it Cancel goes to its own row below
+        val hasSecondary = secondaryText != null && secondaryAction != null
+        dialogView.findViewById<MaterialButton>(R.id.btn_action_secondary).apply {
+            visibility = if (hasSecondary) View.VISIBLE else View.GONE
+            text = secondaryText
+            setOnClickListener {
+                secondaryAction?.invoke()
+                dialog.dismiss()
+            }
         }
-        else{
-            // btnCaution visibility was already decided above by whether its action exists - don't override it here
-            btnDismiss.visibility = View.VISIBLE
-        }
+
+        // Cancel button = same path as tap outside / back (cancel listener)
+        val btnCancelInline = dialogView.findViewById<MaterialButton>(R.id.btn_cancel_inline)
+        val btnCancelBelow = dialogView.findViewById<MaterialButton>(R.id.btn_cancel_below)
+        btnCancelInline.visibility = if (hasSecondary) View.GONE else View.VISIBLE
+        btnCancelBelow.visibility = if (hasSecondary) View.VISIBLE else View.GONE
+        btnCancelInline.setOnClickListener { dialog.cancel() }
+        btnCancelBelow.setOnClickListener { dialog.cancel() }
     }
 
     class Builder(private val context: Context) {
         private var title: String = ""
         private var description: String? = null
-        private var cautionText: String? = null
-        private var cautionAction: (() -> Unit)? = null
-        private var standardText: String? = null
-        private var standardAction: (() -> Unit)? = null
-        private var dismissText: String = "Anuluj"
-        private var dismissAction: (() -> Unit)? = null
+        private var primaryText: String? = null
+        private var primaryCaution: Boolean = false
+        private var primaryAction: (() -> Unit)? = null
+        private var secondaryText: String? = null
+        private var secondaryAction: (() -> Unit)? = null
+        private var onCancel: (() -> Unit)? = null
 
         fun setTitle(title: String) = apply {
             this.title = title
@@ -127,37 +120,32 @@ class ActionsDialog private constructor(
         }
 
         /**
-         * Set the caution button (left, bold)
-         * @param text Button text
+         * Set the primary button (right) - required
+         * @param text Button text - says what will happen
+         * @param caution true = serious consequences (bold, dark red)
          * @param action Action to perform when clicked
          */
-        fun setCautionAction(text: String, action: () -> Unit) = apply {
-            this.cautionText = text
-            this.cautionAction = action
+        fun setPrimaryAction(text: String, caution: Boolean = false, action: () -> Unit) = apply {
+            this.primaryText = text
+            this.primaryCaution = caution
+            this.primaryAction = action
         }
 
         /**
-         * Set the standard button (right)
-         * @param text Button text
+         * Set the secondary button (left, always standard) - optional
+         * @param text Button text - says what will happen
          * @param action Action to perform when clicked
          */
-        fun setStandardAction(text: String, action: () -> Unit) = apply {
-            this.standardText = text
-            this.standardAction = action
+        fun setSecondaryAction(text: String, action: () -> Unit) = apply {
+            this.secondaryText = text
+            this.secondaryAction = action
         }
 
         /**
-         * Set action for dismiss/cancel button (default: just closes the dialog)
+         * Set action on cancel - Cancel button, tap outside and back (default: just closes the dialog)
          */
-        fun setDismissAction(action: () -> Unit) = apply {
-            this.dismissAction = action
-        }
-
-        /**
-         * Set custom dismiss button text (default: "Anuluj")
-         */
-        fun setDismissText(text: String) = apply {
-            this.dismissText = text
+        fun setOnCancel(action: () -> Unit) = apply {
+            this.onCancel = action
         }
 
         /**
@@ -165,20 +153,19 @@ class ActionsDialog private constructor(
          */
         fun show() {
             require(title.isNotEmpty()) { "Title text is required" }
-            require(cautionAction != null || standardAction != null) {
-                "At least one action (caution or standard) must be set"
-            }
+            val primaryText = requireNotNull(primaryText) { "Primary action is required" }
+            val primaryAction = requireNotNull(primaryAction) { "Primary action is required" }
 
             ActionsDialog(
                 context = context,
                 title = title,
                 description = description,
-                btnCautionText = cautionText,
-                btnCautionAction = cautionAction,
-                btnStandardText = standardText,
-                btnStandardAction = standardAction,
-                btnDismissText = dismissText,
-                btnDismissAction = dismissAction
+                primaryText = primaryText,
+                primaryCaution = primaryCaution,
+                primaryAction = primaryAction,
+                secondaryText = secondaryText,
+                secondaryAction = secondaryAction,
+                onCancel = onCancel
             ).show()
         }
     }

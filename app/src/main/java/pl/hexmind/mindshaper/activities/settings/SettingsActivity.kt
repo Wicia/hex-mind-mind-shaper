@@ -66,6 +66,9 @@ class SettingsActivity : CoreActivity() {
 
     private var slowModeHours: Int = 1
 
+    private var flashcardsNewPerDay: Int = AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_DEFAULT
+    private var flashcardsBacklogThreshold: Int = AppSettingsStorage.FLASHCARDS_BACKLOG_DEFAULT
+
     // Activity result launcher for backup file selection
     private val backupPickerLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -158,6 +161,7 @@ class SettingsActivity : CoreActivity() {
 
         setupVoiceRecordingFeatureToggle()
         setupPhotoFeatureToggle()
+        setupFlashcardsFeatureToggle()
         setupCalendarRemindersToggle()
         setupBackupFeatureToggle()
         setupSlowModeListeners()
@@ -237,11 +241,10 @@ class SettingsActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
             .setDescription(getString(R.string.settings_voice_recording_info))
-            .setStandardAction(getString(R.string.common_btn_grant_permission)) {
+            .setPrimaryAction(getString(R.string.common_btn_grant_permission)) {
                 requestVoiceRecordingPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
             }
-            .setDismissText(getString(R.string.common_btn_cancel_not_now))
-            .setDismissAction { binding.switchVoiceRecordingFeature.isChecked = false }
+            .setOnCancel { binding.switchVoiceRecordingFeature.isChecked = false }
             .show()
     }
 
@@ -249,11 +252,60 @@ class SettingsActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.settings_permissions_blockade_title))
             .setDescription(getString(R.string.settings_permissions_recording_blockade_tooltip))
-            .setCautionAction(getString(R.string.common_dialog_open_android_settings)) {
+            .setPrimaryAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
-            .setDismissAction { binding.switchVoiceRecordingFeature.isChecked = false }
+            .setOnCancel { binding.switchVoiceRecordingFeature.isChecked = false }
             .show()
+    }
+
+    // ========== FLASHCARDS FEATURE ==========
+
+    // No permission to ask for - the switch writes straight to the preferences
+    // Repetitions params are stored with the rest on save - same as Slow mode hours
+    private fun setupFlashcardsFeatureToggle() {
+        binding.switchFlashcardsFeature.isChecked = appSettingsStorage.isFlashcardsFeatureEnabled()
+        binding.switchFlashcardsFeature.setOnCheckedChangeListener { _, isChecked ->
+            appSettingsStorage.setFlashcardsFeatureEnabled(isChecked)
+            syncFlashcardsParamsPickerState()
+        }
+
+        flashcardsNewPerDay = appSettingsStorage.getFlashcardsNewPerDay()
+        flashcardsBacklogThreshold = appSettingsStorage.getFlashcardsBacklogThreshold()
+
+        binding.btnFlashcardsNewPerDayDecrease.setOnClickListener {
+            flashcardsNewPerDay = (flashcardsNewPerDay - 1).coerceAtLeast(AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MIN)
+            syncFlashcardsParamsPickerState()
+        }
+        binding.btnFlashcardsNewPerDayIncrease.setOnClickListener {
+            flashcardsNewPerDay = (flashcardsNewPerDay + 1).coerceAtMost(AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MAX)
+            syncFlashcardsParamsPickerState()
+        }
+        binding.btnFlashcardsBacklogDecrease.setOnClickListener {
+            flashcardsBacklogThreshold = (flashcardsBacklogThreshold - AppSettingsStorage.FLASHCARDS_BACKLOG_STEP)
+                .coerceAtLeast(AppSettingsStorage.FLASHCARDS_BACKLOG_MIN)
+            syncFlashcardsParamsPickerState()
+        }
+        binding.btnFlashcardsBacklogIncrease.setOnClickListener {
+            flashcardsBacklogThreshold = (flashcardsBacklogThreshold + AppSettingsStorage.FLASHCARDS_BACKLOG_STEP)
+                .coerceAtMost(AppSettingsStorage.FLASHCARDS_BACKLOG_MAX)
+            syncFlashcardsParamsPickerState()
+        }
+
+        syncFlashcardsParamsPickerState()
+    }
+
+    private fun syncFlashcardsParamsPickerState() {
+        val enabled = binding.switchFlashcardsFeature.isChecked
+        binding.llFlashcardsParamsPicker.alpha = if (enabled) 1f else 0.4f
+
+        binding.tvFlashcardsNewPerDay.text = flashcardsNewPerDay.toString()
+        binding.btnFlashcardsNewPerDayDecrease.isEnabled = enabled && flashcardsNewPerDay > AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MIN
+        binding.btnFlashcardsNewPerDayIncrease.isEnabled = enabled && flashcardsNewPerDay < AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MAX
+
+        binding.tvFlashcardsBacklog.text = flashcardsBacklogThreshold.toString()
+        binding.btnFlashcardsBacklogDecrease.isEnabled = enabled && flashcardsBacklogThreshold > AppSettingsStorage.FLASHCARDS_BACKLOG_MIN
+        binding.btnFlashcardsBacklogIncrease.isEnabled = enabled && flashcardsBacklogThreshold < AppSettingsStorage.FLASHCARDS_BACKLOG_MAX
     }
 
     // ========== PHOTO FEATURE ==========
@@ -311,11 +363,10 @@ class SettingsActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
             .setDescription(getString(R.string.settings_permissions_photo_info))
-            .setStandardAction(getString(R.string.common_btn_grant_permission)) {
+            .setPrimaryAction(getString(R.string.common_btn_grant_permission)) {
                 requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
             }
-            .setDismissText(getString(R.string.common_btn_cancel_not_now))
-            .setDismissAction { binding.switchPhotoFeature.isChecked = false }
+            .setOnCancel { binding.switchPhotoFeature.isChecked = false }
             .show()
     }
 
@@ -323,10 +374,10 @@ class SettingsActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.settings_permissions_blockade_title))
             .setDescription(getString(R.string.settings_permissions_photo_blockade_tooltip))
-            .setCautionAction(getString(R.string.common_dialog_open_android_settings)) {
+            .setPrimaryAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
-            .setDismissAction { binding.switchPhotoFeature.isChecked = false }
+            .setOnCancel { binding.switchPhotoFeature.isChecked = false }
             .show()
     }
 
@@ -433,7 +484,7 @@ class SettingsActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
             .setDescription(getString(R.string.settings_calendar_permission_info))
-            .setStandardAction(getString(R.string.common_btn_grant_permission)) {
+            .setPrimaryAction(getString(R.string.common_btn_grant_permission)) {
                 requestCalendarPermissionLauncher.launch(
                     arrayOf(
                         Manifest.permission.READ_CALENDAR,
@@ -441,8 +492,7 @@ class SettingsActivity : CoreActivity() {
                     )
                 )
             }
-            .setDismissText(getString(R.string.common_btn_cancel_not_now))
-            .setDismissAction { binding.switchCalendarReminders.isChecked = false }
+            .setOnCancel { binding.switchCalendarReminders.isChecked = false }
             .show()
     }
 
@@ -450,10 +500,10 @@ class SettingsActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.settings_permissions_blockade_title))
             .setDescription(getString(R.string.settings_calendar_blockade_tooltip))
-            .setCautionAction(getString(R.string.common_dialog_open_android_settings)) {
+            .setPrimaryAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
-            .setDismissAction { binding.switchCalendarReminders.isChecked = false }
+            .setOnCancel { binding.switchCalendarReminders.isChecked = false }
             .show()
     }
 
@@ -534,11 +584,10 @@ class SettingsActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
             .setDescription(getString(R.string.settings_backup_permission_info))
-            .setStandardAction(getString(R.string.common_btn_grant_permission)) {
+            .setPrimaryAction(getString(R.string.common_btn_grant_permission)) {
                 requestStoragePermissionLauncher.launch(permissionsService.getStoragePermission())
             }
-            .setDismissText(getString(R.string.common_btn_cancel_not_now))
-            .setDismissAction { binding.switchBackupFeature.isChecked = false }
+            .setOnCancel { binding.switchBackupFeature.isChecked = false }
             .show()
     }
 
@@ -546,10 +595,10 @@ class SettingsActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.settings_permissions_blockade_title))
             .setDescription(getString(R.string.settings_permissions_backup_blockade_tooltip))
-            .setCautionAction(getString(R.string.common_dialog_open_android_settings)) {
+            .setPrimaryAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
-            .setDismissAction { binding.switchBackupFeature.isChecked = false }
+            .setOnCancel { binding.switchBackupFeature.isChecked = false }
             .show()
     }
 
@@ -771,10 +820,9 @@ class SettingsActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_deletion_dialog_title))
             .setDescription(getString(R.string.settings_snapshot_restore_warning))
-            .setCautionAction(getString(R.string.common_btn_confirm_replace)) {
+            .setPrimaryAction(getString(R.string.common_btn_confirm_replace), caution = true) {
                 loadBackupFile()
             }
-            .setDismissText(getString(R.string.common_btn_cancel_replace))
             .show()
     }
 
@@ -834,6 +882,10 @@ class SettingsActivity : CoreActivity() {
         // Slow mode
         appSettingsStorage.setSlowModeEnabled(binding.switchSlowMode.isChecked)
         appSettingsStorage.setSlowModeHours(slowModeHours)
+
+        // Flashcards - Repetitions System
+        appSettingsStorage.setFlashcardsNewPerDay(flashcardsNewPerDay)
+        appSettingsStorage.setFlashcardsBacklogThreshold(flashcardsBacklogThreshold)
 
         // Dormant mode
         if (binding.switchDormantMode.isChecked && !validateDormantDaysInput()) {

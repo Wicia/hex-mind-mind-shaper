@@ -22,6 +22,8 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.common.ui.NavigationBarController
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
+import pl.hexmind.mindshaper.activities.flashcards.FlashcardSetActivity
+import pl.hexmind.mindshaper.activities.flashcards.FlashcardsActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.activities.metadata.MetadataActivity
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
@@ -59,10 +61,12 @@ open class CoreActivity : AppCompatActivity() {
              CaptureActivity::class.simpleName      to 0, // Highlight Home icon when in Capture
               StreamActivity::class.java.simpleName to 1,
              DetailsActivity::class.simpleName      to 1, // Highlight Stream icon when in Thought Details
-            WorkshopActivity::class.java.simpleName to 2,
-          GoalDetailActivity::class.java.simpleName to 2, // Highlight Workshop icon when in Goal Details
-            MetadataActivity::class.java.simpleName to 3,
-            SettingsActivity::class.java.simpleName to 4
+          FlashcardsActivity::class.java.simpleName to 2,
+        FlashcardSetActivity::class.java.simpleName to 2, // Highlight Flashcards icon when in a set's preview
+            WorkshopActivity::class.java.simpleName to 3,
+          GoalDetailActivity::class.java.simpleName to 3, // Highlight Workshop icon when in Goal Details
+            MetadataActivity::class.java.simpleName to 4,
+            SettingsActivity::class.java.simpleName to 5
         )
     }
 
@@ -195,9 +199,10 @@ open class CoreActivity : AppCompatActivity() {
                 when (index) {
                     0 -> navigateToHome()
                     1 -> navigateToStream()
-                    2 -> navigateToWorkshop()
-                    3 -> navigateToMetadata()
-                    4 -> navigateToSettings()
+                    2 -> navigateToFlashcards()
+                    3 -> navigateToWorkshop()
+                    4 -> navigateToMetadata()
+                    5 -> navigateToSettings()
                 }
             }
         }
@@ -228,6 +233,15 @@ open class CoreActivity : AppCompatActivity() {
     private fun navigateToStream() {
         if (this::class.java.simpleName != StreamActivity::class.java.simpleName) {
             val intent = Intent(this, StreamActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            overrideTransitions()
+        }
+    }
+
+    private fun navigateToFlashcards() {
+        if (this::class.java.simpleName != FlashcardsActivity::class.java.simpleName) {
+            val intent = Intent(this, FlashcardsActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
             overrideTransitions()

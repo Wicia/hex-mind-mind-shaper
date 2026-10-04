@@ -14,12 +14,11 @@ open class ThoughtManagerActivity : CoreActivity() {
 
     fun showEnableAdditionalFeaturesDialog() {
         ActionsDialog.Builder(this)
-            .setTitle("Nieaktywna forma zapisu myśli")
+            .setTitle(getString(R.string.common_thoughts_forms_inactive_header))
             .setDescription(getString(R.string.common_thoughts_forms_permissions_needed))
-            .setCautionAction(getString(R.string.common_btn_confirm_ok_2)) {
+            .setPrimaryAction(getString(R.string.common_btn_confirm_ok_2)) {
                 startActivity(Intent(this, SettingsActivity::class.java))
             }
-            .setDismissText("Nie")
             .show()
     }
 

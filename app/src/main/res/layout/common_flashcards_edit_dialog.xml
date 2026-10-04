@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="4dp">
+
+    <TextView
+        android:id="@+id/tv_header"
+        style="@style/DialogTile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/flashcards_edit_header" />
+
+    <!-- Set name - required -->
+    <pl.hexmind.mindshaper.common.ui.views.HexInputField
+        android:id="@+id/hif_flashcards_set_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"
+        app:hint="@string/flashcards_set_name_hint"
+        app:inlineHint="true"
+        app:compact="true"
+        app:hexInputType="text"
+        app:hexMaxLength="100"
+        app:maxLines="1" />
+
+    <!-- Rows: FlashcardEditRow, added in code -->
+    <ScrollView
+        android:id="@+id/sv_flashcards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_flashcards_rows"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_flashcard_add"
+        style="@style/SecondaryActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dialog_leading_action_height"
+        android:layout_marginTop="4dp"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+        app:icon="@drawable/ic_add"
+        app:iconGravity="textStart"
+        app:iconSize="@dimen/dialog_leading_action_icon_size" />
+
+    <TextView
+        android:id="@+id/tv_flashcards_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/graphite_beige"
+        android:visibility="gone" />
+
+</LinearLayout>

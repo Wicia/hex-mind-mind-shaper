@@ -54,6 +54,15 @@
                 app:hexNavLabel="@string/stream_title"
                 app:hexNavIcon="@drawable/ic_activity_stream" />
 
+            <!-- Hidden while the flashcards feature is off (NavigationBarController) -->
+            <pl.hexmind.mindshaper.common.ui.HexNavItemView
+                android:id="@+id/navFlashcards"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="?attr/selectableItemBackground"
+                app:hexNavLabel="@string/flashcards_title"
+                app:hexNavIcon="@drawable/ic_activity_flashcards" />
+
             <pl.hexmind.mindshaper.common.ui.HexNavItemView
                 android:id="@+id/navWorkshop"
                 android:layout_width="match_parent"

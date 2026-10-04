@@ -182,11 +182,10 @@ class WorkshopActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_caution_dialog_title))
             .setDescription(getString(R.string.workshop_dialog_reset_onboarding))
-            .setCautionAction(getString(R.string.common_btn_yes)) {
+            .setPrimaryAction(getString(R.string.common_btn_yes)) {
                 onboardingManager.resetSection(section)
                 onboardingAdapter.notifyDataSetChanged()
             }
-            .setDismissText(getString(R.string.common_btn_no))
             .show()
     }
 
@@ -424,10 +423,9 @@ class WorkshopActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_caution_dialog_title))
             .setDescription(getString(R.string.workshop_dialog_reset_paths_title))
-            .setCautionAction(getString(R.string.common_btn_yes)) {
+            .setPrimaryAction(getString(R.string.common_btn_yes), caution = true) {
                 viewModel.resetAllPaths()
             }
-            .setDismissText(getString(R.string.common_btn_no))
             .show()
     }
 
@@ -447,13 +445,12 @@ class WorkshopActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.workshop_dialog_delete_goal_title))
             .setDescription(getString(R.string.workshop_dialog_delete_goal_desc))
-            .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
-                viewModel.deleteGoal(goalId)
-            }
-            .setStandardAction(getString(R.string.workshop_dialog_goal_archive)) {
+            .setSecondaryAction(getString(R.string.workshop_dialog_goal_archive)) {
                 viewModel.archiveGoal(goalId)
             }
-            .setDismissText(getString(R.string.common_btn_cancel))
+            .setPrimaryAction(getString(R.string.common_deletion_dialog_yes), caution = true) {
+                viewModel.deleteGoal(goalId)
+            }
             .show()
     }
 
@@ -461,13 +458,12 @@ class WorkshopActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.workshop_dialog_delete_goal_title))
             .setDescription(getString(R.string.workshop_dialog_delete_goal_desc))
-            .setCautionAction(getString(R.string.common_deletion_dialog_yes)) {
-                viewModel.deleteGoal(goalId)
-            }
-            .setStandardAction(getString(R.string.workshop_dialog_goal_restore)) {
+            .setSecondaryAction(getString(R.string.workshop_dialog_goal_restore)) {
                 viewModel.restoreGoal(goalId)
             }
-            .setDismissText(getString(R.string.common_btn_cancel))
+            .setPrimaryAction(getString(R.string.common_deletion_dialog_yes), caution = true) {
+                viewModel.deleteGoal(goalId)
+            }
             .show()
     }
 

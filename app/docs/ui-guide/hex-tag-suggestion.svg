@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="236" height="108" viewBox="0 0 118 54">
+  <!-- 1 unit = 1dp, rendered at 2x; illustrative render of the app component (values from res/) -->
+  <rect width="118" height="54" fill="#FFF4E6"/>
+  <rect x="12.5" y="12.5" width="93" height="29" rx="14.5" fill="#FFFFFF" stroke="#FFC59A" stroke-width="1"/>
+  <text x="26" y="27.0" dominant-baseline="central" font-size="16" fill="#48433F" font-family="'Baloo 2', 'Segoe UI', sans-serif">Projekt X</text>
+</svg>

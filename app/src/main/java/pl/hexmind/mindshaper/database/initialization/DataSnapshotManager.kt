@@ -14,6 +14,8 @@ import pl.hexmind.mindshaper.BuildConfig
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.database.AppDatabase
 import pl.hexmind.mindshaper.database.models.DomainEntity
+import pl.hexmind.mindshaper.database.models.FlashcardEntity
+import pl.hexmind.mindshaper.database.models.FlashcardSetEntity
 import pl.hexmind.mindshaper.database.models.GoalEntity
 import pl.hexmind.mindshaper.database.models.HexTagEntity
 import pl.hexmind.mindshaper.database.models.StepEntity
@@ -65,6 +67,9 @@ class DataSnapshotManager @Inject constructor(
                 pathSteps = database.pathStepDao().getAllSteps(),
                 hexTags = database.hexTagDao().getAllTags(),
                 thoughtHexTags = database.hexTagDao().getAllThoughtHexTagLinks(),
+                flashcardSets = database.flashcardDao().getAllSets(),
+                flashcards = database.flashcardDao().getAllFlashcards(),
+                thoughtFlashcards = null, // Legacy key - read on restore only
             )
 
             val backupDir = getBackupDirectory()
@@ -163,6 +168,21 @@ class DataSnapshotManager @Inject constructor(
                     database.hexTagDao().insertOrReplaceLinks(this)
                     restoredCount++
                 }
+
+                // Flashcard sets - no link to the other tables. Snapshots v19-v20 hold flashcards of thoughts
+                // instead (turned into sets here), older ones none at all (null)
+                val flashcardSets = snapshot.flashcardSets
+                    ?: snapshot.thoughtFlashcards?.let { legacy -> legacySetsOf(legacy, snapshot.thoughts.orEmpty()) }
+                val flashcards = snapshot.flashcards?.map { flashcard -> withProgressDefaults(flashcard) }
+                    ?: snapshot.thoughtFlashcards?.map { legacy -> legacy.toFlashcard() }
+
+                if (flashcardSets != null && flashcards != null) {
+                    database.flashcardDao().clearAllFlashcards()
+                    database.flashcardDao().clearAllSets()
+                    database.flashcardDao().insertOrReplaceSets(flashcardSets)
+                    database.flashcardDao().insertOrReplaceFlashcards(flashcards)
+                    restoredCount++
+                }
             }
 
             // ! Seed entries added in newer app versions that may be missing from the snapshot
@@ -175,6 +195,31 @@ class DataSnapshotManager @Inject constructor(
             return Result.failure(e)
         }
     }
+
+    /**
+     * Same as Migrations.MIGRATION_20_TO_21: one set per thought (set id = thought id), named after its subject.
+     * ! Unlike the migration the thoughts stay - a thought that had only flashcards comes back empty
+     */
+    private fun legacySetsOf(legacy: List<LegacyThoughtFlashcard>, thoughts: List<ThoughtEntity>): List<FlashcardSetEntity> {
+        val thoughtsById = thoughts.associateBy { thought -> thought.id }
+        return legacy.map { flashcard -> flashcard.thoughtId }.distinct().map { thoughtId ->
+            val thought = thoughtsById[thoughtId]
+            FlashcardSetEntity(
+                id        = thoughtId,
+                name      = thought?.subject?.trim()?.ifEmpty { null } ?: "${Migrations.LEGACY_SET_NAME} #$thoughtId",
+                createdAt = thought?.createdAt ?: Instant.now(),
+                updatedAt = thought?.updatedAt ?: Instant.now()
+            )
+        }
+    }
+
+    /**
+     * Same as Migrations.MIGRATION_21_TO_22: snapshots before v22 have no repetition progress - the flashcard starts as NEW.
+     * ! Gson skips Kotlin defaults - a missing "status" key comes as null despite the non-null type
+     */
+    @Suppress("SENSELESS_COMPARISON")
+    private fun withProgressDefaults(flashcard: FlashcardEntity): FlashcardEntity =
+        if (flashcard.status == null) flashcard.copy(status = FlashcardEntity.STATUS_NEW, level = 0) else flashcard
 
     private fun getBackupDirectory(): File {
         // non-standard flavors get their own dir / "standard" flavors keeps the legacy dir + its old backups
@@ -224,7 +269,30 @@ data class DatabaseSnapshot(
     val pathSteps: List<PathStepEntity>?,
     val hexTags: List<HexTagEntity>?,
     val thoughtHexTags: List<ThoughtHexTagEntity>?,
+    val flashcardSets: List<FlashcardSetEntity>?,
+    val flashcards: List<FlashcardEntity>?,
+    val thoughtFlashcards: List<LegacyThoughtFlashcard>?, // Snapshots v19-v20: flashcards were a form of a thought
 )
+
+/**
+ * Flashcard of a thought as stored by snapshots v19-v20 (THOUGHT_FLASHCARDS) - same JSON keys.
+ * Its answer counters / session state are not read - the Repetitions System starts it as NEW (see MIGRATION_21_TO_22)
+ */
+data class LegacyThoughtFlashcard(
+    val id: Int?,
+    val thoughtId: Int,
+    val position: Int,
+    val front: String,
+    val back: String
+) {
+    fun toFlashcard() = FlashcardEntity(
+        id       = id,
+        setId    = thoughtId,
+        position = position,
+        front    = front,
+        back     = back
+    )
+}
 
 data class SnapshotStats(
     val count: Int,

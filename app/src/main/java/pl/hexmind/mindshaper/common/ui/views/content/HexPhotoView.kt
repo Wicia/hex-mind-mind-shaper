@@ -173,7 +173,7 @@ class HexPhotoView @JvmOverloads constructor(
         ActionsDialog.Builder(context)
             .setTitle(context.getString(R.string.photos_removing_header))
             .setDescription(context.getString(R.string.photos_removing_file))
-            .setCautionAction(context.getString(R.string.common_deletion_dialog_yes_2)) {
+            .setPrimaryAction(context.getString(R.string.common_deletion_dialog_yes_2), caution = true) {
                 deletePhoto()
             }
             .show()

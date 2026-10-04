@@ -17,18 +17,17 @@
     <!-- Buttons & Actions -->
     <string name="common_btn_save">Zapisz</string>
     <string name="common_btn_cancel">Anuluj</string>
-    <string name="common_btn_cancel_not_now">Nie teraz</string>
     <string name="common_btn_confirm_ok">OK</string>
     <string name="common_btn_confirm_ok_2">Dobra</string>
     <string name="common_btn_yes">Tak</string>
-    <string name="common_btn_no">Nie</string>
     <string name="common_btn_add">\?</string>
     <string name="common_btn_create">+</string>
     <string name="common_btn_increase">+</string>
     <string name="common_btn_decrease">-</string>
     <string name="common_btn_grant_permission">Przyznaj</string>
     <string name="common_btn_confirm_replace">Tak, zastąp</string>
-    <string name="common_btn_cancel_replace">Nie, zostaw</string>
+    <string name="common_guide_btn_next">Mów dalej...</string>
+    <string name="common_guide_btn_dismiss">Dzięki</string>
 
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
 
@@ -38,17 +37,21 @@
     <string name="common_deletion_dialog_message">Czy na pewno chcesz usunąć %s?</string>
     <string name="common_deletion_dialog_yes">Usuń</string>
     <string name="common_deletion_dialog_yes_2">Kasujemy</string>
-    <string name="common_deletion_dialog_no">Nie, zostaw</string>
     <string name="common_deletion_dialog_confirmation">%s usunięto</string>
     <string name="common_deletion_dialog_warning">Tej operacji nie można cofnąć.</string>
     <string name="common_edit_note_header">Edytuj notatkę</string>
     <string name="common_list_dialog_title">Wybierz coś sobie…</string>
-    <string name="common_thoughts_forms_permissions_needed">Możesz aktywować zapisywanie myśli w formie nagrań głosowych oraz zdjęć w Ustawieniach.\n\nCzy przejść do Ustawień?</string>
+    <string name="common_thoughts_forms_inactive_header">Nieaktywna forma zapisu myśli</string>
+    <string name="common_thoughts_forms_permissions_needed">Możesz aktywować zapisywanie myśli w formie nagrań głosowych, zdjęć oraz fiszek w Ustawieniach.\n\nCzy przejść do Ustawień?</string>
     <string name="common_thoughts_permissions_dialog_header">Żądanie uprawnień do zasobów Androida</string>
     <string name="common_dialog_open_android_settings">Otwórz ustawienia</string>
 
     <!-- Validation -->
     <string name="common_object_type_thought">Myśl</string>
+
+    <!-- Units -->
+    <string name="common_unit_hours">godz.</string>
+    <string name="common_unit_days">dni</string>
 
     <!-- Thought age -->
     <string name="common_thought_age_pattern">Złapano %s dni temu</string> <!-- TODO: for 'updated' words sequence is opposite -->
@@ -101,6 +104,41 @@
     <string name="photos_removing_file">Wywalić to zdjęcie?</string>
     <string name="photos_no_file">Brakuje tutaj zdjęcia…</string>
     <string name="photos_loading_error">Coś się wyburaczyło przy ładowaniu zdjęcia…</string>
+
+    <!-- Flashcards -->
+    <string name="flashcards_title">Utrwalanie</string>
+    <string name="flashcards_sets_empty">Nie masz jeszcze żadnego zestawu fiszek…
+Dodaj pierwszy przyciskiem +</string>
+    <string name="flashcards_set_no_flashcards">Ten zestaw nie ma jeszcze fiszek</string>
+    <string name="flashcards_create_header">Nowy zestaw fiszek</string>
+    <string name="flashcards_edit_header">Edycja zestawu fiszek</string>
+    <string name="flashcards_set_name_hint">Nazwa zestawu</string>
+    <string name="flashcards_front_hint">Awers (pytanie)</string>
+    <string name="flashcards_back_hint">Rewers (odpowiedź)</string>
+    <string name="flashcards_row_label">Fiszka #%1$d</string>
+    <string name="flashcards_error_no_name">Zestaw potrzebuje nazwy</string>
+    <string name="flashcards_error_incomplete">Każda fiszka potrzebuje awersu i rewersu</string>
+    <string name="flashcards_error_incomplete_single">Fiszka potrzebuje awersu i rewersu</string>
+    <string name="flashcards_new_header">Nowa fiszka #%1$d</string>
+    <string name="flashcards_added_count">Dodano: %1$d</string>
+    <string name="flashcards_btn_add_next">Dodaj kolejną</string>
+    <string name="flashcards_btn_finish">Zakończ</string>
+    <string name="flashcards_btn_create_set">Utwórz</string>
+    <string name="flashcards_set_name_with_count">%1$s (%2$d)</string>
+    <string name="flashcards_end_title">Wszystkie fiszki zostały ogarnięte ;)</string>
+    <string name="flashcards_end_ratings">"Dobrze: %1$d  ·  Średnio: %2$d  ·  Kiepsko: %3$d"</string>
+    <string name="flashcards_end_frozen_info">Zamrożone wrócą na drugą szansę za godzinę</string>
+    <string name="flashcards_set_stats">"Powtórki: %1$d  ·  Nowe: %2$d  ·  Opanowane: %3$d"</string>
+    <string name="flashcards_review_today">Dzisiejsza sesja</string>
+    <string name="flashcards_sets_label">Zestawy</string>
+    <string name="flashcards_review_today_counts">"Do powtórzenia: %1$d  ·  Nowe: %2$d"</string>
+    <string name="flashcards_review_today_done">Na dziś wszystko powtórzone :)</string>
+    <string name="flashcards_new_paused">Nowe fiszki wstrzymane - do nadrobienia: %1$d</string>
+    <string name="flashcards_level_mastered">★</string>
+    <string name="flashcards_edit_progress_info">Postęp nauki zostaje, ale zmiana treści może wpłynąć na naukę</string>
+    <string name="flashcards_removing_header">Usunąć zestaw fiszek?</string>
+    <string name="flashcard_removing_header">Usunąć fiszkę?</string>
+    <string name="flashcards_removing_content">Ta operacja jest nieodwracalna</string>
 
     <!-- ============================================================ -->
     <!--    WORKSHOP - Onboarding review                              -->
@@ -181,7 +219,7 @@
     <!-- Core -->
     <string name="capture_main_label">Łapanie myśli</string>
     <string name="capture_hex_tags_tooltip">temat @osoba #projekt</string>
-    <string name="capture_error_no_content">Potrzebujesz cos zapisać (tekst, nagranie lub obraz)</string>
+    <string name="capture_error_no_content">Potrzebujesz cos zapisać (tekst, nagranie, obraz lub fiszki)</string>
 
     <!-- Rich text -->
     <string name="capture_rich_text_error_note_empty">To wyżej nie może być puste</string>
@@ -195,6 +233,9 @@
     <string name="capture_voice_error_empty">Eeee… To nagranie ma 0 sekund :/</string>
     <string name="capture_voice_error_recording">Błąd podczas nagrywania</string>
     <string name="capture_voice_error_save_failed">Błąd podczas zapisywania do bazy</string>
+    <string name="capture_voice_dialog_title">Co chcesz zrobić z nagraniem?</string>
+    <string name="capture_voice_dialog_delete">Wywalić</string>
+    <string name="capture_voice_dialog_overwrite">Nadpisać</string>
 
     <!-- ============================================================ -->
     <!--    STREAM Activity                                           -->
@@ -286,7 +327,6 @@
     <string name="details_dormant_dialog_title">🌙 Uśpiona myśl</string>
     <string name="details_dormant_dialog_message">Ta myśl jest uśpiona — ma niską wartość i nie była modyfikowana od dłuższego czasu.</string>
     <string name="details_dormant_dialog_wake">Obudź</string>
-    <string name="details_dormant_dialog_leave">Zostaw</string>
 
     <!-- Slow mode -->
     <string name="details_slow_mode_title">⏳ Tryb powolny aktywny…</string>
@@ -365,7 +405,7 @@
     <string name="settings_title">Ustawienia</string>
 
     <!-- Name -->
-    <string name="settings_your_name_header">✒️ Twoje Prawdziwe Imię?</string>
+    <string name="settings_your_name_header">✒️ Moje Prawdziwe Imię?</string>
     <string name="settings_your_name_default">Bezimienn(y/a)</string>
 
     <!-- Value system -->
@@ -378,6 +418,9 @@
     <string name="settings_permissions_section">🔆 Formy zapisu myśli</string>
     <string name="settings_permissions_voice_recording">Włącz zapis w formie głosówek</string>
     <string name="settings_permissions_photo">Włącz zapis w formie zdjęć</string>
+    <string name="settings_permissions_flashcards">Włącz fiszki (widok Utrwalanie)</string>
+    <string name="settings_flashcards_new_per_day_label">Nowych fiszek\ndziennie</string>
+    <string name="settings_flashcards_backlog_label">Wstrzymaj nowe przy\nzaległościach powyżej</string>
     <string name="settings_permissions_backup">Włącz tworzenie kopii zapasowych</string>
     <string name="settings_permissions_blockade_title">Uprawnienie zablokowane</string>
     <string name="settings_permissions_recording_blockade_tooltip">Uprawnienie do nagrywania dźwięku zostało trwale odrzucone.\nMożesz je włączyć w ustawieniach systemu Androida.</string>
@@ -446,13 +489,16 @@
 
     <!-- Slow mode -->
     <string name="settings_slow_mode_header">⏳ Tryb powolny</string>
-    <string name="settings_slow_mode_label">Włącz możliwość nadawania wartości myślom po tylu godzinach:</string>
+    <string name="settings_slow_mode_info">Włącz możliwość nadawania wartości myślom po określonej liczbie godzin</string>
+    <string name="settings_slow_mode_label">Aktywuj tryb Powolny</string>
+    <string name="settings_slow_mode_hours_prefix">Odblokuj nadawanie\nwartości po</string>
 
     <!-- Dormant mode -->
     <string name="settings_dormant_mode_header">🌙 Tryb uśpienia</string>
-    <string name="settings_dormant_mode_switch_label">Aktywuj tryb, w którym myśli będą automatycznie ukrywane, gdy spełnią określone warunki</string>
-    <string name="settings_dormant_mode_days_label">Myśl nie była zmieniana od</string>
-    <string name="settings_dormant_mode_value_label">oraz  Wartość myśli jest ≤</string>
+    <string name="settings_dormant_mode_info">Aktywuj tryb, w którym myśli będą automatycznie ukrywane, gdy spełnią określone warunki</string>
+    <string name="settings_dormant_mode_switch_label">Aktywuj tryb Uśpienia</string>
+    <string name="settings_dormant_mode_days_label">Ukryj myśli niezmieniane od</string>
+    <string name="settings_dormant_mode_value_label">oraz których wartość jest ≤</string>
     <string name="settings_dormant_mode_value_error">Wartość myśli musi być między %1$d a %2$d</string>
     <string name="settings_dormant_mode_value_error_toast">Popraw wartość progu uśpienia przed ponownym zapisem</string>
     <string name="settings_dormant_mode_days_error">Liczba dni musi być między %1$d a %2$d</string>

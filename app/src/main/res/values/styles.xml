@@ -32,7 +32,6 @@
         <item name="android:textColor">@color/_gray_lvl_2</item>
     </style>
 
-    <!-- TODO: Not used = use or delete -->
     <!-- Activity / Text Standard -->
     <style name="TextView_Standard">
         <item name="android:fontFamily">@font/alegreya_regular</item>
@@ -314,6 +313,12 @@
     <!--    DIALOGS -->
     <!-- ====================================== -->
 
+    <!-- Flashcards review on the scrim (FlashcardsSessionDialog) -->
+    <style name="FlashcardsSessionAnimation">
+        <item name="android:windowEnterAnimation">@anim/flashcards_session_enter</item>
+        <item name="android:windowExitAnimation">@anim/flashcards_session_exit</item>
+    </style>
+
     <!-- TODO: make separate styles for standard focus dialog and for bottom sheet dialog -->
     <!-- Common -->
     <style name="DialogTile">
@@ -384,6 +389,44 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">16dp</item>
+    </style>
+
+    <!-- Inner column of an AppCardView -->
+    <style name="AppCardView_Content">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <!-- Section header inside a card - spacing comes from the card padding / divider, not from the header -->
+    <style name="AppCardView_Header" parent="TextView_Header_Section">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <!-- Splits sections sharing one card - applied to HexDottedSeparator -->
+    <style name="AppCardView_Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+    </style>
+
+    <!-- ====================================== -->
+    <!--    SETTINGS ROWS                       -->
+    <!-- ====================================== -->
+
+    <!-- Full-width row, so the whole line toggles, not just the label -->
+    <style name="Settings_Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/baloo2</item>
+        <item name="android:textColor">@color/text_primary</item>
     </style>
 
     <!-- Suppress Material3 default box decoration; custom background handles the border -->

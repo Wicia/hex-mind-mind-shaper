@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- "Do powtórki" on Utrwalanie - one session over all the sets.
+     ! Deliberately not a card / button: no fill, no ripple, no tap on the whole - only the rocket acts
+     Glowing frame (HexWavyFrameView) ripples while there is something to review ("to do") -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- Draws the frame itself - line 10dp in from the edges, the content padding keeps clear of its glow -->
+    <pl.hexmind.mindshaper.common.ui.views.HexWavyFrameView
+        android:id="@+id/frame_review_today"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="20dp"
+        android:paddingStart="28dp"
+        android:paddingEnd="16dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/flashcards_review_today"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:fontFamily="@font/alegreya_regular" />
+
+            <!-- Counts / "all done" + the held back new ones in a second line -->
+            <TextView
+                android:id="@+id/tv_review_today_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                tools:text="Powtórki: 8 · Nowe: 10" />
+
+        </LinearLayout>
+
+        <!-- Bigger than the sets' rockets (48dp / 32dp icon) - the main action of the screen -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_review_today"
+            style="@style/SecondaryActionButton.Ghost"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:padding="8dp"
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+            app:icon="@drawable/ic_activity_home"
+            app:iconGravity="textStart"
+            app:iconSize="48dp"
+            app:iconTint="@color/flashcard_review_rocket"
+            app:rippleColor="@color/flashcard_ripple" />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -149,15 +149,14 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
                 .setDescription(
                     getString(R.string.common_hex_tags_similar_description, similarTag.suggestion)
                 )
-                .setStandardAction(
+                .setSecondaryAction(getString(R.string.common_hex_tags_similar_keep_mine)) {
+                    dismiss()
+                    onConfirm?.invoke(result)
+                }
+                .setPrimaryAction(
                     getString(R.string.common_hex_tags_similar_use, similarTag.suggestion)
                 ) {
                     applySimilarTag(result, similarTag)
-                }
-                .setDismissText(getString(R.string.common_hex_tags_similar_keep_mine))
-                .setDismissAction {
-                    dismiss()
-                    onConfirm?.invoke(result)
                 }
                 .show()
         }
