@@ -16,6 +16,7 @@
     --graphite:#48433F;
     --muted:#88807A;
     --hair:#BEBEBE;
+    --rule:#E6E6E6;
   }
   *{box-sizing:border-box}
   body{
@@ -68,14 +69,15 @@
     font-weight:600; font-size:17px;
     margin:12px 0 6px;
   }
-  dl{display:grid; grid-template-columns:130px 1fr; gap:6px 14px; margin:0 0 10px}
+  dl{display:grid; grid-template-columns:130px 1fr; margin:0 0 10px}
   dt{
     font-family:"Baloo 2",system-ui,sans-serif;
     font-size:13px; font-weight:500; color:var(--muted);
-    text-transform:uppercase; letter-spacing:.04em; padding-top:3px;
+    text-transform:uppercase; letter-spacing:.04em; padding:9px 14px 6px 0;
     text-align:right;
   }
-  dd{margin:0}
+  dd{margin:0; padding:6px 0}
+  dt:not(:first-of-type), dt:not(:first-of-type) + dd{border-top:1px solid var(--rule)}
   dd ul{margin:2px 0}
   dd figure{margin:4px 0 8px}
   .comp > summary{cursor:pointer; list-style:none; display:flex; align-items:center; gap:8px}
@@ -84,7 +86,9 @@
   .comp[open] > summary::before{transform:rotate(90deg)}
   @media (max-width:560px){
     dl{grid-template-columns:1fr; gap:2px}
-    dt{padding-top:8px; text-align:left}
+    dt{padding:8px 0 0; text-align:left}
+    dd{padding-top:2px}
+    dt:not(:first-of-type) + dd{border-top:none}
   }
 </style>
 </head>
@@ -229,27 +233,49 @@
 </div>
 
 <h2>Dialogi</h2>
-<section>
-  <ul>
-    <li><b>Scrim</b> (<code>ScrimDialogs</code>) — dialogi edycji bez ramki dialogu, treść leży wprost na mocnym przyciemnieniu ekranu.
-      <ul>
-        <li>przyciski nie zamykają dialogu same — decyduje kod (walidacja może go zatrzymać)</li>
-      </ul>
-    </li>
-    <li><b>Jeden rząd akcji</b> — wszystkie akcje dialogu stoją w jednym wierszu na dole:
-      <ul>
-        <li>akcja treści (np. „+” dodania wiersza, wypunktowanie) → lewy koniec paska (<code>leadingAction</code>)
-          <ul>
-            <li>mniejsza od przycisków ekranów: wysokość 40dp, ikona 20dp, odsunięta 12dp od lewej (<code>dialog_leading_action_*</code> w <code>dimens.xml</code>)</li>
-          </ul>
-        </li>
-        <li>przyciski tekstowe (<i>Anuluj</i> / <i>Zapisz</i> …) → po prawej</li>
-      </ul>
-    </li>
-    <li><b>Przyciski tekstowe</b> — jeden rozmiar i odstęp w całej aplikacji: <code>dialog_text_button_size</code> (14sp), <code>dialog_text_buttons_gap</code> (12dp) w <code>dimens.xml</code>.</li>
-    <li>Kolejność: <i>Anuluj</i> (negatywny) po lewej, akcja pozytywna (<i>Zapisz</i>, <i>Utwórz</i>, <i>Dodaj kolejną</i>) po prawej.</li>
-  </ul>
-</section>
+<div class="comps">
+  <p class="note">Rendery poglądowe w skali ok. 1,15× (inline SVG, 1 jednostka = 1dp) — wymiary i kolory z <code>res/</code>.</p>
+
+  <details class="comp" open>
+    <summary><h3>Dialog edycji (scrim)</h3></summary>
+    <dl>
+      <dt>Przeznaczenie</dt>
+      <dd>Edycja treści nad ekranem — np. tekst notatki, fiszki zestawu.</dd>
+      <dt>Wygląd</dt>
+      <dd>
+        <figure><svg role="img" aria-label="scrim-dialog" xmlns="http://www.w3.org/2000/svg" width="345" height="220.8" viewBox="0 0 300 192">
+  <rect width="300" height="192" fill="#1A1817"/>
+  <text x="150" y="26" text-anchor="middle" dominant-baseline="central" font-size="18" font-weight="bold" fill="#FFF4E6" font-family="Alegreya, Georgia, serif">Notatka</text>
+  <rect x="16.5" y="44.5" width="267" height="84" rx="8" fill="#FFFFFF" stroke="#FFC59A" stroke-width="0.75"/>
+  <text x="28" y="68" dominant-baseline="central" font-size="18" fill="#48433F" font-family="Alegreya, Georgia, serif">Zakupy:</text>
+  <text x="28" y="94" dominant-baseline="central" font-size="18" fill="#48433F" font-family="Alegreya, Georgia, serif">• mleko</text>
+  <rect x="12" y="140" width="44" height="40" rx="8" fill="#FFE1C8"/>
+  <g transform="translate(24,150)" fill="#FFFFFF">
+    <circle cx="4" cy="4.8" r="1.35"/><circle cx="4" cy="10" r="1.35"/><circle cx="4" cy="15.2" r="1.35"/>
+    <rect x="7.8" y="4.2" width="9.6" height="1.2"/><rect x="7.8" y="9.4" width="9.6" height="1.2"/><rect x="7.8" y="14.6" width="9.6" height="1.2"/>
+  </g>
+  <text x="226" y="160" text-anchor="end" dominant-baseline="central" font-size="14" fill="#FFA86B" font-family="'Baloo 2', 'Segoe UI', sans-serif">Anuluj</text>
+  <text x="280" y="160" text-anchor="end" dominant-baseline="central" font-size="14" fill="#FFA86B" font-family="'Baloo 2', 'Segoe UI', sans-serif">Zapisz</text>
+</svg></figure>
+        <ul>
+          <li>bez ramki dialogu — treść leży wprost na przyciemnieniu</li>
+          <li>wszystkie akcje w jednym rzędzie; akcja treści (np. „+” dodania wiersza, wypunktowanie) na lewym końcu, celowo mniejsza od przycisków ekranów — pomocnicza</li>
+          <li>ikona akcji treści: kwadratowe płótno, zawsze wspólny rozmiar — bez wyjątków dla pojedynczych ikon; glif wyglądający na za mały → inna ikona, nie inny rozmiar</li>
+          <li>przyciski tekstowe — jeden rozmiar i odstęp w całej aplikacji; akcja pozytywna (<i>Zapisz</i>, <i>Utwórz</i>, <i>Dodaj kolejną</i>) zawsze skrajnie po prawej</li>
+        </ul>
+      </dd>
+      <dt>Działanie</dt>
+      <dd>
+        <ul>
+          <li>przyciski nie zamykają dialogu same — decyduje kod (walidacja może go zatrzymać)</li>
+          <li>akcja treści zmienia tylko treść, dialogu nie zamyka</li>
+        </ul>
+      </dd>
+      <dt>Kod</dt>
+      <dd><code>ScrimDialogs</code> (<code>leadingAction</code>), <code>dialog_text_button*</code> / <code>dialog_leading_action_*</code> (<code>dimens.xml</code>)</dd>
+    </dl>
+  </details>
+</div>
 
 <h2>Karty i listy</h2>
 <section>
