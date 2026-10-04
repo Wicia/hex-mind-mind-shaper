@@ -1,4 +1,7 @@
 <meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&family=Alegreya:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>:root{
     --cream:#FFF4E6;
     --surface:#FFFFFF;
@@ -15,23 +18,23 @@
     margin:0; padding:40px 20px 80px;
     background:var(--cream);
     color:var(--graphite);
-    font-family:"Alegreya",Georgia,serif;
+    font-family:"Baloo 2",system-ui,sans-serif;
     font-size:17px; line-height:1.65;
   }
   .wrap{max-width:760px; margin:0 auto}
   h1{
-    font-family:"Baloo 2",system-ui,sans-serif;
+    font-family:"Alegreya",Georgia,serif;
     font-weight:600; font-size:30px; line-height:1.25;
     margin:0 0 6px;
   }
   .lede{margin:0 0 34px; color:var(--muted); font-style:italic}
   h2{
-    font-family:"Baloo 2",system-ui,sans-serif;
+    font-family:"Alegreya",Georgia,serif;
     font-weight:500; font-size:20px;
     margin:38px 0 14px; display:flex; align-items:baseline; gap:10px;
   }
   h2 .count{
-    font-family:"Alegreya",serif; font-size:14px; font-style:italic;
+    font-family:"Baloo 2",system-ui,sans-serif; font-size:14px; font-style:italic;
     color:var(--muted); font-weight:400;
   }
   details.item{
@@ -70,7 +73,7 @@
   .body{padding:2px 18px 16px 46px; border-top:1px solid #F0EAE4}
   .prio{
     display:inline-block;
-    font-family:"Baloo 2",system-ui,sans-serif;
+    font-family:"Alegreya",Georgia,serif;
     font-size:11px; font-weight:600;
     padding:2px 10px; border-radius:20px;
     margin-right:8px;
@@ -99,7 +102,7 @@
     border-radius:8px; font-size:14.5px;
   }
   .where .lbl{
-    font-family:"Baloo 2",system-ui,sans-serif; font-weight:500;
+    font-family:"Alegreya",Georgia,serif; font-weight:500;
     font-size:13px; letter-spacing:.03em; text-transform:uppercase;
     color:var(--muted); display:block; margin-bottom:5px;
   }
@@ -1024,6 +1027,44 @@
           <li>
             <code>res/layout/metadata_activity.xml</code> — wiersz przełącznika
           </li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span>
+      <strong>Wiązanie myśl ↔ krok — które akcje zostają</strong> — zdecydować, które akcje są potrzebne, a które olać.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>od strony myśli (<i>Szczegóły</i>): przypnij do kroku, podmień krok, odepnij, przejście do celu</li>
+        <li>od strony kroku (<i>Cel</i>): przypnij myśl, odepnij i zostaw myśl, odepnij i usuń myśl</li>
+        <li>decyzja dla każdej: zostaje / upraszczamy / wycinamy</li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li><code>activities/details/DetailsActivity.kt</code> — <code>showUnlinkDialog()</code>, <code>openStepPicker()</code></li>
+          <li><code>activities/workshop/GoalDetailActivity.kt</code> — <code>showUnlinkThoughtDialog()</code></li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span>
+      <strong>Przycisk kroku w szczegółach myśli</strong> — naprawić: trochę skomplikowany i mało przejrzysty.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>dziś: tap w powiązanie = przejście do celu, osobny przycisk = dialog odepnij / podmień; bez powiązania = przycisk przypięcia</li>
+        <li>zależy od decyzji „Wiązanie myśl ↔ krok — które akcje zostają”</li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li><code>activities/details/DetailsActivity.kt</code> — <code>updateUsageSection()</code></li>
         </ul>
       </div>
     </div>
