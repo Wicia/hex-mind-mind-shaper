@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mind Shaper — UI Design Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Alegreya:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>:root{
+    --cream:#FFF4E6;
+    --surface:#FFFFFF;
+    --orange-1:#FFE1C8;
+    --orange-2:#FFC59A;
+    --orange-3:#FFA86B;
+    --graphite:#48433F;
+    --muted:#88807A;
+    --hair:#BEBEBE;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:40px 20px 80px;
+    background:var(--cream);
+    color:var(--graphite);
+    font-family:"Alegreya",Georgia,serif;
+    font-size:17px; line-height:1.65;
+  }
+  .wrap{max-width:760px; margin:0 auto}
+  h1{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:600; font-size:30px; line-height:1.25;
+    margin:0 0 6px;
+  }
+  .lede{margin:0 0 34px; color:var(--muted); font-style:italic}
+  h2{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:500; font-size:20px;
+    margin:38px 0 14px;
+  }
+  section{
+    background:var(--surface);
+    border:1px solid var(--orange-1);
+    border-radius:12px;
+    padding:6px 22px 14px;
+  }
+  section > p{margin:12px 0}
+  ul{margin:10px 0; padding-left:20px}
+  li{margin:4px 0}
+  li ul{margin:4px 0}
+  code{
+    font-family:ui-monospace,Consolas,monospace; font-size:14px;
+    background:#FBF4EC; border:1px solid #F0E4D6;
+    padding:1px 5px; border-radius:5px;
+  }
+  .swatch{
+    display:inline-block; width:14px; height:14px;
+    border-radius:4px; border:1px solid rgba(0,0,0,.12);
+    vertical-align:-2px; margin-right:6px;
+  }
+  figure{margin:10px 0 16px}
+  figure svg{display:block; max-width:100%; height:auto; border-radius:8px}
+  .note{color:var(--muted); font-style:italic; font-size:15px}
+  .model-note{margin:-8px 0 12px; color:#D32F2F; font-family:"Baloo 2",system-ui,sans-serif; font-weight:600}
+  .comp{background:var(--surface); border:1px solid var(--orange-1); border-radius:12px; padding:4px 22px 6px; margin:0 0 12px}
+  .comps > .note{margin:0 0 10px}
+  h3{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:600; font-size:17px;
+    margin:12px 0 6px;
+  }
+  dl{display:grid; grid-template-columns:130px 1fr; gap:6px 14px; margin:0 0 10px}
+  dt{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-size:13px; font-weight:500; color:var(--muted);
+    text-transform:uppercase; letter-spacing:.04em; padding-top:3px;
+    text-align:right;
+  }
+  dd{margin:0}
+  dd ul{margin:2px 0}
+  dd figure{margin:4px 0 8px}
+  .comp > summary{cursor:pointer; list-style:none; display:flex; align-items:center; gap:8px}
+  .comp > summary::-webkit-details-marker{display:none}
+  .comp > summary::before{content:"▸"; color:var(--muted); transition:transform .15s}
+  .comp[open] > summary::before{transform:rotate(90deg)}
+  @media (max-width:560px){
+    dl{grid-template-columns:1fr; gap:2px}
+    dt{padding-top:8px; text-align:left}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>UI Design Guide</h1>
+<p class="lede">Wspólne zasady wyglądu i zachowania UI. Nowe widoki trzymają się ich od początku. Istniejących widoków spoza bieżącego zadania nie przerabiamy bez decyzji.</p>
+
+<h2>Kolory</h2>
+<section>
+  <ul>
+    <li><b>Paleta pomarańczowa</b> (<code>colors.xml</code>, <code>_orange_lvl_0..3</code>) — intensywność = waga elementu:
+      <ul>
+        <li><span class="swatch" style="background:#FFF4E6"></span><code>_orange_lvl_0</code> <code>#FFF4E6</code> — tło aplikacji</li>
+        <li><span class="swatch" style="background:#FFE1C8"></span><code>_orange_lvl_1</code> <code>#FFE1C8</code> — akcje list, karty (np. fiszki, zestawy)</li>
+        <li><span class="swatch" style="background:#FFC59A"></span><code>_orange_lvl_2</code> <code>#FFC59A</code> — akcje drugorzędne ekranu, delikatne akcenty (poświata ramki)</li>
+        <li><span class="swatch" style="background:#FFA86B"></span><code>_orange_lvl_3</code> <code>#FFA86B</code> — akcja główna (FAB, główna akcja ekranu), mocny akcent (pasek postępu, gwiazda opanowania)</li>
+      </ul>
+    </li>
+    <li><b>Szary = nieaktywny</b> — <code>_gray_lvl_*</code> oznacza element wyłączony / nieaktywny, ramki pomocnicze i tekst drugorzędny; aktywnych kart i treści nie robimy na szaro.</li>
+    <li><b>Tekst</b> — <code>text_primary</code> (grafit średni), <code>text_secondary</code> (grafit jasny); nie wpisujemy kolorów na sztywno w layoutach, tylko przez kolory semantyczne (<code>text_*</code>, <code>button_*</code>, <code>flashcard_*</code>…).</li>
+  </ul>
+</section>
+
+<h2>Typografia</h2>
+<section>
+  <ul>
+    <li><b>Alegreya</b> — treść „do czytania”: tytuły ekranów (<code>TextView_Header_Activity</code>, 24sp, pogrubione, szare), tekst fiszek, nazwy zestawów.</li>
+    <li><b>Baloo 2</b> — nagłówki sekcji, etykiety, teksty dialogów (<code>TextView_Header_Section</code>, <code>Dialog_Header</code>, <code>Dialog_Text</code>).</li>
+    <li>Nagłówek ekranu ze wspólnego stylu; gdy zamiast tytułu stoi dłuższa nazwa (np. zestawu), może być mniejszy na tym jednym ekranie (np. 20sp).</li>
+  </ul>
+</section>
+
+<h2>Ikony i ich znaczenie</h2>
+<section>
+  <ul>
+    <li><b>X usuwania zawsze po lewej</b> — mały X (<code>ic_close</code>), nie kosz; usuwanie to akcja pomocnicza.</li>
+    <li><b>„Ptaszek” / X = zapisz / usuń</b> — nie używamy ich do innych znaczeń (np. ocen); do ocen służą kciuki (<code>ic_thumb_up</code> / <code>ic_thumb_down</code>) i tylda.</li>
+    <li><b>Rakieta = start sesji</b> — ta sama ukośna rakieta co <i>Home</i> (<code>ic_activity_home</code>).</li>
+    <li><b>Ikony domen</b> (<code>z_ic_domain_*</code>) — wczytywane po prefiksie do galerii ikon domen; nie usuwać ani nie zmieniać nazw, nawet gdy wyszukiwanie nie znajduje odwołań; do innych miejsc UI brać osobną ikonę.</li>
+  </ul>
+</section>
+
+<h2>Przyciski</h2>
+<section>
+  <ul>
+    <li><b>Style akcji</b> (<code>styles.xml</code>):
+      <ul>
+        <li><code>PrimaryActionButton</code> — akcja główna</li>
+        <li><code>SecondaryActionButton</code> — akcje drugorzędne (np. edycja, usuwanie, rakieta); <code>.Ghost</code> = bez tła</li>
+        <li><code>AuxiliaryActionButton</code> — akcje pomocnicze (np. „zamknij” w dialogach informacyjnych)</li>
+      </ul>
+    </li>
+    <li><b>Ukrywanie przycisku</b> — gdy brak akcji (np. nic do powtórki), przycisk znika:
+      <ul>
+        <li><code>GONE</code>, gdy jego miejsce nie trzyma wysokości / układu (np. rząd akcji ekranu — reszta przycisków się dosuwa)</li>
+        <li><code>INVISIBLE</code>, gdy trzyma wysokość karty / widżetu (np. karty listy, widżet z ramką)</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<h2>Chipy i pigułki</h2>
+<p class="model-note">Na tym się wzorować :D</p>
+<div class="comps">
+  <p class="note">Rendery poglądowe w skali ok. 1,15× (inline SVG, 1 jednostka = 1dp) — wymiary i kolory z <code>res/</code>.</p>
+
+  <details class="comp" open>
+    <summary><h3>Pigułka tagu</h3></summary>
+    <dl>
+      <dt>Przeznaczenie</dt>
+      <dd>Tag na liście tagów (<i>Metadane</i>) — pokazuje nazwę i liczbę użyć; dwie akcje w jednej pigułce.</dd>
+      <dt>Wygląd</dt>
+      <dd>
+        <figure><svg role="img" aria-label="hex-tag-pill" xmlns="http://www.w3.org/2000/svg" width="164.1" height="68.9" viewBox="0 0 143 60">
+  <rect width="143" height="60" fill="#FFF4E6"/>
+  <rect x="12" y="12" width="119" height="36" rx="18" fill="#FFE1C8"/>
+  <text x="26" y="30.0" dominant-baseline="central" font-size="16" fill="#48433F" font-family="'Baloo 2', 'Segoe UI', sans-serif">Kasia</text>
+  <rect x="74" y="12" width="1" height="36" fill="#FFF4E6"/>
+  <text x="83" y="30.0" dominant-baseline="central" font-size="16" fill="#857C75" font-family="'Baloo 2', 'Segoe UI', sans-serif">12</text>
+  <g transform="translate(103,22.0) scale(0.6667)" fill="none" stroke="#857C75" stroke-width="2.2" stroke-linecap="round">
+      <circle cx="10" cy="10" r="6"/><path d="M14.4,14.4L20.5,20.5"/></g>
+</svg></figure>
+      </dd>
+      <dt>Działanie</dt>
+      <dd>
+        <ul>
+          <li><b>tap w nazwę</b> = edycja, <b>tap w liczbę / lupę</b> = szukanie w <i>Strumieniu</i></li>
+          <li><b>wciśnięcie</b> podświetla tylko tapniętą część</li>
+        </ul>
+      </dd>
+      <dt>Kod</dt>
+      <dd><code>common_hex_tag_pill.xml</code> (layout)</dd>
+    </dl>
+  </details>
+
+  <details class="comp" open>
+    <summary><h3>Podpowiedź tagu</h3></summary>
+    <dl>
+      <dt>Przeznaczenie</dt>
+      <dd>Propozycja tagu do dodania (<i>Zapis myśli</i>, wyszukiwanie w <i>Strumieniu</i>, pole tagów).</dd>
+      <dt>Wygląd</dt>
+      <dd>
+        <figure><svg role="img" aria-label="hex-tag-suggestion" xmlns="http://www.w3.org/2000/svg" width="135.4" height="62" viewBox="0 0 118 54">
+  <rect width="118" height="54" fill="#FFF4E6"/>
+  <rect x="12.5" y="12.5" width="93" height="29" rx="14.5" fill="#FFFFFF" stroke="#FFC59A" stroke-width="1"/>
+  <text x="26" y="27.0" dominant-baseline="central" font-size="16" fill="#48433F" font-family="'Baloo 2', 'Segoe UI', sans-serif">Projekt X</text>
+</svg></figure>
+        <ul>
+          <li>celowo lżejsza od pigułki — to propozycja, nie wybrany tag</li>
+        </ul>
+      </dd>
+      <dt>Działanie</dt>
+      <dd><b>tap</b> wstawia tag</dd>
+      <dt>Kod</dt>
+      <dd><code>common_hex_tags_suggestion.xml</code> (layout)</dd>
+    </dl>
+  </details>
+
+  <details class="comp" open>
+    <summary><h3>Chip wyboru</h3></summary>
+    <dl>
+      <dt>Przeznaczenie</dt>
+      <dd>Wybór z kilku krótkich opcji — np. dni przypomnienia, liczba powtórzeń kroku; też link do myśli w kroku celu.</dd>
+      <dt>Wygląd</dt>
+      <dd>
+        <figure><svg role="img" aria-label="chip-button" xmlns="http://www.w3.org/2000/svg" width="241" height="66.6" viewBox="0 0 210 58">
+  <rect width="210" height="58" fill="#FFF4E6"/>
+  <rect x="12" y="12" width="52" height="34" rx="16" fill="#FFE1C8"/>
+  <text x="24" y="29" dominant-baseline="central" font-size="14" fill="#48433F" font-family="'Baloo 2', 'Segoe UI', sans-serif">Dziś</text>
+  <rect x="76" y="12" width="122" height="34" rx="16" fill="#FFC59A"/>
+  <text x="88" y="29" dominant-baseline="central" font-size="14" fill="#48433F" font-family="'Baloo 2', 'Segoe UI', sans-serif">Jutro (wybrany)</text>
+</svg></figure>
+      </dd>
+      <dt>Działanie</dt>
+      <dd><b>wciśnięcie</b> wygląda jak wybór</dd>
+      <dt>Kod</dt>
+      <dd><code>ChipButton</code> (styl)</dd>
+    </dl>
+  </details>
+</div>
+
+<h2>Dialogi</h2>
+<section>
+  <ul>
+    <li><b>Scrim</b> (<code>ScrimDialogs</code>) — dialogi edycji bez ramki dialogu, treść leży wprost na mocnym przyciemnieniu ekranu.
+      <ul>
+        <li>przyciski nie zamykają dialogu same — decyduje kod (walidacja może go zatrzymać)</li>
+      </ul>
+    </li>
+    <li><b>Jeden rząd akcji</b> — wszystkie akcje dialogu stoją w jednym wierszu na dole:
+      <ul>
+        <li>akcja treści (np. „+” dodania wiersza, wypunktowanie) → lewy koniec paska (<code>leadingAction</code>)
+          <ul>
+            <li>mniejsza od przycisków ekranów: wysokość 40dp, ikona 20dp, odsunięta 12dp od lewej (<code>dialog_leading_action_*</code> w <code>dimens.xml</code>)</li>
+          </ul>
+        </li>
+        <li>przyciski tekstowe (<i>Anuluj</i> / <i>Zapisz</i> …) → po prawej</li>
+      </ul>
+    </li>
+    <li><b>Przyciski tekstowe</b> — jeden rozmiar i odstęp w całej aplikacji: <code>dialog_text_button_size</code> (14sp), <code>dialog_text_buttons_gap</code> (12dp) w <code>dimens.xml</code>.</li>
+    <li>Kolejność: <i>Anuluj</i> (negatywny) po lewej, akcja pozytywna (<i>Zapisz</i>, <i>Utwórz</i>, <i>Dodaj kolejną</i>) po prawej.</li>
+  </ul>
+</section>
+
+<h2>Karty i listy</h2>
+<section>
+  <ul>
+    <li><b>Jeden kolor kart danego rodzaju</b> — np. fiszki i zestawy: <code>flashcard_background</code> (<code>_orange_lvl_1</code>) dla obu stron fiszki.</li>
+    <li><b>Stan elementu wizualnie, nie tekstem</b>, gdy się da — np. poziom fiszki: pionowy pasek (szare tło, wypełnienie <code>_orange_lvl_3</code>) z liczbą na czubku; zamrożona = półprzezroczysta karta; opanowana = pomarańczowa gwiazda.</li>
+    <li><b>Etykieta sekcji nad listą</b> — mała, w kolorze tekstu drugorzędnego (np. <i>„Zestawy”</i>, 15sp).</li>
+  </ul>
+</section>
+
+<h2>Ruch i animacje</h2>
+<section>
+  <ul>
+    <li><b>Animacje mówią o stanie</b> — np. falująca ramka = „jest coś do zrobienia”, gwiazda „nadająca sygnał” = opanowane; nie dekoracja bez znaczenia.</li>
+    <li><b>Delikatnie</b> — małe amplitudy, płynne wejście / wyjście (np. fale ramki 1.2dp, wygaszanie 600 ms).</li>
+    <li><b>Bez synchronu</b> — powtarzające się animacje wielu elementów (np. gwiazdy) z losowymi przerwami.</li>
+    <li><b>Wyłączone animacje w systemie</b> — elementy stoją nieruchomo (bez fal / sygnałów), treść dalej czytelna.</li>
+    <li><b>Tylko na ekranie</b> — animacje działają, gdy widok jest widoczny i przypięty; zatrzymują się po zniknięciu.</li>
+    <li><b>Bez rozmycia per klatkę</b> — poświatę robimy warstwami kresek (tańsze), nie <code>BlurMaskFilter</code>.</li>
+  </ul>
+</section>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="286" height="120" viewBox="0 0 143 60">
+  <!-- 1 unit = 1dp, rendered at 2x; illustrative render of the app component (values from res/) -->
+  <rect width="143" height="60" fill="#FFF4E6"/>
+  <rect x="12" y="12" width="119" height="36" rx="18" fill="#FFE1C8"/>
+  <text x="26" y="30.0" dominant-baseline="central" font-size="16" fill="#48433F" font-family="'Baloo 2', 'Segoe UI', sans-serif">Kasia</text>
+  <rect x="74" y="12" width="1" height="36" fill="#FFF4E6"/>
+  <text x="83" y="30.0" dominant-baseline="central" font-size="16" fill="#857C75" font-family="'Baloo 2', 'Segoe UI', sans-serif">12</text>
+  <g transform="translate(103,22.0) scale(0.6667)" fill="none" stroke="#857C75" stroke-width="2.2" stroke-linecap="round">
+      <circle cx="10" cy="10" r="6"/><path d="M14.4,14.4L20.5,20.5"/></g>
+</svg>
