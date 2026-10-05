@@ -282,9 +282,9 @@
     </summary>
     <div class="body">
       <ul>
-        <li>dziś stały tekst: <em>„Możesz aktywować zapisywanie myśli w formie nagrań głosowych, zdjęć oraz fiszek w Ustawieniach. Czy przejść do Ustawień?"</em></li>
-        <li>docelowo wstawiana tylko forma, która nie została aktywowana (ta, którą user próbował dodać), np. <em>„Możesz aktywować zapisywanie myśli w formie fiszek w Ustawieniach. Czy przejść do Ustawień?"</em></li>
-        <li>string z parametrem (<code>%1$s</code>) + nazwa formy w dopełniaczu (<em>nagrań głosowych</em> / <em>zdjęć</em> / <em>fiszek</em>) przekazywana z przycisku, który wywołał dialog</li>
+        <li>dziś stały tekst: <em>„Nagrania i zdjęcia włączysz w Ustawieniach."</em></li>
+        <li>docelowo wstawiana tylko forma, która nie została aktywowana (ta, którą user próbował dodać), np. <em>„Zdjęcia włączysz w Ustawieniach."</em></li>
+        <li>string z parametrem (<code>%1$s</code>) + nazwa formy (<em>Nagrania</em> / <em>Zdjęcia</em>) przekazywana z przycisku, który wywołał dialog</li>
       </ul>
       <div class="where"><span class="lbl">Gdzie</span><ul><li><code>res/values/strings.xml</code> — <code>common_thoughts_forms_permissions_needed</code></li><li><code>activities/ThoughtManagerActivity.kt</code> — <code>showEnableAdditionalFeaturesDialog()</code> (dołożyć parametr formy)</li><li>wywołania z przycisków dodawania formy w <code>CaptureActivity</code> i <code>DetailsActivity</code></li></ul></div>
     </div>
@@ -704,77 +704,6 @@
   </details>
   <details class="item">
     <summary>
-      <span class="prio imp">Istotny</span> 
-      <strong>Refactor dialogów</strong> — uporządkować układ przycisków i ujednolicić ich nazwy w 20 miejscach, gdzie tworzony jest 
-      <code>ActionsDialog</code>.
-    </summary>
-    <div class="body">
-      <ul>
-        <li>dziś: [caution] i [standard] obok siebie po połowie szerokości, [dismiss] pod nimi na całą — trzy przyciski mieszczą się strukturalnie, problemem jest logika pokazywania</li>
-        <li>naturalny moment, by zrobić to razem ze scalonym dialogiem ostatniej formy (ten sam plik, te same przyciski)</li>
-      </ul>
-      <div class="gain">
-        <strong>Błąd do naprawy przy okazji:</strong> na końcu 
-        <code>setupButtons</code> gałąź 
-        <code>else</code> ustawia 
-        <code>btnCaution</code> na widoczny nawet wtedy, gdy wcześniej został ukryty z braku akcji caution — dialog z samym [standard] i [dismiss] pokazuje pusty przycisk zabierający pół rzędu. Dotyczy trzech próśb o uprawnienia w Ustawieniach („Przyznaj" + „Nie teraz", bez caution).
-      </div>
-      <ul>
-        <li>
-          <strong>Inwentarz — 20 dialogów:</strong> 4× caution+standard+cancel, 7× caution+cancel, 3× standard+cancel (bez caution), 5× jeden przycisk, 1× caution+standard bez cancel
-        </li>
-        <li>
-          <strong>Widgety nie mają cancel w ogóle:</strong> 
-          <code>HexPhotoView</code> i 
-          <code>HexTextView</code> dają jedno „Kasujemy", 
-          <code>HexAudioView</code> dwa („Wywalić"/„Nadpisać") bez wyjścia — wycofać się da tylko przez X lub dotknięcie poza dialogiem
-        </li>
-        <li>
-          <strong>Nazwy się rozjeżdżają:</strong> ten sam gest to raz „Anuluj", raz „Nie", raz „Nie, zostaw", raz „Zostaw"; potwierdzenie to „Usuń" / „Tak" / „Kasujemy" / „Wywalić" — ujednolicić
-        </li>
-        <li>
-          <strong>Wzorzec „usuń / zachowaj / anuluj" już istnieje</strong> w 4 dialogach (m.in. „Odepnij i usuń myśl" / „Odepnij i zostaw myśl" / „Anuluj") — scalony dialog ostatniej formy wpada w ten sam schemat, nie tworzy nowego
-        </li>
-      </ul>
-      <div class="where">
-        <span class="lbl">Gdzie</span>
-        <ul>
-          <li>
-            <code>common/ui/dialogs/ActionsDialog.kt</code> — 
-            <code>setupButtons()</code> (linia 63), zwłaszcza końcowy warunek „scenariusz z jednym przyciskiem"
-          </li>
-          <li>
-            <code>res/layout/common_actions_dialog.xml</code> — rząd z 
-            <code>btn_action_caution</code> + 
-            <code>btn_action_standard</code> (weight 1) i 
-            <code>btn_dismiss</code> pod spodem
-          </li>
-          <li>miejsca użycia: 
-            <code>SettingsActivity</code> (7), 
-            <code>WorkshopActivity</code> (4), 
-            <code>GoalDetailActivity</code> (2), 
-            <code>DetailsActivity</code> (2), 
-            <code>StreamActivity</code> (1), 
-            <code>ThoughtManagerActivity</code> (1), 
-            <code>HexAudioView</code> / 
-            <code>HexPhotoView</code> / 
-            <code>HexTextView</code> (po 1)
-          </li>
-          <li>napisy przycisków: 
-            <code>res/values/strings.xml</code> — 
-            <code>common_btn_*</code>, 
-            <code>common_deletion_dialog_*</code>
-          </li>
-        </ul>
-      </div>
-      <div class="gain">
-        <strong>Uwaga o zasięgu:</strong> 
-        <code>ActionsDialog</code> obsługuje wszystkie potwierdzenia w apce, więc zmiana układu przemebluje każdy dialog. Kontrolowane (jeden plik + jeden layout), ale obejrzeć na kilku ekranach przed zatwierdzeniem.
-      </div>
-    </div>
-  </details>
-  <details class="item">
-    <summary>
       <span class="prio minor">Drobny</span> 
       <strong>Dorzucić spec tech/impl: kalendarz</strong> — dokumentacja z poprzedniej sesji nie jest jeszcze w repo.
     </summary>
@@ -862,7 +791,6 @@
     </summary>
     <div class="body">
       <ul>
-        <li>osierocony string <code>settings_domain_edit_hint</code> („Nazwa") — po migracji domeny</li>
         <li>martwy <code>app:hintTextColor="#FF8C42"</code> w <code>settings_activity</code> (TIL bez hinta)</li>
       </ul>
     </div>
@@ -1039,7 +967,7 @@
     <div class="body">
       <ul>
         <li>od strony myśli (<i>Szczegóły</i>): przypnij do kroku, podmień krok, odepnij, przejście do celu</li>
-        <li>od strony kroku (<i>Cel</i>): przypnij myśl, odepnij i zostaw myśl, odepnij i usuń myśl</li>
+        <li>od strony kroku (<i>Cel</i>): przypnij myśl, odepnij myśl (myśl zostaje w Strumieniu; „odepnij i usuń myśl” wycięte)</li>
         <li>decyzja dla każdej: zostaje / upraszczamy / wycinamy</li>
       </ul>
       <div class="where">
