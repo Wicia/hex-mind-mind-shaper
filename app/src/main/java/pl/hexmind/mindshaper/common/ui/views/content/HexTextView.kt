@@ -298,8 +298,8 @@ class HexTextView @JvmOverloads constructor(
     private fun showDeleteConfirmation() {
         ActionsDialog.Builder(context)
             .setTitle(context.getString(R.string.details_rich_text_removing_header))
-            .setDescription(context.getString(R.string.details_rich_text_removing_content))
-            .setPrimaryAction(context.getString(R.string.common_deletion_dialog_yes_2), caution = true) {
+            .setDescription(context.getString(R.string.common_deletion_dialog_warning))
+            .setPrimaryAction(context.getString(R.string.details_rich_text_removing_yes), caution = true) {
                 callback?.onTextDeleted()
             }
             .show()

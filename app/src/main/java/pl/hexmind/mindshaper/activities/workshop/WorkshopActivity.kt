@@ -180,9 +180,9 @@ class WorkshopActivity : CoreActivity() {
 
     private fun showResetOnboardingDialog(section: OnboardingSection) {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.common_caution_dialog_title))
+            .setTitle(getString(R.string.workshop_dialog_reset_onboarding_title))
             .setDescription(getString(R.string.workshop_dialog_reset_onboarding))
-            .setPrimaryAction(getString(R.string.common_btn_yes)) {
+            .setPrimaryAction(getString(R.string.workshop_dialog_reset_onboarding_yes)) {
                 onboardingManager.resetSection(section)
                 onboardingAdapter.notifyDataSetChanged()
             }
@@ -421,9 +421,9 @@ class WorkshopActivity : CoreActivity() {
 
     private fun showResetPathsDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.common_caution_dialog_title))
-            .setDescription(getString(R.string.workshop_dialog_reset_paths_title))
-            .setPrimaryAction(getString(R.string.common_btn_yes), caution = true) {
+            .setTitle(getString(R.string.workshop_dialog_reset_paths_title))
+            .setDescription(getString(R.string.workshop_dialog_reset_paths_desc))
+            .setPrimaryAction(getString(R.string.workshop_dialog_reset_paths_yes), caution = true) {
                 viewModel.resetAllPaths()
             }
             .show()
@@ -448,7 +448,7 @@ class WorkshopActivity : CoreActivity() {
             .setSecondaryAction(getString(R.string.workshop_dialog_goal_archive)) {
                 viewModel.archiveGoal(goalId)
             }
-            .setPrimaryAction(getString(R.string.common_deletion_dialog_yes), caution = true) {
+            .setPrimaryAction(getString(R.string.workshop_dialog_delete_goal_yes), caution = true) {
                 viewModel.deleteGoal(goalId)
             }
             .show()
@@ -456,12 +456,12 @@ class WorkshopActivity : CoreActivity() {
 
     private fun showArchivedGoalActions(goalId: Int) {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.workshop_dialog_delete_goal_title))
-            .setDescription(getString(R.string.workshop_dialog_delete_goal_desc))
+            .setTitle(getString(R.string.workshop_dialog_delete_archived_goal_title))
+            .setDescription(getString(R.string.workshop_dialog_delete_archived_goal_desc))
             .setSecondaryAction(getString(R.string.workshop_dialog_goal_restore)) {
                 viewModel.restoreGoal(goalId)
             }
-            .setPrimaryAction(getString(R.string.common_deletion_dialog_yes), caution = true) {
+            .setPrimaryAction(getString(R.string.workshop_dialog_delete_goal_yes), caution = true) {
                 viewModel.deleteGoal(goalId)
             }
             .show()

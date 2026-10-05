@@ -239,7 +239,7 @@ class SettingsActivity : CoreActivity() {
 
     private fun showVoiceRecordingPermissionExplanationDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
+            .setTitle(getString(R.string.settings_permission_voice_recording_title))
             .setDescription(getString(R.string.settings_voice_recording_info))
             .setPrimaryAction(getString(R.string.common_btn_grant_permission)) {
                 requestVoiceRecordingPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
@@ -250,8 +250,8 @@ class SettingsActivity : CoreActivity() {
 
     private fun showVoiceRecordingPermanentDenialDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.settings_permissions_blockade_title))
-            .setDescription(getString(R.string.settings_permissions_recording_blockade_tooltip))
+            .setTitle(getString(R.string.settings_permission_voice_recording_blockade_title))
+            .setDescription(getString(R.string.settings_permissions_blockade_info))
             .setPrimaryAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
@@ -361,7 +361,7 @@ class SettingsActivity : CoreActivity() {
 
     private fun showPhotoPermissionExplanationDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
+            .setTitle(getString(R.string.settings_permission_photo_title))
             .setDescription(getString(R.string.settings_permissions_photo_info))
             .setPrimaryAction(getString(R.string.common_btn_grant_permission)) {
                 requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
@@ -372,8 +372,8 @@ class SettingsActivity : CoreActivity() {
 
     private fun showPhotoPermanentDenialDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.settings_permissions_blockade_title))
-            .setDescription(getString(R.string.settings_permissions_photo_blockade_tooltip))
+            .setTitle(getString(R.string.settings_permission_photo_blockade_title))
+            .setDescription(getString(R.string.settings_permissions_blockade_info))
             .setPrimaryAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
@@ -482,7 +482,7 @@ class SettingsActivity : CoreActivity() {
 
     private fun showCalendarPermissionExplanationDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
+            .setTitle(getString(R.string.settings_permission_calendar_title))
             .setDescription(getString(R.string.settings_calendar_permission_info))
             .setPrimaryAction(getString(R.string.common_btn_grant_permission)) {
                 requestCalendarPermissionLauncher.launch(
@@ -498,8 +498,8 @@ class SettingsActivity : CoreActivity() {
 
     private fun showCalendarPermanentDenialDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.settings_permissions_blockade_title))
-            .setDescription(getString(R.string.settings_calendar_blockade_tooltip))
+            .setTitle(getString(R.string.settings_permission_calendar_blockade_title))
+            .setDescription(getString(R.string.settings_permissions_blockade_info))
             .setPrimaryAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
@@ -582,7 +582,7 @@ class SettingsActivity : CoreActivity() {
 
     private fun showBackupPermissionExplanationDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
+            .setTitle(getString(R.string.settings_permission_backup_title))
             .setDescription(getString(R.string.settings_backup_permission_info))
             .setPrimaryAction(getString(R.string.common_btn_grant_permission)) {
                 requestStoragePermissionLauncher.launch(permissionsService.getStoragePermission())
@@ -593,8 +593,8 @@ class SettingsActivity : CoreActivity() {
 
     private fun showBackupPermanentDenialDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.settings_permissions_blockade_title))
-            .setDescription(getString(R.string.settings_permissions_backup_blockade_tooltip))
+            .setTitle(getString(R.string.settings_permission_backup_blockade_title))
+            .setDescription(getString(R.string.settings_permissions_blockade_info))
             .setPrimaryAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
@@ -818,7 +818,7 @@ class SettingsActivity : CoreActivity() {
 
     private fun showSnapshotLoadingDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.common_deletion_dialog_title))
+            .setTitle(getString(R.string.settings_snapshot_restore_title))
             .setDescription(getString(R.string.settings_snapshot_restore_warning))
             .setPrimaryAction(getString(R.string.common_btn_confirm_replace), caution = true) {
                 loadBackupFile()

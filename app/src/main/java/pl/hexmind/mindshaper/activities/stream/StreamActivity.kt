@@ -280,9 +280,9 @@ class StreamActivity : CoreActivity() {
 
     private fun showDeleteConfirmationDialog(thought: ThoughtDTO) {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.common_deletion_dialog_title))
-            .setDescription(getString(R.string.common_deletion_dialog_message, getString(R.string.common_object_type_thought)))
-            .setPrimaryAction(getString(R.string.common_deletion_dialog_yes), caution = true) {
+            .setTitle(getString(R.string.common_deletion_dialog_thought_title))
+            .setDescription(getString(R.string.common_deletion_dialog_thought_message))
+            .setPrimaryAction(getString(R.string.common_deletion_dialog_thought_yes), caution = true) {
                 deleteThought(thought)
             }
             .show()

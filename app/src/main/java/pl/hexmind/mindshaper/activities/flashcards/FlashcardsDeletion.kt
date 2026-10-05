@@ -9,17 +9,21 @@ import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
  */
 object FlashcardsDeletion {
 
-    fun confirmSet(context: Context, onDelete: () -> Unit) =
-        confirm(context, R.string.flashcards_removing_header, onDelete)
+    fun confirmSet(context: Context, onDelete: () -> Unit) = confirm(
+        context, R.string.flashcards_removing_header, R.string.flashcards_removing_content,
+        R.string.flashcards_removing_yes, onDelete
+    )
 
-    fun confirmFlashcard(context: Context, onDelete: () -> Unit) =
-        confirm(context, R.string.flashcard_removing_header, onDelete)
+    fun confirmFlashcard(context: Context, onDelete: () -> Unit) = confirm(
+        context, R.string.flashcard_removing_header, R.string.common_deletion_dialog_warning,
+        R.string.flashcard_removing_yes, onDelete
+    )
 
-    private fun confirm(context: Context, headerRes: Int, onDelete: () -> Unit) {
+    private fun confirm(context: Context, headerRes: Int, contentRes: Int, confirmRes: Int, onDelete: () -> Unit) {
         ActionsDialog.Builder(context)
             .setTitle(context.getString(headerRes))
-            .setDescription(context.getString(R.string.flashcards_removing_content))
-            .setPrimaryAction(context.getString(R.string.common_deletion_dialog_yes_2), caution = true) { onDelete() }
+            .setDescription(context.getString(contentRes))
+            .setPrimaryAction(context.getString(confirmRes), caution = true) { onDelete() }
             .show()
     }
 }

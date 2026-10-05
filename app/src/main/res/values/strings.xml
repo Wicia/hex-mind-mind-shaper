@@ -18,33 +18,29 @@
     <string name="common_btn_save">Zapisz</string>
     <string name="common_btn_cancel">Anuluj</string>
     <string name="common_btn_confirm_ok">OK</string>
-    <string name="common_btn_confirm_ok_2">Dobra</string>
-    <string name="common_btn_yes">Tak</string>
     <string name="common_btn_add">\?</string>
     <string name="common_btn_create">+</string>
     <string name="common_btn_increase">+</string>
     <string name="common_btn_decrease">-</string>
-    <string name="common_btn_grant_permission">Przyznaj</string>
-    <string name="common_btn_confirm_replace">Tak, zastąp</string>
+    <string name="common_btn_grant_permission">Zezwól</string>
+    <string name="common_btn_confirm_replace">Zastąp dane</string>
+    <string name="common_btn_go_to_settings">Przejdź do Ustawień</string>
     <string name="common_guide_btn_next">Mów dalej...</string>
     <string name="common_guide_btn_dismiss">Dzięki</string>
 
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
 
     <!-- Dialogs -->
-    <string name="common_caution_dialog_title">Uwaga!</string>
-    <string name="common_deletion_dialog_title">Uwaga!</string>
-    <string name="common_deletion_dialog_message">Czy na pewno chcesz usunąć %s?</string>
-    <string name="common_deletion_dialog_yes">Usuń</string>
-    <string name="common_deletion_dialog_yes_2">Kasujemy</string>
     <string name="common_deletion_dialog_confirmation">%s usunięto</string>
-    <string name="common_deletion_dialog_warning">Tej operacji nie można cofnąć.</string>
+    <string name="common_deletion_dialog_warning">Tego nie da się cofnąć.</string>
+    <string name="common_deletion_dialog_thought_title">Usunąć myśl?</string>
+    <string name="common_deletion_dialog_thought_message">Zniknie razem ze wszystkimi formami zapisu. Tego nie da się cofnąć.</string>
+    <string name="common_deletion_dialog_thought_yes">Usuń myśl</string>
     <string name="common_edit_note_header">Edytuj notatkę</string>
     <string name="common_list_dialog_title">Wybierz coś sobie…</string>
-    <string name="common_thoughts_forms_inactive_header">Nieaktywna forma zapisu myśli</string>
-    <string name="common_thoughts_forms_permissions_needed">Możesz aktywować zapisywanie myśli w formie nagrań głosowych, zdjęć oraz fiszek w Ustawieniach.\n\nCzy przejść do Ustawień?</string>
-    <string name="common_thoughts_permissions_dialog_header">Żądanie uprawnień do zasobów Androida</string>
-    <string name="common_dialog_open_android_settings">Otwórz ustawienia</string>
+    <string name="common_thoughts_forms_inactive_header">Włączyć nową formę zapisu?</string>
+    <string name="common_thoughts_forms_permissions_needed">Nagrania i zdjęcia włączysz w Ustawieniach.</string>
+    <string name="common_dialog_open_android_settings">Otwórz ustawienia Androida</string>
 
     <!-- Validation -->
     <string name="common_object_type_thought">Myśl</string>
@@ -75,11 +71,10 @@
     <!-- HexTags widget -->
     <string name="common_hex_tags_dialog_header">Tagowanie</string>
     <!-- Hex Tagi: podpowiedzi i warianty -->
-    <string name="common_hex_tags_hint_idle">Wpisz tag i zatwierdź spacją</string>
-    <string name="common_hex_tags_similar_title">Podobny tag już istnieje</string>
-    <string name="common_hex_tags_similar_description">W Twoich myślach jest już tag [%1$s]. Użyć go, zamiast tworzyć nowy?</string>
+    <string name="common_hex_tags_similar_title">Użyć istniejącego tagu?</string>
+    <string name="common_hex_tags_similar_description">Masz już podobny tag [%1$s].</string>
     <string name="common_hex_tags_similar_use">Użyj [%1$s]</string>
-    <string name="common_hex_tags_similar_keep_mine">Chcę swój tag</string>
+    <string name="common_hex_tags_similar_keep_mine">Utwórz nowy tag</string>
 
     <string name="common_hex_tags_hint_person">Osoba lub Ekipa</string>
     <string name="common_hex_tags_hint_project">Projekt lub Zajawka</string>
@@ -100,8 +95,8 @@
     <string name="files_state_no_file_selected">Nie wybrano pliku</string>
 
     <!-- Photos -->
-    <string name="photos_removing_header">Coś ważnego!</string>
-    <string name="photos_removing_file">Wywalić to zdjęcie?</string>
+    <string name="photos_removing_header">Usunąć zdjęcie?</string>
+    <string name="photos_removing_yes">Usuń zdjęcie</string>
     <string name="photos_no_file">Brakuje tutaj zdjęcia…</string>
     <string name="photos_loading_error">Coś się wyburaczyło przy ładowaniu zdjęcia…</string>
 
@@ -138,7 +133,9 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="flashcards_edit_progress_info">Postęp nauki zostaje, ale zmiana treści może wpłynąć na naukę</string>
     <string name="flashcards_removing_header">Usunąć zestaw fiszek?</string>
     <string name="flashcard_removing_header">Usunąć fiszkę?</string>
-    <string name="flashcards_removing_content">Ta operacja jest nieodwracalna</string>
+    <string name="flashcards_removing_content">Usunięte zostaną wszystkie jego fiszki. Tego nie da się cofnąć.</string>
+    <string name="flashcards_removing_yes">Usuń zestaw</string>
+    <string name="flashcard_removing_yes">Usuń fiszkę</string>
 
     <!-- ============================================================ -->
     <!--    WORKSHOP - Onboarding review                              -->
@@ -151,7 +148,9 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="workshop_onboarding_section_stream">Strumień</string>
     <string name="workshop_onboarding_section_details">Szczegóły myśli</string>
     <string name="workshop_onboarding_section_counter">%1$d/%2$d</string>
-    <string name="workshop_dialog_reset_onboarding">Czy chcesz ponownie zobaczyć wszystkie wskazówki w tej sekcji?</string>
+    <string name="workshop_dialog_reset_onboarding_title">Pokazać wskazówki od nowa?</string>
+    <string name="workshop_dialog_reset_onboarding">Wszystkie wskazówki w tej sekcji pojawią się ponownie.</string>
+    <string name="workshop_dialog_reset_onboarding_yes">Pokaż wskazówki</string>
     <string name="workshop_onboarding_no_thoughts">Najpierw złap jakąś myśl</string>
 
     <!-- ============================================================ -->
@@ -233,9 +232,10 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="capture_voice_error_empty">Eeee… To nagranie ma 0 sekund :/</string>
     <string name="capture_voice_error_recording">Błąd podczas nagrywania</string>
     <string name="capture_voice_error_save_failed">Błąd podczas zapisywania do bazy</string>
-    <string name="capture_voice_dialog_title">Co chcesz zrobić z nagraniem?</string>
-    <string name="capture_voice_dialog_delete">Wywalić</string>
-    <string name="capture_voice_dialog_overwrite">Nadpisać</string>
+    <string name="capture_voice_dialog_title">Nagranie już istnieje — co z nim zrobić?</string>
+    <string name="capture_voice_dialog_description">Obecne nagranie zniknie w obu przypadkach.</string>
+    <string name="capture_voice_dialog_delete">Usuń nagranie</string>
+    <string name="capture_voice_dialog_overwrite">Nagraj od nowa</string>
 
     <!-- ============================================================ -->
     <!--    STREAM Activity                                           -->
@@ -306,7 +306,8 @@ Dodaj pierwszy przyciskiem +</string>
     <!-- ============================================================ -->
 
     <!-- Onboarding -->
-    <string name="details_last_form_removed_message">Usunięto ostatnią formę zapisu myśli. Czy usunąć całą myśl?</string>
+    <string name="details_last_form_removed_title">Usunąć pustą myśl?</string>
+    <string name="details_last_form_removed_message">Usunięto ostatnią formę zapisu — myśl jest teraz pusta.</string>
 
     <string name="details_entry_title">Szczegóły myśli</string>
     <string name="details_entry_tooltip">To miejsce to warsztat, w którym rzeźbisz i rozwijasz swoją myśl</string>
@@ -324,9 +325,9 @@ Dodaj pierwszy przyciskiem +</string>
     <!-- Dormant / warning dialogs -->
     <string name="details_warning_dialog_title">⚠️ Myśl niedługo zaśnie</string>
     <string name="details_warning_dialog_message">Tej myśli zostały 3 dni do uśpienia. Edytuj ją lub zwiększ wartość, by ją zachować.</string>
-    <string name="details_dormant_dialog_title">🌙 Uśpiona myśl</string>
-    <string name="details_dormant_dialog_message">Ta myśl jest uśpiona — ma niską wartość i nie była modyfikowana od dłuższego czasu.</string>
-    <string name="details_dormant_dialog_wake">Obudź</string>
+    <string name="details_dormant_dialog_title">🌙 Obudzić uśpioną myśl?</string>
+    <string name="details_dormant_dialog_message">Ma niską wartość i nie była zmieniana od dłuższego czasu.</string>
+    <string name="details_dormant_dialog_wake">Obudź myśl</string>
 
     <!-- Slow mode -->
     <string name="details_slow_mode_title">⏳ Tryb powolny aktywny…</string>
@@ -338,10 +339,10 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="details_usage_link_button">Powiąż</string>
 
     <!-- Unlink dialog -->
-    <string name="details_usage_dialog_title">Powiązany krok</string>
-    <string name="details_usage_dialog_description">Co zrobić z powiązaniem?</string>
-    <string name="details_usage_dialog_unlink">Odepnij</string>
-    <string name="details_usage_dialog_change">Podmień</string>
+    <string name="details_usage_dialog_title">Co zrobić z powiązanym krokiem?</string>
+    <string name="details_usage_dialog_description">Myśl jest przypięta do kroku celu. Odpięcie nie usuwa ani myśli, ani kroku.</string>
+    <string name="details_usage_dialog_unlink">Odepnij od kroku</string>
+    <string name="details_usage_dialog_change">Podmień krok</string>
 
     <!-- Step picker (bottom sheet) -->
     <string name="details_picker_title">Wybierz krok</string>
@@ -349,7 +350,7 @@ Dodaj pierwszy przyciskiem +</string>
 
     <!-- Rich text -->
     <string name="details_rich_text_removing_header">Usunąć tekst?</string>
-    <string name="details_rich_text_removing_content">Ta operacja jest nieodwracalna</string>
+    <string name="details_rich_text_removing_yes">Usuń tekst</string>
 
     <!-- ============================================================ -->
     <!--    METADATA Activity                                         -->
@@ -357,7 +358,6 @@ Dodaj pierwszy przyciskiem +</string>
 
     <!-- Header -->
     <string name="metadata_title">Metadane</string>
-    <string name="metadata_placeholder">Ekran w budowie</string>
     <string name="metadata_persons_empty">Brak osób w tagach</string>
     <string name="metadata_projects_empty">Brak projektów w tagach</string>
 
@@ -372,7 +372,9 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="metadata_tag_edit_exists">Taki tag już istnieje</string>
 
     <!-- Long press deletion -->
-    <string name="metadata_tag_delete_message">Czy usunąć tag „%1$s”? Zniknie ze wszystkich myśli, które go używają.</string>
+    <string name="metadata_tag_delete_title">Usunąć tag?</string>
+    <string name="metadata_tag_delete_message">Tag [%1$s] zniknie ze wszystkich myśli, które go używają.</string>
+    <string name="metadata_tag_delete_yes">Usuń tag</string>
 
     <!-- Pill count part - opens Stream searched by the tag -->
     <string name="metadata_tag_search">Szukaj myśli z tym tagiem</string>
@@ -422,13 +424,16 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="settings_flashcards_new_per_day_label">Nowych fiszek\ndziennie</string>
     <string name="settings_flashcards_backlog_label">Wstrzymaj nowe przy\nzaległościach powyżej</string>
     <string name="settings_permissions_backup">Włącz tworzenie kopii zapasowych</string>
-    <string name="settings_permissions_blockade_title">Uprawnienie zablokowane</string>
-    <string name="settings_permissions_recording_blockade_tooltip">Uprawnienie do nagrywania dźwięku zostało trwale odrzucone.\nMożesz je włączyć w ustawieniach systemu Androida.</string>
-    <string name="settings_permissions_photo_blockade_tooltip">Uprawnienie do kamery zostało trwale odrzucone.\nMożesz je włączyć w ustawieniach systemu Androida.</string>
-    <string name="settings_permissions_backup_blockade_tooltip">Uprawnienie do pamięci urządzenia zostało trwale odrzucone.\nMożesz je włączyć w ustawieniach systemu Androida.</string>
-    <string name="settings_voice_recording_info">Aby móc nagrywać dźwięk, aplikacja potrzebuje dostępu do mikrofonu.</string>
-    <string name="settings_backup_permission_info">Aby zapisywać i wczytywać kopie zapasowe, aplikacja potrzebuje dostępu do pamięci urządzenia.</string>
-    <string name="settings_permissions_photo_info">Aby móc robić zdjęcia, aplikacja potrzebuje dostępu do kamery.</string>
+    <string name="settings_permissions_blockade_info">Dostęp jest zablokowany — włączysz go w ustawieniach Androida.</string>
+    <string name="settings_permission_voice_recording_blockade_title">Odblokować dostęp do mikrofonu?</string>
+    <string name="settings_permission_photo_blockade_title">Odblokować dostęp do kamery?</string>
+    <string name="settings_permission_backup_blockade_title">Odblokować dostęp do pamięci urządzenia?</string>
+    <string name="settings_voice_recording_info">Bez niego nie nagrasz głosu.</string>
+    <string name="settings_backup_permission_info">Bez niego nie zapiszesz ani nie wczytasz kopii zapasowej ze swoimi danymi.</string>
+    <string name="settings_permissions_photo_info">Bez niego nie zrobisz zdjęcia.</string>
+    <string name="settings_permission_voice_recording_title">Zezwolić na dostęp do mikrofonu?</string>
+    <string name="settings_permission_photo_title">Zezwolić na dostęp do kamery?</string>
+    <string name="settings_permission_backup_title">Zezwolić na dostęp do pamięci urządzenia?</string>
 
     <!-- Default capture form -->
     <string name="settings_default_form_header">✍️ Domyślna forma zapisu myśli</string>
@@ -438,14 +443,15 @@ Dodaj pierwszy przyciskiem +</string>
 
     <!-- Domains -->
     <string name="workshop_calendar_entry_created">Wrzucono w Twój kalendarz</string>
-    <string name="workshop_dialog_delete_step_calendar_warning">Krok, który chcesz usunąć, ma przypomnienie w kalendarzu, które usuniemy wraz z nim. Kontynuować?</string>
+    <string name="workshop_dialog_delete_step_calendar_warning">Usuniemy też jego przypomnienie w kalendarzu.</string>
 
     <string name="settings_calendar_section">🐣 Przypomnienia w kalendarzu</string>
     <string name="settings_calendar_reminders_switch_label">Włącz wpisy do kalendarza</string>
     <string name="settings_calendar_reminders_hint">Kroki celu z ustawionym przypomnieniem trafią do Twojego kalendarza (wybranego poniżej) jako cykliczne wydarzenia</string>
     <string name="settings_calendar_reminders_sync_hint">ⓘ Aby wpisy pojawiły się w aplikacji Kalendarz Google, potrzebne jest połączenie z siecią — synchronizacja wyśle je do chmury.</string>
-    <string name="settings_calendar_permission_info">Aby dodawać przypomnienia do kalendarza, aplikacja potrzebuje dostępu do niego. Bez tego nie da się włączyć tej opcji.</string>
-    <string name="settings_calendar_blockade_tooltip">Dostęp do kalendarza został zablokowany. Możesz go przywrócić w ustawieniach Androida.</string>
+    <string name="settings_permission_calendar_title">Zezwolić na dostęp do kalendarza?</string>
+    <string name="settings_calendar_permission_info">Bez niego nie dodasz przypomnień.</string>
+    <string name="settings_permission_calendar_blockade_title">Odblokować dostęp do kalendarza?</string>
 
     <string name="settings_domains_header">🌾 Moje Domeny</string>
     <string name="settings_start_screen_header">🧭 Ekran startowy</string>
@@ -454,7 +460,6 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="settings_start_screen_workshop">Warsztat</string>
     <string name="settings_domain_edit_title">Edytuj domenę</string>
     <string name="settings_domain_edit_icons_title">| Ikona</string>
-    <string name="settings_domain_edit_hint">Nazwa</string>
     <string name="settings_domain_edit_hint_placeholder">Wpisz nazwę domeny</string>
     <string name="settings_domain_edit_hint_floating">Nazwa domeny</string>
     <string name="settings_domain_edit_error_name_empty">Nazwa domeny nie może być pusta</string>
@@ -485,7 +490,8 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="settings_backup_stats">ⓘ Obecnie masz %1$d plików z kopią zapasową o wadze %2$.1f MB</string>
     <string name="settings_backup_no_snapshots">Brak zapisanych kopii zapasowych…</string>
     <string name="settings_backup_error_version_mismatch">Backup z nowszej wersji aplikacji (%1$d) nie może być załadowany (aktualna wersja: %2$d)</string>
-    <string name="settings_snapshot_restore_warning">Wszystkie obecne dane zostaną zastąpione danymi wczytanymi z wybranego pliku. Kontynuować?</string>
+    <string name="settings_snapshot_restore_title">Zastąpić dane kopią zapasową?</string>
+    <string name="settings_snapshot_restore_warning">Obecne dane zostaną zastąpione danymi z wybranego pliku. Tego nie da się cofnąć.</string>
 
     <!-- Slow mode -->
     <string name="settings_slow_mode_header">⏳ Tryb powolny</string>
@@ -522,9 +528,12 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="workshop_goals_archive_more">Pokaż starsze…</string>
     <string name="workshop_dialog_add_goal">Nowy cel / kierunek</string>
     <string name="workshop_dialog_edit_goal">Edytuj cel / kierunek</string>
-    <string name="workshop_dialog_delete_goal_title">Usunąć cel / kierunek?</string>
-    <string name="workshop_dialog_delete_goal_desc">Zostaną usunięte też wszystkie kroki tego celu.</string>
-    <string name="workshop_dialog_goal_archive">Wrzuć do archiwum</string>
+    <string name="workshop_dialog_delete_goal_title">Usunąć cel?</string>
+    <string name="workshop_dialog_delete_goal_desc">Usunięte zostaną też wszystkie jego kroki. Archiwum zachowa cel razem z krokami.</string>
+    <string name="workshop_dialog_delete_goal_yes">Usuń cel i kroki</string>
+    <string name="workshop_dialog_delete_archived_goal_title">Usunąć cel z archiwum?</string>
+    <string name="workshop_dialog_delete_archived_goal_desc">Usunięte zostaną też wszystkie jego kroki. Tego nie da się cofnąć.</string>
+    <string name="workshop_dialog_goal_archive">Przenieś do archiwum</string>
     <string name="workshop_dialog_goal_restore">Przywróć z archiwum</string>
 
     <!-- Steps -->
@@ -532,6 +541,8 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="workshop_dialog_add_step">Nowy krok</string>
     <string name="workshop_dialog_edit_step">Edytuj krok</string>
     <string name="workshop_dialog_delete_step_title">Usunąć krok?</string>
+    <string name="workshop_dialog_delete_step_yes">Usuń krok</string>
+    <string name="workshop_dialog_delete_step_calendar_yes">Usuń krok i przypomnienie</string>
     <string name="workshop_step_repetitions_header">Ile razy trzeba to wykonać?</string>
     <string name="workshop_step_repetitions_label">Liczba</string>
     <string name="workshop_step_repetitions_single">Jeden raz</string>
@@ -555,14 +566,15 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="workshop_step_linked_thought_fallback">Powiązana myśl</string>
 
     <!-- Unlink thought dialog -->
-    <string name="workshop_step_unlink_title">Powiązana myśl</string>
-    <string name="workshop_step_unlink_description">Co zrobić z powiązaniem?</string>
-    <string name="workshop_step_unlink_keep_thought">Odepnij i zostaw myśl</string>
-    <string name="workshop_step_unlink_delete_thought">Odepnij i usuń myśl</string>
+    <string name="workshop_step_unlink_title">Odpiąć myśl od kroku?</string>
+    <string name="workshop_step_unlink_description">Myśl zostanie w Strumieniu.</string>
+    <string name="workshop_step_unlink_action">Odepnij myśl</string>
 
     <!-- Paths -->
     <string name="workshop_section_paths">Drogi do doświadczenia</string>
-    <string name="workshop_dialog_reset_paths_title">Czy chcesz zresetować swój postęp we wszystkich ukończonych ścieżkach?</string>
+    <string name="workshop_dialog_reset_paths_title">Zresetować postęp ścieżek?</string>
+    <string name="workshop_dialog_reset_paths_desc">Postęp we wszystkich ukończonych ścieżkach zostanie wyzerowany. Tego nie da się cofnąć.</string>
+    <string name="workshop_dialog_reset_paths_yes">Resetuj postęp</string>
     <string name="workshop_path_pool_empty">Nie mam Cię już czego nauczyć…</string>
 
     <!-- Step reminder -->

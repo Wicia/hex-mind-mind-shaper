@@ -294,9 +294,9 @@ class GoalDetailViewModel @Inject constructor(
     }
 
     /**
-     * Handles actions "unpin only" or "unpin + delete thought".
+     * Unlinks the thought from the step - the thought itself stays.
      */
-    fun unlinkThought(stepId: Int, alsoDeleteThought: Boolean) {
+    fun unlinkThought(stepId: Int) {
         // Optimistic UI: clear thoughtId + subject in the affected step
         _goal.value = _goal.value?.let { goal ->
             goal.copy(subItems = goal.subItems.map {
@@ -304,6 +304,6 @@ class GoalDetailViewModel @Inject constructor(
                 else it
             })
         }
-        viewModelScope.launch { goalsService.unlinkThought(stepId, alsoDeleteThought) }
+        viewModelScope.launch { goalsService.unlinkThought(stepId) }
     }
 }

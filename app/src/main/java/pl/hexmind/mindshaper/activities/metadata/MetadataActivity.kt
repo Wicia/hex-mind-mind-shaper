@@ -107,9 +107,9 @@ class MetadataActivity : CoreActivity() {
 
     private fun showTagDeleteDialog(tagName: String) {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.common_deletion_dialog_title))
+            .setTitle(getString(R.string.metadata_tag_delete_title))
             .setDescription(getString(R.string.metadata_tag_delete_message, tagName))
-            .setPrimaryAction(getString(R.string.common_deletion_dialog_yes), caution = true) {
+            .setPrimaryAction(getString(R.string.metadata_tag_delete_yes), caution = true) {
                 viewModel.deleteTag(tagName)
                 showShortToast(R.string.common_deletion_dialog_confirmation, tagName)
             }
