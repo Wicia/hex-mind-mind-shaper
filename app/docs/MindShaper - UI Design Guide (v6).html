@@ -17,6 +17,7 @@
     --muted:#88807A;
     --hair:#BEBEBE;
     --rule:#E6E6E6;
+    --sidebar-w:230px;
   }
   *{box-sizing:border-box}
   body{
@@ -99,6 +100,42 @@
   .comp > summary::-webkit-details-marker{display:none}
   .comp > summary::before{content:"▸"; color:var(--muted); transition:transform .15s}
   .comp[open] > summary::before{transform:rotate(90deg)}
+  /* Side bar (chapters) - same as in Requirements */
+  body{padding-left:calc(var(--sidebar-w) + 20px)}
+  .tabs{
+    display:flex; flex-direction:column; gap:4px;
+    padding:22px 14px 28px;
+    width:var(--sidebar-w);
+    position:fixed; top:0; left:0; bottom:0;
+    overflow-y:auto;
+    background:linear-gradient(to right, #12100F 0%, #12100F 72%, #1E1A17 100%);
+    z-index:20;
+  }
+  .tab{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:500; font-size:14px; line-height:1.3;
+    padding:10px 12px;
+    border:none; border-radius:9px;
+    background:transparent; color:#E8DFD6;
+    cursor:pointer; transition:background .15s,color .15s;
+    width:100%; text-align:left;
+  }
+  .tab:hover{background:rgba(255,255,255,.07)}
+  .tab.active{background:var(--orange-3); color:#2A1B10; font-weight:600}
+  .panel{display:none}
+  .panel.active{display:block}
+  .panel > h2:first-child{margin-top:0}
+  /* Narrow screens: side bar becomes a top strip */
+  @media (max-width:900px){
+    body{padding-left:20px}
+    .tabs{
+      position:static; width:auto;
+      flex-direction:row; flex-wrap:wrap; gap:6px;
+      margin:-40px -20px 28px; padding:14px 16px;
+      background:#12100F;
+    }
+    .tab{width:auto; text-align:center}
+  }
   @media (max-width:560px){
     dl{grid-template-columns:1fr; gap:2px}
     dt{padding:8px 0 0; text-align:left}
@@ -108,11 +145,13 @@
 </style>
 </head>
 <body>
+<nav class="tabs" id="tabbar"><!-- tabs injected by JS from panels --></nav>
 <div class="wrap">
 
 <h1>UI Design Guide</h1>
 <p class="lede">Wspólne zasady wyglądu i zachowania UI. Nowe widoki trzymają się ich od początku. Istniejących widoków spoza bieżącego zadania nie przerabiamy bez decyzji.</p>
 
+<div class="panel" data-tab="Kolory">
 <h2>Kolory</h2>
 <section>
   <ul>
@@ -128,7 +167,9 @@
     <li><b>Tekst</b> — <code>text_primary</code> (grafit średni), <code>text_secondary</code> (grafit jasny); nie wpisujemy kolorów na sztywno w layoutach, tylko przez kolory semantyczne (<code>text_*</code>, <code>button_*</code>, <code>flashcard_*</code>…).</li>
   </ul>
 </section>
+</div>
 
+<div class="panel" data-tab="Typografia">
 <h2>Typografia</h2>
 <section>
   <ul>
@@ -137,7 +178,9 @@
     <li>Nagłówek ekranu ze wspólnego stylu; gdy zamiast tytułu stoi dłuższa nazwa (np. zestawu), może być mniejszy na tym jednym ekranie (np. 20sp).</li>
   </ul>
 </section>
+</div>
 
+<div class="panel" data-tab="Ikony i ich znaczenie">
 <h2>Ikony i ich znaczenie</h2>
 <section>
   <ul>
@@ -147,7 +190,9 @@
     <li><b>Ikony domen</b> (<code>z_ic_domain_*</code>) — wczytywane po prefiksie do galerii ikon domen; nie usuwać ani nie zmieniać nazw, nawet gdy wyszukiwanie nie znajduje odwołań; do innych miejsc UI brać osobną ikonę.</li>
   </ul>
 </section>
+</div>
 
+<div class="panel" data-tab="Przyciski">
 <h2>Przyciski</h2>
 <section>
   <ul>
@@ -166,7 +211,9 @@
     </li>
   </ul>
 </section>
+</div>
 
+<div class="panel" data-tab="Chipy i pigułki">
 <h2>Chipy i pigułki</h2>
 <p class="model-note">Na tym się wzorować :D</p>
 <div class="comps">
@@ -246,7 +293,9 @@
     </dl>
   </details>
 </div>
+</div>
 
+<div class="panel" data-tab="Wybór wartości">
 <h2>Wybór wartości</h2>
 <div class="comps">
   <p class="note">Rendery poglądowe w skali ok. 1,15× (inline SVG, 1 jednostka = 1dp) — wymiary i kolory z <code>res/</code>.</p>
@@ -283,8 +332,49 @@
       <dd><code>HexHourPickerView</code> (<code>stepMinutes</code>), <code>hour_picker_item.xml</code> (layout)</dd>
     </dl>
   </details>
+
+  <details class="comp" open>
+    <summary><h3>Kafelki wyboru</h3></summary>
+    <dl>
+      <dt>Przeznaczenie</dt>
+      <dd>Wybór jednej z kilku opcji z ikoną — w <i>Ustawieniach</i>: ekran startowy, domyślna forma zapisu, skala wartości myśli.</dd>
+      <dt>Wygląd</dt>
+      <dd>
+        <figure><svg role="img" aria-label="hex-option-tiles-row" xmlns="http://www.w3.org/2000/svg" width="345" height="101.2" viewBox="0 0 300 88">
+  <rect width="300" height="88" fill="#FFFFFF"/>
+  <g><rect x="13" y="13" width="84.6667" height="62" rx="12" fill="#FFE1C8" stroke="#FFC59A" stroke-width="2"/><circle cx="55.3333" cy="34" r="9" fill="none" stroke="#000000" stroke-width="2"/><text x="55.3333" y="58" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#000000" font-family="Montserrat, 'Segoe UI', sans-serif">Tekst</text></g>
+  <g><rect x="107.167" y="12.5" width="85.6667" height="63" rx="12" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/><circle cx="150" cy="34" r="9" fill="none" stroke="#625A54" stroke-width="2"/><text x="150" y="58" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#625A54" font-family="Montserrat, 'Segoe UI', sans-serif">Głos</text></g>
+  <g><rect x="201.833" y="12.5" width="85.6667" height="63" rx="12" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/><circle cx="244.667" cy="34" r="9" fill="none" stroke="#625A54" stroke-width="2"/><text x="244.667" y="58" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#625A54" font-family="Montserrat, 'Segoe UI', sans-serif">Zdjęcie</text></g>
+</svg></figure>
+        <figure><svg role="img" aria-label="hex-option-tiles-grid" xmlns="http://www.w3.org/2000/svg" width="345" height="184.0" viewBox="0 0 300 160">
+  <rect width="300" height="160" fill="#FFFFFF"/>
+  <g><rect x="13" y="13" width="132" height="62" rx="12" fill="#FFE1C8" stroke="#FFC59A" stroke-width="2"/><circle cx="79" cy="34" r="9" fill="none" stroke="#000000" stroke-width="2"/><text x="79" y="58" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#000000" font-family="Montserrat, 'Segoe UI', sans-serif">Home</text></g>
+  <g><rect x="154.5" y="12.5" width="133" height="63" rx="12" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/><circle cx="221" cy="34" r="9" fill="none" stroke="#625A54" stroke-width="2"/><text x="221" y="58" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#625A54" font-family="Montserrat, 'Segoe UI', sans-serif">Strumień</text></g>
+  <g opacity="0.45"><rect x="12.5" y="84.5" width="133" height="63" rx="12" fill="#E6E6E6" stroke="#BEBEBE" stroke-width="1"/><circle cx="79" cy="106" r="9" fill="none" stroke="#828282" stroke-width="2"/><text x="79" y="130" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#828282" font-family="Montserrat, 'Segoe UI', sans-serif">Fiszki</text></g>
+  <g><rect x="154.5" y="84.5" width="133" height="63" rx="12" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/><circle cx="221" cy="106" r="9" fill="none" stroke="#625A54" stroke-width="2"/><text x="221" y="130" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#625A54" font-family="Montserrat, 'Segoe UI', sans-serif">Warsztat</text></g>
+</svg></figure>
+        <ul>
+          <li>kafelki zawsze równej szerokości; w jednym rzędzie równej wysokości</li>
+          <li>do 3 kafelków — zawsze jeden rząd</li>
+          <li>4 i więcej — jeden rząd, a gdy kafelek byłby węższy niż 80dp (wąski ekran, duża czcionka), siatka 2 kolumn</li>
+          <li>wyłączony — szary i przygaszony</li>
+        </ul>
+      </dd>
+      <dt>Działanie</dt>
+      <dd>
+        <ul>
+          <li><b>tap</b> wybiera kafelek; wybrany jest zawsze dokładnie jeden</li>
+          <li>wyłączony nie reaguje; gdy był wybrany, wybór przechodzi na pierwszy dostępny</li>
+        </ul>
+      </dd>
+      <dt>Kod</dt>
+      <dd><code>HexOptionTiles</code>, <code>common_option_tile_item_view.xml</code> (layout)</dd>
+    </dl>
+  </details>
+</div>
 </div>
 
+<div class="panel" data-tab="Dialogi">
 <h2>Dialogi</h2>
 <section class="rules">
   <ul>
@@ -391,7 +481,9 @@
     </dl>
   </details>
 </div>
+</div>
 
+<div class="panel" data-tab="Karty i listy">
 <h2>Karty i listy</h2>
 <section>
   <ul>
@@ -400,7 +492,9 @@
     <li><b>Etykieta sekcji nad listą</b> — mała, w kolorze tekstu drugorzędnego (np. <i>„Zestawy”</i>, 15sp).</li>
   </ul>
 </section>
+</div>
 
+<div class="panel" data-tab="Ruch i animacje">
 <h2>Ruch i animacje</h2>
 <section>
   <ul>
@@ -412,7 +506,34 @@
     <li><b>Bez rozmycia per klatkę</b> — poświatę robimy warstwami kresek (tańsze), nie <code>BlurMaskFilter</code>.</li>
   </ul>
 </section>
+</div>
 
 </div>
+
+<script>
+  // Build the side bar from the panels, so adding a chapter = adding one panel
+  (function(){
+    var panels = document.querySelectorAll('.panel');
+    var tabbar = document.getElementById('tabbar');
+    var buttons = [];
+
+    panels.forEach(function(panel){
+      var btn = document.createElement('button');
+      btn.className = 'tab';
+      btn.textContent = panel.getAttribute('data-tab');
+      btn.addEventListener('click', function(){ activate(panel, btn); });
+      tabbar.appendChild(btn);
+      buttons.push(btn);
+    });
+
+    function activate(activePanel, activeBtn){
+      buttons.forEach(function(b){ b.classList.toggle('active', b === activeBtn); });
+      panels.forEach(function(p){ p.classList.toggle('active', p === activePanel); });
+      window.scrollTo(0, 0);
+    }
+
+    activate(panels[0], buttons[0]);
+  })();
+</script>
 </body>
 </html>
