@@ -10,10 +10,11 @@ plugins {
     id("kotlin-parcelize")
 }
 
-// assemble<Variant> now depends on its OWN unit-test task - flavors split "testDebugUnitTest" into per-variant names
+// assemble<Variant> depends on its OWN unit-test task - flavors split "testDebugUnitTest" into per-variant names
+// Lazy match: assemble tasks without a matching test task (e.g. assemble<Variant>UnitTest/AndroidTest) get no dependency
 tasks.matching { it.name.startsWith("assemble") }.configureEach {
     val unitTestTask = "test${name.removePrefix("assemble")}UnitTest"
-    dependsOn(unitTestTask)
+    dependsOn(tasks.matching { it.name == unitTestTask })
 }
 
 android {
