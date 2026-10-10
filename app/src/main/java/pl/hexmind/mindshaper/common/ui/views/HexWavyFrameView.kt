@@ -17,7 +17,7 @@ import kotlin.math.roundToInt
 import kotlin.math.sin
 
 /**
- * Glowing frame of "Do powtórki" whose line ripples like a water surface while [isWaving] ("something to do").
+ * Glowing frame of the today's session widget whose line ripples like a water surface while [isWaving] ("something to do").
  * Not waving = a still, straight frame; the ripples fade in / out.
  *
  * - line = rounded rect sampled every few dp, each point pushed along its outward normal

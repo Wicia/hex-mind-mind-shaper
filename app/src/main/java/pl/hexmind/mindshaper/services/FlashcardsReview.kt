@@ -3,15 +3,15 @@ package pl.hexmind.mindshaper.services
 import pl.hexmind.mindshaper.services.dto.FlashcardDTO
 import pl.hexmind.mindshaper.services.dto.FlashcardSetDTO
 import pl.hexmind.mindshaper.services.dto.FlashcardStatus
-import java.time.Instant
 import java.time.LocalDate
+import kotlin.random.Random
 
 /**
  * What is up for review right now - one session over all the sets (or just one of them).
  * Nothing is stored about the session itself: the queue comes from the flashcards' progress each time,
  * so leaving the session halfway loses nothing - the answered ones are already rescheduled.
  *
- * Order: second chances -> planned reviews (lowest level first) -> new flashcards.
+ * Order: planned reviews (lowest level first, random within a level) -> new flashcards.
  * New ones: at most [Params.newPerDay] a day, none while the due reviews exceed [Params.backlogThreshold].
  */
 object FlashcardsReview {
@@ -29,7 +29,7 @@ object FlashcardsReview {
 
     data class Plan(
         val queue: List<Card>,
-        val repetitionsCount: Int, // Second chances + planned reviews in the queue
+        val repetitionsCount: Int, // Planned reviews in the queue
         val newCount: Int,         // New flashcards in the queue
         val newPausedBacklog: Int  // > 0 = new flashcards held back, this many reviews to catch up first
     ) {
@@ -37,7 +37,7 @@ object FlashcardsReview {
     }
 
     data class SetStats(
-        val dueCount: Int, // Second chances + planned reviews
+        val dueCount: Int,
         val newCount: Int,
         val masteredCount: Int
     )
@@ -50,20 +50,26 @@ object FlashcardsReview {
 
     /**
      * @param setId null = all the sets
+     * @param random order within a level - so the user does not learn what comes after what
      * ! The daily limit and the backlog are counted over all the sets - a set's own session follows the same rules
      */
-    fun plan(sets: List<FlashcardSetDTO>, params: Params, today: LocalDate, now: Instant, setId: Int? = null): Plan {
+    fun plan(
+        sets: List<FlashcardSetDTO>,
+        params: Params,
+        today: LocalDate,
+        setId: Int? = null,
+        random: Random = Random.Default
+    ): Plan {
         val allCards = cardsOf(sets)
         val cards = if (setId == null) allCards else allCards.filter { card -> card.setId == setId }
 
-        val secondChances = cards
-            .filter { card -> card.flashcard.status == FlashcardStatus.FROZEN && isDue(card, today, now) }
-            .sortedBy { card -> card.flashcard.level }
+        // Shuffle first, then the stable sort keeps the random order within a level
         val planned = cards
-            .filter { card -> card.flashcard.status == FlashcardStatus.ACTIVE && isDue(card, today, now) }
-            .sortedWith(compareBy<Card> { card -> card.flashcard.level }.thenBy { card -> card.flashcard.dueOn })
+            .filter { card -> isDue(card, today) }
+            .shuffled(random)
+            .sortedBy { card -> card.flashcard.level }
 
-        val backlog = allCards.count { card -> isDue(card, today, now) }
+        val backlog = allCards.count { card -> isDue(card, today) }
         val introducedToday = allCards.count { card -> card.flashcard.introducedOn == today }
         val isBacklogged = backlog > params.backlogThreshold
         val newAllowed = if (isBacklogged) 0 else (params.newPerDay - introducedToday).coerceAtLeast(0)
@@ -77,20 +83,20 @@ object FlashcardsReview {
         val hasNewWaiting = cards.any { card -> card.flashcard.status == FlashcardStatus.NEW }
 
         return Plan(
-            queue            = secondChances + planned + newCards,
-            repetitionsCount = secondChances.size + planned.size,
+            queue            = planned + newCards,
+            repetitionsCount = planned.size,
             newCount         = newCards.size,
             newPausedBacklog = if (isBacklogged && hasNewWaiting) backlog - params.backlogThreshold else 0
         )
     }
 
-    fun statsOf(set: FlashcardSetDTO, today: LocalDate, now: Instant): SetStats =
+    fun statsOf(set: FlashcardSetDTO, today: LocalDate): SetStats =
         SetStats(
-            dueCount      = set.flashcards.count { flashcard -> FlashcardsScheduler.isRepetitionDue(flashcard, today, now) },
+            dueCount      = set.flashcards.count { flashcard -> FlashcardsScheduler.isRepetitionDue(flashcard, today) },
             newCount      = set.flashcards.count { flashcard -> flashcard.status == FlashcardStatus.NEW },
             masteredCount = set.flashcards.count { flashcard -> flashcard.status == FlashcardStatus.MASTERED }
         )
 
-    private fun isDue(card: Card, today: LocalDate, now: Instant): Boolean =
-        FlashcardsScheduler.isRepetitionDue(card.flashcard, today, now)
+    private fun isDue(card: Card, today: LocalDate): Boolean =
+        FlashcardsScheduler.isRepetitionDue(card.flashcard, today)
 }

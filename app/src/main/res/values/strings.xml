@@ -101,7 +101,7 @@
     <string name="photos_loading_error">Coś się wyburaczyło przy ładowaniu zdjęcia…</string>
 
     <!-- Flashcards -->
-    <string name="flashcards_title">Utrwalanie</string>
+    <string name="flashcards_title">Zapamiętywanie</string>
     <string name="flashcards_sets_empty">Nie masz jeszcze żadnego zestawu fiszek…
 Dodaj pierwszy przyciskiem +</string>
     <string name="flashcards_set_no_flashcards">Ten zestaw nie ma jeszcze fiszek</string>
@@ -121,12 +121,25 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="flashcards_btn_create_set">Utwórz</string>
     <string name="flashcards_set_name_with_count">%1$s (%2$d)</string>
     <string name="flashcards_end_title">Wszystkie fiszki zostały ogarnięte ;)</string>
-    <string name="flashcards_end_ratings">"Dobrze: %1$d  ·  Średnio: %2$d  ·  Kiepsko: %3$d"</string>
-    <string name="flashcards_end_frozen_info">Zamrożone wrócą na drugą szansę za godzinę</string>
-    <string name="flashcards_set_stats">"Powtórki: %1$d  ·  Nowe: %2$d  ·  Opanowane: %3$d"</string>
+    <string name="flashcards_end_ratings">"Mam to: %1$d  ·  Coś świta: %2$d  ·  Pustka: %3$d"</string>
+    <string name="flashcards_rating_good">Mam to</string>
+    <string name="flashcards_rating_ok">Coś świta</string>
+    <string name="flashcards_rating_bad">Pustka</string>
+    <string name="flashcards_set_stats">"Do powtórki: %1$d  ·  Nowe: %2$d  ·  Utrwalone: %3$d"</string>
     <string name="flashcards_review_today">Dzisiejsza sesja</string>
     <string name="flashcards_sets_label">Zestawy</string>
-    <string name="flashcards_review_today_counts">"Do powtórzenia: %1$d  ·  Nowe: %2$d"</string>
+    <plurals name="flashcards_review_today_counts">
+        <item quantity="one">Masz do powtórki %d fiszkę</item>
+        <item quantity="few">Masz do powtórki %d fiszki</item>
+        <item quantity="many">Masz do powtórki %d fiszek</item>
+        <item quantity="other">Masz do powtórki %d fiszki</item>
+    </plurals>
+    <plurals name="flashcards_review_today_new">
+        <item quantity="one">(%d nowa)</item>
+        <item quantity="few">(%d nowe)</item>
+        <item quantity="many">(%d nowych)</item>
+        <item quantity="other">(%d nowe)</item>
+    </plurals>
     <string name="flashcards_review_today_done">Na dziś wszystko powtórzone :)</string>
     <string name="flashcards_new_paused">Nowe fiszki wstrzymane - do nadrobienia: %1$d</string>
     <string name="flashcards_level_mastered">★</string>
@@ -420,9 +433,6 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="settings_permissions_section">🔆 Formy zapisu myśli</string>
     <string name="settings_permissions_voice_recording">Włącz zapis w formie głosówek</string>
     <string name="settings_permissions_photo">Włącz zapis w formie zdjęć</string>
-    <string name="settings_permissions_flashcards">Włącz fiszki (widok Utrwalanie)</string>
-    <string name="settings_flashcards_new_per_day_label">Nowych fiszek\ndziennie</string>
-    <string name="settings_flashcards_backlog_label">Wstrzymaj nowe przy\nzaległościach powyżej</string>
     <string name="settings_permissions_backup">Włącz tworzenie kopii zapasowych</string>
     <string name="settings_permissions_blockade_info">Dostęp jest zablokowany — włączysz go w ustawieniach Androida.</string>
     <string name="settings_permission_voice_recording_blockade_title">Odblokować dostęp do mikrofonu?</string>
@@ -434,6 +444,24 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="settings_permission_voice_recording_title">Zezwolić na dostęp do mikrofonu?</string>
     <string name="settings_permission_photo_title">Zezwolić na dostęp do kamery?</string>
     <string name="settings_permission_backup_title">Zezwolić na dostęp do pamięci urządzenia?</string>
+
+    <!-- Memorizing -->
+    <string name="settings_memorizing_section">🧠 Zapamiętywanie</string>
+    <string name="settings_permissions_flashcards">Włącz fiszki</string>
+    <string name="settings_flashcards_new_per_day_label">Nowych fiszek\ndziennie</string>
+    <string name="settings_flashcards_backlog_label">Wstrzymaj nowe przy\nzaległościach powyżej</string>
+    <string name="settings_flashcards_reminders_switch_label">Włącz przypomnienia o powtórkach</string>
+    <string name="settings_flashcards_reminders_hint">O tej godzinie przypomnimy o sesji powtórek, jeśli coś na nią czeka</string>
+    <string name="settings_flashcards_reminder_hour_label">Godzina\nprzypomnienia</string>
+    <string name="settings_permission_notifications_title">Zezwolić na powiadomienia?</string>
+    <string name="settings_notifications_permission_info">Bez nich nie dostaniesz przypomnień o powtórkach.</string>
+    <string name="settings_permission_notifications_blockade_title">Odblokować powiadomienia?</string>
+
+    <!-- Notifications - flashcards reminders -->
+    <string name="notifications_flashcards_channel_name">Przypomnienia o powtórkach</string>
+    <string name="notifications_flashcards_channel_description">Codzienna sesja powtórek fiszek</string>
+    <string name="notifications_flashcards_session_title">Czas na powtórkę fiszek</string>
+    <string name="notifications_flashcards_session_text">Na dziś: %1$d do powtórki</string>
 
     <!-- Default capture form -->
     <string name="settings_default_form_header">✍️ Domyślna forma zapisu myśli</string>

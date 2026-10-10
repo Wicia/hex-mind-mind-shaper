@@ -30,7 +30,7 @@ import kotlin.random.Random
  * Preview of one set: its flashcards (front + back) in the order they were entered.
  * Delete (X, left) / edit / review (rocket), FAB = add flashcards in a series.
  * Tap on a flashcard = edit just that one, long press = delete it.
- * Each flashcard shows where it is in the Repetitions System (new / level / frozen / mastered).
+ * Each flashcard shows where it is in the Repetitions System (new / level / mastered).
  */
 @AndroidEntryPoint
 class FlashcardSetActivity : CoreActivity() {
@@ -38,9 +38,6 @@ class FlashcardSetActivity : CoreActivity() {
     companion object {
         // Intent extra key — must match SavedStateHandle key in FlashcardSetViewModel
         private const val EXTRA_SET_ID = "setId"
-
-        // Frozen flashcard's row - still readable, but clearly "on hold"
-        private const val FROZEN_ALPHA = 0.5f
 
         // Mastered star - bigger than the level number (15sp), in the flashcards' accent
         private const val STAR_TEXT_SIZE_SP = 22f
@@ -150,7 +147,7 @@ class FlashcardSetActivity : CoreActivity() {
 
     /**
      * Level 0 (new) - 5: number on top + the bar filled from the bottom.
-     * Mastered = a star instead of the number, frozen = the whole card half transparent (waits for the second chance)
+     * Mastered = a star instead of the number
      */
     private fun bindLevel(row: View, flashcard: FlashcardDTO) {
         val filled = flashcard.level.coerceIn(0, FlashcardsScheduler.MAX_LEVEL).toFloat() / FlashcardsScheduler.MAX_LEVEL
@@ -162,7 +159,6 @@ class FlashcardSetActivity : CoreActivity() {
             startStarSignal(row.findViewById(R.id.v_preview_level_signal))
         }
         else tvLevel.text = flashcard.level.toString()
-        row.alpha = if (flashcard.status == FlashcardStatus.FROZEN) FROZEN_ALPHA else 1f
         row.findViewById<View>(R.id.v_preview_level_done).updateLayoutParams<LinearLayout.LayoutParams> { weight = filled }
         row.findViewById<View>(R.id.v_preview_level_left).updateLayoutParams<LinearLayout.LayoutParams> { weight = 1f - filled }
     }

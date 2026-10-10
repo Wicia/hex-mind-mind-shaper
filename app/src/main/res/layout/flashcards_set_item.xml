@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- One set on the Utrwalanie list - same card look as the flashcard itself (color + Alegreya) -->
-<!-- Tap = preview of the set's flashcards, rocket = start / resume the review -->
+<!-- One set on the flashcards screen list - same card look as the flashcard itself (color + Alegreya) -->
+<!-- Tap = preview of the set's flashcards, rocket = review of just this set -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -33,7 +33,7 @@
             android:fontFamily="@font/alegreya_regular"
             tools:text="Stolice Azji (12)" />
 
-        <!-- Paused session (what is left of it) or the last session's result - gone when neither -->
+        <!-- Repetitions System stats of the set - gone for an empty set -->
         <TextView
             android:id="@+id/tv_set_status"
             android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
             android:textSize="14sp"
             android:textColor="@color/text_secondary"
             android:visibility="gone"
-            tools:text="Utrwalono 67% fiszek"
+            tools:text="Do powtórki: 3  ·  Nowe: 5  ·  Utrwalone: 2"
             tools:visibility="visible" />
 
     </LinearLayout>

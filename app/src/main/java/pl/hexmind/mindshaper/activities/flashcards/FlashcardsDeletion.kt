@@ -5,7 +5,7 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 
 /**
- * Delete confirmations of Utrwalanie - the same one for the X button and the long press.
+ * Delete confirmations of the flashcards screens - the same one for the X button and the long press.
  */
 object FlashcardsDeletion {
 

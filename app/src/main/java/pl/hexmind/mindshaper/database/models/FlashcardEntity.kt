@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import java.time.Instant
 
 /**
  * One flashcard (front + back) of a set. A set holds an ordered list of them.
@@ -40,7 +39,7 @@ data class FlashcardEntity(
     @ColumnInfo(name = "back")
     val back: String,
 
-    // Repetitions System progress - FlashcardStatus name (NEW / ACTIVE / FROZEN / MASTERED)
+    // Repetitions System progress - FlashcardStatus name (NEW / ACTIVE / MASTERED)
     @ColumnInfo(name = "status")
     val status: String = STATUS_NEW,
 
@@ -52,15 +51,12 @@ data class FlashcardEntity(
     @ColumnInfo(name = "due_on")
     val dueOn: Long? = null,
 
-    // FROZEN: second chance not before this moment
-    @ColumnInfo(name = "frozen_until")
-    val frozenUntil: Instant? = null,
-
     // Day of the first review (epoch day) - counts towards the daily limit of new flashcards
     @ColumnInfo(name = "introduced_on")
     val introducedOn: Long? = null
 ) {
     companion object {
         const val STATUS_NEW = "NEW"
+        const val STATUS_ACTIVE = "ACTIVE"
     }
 }

@@ -19,6 +19,7 @@ import pl.hexmind.mindshaper.database.initialization.DataSnapshotManager
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.DomainIconsService
 import pl.hexmind.mindshaper.services.dto.DefaultCaptureForm
+import pl.hexmind.mindshaper.services.reminders.FlashcardsReminders
 import timber.log.Timber
 
 @HiltAndroidApp
@@ -36,6 +37,9 @@ class ApplicationMain : Application() {
     @Inject
     lateinit var appSettingsStorage: AppSettingsStorage
 
+    @Inject
+    lateinit var flashcardsReminders: FlashcardsReminders
+
     override fun onCreate() {
         super.onCreate()
 
@@ -45,6 +49,9 @@ class ApplicationMain : Application() {
         }
 
         registerCaptureShortcuts()
+
+        // Safety net - the alarm is also lost on force stop, aggressive background killing or an update
+        flashcardsReminders.scheduleNext()
 
         CoroutineScope(Dispatchers.IO).launch {
             databaseInitializer.initializeIfNeeded()

@@ -13,7 +13,7 @@ import pl.hexmind.mindshaper.services.FlashcardsReview
 import pl.hexmind.mindshaper.services.dto.FlashcardSetDTO
 
 /**
- * Set on the Utrwalanie list + what the Repetitions System says about it right now.
+ * Set on the flashcards screen list + what the Repetitions System says about it right now.
  * ! Counts depend on the time - kept in the item, so a refresh after a while rebinds what changed
  */
 data class FlashcardSetItem(

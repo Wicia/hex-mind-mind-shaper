@@ -17,11 +17,13 @@ import pl.hexmind.mindshaper.services.dto.FlashcardRating
  * Review session on the scrim (FlashcardsSessionDialog): flashcards of the queue one by one -> end card.
  *
  * - front:       reveal (flip) / skip (to the end of the queue)
- * - back:        good (thumb up) / ok (tilde) / bad (thumb down) - each goes to the next flashcard
- * - end card:    the session's ratings, tick = close the scrim
+ * - back:        good (smile) / ok (thinking) / bad (blank face) - each goes to the next flashcard
+ * - end card:    the session's first ratings, tick = close the scrim
  *
- * Every rating goes out through the callback right away to be stored - the queue itself is not stored,
- * the next session builds it again from the flashcards' progress (see FlashcardsReview).
+ * BAD sends the flashcard to the end of the queue - it comes back until rated GOOD / OK.
+ * Only the first rating of a flashcard goes out through the callback (right away, to be stored) - the returns
+ * change neither its level nor its date. The queue itself is not stored, the next session builds it again
+ * from the flashcards' progress (see FlashcardsReview).
  */
 class HexFlashcardView @JvmOverloads constructor(
     context: Context,
@@ -35,7 +37,7 @@ class HexFlashcardView @JvmOverloads constructor(
     }
 
     interface FlashcardsCallback {
-        /** Flashcard rated - its progress is to be stored. */
+        /** Flashcard rated for the first time in the session - its progress is to be stored. */
         fun onRated(flashcard: FlashcardDTO, rating: FlashcardRating) {}
 
         /** Tick on the end card. */
@@ -50,17 +52,25 @@ class HexFlashcardView @JvmOverloads constructor(
     private val btnLeft: MaterialButton
     private val btnMiddle: MaterialButton
     private val btnRight: MaterialButton
+    private val tvLeftCaption: TextView
+    private val tvMiddleCaption: TextView
+    private val tvRightCaption: TextView
     private val llProgress: LinearLayout
     private val vProgressDone: View
     private val vProgressLeft: View
 
     private var callback: FlashcardsCallback? = null
 
-    // Head = the flashcard on the card; rated ones leave the queue, skipped ones go to its end
+    private val actionIconSize = resources.getDimensionPixelSize(R.dimen.flashcard_action_icon_size)
+    private val ratingIconSize = resources.getDimensionPixelSize(R.dimen.flashcard_rating_icon_size)
+
+    // Head = the flashcard on the card; GOOD / OK take it off the queue, skip and BAD send it to the end
     private var queue: List<FlashcardsReview.Card> = emptyList()
     private var sessionSize = 0
     private var isRevealed = false
+    // First ratings only - a return after BAD counts neither here nor in the progress of the flashcard
     private val ratings = mutableMapOf<FlashcardRating, Int>()
+    private val ratedCards = mutableSetOf<FlashcardsReview.Card>()
 
     // One animation at a time - a second tap mid-flip would rate twice
     private var isAnimating = false
@@ -77,6 +87,9 @@ class HexFlashcardView @JvmOverloads constructor(
         btnLeft = findViewById(R.id.btn_flashcard_left)
         btnMiddle = findViewById(R.id.btn_flashcard_middle)
         btnRight = findViewById(R.id.btn_flashcard_right)
+        tvLeftCaption = findViewById(R.id.tv_flashcard_left_caption)
+        tvMiddleCaption = findViewById(R.id.tv_flashcard_middle_caption)
+        tvRightCaption = findViewById(R.id.tv_flashcard_right_caption)
         llProgress = findViewById(R.id.ll_flashcard_progress)
         vProgressDone = findViewById(R.id.v_flashcard_progress_done)
         vProgressLeft = findViewById(R.id.v_flashcard_progress_left)
@@ -131,19 +144,27 @@ class HexFlashcardView @JvmOverloads constructor(
 
         if (isRevealed) {
             // Not approve / close icons - in the app those mean "save" and "delete"
-            btnLeft.setIconResource(R.drawable.ic_thumb_up)
-            btnRight.setIconResource(R.drawable.ic_thumb_down)
+            btnLeft.setIconResource(R.drawable.ic_memory_have)
+            btnRight.setIconResource(R.drawable.ic_memory_empty)
+            btnLeft.iconSize = ratingIconSize
+            btnRight.iconSize = ratingIconSize
             btnMiddle.visibility = VISIBLE
             btnRight.visibility = VISIBLE
+            tvLeftCaption.setText(R.string.flashcards_rating_good)
+            tvMiddleCaption.setText(R.string.flashcards_rating_ok)
+            tvRightCaption.setText(R.string.flashcards_rating_bad)
         }
         else {
             btnLeft.setIconResource(R.drawable.ic_path_reveal)
             btnRight.setIconResource(R.drawable.ic_replace_or_renew)
+            btnLeft.iconSize = actionIconSize
+            btnRight.iconSize = actionIconSize
             btnMiddle.visibility = INVISIBLE
             // Nothing to skip to when it is the last one in the queue - INVISIBLE keeps the row height
             btnRight.visibility = if (queue.size > 1) VISIBLE else INVISIBLE
         }
         btnLeft.visibility = VISIBLE
+        showCaptions(isRevealed)
 
         showProgress(done = sessionSize - queue.size, total = sessionSize)
     }
@@ -153,23 +174,28 @@ class HexFlashcardView @JvmOverloads constructor(
         llSummary.visibility = VISIBLE
         tvSummaryTitle.text = context.getString(R.string.flashcards_end_title)
 
-        val bad = ratings[FlashcardRating.BAD] ?: 0
-        val result = context.getString(
+        tvSummaryResult.text = context.getString(
             R.string.flashcards_end_ratings,
             ratings[FlashcardRating.GOOD] ?: 0,
             ratings[FlashcardRating.OK] ?: 0,
-            bad
+            ratings[FlashcardRating.BAD] ?: 0
         )
-        tvSummaryResult.text =
-            if (bad > 0) result + "\n" + context.getString(R.string.flashcards_end_frozen_info)
-            else result
 
         btnLeft.visibility = INVISIBLE
         btnMiddle.visibility = INVISIBLE
         btnRight.setIconResource(R.drawable.ic_action_approve)
+        btnRight.iconSize = actionIconSize
         btnRight.visibility = VISIBLE
+        showCaptions(false)
 
         showProgress(done = 1, total = 1)
+    }
+
+    private fun showCaptions(visible: Boolean) {
+        val visibility = if (visible) VISIBLE else INVISIBLE
+        tvLeftCaption.visibility = visibility
+        tvMiddleCaption.visibility = visibility
+        tvRightCaption.visibility = visibility
     }
 
     private fun showProgress(done: Int, total: Int) {
@@ -196,10 +222,12 @@ class HexFlashcardView @JvmOverloads constructor(
     private fun rate(rating: FlashcardRating) {
         animateCardChange(flip = false) {
             val current = queue.first()
-            ratings[rating] = (ratings[rating] ?: 0) + 1
-            queue = queue.drop(1)
+            if (ratedCards.add(current)) {
+                ratings[rating] = (ratings[rating] ?: 0) + 1
+                callback?.onRated(current.flashcard, rating)
+            }
+            queue = if (rating == FlashcardRating.BAD) queue.drop(1) + current else queue.drop(1)
             isRevealed = false
-            callback?.onRated(current.flashcard, rating)
         }
     }
 
@@ -266,6 +294,7 @@ class HexFlashcardView @JvmOverloads constructor(
         sessionSize = newQueue.size
         isRevealed = false
         ratings.clear()
+        ratedCards.clear()
         render()
     }
 

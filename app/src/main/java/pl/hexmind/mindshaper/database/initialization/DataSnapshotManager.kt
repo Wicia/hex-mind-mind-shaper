@@ -27,6 +27,7 @@ import pl.hexmind.mindshaper.database.models.ThoughtHexTagEntity
 import java.io.File
 import java.text.SimpleDateFormat
 import java.time.Instant
+import java.time.LocalDate
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
@@ -214,12 +215,18 @@ class DataSnapshotManager @Inject constructor(
     }
 
     /**
-     * Same as Migrations.MIGRATION_21_TO_22: snapshots before v22 have no repetition progress - the flashcard starts as NEW.
+     * Same as the migrations of the flashcards' progress:
+     * - MIGRATION_21_TO_22: snapshots before v22 have no repetition progress - the flashcard starts as NEW
+     * - MIGRATION_22_TO_23: a FROZEN flashcard of v22 becomes ACTIVE, due today, its level kept
      * ! Gson skips Kotlin defaults - a missing "status" key comes as null despite the non-null type
      */
-    @Suppress("SENSELESS_COMPARISON")
+    @Suppress("SENSELESS_NULL_IN_WHEN")
     private fun withProgressDefaults(flashcard: FlashcardEntity): FlashcardEntity =
-        if (flashcard.status == null) flashcard.copy(status = FlashcardEntity.STATUS_NEW, level = 0) else flashcard
+        when (flashcard.status) {
+            null                            -> flashcard.copy(status = FlashcardEntity.STATUS_NEW, level = 0)
+            Migrations.LEGACY_STATUS_FROZEN -> flashcard.copy(status = FlashcardEntity.STATUS_ACTIVE, dueOn = LocalDate.now().toEpochDay())
+            else                            -> flashcard
+        }
 
     private fun getBackupDirectory(): File {
         // non-standard flavors get their own dir / "standard" flavors keeps the legacy dir + its old backups

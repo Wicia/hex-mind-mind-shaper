@@ -85,12 +85,13 @@
                     android:textSize="16sp"
                     android:textColor="@color/text_primary"
                     android:fontFamily="@font/alegreya_regular"
-                    tools:text="Dobrze: 5 · Średnio: 2 · Kiepsko: 1" />
+                    tools:text="Mam to: 5 · Coś świta: 2 · Pustka: 1" />
 
             </LinearLayout>
 
             <!-- Actions: left (reveal / good), middle (ok - back only), right (skip / bad / close) -->
-            <!-- Same size as the delete button of the rich text (48dp, 32dp icon) -->
+            <!-- Same size as the delete button of the rich text (48dp, 32dp icon) - rating icons bigger (set in code) -->
+            <!-- Caption under each rating icon - INVISIBLE on the front / end card, keeps the row height -->
             <!-- ! Extra side padding - at the card padding alone the icons hugged the edges -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -98,19 +99,34 @@
                 android:layout_marginTop="4dp"
                 android:paddingHorizontal="8dp"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="top">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_flashcard_left"
-                    style="@style/SecondaryActionButton.Ghost"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:padding="8dp"
-                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                    app:icon="@drawable/ic_path_reveal"
-                    app:iconGravity="textStart"
-                    app:iconSize="32dp"
-                    app:rippleColor="@color/flashcard_ripple" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_flashcard_left"
+                        style="@style/SecondaryActionButton.Ghost"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:padding="6dp"
+                        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                        app:icon="@drawable/ic_path_reveal"
+                        app:iconGravity="textStart"
+                        app:iconSize="@dimen/flashcard_action_icon_size"
+                        app:rippleColor="@color/flashcard_ripple" />
+
+                    <TextView
+                        android:id="@+id/tv_flashcard_left_caption"
+                        style="@style/Flashcard_RatingCaption"
+                        android:visibility="invisible"
+                        tools:text="Mam to"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
 
                 <View
                     android:layout_width="0dp"
@@ -118,42 +134,71 @@
                     android:layout_weight="1" />
 
                 <!-- INVISIBLE on the front / end card - keeps the row height -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_flashcard_middle"
-                    style="@style/SecondaryActionButton.Ghost"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:padding="8dp"
-                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                    android:visibility="invisible"
-                    app:icon="@drawable/ic_rating_ok"
-                    app:iconGravity="textStart"
-                    app:iconSize="32dp"
-                    app:rippleColor="@color/flashcard_ripple"
-                    tools:visibility="visible" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_flashcard_middle"
+                        style="@style/SecondaryActionButton.Ghost"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:padding="6dp"
+                        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                        android:visibility="invisible"
+                        app:icon="@drawable/ic_memory_thinking"
+                        app:iconGravity="textStart"
+                        app:iconSize="@dimen/flashcard_rating_icon_size"
+                        app:rippleColor="@color/flashcard_ripple" />
+
+                    <TextView
+                        android:id="@+id/tv_flashcard_middle_caption"
+                        style="@style/Flashcard_RatingCaption"
+                        android:visibility="invisible"
+                        tools:text="Mam to"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_weight="1" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_flashcard_right"
-                    style="@style/SecondaryActionButton.Ghost"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:padding="8dp"
-                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                    app:icon="@drawable/ic_replace_or_renew"
-                    app:iconGravity="textStart"
-                    app:iconSize="32dp"
-                    app:rippleColor="@color/flashcard_ripple" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_flashcard_right"
+                        style="@style/SecondaryActionButton.Ghost"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:padding="6dp"
+                        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                        app:icon="@drawable/ic_replace_or_renew"
+                        app:iconGravity="textStart"
+                        app:iconSize="@dimen/flashcard_action_icon_size"
+                        app:rippleColor="@color/flashcard_ripple" />
+
+                    <TextView
+                        android:id="@+id/tv_flashcard_right_caption"
+                        style="@style/Flashcard_RatingCaption"
+                        android:visibility="invisible"
+                        tools:text="Mam to"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
         </LinearLayout>
 
-        <!-- Session progress: rated out of all the session's flashcards (weights set in code) -->
+        <!-- Session progress: flashcards off the queue out of all the session's flashcards (weights set in code) -->
         <LinearLayout
             android:id="@+id/ll_flashcard_progress"
             android:layout_width="match_parent"

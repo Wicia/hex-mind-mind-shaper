@@ -108,108 +108,6 @@
                         style="@style/Settings_Switch"
                         android:text="@string/settings_permissions_photo" />
 
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/switch_flashcards_feature"
-                        style="@style/Settings_Switch"
-                        android:text="@string/settings_permissions_flashcards" />
-
-                    <!-- Repetitions System params - dimmed while flashcards are off -->
-                    <LinearLayout
-                        android:id="@+id/ll_flashcards_params_picker"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginStart="16dp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="0dp"
-                            android:baselineAligned="false"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="180dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:gravity="end"
-                                android:text="@string/settings_flashcards_new_per_day_label"
-                                android:textSize="14sp" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btn_flashcards_new_per_day_decrease"
-                                style="@style/SecondaryActionButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:minWidth="35dp"
-                                android:text="@string/common_btn_decrease" />
-
-                            <TextView
-                                android:id="@+id/tv_flashcards_new_per_day"
-                                android:layout_width="40dp"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                tools:text="10"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btn_flashcards_new_per_day_increase"
-                                style="@style/SecondaryActionButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:minWidth="35dp"
-                                android:text="@string/common_btn_increase" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:baselineAligned="false"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="180dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:gravity="end"
-                                android:text="@string/settings_flashcards_backlog_label"
-                                android:textSize="14sp" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btn_flashcards_backlog_decrease"
-                                style="@style/SecondaryActionButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:minWidth="35dp"
-                                android:text="@string/common_btn_decrease" />
-
-                            <TextView
-                                android:id="@+id/tv_flashcards_backlog"
-                                android:layout_width="40dp"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                tools:text="10"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btn_flashcards_backlog_increase"
-                                style="@style/SecondaryActionButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:minWidth="35dp"
-                                android:text="@string/common_btn_increase" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
                     <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
 
                     <!-- Default way to capture thoughts -->
@@ -425,6 +323,183 @@
                             android:layout_marginStart="16dp"
                             android:layout_gravity="center_horizontal"
                             android:visibility="invisible" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- === MEMORIZING === -->
+            <androidx.cardview.widget.CardView
+                style="@style/AppCardView">
+
+                <LinearLayout
+                    style="@style/AppCardView_Content">
+
+                    <TextView
+                        android:id="@+id/tv_memorizing_section_header"
+                        style="@style/AppCardView_Header"
+                        android:text="@string/settings_memorizing_section" />
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_flashcards_feature"
+                        style="@style/Settings_Switch"
+                        android:text="@string/settings_permissions_flashcards" />
+
+                    <!-- Repetitions System params - dimmed while flashcards are off -->
+                    <LinearLayout
+                        android:id="@+id/ll_flashcards_params_picker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="16dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0dp"
+                            android:baselineAligned="false"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="180dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:gravity="end"
+                                android:text="@string/settings_flashcards_new_per_day_label"
+                                android:textSize="14sp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_flashcards_new_per_day_decrease"
+                                style="@style/SecondaryActionButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="35dp"
+                                android:text="@string/common_btn_decrease" />
+
+                            <TextView
+                                android:id="@+id/tv_flashcards_new_per_day"
+                                android:layout_width="40dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                tools:text="10"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_flashcards_new_per_day_increase"
+                                style="@style/SecondaryActionButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="35dp"
+                                android:text="@string/common_btn_increase" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:baselineAligned="false"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="180dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:gravity="end"
+                                android:text="@string/settings_flashcards_backlog_label"
+                                android:textSize="14sp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_flashcards_backlog_decrease"
+                                style="@style/SecondaryActionButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="35dp"
+                                android:text="@string/common_btn_decrease" />
+
+                            <TextView
+                                android:id="@+id/tv_flashcards_backlog"
+                                android:layout_width="40dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                tools:text="10"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_flashcards_backlog_increase"
+                                style="@style/SecondaryActionButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minWidth="35dp"
+                                android:text="@string/common_btn_increase" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_flashcards_reminders"
+                        style="@style/Settings_Switch"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/settings_flashcards_reminders_switch_label" />
+
+                    <TextView
+                        style="@style/TextView_Section_Info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/settings_flashcards_reminders_hint" />
+
+                    <!-- Reminder hour - dimmed while flashcards or their reminder are off -->
+                    <LinearLayout
+                        android:id="@+id/ll_flashcards_reminder_hour_picker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="16dp"
+                        android:baselineAligned="false"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="180dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:gravity="end"
+                            android:text="@string/settings_flashcards_reminder_hour_label"
+                            android:textSize="14sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_flashcards_reminder_hour_decrease"
+                            style="@style/SecondaryActionButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="35dp"
+                            android:text="@string/common_btn_decrease" />
+
+                        <TextView
+                            android:id="@+id/tv_flashcards_reminder_hour"
+                            android:layout_width="40dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            tools:text="9"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_flashcards_reminder_hour_increase"
+                            style="@style/SecondaryActionButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minWidth="35dp"
+                            android:text="@string/common_btn_increase" />
 
                     </LinearLayout>
 
