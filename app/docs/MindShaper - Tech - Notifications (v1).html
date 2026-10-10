@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mind Shaper — Tech: Notifications</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>:root{
+    --cream:#FFF4E6;
+    --surface:#FFFFFF;
+    --orange-1:#FFE1C8;
+    --orange-2:#FFC59A;
+    --orange-3:#FFA86B;
+    --graphite:#48433F;
+    --muted:#88807A;
+    --rule:#E6E6E6;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:40px 20px 80px;
+    background:var(--cream);
+    color:var(--graphite);
+    font-family:"Alegreya",Georgia,serif;
+    font-size:17px; line-height:1.65;
+  }
+  .wrap{max-width:760px; margin:0 auto}
+  h1{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:600; font-size:30px; line-height:1.25;
+    margin:0 0 6px;
+  }
+  .lede{margin:0 0 34px; color:var(--muted); font-style:italic}
+  h2{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:500; font-size:20px;
+    margin:38px 0 14px;
+  }
+  section{
+    background:var(--surface);
+    border:1px solid var(--orange-1);
+    border-radius:12px;
+    padding:6px 22px 14px;
+  }
+  section > p{margin:12px 0}
+  ul{margin:10px 0; padding-left:20px}
+  li{margin:4px 0}
+  li ul{margin:4px 0}
+  code{
+    font-family:ui-monospace,Consolas,monospace; font-size:14px;
+    background:#FBF4EC; border:1px solid #F0E4D6;
+    padding:1px 5px; border-radius:5px;
+  }
+  figure{margin:10px 0 16px}
+  figure svg{display:block; max-width:100%; height:auto; border-radius:8px}
+  .note{color:var(--muted); font-style:italic; font-size:15px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Tech: Powiadomienia</h1>
+<p class="lede">Jak aplikacja planuje i pokazuje powiadomienia. Pierwszy przypadek użycia to przypomnienia o powtórkach fiszek. Dokument opisuje rzeczy zaimplementowane. Co i kiedy przypominamy, ustala dokument wymagań fiszek.</p>
+
+<h2>Mechanizm</h2>
+<section>
+  <ul>
+    <li><b>Powiadomienia lokalne, nie push z serwera.</b> Wszystko liczy się na telefonie. FCM wymagałby backendu i Firebase, a dla użytkownika wygląd jest ten sam.</li>
+    <li><b>AlarmManager z niedokładnym alarmem</b> (<code>setAndAllowWhileIdle</code>).
+      <ul>
+        <li>nie wymaga uprawnienia <code>SCHEDULE_EXACT_ALARM</code>; spóźnienie o kilka–kilkanaście minut (Doze) nie przeszkadza przy przypomnieniu</li>
+        <li>odrzucony WorkManager: nowa zależność plus konfiguracja z Hilt, a okresowa praca co 24h „pływa” i nie trzyma godziny</li>
+      </ul>
+    </li>
+    <li><b>Alarm trzyma system, nie aplikacja.</b> Zamawiamy jeden moment w czasie, a o tej porze system budzi nasz receiver. Pojedynczy alarm nie powtarza się sam, więc kolejny dzień zamawiamy po każdym wywołaniu.</li>
+  </ul>
+</section>
+
+<h2>Cykl alarmu</h2>
+<section>
+  <figure>
+    <svg viewBox="0 0 680 250" width="680" height="250" xmlns="http://www.w3.org/2000/svg" font-family="Alegreya, Georgia, serif" font-size="14" fill="#48433F">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#C9733A"/>
+        </marker>
+      </defs>
+      <rect width="680" height="250" fill="#FFFFFF"/>
+
+      <!-- Triggers -->
+      <g font-size="13">
+        <rect x="10" y="14"  width="190" height="30" rx="8" fill="#FFF4E6" stroke="#FFC59A"/>
+        <text x="105" y="34" text-anchor="middle">restart telefonu</text>
+        <rect x="10" y="54"  width="190" height="30" rx="8" fill="#FFF4E6" stroke="#FFC59A"/>
+        <text x="105" y="74" text-anchor="middle">zmiana czasu / strefy</text>
+        <rect x="10" y="94"  width="190" height="30" rx="8" fill="#FFF4E6" stroke="#FFC59A"/>
+        <text x="105" y="114" text-anchor="middle">start aplikacji</text>
+        <rect x="10" y="134" width="190" height="30" rx="8" fill="#FFF4E6" stroke="#FFC59A"/>
+        <text x="105" y="154" text-anchor="middle">zmiana w Ustawieniach</text>
+      </g>
+      <path d="M200,29 L262,82"  stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+      <path d="M200,69 L262,88"  stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+      <path d="M200,109 L262,96" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+      <path d="M200,149 L262,102" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+
+      <!-- scheduleNext -->
+      <rect x="265" y="70" width="150" height="44" rx="10" fill="#FFE1C8" stroke="#FFA86B"/>
+      <text x="340" y="97" text-anchor="middle" font-family="Consolas, monospace" font-size="13">scheduleNext()</text>
+
+      <!-- System alarm -->
+      <path d="M415,92 L478,92" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+      <rect x="480" y="70" width="190" height="44" rx="10" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="575" y="89" text-anchor="middle">alarm w systemie</text>
+      <text x="575" y="106" text-anchor="middle" font-size="12" fill="#88807A">najbliższa wybrana godzina</text>
+
+      <!-- Fire -->
+      <path d="M575,114 L575,168" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+      <text x="583" y="146" font-size="12" fill="#88807A">o godzinie</text>
+      <rect x="440" y="170" width="230" height="64" rx="10" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="555" y="192" text-anchor="middle">receiver: liczy kolejkę</text>
+      <text x="555" y="210" text-anchor="middle" font-size="13">jest coś do zrobienia → powiadomienie</text>
+      <text x="555" y="226" text-anchor="middle" font-size="13" fill="#88807A">nic nie czeka → cisza</text>
+
+      <!-- Loop back -->
+      <path d="M440,202 L340,202 L340,116" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+      <text x="350" y="194" font-size="12" fill="#88807A">zawsze: na jutro</text>
+    </svg>
+  </figure>
+  <ul>
+    <li><b>Jedna funkcja planująca</b> <code>scheduleNext()</code>: liczy najbliższą wybraną godzinę i zastępuje alarm. Gdy przypomnienia są nieaktywne (wyłączone fiszki, wyłączony przełącznik albo brak zgody), sama kasuje alarm. Wywołujący nie musi więc wiedzieć, co się zmieniło.</li>
+    <li><b>Margines minuty.</b> Jeśli godzina dzisiaj wypada za mniej niż minutę, alarm idzie na jutro. Alarm dostarczony chwilę za wcześnie nie zamówi wtedy jeszcze raz tej samej godziny.</li>
+    <li><b>Planowanie wiele razy jest bezpieczne.</b> Alarm ma stały identyfikator (ten sam <code>PendingIntent</code>), więc ponowne zaplanowanie zastępuje stary alarm, a nie dodaje drugiego.</li>
+  </ul>
+</section>
+
+<h2>Ponowne planowanie — kiedy i dlaczego</h2>
+<section>
+  <ul>
+    <li><b>Restart telefonu</b> (<code>BOOT_COMPLETED</code>, uprawnienie <code>RECEIVE_BOOT_COMPLETED</code>). System po restarcie zapomina wszystkie alarmy. Bez tego przypomnienia milkną, dopóki ktoś nie otworzy aplikacji.</li>
+    <li><b>Zmiana czasu lub strefy</b> (<code>TIME_SET</code>, <code>TIMEZONE_CHANGED</code>). Alarm to konkretny moment, a nie „19:00 na zegarku”. Po zmianie strefy odpaliłby się o złej godzinie lokalnej, więc przeliczamy go od nowa.</li>
+    <li><b>Start aplikacji</b> jako siatka bezpieczeństwa. Alarm znika też przy „Wymuś zatrzymanie”, agresywnym ubijaniu w tle przez niektórych producentów i czasem po aktualizacji. Takich sytuacji nie da się złapać sygnałem.</li>
+    <li><b>Zmiana w Ustawieniach</b>, czyli włączenie przełącznika albo nowa godzina.</li>
+  </ul>
+</section>
+
+<h2>Treść powiadomienia</h2>
+<section>
+  <ul>
+    <li><b>Liczona w chwili alarmu, nie przy planowaniu.</b> Receiver czyta bazę i liczy kolejkę tymi samymi regułami co sesja (<code>FlashcardsReview.plan</code>). Gdy nic nie czeka, powiadomienia nie ma.</li>
+    <li><b>Jedno powiadomienie na rodzaj</b> (stały identyfikator). Kolejne aktualizuje poprzednie, zamiast tworzyć stos.</li>
+    <li><b>Receiver czeka na bazę.</b> Odczyt kolejki jest asynchroniczny, więc receiver trzyma się przy życiu przez <code>goAsync()</code>. Kolejny alarm zamawia zawsze, także gdy liczenie się nie powiedzie.</li>
+    <li><b>Ponowne sprawdzenie przy alarmie.</b> Zgodę lub przełącznik można było cofnąć po zaplanowaniu, więc receiver sprawdza je jeszcze raz przed pokazaniem powiadomienia.</li>
+    <li><b>Tapnięcie</b> otwiera Zapamiętywanie z flagą startu sesji. Pod spodem jest ekran główny, więc „wstecz” po sesji wraca do aplikacji, a nie na pulpit.</li>
+  </ul>
+</section>
+
+<h2>Uprawnienie i kanał</h2>
+<section>
+  <ul>
+    <li><b><code>POST_NOTIFICATIONS</code></b> to uprawnienie runtime od Androida 13 (minSdk 30, więc starsze wersje go nie wymagają). Prosimy o nie przy włączaniu przełącznika w Ustawieniach, nie przy starcie aplikacji. Przy odmowie przełącznik wraca na „wył.”.</li>
+    <li><b>Kanał powiadomień</b> jest jeden na rodzaj przypomnień i powstaje przy pierwszym powiadomieniu (ponowne utworzenie nic nie zmienia). Użytkownik może go wyciszyć w ustawieniach systemu.</li>
+    <li><b>Zgoda cofnięta w systemie.</b> Przełącznik w Ustawieniach pokazuje „wł.” tylko wtedy, gdy jest i wybór użytkownika, i zgoda.</li>
+    <li><b>Mała ikona</b> musi być jednokolorowym wektorem, bo system sam ją barwi. Kolor akcentu daje na Androidzie 12+ białą ikonę na pomarańczowym kółku, a na starszych pomarańczową ikonę.</li>
+    <li><b>MIUI</b> ignoruje małą ikonę i kolor, pokazuje ikonę aplikacji. To nie błąd w kodzie.</li>
+  </ul>
+</section>
+
+<h2>Implementacja</h2>
+<section>
+  <ul>
+    <li><code>services/reminders/FlashcardsReminders.kt</code> — <code>scheduleNext()</code>, <code>notifyIfDue()</code>, kanał</li>
+    <li><code>services/reminders/FlashcardsReminderReceiver.kt</code> — alarm</li>
+    <li><code>services/reminders/RemindersRescheduleReceiver.kt</code> — restart, zmiana czasu lub strefy</li>
+    <li><code>ApplicationMain.kt</code> — start aplikacji</li>
+    <li><code>activities/settings/SettingsActivity.kt</code> — przełącznik, godzina, zgoda</li>
+    <li><code>AndroidManifest.xml</code> — receivery i uprawnienia</li>
+    <li><code>ic_notification_flashcards.xml</code> — mała ikona</li>
+  </ul>
+</section>
+
+</div>
+</body>
+</html>

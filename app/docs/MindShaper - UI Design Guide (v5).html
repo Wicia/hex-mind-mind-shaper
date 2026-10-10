@@ -121,7 +121,7 @@
         <li><span class="swatch" style="background:#FFF4E6"></span><code>_orange_lvl_0</code> <code>#FFF4E6</code> — tło aplikacji</li>
         <li><span class="swatch" style="background:#FFE1C8"></span><code>_orange_lvl_1</code> <code>#FFE1C8</code> — akcje list, karty (np. fiszki, zestawy)</li>
         <li><span class="swatch" style="background:#FFC59A"></span><code>_orange_lvl_2</code> <code>#FFC59A</code> — akcje drugorzędne ekranu, delikatne akcenty (poświata ramki)</li>
-        <li><span class="swatch" style="background:#FFA86B"></span><code>_orange_lvl_3</code> <code>#FFA86B</code> — akcja główna (FAB, główna akcja ekranu), mocny akcent (pasek postępu, gwiazda opanowania)</li>
+        <li><span class="swatch" style="background:#FFA86B"></span><code>_orange_lvl_3</code> <code>#FFA86B</code> — akcja główna (FAB, główna akcja ekranu), mocny akcent (pasek postępu, gwiazda utrwalenia)</li>
       </ul>
     </li>
     <li><b>Szary = nieaktywny</b> — <code>_gray_lvl_*</code> oznacza element wyłączony / nieaktywny, ramki pomocnicze i tekst drugorzędny; aktywnych kart i treści nie robimy na szaro.</li>
@@ -142,7 +142,7 @@
 <section>
   <ul>
     <li><b>X usuwania zawsze po lewej</b> — mały X (<code>ic_close</code>), nie kosz; usuwanie to akcja pomocnicza.</li>
-    <li><b>„Ptaszek” / X = zapisz / usuń</b> — nie używamy ich do innych znaczeń (np. ocen); do ocen służą kciuki (<code>ic_thumb_up</code> / <code>ic_thumb_down</code>) i tylda.</li>
+    <li><b>„Ptaszek” / X = zapisz / usuń</b> — nie używamy ich do innych znaczeń (np. ocen); do ocen służą buźki (<code>ic_memory_have</code> / <code>ic_memory_thinking</code> / <code>ic_memory_empty</code>).</li>
     <li><b>Rakieta = start sesji</b> — ta sama ukośna rakieta co <i>Home</i> (<code>ic_activity_home</code>).</li>
     <li><b>Ikony domen</b> (<code>z_ic_domain_*</code>) — wczytywane po prefiksie do galerii ikon domen; nie usuwać ani nie zmieniać nazw, nawet gdy wyszukiwanie nie znajduje odwołań; do innych miejsc UI brać osobną ikonę.</li>
   </ul>
@@ -358,7 +358,7 @@
 <section>
   <ul>
     <li><b>Jeden kolor kart danego rodzaju</b> — np. fiszki i zestawy: <code>flashcard_background</code> (<code>_orange_lvl_1</code>) dla obu stron fiszki.</li>
-    <li><b>Stan elementu wizualnie, nie tekstem</b>, gdy się da — np. poziom fiszki: pionowy pasek (szare tło, wypełnienie <code>_orange_lvl_3</code>) z liczbą na czubku; zamrożona = półprzezroczysta karta; opanowana = pomarańczowa gwiazda.</li>
+    <li><b>Stan elementu wizualnie, nie tekstem</b>, gdy się da — np. poziom fiszki: pionowy pasek (szare tło, wypełnienie <code>_orange_lvl_3</code>) z liczbą na czubku; utrwalona = pomarańczowa gwiazda.</li>
     <li><b>Etykieta sekcji nad listą</b> — mała, w kolorze tekstu drugorzędnego (np. <i>„Zestawy”</i>, 15sp).</li>
   </ul>
 </section>
@@ -366,7 +366,7 @@
 <h2>Ruch i animacje</h2>
 <section>
   <ul>
-    <li><b>Animacje mówią o stanie</b> — np. falująca ramka = „jest coś do zrobienia”, gwiazda „nadająca sygnał” = opanowane; nie dekoracja bez znaczenia.</li>
+    <li><b>Animacje mówią o stanie</b> — np. falująca ramka = „jest coś do zrobienia”, gwiazda „nadająca sygnał” = utrwalone; nie dekoracja bez znaczenia.</li>
     <li><b>Delikatnie</b> — małe amplitudy, płynne wejście / wyjście (np. fale ramki 1.2dp, wygaszanie 600 ms).</li>
     <li><b>Bez synchronu</b> — powtarzające się animacje wielu elementów (np. gwiazdy) z losowymi przerwami.</li>
     <li><b>Wyłączone animacje w systemie</b> — elementy stoją nieruchomo (bez fal / sygnałów), treść dalej czytelna.</li>
