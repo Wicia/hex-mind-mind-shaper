@@ -247,6 +247,44 @@
   </details>
 </div>
 
+<h2>Wybór wartości</h2>
+<div class="comps">
+  <p class="note">Rendery poglądowe w skali ok. 1,15× (inline SVG, 1 jednostka = 1dp) — wymiary i kolory z <code>res/</code>.</p>
+
+  <details class="comp" open>
+    <summary><h3>Wybór godziny</h3></summary>
+    <dl>
+      <dt>Przeznaczenie</dt>
+      <dd>Wybór pory dnia — godzina przypomnienia o fiszkach (<i>Ustawienia</i>), godzina wpisu kroku celu do kalendarza (<i>Warsztat</i>).</dd>
+      <dt>Wygląd</dt>
+      <dd>
+        <figure><svg role="img" aria-label="hex-hour-picker" xmlns="http://www.w3.org/2000/svg" width="345" height="87.4" viewBox="0 0 300 76">
+  <rect width="300" height="76" fill="#FFF4E6"/>
+  <g opacity="0.52"><circle cx="30" cy="30.3" r="6.4" fill="#828282"/><text x="30" y="46.3" text-anchor="middle" dominant-baseline="central" font-size="8.3" fill="#625A54" font-family="'Baloo 2', 'Segoe UI', sans-serif">07:00</text></g>
+  <g opacity="0.76"><circle cx="90" cy="28.2" r="8.2" fill="#828282"/><text x="90" y="48.7" text-anchor="middle" dominant-baseline="central" font-size="10.7" fill="#625A54" font-family="'Baloo 2', 'Segoe UI', sans-serif">08:00</text></g>
+  <g opacity="1.00"><circle cx="150" cy="26.0" r="10.0" fill="#FFA86B"/><text x="150" y="51.0" text-anchor="middle" dominant-baseline="central" font-size="13.0" fill="#625A54" font-family="'Baloo 2', 'Segoe UI', sans-serif">09:00</text></g>
+  <g opacity="0.76"><circle cx="210" cy="28.2" r="8.2" fill="#828282"/><text x="210" y="48.7" text-anchor="middle" dominant-baseline="central" font-size="10.7" fill="#625A54" font-family="'Baloo 2', 'Segoe UI', sans-serif">10:00</text></g>
+  <g opacity="0.52"><circle cx="270" cy="30.3" r="6.4" fill="#828282"/><text x="270" y="46.3" text-anchor="middle" dominant-baseline="central" font-size="8.3" fill="#625A54" font-family="'Baloo 2', 'Segoe UI', sans-serif">11:00</text></g>
+</svg></figure>
+        <ul>
+          <li>wybrana jest zawsze godzina na środku — bez osobnego zaznaczenia</li>
+          <li>odstęp między godzinami zależy od miejsca: pełne godziny (fiszki) albo co 30 min (kroki celu)</li>
+          <li>wyłączony — przyciemniony razem ze swoją etykietą</li>
+        </ul>
+      </dd>
+      <dt>Działanie</dt>
+      <dd>
+        <ul>
+          <li><b>przewinięcie w bok</b> zmienia godzinę; po puszczeniu pasek dociąga najbliższą godzinę na środek</li>
+          <li>wyłączony się nie przewija</li>
+        </ul>
+      </dd>
+      <dt>Kod</dt>
+      <dd><code>HexHourPickerView</code> (<code>stepMinutes</code>), <code>hour_picker_item.xml</code> (layout)</dd>
+    </dl>
+  </details>
+</div>
+
 <h2>Dialogi</h2>
 <section class="rules">
   <ul>
