@@ -28,6 +28,7 @@ import pl.hexmind.mindshaper.database.initialization.DataSnapshotManager
 import pl.hexmind.mindshaper.databinding.SettingsActivityBinding
 import pl.hexmind.mindshaper.services.CalendarService
 import pl.hexmind.mindshaper.services.AppSettingsStorage
+import pl.hexmind.mindshaper.services.AppShortcuts
 import pl.hexmind.mindshaper.services.DomainIconsService
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.MediaStorageService
@@ -63,6 +64,9 @@ class SettingsActivity : CoreActivity() {
 
     @Inject
     lateinit var flashcardsReminders: FlashcardsReminders
+
+    @Inject
+    lateinit var appShortcuts: AppShortcuts
 
     private lateinit var binding: SettingsActivityBinding
 
@@ -278,6 +282,8 @@ class SettingsActivity : CoreActivity() {
             binding.tilesStartScreen.setFlashcardsEnabled(isChecked)
             // Flashcards off = no reminders either
             flashcardsReminders.scheduleNext()
+            // ...and no new-flashcards shortcut on the app icon
+            appShortcuts.register()
         }
 
         flashcardsNewPerDay = appSettingsStorage.getFlashcardsNewPerDay()

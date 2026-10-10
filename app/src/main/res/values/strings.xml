@@ -197,6 +197,7 @@ Dodaj pierwszy przyciskiem +</string>
     <!--    APP SHORTCUTS (long-press launcher icon)                  -->
     <!-- ============================================================ -->
 
+    <string name="shortcut_new_flashcards">Twórz fiszki</string>
     <string name="shortcut_new_text">Złap notatkę</string>
     <string name="shortcut_new_voice">Złap głosówkę</string>
     <string name="shortcut_new_photo">Złap zdjęcie</string>

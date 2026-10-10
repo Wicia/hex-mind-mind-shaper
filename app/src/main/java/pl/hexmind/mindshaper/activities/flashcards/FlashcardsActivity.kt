@@ -20,6 +20,7 @@ import pl.hexmind.mindshaper.services.dto.FlashcardSetDTO
  * Flashcards screen - today's session widget (one session over all the sets) + the flashcard sets below.
  * Set: tap = preview, rocket = review of just this set, long press = delete.
  * Opened from a reminder: the session starts as soon as the sets are loaded.
+ * Opened from the launcher shortcut: the new-set dialog opens right away.
  */
 @AndroidEntryPoint
 class FlashcardsActivity : CoreActivity() {
@@ -81,27 +82,34 @@ class FlashcardsActivity : CoreActivity() {
             FlashcardsSessionDialog.open(this, viewModel.planReview(sets), onRated = viewModel::rate)
         }
 
-        findViewById<FloatingActionButton>(R.id.fab_add_set).setOnClickListener {
-            // One dialog: name -> the set is created -> its flashcards in a series -> "Zakończ" opens the set
-            var newSetId: Int? = null
-            FlashcardEditDialog.newSet(
-                context = this,
-                onCreateSet = { name, onCreated ->
-                    viewModel.addSet(name) { setId ->
-                        newSetId = setId
-                        onCreated()
-                    }
-                },
-                onAdd = { flashcard -> newSetId?.let { setId -> viewModel.addFlashcard(setId, flashcard) } },
-                onFinish = { newSetId?.let { setId -> startActivity(FlashcardSetActivity.newIntent(this, setId)) } }
-            ).show()
-        }
+        findViewById<FloatingActionButton>(R.id.fab_add_set).setOnClickListener { openNewSet() }
 
         viewModel.sets.observe(this) { newSets ->
             sets = newSets
             render()
             startPendingSession()
         }
+
+        // Launcher shortcut - only on the first creation, a rotation must not open the dialog again
+        if (savedInstanceState == null && intent.getBooleanExtra(EXTRA_NEW_SET, false)) {
+            openNewSet()
+        }
+    }
+
+    // One dialog: name -> the set is created -> its flashcards in a series -> Finish opens the set
+    private fun openNewSet() {
+        var newSetId: Int? = null
+        FlashcardEditDialog.newSet(
+            context = this,
+            onCreateSet = { name, onCreated ->
+                viewModel.addSet(name) { setId ->
+                    newSetId = setId
+                    onCreated()
+                }
+            },
+            onAdd = { flashcard -> newSetId?.let { setId -> viewModel.addFlashcard(setId, flashcard) } },
+            onFinish = { newSetId?.let { setId -> startActivity(FlashcardSetActivity.newIntent(this, setId)) } }
+        ).show()
     }
 
     private fun startPendingSession() {
@@ -160,5 +168,8 @@ class FlashcardsActivity : CoreActivity() {
     companion object {
         /** true = the review session starts right away (reminder) */
         const val EXTRA_START_SESSION = "extra_start_session"
+
+        /** true = the new-set dialog opens right away (launcher shortcut) */
+        const val EXTRA_NEW_SET = "extra_new_set"
     }
 }
