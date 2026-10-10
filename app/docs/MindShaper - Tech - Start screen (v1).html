@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mind Shaper — Tech: Start screen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>:root{
+    --cream:#FFF4E6;
+    --surface:#FFFFFF;
+    --orange-1:#FFE1C8;
+    --orange-2:#FFC59A;
+    --orange-3:#FFA86B;
+    --graphite:#48433F;
+    --muted:#88807A;
+    --rule:#E6E6E6;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:40px 20px 80px;
+    background:var(--cream);
+    color:var(--graphite);
+    font-family:"Alegreya",Georgia,serif;
+    font-size:17px; line-height:1.65;
+  }
+  .wrap{max-width:760px; margin:0 auto}
+  h1{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:600; font-size:30px; line-height:1.25;
+    margin:0 0 6px;
+  }
+  .lede{margin:0 0 34px; color:var(--muted); font-style:italic}
+  h2{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:500; font-size:20px;
+    margin:38px 0 14px;
+  }
+  section{
+    background:var(--surface);
+    border:1px solid var(--orange-1);
+    border-radius:12px;
+    padding:6px 22px 14px;
+  }
+  section > p{margin:12px 0}
+  ul{margin:10px 0; padding-left:20px}
+  li{margin:4px 0}
+  li ul{margin:4px 0}
+  code{
+    font-family:ui-monospace,Consolas,monospace; font-size:14px;
+    background:#FBF4EC; border:1px solid #F0E4D6;
+    padding:1px 5px; border-radius:5px;
+  }
+  figure{margin:10px 0 16px}
+  figure svg{display:block; max-width:100%; height:auto; border-radius:8px}
+  .note{color:var(--muted); font-style:italic; font-size:15px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Tech: Ekran startowy</h1>
+<p class="lede">Jak aplikacja otwiera wybrany ekran startowy po uruchomieniu z ikony. Dokument opisuje rzeczy zaimplementowane. Jakie ekrany można wybrać, ustala dokument wymagań (<i>Ustawienia</i>).</p>
+
+<h2>Mechanizm</h2>
+<section>
+  <figure>
+    <svg viewBox="0 0 700 190" width="700" height="190" xmlns="http://www.w3.org/2000/svg" font-family="Alegreya, Georgia, serif" font-size="14" fill="#48433F">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#C9733A"/>
+        </marker>
+      </defs>
+      <rect width="700" height="190" fill="#FFFFFF"/>
+
+      <!-- Launcher -->
+      <rect x="10" y="66" width="130" height="44" rx="10" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="75" y="93" text-anchor="middle">ikona aplikacji</text>
+      <path d="M140,88 L198,88" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+      <text x="169" y="80" text-anchor="middle" font-size="11" fill="#88807A">MAIN</text>
+
+      <!-- Launcher Home -->
+      <rect x="200" y="56" width="200" height="64" rx="10" fill="#FFE1C8" stroke="#FFA86B"/>
+      <text x="300" y="80" text-anchor="middle" font-family="Consolas, monospace" font-size="13">HomeActivity</text>
+      <text x="300" y="98" text-anchor="middle" font-size="12">przed setContentView:</text>
+      <text x="300" y="113" text-anchor="middle" font-size="12">startActivities + finish</text>
+      <text x="300" y="140" text-anchor="middle" font-size="12" fill="#88807A">bez żadnej klatki</text>
+
+      <path d="M400,88 L458,88" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+
+      <!-- Resulting stack -->
+      <text x="565" y="22" text-anchor="middle" font-size="12" fill="#88807A">stos zadania</text>
+      <rect x="460" y="32" width="210" height="50" rx="10" fill="#FFE1C8" stroke="#FFA86B"/>
+      <text x="565" y="54" text-anchor="middle">wybrany ekran</text>
+      <text x="565" y="71" text-anchor="middle" font-size="12" fill="#88807A">tworzony od razu, na wierzchu</text>
+      <rect x="460" y="92" width="210" height="50" rx="10" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="565" y="114" text-anchor="middle">Home</text>
+      <text x="565" y="131" text-anchor="middle" font-size="12" fill="#88807A">zwykły intent, tworzony po BACK</text>
+      <path d="M672,57 C690,57 690,117 672,117" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+      <text x="565" y="168" text-anchor="middle" font-size="12" fill="#88807A">BACK z wybranego ekranu → Home, kolejny BACK → wyjście</text>
+    </svg>
+  </figure>
+  <ul>
+    <li><b>Launcherem zostaje <code>HomeActivity</code>, bez osobnej aktywności trampoliny.</b> Ikona na ekranie telefonu i przypięte skróty wskazują na ten sam komponent co wcześniej.</li>
+    <li><b>Przekierowanie przed <code>setContentView</code>, potem <code>finish()</code>.</b> Aktywność zamknięta w <code>onCreate</code> nie dochodzi do <code>onStart</code>/<code>onResume</code>, więc nie rysuje żadnej klatki.
+      <ul>
+        <li>poprzednie podejście (<code>startActivity</code> po zbudowaniu Home) pokazywało Home, dopóki wybrany ekran nie narysował pierwszej klatki — widoczne mignięcie</li>
+      </ul>
+    </li>
+    <li><b>Stos jednym wywołaniem</b> <code>startActivities(home, cel)</code>. System tworzy tylko ostatnią aktywność, a Home pod spodem dopiero, gdy BACK do niej dojdzie. Ten sam wzorzec co stos intencji w skrótach aplikacji (<i>Tech — Skróty aplikacji</i>).</li>
+  </ul>
+</section>
+
+<h2>Kiedy przekierowujemy</h2>
+<section>
+  <p>Wszystkie warunki naraz — każdy odcina inny przypadek:</p>
+  <ul>
+    <li><code>savedInstanceState == null</code> — nie przy odtwarzaniu aktywności (obrót ekranu, powrót po ubiciu procesu)</li>
+    <li><code>isTaskRoot</code> — nie, gdy Home jest otwierany na już istniejącym stosie</li>
+    <li><code>ACTION_MAIN</code> + <code>CATEGORY_LAUNCHER</code> — nie przy przejściu na Home z dolnego paska nawigacji ani z innego miejsca aplikacji</li>
+    <li><b>Fiszki wyłączone</b> — wybór <i>Fiszki</i> jest ignorowany, start zostaje na Home</li>
+  </ul>
+</section>
+
+<h2>Pułapki — nie ruszać</h2>
+<section>
+  <ul>
+    <li><b>Kolejność w <code>onCreate</code>.</b> Przeniesienie przekierowania za <code>setContentView</code> (wygląda naturalniej) przywraca mignięcie Home.</li>
+    <li><b>Intent dolnego Home bez <code>MAIN</code>/<code>LAUNCHER</code>.</b> Z nimi Home pod spodem, utworzony po BACK, przekierowałby znowu — pętla zamiast powrotu.</li>
+    <li><b><code>onDestroy</code> po wczesnym <code>finish()</code></b> trafia na aktywność bez widoków. Sprzątanie w <code>CoreActivity</code> (pasek nawigacji, kontroler) musi zostać bezpieczne na <code>null</code>; to samo dotyczy nowego kodu w <code>onDestroy</code> Home.</li>
+  </ul>
+</section>
+
+<h2>Do weryfikacji na urządzeniu</h2>
+<section>
+  <ul>
+    <li>start z ikony z każdym wyborem — bez mignięcia Home</li>
+    <li>BACK z wybranego ekranu → Home, drugi BACK → wyjście z aplikacji</li>
+    <li>obrót ekranu i nawigacja do Home z paska — bez przekierowania</li>
+    <li>powrót do aplikacji z listy ostatnich (aplikacja w tle) — bez przekierowania</li>
+  </ul>
+  <p class="note">Przed pierwszą klatką system może na chwilę pokazać okno startowe z tłem motywu — to nie Home i nie jest objęte tym mechanizmem.</p>
+</section>
+
+</div>
+</body>
+</html>
