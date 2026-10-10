@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.activities.workshop
+package pl.hexmind.mindshaper.common.ui.views
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.mindshaper.R
 
 /**
- * Horizontal time-of-day picker.
- * Center item is always the selected one; side items scale down via [GoalReminderView].
+ * Slots of the horizontal time-of-day picker.
+ * Center item is always the selected one; side items scale down via [HexHourPickerView].
  * Centering of first/last entries is handled by RecyclerView edge padding, not ghost items.
  */
 class HourPickerAdapter(

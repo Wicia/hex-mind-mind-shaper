@@ -76,8 +76,6 @@ class AppSettingsStorage @Inject constructor(
         private const val PARAM_FLASHCARDS_REMINDER_HOUR     = "param_flashcards_review_start_hour"
 
         const val FLASHCARDS_REMINDER_HOUR_DEFAULT = 9
-        const val FLASHCARDS_REMINDER_HOUR_MIN     = 0
-        const val FLASHCARDS_REMINDER_HOUR_MAX     = 23
 
         // Dormant mode
         private const val PARAM_DORMANT_MODE_ENABLED    = "param_dormant_mode_enabled"
@@ -270,7 +268,8 @@ class AppSettingsStorage @Inject constructor(
 
     fun getStartScreen(): StartScreen {
         val value = sharedPreferences.getString(PARAM_START_SCREEN, "")
-        return if (!value.isNullOrBlank()) StartScreen.valueOf(value) else StartScreen.HOME
+        // Unknown value (e.g. saved by another app version) = Home, not a crash
+        return StartScreen.entries.firstOrNull { it.name == value } ?: StartScreen.HOME
     }
 
     // === SLOW MODE ===

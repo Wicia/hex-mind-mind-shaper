@@ -16,13 +16,12 @@
         />
 
     <!-- Hour picker (center = selected) -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_hours"
+    <pl.hexmind.mindshaper.common.ui.views.HexHourPickerView
+        android:id="@+id/hour_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
+        app:stepMinutes="30"
         />
 
     <!-- Days section label -->

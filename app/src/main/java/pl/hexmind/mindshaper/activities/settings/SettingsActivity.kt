@@ -72,7 +72,6 @@ class SettingsActivity : CoreActivity() {
 
     private var flashcardsNewPerDay: Int = AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_DEFAULT
 
-    private var flashcardsReminderHour: Int = AppSettingsStorage.FLASHCARDS_REMINDER_HOUR_DEFAULT
 
     // Activity result launcher for backup file selection
     private val backupPickerLauncher = registerForActivityResult(
@@ -331,16 +330,7 @@ class SettingsActivity : CoreActivity() {
             syncFlashcardsRemindersState()
         }
 
-        flashcardsReminderHour = appSettingsStorage.getFlashcardsReminderHour()
-
-        binding.btnFlashcardsReminderHourDecrease.setOnClickListener {
-            flashcardsReminderHour = (flashcardsReminderHour - 1).coerceAtLeast(AppSettingsStorage.FLASHCARDS_REMINDER_HOUR_MIN)
-            syncFlashcardsRemindersState()
-        }
-        binding.btnFlashcardsReminderHourIncrease.setOnClickListener {
-            flashcardsReminderHour = (flashcardsReminderHour + 1).coerceAtMost(AppSettingsStorage.FLASHCARDS_REMINDER_HOUR_MAX)
-            syncFlashcardsRemindersState()
-        }
+        binding.hourPickerFlashcardsReminder.setSelectedHour(appSettingsStorage.getFlashcardsReminderHour())
 
         syncFlashcardsRemindersToggleWithPermissions()
     }
@@ -359,11 +349,8 @@ class SettingsActivity : CoreActivity() {
         binding.switchFlashcardsReminders.isEnabled = flashcardsOn
 
         val enabled = flashcardsOn && binding.switchFlashcardsReminders.isChecked
-        binding.llFlashcardsReminderHourPicker.alpha = if (enabled) 1f else 0.4f
-
-        binding.tvFlashcardsReminderHour.text = flashcardsReminderHour.toString()
-        binding.btnFlashcardsReminderHourDecrease.isEnabled = enabled && flashcardsReminderHour > AppSettingsStorage.FLASHCARDS_REMINDER_HOUR_MIN
-        binding.btnFlashcardsReminderHourIncrease.isEnabled = enabled && flashcardsReminderHour < AppSettingsStorage.FLASHCARDS_REMINDER_HOUR_MAX
+        binding.tvFlashcardsReminderHourLabel.alpha = if (enabled) 1f else 0.4f
+        binding.hourPickerFlashcardsReminder.isEnabled = enabled
     }
 
     private val requestNotificationsPermissionLauncher = registerForActivityResult(
@@ -990,7 +977,7 @@ class SettingsActivity : CoreActivity() {
         appSettingsStorage.setFlashcardsNewPerDay(flashcardsNewPerDay)
 
         // Flashcards - reminder: new hour = the alarm ordered again
-        appSettingsStorage.setFlashcardsReminderHour(flashcardsReminderHour)
+        appSettingsStorage.setFlashcardsReminderHour(binding.hourPickerFlashcardsReminder.getSelectedHour())
         flashcardsReminders.scheduleNext()
 
         // Dormant mode

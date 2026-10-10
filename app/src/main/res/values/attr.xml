@@ -47,6 +47,11 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="HexHourPickerView">
+        <!-- Minutes between slots: 30 = half hours, 60 = full hours -->
+        <attr name="stepMinutes" format="integer" />
+    </declare-styleable>
+
     <declare-styleable name="IconsGridView">
         <attr name="rowPattern" format="string" />
     </declare-styleable>

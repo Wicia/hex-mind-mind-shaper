@@ -447,12 +447,12 @@ Dodaj pierwszy przyciskiem +</string>
 
     <!-- Memorizing -->
     <string name="settings_memorizing_section">🧠 Zapamiętywanie</string>
-    <string name="settings_permissions_flashcards">Włącz fiszki</string>
-    <string name="settings_flashcards_new_per_day_label">Nowych fiszek\ndziennie</string>
+    <string name="settings_permissions_flashcards">Włącz powtórki z użyciem fiszek</string>
+    <string name="settings_flashcards_new_per_day_label">Max. liczba nowych fiszek\ndziennie w powtórkach</string>
     <string name="settings_flashcards_backlog_label">Wstrzymaj nowe przy\nzaległościach powyżej</string>
     <string name="settings_flashcards_reminders_switch_label">Włącz przypomnienia o powtórkach</string>
     <string name="settings_flashcards_reminders_hint">O tej godzinie przypomnimy o sesji powtórek, jeśli coś na nią czeka</string>
-    <string name="settings_flashcards_reminder_hour_label">Godzina\nprzypomnienia</string>
+    <string name="settings_flashcards_reminder_hour_label">Godzina wysyłania przypominajek</string>
     <string name="settings_permission_notifications_title">Zezwolić na powiadomienia?</string>
     <string name="settings_notifications_permission_info">Bez nich nie dostaniesz przypomnień o powtórkach.</string>
     <string name="settings_permission_notifications_blockade_title">Odblokować powiadomienia?</string>
