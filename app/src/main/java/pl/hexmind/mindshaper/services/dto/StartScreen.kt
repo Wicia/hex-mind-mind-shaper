@@ -6,5 +6,6 @@ package pl.hexmind.mindshaper.services.dto
 enum class StartScreen {
     HOME,
     STREAM,
+    FLASHCARDS,
     WORKSHOP
 }

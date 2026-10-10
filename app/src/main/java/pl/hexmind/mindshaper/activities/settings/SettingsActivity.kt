@@ -275,6 +275,7 @@ class SettingsActivity : CoreActivity() {
             appSettingsStorage.setFlashcardsFeatureEnabled(isChecked)
             syncFlashcardsParamsPickerState()
             syncFlashcardsRemindersState()
+            binding.tilesStartScreen.setFlashcardsEnabled(isChecked)
             // Flashcards off = no reminders either
             flashcardsReminders.scheduleNext()
         }
@@ -702,6 +703,7 @@ class SettingsActivity : CoreActivity() {
 
     private fun initStartScreenConfig() {
         binding.tilesStartScreen.setSelected(appSettingsStorage.getStartScreen())
+        binding.tilesStartScreen.setFlashcardsEnabled(appSettingsStorage.isFlashcardsFeatureEnabled())
     }
 
     // ========== SLOW MODE ==========

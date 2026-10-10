@@ -10,6 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
+import pl.hexmind.mindshaper.activities.flashcards.FlashcardsActivity
 import pl.hexmind.mindshaper.activities.stream.StreamActivity
 import pl.hexmind.mindshaper.activities.workshop.WorkshopActivity
 import pl.hexmind.mindshaper.common.formatting.setColoredText
@@ -81,7 +82,7 @@ class HomeActivity : CoreActivity() {
 
     /**
      * Pushes the user-chosen start screen on top of Home on a genuine cold launch from the launcher icon.
-     * Home is left in the stack (no finish), so BACK from Stream/Workshop lands on a fully rendered Home.
+     * Home is left in the stack (no finish), so BACK from Stream/Flashcards/Workshop lands on a fully rendered Home.
      */
     private fun openChosenStartScreenIfNeeded(savedInstanceState: Bundle?) {
         // Only a real cold launch reroutes: nav-bar navigation to Home carries no MAIN/LAUNCHER intent,
@@ -96,9 +97,11 @@ class HomeActivity : CoreActivity() {
         }
 
         val targetScreen = when (appSettingsStorage.getStartScreen()) {
-            StartScreen.STREAM   -> StreamActivity::class.java
-            StartScreen.WORKSHOP -> WorkshopActivity::class.java
-            StartScreen.HOME     -> return
+            StartScreen.STREAM     -> StreamActivity::class.java
+            // Flashcards feature off = its screen is hidden, Home stays
+            StartScreen.FLASHCARDS -> if (appSettingsStorage.isFlashcardsFeatureEnabled()) FlashcardsActivity::class.java else return
+            StartScreen.WORKSHOP   -> WorkshopActivity::class.java
+            StartScreen.HOME       -> return
         }
 
         startActivity(Intent(this, targetScreen))
