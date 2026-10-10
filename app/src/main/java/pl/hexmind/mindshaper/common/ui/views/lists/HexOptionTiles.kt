@@ -5,8 +5,8 @@ import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -15,7 +15,9 @@ import pl.hexmind.mindshaper.R
 import androidx.core.view.isVisible
 
 /**
- * Horizontal tile-based radio group — each tile shows an icon + label.
+ * Tile-based radio group — each tile shows an icon + label.
+ * Tiles share one row; 4+ tiles wrap into a 2-column grid when a tile would be
+ * narrower than MIN_TILE_WIDTH_DP (narrow screen, large font). Up to 3 tiles never wrap.
  * Exactly one tile is selected at a time.
  * Individual tiles can be disabled (grayed out, non-clickable).
  *
@@ -32,7 +34,14 @@ open class HexOptionTiles @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr) {
+) : ViewGroup(context, attrs, defStyleAttr) {
+
+    private companion object {
+        const val GAP_DP            = 8
+        const val MIN_TILE_WIDTH_DP = 80
+        const val GRID_COLUMNS      = 2
+        const val GRID_MIN_TILES    = 4
+    }
 
     data class Option(
         val id: Int,
@@ -48,15 +57,16 @@ open class HexOptionTiles @JvmOverloads constructor(
     // LinkedHashMap preserves insertion order (used for fallback: first non-disabled)
     private val tileViews = linkedMapOf<Int, View>()
 
-    init {
-        orientation = HORIZONTAL
-    }
+    // Resolved in onMeasure, used by onLayout
+    private var columns = 1
+    private var tileWidth = 0
+    private val rowHeights = mutableListOf<Int>()
 
     fun setOptions(options: List<Option>) {
         removeAllViews()
         tileViews.clear()
 
-        options.forEachIndexed { index, option ->
+        options.forEach { option ->
             val tileView = LayoutInflater.from(context)
                 .inflate(R.layout.common_option_tile_item_view, this, false)
 
@@ -71,11 +81,6 @@ open class HexOptionTiles @JvmOverloads constructor(
 
             // Label handling
             tileView.findViewById<TextView>(R.id.tv_tile_label).setText(option.labelRes)
-
-            // Gap between tiles (not before the first one)
-            if (index > 0) {
-                (tileView.layoutParams as LayoutParams).marginStart = dpToPx(8)
-            }
 
             tileView.setOnClickListener {
                 if (option.id !in disabledIds) {
@@ -117,6 +122,54 @@ open class HexOptionTiles @JvmOverloads constructor(
             }
         }
         refreshAllStates()
+    }
+
+    // ========== LAYOUT ==========
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val width = MeasureSpec.getSize(widthMeasureSpec)
+        val gap = dpToPx(GAP_DP)
+        val count = childCount
+        val contentWidth = width - paddingLeft - paddingRight
+
+        rowHeights.clear()
+        if (count == 0) {
+            setMeasuredDimension(width, paddingTop + paddingBottom)
+            return
+        }
+
+        val singleRowTileWidth = (contentWidth - gap * (count - 1)) / count
+        columns = if (count < GRID_MIN_TILES || singleRowTileWidth >= dpToPx(MIN_TILE_WIDTH_DP)) count else GRID_COLUMNS
+        tileWidth = (contentWidth - gap * (columns - 1)) / columns
+
+        // Tiles in one row share the height of the tallest one
+        val widthSpec = MeasureSpec.makeMeasureSpec(tileWidth, MeasureSpec.EXACTLY)
+        for (rowStart in 0 until count step columns) {
+            val row = (rowStart until minOf(rowStart + columns, count)).map { getChildAt(it) }
+            row.forEach { it.measure(widthSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)) }
+            val rowHeight = row.maxOf { it.measuredHeight }
+            row.forEach { it.measure(widthSpec, MeasureSpec.makeMeasureSpec(rowHeight, MeasureSpec.EXACTLY)) }
+            rowHeights += rowHeight
+        }
+
+        val height = paddingTop + paddingBottom + rowHeights.sum() + gap * (rowHeights.size - 1)
+        setMeasuredDimension(width, resolveSize(height, heightMeasureSpec))
+    }
+
+    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+        val gap = dpToPx(GAP_DP)
+        val rtl = layoutDirection == LAYOUT_DIRECTION_RTL
+        var top = paddingTop
+
+        rowHeights.forEachIndexed { rowIndex, rowHeight ->
+            for (column in 0 until columns) {
+                val child = getChildAt(rowIndex * columns + column) ?: break
+                val offset = column * (tileWidth + gap)
+                val left = if (rtl) width - paddingRight - offset - tileWidth else paddingLeft + offset
+                child.layout(left, top, left + tileWidth, top + rowHeight)
+            }
+            top += rowHeight + gap
+        }
     }
 
     // ========== PRIVATE HELPERS ==========
