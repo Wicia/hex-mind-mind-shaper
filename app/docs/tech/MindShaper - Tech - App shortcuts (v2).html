@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mind Shaper — Tech: App shortcuts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>:root{
+    --cream:#FFF4E6;
+    --surface:#FFFFFF;
+    --orange-1:#FFE1C8;
+    --orange-2:#FFC59A;
+    --orange-3:#FFA86B;
+    --graphite:#48433F;
+    --muted:#88807A;
+    --rule:#E6E6E6;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:40px 20px 80px;
+    background:var(--cream);
+    color:var(--graphite);
+    font-family:"Alegreya",Georgia,serif;
+    font-size:17px; line-height:1.65;
+  }
+  .wrap{max-width:760px; margin:0 auto}
+  h1{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:600; font-size:30px; line-height:1.25;
+    margin:0 0 6px;
+  }
+  .lede{margin:0 0 34px; color:var(--muted); font-style:italic}
+  h2{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:500; font-size:20px;
+    margin:38px 0 8px;
+  }
+  h2::before{
+    content:"\2726";
+    color:var(--orange-3);
+    font-size:1.3em; line-height:1;
+    margin-right:8px;
+  }
+  section{
+    background:var(--surface);
+    border:1px solid var(--orange-1);
+    border-radius:12px;
+    padding:6px 22px 14px;
+  }
+  section > p{margin:12px 0}
+  ul{margin:10px 0; padding-left:20px}
+  li{margin:4px 0}
+  li ul{margin:4px 0}
+  code{
+    font-family:ui-monospace,Consolas,monospace; font-size:14px;
+    background:#FBF4EC; border:1px solid #F0E4D6;
+    padding:1px 5px; border-radius:5px;
+  }
+  figure{margin:10px 0 16px}
+  figure svg{display:block; max-width:100%; height:auto; border-radius:8px}
+  .note{color:var(--muted); font-style:italic; font-size:15px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Tech: Skróty aplikacji</h1>
+<p class="lede">Jak działają skróty widoczne po przytrzymaniu ikony aplikacji. Dokument opisuje rzeczy zaimplementowane. Jakie skróty są, ustala dokument wymagań (<i>Skróty aplikacji</i>).</p>
+
+<h2>Mechanizm</h2>
+<section>
+  <figure>
+    <svg viewBox="0 0 700 230" width="700" height="230" xmlns="http://www.w3.org/2000/svg" font-family="Alegreya, Georgia, serif" font-size="14" fill="#48433F">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#C9733A"/>
+        </marker>
+      </defs>
+      <rect width="700" height="230" fill="#FFFFFF"/>
+
+      <!-- Shortcut list -->
+      <text x="95" y="20" text-anchor="middle" font-size="12" fill="#88807A">przytrzymanie ikony</text>
+      <rect x="10" y="30" width="170" height="32" rx="8" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="95" y="51" text-anchor="middle">Twórz fiszki</text>
+      <rect x="10" y="80" width="170" height="32" rx="8" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="95" y="101" text-anchor="middle">Złap notatkę</text>
+      <rect x="10" y="120" width="170" height="32" rx="8" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="95" y="141" text-anchor="middle">Złap głosówkę</text>
+      <rect x="10" y="160" width="170" height="32" rx="8" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="95" y="181" text-anchor="middle">Złap zdjęcie</text>
+
+      <!-- Targets -->
+      <path d="M180,46 L258,46" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+      <path d="M180,96 C220,96 220,136 258,136" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+      <path d="M180,136 L258,136" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+      <path d="M180,176 C220,176 220,136 258,136" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+
+      <rect x="260" y="22" width="210" height="50" rx="10" fill="#FFE1C8" stroke="#FFA86B"/>
+      <text x="365" y="43" text-anchor="middle" font-family="Consolas, monospace" font-size="13">FlashcardsActivity</text>
+      <text x="365" y="61" text-anchor="middle" font-size="12">EXTRA_NEW_SET → nowy zestaw</text>
+      <rect x="260" y="111" width="210" height="50" rx="10" fill="#FFE1C8" stroke="#FFA86B"/>
+      <text x="365" y="132" text-anchor="middle" font-family="Consolas, monospace" font-size="13">CaptureActivity</text>
+      <text x="365" y="150" text-anchor="middle" font-size="12">EXTRA_CAPTURE_FORM → forma</text>
+
+      <!-- Resulting stack -->
+      <text x="590" y="62" text-anchor="middle" font-size="12" fill="#88807A">stos z setIntents</text>
+      <rect x="510" y="72" width="160" height="44" rx="10" fill="#FFE1C8" stroke="#FFA86B"/>
+      <text x="590" y="92" text-anchor="middle">cel</text>
+      <text x="590" y="108" text-anchor="middle" font-size="12" fill="#88807A">ostatni intent</text>
+      <rect x="510" y="126" width="160" height="44" rx="10" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="590" y="146" text-anchor="middle">Home</text>
+      <text x="590" y="162" text-anchor="middle" font-size="12" fill="#88807A">pierwszy intent</text>
+      <path d="M672,94 C690,94 690,148 672,148" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+      <text x="590" y="192" text-anchor="middle" font-size="12" fill="#88807A">BACK → Home zamiast wyjścia</text>
+    </svg>
+  </figure>
+  <ul>
+    <li><b>Skrót = intencja z parametrem, nie osobna ścieżka.</b> Skróty „Złap…” otwierają to samo <code>CaptureActivity</code> i różnią się tylko extra <code>EXTRA_CAPTURE_FORM</code> z nazwą wartości <code>DefaultCaptureForm</code>. Otwieranie formy ma jedną implementację, w <code>autoOpenDefaultFormIfNeeded()</code>.</li>
+    <li><b>Nadpisanie, nie rozgałęzienie.</b> <code>autoOpenDefaultFormIfNeeded()</code> używa extra <i>zamiast</i> ustawienia. Brak extra = forma z <code>AppSettingsStorage.getDefaultCaptureForm()</code>.</li>
+    <li><b>Odporność na złą wartość.</b> <code>runCatching { DefaultCaptureForm.valueOf(name) }.getOrNull()</code> — nieznana wartość cicho spada do ustawienia domyślnego zamiast rzucić <code>IllegalArgumentException</code>.</li>
+    <li><b>„Twórz fiszki” — ten sam wzorzec.</b> <code>FlashcardsActivity</code> z extra <code>EXTRA_NEW_SET</code> otwiera dialog nowego zestawu, <code>openNewSet()</code>, wspólny z FAB „+”.
+      <ul>
+        <li>tylko przy pierwszym utworzeniu (<code>savedInstanceState == null</code>) — obrót nie otwiera dialogu ponownie, jak <code>EXTRA_START_SESSION</code> z przypomnienia</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<h2>Rejestracja</h2>
+<section>
+  <ul>
+    <li><b>Dynamiczne, nie <code>res/xml/shortcuts.xml</code>.</b> Statyczny XML nie rozwija <code>${applicationId}</code>, więc gubi wariant <code>.debug</code>.</li>
+    <li><b><code>AppShortcuts.register()</code></b> (singleton Hilt) — wołane przy starcie aplikacji (<code>ApplicationMain</code>) i przy przełączeniu fiszek w Ustawieniach. Zestaw zależy od ustawień: fiszki wyłączone = brak skrótu „Twórz fiszki”.</li>
+    <li><b><code>setDynamicShortcuts(list)</code>, nie <code>pushDynamicShortcut</code>.</b> Podmienia cały zestaw:
+      <ul>
+        <li>kolejność zawsze z listy: Twórz fiszki, Złap notatkę, Złap głosówkę, Złap zdjęcie</li>
+        <li>skrót pominięty na liście znika z launchera — wyłączone fiszki, dawny <code>new_thought</code> ze starszych buildów; <code>push</code> zostawiłby go na stałe</li>
+      </ul>
+    </li>
+    <li><b>Fabryka <code>buildShortcut(id, labelRes, iconRes, targetIntent)</code>.</b> Pozycje różnią się tylko danymi, więc jeden builder; <code>buildCaptureShortcut</code> dokłada do niej extra formy.</li>
+    <li><b><code>@StringRes</code> / <code>@DrawableRes</code></b> na parametrach — Lint pilnuje, by nie wpadł tam dowolny <code>Int</code>.</li>
+  </ul>
+</section>
+
+<h2>Stos intencji</h2>
+<section>
+  <ul>
+    <li><b><code>setIntents(arrayOf(homeIntent, targetIntent))</code> — Home pierwszy, cel ostatni.</b> Launcher układa wcześniejsze intencje pod ostatnią, więc BACK z zimnego startu ląduje na <code>HomeActivity</code> zamiast wyrzucać z aplikacji.</li>
+    <li><b>Intent Home bez <code>CATEGORY_LAUNCHER</code>.</b> Home pod spodem nie przekierowuje na ekran startowy (<i>Tech — Ekran startowy</i>).</li>
+  </ul>
+</section>
+
+<h2>Etykiety i ikony</h2>
+<section>
+  <ul>
+    <li><b>Jeden string na skrót.</b> <code>shortLabel</code> i <code>longLabel</code> dostają tę samą wartość — API wymaga obu, a przy krótkich etykietach dłuższy wariant nic nie wnosi.</li>
+    <li><b>Vectory <code>ic_shortcut_new_flashcards</code> / <code>_text</code> / <code>_voice</code> / <code>_photo</code>.</b> Pomarańczowy dysk (<code>#FFA86B</code>) + biały glif w <code>&lt;group&gt;</code> ze skalą <code>0.58</code>.
+      <ul>
+        <li>glify reużyte z <code>ic_activity_flashcards</code> / <code>ic_thought_type_rich_text</code> / <code>_recording</code> / <code>_photo</code> (ten sam viewport 960) — brak nowych ścieżek do utrzymania</li>
+      </ul>
+    </li>
+    <li><b>Kolor wpisany wprost, nie <code>?attr/...</code>.</b> Launcher renderuje ikony skrótów we własnym motywie, gdzie atrybuty motywu rozwiązują się nieprzewidywalnie.</li>
+  </ul>
+</section>
+
+<h2>Wyłączone funkcje</h2>
+<section>
+  <ul>
+    <li><b>Fiszki</b> — skrótu nie ma na liście (patrz <i>Rejestracja</i>).</li>
+    <li><b>Głosówka / zdjęcie</b> — skrót zostaje. <code>autoOpenVoiceRecording()</code> / <code>autoOpenPhoto()</code> sprawdzają <code>isVoiceRecordingEnabled()</code> / <code>isPhotoFeatureEnabled()</code> i pokazują dialog zachęty — ta sama ścieżka co z aplikacji, bez dodatkowego kodu.</li>
+  </ul>
+</section>
+
+<h2>Implementacja</h2>
+<section>
+  <ul>
+    <li><code>services/AppShortcuts.kt</code> — lista skrótów, rejestracja</li>
+    <li><code>ApplicationMain.kt</code> — start aplikacji</li>
+    <li><code>activities/settings/SettingsActivity.kt</code> — przełącznik fiszek</li>
+    <li><code>activities/capture/CaptureActivity.kt</code> — <code>EXTRA_CAPTURE_FORM</code></li>
+    <li><code>activities/flashcards/FlashcardsActivity.kt</code> — <code>EXTRA_NEW_SET</code></li>
+  </ul>
+</section>
+
+<h2>Do weryfikacji na urządzeniu</h2>
+<section>
+  <ul>
+    <li>kolejność skrótów w launcherze (część nakładek producenckich ma własne zdanie)</li>
+    <li>czytelność glifów w małym rozmiarze ikony skrótu</li>
+    <li>skrót do wyłączonej głosówki / zdjęcia → dialog zachęty przy zimnym starcie</li>
+    <li>„Twórz fiszki”: dialog nowego zestawu od razu po starcie; „Zakończ” → zestaw, BACK → lista fiszek → Home</li>
+    <li>wyłączenie fiszek w Ustawieniach → skrót znika, włączenie → wraca na pierwszą pozycję</li>
+  </ul>
+</section>
+
+</div>
+</body>
+</html>
