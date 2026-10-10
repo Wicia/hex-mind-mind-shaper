@@ -17,8 +17,9 @@ import pl.hexmind.mindshaper.common.ui.views.HexWavyFrameView
 import pl.hexmind.mindshaper.services.dto.FlashcardSetDTO
 
 /**
- * Utrwalanie - "Do powtórki" (one session over all the sets) + the flashcard sets below.
+ * Flashcards screen - today's session widget (one session over all the sets) + the flashcard sets below.
  * Set: tap = preview, rocket = review of just this set, long press = delete.
+ * Opened from a reminder: the session starts as soon as the sets are loaded.
  */
 @AndroidEntryPoint
 class FlashcardsActivity : CoreActivity() {
@@ -36,6 +37,9 @@ class FlashcardsActivity : CoreActivity() {
     // Last sets from the database - due reviews also change with the time, so onResume renders them again
     private var sets: List<FlashcardSetDTO> = emptyList()
 
+    // Reminder's session waiting for the first sets from the database
+    private var pendingSession = false
+
     private val setsAdapter = FlashcardSetsAdapter(
         onSetTap = { set ->
             set.id?.let { setId -> startActivity(FlashcardSetActivity.newIntent(this, setId)) }
@@ -51,6 +55,11 @@ class FlashcardsActivity : CoreActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.flashcards_activity)
+
+        // Only on the first creation - a rotation must not start the session again
+        if (savedInstanceState == null) {
+            pendingSession = intent.getBooleanExtra(EXTRA_START_SESSION, false)
+        }
 
         // Nav overlay + current-screen highlight are added by CoreActivity (onContentChanged / onResume)
         setupHeader(R.drawable.ic_activity_flashcards, R.string.flashcards_title)
@@ -91,12 +100,20 @@ class FlashcardsActivity : CoreActivity() {
         viewModel.sets.observe(this) { newSets ->
             sets = newSets
             render()
+            startPendingSession()
         }
+    }
+
+    private fun startPendingSession() {
+        if (!pendingSession) return
+        pendingSession = false
+
+        FlashcardsSessionDialog.open(this, viewModel.planReview(sets), onRated = viewModel::rate)
     }
 
     override fun onResume() {
         super.onResume()
-        // A second chance may have unlocked / a new day started while away
+        // A new day may have started while away
         render()
     }
 
@@ -124,8 +141,13 @@ class FlashcardsActivity : CoreActivity() {
         if (!hasFlashcards) return
 
         val plan = viewModel.planReview(sets)
-        val status = if (plan.isEmpty) getString(R.string.flashcards_review_today_done)
-                     else              getString(R.string.flashcards_review_today_counts, plan.repetitionsCount, plan.newCount)
+        // The total is the whole session - the new ones are a part of it
+        val counts = resources.getQuantityString(R.plurals.flashcards_review_today_counts, plan.queue.size, plan.queue.size)
+        val status = when {
+            plan.isEmpty      -> getString(R.string.flashcards_review_today_done)
+            plan.newCount > 0 -> counts + " " + resources.getQuantityString(R.plurals.flashcards_review_today_new, plan.newCount, plan.newCount)
+            else              -> counts
+        }
         tvReviewTodayStatus.text =
             if (plan.newPausedBacklog > 0) status + "\n" + getString(R.string.flashcards_new_paused, plan.newPausedBacklog)
             else status
@@ -133,5 +155,10 @@ class FlashcardsActivity : CoreActivity() {
         btnReviewToday.visibility = if (plan.isEmpty) View.INVISIBLE else View.VISIBLE
         // Rippling frame = "something to do" - smooths out once everything is reviewed
         frameReviewToday.isWaving = !plan.isEmpty
+    }
+
+    companion object {
+        /** true = the review session starts right away (reminder) */
+        const val EXTRA_START_SESSION = "extra_start_session"
     }
 }

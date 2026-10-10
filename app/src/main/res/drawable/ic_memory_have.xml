@@ -1,0 +1,15 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Jedna ścieżka: białe koło + wycięcia (evenOdd) = oczy i koci uśmiech "3" -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:fillType="evenOdd"
+        android:pathData="M2,12a10,10 0,1 0,20 0a10,10 0,1 0,-20 0Z
+            M7.25,10a1.25,1.25 0,1 0,2.5 0a1.25,1.25 0,1 0,-2.5 0Z
+            M14.25,10a1.25,1.25 0,1 0,2.5 0a1.25,1.25 0,1 0,-2.5 0Z
+            M9.25,14.5A0.75,0.75 0,0 0,7.75 14.5A2.5,2.5 0,0 0,12 16.285A2.5,2.5 0,0 0,16.25 14.5A0.75,0.75 0,0 0,14.75 14.5A1,1 0,0 1,12.75 14.5A0.75,0.75 0,0 0,11.25 14.5A1,1 0,0 1,9.25 14.5Z" />
+</vector>

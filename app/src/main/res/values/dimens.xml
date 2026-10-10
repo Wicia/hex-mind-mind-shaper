@@ -6,6 +6,10 @@
     <!-- Review progress bar along the bottom edge of the flashcard -->
     <dimen name="flashcard_progress_height">4dp</dimen>
 
+    <!-- Session actions of the flashcard: reveal / skip / close vs the bigger rating faces -->
+    <dimen name="flashcard_action_icon_size">32dp</dimen>
+    <dimen name="flashcard_rating_icon_size">36dp</dimen>
+
     <!-- Level bar in the set preview (vertical twin of the session progress) -->
     <dimen name="flashcard_level_bar_width">4dp</dimen>
 

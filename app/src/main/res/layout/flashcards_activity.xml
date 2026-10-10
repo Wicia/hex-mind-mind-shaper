@@ -24,7 +24,7 @@
             <!-- Activity header (icon + title) -->
             <include layout="@layout/common_header_activity" />
 
-            <!-- "Do powtórki": one session over all the sets
+            <!-- Today's session widget: one session over all the sets
                  ! -10dp = HexWavyFrameView.LINE_INSET_DP - the frame line lines up with the set cards' edges,
                  its glow falls into the column's 16dp padding -->
             <include

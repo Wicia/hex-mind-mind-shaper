@@ -237,11 +237,8 @@ class GoalDetailActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.workshop_step_unlink_title))
             .setDescription(getString(R.string.workshop_step_unlink_description))
-            .setSecondaryAction(getString(R.string.workshop_step_unlink_keep_thought)) {
-                viewModel.unlinkThought(stepId, alsoDeleteThought = false)
-            }
-            .setPrimaryAction(getString(R.string.workshop_step_unlink_delete_thought), caution = true) {
-                viewModel.unlinkThought(stepId, alsoDeleteThought = true)
+            .setPrimaryAction(getString(R.string.workshop_step_unlink_action)) {
+                viewModel.unlinkThought(stepId)
             }
             .show()
     }
@@ -289,14 +286,18 @@ class GoalDetailActivity : CoreActivity() {
         appSettingsStorage.isCalendarRemindersEnabled() && permissionsService.isCalendarGranted()
 
     private fun showDeleteStepConfirmation(stepId: Int) {
-        val warning = if (viewModel.hasCalendarReminder(stepId))
+        val hasReminder = viewModel.hasCalendarReminder(stepId)
+        val warning = if (hasReminder)
             getString(R.string.workshop_dialog_delete_step_calendar_warning)
         else getString(R.string.common_deletion_dialog_warning)
+        val confirm = if (hasReminder)
+            getString(R.string.workshop_dialog_delete_step_calendar_yes)
+        else getString(R.string.workshop_dialog_delete_step_yes)
 
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.workshop_dialog_delete_step_title))
             .setDescription(warning)
-            .setPrimaryAction(getString(R.string.common_deletion_dialog_yes), caution = true) {
+            .setPrimaryAction(confirm, caution = true) {
                 viewModel.deleteStep(stepId)
             }
             .show()

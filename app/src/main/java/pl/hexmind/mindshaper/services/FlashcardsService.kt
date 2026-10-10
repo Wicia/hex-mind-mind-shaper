@@ -31,6 +31,9 @@ class FlashcardsService @Inject constructor(
     fun getSetByIdLive(setId: Int): LiveData<FlashcardSetDTO?> =
         flashcardDAO.getSetByIdLive(setId).map { set -> set?.let { toDto(it) } }
 
+    suspend fun getAllSets(): List<FlashcardSetDTO> =
+        flashcardDAO.getAllSetsWithCards().map { set -> toDto(set) }
+
     /**
      * What is up for review right now - with the user's limits (Settings).
      * @param sets all the sets - the daily limit of new flashcards and the backlog count over all of them
@@ -41,15 +44,14 @@ class FlashcardsService @Inject constructor(
             sets   = sets,
             params = FlashcardsReview.Params(
                 newPerDay        = appSettingsStorage.getFlashcardsNewPerDay(),
-                backlogThreshold = appSettingsStorage.getFlashcardsBacklogThreshold()
+                backlogThreshold = AppSettingsStorage.FLASHCARDS_BACKLOG_THRESHOLD
             ),
             today  = LocalDate.now(),
-            now    = Instant.now(),
             setId  = setId
         )
 
     fun statsOf(set: FlashcardSetDTO): FlashcardsReview.SetStats =
-        FlashcardsReview.statsOf(set, LocalDate.now(), Instant.now())
+        FlashcardsReview.statsOf(set, LocalDate.now())
 
     /** @return id of the new set */
     suspend fun addSet(name: String, flashcards: List<FlashcardDTO>): Int =
@@ -100,9 +102,9 @@ class FlashcardsService @Inject constructor(
         flashcardDAO.deleteSet(setId)
     }
 
-    /** Rating in a review session -> the flashcard's next level / review date (FlashcardsScheduler) */
+    /** First rating of the flashcard in a review session -> its next level / review date (FlashcardsScheduler) */
     suspend fun rate(flashcard: FlashcardDTO, rating: FlashcardRating) {
-        updateProgress(FlashcardsScheduler.rate(flashcard, rating, LocalDate.now(), Instant.now()))
+        updateProgress(FlashcardsScheduler.rate(flashcard, rating, LocalDate.now()))
     }
 
     /**
@@ -117,7 +119,6 @@ class FlashcardsService @Inject constructor(
                 status       = flashcard.status.name,
                 level        = flashcard.level,
                 dueOn        = flashcard.dueOn?.toEpochDay(),
-                frozenUntil  = flashcard.frozenUntil,
                 introducedOn = flashcard.introducedOn?.toEpochDay()
             )
         )
@@ -139,7 +140,6 @@ class FlashcardsService @Inject constructor(
                         status       = FlashcardStatus.valueOf(flashcard.status),
                         level        = flashcard.level,
                         dueOn        = flashcard.dueOn?.let { day -> LocalDate.ofEpochDay(day) },
-                        frozenUntil  = flashcard.frozenUntil,
                         introducedOn = flashcard.introducedOn?.let { day -> LocalDate.ofEpochDay(day) }
                     )
                 }
@@ -158,7 +158,6 @@ class FlashcardsService @Inject constructor(
             status       = flashcard.status.name,
             level        = flashcard.level,
             dueOn        = flashcard.dueOn?.toEpochDay(),
-            frozenUntil  = flashcard.frozenUntil,
             introducedOn = flashcard.introducedOn?.toEpochDay()
         )
 }

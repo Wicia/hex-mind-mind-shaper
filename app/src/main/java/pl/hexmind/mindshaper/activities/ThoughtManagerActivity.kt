@@ -16,7 +16,7 @@ open class ThoughtManagerActivity : CoreActivity() {
         ActionsDialog.Builder(this)
             .setTitle(getString(R.string.common_thoughts_forms_inactive_header))
             .setDescription(getString(R.string.common_thoughts_forms_permissions_needed))
-            .setPrimaryAction(getString(R.string.common_btn_confirm_ok_2)) {
+            .setPrimaryAction(getString(R.string.common_btn_go_to_settings)) {
                 startActivity(Intent(this, SettingsActivity::class.java))
             }
             .show()

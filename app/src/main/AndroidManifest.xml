@@ -24,6 +24,10 @@
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
+    <!-- Permission -> Flashcards reminders -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <queries>
         <intent>
             <action android:name="android.intent.action.OPEN_DOCUMENT" />
@@ -141,6 +145,22 @@
                     />
             </intent-filter>
         </activity>
+
+        <!-- Flashcards reminder alarm - only the app's own explicit intent -->
+        <receiver
+            android:name="pl.hexmind.mindshaper.services.reminders.FlashcardsReminderReceiver"
+            android:exported="false" />
+
+        <!-- System broadcasts that drop or shift the reminder alarm -->
+        <receiver
+            android:name="pl.hexmind.mindshaper.services.reminders.RemindersRescheduleReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+        </receiver>
 
         <provider
             android:name="androidx.core.content.FileProvider"

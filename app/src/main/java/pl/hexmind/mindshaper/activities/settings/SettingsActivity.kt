@@ -33,6 +33,7 @@ import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.MediaStorageService
 import pl.hexmind.mindshaper.services.WritableCalendar
 import pl.hexmind.mindshaper.services.dto.DomainDTO
+import pl.hexmind.mindshaper.services.reminders.FlashcardsReminders
 import pl.hexmind.mindshaper.services.validators.DomainValidator
 import javax.inject.Inject
 
@@ -60,6 +61,9 @@ class SettingsActivity : CoreActivity() {
     @Inject
     lateinit var calendarService: CalendarService
 
+    @Inject
+    lateinit var flashcardsReminders: FlashcardsReminders
+
     private lateinit var binding: SettingsActivityBinding
 
     private var selectedBackupUri: Uri? = null
@@ -67,7 +71,7 @@ class SettingsActivity : CoreActivity() {
     private var slowModeHours: Int = 1
 
     private var flashcardsNewPerDay: Int = AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_DEFAULT
-    private var flashcardsBacklogThreshold: Int = AppSettingsStorage.FLASHCARDS_BACKLOG_DEFAULT
+
 
     // Activity result launcher for backup file selection
     private val backupPickerLauncher = registerForActivityResult(
@@ -100,6 +104,7 @@ class SettingsActivity : CoreActivity() {
         syncVoiceRecordingToggleWithPermissions()
         syncPhotoToggleWithPermissions()
         syncCalendarToggleWithPermissions()
+        syncFlashcardsRemindersToggleWithPermissions()
         syncBackupToggleWithPermissions()
         refreshSnapshotStats()
     }
@@ -162,6 +167,7 @@ class SettingsActivity : CoreActivity() {
         setupVoiceRecordingFeatureToggle()
         setupPhotoFeatureToggle()
         setupFlashcardsFeatureToggle()
+        setupFlashcardsRemindersToggle()
         setupCalendarRemindersToggle()
         setupBackupFeatureToggle()
         setupSlowModeListeners()
@@ -239,7 +245,7 @@ class SettingsActivity : CoreActivity() {
 
     private fun showVoiceRecordingPermissionExplanationDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
+            .setTitle(getString(R.string.settings_permission_voice_recording_title))
             .setDescription(getString(R.string.settings_voice_recording_info))
             .setPrimaryAction(getString(R.string.common_btn_grant_permission)) {
                 requestVoiceRecordingPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
@@ -250,8 +256,8 @@ class SettingsActivity : CoreActivity() {
 
     private fun showVoiceRecordingPermanentDenialDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.settings_permissions_blockade_title))
-            .setDescription(getString(R.string.settings_permissions_recording_blockade_tooltip))
+            .setTitle(getString(R.string.settings_permission_voice_recording_blockade_title))
+            .setDescription(getString(R.string.settings_permissions_blockade_info))
             .setPrimaryAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
@@ -268,10 +274,12 @@ class SettingsActivity : CoreActivity() {
         binding.switchFlashcardsFeature.setOnCheckedChangeListener { _, isChecked ->
             appSettingsStorage.setFlashcardsFeatureEnabled(isChecked)
             syncFlashcardsParamsPickerState()
+            syncFlashcardsRemindersState()
+            // Flashcards off = no reminders either
+            flashcardsReminders.scheduleNext()
         }
 
         flashcardsNewPerDay = appSettingsStorage.getFlashcardsNewPerDay()
-        flashcardsBacklogThreshold = appSettingsStorage.getFlashcardsBacklogThreshold()
 
         binding.btnFlashcardsNewPerDayDecrease.setOnClickListener {
             flashcardsNewPerDay = (flashcardsNewPerDay - 1).coerceAtLeast(AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MIN)
@@ -279,16 +287,6 @@ class SettingsActivity : CoreActivity() {
         }
         binding.btnFlashcardsNewPerDayIncrease.setOnClickListener {
             flashcardsNewPerDay = (flashcardsNewPerDay + 1).coerceAtMost(AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MAX)
-            syncFlashcardsParamsPickerState()
-        }
-        binding.btnFlashcardsBacklogDecrease.setOnClickListener {
-            flashcardsBacklogThreshold = (flashcardsBacklogThreshold - AppSettingsStorage.FLASHCARDS_BACKLOG_STEP)
-                .coerceAtLeast(AppSettingsStorage.FLASHCARDS_BACKLOG_MIN)
-            syncFlashcardsParamsPickerState()
-        }
-        binding.btnFlashcardsBacklogIncrease.setOnClickListener {
-            flashcardsBacklogThreshold = (flashcardsBacklogThreshold + AppSettingsStorage.FLASHCARDS_BACKLOG_STEP)
-                .coerceAtMost(AppSettingsStorage.FLASHCARDS_BACKLOG_MAX)
             syncFlashcardsParamsPickerState()
         }
 
@@ -303,9 +301,101 @@ class SettingsActivity : CoreActivity() {
         binding.btnFlashcardsNewPerDayDecrease.isEnabled = enabled && flashcardsNewPerDay > AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MIN
         binding.btnFlashcardsNewPerDayIncrease.isEnabled = enabled && flashcardsNewPerDay < AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MAX
 
-        binding.tvFlashcardsBacklog.text = flashcardsBacklogThreshold.toString()
-        binding.btnFlashcardsBacklogDecrease.isEnabled = enabled && flashcardsBacklogThreshold > AppSettingsStorage.FLASHCARDS_BACKLOG_MIN
-        binding.btnFlashcardsBacklogIncrease.isEnabled = enabled && flashcardsBacklogThreshold < AppSettingsStorage.FLASHCARDS_BACKLOG_MAX
+        // Fixed threshold - shown, but locked
+        binding.tvFlashcardsBacklog.text = AppSettingsStorage.FLASHCARDS_BACKLOG_THRESHOLD.toString()
+        binding.btnFlashcardsBacklogDecrease.isEnabled = false
+        binding.btnFlashcardsBacklogIncrease.isEnabled = false
+    }
+
+    // ========== FLASHCARDS REMINDERS ==========
+
+    // The switch writes straight to the preferences (permission flow) - the hour is stored with the rest on save
+    private fun setupFlashcardsRemindersToggle() {
+        binding.switchFlashcardsReminders.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                when {
+                    permissionsService.isNotificationsGranted() -> {
+                        appSettingsStorage.setFlashcardsRemindersEnabled(true)
+                        flashcardsReminders.scheduleNext()
+                    }
+                    else -> {
+                        showNotificationsPermissionExplanationDialog()
+                    }
+                }
+            }
+            else {
+                appSettingsStorage.setFlashcardsRemindersEnabled(false)
+                flashcardsReminders.scheduleNext()
+            }
+            syncFlashcardsRemindersState()
+        }
+
+        binding.hourPickerFlashcardsReminder.setSelectedHour(appSettingsStorage.getFlashcardsReminderHour())
+
+        syncFlashcardsRemindersToggleWithPermissions()
+    }
+
+    private fun syncFlashcardsRemindersToggleWithPermissions() {
+        val hasPermission = permissionsService.isNotificationsGranted()
+        val wantsReminders = appSettingsStorage.isFlashcardsRemindersEnabled()
+
+        binding.switchFlashcardsReminders.isChecked = wantsReminders && hasPermission
+        syncFlashcardsRemindersState()
+    }
+
+    // Reminders belong to flashcards - dimmed while they are off, the hour also while the reminders are off
+    private fun syncFlashcardsRemindersState() {
+        val flashcardsOn = binding.switchFlashcardsFeature.isChecked
+        binding.switchFlashcardsReminders.isEnabled = flashcardsOn
+
+        val enabled = flashcardsOn && binding.switchFlashcardsReminders.isChecked
+        binding.tvFlashcardsReminderHourLabel.alpha = if (enabled) 1f else 0.4f
+        binding.hourPickerFlashcardsReminder.isEnabled = enabled
+    }
+
+    private val requestNotificationsPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // Approved
+            appSettingsStorage.setFlashcardsRemindersEnabled(true)
+            binding.switchFlashcardsReminders.isChecked = true
+            flashcardsReminders.scheduleNext()
+        }
+        else {
+            // Denial
+            appSettingsStorage.setFlashcardsRemindersEnabled(false)
+            binding.switchFlashcardsReminders.isChecked = false
+
+            // Handling permissions "blockade"
+            if (!shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                showNotificationsPermanentDenialDialog()
+            }
+        }
+        syncFlashcardsRemindersState()
+    }
+
+    // Reached only on Android 13+ - below, the permission is always granted
+    private fun showNotificationsPermissionExplanationDialog() {
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.settings_permission_notifications_title))
+            .setDescription(getString(R.string.settings_notifications_permission_info))
+            .setPrimaryAction(getString(R.string.common_btn_grant_permission)) {
+                requestNotificationsPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+            .setOnCancel { binding.switchFlashcardsReminders.isChecked = false }
+            .show()
+    }
+
+    private fun showNotificationsPermanentDenialDialog() {
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.settings_permission_notifications_blockade_title))
+            .setDescription(getString(R.string.settings_permissions_blockade_info))
+            .setPrimaryAction(getString(R.string.common_dialog_open_android_settings)) {
+                openAppSettings()
+            }
+            .setOnCancel { binding.switchFlashcardsReminders.isChecked = false }
+            .show()
     }
 
     // ========== PHOTO FEATURE ==========
@@ -361,7 +451,7 @@ class SettingsActivity : CoreActivity() {
 
     private fun showPhotoPermissionExplanationDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
+            .setTitle(getString(R.string.settings_permission_photo_title))
             .setDescription(getString(R.string.settings_permissions_photo_info))
             .setPrimaryAction(getString(R.string.common_btn_grant_permission)) {
                 requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
@@ -372,8 +462,8 @@ class SettingsActivity : CoreActivity() {
 
     private fun showPhotoPermanentDenialDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.settings_permissions_blockade_title))
-            .setDescription(getString(R.string.settings_permissions_photo_blockade_tooltip))
+            .setTitle(getString(R.string.settings_permission_photo_blockade_title))
+            .setDescription(getString(R.string.settings_permissions_blockade_info))
             .setPrimaryAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
@@ -482,7 +572,7 @@ class SettingsActivity : CoreActivity() {
 
     private fun showCalendarPermissionExplanationDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
+            .setTitle(getString(R.string.settings_permission_calendar_title))
             .setDescription(getString(R.string.settings_calendar_permission_info))
             .setPrimaryAction(getString(R.string.common_btn_grant_permission)) {
                 requestCalendarPermissionLauncher.launch(
@@ -498,8 +588,8 @@ class SettingsActivity : CoreActivity() {
 
     private fun showCalendarPermanentDenialDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.settings_permissions_blockade_title))
-            .setDescription(getString(R.string.settings_calendar_blockade_tooltip))
+            .setTitle(getString(R.string.settings_permission_calendar_blockade_title))
+            .setDescription(getString(R.string.settings_permissions_blockade_info))
             .setPrimaryAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
@@ -582,7 +672,7 @@ class SettingsActivity : CoreActivity() {
 
     private fun showBackupPermissionExplanationDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.common_thoughts_permissions_dialog_header))
+            .setTitle(getString(R.string.settings_permission_backup_title))
             .setDescription(getString(R.string.settings_backup_permission_info))
             .setPrimaryAction(getString(R.string.common_btn_grant_permission)) {
                 requestStoragePermissionLauncher.launch(permissionsService.getStoragePermission())
@@ -593,8 +683,8 @@ class SettingsActivity : CoreActivity() {
 
     private fun showBackupPermanentDenialDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.settings_permissions_blockade_title))
-            .setDescription(getString(R.string.settings_permissions_backup_blockade_tooltip))
+            .setTitle(getString(R.string.settings_permission_backup_blockade_title))
+            .setDescription(getString(R.string.settings_permissions_blockade_info))
             .setPrimaryAction(getString(R.string.common_dialog_open_android_settings)) {
                 openAppSettings()
             }
@@ -818,7 +908,7 @@ class SettingsActivity : CoreActivity() {
 
     private fun showSnapshotLoadingDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.common_deletion_dialog_title))
+            .setTitle(getString(R.string.settings_snapshot_restore_title))
             .setDescription(getString(R.string.settings_snapshot_restore_warning))
             .setPrimaryAction(getString(R.string.common_btn_confirm_replace), caution = true) {
                 loadBackupFile()
@@ -885,7 +975,10 @@ class SettingsActivity : CoreActivity() {
 
         // Flashcards - Repetitions System
         appSettingsStorage.setFlashcardsNewPerDay(flashcardsNewPerDay)
-        appSettingsStorage.setFlashcardsBacklogThreshold(flashcardsBacklogThreshold)
+
+        // Flashcards - reminder: new hour = the alarm ordered again
+        appSettingsStorage.setFlashcardsReminderHour(binding.hourPickerFlashcardsReminder.getSelectedHour())
+        flashcardsReminders.scheduleNext()
 
         // Dormant mode
         if (binding.switchDormantMode.isChecked && !validateDormantDaysInput()) {

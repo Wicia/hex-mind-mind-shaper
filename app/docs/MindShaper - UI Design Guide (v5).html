@@ -6,7 +6,7 @@
 <title>Mind Shaper — UI Design Guide</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Alegreya:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
 <style>:root{
     --cream:#FFF4E6;
     --surface:#FFFFFF;
@@ -74,18 +74,6 @@
     text-transform:uppercase; letter-spacing:.06em;
   }
   .rules > ul{margin:4px 0 2px}
-  .review{margin-top:16px}
-  /* ! Wider than the column (+40%) - wide dialog tables; only where the screen has room */
-  @media (min-width:1150px){ .review{width:140%; margin-left:-20%} }
-  .review > .model-note{margin:0 0 8px}
-  .review h3{margin-top:16px}
-  .review table{table-layout:fixed}
-  .prop{margin-top:4px; color:#B85F25; font-size:14px; line-height:1.4}
-  .prop::before{content:"→ "}
-  .prop.same{color:var(--muted)}
-  .review th{width:13.5%}
-  .review th:first-child{width:16%}
-  .review th:nth-child(3){width:30%}
   table{width:100%; border-collapse:collapse; font-size:15px; margin:4px 0 8px}
   th{font-family:"Baloo 2",system-ui,sans-serif; font-size:13px; font-weight:500; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; text-align:left; padding:4px 10px 4px 0}
   td{padding:5px 10px 5px 0; border-top:1px solid var(--rule); vertical-align:top}
@@ -133,7 +121,7 @@
         <li><span class="swatch" style="background:#FFF4E6"></span><code>_orange_lvl_0</code> <code>#FFF4E6</code> — tło aplikacji</li>
         <li><span class="swatch" style="background:#FFE1C8"></span><code>_orange_lvl_1</code> <code>#FFE1C8</code> — akcje list, karty (np. fiszki, zestawy)</li>
         <li><span class="swatch" style="background:#FFC59A"></span><code>_orange_lvl_2</code> <code>#FFC59A</code> — akcje drugorzędne ekranu, delikatne akcenty (poświata ramki)</li>
-        <li><span class="swatch" style="background:#FFA86B"></span><code>_orange_lvl_3</code> <code>#FFA86B</code> — akcja główna (FAB, główna akcja ekranu), mocny akcent (pasek postępu, gwiazda opanowania)</li>
+        <li><span class="swatch" style="background:#FFA86B"></span><code>_orange_lvl_3</code> <code>#FFA86B</code> — akcja główna (FAB, główna akcja ekranu), mocny akcent (pasek postępu, gwiazda utrwalenia)</li>
       </ul>
     </li>
     <li><b>Szary = nieaktywny</b> — <code>_gray_lvl_*</code> oznacza element wyłączony / nieaktywny, ramki pomocnicze i tekst drugorzędny; aktywnych kart i treści nie robimy na szaro.</li>
@@ -154,7 +142,7 @@
 <section>
   <ul>
     <li><b>X usuwania zawsze po lewej</b> — mały X (<code>ic_close</code>), nie kosz; usuwanie to akcja pomocnicza.</li>
-    <li><b>„Ptaszek” / X = zapisz / usuń</b> — nie używamy ich do innych znaczeń (np. ocen); do ocen służą kciuki (<code>ic_thumb_up</code> / <code>ic_thumb_down</code>) i tylda.</li>
+    <li><b>„Ptaszek” / X = zapisz / usuń</b> — nie używamy ich do innych znaczeń (np. ocen); do ocen służą buźki (<code>ic_memory_have</code> / <code>ic_memory_thinking</code> / <code>ic_memory_empty</code>).</li>
     <li><b>Rakieta = start sesji</b> — ta sama ukośna rakieta co <i>Home</i> (<code>ic_activity_home</code>).</li>
     <li><b>Ikony domen</b> (<code>z_ic_domain_*</code>) — wczytywane po prefiksie do galerii ikon domen; nie usuwać ani nie zmieniać nazw, nawet gdy wyszukiwanie nie znajduje odwołań; do innych miejsc UI brać osobną ikonę.</li>
   </ul>
@@ -259,12 +247,51 @@
   </details>
 </div>
 
+<h2>Wybór wartości</h2>
+<div class="comps">
+  <p class="note">Rendery poglądowe w skali ok. 1,15× (inline SVG, 1 jednostka = 1dp) — wymiary i kolory z <code>res/</code>.</p>
+
+  <details class="comp" open>
+    <summary><h3>Wybór godziny</h3></summary>
+    <dl>
+      <dt>Przeznaczenie</dt>
+      <dd>Wybór pory dnia — godzina przypomnienia o fiszkach (<i>Ustawienia</i>), godzina wpisu kroku celu do kalendarza (<i>Warsztat</i>).</dd>
+      <dt>Wygląd</dt>
+      <dd>
+        <figure><svg role="img" aria-label="hex-hour-picker" xmlns="http://www.w3.org/2000/svg" width="345" height="87.4" viewBox="0 0 300 76">
+  <rect width="300" height="76" fill="#FFF4E6"/>
+  <g opacity="0.52"><circle cx="30" cy="30.3" r="6.4" fill="#828282"/><text x="30" y="46.3" text-anchor="middle" dominant-baseline="central" font-size="8.3" fill="#625A54" font-family="'Baloo 2', 'Segoe UI', sans-serif">07:00</text></g>
+  <g opacity="0.76"><circle cx="90" cy="28.2" r="8.2" fill="#828282"/><text x="90" y="48.7" text-anchor="middle" dominant-baseline="central" font-size="10.7" fill="#625A54" font-family="'Baloo 2', 'Segoe UI', sans-serif">08:00</text></g>
+  <g opacity="1.00"><circle cx="150" cy="26.0" r="10.0" fill="#FFA86B"/><text x="150" y="51.0" text-anchor="middle" dominant-baseline="central" font-size="13.0" fill="#625A54" font-family="'Baloo 2', 'Segoe UI', sans-serif">09:00</text></g>
+  <g opacity="0.76"><circle cx="210" cy="28.2" r="8.2" fill="#828282"/><text x="210" y="48.7" text-anchor="middle" dominant-baseline="central" font-size="10.7" fill="#625A54" font-family="'Baloo 2', 'Segoe UI', sans-serif">10:00</text></g>
+  <g opacity="0.52"><circle cx="270" cy="30.3" r="6.4" fill="#828282"/><text x="270" y="46.3" text-anchor="middle" dominant-baseline="central" font-size="8.3" fill="#625A54" font-family="'Baloo 2', 'Segoe UI', sans-serif">11:00</text></g>
+</svg></figure>
+        <ul>
+          <li>wybrana jest zawsze godzina na środku — bez osobnego zaznaczenia</li>
+          <li>odstęp między godzinami zależy od miejsca: pełne godziny (fiszki) albo co 30 min (kroki celu)</li>
+          <li>wyłączony — przyciemniony razem ze swoją etykietą</li>
+        </ul>
+      </dd>
+      <dt>Działanie</dt>
+      <dd>
+        <ul>
+          <li><b>przewinięcie w bok</b> zmienia godzinę; po puszczeniu pasek dociąga najbliższą godzinę na środek</li>
+          <li>wyłączony się nie przewija</li>
+        </ul>
+      </dd>
+      <dt>Kod</dt>
+      <dd><code>HexHourPickerView</code> (<code>stepMinutes</code>), <code>hour_picker_item.xml</code> (layout)</dd>
+    </dl>
+  </details>
+</div>
+
 <h2>Dialogi</h2>
 <section class="rules">
   <ul>
     <li><b>Tytuł</b> — jednoznaczny i jasno komunikujący decyzję, którą użytkownik ma podjąć.</li>
     <li><b>Przycisk mówi, co się stanie</b> — np. „Usuń cel i kroki” zamiast opisu + opcji w stylu „Tak” / „Nie”</li>
     <li><b>Treść</b> — krótka, ale informująca o konsekwencji</li>
+    <li><b>Nazwy w tekście</b> — wstawiana nazwa (np. tagu) w nawiasach kwadratowych: <i>Tag [praca] zniknie…</i>, nie w cudzysłowie</li>
     <li><b>Po prawej</b> — akcja główna / potwierdzajaca / o poważnych konsekwencjach; pozostałe po lewej (np. Anuluj)</li>
     <li><b>Akcje o poważnych konsekwencjach</b> — jednoznacznie opisane i wyróżnione wizualnie jako potencjalnie niebezpieczne</li>
   </ul>
@@ -365,60 +392,11 @@
   </details>
 </div>
 
-<section class="review">
-  <p class="model-note">DO SPRAWDZENIA</p>
-  <p>Teksty dialogów decyzji (<code>ActionsDialog</code>) — układ przycisków i caution już według karty „Dialog decyzji”; kolumny Standard / Caution / Dismiss = stan sprzed niej.</p>
-  <p>Pod każdą wartością → propozycja według zasad dialogów (szara = bez zmian). „Jako standard” = akcja bez poważnych konsekwencji, przestaje być caution (wdrożone); Dismiss jest już wszędzie „Anuluj”.</p>
-  <h3>3 przyciski</h3>
-  <table>
-    <tr><th>Scenariusz</th><th>Nagłówek</th><th>Treść</th><th>Standard</th><th>Caution</th><th>Dismiss</th></tr>
-    <tr><td>Szczegóły myśli – powiązany krok (<code>DetailsActivity</code>)</td><td>Powiązany krok<div class="prop">Co zrobić z powiązanym krokiem?</div></td><td>Co zrobić z powiązaniem?<div class="prop">Myśl jest przypięta do kroku celu. Odpięcie nie usuwa ani myśli, ani kroku.</div></td><td>Podmień<div class="prop">Podmień krok</div></td><td>Odepnij<div class="prop">Odepnij od kroku</div></td><td>Anuluj<div class="prop same">bez zmian</div></td></tr>
-    <tr><td>Krok celu – powiązana myśl (<code>GoalDetailActivity</code>)</td><td>Powiązana myśl<div class="prop">Odpiąć myśl od kroku?</div></td><td>Co zrobić z powiązaniem?<div class="prop">Myśl możesz zostawić w Strumieniu albo usunąć ją przy odpięciu.</div></td><td>Odepnij i zostaw myśl<div class="prop same">bez zmian</div></td><td>Odepnij i usuń myśl<div class="prop same">bez zmian</div></td><td>Anuluj<div class="prop same">bez zmian</div></td></tr>
-    <tr><td>Usuwanie celu (<code>WorkshopActivity</code>)</td><td>Usunąć cel / kierunek?<div class="prop">Usunąć cel?</div></td><td>Zostaną usunięte też wszystkie kroki tego celu.<div class="prop">Usunięte zostaną też wszystkie jego kroki. Archiwum zachowa cel razem z krokami.</div></td><td>Wrzuć do archiwum<div class="prop">Przenieś do archiwum</div></td><td>Usuń<div class="prop">Usuń cel i kroki</div></td><td>Anuluj<div class="prop same">bez zmian</div></td></tr>
-    <tr><td>Usuwanie celu z archiwum (<code>WorkshopActivity</code>)</td><td>Usunąć cel / kierunek?<div class="prop">Usunąć cel z archiwum?</div></td><td>Zostaną usunięte też wszystkie kroki tego celu.<div class="prop">Usunięte zostaną też wszystkie jego kroki. Tego nie da się cofnąć.</div></td><td>Przywróć z archiwum<div class="prop same">bez zmian</div></td><td>Usuń<div class="prop">Usuń cel i kroki</div></td><td>Anuluj<div class="prop same">bez zmian</div></td></tr>
-    <tr><td>Nagranie już istnieje (<code>HexAudioView</code>)</td><td>Co chcesz zrobić z nagraniem?<div class="prop">Nagranie już istnieje — co z nim zrobić?</div></td><td>—<div class="prop">Obecne nagranie zniknie w obu przypadkach.</div></td><td>Nadpisać<div class="prop">Nagraj od nowa</div></td><td>Wywalić<div class="prop">Usuń nagranie</div></td><td>Anuluj (domyślny)<div class="prop">Anuluj</div></td></tr>
-  </table>
-  <h3>2 przyciski – caution + dismiss</h3>
-  <table>
-    <tr><th>Scenariusz</th><th>Nagłówek</th><th>Treść</th><th>Standard</th><th>Caution</th><th>Dismiss</th></tr>
-    <tr><td>Usuwanie pustej myśli (<code>DetailsActivity</code>)</td><td>Uwaga!<div class="prop">Usunąć pustą myśl?</div></td><td>Usunięto ostatnią formę zapisu myśli. Czy usunąć całą myśl?<div class="prop">Usunięto ostatnią formę zapisu — myśl jest teraz pusta.</div></td><td>—</td><td>Usuń<div class="prop">Usuń myśl</div></td><td>Nie, zostaw<div class="prop">Zostaw pustą myśl</div></td></tr>
-    <tr><td>Usuwanie myśli w Strumieniu (<code>StreamActivity</code>)</td><td>Uwaga!<div class="prop">Usunąć myśl?</div></td><td>Czy na pewno chcesz usunąć Myśl?<div class="prop">Zniknie razem ze wszystkimi formami zapisu. Tego nie da się cofnąć.</div></td><td>—</td><td>Usuń<div class="prop">Usuń myśl</div></td><td>Nie, zostaw<div class="prop">Anuluj</div></td></tr>
-    <tr><td>Usuwanie tagu (<code>MetadataActivity</code>)</td><td>Uwaga!<div class="prop">Usunąć tag „[tag]”?</div></td><td>Czy usunąć tag „[tag]”? Zniknie ze wszystkich myśli, które go używają.<div class="prop">Zniknie ze wszystkich myśli, które go używają.</div></td><td>—</td><td>Usuń<div class="prop">Usuń tag</div></td><td>Nie, zostaw<div class="prop">Anuluj</div></td></tr>
-    <tr><td>Usuwanie kroku (<code>GoalDetailActivity</code>)</td><td>Usunąć krok?<div class="prop same">bez zmian</div></td><td>Tej operacji nie można cofnąć. <i>(z przypomnieniem:</i> Krok, który chcesz usunąć, ma przypomnienie w kalendarzu, które usuniemy wraz z nim. Kontynuować?<i>)</i><div class="prop">Tego nie da się cofnąć. <i>(z przypomnieniem:</i> Usuniemy też jego przypomnienie w kalendarzu.<i>)</i></div></td><td>—</td><td>Usuń<div class="prop">Usuń krok <i>(z przypomnieniem:</i> Usuń krok i przypomnienie<i>)</i></div></td><td>Anuluj<div class="prop same">bez zmian</div></td></tr>
-    <tr><td>Usuwanie zestawu fiszek / fiszki (<code>FlashcardsDeletion</code>)</td><td>Usunąć zestaw fiszek? / Usunąć fiszkę?<div class="prop same">bez zmian</div></td><td>Ta operacja jest nieodwracalna<div class="prop">Zestaw: Usunięte zostaną wszystkie jego fiszki. Tego nie da się cofnąć. / Fiszka: Tego nie da się cofnąć.</div></td><td>—</td><td>Kasujemy<div class="prop">Usuń zestaw / Usuń fiszkę</div></td><td>Anuluj (domyślny)<div class="prop">Anuluj</div></td></tr>
-    <tr><td>Usuwanie zdjęcia (<code>HexPhotoView</code>)</td><td>Coś ważnego!<div class="prop">Usunąć zdjęcie?</div></td><td>Wywalić to zdjęcie?<div class="prop">Tego nie da się cofnąć.</div></td><td>—</td><td>Kasujemy<div class="prop">Usuń zdjęcie</div></td><td>Anuluj (domyślny)<div class="prop">Anuluj</div></td></tr>
-    <tr><td>Usuwanie tekstu (<code>HexTextView</code>)</td><td>Usunąć tekst?<div class="prop same">bez zmian</div></td><td>Ta operacja jest nieodwracalna<div class="prop">Tego nie da się cofnąć.</div></td><td>—</td><td>Kasujemy<div class="prop">Usuń tekst</div></td><td>Anuluj (domyślny)<div class="prop">Anuluj</div></td></tr>
-    <tr><td>Przywracanie kopii zapasowej (<code>SettingsActivity</code>)</td><td>Uwaga!<div class="prop">Zastąpić dane kopią zapasową?</div></td><td>Wszystkie obecne dane zostaną zastąpione danymi wczytanymi z wybranego pliku. Kontynuować?<div class="prop">Obecne dane zostaną zastąpione danymi z wybranego pliku. Tego nie da się cofnąć.</div></td><td>—</td><td>Tak, zastąp<div class="prop">Zastąp dane</div></td><td>Nie, zostaw<div class="prop">Anuluj</div></td></tr>
-    <tr><td>Reset onboardingu (<code>WorkshopActivity</code>)</td><td>Uwaga!<div class="prop">Pokazać wskazówki od nowa?</div></td><td>Czy chcesz ponownie zobaczyć wszystkie wskazówki w tej sekcji?<div class="prop">Wszystkie wskazówki w tej sekcji pojawią się ponownie.</div></td><td>—</td><td>Tak<div class="prop">Pokaż wskazówki — jako standard</div></td><td>Nie<div class="prop">Anuluj</div></td></tr>
-    <tr><td>Reset ścieżek (<code>WorkshopActivity</code>)</td><td>Uwaga!<div class="prop">Zresetować postęp ścieżek?</div></td><td>Czy chcesz zresetować swój postęp we wszystkich ukończonych ścieżkach?<div class="prop">Postęp we wszystkich ukończonych ścieżkach zostanie wyzerowany. Tego nie da się cofnąć.</div></td><td>—</td><td>Tak<div class="prop">Resetuj postęp</div></td><td>Nie<div class="prop">Anuluj</div></td></tr>
-    <tr><td>Uśpiona myśl (<code>DetailsActivity</code>)</td><td>🌙 Uśpiona myśl<div class="prop">🌙 Obudzić uśpioną myśl?</div></td><td>Ta myśl jest uśpiona — ma niską wartość i nie była modyfikowana od dłuższego czasu.<div class="prop">Ma niską wartość i nie była zmieniana od dłuższego czasu.</div></td><td>—</td><td>Obudź<div class="prop">Obudź myśl — jako standard</div></td><td>Zostaw<div class="prop">Zostaw uśpioną</div></td></tr>
-    <tr><td>Nieaktywna forma zapisu (<code>ThoughtManagerActivity</code>)</td><td>Nieaktywna forma zapisu myśli<div class="prop">Włączyć nową formę zapisu?</div></td><td>Możesz aktywować zapisywanie myśli w formie nagrań głosowych, zdjęć oraz fiszek w Ustawieniach. Czy przejść do Ustawień?<div class="prop">Nagrania, zdjęcia i fiszki włączysz w Ustawieniach.</div></td><td>—</td><td>Dobra<div class="prop">Przejdź do Ustawień — jako standard</div></td><td>Nie<div class="prop">Anuluj</div></td></tr>
-    <tr><td>Uprawnienie zablokowane – głos (<code>SettingsActivity</code>)</td><td>Uprawnienie zablokowane<div class="prop">Odblokować dostęp do mikrofonu?</div></td><td>Uprawnienie do nagrywania dźwięku zostało trwale odrzucone. Możesz je włączyć w ustawieniach systemu Androida.<div class="prop">Dostęp jest zablokowany — włączysz go w ustawieniach Androida.</div></td><td>—</td><td>Otwórz ustawienia<div class="prop">Otwórz ustawienia Androida — jako standard</div></td><td>Anuluj (domyślny)<div class="prop">Anuluj</div></td></tr>
-    <tr><td>Uprawnienie zablokowane – zdjęcia (<code>SettingsActivity</code>)</td><td>Uprawnienie zablokowane<div class="prop">Odblokować dostęp do kamery?</div></td><td>Uprawnienie do kamery zostało trwale odrzucone. Możesz je włączyć w ustawieniach systemu Androida.<div class="prop">Dostęp jest zablokowany — włączysz go w ustawieniach Androida.</div></td><td>—</td><td>Otwórz ustawienia<div class="prop">Otwórz ustawienia Androida — jako standard</div></td><td>Anuluj (domyślny)<div class="prop">Anuluj</div></td></tr>
-    <tr><td>Uprawnienie zablokowane – kalendarz (<code>SettingsActivity</code>)</td><td>Uprawnienie zablokowane<div class="prop">Odblokować dostęp do kalendarza?</div></td><td>Dostęp do kalendarza został zablokowany. Możesz go przywrócić w ustawieniach Androida.<div class="prop">Dostęp jest zablokowany — włączysz go w ustawieniach Androida.</div></td><td>—</td><td>Otwórz ustawienia<div class="prop">Otwórz ustawienia Androida — jako standard</div></td><td>Anuluj (domyślny)<div class="prop">Anuluj</div></td></tr>
-    <tr><td>Uprawnienie zablokowane – backup (<code>SettingsActivity</code>)</td><td>Uprawnienie zablokowane<div class="prop">Odblokować dostęp do pamięci urządzenia?</div></td><td>Uprawnienie do pamięci urządzenia zostało trwale odrzucone. Możesz je włączyć w ustawieniach systemu Androida.<div class="prop">Dostęp jest zablokowany — włączysz go w ustawieniach Androida.</div></td><td>—</td><td>Otwórz ustawienia<div class="prop">Otwórz ustawienia Androida — jako standard</div></td><td>Anuluj (domyślny)<div class="prop">Anuluj</div></td></tr>
-  </table>
-  <h3>2 przyciski – standard + dismiss</h3>
-  <table>
-    <tr><th>Scenariusz</th><th>Nagłówek</th><th>Treść</th><th>Standard</th><th>Caution</th><th>Dismiss</th></tr>
-    <tr><td>Prośba o uprawnienie – głos (<code>SettingsActivity</code>)</td><td>Żądanie uprawnień do zasobów Androida<div class="prop">Zezwolić na dostęp do mikrofonu?</div></td><td>Aby móc nagrywać dźwięk, aplikacja potrzebuje dostępu do mikrofonu.<div class="prop">Bez niego nie nagrasz głosu.</div></td><td>Przyznaj<div class="prop">Zezwól</div></td><td>—</td><td>Nie teraz<div class="prop same">bez zmian</div></td></tr>
-    <tr><td>Prośba o uprawnienie – zdjęcia (<code>SettingsActivity</code>)</td><td>Żądanie uprawnień do zasobów Androida<div class="prop">Zezwolić na dostęp do kamery?</div></td><td>Aby móc robić zdjęcia, aplikacja potrzebuje dostępu do kamery.<div class="prop">Bez niego nie zrobisz zdjęcia.</div></td><td>Przyznaj<div class="prop">Zezwól</div></td><td>—</td><td>Nie teraz<div class="prop same">bez zmian</div></td></tr>
-    <tr><td>Prośba o uprawnienie – kalendarz (<code>SettingsActivity</code>)</td><td>Żądanie uprawnień do zasobów Androida<div class="prop">Zezwolić na dostęp do kalendarza?</div></td><td>Aby dodawać przypomnienia do kalendarza, aplikacja potrzebuje dostępu do niego. Bez tego nie da się włączyć tej opcji.<div class="prop">Bez niego nie dodasz przypomnień.</div></td><td>Przyznaj<div class="prop">Zezwól</div></td><td>—</td><td>Nie teraz<div class="prop same">bez zmian</div></td></tr>
-    <tr><td>Prośba o uprawnienie – backup (<code>SettingsActivity</code>)</td><td>Żądanie uprawnień do zasobów Androida<div class="prop">Zezwolić na dostęp do pamięci urządzenia?</div></td><td>Aby zapisywać i wczytywać kopie zapasowe, aplikacja potrzebuje dostępu do pamięci urządzenia.<div class="prop">Bez niego nie zapiszesz ani nie wczytasz kopii zapasowej.</div></td><td>Przyznaj<div class="prop">Zezwól</div></td><td>—</td><td>Nie teraz<div class="prop same">bez zmian</div></td></tr>
-    <tr><td>Podobny tag już istnieje (<code>HexTagsBottomSheet</code>)</td><td>Podobny tag już istnieje<div class="prop">Użyć istniejącego tagu?</div></td><td>W Twoich myślach jest już tag [tag]. Użyć go, zamiast tworzyć nowy?<div class="prop">Masz już podobny tag [tag].</div></td><td>Użyj [tag]<div class="prop same">bez zmian</div></td><td>—</td><td>Chcę swój tag<div class="prop">Utwórz nowy tag</div></td></tr>
-  </table>
-  <h3>Niespójności</h3>
-  <ul>
-    <li>potwierdzenie usunięcia: „Usuń” / „Kasujemy” / „Tak”</li>
-    <li>tytuły raz ogólne („Uwaga!”), raz pytanie („Usunąć krok?”)</li>
-  </ul>
-</section>
-
 <h2>Karty i listy</h2>
 <section>
   <ul>
     <li><b>Jeden kolor kart danego rodzaju</b> — np. fiszki i zestawy: <code>flashcard_background</code> (<code>_orange_lvl_1</code>) dla obu stron fiszki.</li>
-    <li><b>Stan elementu wizualnie, nie tekstem</b>, gdy się da — np. poziom fiszki: pionowy pasek (szare tło, wypełnienie <code>_orange_lvl_3</code>) z liczbą na czubku; zamrożona = półprzezroczysta karta; opanowana = pomarańczowa gwiazda.</li>
+    <li><b>Stan elementu wizualnie, nie tekstem</b>, gdy się da — np. poziom fiszki: pionowy pasek (szare tło, wypełnienie <code>_orange_lvl_3</code>) z liczbą na czubku; utrwalona = pomarańczowa gwiazda.</li>
     <li><b>Etykieta sekcji nad listą</b> — mała, w kolorze tekstu drugorzędnego (np. <i>„Zestawy”</i>, 15sp).</li>
   </ul>
 </section>
@@ -426,7 +404,7 @@
 <h2>Ruch i animacje</h2>
 <section>
   <ul>
-    <li><b>Animacje mówią o stanie</b> — np. falująca ramka = „jest coś do zrobienia”, gwiazda „nadająca sygnał” = opanowane; nie dekoracja bez znaczenia.</li>
+    <li><b>Animacje mówią o stanie</b> — np. falująca ramka = „jest coś do zrobienia”, gwiazda „nadająca sygnał” = utrwalone; nie dekoracja bez znaczenia.</li>
     <li><b>Delikatnie</b> — małe amplitudy, płynne wejście / wyjście (np. fale ramki 1.2dp, wygaszanie 600 ms).</li>
     <li><b>Bez synchronu</b> — powtarzające się animacje wielu elementów (np. gwiazdy) z losowymi przerwami.</li>
     <li><b>Wyłączone animacje w systemie</b> — elementy stoją nieruchomo (bez fal / sygnałów), treść dalej czytelna.</li>

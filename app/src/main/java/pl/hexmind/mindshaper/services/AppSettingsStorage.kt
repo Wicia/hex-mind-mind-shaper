@@ -62,17 +62,20 @@ class AppSettingsStorage @Inject constructor(
         const val SLOW_MODE_HOURS_MAX = 72
 
         // Flashcards - Repetitions System
-        private const val PARAM_FLASHCARDS_NEW_PER_DAY       = "param_flashcards_new_per_day"
-        private const val PARAM_FLASHCARDS_BACKLOG_THRESHOLD = "param_flashcards_backlog_threshold"
+        private const val PARAM_FLASHCARDS_NEW_PER_DAY = "param_flashcards_new_per_day"
 
         const val FLASHCARDS_NEW_PER_DAY_DEFAULT = 10
         const val FLASHCARDS_NEW_PER_DAY_MIN     = 1
-        const val FLASHCARDS_NEW_PER_DAY_MAX     = 50
+        const val FLASHCARDS_NEW_PER_DAY_MAX     = 30
 
-        const val FLASHCARDS_BACKLOG_DEFAULT = 30
-        const val FLASHCARDS_BACKLOG_MIN     = 5
-        const val FLASHCARDS_BACKLOG_MAX     = 200
-        const val FLASHCARDS_BACKLOG_STEP    = 5
+        // Due reviews above this number hold the new flashcards back - fixed, shown locked in Settings
+        const val FLASHCARDS_BACKLOG_THRESHOLD = 30
+
+        // Flashcards - reminder: one review session reminder a day
+        private const val PARAM_FLASHCARDS_REMINDERS_ENABLED = "param_flashcards_reminders_enabled"
+        private const val PARAM_FLASHCARDS_REMINDER_HOUR     = "param_flashcards_review_start_hour"
+
+        const val FLASHCARDS_REMINDER_HOUR_DEFAULT = 9
 
         // Dormant mode
         private const val PARAM_DORMANT_MODE_ENABLED    = "param_dormant_mode_enabled"
@@ -179,20 +182,29 @@ class AppSettingsStorage @Inject constructor(
         }
     }
 
-    /** Most new flashcards a day in the review session */
+    /** Most new flashcards a day in the review session - a value stored above the current range comes clamped */
     fun getFlashcardsNewPerDay(): Int =
         sharedPreferences.getInt(PARAM_FLASHCARDS_NEW_PER_DAY, FLASHCARDS_NEW_PER_DAY_DEFAULT)
+            .coerceIn(FLASHCARDS_NEW_PER_DAY_MIN, FLASHCARDS_NEW_PER_DAY_MAX)
 
     fun setFlashcardsNewPerDay(count: Int) {
         sharedPreferences.edit { putInt(PARAM_FLASHCARDS_NEW_PER_DAY, count) }
     }
 
-    /** Due reviews above this number hold the new flashcards back */
-    fun getFlashcardsBacklogThreshold(): Int =
-        sharedPreferences.getInt(PARAM_FLASHCARDS_BACKLOG_THRESHOLD, FLASHCARDS_BACKLOG_DEFAULT)
+    // User's wish only - the notifications permission is checked separately
+    fun isFlashcardsRemindersEnabled(): Boolean =
+        sharedPreferences.getBoolean(PARAM_FLASHCARDS_REMINDERS_ENABLED, false)
 
-    fun setFlashcardsBacklogThreshold(count: Int) {
-        sharedPreferences.edit { putInt(PARAM_FLASHCARDS_BACKLOG_THRESHOLD, count) }
+    fun setFlashcardsRemindersEnabled(enabled: Boolean) {
+        sharedPreferences.edit { putBoolean(PARAM_FLASHCARDS_REMINDERS_ENABLED, enabled) }
+    }
+
+    /** Full hour of the review session reminder */
+    fun getFlashcardsReminderHour(): Int =
+        sharedPreferences.getInt(PARAM_FLASHCARDS_REMINDER_HOUR, FLASHCARDS_REMINDER_HOUR_DEFAULT)
+
+    fun setFlashcardsReminderHour(hour: Int) {
+        sharedPreferences.edit { putInt(PARAM_FLASHCARDS_REMINDER_HOUR, hour) }
     }
 
     // === CALENDAR REMINDERS ===
@@ -256,7 +268,8 @@ class AppSettingsStorage @Inject constructor(
 
     fun getStartScreen(): StartScreen {
         val value = sharedPreferences.getString(PARAM_START_SCREEN, "")
-        return if (!value.isNullOrBlank()) StartScreen.valueOf(value) else StartScreen.HOME
+        // Unknown value (e.g. saved by another app version) = Home, not a crash
+        return StartScreen.entries.firstOrNull { it.name == value } ?: StartScreen.HOME
     }
 
     // === SLOW MODE ===

@@ -57,6 +57,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun flashcardDao(): FlashcardDAO
 
     companion object {
-        const val DB_VERSION = 22
+        const val DB_VERSION = 23
     }
 }

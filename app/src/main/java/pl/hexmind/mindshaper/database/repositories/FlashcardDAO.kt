@@ -22,6 +22,11 @@ interface FlashcardDAO {
     @Query("SELECT * FROM FLASHCARD_SETS ORDER BY updated_at DESC")
     fun getAllSetsLive(): LiveData<List<FlashcardSetWithCards>>
 
+    // One-off read outside the UI (reminders) - same order as the live list
+    @Transaction
+    @Query("SELECT * FROM FLASHCARD_SETS ORDER BY updated_at DESC")
+    suspend fun getAllSetsWithCards(): List<FlashcardSetWithCards>
+
     @Transaction
     @Query("SELECT * FROM FLASHCARD_SETS WHERE id = :setId")
     fun getSetByIdLive(setId: Int): LiveData<FlashcardSetWithCards?>

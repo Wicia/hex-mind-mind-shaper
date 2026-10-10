@@ -305,7 +305,7 @@ class DetailsViewModel @Inject constructor(
         // Optimistic clear so UI flips immediately
         _linkedStep.value = null
         viewModelScope.launch {
-            goalsService.unlinkThought(linkedStep.stepId, alsoDeleteThought = false)
+            goalsService.unlinkThought(linkedStep.stepId)
         }
     }
 

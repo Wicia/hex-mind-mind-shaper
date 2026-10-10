@@ -287,6 +287,7 @@ class HexAudioView @JvmOverloads constructor(
     private fun showRecordingOptionsDialog() {
         ActionsDialog.Builder(context)
             .setTitle(context.getString(R.string.capture_voice_dialog_title))
+            .setDescription(context.getString(R.string.capture_voice_dialog_description))
             .setSecondaryAction(context.getString(R.string.capture_voice_dialog_overwrite)) {
                 deleteCurrentRecording(deleteFromDatabase = true)  // Delete from DB
                 startRecording()

@@ -22,8 +22,7 @@ sealed class StepProgressResult {
 
 @Singleton
 class GoalsService @Inject constructor(
-    private val repository: WorkshopRepository,
-    private val thoughtsService: ThoughtsService
+    private val repository: WorkshopRepository
 ) {
 
     // ── Goals ──────────────────────────────────────────────────────────────────
@@ -162,19 +161,12 @@ class GoalsService @Inject constructor(
     }
 
     /**
-     * Unlinks the thought from the step.
-     * If [alsoDeleteThought] is true, the underlying thought is also deleted from THOUGHTS.
+     * Unlinks the thought from the step - the thought itself stays.
      */
-    suspend fun unlinkThought(stepId: Int, alsoDeleteThought: Boolean) {
+    suspend fun unlinkThought(stepId: Int) {
         val current = repository.getStepById(stepId) ?: return
-        val linkedId = current.thoughtId ?: return
-
-        // Clear FK first (avoid orphan window even though SET_NULL would handle it)
+        if (current.thoughtId == null) return
         repository.updateStep(current.copy(thoughtId = null))
-
-        if (alsoDeleteThought) {
-            thoughtsService.deleteThoughtById(linkedId)
-        }
     }
 
     /**

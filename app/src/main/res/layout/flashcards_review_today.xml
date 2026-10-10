@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- "Do powtórki" on Utrwalanie - one session over all the sets.
+<!-- Today's session widget on the flashcards screen - one session over all the sets.
      ! Deliberately not a card / button: no fill, no ripple, no tap on the whole - only the rocket acts
      Glowing frame (HexWavyFrameView) ripples while there is something to review ("to do") -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="@color/text_secondary"
-                tools:text="Powtórki: 8 · Nowe: 10" />
+                tools:text="Masz do powtórki 18 fiszek (10 nowych)" />
 
         </LinearLayout>
 

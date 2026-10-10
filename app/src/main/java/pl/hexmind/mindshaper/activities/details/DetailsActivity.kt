@@ -313,9 +313,9 @@ class DetailsActivity : ThoughtManagerActivity() {
 
     private fun showDeleteEmptyThoughtDialog() {
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.common_deletion_dialog_title))
+            .setTitle(getString(R.string.details_last_form_removed_title))
             .setDescription(getString(R.string.details_last_form_removed_message))
-            .setPrimaryAction(getString(R.string.common_deletion_dialog_yes), caution = true) {
+            .setPrimaryAction(getString(R.string.common_deletion_dialog_thought_yes), caution = true) {
                 viewModel.deleteThought()
                 showShortToast(
                     R.string.common_deletion_dialog_confirmation,
