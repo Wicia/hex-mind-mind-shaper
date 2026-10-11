@@ -15,8 +15,8 @@ import androidx.core.content.ContextCompat
 import pl.hexmind.mindshaper.R
 
 /**
- * Tab switch for N tabs - a label over its own underline; the active one is underlined with a
- * horizontal curly brace (ends curled up, tip pointing down).
+ * Tab switch for N tabs - a label over its own underline with the ends curled up; the active one
+ * also has a tip pointing down, so it reads as a horizontal curly brace.
  *
  * XML usage:
  *   <pl.hexmind.mindshaper.common.ui.views.HexTabSwitch
@@ -68,7 +68,7 @@ class HexTabSwitch @JvmOverloads constructor(
         textSize = sp(DEFAULT_TEXT_SIZE_SP)
     }
 
-    private val bracePath = Path()
+    private val underlinePath = Path()
 
     private var tabs: List<String> = emptyList()
 
@@ -197,35 +197,43 @@ class HexTabSwitch @JvmOverloads constructor(
             return
         }
 
+        buildUnderline(left + lineInset(), left + segmentWidth - lineInset(), lineY, withTip = false)
         linePaint.color = inactiveColor
-        canvas.drawLine(left + lineInset(), lineY, left + segmentWidth - lineInset(), lineY, linePaint)
+        canvas.drawPath(underlinePath, linePaint)
     }
 
     // Round caps stick out by half the stroke, so the ends are pulled in to keep the gap exact
     private fun lineInset(): Float = gap / 2f + lineThickness / 2f
 
-    /**
-     * Horizontal curly brace across the tab: ends curl up into the line,
-     * the middle bends down into a tip under the label.
-     */
+    /** The active tab's brace - follows the animated position, not selectedIndex. */
     private fun drawBrace(canvas: Canvas, segmentWidth: Float, lineY: Float) {
         val left = bracePosition * segmentWidth + lineInset()
         val right = (bracePosition + 1f) * segmentWidth - lineInset()
-        val centerX = (left + right) / 2f
-        val halfNotch = notchWidth / 2f
-        val tipY = lineY + notchDepth
 
-        bracePath.reset()
-        bracePath.moveTo(left, lineY - braceCurl)
-        bracePath.quadTo(left, lineY, left + braceCurl, lineY)
-        bracePath.lineTo(centerX - halfNotch, lineY)
-        bracePath.quadTo(centerX, lineY, centerX, tipY)
-        bracePath.quadTo(centerX, lineY, centerX + halfNotch, lineY)
-        bracePath.lineTo(right - braceCurl, lineY)
-        bracePath.quadTo(right, lineY, right, lineY - braceCurl)
-
+        buildUnderline(left, right, lineY, withTip = true)
         linePaint.color = activeColor
-        canvas.drawPath(bracePath, linePaint)
+        canvas.drawPath(underlinePath, linePaint)
+    }
+
+    /**
+     * Underline with its ends curled up - every tab has it.
+     * withTip: the middle bends down into a tip under the label, so the whole reads as a horizontal curly brace.
+     */
+    private fun buildUnderline(left: Float, right: Float, lineY: Float, withTip: Boolean) {
+        underlinePath.reset()
+        underlinePath.moveTo(left, lineY - braceCurl)
+        underlinePath.quadTo(left, lineY, left + braceCurl, lineY)
+
+        if (withTip) {
+            val centerX = (left + right) / 2f
+            val halfNotch = notchWidth / 2f
+            underlinePath.lineTo(centerX - halfNotch, lineY)
+            underlinePath.quadTo(centerX, lineY, centerX, lineY + notchDepth)
+            underlinePath.quadTo(centerX, lineY, centerX + halfNotch, lineY)
+        }
+
+        underlinePath.lineTo(right - braceCurl, lineY)
+        underlinePath.quadTo(right, lineY, right, lineY - braceCurl)
     }
 
     private fun animateBraceTo(target: Float) {
