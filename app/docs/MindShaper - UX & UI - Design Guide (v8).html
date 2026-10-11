@@ -371,6 +371,35 @@
       <dd><code>HexOptionTiles</code>, <code>common_option_tile_item_view.xml</code> (layout)</dd>
     </dl>
   </details>
+
+  <details class="comp" open>
+    <summary><h3>Przełącznik zakładek</h3></summary>
+    <dl>
+      <dt>Przeznaczenie</dt>
+      <dd>Przełączanie widoku listy między kilkoma rodzajami — np. Osoby / Projekty w <i>Metadanych</i>.</dd>
+      <dt>Wygląd</dt>
+      <dd>
+        <figure><svg role="img" aria-label="hex-tab-switch" xmlns="http://www.w3.org/2000/svg" width="345" height="67.9" viewBox="0 0 300 59">
+  <rect width="300" height="59" fill="#FFF4E6"/>
+  <g transform="translate(0,4)" font-size="16" font-family="'Baloo 2', 'Segoe UI', sans-serif" text-anchor="middle" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <text x="75" y="18" dominant-baseline="central" font-weight="700" fill="#48433F" stroke="none">Osoby</text>
+    <text x="225" y="18" dominant-baseline="central" fill="#48433F" stroke="none">Projekty</text>
+    <path d="M8,32Q8,38 14,38L61,38Q75,38 75,49Q75,38 89,38L136,38Q142,38 142,32" stroke="#FFC59A"/>
+    <path d="M158,38H292" stroke="#FFE1C8"/>
+  </g>
+</svg></figure>
+        <ul>
+          <li>etykiety <code>text_primary</code>; aktywna pogrubiona</li>
+          <li>aktywna zakładka: poziomy nawias klamrowy <code>_orange_lvl_2</code> (końce podwinięte w górę, szpic w dół)</li>
+          <li>nieaktywna: prosta linia <code>_orange_lvl_1</code></li>
+        </ul>
+      </dd>
+      <dt>Działanie</dt>
+      <dd><b>tap</b> wybiera zakładkę — pogrubienie zmienia się od razu, nawias przesuwa się pod nią</dd>
+      <dt>Kod</dt>
+      <dd><code>HexTabSwitch</code> (widget); poprzedni wygląd (zrośnięte segmenty z ząbkiem): <code>docs/legacy/HexTabSwitchLegacy.kt</code> (poza kodem aplikacji)</dd>
+    </dl>
+  </details>
 </div>
 </div>
 

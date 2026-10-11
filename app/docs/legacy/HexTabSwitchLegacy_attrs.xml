@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- To restore: paste into res/values/attr.xml; shared tab* attrs are declared in HexTabSwitch, referenced here -->
+    <declare-styleable name="HexTabSwitchLegacy">
+        <attr name="tabHeight" />
+        <attr name="tabCornerRadius" format="dimension" />
+        <attr name="tabActiveColor" />
+        <attr name="tabInactiveColor" />
+        <attr name="tabActiveLift" format="dimension" />
+        <attr name="tabActiveStrokeWidth" format="dimension" />
+        <attr name="tabActiveStrokeColor" format="reference|color" />
+        <attr name="tabActiveTextColor" format="reference|color" />
+        <attr name="tabInactiveTextColor" format="reference|color" />
+        <attr name="tabTextSize" />
+        <attr name="notchWidth" />
+        <attr name="notchDepth" />
+    </declare-styleable>
+
+</resources>
