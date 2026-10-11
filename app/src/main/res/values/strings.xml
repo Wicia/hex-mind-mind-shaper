@@ -119,13 +119,18 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="flashcards_btn_add_next">Dodaj kolejną</string>
     <string name="flashcards_btn_finish">Zakończ</string>
     <string name="flashcards_btn_create_set">Utwórz</string>
-    <string name="flashcards_set_name_with_count">%1$s (%2$d)</string>
     <string name="flashcards_end_title">Wszystkie fiszki zostały ogarnięte ;)</string>
     <string name="flashcards_end_ratings">"Mam to: %1$d  ·  Coś świta: %2$d  ·  Pustka: %3$d"</string>
     <string name="flashcards_rating_good">Mam to</string>
     <string name="flashcards_rating_ok">Coś świta</string>
     <string name="flashcards_rating_bad">Pustka</string>
-    <string name="flashcards_set_stats">"Do powtórki: %1$d  ·  Nowe: %2$d  ·  Utrwalone: %3$d"</string>
+    <plurals name="flashcards_set_count">
+        <item quantity="one">%d fiszka</item>
+        <item quantity="few">%d fiszki</item>
+        <item quantity="many">%d fiszek</item>
+        <item quantity="other">%d fiszki</item>
+    </plurals>
+    <string name="flashcards_set_stats">"%1$s | do powtórki: %2$d · utrwalone: %3$d"</string>
     <string name="flashcards_review_today">Dzisiejsza sesja</string>
     <string name="flashcards_tab_loose">Luźne fiszki</string>
     <string name="flashcards_tab_sets">Zestawy</string>
@@ -145,6 +150,7 @@ Dodaj pierwszą przyciskiem +</string>
     </plurals>
     <string name="flashcards_review_today_done">Na dziś wszystko powtórzone :)</string>
     <string name="flashcards_new_paused">Nowe fiszki wstrzymane - do nadrobienia: %1$d</string>
+    <string name="flashcards_level">lvl: %1$d</string>
     <string name="flashcards_level_mastered">★</string>
     <string name="flashcards_edit_progress_info">Postęp nauki zostaje, ale zmiana treści może wpłynąć na naukę</string>
     <string name="flashcards_removing_header">Usunąć zestaw fiszek?</string>
@@ -154,6 +160,12 @@ Dodaj pierwszą przyciskiem +</string>
     <string name="flashcards_removing_with_flashcards">Usuń z fiszkami</string>
     <string name="flashcards_removing_keep_loose">Fiszki do luźnych</string>
     <string name="flashcard_removing_yes">Usuń fiszkę</string>
+    <string name="flashcard_move_header">Przenieść fiszkę?</string>
+    <string name="flashcard_move_content">Możesz ją przenieść do luźnych fiszek albo do innego zestawu.</string>
+    <string name="flashcard_move_to_set">Do innego zestawu</string>
+    <string name="flashcard_move_to_loose">Do luźnych</string>
+    <string name="flashcard_move_pick_header">Przenieś do zestawu</string>
+    <string name="flashcards_btn_move">Przenieś</string>
 
     <!-- ============================================================ -->
     <!--    WORKSHOP - Onboarding review                              -->

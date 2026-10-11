@@ -51,6 +51,14 @@ class FlashcardsViewModel @Inject constructor(
         }
     }
 
+    /** A loose flashcard to a set */
+    fun moveLooseFlashcard(flashcard: FlashcardDTO, toSetId: Int?) {
+        val flashcardId = flashcard.id ?: return
+        viewModelScope.launch {
+            flashcardsService.moveFlashcard(flashcardId, fromSetId = null, toSetId = toSetId)
+        }
+    }
+
     /** Empty set - the flashcards are added right after, in a series */
     fun addSet(name: String, onCreated: (setId: Int) -> Unit) {
         viewModelScope.launch {

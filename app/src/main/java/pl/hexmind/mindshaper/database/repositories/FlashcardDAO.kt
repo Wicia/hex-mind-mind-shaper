@@ -72,6 +72,10 @@ interface FlashcardDAO {
     @Query("SELECT COALESCE(MAX(position), -1) FROM FLASHCARDS WHERE set_id IS :setId")
     suspend fun getLastPosition(setId: Int?): Int
 
+    /** @param setId null = to the loose flashcards; repetition progress stays */
+    @Query("UPDATE FLASHCARDS SET set_id = :setId, position = :position WHERE id = :id")
+    suspend fun moveFlashcard(id: Int, setId: Int?, position: Int)
+
     /** Whole set to the loose flashcards, after the last loose one - the set's own order is kept */
     @Query("UPDATE FLASHCARDS SET set_id = NULL, position = position + :positionOffset WHERE set_id = :setId")
     suspend fun moveSetToLoose(setId: Int, positionOffset: Int)

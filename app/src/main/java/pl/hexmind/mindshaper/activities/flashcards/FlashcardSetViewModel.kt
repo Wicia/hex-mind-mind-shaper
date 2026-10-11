@@ -21,7 +21,7 @@ class FlashcardSetViewModel @Inject constructor(
 ) : ViewModel() {
 
     // Key matches FlashcardSetActivity.EXTRA_SET_ID ("setId")
-    private val setId: Int = savedStateHandle.get<Int>("setId") ?: 0
+    val setId: Int = savedStateHandle.get<Int>("setId") ?: 0
 
     // null = the set is gone (deleted)
     val set: LiveData<FlashcardSetDTO?> = flashcardsService.getSetByIdLive(setId)
@@ -58,16 +58,17 @@ class FlashcardSetViewModel @Inject constructor(
         }
     }
 
-    fun rate(flashcard: FlashcardDTO, rating: FlashcardRating) {
+    /** @param toSetId null = to the loose flashcards */
+    fun moveFlashcard(flashcard: FlashcardDTO, toSetId: Int?) {
+        val flashcardId = flashcard.id ?: return
         viewModelScope.launch {
-            flashcardsService.rate(flashcard, rating)
+            flashcardsService.moveFlashcard(flashcardId, fromSetId = setId, toSetId = toSetId)
         }
     }
 
-    /** @param keepFlashcards true = the set's flashcards become loose */
-    fun deleteSet(keepFlashcards: Boolean) {
+    fun rate(flashcard: FlashcardDTO, rating: FlashcardRating) {
         viewModelScope.launch {
-            flashcardsService.deleteSet(setId, keepFlashcards)
+            flashcardsService.rate(flashcard, rating)
         }
     }
 }

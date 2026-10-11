@@ -121,6 +121,20 @@ class FlashcardsService @Inject constructor(
         }
     }
 
+    /**
+     * To the end of the target - repetition progress stays, it is the same flashcard. Both sets count as edited.
+     * @param fromSetId / toSetId null = the loose flashcards
+     */
+    suspend fun moveFlashcard(flashcardId: Int, fromSetId: Int?, toSetId: Int?) {
+        if (fromSetId == toSetId) return
+        database.withTransaction {
+            val position = flashcardDAO.getLastPosition(toSetId) + 1
+            flashcardDAO.moveFlashcard(flashcardId, toSetId, position)
+            touchSet(fromSetId)
+            touchSet(toSetId)
+        }
+    }
+
     /** @param keepFlashcards true = the set's flashcards become loose (after the last loose one), false = deleted with it */
     suspend fun deleteSet(setId: Int, keepFlashcards: Boolean) {
         database.withTransaction {

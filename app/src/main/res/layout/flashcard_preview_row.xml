@@ -26,7 +26,9 @@
             android:textStyle="bold"
             android:textColor="@color/text_primary"
             android:fontFamily="@font/alegreya_regular"
-            tools:text="Stolica Mongolii?" />
+            android:lineSpacingMultiplier="@dimen/line_spacing_tight"
+            tools:text="Stolica Mongolii?"
+            />
 
         <TextView
             android:id="@+id/tv_preview_back"
@@ -41,7 +43,7 @@
 
     </LinearLayout>
 
-    <!-- Level: number on top (mastered = star sending out a signal), vertical bar below filling up from the bottom (weights set in code)
+    <!-- Level: "lvl: N" on top (mastered = star sending out a signal), vertical bar below filling up from the bottom (weights set in code)
          ! clipChildren off here and on the row - the signal ring grows past its bounds -->
     <LinearLayout
         android:layout_width="wrap_content"
@@ -73,7 +75,7 @@
                 android:layout_gravity="center"
                 android:textSize="15sp"
                 android:textColor="@color/text_secondary"
-                tools:text="2" />
+                tools:text="lvl: 2" />
 
         </FrameLayout>
 

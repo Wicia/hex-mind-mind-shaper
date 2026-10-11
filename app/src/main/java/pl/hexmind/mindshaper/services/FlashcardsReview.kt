@@ -39,7 +39,6 @@ object FlashcardsReview {
 
     data class SetStats(
         val dueCount: Int,
-        val newCount: Int,
         val masteredCount: Int
     )
 
@@ -96,7 +95,6 @@ object FlashcardsReview {
     fun statsOf(set: FlashcardSetDTO, today: LocalDate): SetStats =
         SetStats(
             dueCount      = set.flashcards.count { flashcard -> FlashcardsScheduler.isRepetitionDue(flashcard, today) },
-            newCount      = set.flashcards.count { flashcard -> flashcard.status == FlashcardStatus.NEW },
             masteredCount = set.flashcards.count { flashcard -> flashcard.status == FlashcardStatus.MASTERED }
         )
 

@@ -21,7 +21,7 @@ import pl.hexmind.mindshaper.services.dto.FlashcardsLibraryDTO
 
 /**
  * Flashcards screen - today's session widget (one session over all the flashcards) + tabs below:
- * - Luźne fiszki (default): flashcards without a set - tap = edit, long press = delete
+ * - Luźne fiszki (default): flashcards without a set - tap = edit (+ move to a set), long press = delete
  * - Zestawy: set tap = preview, rocket = review of just this set, long press = delete
  * FAB adds to the shown tab: loose flashcards in a series / a new set.
  * Opened from a reminder: the session starts as soon as the flashcards are loaded.
@@ -146,8 +146,24 @@ class FlashcardsActivity : CoreActivity() {
         ).show()
     }
 
+    // A loose flashcard moves only to a set - no set, no Move button
     private fun openLooseEdit(flashcard: FlashcardDTO, number: Int) {
-        FlashcardEditDialog.edit(this, flashcard, number = number, onSave = viewModel::updateLooseFlashcard).show()
+        val onMove: (() -> Unit)? =
+            if (FlashcardMove.canMove(null, library.sets)) {
+                {
+                    FlashcardMove.start(this, null, library.sets) { toSetId ->
+                        viewModel.moveLooseFlashcard(flashcard, toSetId)
+                    }
+                }
+            }
+            else null
+        FlashcardEditDialog.edit(
+            context = this,
+            flashcard = flashcard,
+            number = number,
+            onSave = viewModel::updateLooseFlashcard,
+            onMove = onMove
+        ).show()
     }
 
     private fun startPendingSession() {

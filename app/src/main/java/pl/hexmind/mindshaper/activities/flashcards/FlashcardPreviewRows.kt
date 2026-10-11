@@ -57,8 +57,8 @@ object FlashcardPreviewRows {
     }
 
     /**
-     * Level 0 (new) - 5: number on top + the bar filled from the bottom.
-     * Mastered = a star instead of the number
+     * Level 0 (new) - 5: "lvl: N" on top + the bar filled from the bottom.
+     * Mastered = a star instead of "lvl: N"
      */
     private fun bindLevel(row: View, flashcard: FlashcardDTO) {
         val context = row.context
@@ -70,7 +70,7 @@ object FlashcardPreviewRows {
             tvLevel.setTextSize(TypedValue.COMPLEX_UNIT_SP, STAR_TEXT_SIZE_SP)
             startStarSignal(row.findViewById(R.id.v_preview_level_signal))
         }
-        else tvLevel.text = flashcard.level.toString()
+        else tvLevel.text = context.getString(R.string.flashcards_level, flashcard.level)
         row.findViewById<View>(R.id.v_preview_level_done).updateLayoutParams<LinearLayout.LayoutParams> { weight = filled }
         row.findViewById<View>(R.id.v_preview_level_left).updateLayoutParams<LinearLayout.LayoutParams> { weight = 1f - filled }
     }

@@ -25,5 +25,10 @@
     <!-- Content's action at the left end of the dialog button bar (ScrimDialogs leadingAction) -->
     <dimen name="dialog_leading_action_height">40dp</dimen>
     <dimen name="dialog_leading_action_icon_size">20dp</dimen>
+    <!-- ! Move icon is thin and detailed - at 20dp it reads smaller than the plain "+" -->
+    <dimen name="dialog_leading_action_move_icon_size">26dp</dimen>
     <dimen name="dialog_leading_action_margin_start">12dp</dimen>
+
+    <!-- Tight line spacing (lineSpacingMultiplier) of multi-line labels - action buttons, flashcard front -->
+    <item name="line_spacing_tight" format="float" type="dimen">0.80</item>
 </resources>
