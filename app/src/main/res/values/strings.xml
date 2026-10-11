@@ -127,7 +127,10 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="flashcards_rating_bad">Pustka</string>
     <string name="flashcards_set_stats">"Do powtórki: %1$d  ·  Nowe: %2$d  ·  Utrwalone: %3$d"</string>
     <string name="flashcards_review_today">Dzisiejsza sesja</string>
-    <string name="flashcards_sets_label">Zestawy</string>
+    <string name="flashcards_tab_loose">Luźne fiszki</string>
+    <string name="flashcards_tab_sets">Zestawy</string>
+    <string name="flashcards_loose_empty">Nie masz jeszcze luźnych fiszek…
+Dodaj pierwszą przyciskiem +</string>
     <plurals name="flashcards_review_today_counts">
         <item quantity="one">Masz do powtórki %d fiszkę</item>
         <item quantity="few">Masz do powtórki %d fiszki</item>
@@ -146,8 +149,10 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="flashcards_edit_progress_info">Postęp nauki zostaje, ale zmiana treści może wpłynąć na naukę</string>
     <string name="flashcards_removing_header">Usunąć zestaw fiszek?</string>
     <string name="flashcard_removing_header">Usunąć fiszkę?</string>
-    <string name="flashcards_removing_content">Usunięte zostaną wszystkie jego fiszki. Tego nie da się cofnąć.</string>
+    <string name="flashcards_removing_content">Jego fiszki możesz usunąć razem z nim albo zachować jako luźne. Usunięcia nie da się cofnąć.</string>
     <string name="flashcards_removing_yes">Usuń zestaw</string>
+    <string name="flashcards_removing_with_flashcards">Usuń z fiszkami</string>
+    <string name="flashcards_removing_keep_loose">Fiszki do luźnych</string>
     <string name="flashcard_removing_yes">Usuń fiszkę</string>
 
     <!-- ============================================================ -->

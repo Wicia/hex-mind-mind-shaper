@@ -1,6 +1,7 @@
 package pl.hexmind.mindshaper.services
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.map
 import androidx.room.withTransaction
 import pl.hexmind.mindshaper.database.AppDatabase
@@ -13,6 +14,7 @@ import pl.hexmind.mindshaper.services.dto.FlashcardDTO
 import pl.hexmind.mindshaper.services.dto.FlashcardRating
 import pl.hexmind.mindshaper.services.dto.FlashcardSetDTO
 import pl.hexmind.mindshaper.services.dto.FlashcardStatus
+import pl.hexmind.mindshaper.services.dto.FlashcardsLibraryDTO
 import java.time.Instant
 import java.time.LocalDate
 import javax.inject.Inject
@@ -31,23 +33,41 @@ class FlashcardsService @Inject constructor(
     fun getSetByIdLive(setId: Int): LiveData<FlashcardSetDTO?> =
         flashcardDAO.getSetByIdLive(setId).map { set -> set?.let { toDto(it) } }
 
-    suspend fun getAllSets(): List<FlashcardSetDTO> =
-        flashcardDAO.getAllSetsWithCards().map { set -> toDto(set) }
+    /** Sets + loose flashcards - emitted once both are loaded, half of it would show wrong counts / empty states */
+    fun getLibraryLive(): LiveData<FlashcardsLibraryDTO> {
+        val sets = getAllSetsLive()
+        val loose = flashcardDAO.getLooseLive().map { flashcards -> flashcards.map { flashcard -> toDto(flashcard) } }
+        return MediatorLiveData<FlashcardsLibraryDTO>().apply {
+            fun emit() {
+                val currentSets = sets.value ?: return
+                val currentLoose = loose.value ?: return
+                value = FlashcardsLibraryDTO(currentSets, currentLoose)
+            }
+            addSource(sets) { emit() }
+            addSource(loose) { emit() }
+        }
+    }
+
+    suspend fun getLibrary(): FlashcardsLibraryDTO =
+        FlashcardsLibraryDTO(
+            sets  = flashcardDAO.getAllSetsWithCards().map { set -> toDto(set) },
+            loose = flashcardDAO.getLoose().map { flashcard -> toDto(flashcard) }
+        )
 
     /**
      * What is up for review right now - with the user's limits (Settings).
-     * @param sets all the sets - the daily limit of new flashcards and the backlog count over all of them
-     * @param setId null = one session over all the sets
+     * @param library all the flashcards - the daily limit of new flashcards and the backlog count over all of them
+     * @param setId null = one session over all the flashcards
      */
-    fun planReview(sets: List<FlashcardSetDTO>, setId: Int? = null): FlashcardsReview.Plan =
+    fun planReview(library: FlashcardsLibraryDTO, setId: Int? = null): FlashcardsReview.Plan =
         FlashcardsReview.plan(
-            sets   = sets,
-            params = FlashcardsReview.Params(
+            library = library,
+            params  = FlashcardsReview.Params(
                 newPerDay        = appSettingsStorage.getFlashcardsNewPerDay(),
                 backlogThreshold = AppSettingsStorage.FLASHCARDS_BACKLOG_THRESHOLD
             ),
-            today  = LocalDate.now(),
-            setId  = setId
+            today   = LocalDate.now(),
+            setId   = setId
         )
 
     fun statsOf(set: FlashcardSetDTO): FlashcardsReview.SetStats =
@@ -72,34 +92,48 @@ class FlashcardsService @Inject constructor(
         }
     }
 
-    /** Added at the end of the set - the order the user enters them in */
-    suspend fun addFlashcard(setId: Int, flashcard: FlashcardDTO) {
+    /**
+     * Added at the end of the set - the order the user enters them in
+     * @param setId null = a loose flashcard
+     */
+    suspend fun addFlashcard(setId: Int?, flashcard: FlashcardDTO) {
         database.withTransaction {
             val position = flashcardDAO.getLastPosition(setId) + 1
             flashcardDAO.insert(toEntity(setId, position, flashcard))
-            flashcardDAO.touchSet(setId, Instant.now().toEpochMilli())
+            touchSet(setId)
         }
     }
 
     /** Content only - the rest of the set and the flashcard's repetition progress stay untouched */
-    suspend fun updateFlashcard(setId: Int, flashcard: FlashcardDTO) {
+    suspend fun updateFlashcard(setId: Int?, flashcard: FlashcardDTO) {
         val id = flashcard.id ?: return
         database.withTransaction {
             flashcardDAO.updateContent(id, flashcard.front, flashcard.back)
-            flashcardDAO.touchSet(setId, Instant.now().toEpochMilli())
+            touchSet(setId)
         }
     }
 
     /** Gap in the positions is fine - they only order the set */
-    suspend fun deleteFlashcard(setId: Int, flashcardId: Int) {
+    suspend fun deleteFlashcard(setId: Int?, flashcardId: Int) {
         database.withTransaction {
             flashcardDAO.deleteFlashcard(flashcardId)
-            flashcardDAO.touchSet(setId, Instant.now().toEpochMilli())
+            touchSet(setId)
         }
     }
 
-    suspend fun deleteSet(setId: Int) {
-        flashcardDAO.deleteSet(setId)
+    /** @param keepFlashcards true = the set's flashcards become loose (after the last loose one), false = deleted with it */
+    suspend fun deleteSet(setId: Int, keepFlashcards: Boolean) {
+        database.withTransaction {
+            if (keepFlashcards) {
+                flashcardDAO.moveSetToLoose(setId, positionOffset = flashcardDAO.getLastPosition(null) + 1)
+            }
+            flashcardDAO.deleteSet(setId)
+        }
+    }
+
+    // Loose flashcards have no set to mark as edited
+    private suspend fun touchSet(setId: Int?) {
+        setId?.let { id -> flashcardDAO.touchSet(id, Instant.now().toEpochMilli()) }
     }
 
     /** First rating of the flashcard in a review session -> its next level / review date (FlashcardsScheduler) */
@@ -132,23 +166,24 @@ class FlashcardsService @Inject constructor(
             updatedAt = setWithCards.set.updatedAt,
             flashcards = setWithCards.flashcards
                 .sortedBy { flashcard -> flashcard.position }
-                .map { flashcard ->
-                    FlashcardDTO(
-                        id           = flashcard.id,
-                        front        = flashcard.front,
-                        back         = flashcard.back,
-                        status       = FlashcardStatus.valueOf(flashcard.status),
-                        level        = flashcard.level,
-                        dueOn        = flashcard.dueOn?.let { day -> LocalDate.ofEpochDay(day) },
-                        introducedOn = flashcard.introducedOn?.let { day -> LocalDate.ofEpochDay(day) }
-                    )
-                }
+                .map { flashcard -> toDto(flashcard) }
+        )
+
+    private fun toDto(flashcard: FlashcardEntity): FlashcardDTO =
+        FlashcardDTO(
+            id           = flashcard.id,
+            front        = flashcard.front,
+            back         = flashcard.back,
+            status       = FlashcardStatus.valueOf(flashcard.status),
+            level        = flashcard.level,
+            dueOn        = flashcard.dueOn?.let { day -> LocalDate.ofEpochDay(day) },
+            introducedOn = flashcard.introducedOn?.let { day -> LocalDate.ofEpochDay(day) }
         )
 
     private fun toEntities(setId: Int, flashcards: List<FlashcardDTO>): List<FlashcardEntity> =
         flashcards.mapIndexed { index, flashcard -> toEntity(setId, index, flashcard) }
 
-    private fun toEntity(setId: Int, position: Int, flashcard: FlashcardDTO): FlashcardEntity =
+    private fun toEntity(setId: Int?, position: Int, flashcard: FlashcardDTO): FlashcardEntity =
         FlashcardEntity(
             id           = flashcard.id,
             setId        = setId,

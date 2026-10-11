@@ -583,6 +583,37 @@ class Migrations {
             }
         }
 
+        // Loose flashcards: set_id may be NULL (a flashcard without a set) - the cascade still applies to the ones in a set
+        // ! Table rebuilt - SQLite cannot drop NOT NULL from a column in place
+        val MIGRATION_23_TO_24 = object : Migration(23, 24) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS FLASHCARDS_NEW (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        set_id INTEGER,
+                        position INTEGER NOT NULL,
+                        front TEXT NOT NULL,
+                        back TEXT NOT NULL,
+                        status TEXT NOT NULL,
+                        level INTEGER NOT NULL,
+                        due_on INTEGER,
+                        introduced_on INTEGER,
+                        FOREIGN KEY(set_id) REFERENCES FLASHCARD_SETS(id) ON DELETE CASCADE
+                    )
+                """)
+
+                db.execSQL("""
+                    INSERT INTO FLASHCARDS_NEW (id, set_id, position, front, back, status, level, due_on, introduced_on)
+                    SELECT id, set_id, position, front, back, status, level, due_on, introduced_on
+                    FROM FLASHCARDS
+                """)
+
+                db.execSQL("DROP TABLE FLASHCARDS")
+                db.execSQL("ALTER TABLE FLASHCARDS_NEW RENAME TO FLASHCARDS")
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_FLASHCARDS_set_id ON FLASHCARDS(set_id)")
+            }
+        }
+
         // Status of snapshots v22 - MIGRATION_22_TO_23 and DataSnapshotManager turn it into ACTIVE
         const val LEGACY_STATUS_FROZEN = "FROZEN"
 

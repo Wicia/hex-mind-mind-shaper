@@ -7,7 +7,8 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 /**
- * One flashcard (front + back) of a set. A set holds an ordered list of them.
+ * One flashcard (front + back) - of a set, or loose (no set).
+ * A set holds an ordered list of them, the loose ones have their own order.
  */
 @Entity(
     tableName = "FLASHCARDS",
@@ -16,7 +17,7 @@ import androidx.room.PrimaryKey
             entity = FlashcardSetEntity::class,
             parentColumns = ["id"],
             childColumns = ["set_id"],
-            onDelete = ForeignKey.CASCADE // Flashcards live and die with their set
+            onDelete = ForeignKey.CASCADE // Flashcards of a set live and die with it, unless moved to the loose ones first
         )
     ],
     indices = [Index(value = ["set_id"])]
@@ -26,10 +27,11 @@ data class FlashcardEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
 
+    // null = loose flashcard
     @ColumnInfo(name = "set_id")
-    val setId: Int,
+    val setId: Int?,
 
-    // Order in which the user entered the flashcards
+    // Order in which the user entered the flashcards - within the set, or among the loose ones
     @ColumnInfo(name = "position")
     val position: Int,
 

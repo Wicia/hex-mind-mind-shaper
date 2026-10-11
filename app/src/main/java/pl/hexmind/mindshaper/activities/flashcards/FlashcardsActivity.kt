@@ -2,6 +2,7 @@ package pl.hexmind.mindshaper.activities.flashcards
 
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,43 +14,54 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardEditDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardsSessionDialog
+import pl.hexmind.mindshaper.common.ui.views.HexTabSwitch
 import pl.hexmind.mindshaper.common.ui.views.HexWavyFrameView
-import pl.hexmind.mindshaper.services.dto.FlashcardSetDTO
+import pl.hexmind.mindshaper.services.dto.FlashcardDTO
+import pl.hexmind.mindshaper.services.dto.FlashcardsLibraryDTO
 
 /**
- * Flashcards screen - today's session widget (one session over all the sets) + the flashcard sets below.
- * Set: tap = preview, rocket = review of just this set, long press = delete.
- * Opened from a reminder: the session starts as soon as the sets are loaded.
- * Opened from the launcher shortcut: the new-set dialog opens right away.
+ * Flashcards screen - today's session widget (one session over all the flashcards) + tabs below:
+ * - Luźne fiszki (default): flashcards without a set - tap = edit, long press = delete
+ * - Zestawy: set tap = preview, rocket = review of just this set, long press = delete
+ * FAB adds to the shown tab: loose flashcards in a series / a new set.
+ * Opened from a reminder: the session starts as soon as the flashcards are loaded.
+ * Opened from the launcher shortcut: a series of new loose flashcards right away.
  */
 @AndroidEntryPoint
 class FlashcardsActivity : CoreActivity() {
 
     private val viewModel: FlashcardsViewModel by viewModels()
 
+    private lateinit var tabsFlashcards: HexTabSwitch
+    private lateinit var llLoose: LinearLayout
+    private lateinit var tvLooseEmpty: TextView
     private lateinit var rvSets: RecyclerView
-    private lateinit var tvEmpty: TextView
-    private lateinit var tvSetsLabel: TextView
+    private lateinit var tvSetsEmpty: TextView
     private lateinit var reviewToday: View
     private lateinit var tvReviewTodayStatus: TextView
     private lateinit var btnReviewToday: MaterialButton
     private lateinit var frameReviewToday: HexWavyFrameView
 
-    // Last sets from the database - due reviews also change with the time, so onResume renders them again
-    private var sets: List<FlashcardSetDTO> = emptyList()
+    // Last flashcards from the database - due reviews also change with the time, so onResume renders them again
+    private var library = FlashcardsLibraryDTO(emptyList())
 
-    // Reminder's session waiting for the first sets from the database
+    // Reminder's session waiting for the first flashcards from the database
     private var pendingSession = false
+
+    // Shortcut's series waiting for the loose flashcards - their count numbers the new ones
+    private var pendingNewLoose = false
 
     private val setsAdapter = FlashcardSetsAdapter(
         onSetTap = { set ->
             set.id?.let { setId -> startActivity(FlashcardSetActivity.newIntent(this, setId)) }
         },
         onSetLongPress = { set ->
-            set.id?.let { setId -> FlashcardsDeletion.confirmSet(this) { viewModel.deleteSet(setId) } }
+            set.id?.let { setId ->
+                FlashcardsDeletion.confirmSet(this, set) { keepFlashcards -> viewModel.deleteSet(setId, keepFlashcards) }
+            }
         },
         onReviewTap = { set ->
-            FlashcardsSessionDialog.open(this, viewModel.planReview(sets, set.id), onRated = viewModel::rate)
+            FlashcardsSessionDialog.open(this, viewModel.planReview(library, set.id), onRated = viewModel::rate)
         }
     )
 
@@ -57,18 +69,20 @@ class FlashcardsActivity : CoreActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.flashcards_activity)
 
-        // Only on the first creation - a rotation must not start the session again
+        // Only on the first creation - a rotation must not start the session / the series again
         if (savedInstanceState == null) {
             pendingSession = intent.getBooleanExtra(EXTRA_START_SESSION, false)
+            pendingNewLoose = intent.getBooleanExtra(EXTRA_NEW_LOOSE_FLASHCARDS, false)
         }
 
         // Nav overlay + current-screen highlight are added by CoreActivity (onContentChanged / onResume)
         setupHeader(R.drawable.ic_activity_flashcards, R.string.flashcards_title)
 
+        tabsFlashcards = findViewById(R.id.tabs_flashcards)
+        llLoose = findViewById(R.id.ll_loose_flashcards)
+        tvLooseEmpty = findViewById(R.id.tv_loose_empty)
         rvSets = findViewById(R.id.rv_sets)
-        tvEmpty = findViewById(R.id.tv_sets_empty)
-
-        tvSetsLabel = findViewById(R.id.tv_sets_label)
+        tvSetsEmpty = findViewById(R.id.tv_sets_empty)
 
         reviewToday = findViewById(R.id.inc_review_today)
         tvReviewTodayStatus = reviewToday.findViewById(R.id.tv_review_today_status)
@@ -78,22 +92,42 @@ class FlashcardsActivity : CoreActivity() {
         rvSets.layoutManager = LinearLayoutManager(this)
         rvSets.adapter = setsAdapter
 
+        tabsFlashcards.setTabs(
+            listOf(
+                getString(R.string.flashcards_tab_loose),
+                getString(R.string.flashcards_tab_sets)
+            ),
+            initialIndex = savedInstanceState?.getInt(STATE_TAB) ?: TAB_LOOSE
+        )
+        tabsFlashcards.onTabSelected = { renderTabs() }
+
         btnReviewToday.setOnClickListener {
-            FlashcardsSessionDialog.open(this, viewModel.planReview(sets), onRated = viewModel::rate)
+            FlashcardsSessionDialog.open(this, viewModel.planReview(library), onRated = viewModel::rate)
         }
 
-        findViewById<FloatingActionButton>(R.id.fab_add_set).setOnClickListener { openNewSet() }
+        findViewById<FloatingActionButton>(R.id.fab_add).setOnClickListener {
+            if (tabsFlashcards.selectedIndex == TAB_LOOSE) openAddLoose() else openNewSet()
+        }
 
-        viewModel.sets.observe(this) { newSets ->
-            sets = newSets
+        viewModel.library.observe(this) { newLibrary ->
+            library = newLibrary
             render()
             startPendingSession()
+            startPendingNewLoose()
         }
+    }
 
-        // Launcher shortcut - only on the first creation, a rotation must not open the dialog again
-        if (savedInstanceState == null && intent.getBooleanExtra(EXTRA_NEW_SET, false)) {
-            openNewSet()
-        }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(STATE_TAB, tabsFlashcards.selectedIndex)
+    }
+
+    private fun openAddLoose() {
+        FlashcardEditDialog.addSeries(
+            this,
+            firstNumber = library.loose.size + 1,
+            onAdd = { flashcard -> viewModel.addFlashcard(null, flashcard) }
+        ).show()
     }
 
     // One dialog: name -> the set is created -> its flashcards in a series -> Finish opens the set
@@ -112,11 +146,24 @@ class FlashcardsActivity : CoreActivity() {
         ).show()
     }
 
+    private fun openLooseEdit(flashcard: FlashcardDTO, number: Int) {
+        FlashcardEditDialog.edit(this, flashcard, number = number, onSave = viewModel::updateLooseFlashcard).show()
+    }
+
     private fun startPendingSession() {
         if (!pendingSession) return
         pendingSession = false
 
-        FlashcardsSessionDialog.open(this, viewModel.planReview(sets), onRated = viewModel::rate)
+        FlashcardsSessionDialog.open(this, viewModel.planReview(library), onRated = viewModel::rate)
+    }
+
+    private fun startPendingNewLoose() {
+        if (!pendingNewLoose) return
+        pendingNewLoose = false
+
+        tabsFlashcards.setSelectedIndex(TAB_LOOSE)
+        renderTabs()
+        openAddLoose()
     }
 
     override fun onResume() {
@@ -126,29 +173,44 @@ class FlashcardsActivity : CoreActivity() {
     }
 
     private fun render() {
-        setsAdapter.submitList(sets.map { set ->
+        FlashcardPreviewRows.render(
+            container   = llLoose,
+            flashcards  = library.loose,
+            onTap       = { flashcard, number -> openLooseEdit(flashcard, number) },
+            onLongPress = { flashcard -> FlashcardsDeletion.confirmFlashcard(this) { viewModel.deleteLooseFlashcard(flashcard) } }
+        )
+
+        setsAdapter.submitList(library.sets.map { set ->
             FlashcardSetItem(
                 set       = set,
                 stats     = viewModel.statsOf(set),
-                canReview = !viewModel.planReview(sets, set.id).isEmpty
+                canReview = !viewModel.planReview(library, set.id).isEmpty
             )
         })
 
-        val hasSets = sets.isNotEmpty()
-        rvSets.visibility = if (hasSets) View.VISIBLE else View.GONE
-        tvSetsLabel.visibility = if (hasSets) View.VISIBLE else View.GONE
-        tvEmpty.visibility = if (hasSets) View.GONE else View.VISIBLE
-
+        renderTabs()
         renderReviewToday()
+    }
+
+    /** Only the shown tab's list (or its empty state) is visible */
+    private fun renderTabs() {
+        val isLooseTab = tabsFlashcards.selectedIndex == TAB_LOOSE
+        val hasLoose = library.loose.isNotEmpty()
+        val hasSets = library.sets.isNotEmpty()
+
+        llLoose.visibility = if (isLooseTab && hasLoose) View.VISIBLE else View.GONE
+        tvLooseEmpty.visibility = if (isLooseTab && !hasLoose) View.VISIBLE else View.GONE
+        rvSets.visibility = if (!isLooseTab && hasSets) View.VISIBLE else View.GONE
+        tvSetsEmpty.visibility = if (!isLooseTab && !hasSets) View.VISIBLE else View.GONE
     }
 
     private fun renderReviewToday() {
         // No flashcards at all - nothing to say about the review
-        val hasFlashcards = sets.any { set -> set.flashcards.isNotEmpty() }
+        val hasFlashcards = !library.isEmpty
         reviewToday.visibility = if (hasFlashcards) View.VISIBLE else View.GONE
         if (!hasFlashcards) return
 
-        val plan = viewModel.planReview(sets)
+        val plan = viewModel.planReview(library)
         // The total is the whole session - the new ones are a part of it
         val counts = resources.getQuantityString(R.plurals.flashcards_review_today_counts, plan.queue.size, plan.queue.size)
         val status = when {
@@ -169,7 +231,12 @@ class FlashcardsActivity : CoreActivity() {
         /** true = the review session starts right away (reminder) */
         const val EXTRA_START_SESSION = "extra_start_session"
 
-        /** true = the new-set dialog opens right away (launcher shortcut) */
-        const val EXTRA_NEW_SET = "extra_new_set"
+        /** true = a series of new loose flashcards opens right away (launcher shortcut) */
+        const val EXTRA_NEW_LOOSE_FLASHCARDS = "extra_new_loose_flashcards"
+
+        private const val STATE_TAB = "state_tab"
+
+        // HexTabSwitch order: 0 = loose flashcards, 1 = sets
+        private const val TAB_LOOSE = 0
     }
 }

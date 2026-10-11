@@ -35,7 +35,7 @@ class AppShortcuts @Inject constructor(
                     labelRes     = R.string.shortcut_new_flashcards,
                     iconRes      = R.drawable.ic_shortcut_new_flashcards,
                     targetIntent = Intent(context, FlashcardsActivity::class.java)
-                        .putExtra(FlashcardsActivity.EXTRA_NEW_SET, true)
+                        .putExtra(FlashcardsActivity.EXTRA_NEW_LOOSE_FLASHCARDS, true)
                 ))
             }
             add(buildCaptureShortcut(

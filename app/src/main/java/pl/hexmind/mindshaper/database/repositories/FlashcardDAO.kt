@@ -45,6 +45,14 @@ interface FlashcardDAO {
 
 // ========== FLASHCARDS ==========
 
+    // Loose flashcards (no set) - in the order they were entered
+    @Query("SELECT * FROM FLASHCARDS WHERE set_id IS NULL ORDER BY position")
+    fun getLooseLive(): LiveData<List<FlashcardEntity>>
+
+    // One-off read outside the UI (reminders)
+    @Query("SELECT * FROM FLASHCARDS WHERE set_id IS NULL ORDER BY position")
+    suspend fun getLoose(): List<FlashcardEntity>
+
     @Query("DELETE FROM FLASHCARDS WHERE set_id = :setId")
     suspend fun deleteBySetId(setId: Int)
 
@@ -57,9 +65,16 @@ interface FlashcardDAO {
     @Query("DELETE FROM FLASHCARDS WHERE id = :id")
     suspend fun deleteFlashcard(id: Int)
 
-    // -1 for an empty set - the first flashcard lands at position 0
-    @Query("SELECT COALESCE(MAX(position), -1) FROM FLASHCARDS WHERE set_id = :setId")
-    suspend fun getLastPosition(setId: Int): Int
+    /**
+     * -1 for an empty set - the first flashcard lands at position 0
+     * @param setId null = the loose flashcards (IS matches NULL too)
+     */
+    @Query("SELECT COALESCE(MAX(position), -1) FROM FLASHCARDS WHERE set_id IS :setId")
+    suspend fun getLastPosition(setId: Int?): Int
+
+    /** Whole set to the loose flashcards, after the last loose one - the set's own order is kept */
+    @Query("UPDATE FLASHCARDS SET set_id = NULL, position = position + :positionOffset WHERE set_id = :setId")
+    suspend fun moveSetToLoose(setId: Int, positionOffset: Int)
 
     /** One flashcard edited on its own - its place in the set and its repetition progress stay */
     @Query("UPDATE FLASHCARDS SET front = :front, back = :back WHERE id = :id")

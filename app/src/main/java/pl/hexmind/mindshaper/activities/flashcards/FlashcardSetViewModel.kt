@@ -11,6 +11,7 @@ import pl.hexmind.mindshaper.services.FlashcardsService
 import pl.hexmind.mindshaper.services.dto.FlashcardDTO
 import pl.hexmind.mindshaper.services.dto.FlashcardRating
 import pl.hexmind.mindshaper.services.dto.FlashcardSetDTO
+import pl.hexmind.mindshaper.services.dto.FlashcardsLibraryDTO
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,11 +26,11 @@ class FlashcardSetViewModel @Inject constructor(
     // null = the set is gone (deleted)
     val set: LiveData<FlashcardSetDTO?> = flashcardsService.getSetByIdLive(setId)
 
-    // The set's own session follows the limits counted over all the sets (new per day, backlog)
-    val allSets: LiveData<List<FlashcardSetDTO>> = flashcardsService.getAllSetsLive()
+    // The set's own session follows the limits counted over all the flashcards (new per day, backlog)
+    val library: LiveData<FlashcardsLibraryDTO> = flashcardsService.getLibraryLive()
 
-    fun planReview(sets: List<FlashcardSetDTO>): FlashcardsReview.Plan =
-        flashcardsService.planReview(sets, setId)
+    fun planReview(library: FlashcardsLibraryDTO): FlashcardsReview.Plan =
+        flashcardsService.planReview(library, setId)
 
     fun updateSet(name: String, flashcards: List<FlashcardDTO>) {
         viewModelScope.launch {
@@ -63,9 +64,10 @@ class FlashcardSetViewModel @Inject constructor(
         }
     }
 
-    fun deleteSet() {
+    /** @param keepFlashcards true = the set's flashcards become loose */
+    fun deleteSet(keepFlashcards: Boolean) {
         viewModelScope.launch {
-            flashcardsService.deleteSet(setId)
+            flashcardsService.deleteSet(setId, keepFlashcards)
         }
     }
 }

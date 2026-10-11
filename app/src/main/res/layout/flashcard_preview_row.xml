@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- One flashcard in the set's preview: front (bold) and back, level bar on the right - tap = FlashcardEditDialog, long press = delete -->
+<!-- One flashcard in a preview list (set preview, loose flashcards tab): front (bold) and back, level bar on the right - tap = FlashcardEditDialog, long press = delete -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"

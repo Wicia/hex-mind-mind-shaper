@@ -310,6 +310,26 @@
   <details class="item">
     <summary>
       <span class="prio imp">Istotny</span>
+      <strong>Fiszki — krok 2: luźne fiszki (bez zestawu)</strong> — dodawanie fiszek bez konieczności wrzucania ich do określonego zestawu.
+    </summary>
+    <div class="body">
+      <ul>
+        <li><strong>Luźne fiszki</strong> — fiszka może istnieć bez zestawu</li>
+        <li><strong>Skrót „Twórz fiszki”</strong> — otwiera od razu ekran dodawania fiszek, bez wyboru zestawu</li>
+        <li><strong>Zakładki w <i>Zapamiętywaniu</i></strong> — zamiast etykiety „Zestawy” przełącznik zakładek jak w <i>Metadanych</i> (Osoby / Projekty)
+          <ul>
+            <li>zakładki: „Luźne fiszki” / „Zestawy”</li>
+            <li>domyślnie zaznaczone „Luźne fiszki”</li>
+          </ul>
+        </li>
+        <li><strong>[Przenieś] w edycji fiszki</strong> — przycisk po lewej, ikona <code>ic_move_item</code> (już jest)</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>activities/flashcards/FlashcardsActivity.kt</code> — etykieta <code>flashcards_sets_label</code> → <code>HexTabSwitch</code> (wzór: <code>metadata_activity.xml</code>)</li><li><code>services/AppShortcuts.kt</code> — skrót „Twórz fiszki”</li></ul></div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span>
       <strong>Fiszki — rozbicie stanu D widżetu „Dzisiejsza sesja”</strong> — „Na dziś wszystko powtórzone :)” skleja 3 różne sytuacje i czasem mówi nieprawdę.
     </summary>
     <div class="body">

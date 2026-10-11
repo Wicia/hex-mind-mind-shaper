@@ -69,7 +69,7 @@ class FlashcardsReminders @Inject constructor(
     suspend fun notifyIfDue() {
         if (!isActive()) return
 
-        val plan = flashcardsService.planReview(flashcardsService.getAllSets())
+        val plan = flashcardsService.planReview(flashcardsService.getLibrary())
         if (plan.isEmpty) return
 
         ensureChannel()
