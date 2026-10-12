@@ -129,11 +129,10 @@ class FlashcardsActivity : CoreActivity() {
     private fun setupFab() {
         val fab = findViewById<FloatingActionButton>(R.id.fab_add)
         speedDial = SpeedDial(this, fab)
-        // TODO: placeholder icon - replace with a proper import icon
-        speedDial.addOption(R.string.flashcards_speed_dial_import, R.drawable.ic_action_list) {
+        speedDial.addOption(R.string.flashcards_speed_dial_import, R.drawable.ic_action_import) {
             FlashcardsImportDialog(this, onImport = viewModel::importLooseFlashcards).show()
         }
-        speedDial.addOption(R.string.flashcards_speed_dial_add, R.drawable.ic_action_add) {
+        speedDial.addOption(R.string.flashcards_speed_dial_add, R.drawable.ic_action_add_flashcards) {
             openAddLoose()
         }
 

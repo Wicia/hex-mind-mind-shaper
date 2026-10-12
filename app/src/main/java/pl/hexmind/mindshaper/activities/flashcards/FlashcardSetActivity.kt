@@ -93,11 +93,10 @@ class FlashcardSetActivity : CoreActivity() {
 
     private fun setupSpeedDial() {
         val speedDial = SpeedDial(this, fabAdd)
-        // TODO: placeholder icon - replace with a proper import icon
-        speedDial.addOption(R.string.flashcards_speed_dial_import, R.drawable.ic_action_list) {
+        speedDial.addOption(R.string.flashcards_speed_dial_import, R.drawable.ic_action_import) {
             FlashcardsImportDialog(this, onImport = viewModel::importFlashcards).show()
         }
-        speedDial.addOption(R.string.flashcards_speed_dial_add, R.drawable.ic_action_add) {
+        speedDial.addOption(R.string.flashcards_speed_dial_add, R.drawable.ic_action_add_flashcards) {
             viewModel.set.value?.let { set -> openAddSeries(set) }
         }
         fabAdd.setOnClickListener { speedDial.toggle() }
