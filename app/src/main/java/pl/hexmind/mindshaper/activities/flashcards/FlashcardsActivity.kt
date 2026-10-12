@@ -13,9 +13,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardEditDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardsImportDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardsSessionDialog
 import pl.hexmind.mindshaper.common.ui.views.HexTabSwitch
 import pl.hexmind.mindshaper.common.ui.views.HexWavyFrameView
+import pl.hexmind.mindshaper.common.ui.views.SpeedDial
 import pl.hexmind.mindshaper.services.dto.FlashcardDTO
 import pl.hexmind.mindshaper.services.dto.FlashcardsLibraryDTO
 
@@ -23,7 +25,7 @@ import pl.hexmind.mindshaper.services.dto.FlashcardsLibraryDTO
  * Flashcards screen - today's session widget (one session over all the flashcards) + tabs below:
  * - Luźne fiszki (default): flashcards without a set - tap = edit (+ move to a set), long press = delete
  * - Zestawy: set tap = preview, rocket = review of just this set, long press = delete
- * FAB adds to the shown tab: loose flashcards in a series / a new set.
+ * FAB by the shown tab: speed dial (add loose flashcards in a series / import them from a text) / a new set.
  * Opened from a reminder: the session starts as soon as the flashcards are loaded.
  * Opened from the launcher shortcut: a series of new loose flashcards right away.
  */
@@ -41,6 +43,7 @@ class FlashcardsActivity : CoreActivity() {
     private lateinit var tvReviewTodayStatus: TextView
     private lateinit var btnReviewToday: MaterialButton
     private lateinit var frameReviewToday: HexWavyFrameView
+    private lateinit var speedDial: SpeedDial
 
     // Last flashcards from the database - due reviews also change with the time, so onResume renders them again
     private var library = FlashcardsLibraryDTO(emptyList())
@@ -99,15 +102,16 @@ class FlashcardsActivity : CoreActivity() {
             ),
             initialIndex = savedInstanceState?.getInt(STATE_TAB) ?: TAB_LOOSE
         )
-        tabsFlashcards.onTabSelected = { renderTabs() }
+        tabsFlashcards.onTabSelected = {
+            speedDial.close()
+            renderTabs()
+        }
 
         btnReviewToday.setOnClickListener {
             FlashcardsSessionDialog.open(this, viewModel.planReview(library), onRated = viewModel::rate)
         }
 
-        findViewById<FloatingActionButton>(R.id.fab_add).setOnClickListener {
-            if (tabsFlashcards.selectedIndex == TAB_LOOSE) openAddLoose() else openNewSet()
-        }
+        setupFab()
 
         viewModel.library.observe(this) { newLibrary ->
             library = newLibrary
@@ -120,6 +124,22 @@ class FlashcardsActivity : CoreActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt(STATE_TAB, tabsFlashcards.selectedIndex)
+    }
+
+    private fun setupFab() {
+        val fab = findViewById<FloatingActionButton>(R.id.fab_add)
+        speedDial = SpeedDial(this, fab)
+        // TODO: placeholder icon - replace with a proper import icon
+        speedDial.addOption(R.string.flashcards_speed_dial_import, R.drawable.ic_action_list) {
+            FlashcardsImportDialog(this, onImport = viewModel::importLooseFlashcards).show()
+        }
+        speedDial.addOption(R.string.flashcards_speed_dial_add, R.drawable.ic_action_add) {
+            openAddLoose()
+        }
+
+        fab.setOnClickListener {
+            if (tabsFlashcards.selectedIndex == TAB_LOOSE) speedDial.toggle() else openNewSet()
+        }
     }
 
     private fun openAddLoose() {

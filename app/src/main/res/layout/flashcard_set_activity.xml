@@ -103,7 +103,10 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- fab - Add flashcards in a series -->
+    <!-- Speed dial -->
+    <include layout="@layout/common_speed_dial" />
+
+    <!-- fab - speed dial (Add flashcards in a series / Import flashcards) -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_flashcards"
         android:layout_width="wrap_content"

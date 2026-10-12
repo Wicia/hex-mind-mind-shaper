@@ -20,6 +20,7 @@ import androidx.core.view.isVisible
  * narrower than MIN_TILE_WIDTH_DP (narrow screen, large font). Up to 3 tiles never wrap.
  * Exactly one tile is selected at a time.
  * Individual tiles can be disabled (grayed out, non-clickable).
+ * app:compact="true" - slim tiles for short labels without icons (e.g. inside a dialog).
  *
  * Usage:
  *   tileGroup.setOptions(listOf(
@@ -41,6 +42,7 @@ open class HexOptionTiles @JvmOverloads constructor(
         const val MIN_TILE_WIDTH_DP = 80
         const val GRID_COLUMNS      = 2
         const val GRID_MIN_TILES    = 4
+        const val COMPACT_PADDING_VERTICAL_DP = 6
     }
 
     data class Option(
@@ -50,6 +52,8 @@ open class HexOptionTiles @JvmOverloads constructor(
     )
 
     var onSelectionChanged: ((selectedId: Int) -> Unit)? = null
+
+    private var compact = false
 
     private var selectedId: Int = -1
     private val disabledIds = mutableSetOf<Int>()
@@ -61,6 +65,17 @@ open class HexOptionTiles @JvmOverloads constructor(
     private var columns = 1
     private var tileWidth = 0
     private val rowHeights = mutableListOf<Int>()
+
+    init {
+        attrs?.let {
+            val typedArray = context.obtainStyledAttributes(it, R.styleable.HexOptionTiles)
+            try {
+                compact = typedArray.getBoolean(R.styleable.HexOptionTiles_compact, false)
+            } finally {
+                typedArray.recycle()
+            }
+        }
+    }
 
     fun setOptions(options: List<Option>) {
         removeAllViews()
@@ -81,6 +96,12 @@ open class HexOptionTiles @JvmOverloads constructor(
 
             // Label handling
             tileView.findViewById<TextView>(R.id.tv_tile_label).setText(option.labelRes)
+
+            if (compact) {
+                tileView.minimumHeight = 0
+                val verticalPadding = dpToPx(COMPACT_PADDING_VERTICAL_DP)
+                tileView.setPadding(tileView.paddingLeft, verticalPadding, tileView.paddingRight, verticalPadding)
+            }
 
             tileView.setOnClickListener {
                 if (option.id !in disabledIds) {

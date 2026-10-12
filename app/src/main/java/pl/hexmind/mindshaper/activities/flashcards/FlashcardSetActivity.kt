@@ -15,14 +15,16 @@ import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.common.formatting.withoutOrphans
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardEditDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardsEditDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardsImportDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardsSessionDialog
+import pl.hexmind.mindshaper.common.ui.views.SpeedDial
 import pl.hexmind.mindshaper.services.dto.FlashcardDTO
 import pl.hexmind.mindshaper.services.dto.FlashcardSetDTO
 import pl.hexmind.mindshaper.services.dto.FlashcardsLibraryDTO
 
 /**
  * Preview of one set: its flashcards (front + back) in the order they were entered.
- * Delete (X, left) / edit / review (rocket), FAB = add flashcards in a series.
+ * Delete (X, left) / edit / review (rocket), FAB = speed dial: add flashcards in a series / import them from a text.
  * Tap on a flashcard = edit just that one (+ move it), long press = delete it.
  * Each flashcard shows where it is in the Repetitions System (new / level / mastered).
  */
@@ -59,9 +61,7 @@ class FlashcardSetActivity : CoreActivity() {
         btnEdit = findViewById(R.id.btn_set_edit)
         btnReview = findViewById(R.id.btn_set_review)
 
-        fabAdd.setOnClickListener {
-            viewModel.set.value?.let { set -> openAddSeries(set) }
-        }
+        setupSpeedDial()
 
         btnEdit.setOnClickListener {
             val set = viewModel.set.value ?: return@setOnClickListener
@@ -89,6 +89,18 @@ class FlashcardSetActivity : CoreActivity() {
             }
             render(set)
         }
+    }
+
+    private fun setupSpeedDial() {
+        val speedDial = SpeedDial(this, fabAdd)
+        // TODO: placeholder icon - replace with a proper import icon
+        speedDial.addOption(R.string.flashcards_speed_dial_import, R.drawable.ic_action_list) {
+            FlashcardsImportDialog(this, onImport = viewModel::importFlashcards).show()
+        }
+        speedDial.addOption(R.string.flashcards_speed_dial_add, R.drawable.ic_action_add) {
+            viewModel.set.value?.let { set -> openAddSeries(set) }
+        }
+        fabAdd.setOnClickListener { speedDial.toggle() }
     }
 
     private fun openAddSeries(set: FlashcardSetDTO) {

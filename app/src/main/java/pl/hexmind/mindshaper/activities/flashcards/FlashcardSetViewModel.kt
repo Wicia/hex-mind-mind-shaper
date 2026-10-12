@@ -45,6 +45,13 @@ class FlashcardSetViewModel @Inject constructor(
         }
     }
 
+    /** One transaction - the imported flashcards go to the end of the set in the order of the text */
+    fun importFlashcards(flashcards: List<FlashcardDTO>) {
+        viewModelScope.launch {
+            flashcardsService.addFlashcards(setId, flashcards)
+        }
+    }
+
     fun updateFlashcard(flashcard: FlashcardDTO) {
         viewModelScope.launch {
             flashcardsService.updateFlashcard(setId, flashcard)

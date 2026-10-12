@@ -166,6 +166,26 @@ Dodaj pierwszą przyciskiem +</string>
     <string name="flashcard_move_to_loose">Do luźnych</string>
     <string name="flashcard_move_pick_header">Przenieś do zestawu</string>
     <string name="flashcards_btn_move">Przenieś</string>
+    <string name="flashcards_speed_dial_add">Dodaj fiszki</string>
+    <string name="flashcards_speed_dial_import">Importuj fiszki</string>
+    <string name="flashcards_import_header">Import fiszek</string>
+    <string name="flashcards_import_separator_label">Separator:</string>
+    <string name="flashcards_import_separator_new_line">Enter</string>
+    <string name="flashcards_import_separator_dash">Myślnik</string>
+    <string name="flashcards_import_hint_new_line">"Awers
+Rewers
+Awers
+Rewers…"</string>
+    <string name="flashcards_import_hint_dash">"Awers - Rewers
+Awers - Rewers…"</string>
+    <string name="flashcards_import_btn">Importuj</string>
+    <plurals name="flashcards_import_count">
+        <item quantity="one">Powstanie %d fiszka</item>
+        <item quantity="few">Powstaną %d fiszki</item>
+        <item quantity="many">Powstanie %d fiszek</item>
+        <item quantity="other">Powstanie %d fiszki</item>
+    </plurals>
+    <string name="flashcards_import_skipped">(pominięte linie: %1$d)</string>
 
     <!-- ============================================================ -->
     <!--    WORKSHOP - Onboarding review                              -->

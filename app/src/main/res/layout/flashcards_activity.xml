@@ -91,7 +91,10 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- fab - New loose flashcards / New set (by the tab) -->
+    <!-- Speed dial (Luźne fiszki tab) -->
+    <include layout="@layout/common_speed_dial" />
+
+    <!-- fab - speed dial (Luźne fiszki) / New set (Zestawy) -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add"
         android:layout_width="wrap_content"

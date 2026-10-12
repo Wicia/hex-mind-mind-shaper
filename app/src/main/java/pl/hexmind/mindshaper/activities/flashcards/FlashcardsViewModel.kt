@@ -38,6 +38,13 @@ class FlashcardsViewModel @Inject constructor(
         }
     }
 
+    /** One transaction - the imported flashcards keep the order of the text */
+    fun importLooseFlashcards(flashcards: List<FlashcardDTO>) {
+        viewModelScope.launch {
+            flashcardsService.addFlashcards(null, flashcards)
+        }
+    }
+
     fun updateLooseFlashcard(flashcard: FlashcardDTO) {
         viewModelScope.launch {
             flashcardsService.updateFlashcard(null, flashcard)

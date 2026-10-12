@@ -24,6 +24,10 @@
         <attr name="valueTextColor" format="reference|color" />
     </declare-styleable>
 
+    <declare-styleable name="HexOptionTiles">
+        <attr name="compact" />
+    </declare-styleable>
+
     <declare-styleable name="HexAudioView">
         <attr name="recordingMode" format="enum">
             <enum name="recordPlayback" value="0" />

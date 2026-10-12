@@ -104,6 +104,18 @@ class FlashcardsService @Inject constructor(
         }
     }
 
+    /**
+     * Many at once (import) - added at the end, in the list order
+     * @param setId null = loose flashcards
+     */
+    suspend fun addFlashcards(setId: Int?, flashcards: List<FlashcardDTO>) {
+        database.withTransaction {
+            val firstPosition = flashcardDAO.getLastPosition(setId) + 1
+            flashcardDAO.insertAll(flashcards.mapIndexed { index, flashcard -> toEntity(setId, firstPosition + index, flashcard) })
+            touchSet(setId)
+        }
+    }
+
     /** Content only - the rest of the set and the flashcard's repetition progress stay untouched */
     suspend fun updateFlashcard(setId: Int?, flashcard: FlashcardDTO) {
         val id = flashcard.id ?: return
