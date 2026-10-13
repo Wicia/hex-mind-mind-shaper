@@ -80,6 +80,16 @@
             border-bottom:1px solid rgba(255,255,255,.08);
         }
         .tab-row:last-child{border-bottom:none;}
+        /* Group name - starts where the separator line starts */
+        .tab-group-name{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-weight:600;
+            font-size:11px;
+            letter-spacing:.08em;
+            text-transform:uppercase;
+            color:var(--muted);
+            padding:4px 0 2px;
+        }
         .tab{
             font-family:'Baloo 2',system-ui,sans-serif;
             font-weight:500;
@@ -103,9 +113,9 @@
             font-weight:600;
         }
 
-        /* Content sits next to the sidebar */
+        /* Gap between the sidebar and the text = the sidebar's width; 32px = the left padding of header / panel */
         header,
-        .panel{margin-left:var(--sidebar-w);}
+        .panel{margin-left:calc(var(--sidebar-w) * 2 - 32px);}
 
         /* Narrow screens: sidebar becomes a top strip again */
         @media (max-width:900px){
@@ -123,6 +133,7 @@
                 padding-bottom:8px;
             }
             .tab{width:auto;text-align:center;}
+            .tab-group-name{flex-basis:100%;}
             header,
             .panel{margin-left:0;}
         }
@@ -211,7 +222,7 @@
             font-weight:600;
             font-size:16px;
             color:var(--graphite);
-            background:var(--ribbon-bg);
+            background:var(--orange-1);
         }
         details.req>summary::-webkit-details-marker{display:none;}
         details.req>summary::before{
@@ -323,7 +334,10 @@
             height:6px;
             top:10px;
         }
+        /* Chips are inline-block - an inline background spans Baloo 2's tall font box, line-height would not shrink it */
         .bracket{
+            display:inline-block;
+            line-height:1.3;
             font-family:'Baloo 2',system-ui,sans-serif;
             font-size:13px;
             font-weight:500;
@@ -335,6 +349,7 @@
         /* Location/screen marker — cool blue tag with an arrow notch on the left */
         .location{
             display:inline-block;
+            line-height:1.3;
             font-family:'Baloo 2',system-ui,sans-serif;
             font-size:13px;
             font-weight:500;
@@ -346,6 +361,8 @@
         }
         /* Cross-reference to an extracted, abstract pattern/module (own family — not a screen/location) */
         .req-link{
+            display:inline-block;
+            line-height:1.3;
             font-family:'Baloo 2',system-ui,sans-serif;
             font-size:13px;
             font-weight:500;
@@ -355,6 +372,12 @@
             cursor:pointer;
             text-decoration:none;
             border-bottom:1px dashed var(--coffee);
+            /* Long block names end with "…" - max 45 characters and never wider than the cell; full name in the tooltip */
+            max-width:min(45ch, 100%);
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            vertical-align:bottom;
         }
         .req-link::before{content:"\21B3";margin-right:4px;opacity:.8;}
         /* higher specificity so the coffee survives inside table cells */
@@ -363,13 +386,17 @@
         /* User-facing messages/toasts — gray + italic, no bracket */
         .msg{color:var(--muted);font-style:italic;}
         /* ── Mechanisms table (new spec format) ── */
-        .feature-goal{
+        .feature-goal,
+        .feature-terms,
+        .feature-parts{
             color:var(--graphite-soft);
             font-size:15px;
             margin:6px 0 18px;
             line-height:1.5;
         }
-        .feature-goal b{
+        .feature-goal b,
+        .feature-terms b,
+        .feature-parts b{
             font-family:'Baloo 2',system-ui,sans-serif;
             font-weight:600;
             color:var(--orange-ink);
@@ -379,6 +406,9 @@
             display:block;
             margin-bottom:6px;
         }
+        .feature-terms ul{margin:0;padding-left:20px;}
+        /* Header right above the mechanisms table */
+        .feature-parts{margin-bottom:0;}
         .mech-table{
             border-collapse:separate;
             border-spacing:0;
@@ -395,11 +425,11 @@
             font-size:12px;
             text-transform:uppercase;
             letter-spacing:.03em;
-            color:var(--orange-ink);
-            background:var(--col-head);
+            color:var(--tab-ink);
+            background:var(--ribbon-bg);
             text-align:left;
             padding:10px 14px;
-            border-bottom:2px solid var(--line);
+            border-bottom:2px solid var(--orange-2);
         }
         .mech-table thead th:first-child{width:190px;}
         .mech-table tbody td{
@@ -416,6 +446,7 @@
             font-weight:600;
             font-size:14px;
             color:var(--graphite);
+            background:var(--cream);
         }
         ul.cell{margin:0;padding-left:16px;list-style:none;}
         ul.cell>li{padding:3px 0;position:relative;line-height:1.4;}
@@ -467,6 +498,36 @@
         .grade-table th,.grade-table td{padding:5px 10px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line);}
         .grade-table th{font-family:'Baloo 2',system-ui,sans-serif;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.03em;color:var(--orange-ink);}
         .grade-table tr:last-child td{border-bottom:none;}
+        /* ── Wider sections: the frame grows by 5%, only the mechanisms table uses the extra room ── */
+        details.req{width:105%;}
+        .spec-body>*:not(.mech-table){max-width:calc((100% + 36px) / 1.05 - 36px);}
+        @media (max-width:900px){
+            details.req{width:100%;}
+            .spec-body>*:not(.mech-table){max-width:none;}
+        }
+        /* ── FAB: expand / collapse all requirements of the shown tab ── */
+        .fab-toggle{
+            position:fixed;
+            right:24px;
+            bottom:24px;
+            z-index:10;
+            display:flex;
+            align-items:center;
+            gap:8px;
+            padding:12px 18px;
+            border:none;
+            border-radius:28px;
+            background:var(--orange-3);
+            color:#FFFFFF;
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-size:15px;
+            font-weight:600;
+            box-shadow:0 4px 12px rgba(111,78,55,.3);
+            cursor:pointer;
+        }
+        .fab-toggle:hover{background:var(--orange-ink);}
+        .fab-toggle svg{width:18px;height:18px;transition:transform .2s;}
+        .fab-toggle.collapse svg{transform:rotate(180deg);}
     </style>
 </head>
 <body>
@@ -648,6 +709,7 @@
                         <ul>
                             <li>przy starcie aplikacji, tylko gdy opcja włączona</li>
                             <li>max 1 plik dziennie (nadpisywanie)</li>
+                            <li>✳️ kopia obejmuje fiszki (luźne i zestawy) z postępem powtórek</li>
                             <li>backup starszy niż aktualna wersja DB może być wczytany; nowszy nie</li>
                             <li>nowe zasoby z nowej wersji aplikacji (np. ikony) są doseedowane po wczytaniu backupu oraz przy każdym starcie</li>
                         </ul>
@@ -1829,19 +1891,36 @@
     </details>
 </section>
 
-<section class="panel" data-tab="Tworzenie fiszek" data-row="4">
-    <p class="panel-intro">Zestawy fiszek i ich edycja — osobny system, nie forma myśli.</p>
+<section class="panel" data-tab="* Wstęp &amp; Podstawy" data-row="4">
+    <div class="feature-terms"><b>Pojęcia</b><ul>
+        <li>fiszka — awers (pytanie) + rewers (odpowiedź), oba wymagane; osobny system, nie forma myśli</li>
+        <li>luźna fiszka — fiszka bez zestawu: zapisana w biegu, do uporządkowania później</li>
+        <li>zestaw — nazwa + fiszki jednego tematu w kolejności dodania</li>
+        <li>etap fiszki
+            <ul>
+                <li><i>nowa</i> — jeszcze nie powtarzana, czeka w puli</li>
+                <li><i>aktywna</i> — w planowych powtórkach, ma poziom</li>
+                <li><i>utrwalona</i> — już nie wraca do powtórek</li>
+            </ul>
+        </li>
+        <li>poziom — 1–5 dla aktywnej fiszki; im wyższy, tym dłuższy odstęp do kolejnej powtórki</li>
+        <li>postęp fiszki — etap, poziom i termin kolejnej powtórki</li>
+        <li>powtórki do zrobienia — fiszki z terminem powtórki na dziś lub wcześniej; dzień kończy się o północy</li>
+        <li>zaległości — powtórki, które nie zostały zrobione w swoim terminie (np. po przerwaniu sesji) i wracają w kolejnej sesji</li>
+        <li>sesja powtórek — przejście przez fiszki, które czekają dziś na powtórkę: wszystkie albo z jednego zestawu</li>
+    </ul></div>
 
     <details class="req">
         <summary>
-            <span class="req-title">Zestawy i fiszki<span class="req-alt">Ekran „Zapamiętywanie”</span></span>
+            <span class="req-title">Włączanie modułu fiszek<span class="req-alt">Zapamiętywanie</span></span>
             <span class="check">
                 <span class="check-main verify">🟡 Weryfikacja</span>
                 <span class="check-ago">-</span>
             </span>
         </summary>
         <div class="spec-body">
-            <p class="feature-goal"><b>Potrzeba i Cel</b>fiszki żyją w nazwanych zestawach, we własnym widoku — mają inny rytm niż myśli, więc nie mieszają się ze <span class="location">Strumień</span></p>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>kto nie uczy się z fiszek, nie widzi ich w aplikacji</p>
+            <p class="feature-parts"><b>Składowe</b></p>
             <table class="mech-table">
                 <thead>
                 <tr>
@@ -1852,65 +1931,28 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td class="mech-name">Włączenie funkcji</td>
+                    <td class="mech-name">Włączanie i wyłączanie fiszek</td>
                     <td><ul class="cell">
-                        <li>przełącznik w <span class="location">Ustawienia</span>, domyślnie wyłączony</li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>wyłączenie ukrywa <span class="location">Zapamiętywanie</span> w menu, ale nie usuwa zestawów</li>
-                    </ul></td>
-                </tr>
-                <tr>
-                    <td class="mech-name">Zestaw i fiszka</td>
-                    <td><ul class="cell">
-                        <li>zestaw — nazwa + lista fiszek w kolejności wpisania</li>
-                        <li>fiszka — awers (pytanie) + rewers (odpowiedź), oba wymagane</li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>edycja zawsze dozwolona — nie zmienia postępu karty</li>
-                    </ul></td>
-                </tr>
-                <tr>
-                    <td class="mech-name">Nowy zestaw</td>
-                    <td><ul class="cell">
-                        <li><span class="bracket">+</span> na liście zestawów</li>
-                        <li>skrót <span class="bracket">Twórz fiszki</span> na ikonie aplikacji — <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Skróty aplikacji">Skróty aplikacji</a></li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>jeden dialog: nazwa, a potem fiszki dodawane serią</li>
-                        <li><span class="bracket">Zakończ</span> → podgląd nowego zestawu</li>
-                    </ul></td>
-                </tr>
-                <tr>
-                    <td class="mech-name">Lista zestawów</td>
-                    <td><ul class="cell">
-                        <li>karta zestawu: <span class="msg">Nazwa (liczba fiszek)</span> + <span class="msg">Do powtórki: N · Nowe: M · Utrwalone: K</span>
+                        <li>przełącznik <span class="bracket">Włącz powtórki z użyciem fiszek</span> w <span class="location">Ustawienia</span>
                             <ul>
-                                <li>inaczej niż w widżecie <a class="req-link" data-target-tab="Powtarzanie fiszek" data-target-req="Dzisiejsza sesja">Dzisiejsza sesja</a>: <i>Do powtórki</i> = tylko karty z terminem ≤ dziś, <i>Nowe</i> = wszystkie nowe w zestawie, bez limitu</li>
+                                <li>domyślnie wyłączony</li>
                             </ul>
                         </li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>ostatnio edytowane na górze; ocena w sesji to nie edycja — nie przesuwa zestawu</li>
-                        <li>tapnięcie = podgląd zestawu; rakieta = sesja tylko z tego zestawu</li>
-                    </ul></td>
-                </tr>
-                <tr>
-                    <td class="mech-name">Podgląd zestawu</td>
-                    <td><ul class="cell">
-                        <li>lista fiszek (awers + rewers) z paskiem poziomu; utrwalona = gwiazda ★</li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>usunięcie i edycja zestawu, edycja / usunięcie fiszki, rakieta</li>
-                    </ul></td>
-                </tr>
-                <tr>
-                    <td class="mech-name">Kopie zapasowe</td>
-                    <td><ul class="cell">
-                        <li>zestawy z postępem są w kopii</li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>starsze kopie odtwarzają się bez utraty fiszek</li>
+                        <li>fiszki włączone
+                            <ul>
+                                <li>pokazanie nowego wejścia <span class="location">Zapamiętywanie</span> w menu</li>
+                                <li>skrót <span class="bracket">Twórz fiszki</span> na ikonie aplikacji</li>
+                                <li><span class="location">Zapamiętywanie</span> do wyboru jako ekran startowy</li>
+                            </ul>
+                        </li>
+                        <li>fiszki wyłączone
+                            <ul>
+                                <li>znikają <span class="location">Zapamiętywanie</span> z menu, skrót i przypomnienia o powtórkach</li>
+                                <li>fiszki i zestawy zostają — po ponownym włączeniu wszystko wraca</li>
+                            </ul>
+                        </li>
                     </ul></td>
                 </tr>
                 </tbody>
@@ -1919,59 +1961,20 @@
     </details>
 </section>
 
-<section class="panel" data-tab="Powtarzanie fiszek" data-row="4">
-    <p class="panel-intro">Trwałe zapamiętywanie: fiszki wracają w rosnących odstępach, tuż przed zapomnieniem.</p>
+<section class="panel" data-tab="Tworzenie i zarządzanie fiszkami" data-row="4">
+    <p class="panel-intro">Fiszki luźne i w zestawach — zapisywanie, porządkowanie i edycja.</p>
 
     <details class="req">
         <summary>
-            <span class="req-title">Dzisiejsza sesja<span class="req-alt">Widżet na górze „Zapamiętywania”</span></span>
+            <span class="req-title">Tworzenie i zarządzanie luźnymi fiszkami<span class="req-alt">Zakładka „Luźne fiszki”</span></span>
             <span class="check">
                 <span class="check-main verify">🟡 Weryfikacja</span>
                 <span class="check-ago">-</span>
             </span>
         </summary>
         <div class="spec-body">
-            <p class="feature-goal"><b>Potrzeba i Cel</b>jedno miejsce, które mówi, czy dziś jest coś do powtórzenia — i jednym tapnięciem to zaczyna</p>
-            <figure>
-            <svg viewBox="0 0 700 340" width="700" height="340" xmlns="http://www.w3.org/2000/svg" font-family="Alegreya, Georgia, serif" font-size="15" fill="#48433F">
-                  <defs>
-                    <filter id="glow" x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="3"/></filter>
-                    <path id="wavy" d="M10.0,0.0 Q14.7,-2.2 19.4,0.0 T28.8,0.0 T38.1,0.0 T47.5,0.0 T56.9,0.0 T66.2,0.0 T75.6,0.0 T85.0,0.0 T94.4,0.0 T103.8,0.0 T113.1,0.0 T122.5,0.0 T131.9,0.0 T141.2,0.0 T150.6,0.0 T160.0,0.0 T169.4,0.0 T178.8,0.0 T188.1,0.0 T197.5,0.0 T206.9,0.0 T216.2,0.0 T225.6,0.0 T235.0,0.0 T244.4,0.0 T253.8,0.0 T263.1,0.0 T272.5,0.0 T281.9,0.0 T291.2,0.0 T300.6,0.0 T310.0,0.0 A10,10 0 0 1 320.0,10.0 L320.0,86.0 A10,10 0 0 1 310.0,96.0 Q305.3,98.2 300.6,96.0 T291.2,96.0 T281.9,96.0 T272.5,96.0 T263.1,96.0 T253.8,96.0 T244.4,96.0 T235.0,96.0 T225.6,96.0 T216.2,96.0 T206.9,96.0 T197.5,96.0 T188.1,96.0 T178.8,96.0 T169.4,96.0 T160.0,96.0 T150.6,96.0 T141.2,96.0 T131.9,96.0 T122.5,96.0 T113.1,96.0 T103.8,96.0 T94.4,96.0 T85.0,96.0 T75.6,96.0 T66.2,96.0 T56.9,96.0 T47.5,96.0 T38.1,96.0 T28.8,96.0 T19.4,96.0 T10.0,96.0 A10,10 0 0 1 0.0,86.0 L0.0,10.0 A10,10 0 0 1 10.0,0.0 Z"/>
-                  </defs>
-                  <rect width="700" height="340" fill="#FFF4E6"/>
-
-                  <!-- A: no flashcards at all -->
-                  <text x="20" y="24" font-size="13"><tspan font-family="'Baloo 2', system-ui, sans-serif" font-size="15" font-weight="700">A</tspan><tspan fill="#88807A">  ·  brak fiszek (brak zestawów albo same puste)</tspan></text>
-                  <rect x="20" y="36" width="320" height="96" rx="10" fill="none" stroke="#BEBEBE" stroke-dasharray="6 5"/>
-                  <text x="180" y="89" text-anchor="middle" font-style="italic" fill="#88807A">widżet ukryty</text>
-
-                  <!-- B: something to review -->
-                  <text x="360" y="24" font-size="13"><tspan font-family="'Baloo 2', system-ui, sans-serif" font-size="15" font-weight="700">B</tspan><tspan fill="#88807A">  ·  kolejka niepusta, nowe nie są wstrzymane</tspan></text>
-                  <g transform="translate(360,36)">
-                    <use href="#wavy" fill="none" stroke="#FFC59A" stroke-width="7" opacity="0.5" filter="url(#glow)"/>
-                    <use href="#wavy" fill="none" stroke="#FFC59A" stroke-width="2"/>
-                    <text x="18" y="54">Masz do powtórki 8 fiszek (3 nowe)</text>
-                    <use href="#i-rocket" x="276" y="14" width="30" height="30" color="#FFA86B"/>
-                  </g>
-
-                  <!-- C: new cards paused by the backlog -->
-                  <text x="20" y="190" font-size="13"><tspan font-family="'Baloo 2', system-ui, sans-serif" font-size="15" font-weight="700">C</tspan><tspan fill="#88807A">  ·  zaległości &gt; próg, a nowe czekają</tspan></text>
-                  <g transform="translate(20,202)">
-                    <use href="#wavy" fill="none" stroke="#FFC59A" stroke-width="7" opacity="0.5" filter="url(#glow)"/>
-                    <use href="#wavy" fill="none" stroke="#FFC59A" stroke-width="2"/>
-                    <text x="18" y="42">Masz do powtórki 40 fiszek</text>
-                    <text x="18" y="68" font-size="13" fill="#88807A">Nowe fiszki wstrzymane - do nadrobienia: 10</text>
-                    <use href="#i-rocket" x="276" y="14" width="30" height="30" color="#FFA86B"/>
-                  </g>
-
-                  <!-- D: queue empty -->
-                  <text x="360" y="190" font-size="13"><tspan font-family="'Baloo 2', system-ui, sans-serif" font-size="15" font-weight="700">D</tspan><tspan fill="#88807A">  ·  kolejka pusta</tspan></text>
-                  <rect x="360" y="202" width="320" height="96" rx="10" fill="none" stroke="#FFC59A" stroke-width="2"/>
-                  <text x="378" y="256">Na dziś wszystko powtórzone :)</text>
-
-                  <text x="350" y="326" text-anchor="middle" font-size="12" fill="#88807A">rakieta i falowanie ramki = „jest coś do zrobienia”</text>
-                </svg>
-            </figure>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>szybki zapis fiszki w biegu, bez wybierania zestawu — porządek można zrobić później</p>
+            <p class="feature-parts"><b>Składowe</b></p>
             <table class="mech-table">
                 <thead>
                 <tr>
@@ -1982,30 +1985,97 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td class="mech-name">Treść</td>
+                    <td class="mech-name">Wyświetlanie listy luźnych fiszek</td>
                     <td><ul class="cell">
-                        <li><span class="msg">Masz do powtórki N fiszek (M nowych)</span> — jedna sesja ze wszystkich zestawów
+                        <li>lista luźnych fiszek w zakładce <span class="bracket">Luźne fiszki</span> (domyślnej), pod informacjami <a class="req-link" data-target-tab="Powtarzanie z fiszkami" data-target-req="Dzisiejsza sesja powtórek">Dzisiejsza sesja powtórek</a>
                             <ul>
-                                <li><i>N</i> = cała sesja (powtórki + nowe), <i>M</i> = ile z nich nowych, po limicie dziennym</li>
+                                <li>awers i rewers każdej fiszki</li>
+                                <li>poziom fiszki w powtórkach — od nowej do najwyższego; utrwalona fiszka wyróżniona</li>
+                                <li>fiszki w kolejności dodania</li>
+                                <li>brak luźnych fiszek — informacja, że jeszcze ich nie ma</li>
                             </ul>
                         </li>
-                        <li>przy wstrzymanych nowych druga linia: <span class="msg">Nowe fiszki wstrzymane - do nadrobienia: N</span></li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>jedyna akcja to rakieta — start sesji</li>
-                        <li>falująca ramka = „jest coś do zrobienia”</li>
+                        <li>ten sam widok listy co w szczegółach zestawu</li>
                     </ul></td>
                 </tr>
                 <tr>
-                    <td class="mech-name">Stany</td>
+                    <td class="mech-name">Dodawanie fiszki do luźnych fiszek</td>
                     <td><ul class="cell">
-                        <li>A — brak fiszek (brak zestawów albo same puste): widżet ukryty</li>
-                        <li>B — kolejka niepusta</li>
-                        <li>C — zaległości ponad próg, nowe czekają</li>
-                        <li>D — kolejka pusta: <span class="msg">Na dziś wszystko powtórzone :)</span></li>
+                        <li>dodawanie z zakładki <span class="bracket">Luźne fiszki</span></li>
+                        <li>dodawanie skrótem <span class="bracket">Twórz fiszki</span> na ikonie aplikacji — <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Skróty aplikacji">Skróty aplikacji</a></li>
+                        <li>dodawanie serią — fiszka po fiszce, bez wychodzenia z dodawania
+                            <ul>
+                                <li>widać, która to fiszka z kolei</li>
+                                <li>widać, ile fiszek już dodano w tej serii</li>
+                            </ul>
+                        </li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>znany problem: stan D skleja 3 sytuacje — koniec na dziś / wykorzystany limit nowych / wszystko utrwalone; przy wszystkich utrwalonych tekst wprowadza w błąd</li>
+                        <li>zapisanie fiszki i przejście do kolejnej albo zakończenie serii
+                            <ul>
+                                <li>niewypełniona fiszka przy zakończeniu nie jest zapisywana</li>
+                            </ul>
+                        </li>
+                        <li>wpisywana fiszka nie gubi się przez przypadkowe zamknięcie</li>
+                        <li>wymagany awers i rewers — niepełna fiszka się nie zapisuje</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Edytowanie i usuwanie luźnych fiszek</td>
+                    <td><ul class="cell">
+                        <li>edycja fiszki z listy
+                            <ul>
+                                <li>awers i rewers do zmiany</li>
+                            </ul>
+                        </li>
+                        <li>usuwanie fiszki z listy
+                            <ul>
+                                <li>z potwierdzeniem</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>edycja zawsze dozwolona — nie zmienia postępu fiszki
+                            <ul>
+                                <li>zmiana treści fiszki w trakcie nauki — ostrzeżenie, że może to wpłynąć na naukę</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Importowanie luźnych fiszek z tekstu</td>
+                    <td><ul class="cell">
+                        <li>import z zakładki <span class="bracket">Luźne fiszki</span> — wklejony tekst, z którego powstaje wiele fiszek naraz</li>
+                        <li>wybór sposobu podziału tekstu
+                            <ul>
+                                <li><span class="bracket">Enter</span> — awers i rewers w kolejnych liniach, para po parze</li>
+                                <li><span class="bracket">Myślnik</span> — awers i rewers w jednej linii, rozdzielone myślnikiem ze spacjami</li>
+                            </ul>
+                        </li>
+                        <li>przed importem widać, ile fiszek powstanie i ile linii zostanie pominiętych</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>puste linie nie liczą się ani jako fiszka, ani jako pominięte</li>
+                        <li>pominięte linie
+                            <ul>
+                                <li><span class="bracket">Enter</span> — ostatnia linia bez pary</li>
+                                <li><span class="bracket">Myślnik</span> — linia bez myślnika albo z pustym awersem lub rewersem</li>
+                            </ul>
+                        </li>
+                        <li>przy <span class="bracket">Myślnik</span> liczy się pierwszy myślnik ze spacjami — słowa z łącznikiem (np. biało-czerwony) zostają całe</li>
+                        <li>zaimportowane fiszki to nowe luźne fiszki</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Przenoszenie luźnej fiszki do zestawu</td>
+                    <td><ul class="cell">
+                        <li>przenoszenie dostępne w edycji fiszki — tylko gdy istnieje jakiś zestaw</li>
+                        <li>od razu wybór zestawu docelowego</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>skutki przeniesienia — jak w <a class="req-link" data-target-tab="Tworzenie i zarządzanie fiszkami" data-target-req="Szczegóły zestawu fiszek">Szczegóły zestawu fiszek</a></li>
                     </ul></td>
                 </tr>
                 </tbody>
@@ -2015,14 +2085,214 @@
 
     <details class="req">
         <summary>
-            <span class="req-title">Sesja powtórek</span>
+            <span class="req-title">Tworzenie i zarządzanie zestawami fiszek<span class="req-alt">Zakładka „Zestawy”</span></span>
             <span class="check">
                 <span class="check-main verify">🟡 Weryfikacja</span>
                 <span class="check-ago">-</span>
             </span>
         </summary>
         <div class="spec-body">
-            <p class="feature-goal"><b>Potrzeba i Cel</b>szybkie przejście przez dzisiejsze karty z oceną, jak poszło — bez gubienia postępu</p>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>fiszki jednego tematu trzymane razem — widać, ile ich jest i ile czeka na powtórkę</p>
+            <p class="feature-parts"><b>Składowe</b></p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Wyświetlanie listy zestawów fiszek</td>
+                    <td><ul class="cell">
+                        <li>lista zestawów w zakładce <span class="bracket">Zestawy</span>, pod informacjami <a class="req-link" data-target-tab="Powtarzanie z fiszkami" data-target-req="Dzisiejsza sesja powtórek">Dzisiejsza sesja powtórek</a>
+                            <ul>
+                                <li>nazwa zestawu i liczba fiszek, które do niego należą</li>
+                                <li>ile z nich jest już utrwalonych</li>
+                                <li>ile z nich czeka na powtórkę — tylko te z terminem na dziś lub wcześniej, bez nowych (inaczej niż w <a class="req-link" data-target-tab="Powtarzanie z fiszkami" data-target-req="Dzisiejsza sesja powtórek">Dzisiejsza sesja powtórek</a>)</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>ostatnio edytowane zestawy na górze — powtórki nie zmieniają kolejności</li>
+                        <li>otwieranie szczegółów zestawu</li>
+                        <li>uruchamianie sesji powtórek tylko z tego zestawu</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Tworzenie nowego zestawu</td>
+                    <td><ul class="cell">
+                        <li>tworzenie z zakładki <span class="bracket">Zestawy</span>
+                            <ul>
+                                <li>nazwa zestawu</li>
+                                <li>pierwsze fiszki dodawane serią</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>po zakończeniu otwierają się <a class="req-link" data-target-tab="Tworzenie i zarządzanie fiszkami" data-target-req="Szczegóły zestawu fiszek">Szczegóły zestawu fiszek</a></li>
+                        <li>wymagana nazwa zestawu — bez niej zestaw się nie zapisuje</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Dodawanie fiszek do zestawu</td>
+                    <td><ul class="cell">
+                        <li>dodawanie ze szczegółów zestawu</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>dodawanie serią, nowe fiszki na końcu zestawu — jak w <a class="req-link" data-target-tab="Tworzenie i zarządzanie fiszkami" data-target-req="Tworzenie i zarządzanie luźnymi fiszkami">Tworzenie i zarządzanie luźnymi fiszkami</a></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Edytowanie i usuwanie zestawu</td>
+                    <td><ul class="cell">
+                        <li>edycja ze szczegółów zestawu — <a class="req-link" data-target-tab="Tworzenie i zarządzanie fiszkami" data-target-req="Szczegóły zestawu fiszek">Szczegóły zestawu fiszek</a></li>
+                        <li>usuwanie z listy zestawów</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>decydowanie o fiszkach usuwanego zestawu
+                            <ul>
+                                <li>usunięcie razem z zestawem</li>
+                                <li>albo zachowanie jako luźne fiszki</li>
+                            </ul>
+                        </li>
+                        <li>usunięcia nie da się cofnąć</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Szczegóły zestawu fiszek</span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <p class="feature-goal"><b>Potrzeba i Cel</b>wgląd w cały zestaw — treść fiszek i postęp każdej z nich</p>
+            <p class="feature-parts"><b>Składowe</b></p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Wyświetlanie listy fiszek w zestawie</td>
+                    <td><ul class="cell">
+                        <li>nazwa zestawu</li>
+                        <li>lista fiszek zestawu
+                            <ul>
+                                <li>awers i rewers każdej fiszki</li>
+                                <li>poziom fiszki w powtórkach — od nowej do najwyższego; utrwalona fiszka wyróżniona</li>
+                                <li>fiszki w kolejności dodania</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>uruchamianie sesji powtórek tylko z tego zestawu</li>
+                        <li>edycja i usuwanie pojedynczej fiszki — jak w <a class="req-link" data-target-tab="Tworzenie i zarządzanie fiszkami" data-target-req="Tworzenie i zarządzanie luźnymi fiszkami">Tworzenie i zarządzanie luźnymi fiszkami</a></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Edytowanie zestawu fiszek</td>
+                    <td><ul class="cell">
+                        <li>edycja całego zestawu naraz
+                            <ul>
+                                <li>nazwa zestawu</li>
+                                <li>wszystkie fiszki — zmiana, dodawanie i usuwanie</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>puste fiszki nie są zapisywane</li>
+                        <li>wymagana nazwa zestawu oraz awers i rewers każdej fiszki — inaczej zestaw się nie zapisuje</li>
+                        <li>zmiana treści fiszek w trakcie nauki — ostrzeżenie jak w <a class="req-link" data-target-tab="Tworzenie i zarządzanie fiszkami" data-target-req="Tworzenie i zarządzanie luźnymi fiszkami">Tworzenie i zarządzanie luźnymi fiszkami</a></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Importowanie fiszek do zestawu z tekstu</td>
+                    <td><ul class="cell">
+                        <li>import ze szczegółów zestawu</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>zaimportowane fiszki trafiają na koniec zestawu</li>
+                        <li>podział tekstu i pomijanie linii — jak w <a class="req-link" data-target-tab="Tworzenie i zarządzanie fiszkami" data-target-req="Tworzenie i zarządzanie luźnymi fiszkami">Tworzenie i zarządzanie luźnymi fiszkami</a></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Przenoszenie fiszki z zestawu</td>
+                    <td><ul class="cell">
+                        <li>przenoszenie dostępne w edycji fiszki
+                            <ul>
+                                <li>do luźnych fiszek</li>
+                                <li>albo do innego zestawu — tylko gdy jakiś istnieje</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>fiszka trafia na koniec zestawu docelowego</li>
+                        <li>postęp powtórek zostaje</li>
+                        <li>zestaw źródłowy i docelowy liczą się jako edytowane — idą na górę listy zestawów</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </details>
+</section>
+
+<section class="panel" data-tab="Powtarzanie z fiszkami" data-row="4">
+    <p class="panel-intro">Trwałe zapamiętywanie: fiszki wracają w rosnących odstępach, tuż przed zapomnieniem.</p>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Dzisiejsza sesja powtórek<span class="req-alt">Widżet „Dzisiejsza sesja” na górze „Zapamiętywania”</span></span>
+            <span class="check">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago">-</span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <p class="feature-goal"><b>Potrzeba i Cel</b>codzienna porcja powtórek — wiadomo, co dziś czeka, a nowego materiału nie przybywa szybciej, niż da się go powtarzać</p>
+            <figure>
+            <svg viewBox="0 0 700 310" width="700" height="310" xmlns="http://www.w3.org/2000/svg" font-family="Alegreya, Georgia, serif" font-size="15" fill="#48433F">
+                  <defs>
+                    <filter id="glow" x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="3"/></filter>
+                    <path id="wavy" d="M10.0,0.0 Q14.7,-2.2 19.4,0.0 T28.8,0.0 T38.1,0.0 T47.5,0.0 T56.9,0.0 T66.2,0.0 T75.6,0.0 T85.0,0.0 T94.4,0.0 T103.8,0.0 T113.1,0.0 T122.5,0.0 T131.9,0.0 T141.2,0.0 T150.6,0.0 T160.0,0.0 T169.4,0.0 T178.8,0.0 T188.1,0.0 T197.5,0.0 T206.9,0.0 T216.2,0.0 T225.6,0.0 T235.0,0.0 T244.4,0.0 T253.8,0.0 T263.1,0.0 T272.5,0.0 T281.9,0.0 T291.2,0.0 T300.6,0.0 T310.0,0.0 A10,10 0 0 1 320.0,10.0 L320.0,86.0 A10,10 0 0 1 310.0,96.0 Q305.3,98.2 300.6,96.0 T291.2,96.0 T281.9,96.0 T272.5,96.0 T263.1,96.0 T253.8,96.0 T244.4,96.0 T235.0,96.0 T225.6,96.0 T216.2,96.0 T206.9,96.0 T197.5,96.0 T188.1,96.0 T178.8,96.0 T169.4,96.0 T160.0,96.0 T150.6,96.0 T141.2,96.0 T131.9,96.0 T122.5,96.0 T113.1,96.0 T103.8,96.0 T94.4,96.0 T85.0,96.0 T75.6,96.0 T66.2,96.0 T56.9,96.0 T47.5,96.0 T38.1,96.0 T28.8,96.0 T19.4,96.0 T10.0,96.0 A10,10 0 0 1 0.0,86.0 L0.0,10.0 A10,10 0 0 1 10.0,0.0 Z"/>
+                  </defs>
+                  <rect width="700" height="310" fill="#FFF4E6"/>
+
+                  <!-- A: no flashcards at all -->
+                  <text x="20" y="24" font-size="13"><tspan font-family="'Baloo 2', system-ui, sans-serif" font-size="15" font-weight="700">A</tspan><tspan fill="#88807A">  ·  brak fiszek (ani luźnych, ani w zestawach)</tspan></text>
+                  <rect x="20" y="36" width="320" height="96" rx="10" fill="none" stroke="#BEBEBE" stroke-dasharray="6 5"/>
+                  <text x="180" y="89" text-anchor="middle" font-style="italic" fill="#88807A">brak informacji o sesji</text>
+
+                  <!-- B: something to review -->
+                  <text x="360" y="24" font-size="13"><tspan font-family="'Baloo 2', system-ui, sans-serif" font-size="15" font-weight="700">B</tspan><tspan fill="#88807A">  ·  są fiszki do powtórki</tspan></text>
+                  <g transform="translate(360,36)">
+                    <use href="#wavy" fill="none" stroke="#FFC59A" stroke-width="7" opacity="0.5" filter="url(#glow)"/>
+                    <use href="#wavy" fill="none" stroke="#FFC59A" stroke-width="2"/>
+                    <text x="18" y="54">Masz do powtórki 8 fiszek (3 nowe)</text>
+                    <use href="#i-rocket" x="276" y="14" width="30" height="30" color="#FFA86B"/>
+                  </g>
+
+                  <!-- C: queue empty -->
+                  <text x="20" y="190" font-size="13"><tspan font-family="'Baloo 2', system-ui, sans-serif" font-size="15" font-weight="700">C</tspan><tspan fill="#88807A">  ·  nic nie czeka</tspan></text>
+                  <rect x="20" y="202" width="320" height="96" rx="10" fill="none" stroke="#FFC59A" stroke-width="2"/>
+                  <text x="38" y="256">Na dziś wszystko powtórzone :)</text>
+
+                  <text x="520" y="254" text-anchor="middle" font-size="12" fill="#88807A">wyróżnienie = dziś jest coś do powtórzenia</text>
+                </svg>
+            </figure>
             <figure>
             <svg viewBox="0 0 700 210" width="700" height="210" xmlns="http://www.w3.org/2000/svg" font-family="Alegreya, Georgia, serif" font-size="14" fill="#48433F">
                   <rect width="700" height="210" fill="#FFFFFF"/>
@@ -2043,11 +2313,6 @@
                   <text x="145" y="146" text-anchor="middle" font-family="'Baloo 2', system-ui, sans-serif" font-weight="600">Planowe powtórki</text>
                   <text x="145" y="164" text-anchor="middle" font-size="12" fill="#88807A">najniższy poziom najpierw</text>
 
-                  <!-- Backlog gate before the new cards -->
-                  <path d="M292,40 L292,128" stroke="#D98A7E" stroke-width="3" stroke-dasharray="6 4" fill="none"/>
-                  <path d="M292,128 L292,182" stroke="#D98A7E" stroke-width="1" fill="none"/>
-                  <text x="292" y="198" text-anchor="middle" font-size="12" fill="#B2554A">zaległości &gt; próg → nowe wstrzymane do nadrobienia</text>
-
                   <!-- New cards: up to the daily limit, the rest waits for the next days -->
                   <rect x="314" y="44" width="186" height="80" rx="10" fill="#FFF4E6" stroke="#FFC59A"/>
                   <g font-family="'Baloo 2', system-ui, sans-serif" font-size="14" text-anchor="middle">
@@ -2056,13 +2321,13 @@
                     <rect x="392" y="66" width="26" height="36" rx="5" fill="#FFE1C8" stroke="#FFA86B"/><text x="405" y="89">0</text>
                   </g>
                   <path d="M426,56 L426,112" stroke="#88807A" stroke-dasharray="3 3" fill="none"/>
-                  <text x="426" y="53" text-anchor="middle" font-size="11" fill="#88807A">limit</text>
+                  <text x="426" y="53" text-anchor="middle" font-size="11" fill="#88807A">limit dzienny</text>
                   <g font-family="'Baloo 2', system-ui, sans-serif" font-size="14" text-anchor="middle" opacity="0.35">
                     <rect x="434" y="66" width="26" height="36" rx="5" fill="none" stroke="#FFA86B" stroke-dasharray="4 3"/><text x="447" y="89">0</text>
                     <rect x="466" y="66" width="26" height="36" rx="5" fill="none" stroke="#FFA86B" stroke-dasharray="4 3"/><text x="479" y="89">0</text>
                   </g>
                   <text x="407" y="146" text-anchor="middle" font-family="'Baloo 2', system-ui, sans-serif" font-weight="600">Nowe</text>
-                  <text x="407" y="164" text-anchor="middle" font-size="12" fill="#88807A">starsze zestawy najpierw</text>
+                  <text x="407" y="164" text-anchor="middle" font-size="12" fill="#88807A">luźne, potem starsze zestawy</text>
 
                   <!-- Cards rated "Pustka" come back at the end of the queue -->
                   <rect x="520" y="44" width="160" height="80" rx="10" fill="#FFF4E6" stroke="#FFA86B" stroke-dasharray="5 4"/>
@@ -2074,6 +2339,7 @@
                   <text x="600" y="164" text-anchor="middle" font-size="12" fill="#88807A">po [Pustka], do skutku</text>
                 </svg>
             </figure>
+            <p class="feature-parts"><b>Składowe</b></p>
             <table class="mech-table">
                 <thead>
                 <tr>
@@ -2084,42 +2350,94 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td class="mech-name">Zakres</td>
+                    <td class="mech-name">Informacje o dzisiejszej sesji</td>
                     <td><ul class="cell">
-                        <li>widżet <i>Dzisiejsza sesja</i> — karty ze wszystkich zestawów</li>
-                        <li>rakieta zestawu — tylko ten zestaw</li>
+                        <li>informacje o sesji ze wszystkich fiszek — luźnych i z zestawów (stan B z diagramu)
+                            <ul>
+                                <li>ile fiszek czeka dziś na powtórkę</li>
+                                <li>ile z nich to nowe — w ramach dziennego limitu</li>
+                            </ul>
+                        </li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>limit nowych i próg zaległości zawsze liczone globalnie</li>
-                    </ul></td>
-                </tr>
-                <tr>
-                    <td class="mech-name">Kolejka</td>
-                    <td><ul class="cell">
-                        <li>planowe powtórki (najniższy poziom najpierw) → nowe (starsze zestawy najpierw) → powroty</li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>ustalana na starcie; w obrębie poziomu losowo</li>
-                        <li>karty, które staną się dostępne w trakcie, wejdą do następnej sesji</li>
+                        <li>wyróżnienie, gdy jest coś do powtórzenia</li>
                     </ul></td>
                 </tr>
                 <tr>
-                    <td class="mech-name">Przebieg</td>
+                    <td class="mech-name">Ukrywanie informacji bez fiszek</td>
                     <td><ul class="cell">
-                        <li>karta na scrimie: awers → odkrycie → ocena <span class="bracket">Mam to</span> / <span class="bracket">Coś świta</span> / <span class="bracket">Pustka</span></li>
+                        <li>brak fiszek, ani luźnych, ani w zestawach (stan A z diagramu)</li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>pominięcie karty — wraca na koniec kolejki</li>
-                        <li>po <span class="bracket">Pustka</span> fiszka wraca na koniec kolejki tej sesji, aż padnie <span class="bracket">Mam to</span> albo <span class="bracket">Coś świta</span>; liczy się tylko pierwsza ocena</li>
+                        <li>informacje o sesji nie są pokazywane</li>
                     </ul></td>
                 </tr>
                 <tr>
-                    <td class="mech-name">Koniec i przerwanie</td>
+                    <td class="mech-name">Informowanie o końcu powtórek na dziś</td>
                     <td><ul class="cell">
-                        <li>karta końcowa — podsumowanie pierwszych ocen</li>
+                        <li>nic nie czeka na powtórkę (stan C z diagramu)</li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>każda ocena zapisuje się od razu — przerwanie niczego nie gubi, następna sesja bierze resztę</li>
+                        <li>informacja, że na dziś wszystko powtórzone</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Uruchamianie sesji</td>
+                    <td><ul class="cell">
+                        <li>start sesji z informacji o dzisiejszej sesji</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>przebieg — <a class="req-link" data-target-tab="Powtarzanie z fiszkami" data-target-req="Przebieg sesji powtórek">Przebieg sesji powtórek</a></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Wybieranie zakresu sesji</td>
+                    <td><ul class="cell">
+                        <li>zakres sesji
+                            <ul>
+                                <li>z informacji o dzisiejszej sesji — wszystkie fiszki, luźne i z zestawów</li>
+                                <li>z zestawu — tylko ten zestaw</li>
+                                <li>z przypomnienia — wszystkie fiszki, jak z informacji o dzisiejszej sesji</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>dzienny limit nowych fiszek liczony zawsze dla wszystkich fiszek — także w sesji z jednego zestawu</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Układanie kolejki</td>
+                    <td><ul class="cell">
+                        <li>kolejność fiszek w sesji
+                            <ul>
+                                <li>planowe powtórki — najniższy poziom najpierw</li>
+                                <li>nowe — najpierw luźne, potem starsze zestawy</li>
+                                <li>powroty — fiszki ocenione jako <span class="bracket">Pustka</span></li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>kolejność ustalona na początku sesji; fiszki z tego samego poziomu w losowej kolejności</li>
+                        <li>fiszki, którym termin minie w trakcie sesji, czekają do następnej</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Ustawianie dziennego limitu nowych fiszek</td>
+                    <td><ul class="cell">
+                        <li>dzienny limit nowych fiszek w <span class="location">Ustawienia</span> — ile nowych fiszek dziennie może zacząć powtórki
+                            <ul>
+                                <li>domyślnie 10, zakres 1–30</li>
+                                <li>do zmiany tylko przy włączonych fiszkach</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>limit na dzień kalendarzowy — nowe fiszki ocenione wcześniej tego dnia, w dowolnej sesji, zmniejszają dzienny limit</li>
+                        <li>pozostałe nowe nie przepadają — czekają i wchodzą w kolejnych dniach, najwyżej tyle dziennie, ile wynosi limit
+                            <ul>
+                                <li>przykład: 25 nowych przy limicie 10 → dziś 10, jutro 10, pojutrze 5</li>
+                            </ul>
+                        </li>
                     </ul></td>
                 </tr>
                 </tbody>
@@ -2129,14 +2447,14 @@
 
     <details class="req">
         <summary>
-            <span class="req-title">Reguły powtórek<span class="req-alt">System Powtórek</span></span>
+            <span class="req-title">Przebieg sesji powtórek<span class="req-alt">System Powtórek</span></span>
             <span class="check">
                 <span class="check-main verify">🟡 Weryfikacja</span>
                 <span class="check-ago">-</span>
             </span>
         </summary>
         <div class="spec-body">
-            <p class="feature-goal"><b>Potrzeba i Cel</b>prosty, przewidywalny system — stała skala interwałów zamiast algorytmu; wiadomo, co dzieje się z kartą</p>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>trwałe zapamiętanie fiszek dzięki powtórkom według prostych, przewidywalnych reguł</p>
             <figure>
             <svg viewBox="0 0 700 300" width="700" height="300" xmlns="http://www.w3.org/2000/svg" font-family="Alegreya, Georgia, serif" font-size="13" fill="#48433F">
                   <rect width="700" height="300" fill="#FFFFFF"/>
@@ -2234,6 +2552,7 @@
                   </g>
                 </svg>
             </figure>
+            <p class="feature-parts"><b>Składowe</b></p>
             <table class="mech-table">
                 <thead>
                 <tr>
@@ -2244,20 +2563,29 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td class="mech-name">Stan karty</td>
+                    <td class="mech-name">Powtarzanie fiszek</td>
                     <td><ul class="cell">
-                        <li><i>Nowa</i> — jeszcze nie powtarzana, czeka w puli</li>
-                        <li><i>Aktywna</i> — w planowych powtórkach, poziom 1–5</li>
-                        <li><i>Utrwalona</i> — już nie wraca do powtórek</li>
+                        <li>fiszka po fiszce
+                            <ul>
+                                <li>najpierw awers, potem odkrycie rewersu</li>
+                                <li>przed odkryciem rewersu fiszkę można pominąć — chyba że jest ostatnia w kolejce</li>
+                                <li>ocena: <span class="bracket">Mam to</span> / <span class="bracket">Coś świta</span> / <span class="bracket">Pustka</span></li>
+                            </ul>
+                        </li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>postęp karty = status, poziom i termin kolejnej powtórki</li>
+                        <li>pominięta fiszka wraca na koniec kolejki</li>
+                        <li>po <span class="bracket">Pustka</span> fiszka wraca w tej sesji, aż padnie <span class="bracket">Mam to</span> albo <span class="bracket">Coś świta</span>
+                            <ul>
+                                <li>o poziomie i terminie decyduje tylko pierwsza ocena w sesji</li>
+                            </ul>
+                        </li>
                     </ul></td>
                 </tr>
                 <tr>
-                    <td class="mech-name">Oceny</td>
+                    <td class="mech-name">Ocenianie fiszki</td>
                     <td><ul class="cell">
-                        <li>każda ocena znaczy zawsze to samo:
+                        <li>każda ocena znaczy zawsze to samo
                             <ul>
                                 <li><span class="bracket">Mam to</span> — poziom +1</li>
                                 <li><span class="bracket">Coś świta</span> — poziom bez zmian</li>
@@ -2266,29 +2594,36 @@
                         </li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>nowa karta — po pierwszej ocenie poziom 1, wraca jutro</li>
+                        <li>nowa fiszka — po pierwszej ocenie ustawiany jest poziom 1, kolejna powtórka jutro</li>
                         <li>najwyżej jeden poziom w dół dziennie — powroty w sesji nie zmieniają poziomu ani terminu</li>
                     </ul></td>
                 </tr>
                 <tr>
-                    <td class="mech-name">Poziomy i termin</td>
+                    <td class="mech-name">Planowanie kolejnej powtórki</td>
                     <td><ul class="cell">
-                        <li>interwały poziomów 1–5: <b>1 → 3 → 7 → 14 → 30 dni</b></li>
+                        <li>odstęp do kolejnej powtórki zależy od poziomu fiszki
+                            <ul>
+                                <li>poziom 1 — za 1 dzień</li>
+                                <li>poziom 2 — za 3 dni</li>
+                                <li>poziom 3 — za 7 dni</li>
+                                <li>poziom 4 — za 14 dni</li>
+                                <li>poziom 5 — za 30 dni</li>
+                            </ul>
+                        </li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>termin = dzień faktycznej powtórki + interwał nowego poziomu; spóźnienie nie obniża poziomu</li>
+                        <li>odstęp liczony od dnia, w którym fiszka została faktycznie powtórzona; zaległości nie obniżają poziomu</li>
                         <li><span class="bracket">Mam to</span> na poziomie 5 = utrwalenie</li>
                     </ul></td>
                 </tr>
                 <tr>
-                    <td class="mech-name">Limity</td>
+                    <td class="mech-name">Kończenie i przerywanie sesji</td>
                     <td><ul class="cell">
-                        <li>limit nowych kart dziennie — domyślnie 10, zakres 1–30 (<span class="location">Ustawienia</span>)</li>
-                        <li>próg zaległości — stałe 30, na razie zablokowany</li>
-                        <li>zaległości = powtórki z terminem ≤ dziś; dzień kończy się o północy</li>
+                        <li>podsumowanie sesji — ile fiszek dostało każdą z ocen (liczy się pierwsza ocena)</li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>zaległości ponad próg odraczają nowe karty bez utraty — wracają po nadrobieniu</li>
+                        <li>każda ocena zapisuje się od razu — przerwanie niczego nie gubi</li>
+                        <li>planowe powtórki nieocenione przed przerwaniem zostają zaległościami — wracają w następnej sesji; nieocenione nowe pozostają nowe</li>
                     </ul></td>
                 </tr>
                 </tbody>
@@ -2296,7 +2631,7 @@
             <details class="grades">
                 <summary>Pełna tabela ocen</summary>
               <table class="grade-table">
-                <thead><tr><th>Poziom wejściowy</th><th>Ocena</th><th>Nowy poziom (interwał)</th><th>Tego samego dnia</th><th>Kolejna powtórka</th></tr></thead>
+                <thead><tr><th>Poziom wejściowy</th><th>Ocena</th><th>Nowy poziom (odstęp)</th><th>Tego samego dnia</th><th>Kolejna powtórka</th></tr></thead>
                 <tbody>
                   <tr><td>Nowa</td><td>Mam to</td><td>1 (1 dzień)</td><td>nic</td><td>jutro</td></tr>
                   <tr><td>Nowa</td><td>Coś świta</td><td>1 (1 dzień)</td><td>nic</td><td>jutro</td></tr>
@@ -2324,7 +2659,7 @@
 
     <details class="req">
         <summary>
-            <span class="req-title">Przypomnienia</span>
+            <span class="req-title">Przypomnienia o sesjach powtórek<span class="req-alt">Przypominajki systemowe (notyfikacje)</span></span>
             <span class="check">
                 <span class="check-main verify">🟡 Weryfikacja</span>
                 <span class="check-ago">-</span>
@@ -2363,6 +2698,7 @@
                   <text x="20" y="24" font-size="12" fill="#88807A">nic nie czeka = brak powiadomienia</text>
                 </svg>
             </figure>
+            <p class="feature-parts"><b>Składowe</b></p>
             <table class="mech-table">
                 <thead>
                 <tr>
@@ -2373,32 +2709,46 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td class="mech-name">Ustawienia</td>
+                    <td class="mech-name">Włączanie przypomnień</td>
                     <td><ul class="cell">
-                        <li>przełącznik w <span class="location">Ustawienia</span>, domyślnie wyłączony</li>
-                        <li>jedna pełna godzina, domyślnie 9:00</li>
+                        <li>przełącznik <span class="bracket">Włącz przypomnienia o powtórkach</span> w <span class="location">Ustawienia</span>
+                            <ul>
+                                <li>domyślnie wyłączony</li>
+                                <li>dostępny tylko przy włączonych fiszkach</li>
+                            </ul>
+                        </li>
+                        <li>godzina przypomnienia
+                            <ul>
+                                <li>pełna godzina, domyślnie 9:00</li>
+                            </ul>
+                        </li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>włączenie prosi o zgodę na powiadomienia</li>
+                        <li>włączenie wymaga zgody na powiadomienia</li>
                     </ul></td>
                 </tr>
                 <tr>
-                    <td class="mech-name">Powiadomienie</td>
+                    <td class="mech-name">Przypominanie o powtórkach</td>
                     <td><ul class="cell">
-                        <li><span class="msg">Czas na powtórkę fiszek</span> + <span class="msg">Na dziś: N do powtórki</span> — ta sama liczba co w widżecie, bez rozbicia na nowe</li>
+                        <li>jedno powiadomienie dziennie o wybranej godzinie
+                            <ul>
+                                <li>ile fiszek czeka dziś na powtórkę — ta sama liczba co w informacjach o <a class="req-link" data-target-tab="Powtarzanie z fiszkami" data-target-req="Dzisiejsza sesja powtórek">Dzisiejsza sesja powtórek</a>, bez rozbicia na nowe</li>
+                            </ul>
+                        </li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>treść liczona w chwili przypomnienia; nic nie czeka = brak powiadomienia</li>
-                        <li>może przyjść kilkanaście minut po czasie (oszczędzanie baterii)</li>
+                        <li>nic nie czeka = brak powiadomienia</li>
+                        <li>liczba aktualna w chwili przypomnienia</li>
+                        <li>może przyjść z kilkunastominutowym opóźnieniem (oszczędzanie baterii przez system)</li>
                     </ul></td>
                 </tr>
                 <tr>
-                    <td class="mech-name">Tapnięcie</td>
+                    <td class="mech-name">Otwieranie sesji z przypomnienia</td>
                     <td><ul class="cell">
-                        <li>powiadomienie</li>
+                        <li>otwarcie powiadomienia</li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>otwiera <span class="location">Zapamiętywanie</span> i od razu startuje sesję</li>
+                        <li>od razu startuje sesja powtórek w <span class="location">Zapamiętywanie</span></li>
                     </ul></td>
                 </tr>
                 </tbody>
@@ -2597,7 +2947,7 @@
             </span>
         </summary>
         <div class="spec-body">
-            <p class="feature-goal"><b>Potrzeba i Cel</b>złapanie myśli w wybranej formie bez wchodzenia w aplikację — prosto z ekranu głównego telefonu; ✳️ tak samo szybkie założenie nowego zestawu fiszek</p>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>złapanie myśli w wybranej formie bez wchodzenia w aplikację — prosto z ekranu głównego telefonu; ✳️ tak samo szybkie dopisanie nowych fiszek</p>
             <table class="mech-table">
                 <thead>
                 <tr>
@@ -2621,14 +2971,14 @@
                     </ul></td>
                 </tr>
                 <tr>
-                    <td class="mech-name">✳️ Nowy zestaw fiszek</td>
+                    <td class="mech-name">✳️ Nowe fiszki</td>
                     <td><ul class="cell">
                         <li>✳️ skrót <span class="bracket">Twórz fiszki</span> — pierwszy na liście, nad skrótami formy zapisu</li>
                         <li>✳️ widoczny tylko przy włączonych fiszkach — przełączenie w <span class="location">Ustawienia</span> zmienia listę skrótów od razu</li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>✳️ otwiera <span class="location">Zapamiętywanie</span> z od razu otwartym dialogiem nowego zestawu — tym samym co przycisk <span class="bracket">+</span></li>
-                        <li>✳️ <span class="bracket">Zakończ</span> → podgląd nowego zestawu; anulowanie → lista zestawów</li>
+                        <li>✳️ otwiera <span class="location">Zapamiętywanie</span> na zakładce <span class="bracket">Luźne fiszki</span> z od razu otwartą serią nowych fiszek — bez wyboru zestawu</li>
+                        <li>✳️ zamknięcie serii → lista luźnych fiszek</li>
                     </ul></td>
                 </tr>
                 <tr>
@@ -2638,7 +2988,7 @@
                     </ul></td>
                     <td><ul class="cell">
                         <li>cofnięcie prowadzi do <span class="location">Dom</span>, nie wyrzuca z aplikacji</li>
-                        <li>✳️ z nowego zestawu: zestaw → <span class="location">Zapamiętywanie</span> → <span class="location">Dom</span></li>
+                        <li>✳️ z nowych fiszek: <span class="location">Zapamiętywanie</span> → <span class="location">Dom</span></li>
                     </ul></td>
                 </tr>
                 </tbody>
@@ -2655,11 +3005,20 @@
         var rowEls = {};
         var buttons = [];
 
+        // Group name shown above each row of tabs (key = data-row)
+        var ROW_NAMES = {'1':'Aplikacja', '2':'Myśli', '3':'Rozwój', '4':'Zapamiętywanie', '5':'Core'};
+
         panels.forEach(function(panel){
             var row = panel.getAttribute('data-row') || '1';
             if(!rowEls[row]){
                 rowEls[row] = document.createElement('div');
                 rowEls[row].className = 'tab-row';
+                if(ROW_NAMES[row]){
+                    var groupName = document.createElement('div');
+                    groupName.className = 'tab-group-name';
+                    groupName.textContent = ROW_NAMES[row];
+                    rowEls[row].appendChild(groupName);
+                }
                 tabbar.appendChild(rowEls[row]);
             }
             var btn = document.createElement('button');
@@ -2729,11 +3088,48 @@
             }
         }
         document.querySelectorAll('.req-link').forEach(function(link){
+            link.title = link.textContent;
             link.addEventListener('click', function(e){
                 e.preventDefault();
                 go(link.getAttribute('data-target-tab'), link.getAttribute('data-target-req'));
             });
         });
+    })();
+</script>
+<button class="fab-toggle" id="fabToggle" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l6 6 6-6M6 13l6 6 6-6"/></svg>
+    <span id="fabToggleLabel">Rozwiń wszystko</span>
+</button>
+<script>
+    // FAB: expand all requirements of the shown tab, or collapse them once all are open
+    (function(){
+        var fab = document.getElementById('fabToggle');
+        var label = document.getElementById('fabToggleLabel');
+
+        function shownReqs(){
+            var panel = document.querySelector('.panel.active');
+            return panel ? Array.prototype.slice.call(panel.querySelectorAll('details.req')) : [];
+        }
+
+        function refresh(){
+            var reqs = shownReqs();
+            var allOpen = reqs.length > 0 && reqs.every(function(req){ return req.open; });
+            fab.style.display = reqs.length ? '' : 'none';
+            fab.classList.toggle('collapse', allOpen);
+            label.textContent = allOpen ? 'Zwiń wszystko' : 'Rozwiń wszystko';
+        }
+
+        fab.addEventListener('click', function(){
+            var reqs = shownReqs();
+            var open = !reqs.every(function(req){ return req.open; });
+            reqs.forEach(function(req){ req.open = open; });
+            refresh();
+        });
+
+        // Single sections opened by hand and tab switches keep the label right
+        document.addEventListener('toggle', refresh, true);
+        document.getElementById('tabbar').addEventListener('click', function(){ setTimeout(refresh, 0); });
+        refresh();
     })();
 </script>
 </body>
