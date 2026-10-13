@@ -24,7 +24,7 @@
     <string name="common_btn_decrease">-</string>
     <string name="common_btn_grant_permission">Zezwól</string>
     <string name="common_btn_confirm_replace">Zastąp dane</string>
-    <string name="common_btn_go_to_settings">Przejdź do Ustawień</string>
+    <string name="common_btn_go_to_settings">Przejdź do Preferencji</string>
     <string name="common_guide_btn_next">Mów dalej...</string>
     <string name="common_guide_btn_dismiss">Dzięki</string>
 
@@ -39,7 +39,7 @@
     <string name="common_edit_note_header">Edytuj notatkę</string>
     <string name="common_list_dialog_title">Wybierz coś sobie…</string>
     <string name="common_thoughts_forms_inactive_header">Włączyć nową formę zapisu?</string>
-    <string name="common_thoughts_forms_permissions_needed">Nagrania i zdjęcia włączysz w Ustawieniach.</string>
+    <string name="common_thoughts_forms_permissions_needed">Nagrania i zdjęcia włączysz w Preferencjach.</string>
     <string name="common_dialog_open_android_settings">Otwórz ustawienia Androida</string>
 
     <!-- Validation -->
@@ -191,7 +191,7 @@ Awers - Rewers…"</string>
 
     <string name="workshop_section_onboarding">Moje poznawanie aplikacji</string>
     <string name="workshop_onboarding_section_home">Dom</string>
-    <string name="workshop_onboarding_section_settings">Ustawienia</string>
+    <string name="workshop_onboarding_section_settings">Preferencje</string>
     <string name="workshop_onboarding_section_capture">Łapanie myśli</string>
     <string name="workshop_onboarding_section_stream">Strumień</string>
     <string name="workshop_onboarding_section_details">Szczegóły myśli</string>
@@ -429,7 +429,7 @@ Awers - Rewers…"</string>
     <!-- ============================================================ -->
 
     <!-- Onboarding -->
-    <string name="settings_entry_title_1">Ustawienia</string>
+    <string name="settings_entry_title_1">Preferencje</string>
     <string name="settings_entry_tooltip_1">
     <![CDATA[
         W tym kreatywnym miejscu skroisz aplikację pod siebie!\n\n
@@ -449,7 +449,7 @@ Awers - Rewers…"</string>
     <string name="settings_backup_tooltip_2">Gdy uruchomisz aplikację jej mechanizm zapisze dane twoich myśli.\n\nMoże się to wydarzyć maksymalnie raz na godzinę.</string>
 
     <!-- Header -->
-    <string name="settings_title">Ustawienia</string>
+    <string name="settings_title">Preferencje</string>
 
     <!-- Name -->
     <string name="settings_your_name_header">✒️ Moje Prawdziwe Imię?</string>

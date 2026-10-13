@@ -282,8 +282,8 @@
     </summary>
     <div class="body">
       <ul>
-        <li>dziś stały tekst: <em>„Nagrania i zdjęcia włączysz w Ustawieniach."</em></li>
-        <li>docelowo wstawiana tylko forma, która nie została aktywowana (ta, którą user próbował dodać), np. <em>„Zdjęcia włączysz w Ustawieniach."</em></li>
+        <li>dziś stały tekst: <em>„Nagrania i zdjęcia włączysz w Preferencjach."</em></li>
+        <li>docelowo wstawiana tylko forma, która nie została aktywowana (ta, którą user próbował dodać), np. <em>„Zdjęcia włączysz w Preferencjach."</em></li>
         <li>string z parametrem (<code>%1$s</code>) + nazwa formy (<em>Nagrania</em> / <em>Zdjęcia</em>) przekazywana z przycisku, który wywołał dialog</li>
       </ul>
       <div class="where"><span class="lbl">Gdzie</span><ul><li><code>res/values/strings.xml</code> — <code>common_thoughts_forms_permissions_needed</code></li><li><code>activities/ThoughtManagerActivity.kt</code> — <code>showEnableAdditionalFeaturesDialog()</code> (dołożyć parametr formy)</li><li>wywołania z przycisków dodawania formy w <code>CaptureActivity</code> i <code>DetailsActivity</code></li></ul></div>
@@ -400,7 +400,7 @@
             <li>minus: dialog przerywa sesję przy każdej utrwalonej fiszce</li>
           </ul>
         </li>
-        <li><strong>Propozycja B (Claude): przełącznik w <i>Ustawieniach</i></strong>
+        <li><strong>Propozycja B (Claude): przełącznik w <i>Preferencjach</i></strong>
           <ul>
             <li><i>„Utrwalone fiszki wracają co 90 dni”</i>, domyślnie włączony</li>
             <li>plus: zero pytań w trakcie nauki</li>
@@ -421,7 +421,7 @@
         </li>
         <li><strong>Do ustalenia</strong>
           <ul>
-            <li>czy 90 dni to stała, czy parametr w <i>Ustawieniach</i></li>
+            <li>czy 90 dni to stała, czy parametr w <i>Preferencjach</i></li>
             <li>czy kontrolne powtórki liczą się do <i>„Masz do powtórki N fiszek”</i></li>
             <li>jak oznaczyć w podglądzie zestawu utrwaloną fiszkę, która wraca na kontrolę</li>
             <li>powiązanie z punktem <i>„Przywracanie utrwalonych kart do nauki”</i></li>
@@ -440,7 +440,7 @@
         <li>jak działało: przy starcie sesji, gdy powtórek do zrobienia (termin dziś lub wcześniej, wszystkie fiszki) było ponad próg 30, do sesji nie wchodziła żadna nowa fiszka</li>
         <li>widżet <i>Dzisiejsza sesja</i> pokazywał wtedy <i>„Nowe fiszki wstrzymane - do nadrobienia: N”</i> (N = powtórki ponad próg)</li>
         <li>teraz przyrost nowych ogranicza tylko dzienny limit nowych fiszek</li>
-        <li>przy powrocie: prostsza nazwa w <i>Ustawieniach</i> (nie „zaległości” — to słowo jest zarezerwowane dla powtórek niezrobionych w terminie)</li>
+        <li>przy powrocie: prostsza nazwa w <i>Preferencjach</i> (nie „zaległości” — to słowo jest zarezerwowane dla powtórek niezrobionych w terminie)</li>
       </ul>
       <div class="where"><span class="lbl">Gdzie</span><ul><li><code>services/FlashcardsReview.kt</code> — <code>plan()</code></li><li><code>activities/flashcards/FlashcardsActivity.kt</code> — <code>renderReviewToday()</code></li><li><code>settings_activity.xml</code> — sekcja Zapamiętywanie</li></ul></div>
     </div>
@@ -906,7 +906,7 @@
         <li><b>stopka zostaje</b> (domena / wartość, „Zmieniono dziś”…) — raz na myśl, na styku z następną (po ostatniej składowej myśli, przed pierwszą składową kolejnej); wygląd — do rozstrzygnięcia</li>
         <li><b>filtr rodzaju treści</b> — w filtrze Strumienia wybór, jakie składowe myśli pokazywać: tekst, głosówka, obraz, fiszka
           <ul>
-            <li>opcja widoczna tylko, jeśli dana forma zapisu jest włączona (w Ustawieniach); tekst zawsze widoczny</li>
+            <li>opcja widoczna tylko, jeśli dana forma zapisu jest włączona (w Preferencjach); tekst zawsze widoczny</li>
             <li>np. filtr = obraz → feed pokazuje same obrazy; myśli bez obrazu są pomijane w całości (tekst też da się odfiltrować — ktoś może chcieć widzieć same obrazy)</li>
             <li>wybór wielokrotny — np. obraz + fiszka: myśl, która ma choć jedną z nich, pokazuje tylko te składowe; pozostałe myśli pomijane</li>
             <li>domyślnie wszystkie zaznaczone; tap na zaznaczonej opcji = odznaczenie; odznaczenie ostatniej → powrót do „wszystkie zaznaczone”</li>
@@ -981,14 +981,14 @@
 <details class="item">
     <summary>
       <span class="prio minor">Drobny</span> 
-      <strong>Wpisywanie Hex Tagów zamiast arkusza</strong> — opcja w Ustawieniach dla tych, którym szybciej się pisze.
+      <strong>Wpisywanie Hex Tagów zamiast arkusza</strong> — opcja w Preferencjach dla tych, którym szybciej się pisze.
     </summary>
     <div class="body">
       <ul>
         <li>dziś kryteria wybiera się wyłącznie przez arkusz z polami; wpisywanie 
           <code>samochód #zakupy @ja</code> wprost w pasek zniknęło
         </li>
-        <li>przełącznik w Ustawieniach wybierałby tryb szukajki: arkusz (domyślnie) albo pole tekstowe</li>
+        <li>przełącznik w Preferencjach wybierałby tryb szukajki: arkusz (domyślnie) albo pole tekstowe</li>
         <li>do rozstrzygnięcia: czy dwa tryby są warte utrzymania, czy arkusz wystarcza</li>
         <li>kod starej szukajki jest w historii repo — dostępny przez <strong>06/09/2026</strong>, potem trzeba by pisać od nowa</li>
       </ul>
@@ -1129,7 +1129,7 @@
         <li>skutek na UI: albo domeny pokazują pustą ikonę 
           <code>ic_domain_none</code> (fallback dla id 0), albo — mniej prawdopodobne — crash przy pierwszym starcie (NPE z unboxingu)
         </li>
-        <li>do sprawdzenia na urządzeniu: wyczyść dane, wejdź w Ustawienia → jaka ikona przy domenach; pusta „none" = wariant 0, crash = wariant NPE</li>
+        <li>do sprawdzenia na urządzeniu: wyczyść dane, wejdź w Preferencje → jaka ikona przy domenach; pusta „none" = wariant 0, crash = wariant NPE</li>
         <li>fix: seed powinien nadać domyślną ikonę zamiast 
           <code>null</code> — spełnia spec i usuwa ryzyko 
           <code>null → Int</code>

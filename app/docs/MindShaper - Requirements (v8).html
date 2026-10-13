@@ -541,7 +541,7 @@
         <ul>
             <li>Klikalne zakładki (poniżej) to grupy celów biznesowych/moduły głównych funkcji, nie ekrany w aplikacji (chociaż takie odwzorowanie/mapowanie może wystąpić)</li>
             <li>Każdy feature jest opisany w jednym miejscu — tam, gdzie jego cel biznesowy</li>
-            <li>Jeśli część feature'u pojawia się na innym ekranie (np. przełącznik w Ustawieniach), jest tam tylko wzmiankowana, a pełny opis zostaje w karcie feature'u</li>
+            <li>Jeśli część feature'u pojawia się na innym ekranie (np. przełącznik w Preferencjach), jest tam tylko wzmiankowana, a pełny opis zostaje w karcie feature'u</li>
         </ul>
     </details>
 
@@ -611,7 +611,7 @@
 </section>
 
 
-<section class="panel" data-tab="Ustawienia" data-row="1">
+<section class="panel" data-tab="Preferencje" data-row="1">
     <p class="panel-intro">Konfiguracja aplikacji, dane oraz przełączniki funkcji.</p>
 
     <details class="req">
@@ -632,7 +632,7 @@
             <div class="spec-section">
                 <h3>Wejścia, Dane, Stany</h3>
                 <ul>
-                    <li>Sekcja „Moje domeny" (Ustawienia)
+                    <li>Sekcja „Moje domeny" (Preferencje)
                         <ul>
                             <li>Lista domen (max. 10 pozycji)</li>
                             <li>ikona domeny, nazwa domeny, lista domyślnych ikon (do wyboru)</li>
@@ -676,7 +676,7 @@
             <div class="spec-section">
                 <h3>Wejścia, Dane, Stany</h3>
                 <ul>
-                    <li>Sekcja „Kopia zapasowa danych" (Ustawienia)
+                    <li>Sekcja „Kopia zapasowa danych" (Preferencje)
                         <ul>
                             <li>włącz / wyłącz robienie backupu (domyślnie wyłączony)</li>
                             <li>metadane backupu
@@ -742,11 +742,11 @@
             <div class="spec-section">
                 <h3>Wejścia, Dane, Stany</h3>
                 <ul>
-                    <li>✳️ Sekcja „Ekran startowy" — w sekcji personalizacji, pod „Moje domeny" <span class="location">Ustawienia</span>
+                    <li>✳️ Sekcja „Ekran startowy" — w sekcji personalizacji, pod „Moje domeny" <span class="location">Preferencje</span>
                         <ul>
                             <li>✳️ 4 kafelki do wyboru: <span class="location">Dom</span> / <span class="location">Strumień</span> / <span class="location">Zapamiętywanie</span> / <span class="location">Warsztat</span> (dokładnie jeden aktywny)</li>
                             <li>✳️ domyślnie: <span class="location">Dom</span></li>
-                            <li>✳️ fiszki wyłączone w <span class="location">Ustawieniach</span> — kafelek <span class="location">Zapamiętywanie</span> wyszarzony, zaznaczenie wraca na <span class="location">Dom</span>; aplikacja startuje wtedy na <span class="location">Dom</span></li>
+                            <li>✳️ fiszki wyłączone w <span class="location">Preferencjach</span> — kafelek <span class="location">Zapamiętywanie</span> wyszarzony, zaznaczenie wraca na <span class="location">Dom</span>; aplikacja startuje wtedy na <span class="location">Dom</span></li>
                         </ul>
                     </li>
                     <li>✳️ Wybór zapamiętywany trwale między uruchomieniami aplikacji</li>
@@ -809,7 +809,7 @@
             <div class="spec-section">
                 <h3>Wejścia, Dane, Stany</h3>
                 <ul>
-                    <li>✳️ Nowe wejście <span class="location">Metadane</span> w nawigacji — między <span class="location">Warsztat</span> a <span class="location">Ustawienia</span></li>
+                    <li>✳️ Nowe wejście <span class="location">Metadane</span> w nawigacji — między <span class="location">Warsztat</span> a <span class="location">Preferencje</span></li>
                     <li>✳️ Lista pigułek — każdy tag Osoby jako pigułka: nazwa + liczba użyć, po maks. 2 w wierszu
                         <ul>
                             <li>nieparzysta liczba tagów → ostatni wiersz z jedną pigułką</li>
@@ -972,7 +972,7 @@
                     <tr>
                         <td class="mech-name">Włączanie funkcji</td>
                         <td><ul class="cell">
-                            <li><span class="bracket">Włącz nagrania dźwiękowe</span> (toggle) <span class="location">Ustawienia</span></li>
+                            <li><span class="bracket">Włącz nagrania dźwiękowe</span> (toggle) <span class="location">Preferencje</span></li>
                             <li>domyślnie wyłączona</li>
                         </ul></td>
                         <td><ul class="cell">
@@ -986,13 +986,13 @@
                             <li><span class="bracket">Dodaj nagranie głosowe</span> — gdy myśl nie ma jeszcze nagrania
                                 <ul>
                                     <li>funkcja włączona = aktywny; </li>
-                                    <li>wyłączona = nieaktywny (szary) + info z możliwością przejścia do ustawień</li>
+                                    <li>wyłączona = nieaktywny (szary) + info z możliwością przejścia do Preferencji</li>
                                 </ul>
                             </li>
                             <li>widget do nagrań — gdy myśl ma już podpięte nagranie</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>info dla użytkownika, gdy funkcja wyłączona — z opcją <span class="bracket">Idź do ustawień</span></li>
+                            <li>info dla użytkownika, gdy funkcja wyłączona — z opcją <span class="bracket">Przejdź do Preferencji</span></li>
                         </ul></td>
                     </tr>
                     <tr>
@@ -1077,7 +1077,7 @@
                     <tr>
                         <td class="mech-name">Włączanie funkcji</td>
                         <td><ul class="cell">
-                            <li><span class="bracket">Włącz robienie zdjęć</span> (toggle) <span class="location">Ustawienia</span></li>
+                            <li><span class="bracket">Włącz robienie zdjęć</span> (toggle) <span class="location">Preferencje</span></li>
                             <li>domyślnie wyłączona</li>
                         </ul></td>
                         <td><ul class="cell">
@@ -1091,13 +1091,13 @@
                             <li><span class="bracket">Dodaj zdjęcie</span> — gdy myśl nie ma jeszcze zdjęcia
                                 <ul>
                                     <li>funkcja włączona = aktywny; </li>
-                                    <li>wyłączona = nieaktywny (szary) + info z możliwością przejścia do ustawień</li>
+                                    <li>wyłączona = nieaktywny (szary) + info z możliwością przejścia do Preferencji</li>
                                 </ul>
                             </li>
                             <li>widget do zdjęć — wyświetlanie miniaturki (gdy myśl ma podpięte zdjęcie)</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>info dla użytkownika, gdy funkcja wyłączona — z opcją <span class="bracket">Idź do ustawień</span></li>
+                            <li>info dla użytkownika, gdy funkcja wyłączona — z opcją <span class="bracket">Przejdź do Preferencji</span></li>
                         </ul></td>
                     </tr>
                     <tr>
@@ -1161,7 +1161,7 @@
                     <tr>
                         <td class="mech-name">Wybór domyślnej formy</td>
                         <td><ul class="cell">
-                            <li>domyślna forma zapisu myśli <span class="location">Ustawienia</span>
+                            <li>domyślna forma zapisu myśli <span class="location">Preferencje</span>
                                 <ul>
                                     <li>tekstowa (default)</li>
                                     <li>głosowa</li>
@@ -1794,7 +1794,7 @@
                 <tr>
                     <td class="mech-name">Włączanie funkcji</td>
                     <td><ul class="cell">
-                        <li><span class="bracket">Włącz wpisy do kalendarza</span> (toggle) <span class="location">Ustawienia</span></li>
+                        <li><span class="bracket">Włącz wpisy do kalendarza</span> (toggle) <span class="location">Preferencje</span></li>
                         <li>domyślnie wyłączona</li>
                     </ul></td>
                     <td><ul class="cell">
@@ -1894,9 +1894,9 @@
     <details class="req">
         <summary>
             <span class="req-title">Włączanie modułu fiszek<span class="req-alt">Zapamiętywanie</span></span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="13/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
@@ -1914,7 +1914,7 @@
                 <tr>
                     <td class="mech-name">Włączanie i wyłączanie fiszek</td>
                     <td><ul class="cell">
-                        <li>przełącznik <span class="bracket">Włącz powtórki z użyciem fiszek</span> w <span class="location">Ustawienia</span>
+                        <li>przełącznik <span class="bracket">Włącz powtórki z użyciem fiszek</span> w <span class="location">Preferencje</span>
                             <ul>
                                 <li>domyślnie wyłączony</li>
                             </ul>
@@ -1948,9 +1948,9 @@
     <details class="req">
         <summary>
             <span class="req-title">Tworzenie i zarządzanie luźnymi fiszkami<span class="req-alt">Zakładka „Luźne fiszki”</span></span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="13/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
@@ -2067,9 +2067,9 @@
     <details class="req">
         <summary>
             <span class="req-title">Tworzenie i zarządzanie zestawami fiszek<span class="req-alt">Zakładka „Zestawy”</span></span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="13/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
@@ -2149,9 +2149,9 @@
     <details class="req">
         <summary>
             <span class="req-title">Szczegóły zestawu fiszek</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="13/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
@@ -2237,9 +2237,9 @@
     <details class="req">
         <summary>
             <span class="req-title">Dzisiejsza sesja powtórek<span class="req-alt">Widżet „Dzisiejsza sesja” na górze „Zapamiętywania”</span></span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="13/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
@@ -2405,7 +2405,7 @@
                 <tr>
                     <td class="mech-name">Ustawianie dziennego limitu nowych fiszek</td>
                     <td><ul class="cell">
-                        <li>dzienny limit nowych fiszek w <span class="location">Ustawienia</span> — ile nowych fiszek dziennie może zacząć powtórki
+                        <li>dzienny limit nowych fiszek w <span class="location">Preferencje</span> — ile nowych fiszek dziennie może zacząć powtórki
                             <ul>
                                 <li>domyślnie 10, zakres 1–30</li>
                                 <li>do zmiany tylko przy włączonych fiszkach</li>
@@ -2429,9 +2429,9 @@
     <details class="req">
         <summary>
             <span class="req-title">Przebieg sesji powtórek<span class="req-alt">System Powtórek</span></span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="13/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
@@ -2641,9 +2641,9 @@
     <details class="req">
         <summary>
             <span class="req-title">Przypomnienia o sesjach powtórek<span class="req-alt">Przypominajki systemowe (notyfikacje)</span></span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="13/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
@@ -2692,7 +2692,7 @@
                 <tr>
                     <td class="mech-name">Włączanie przypomnień</td>
                     <td><ul class="cell">
-                        <li>przełącznik <span class="bracket">Włącz przypomnienia o powtórkach</span> w <span class="location">Ustawienia</span>
+                        <li>przełącznik <span class="bracket">Włącz przypomnienia o powtórkach</span> w <span class="location">Preferencje</span>
                             <ul>
                                 <li>domyślnie wyłączony</li>
                                 <li>dostępny tylko przy włączonych fiszkach</li>
@@ -2807,7 +2807,7 @@
                     <td class="mech-name">Pokazywanie i chowanie panelu</td>
                     <td><ul class="cell">
                         <li>✴️ wysuwany panel przy lewej krawędzi</li>
-                        <li>pozycje do pozostałych ekranów: <span class="location">Dom</span> <span class="location">Strumień myśli</span> <span class="location">Warsztat</span> <span class="location">Ustawienia</span></li>
+                        <li>pozycje do pozostałych ekranów: <span class="location">Dom</span> <span class="location">Strumień myśli</span> <span class="location">Warsztat</span> <span class="location">Preferencje</span></li>
                         <li>✳️ każda pozycja to ikona + podpis</li>
                     </ul></td>
                     <td><ul class="cell">
@@ -2881,7 +2881,7 @@
                         <ul>
                             <li>Sekcje = ekrany aplikacji
                                 <ul>
-                                    <li>stała kolejność: Dom, Ustawienia, Łapanie myśli, Strumień, Szczegóły myśli</li>
+                                    <li>stała kolejność: Dom, Preferencje, Łapanie myśli, Strumień, Szczegóły myśli</li>
                                     <li>ikona ekranu, nazwa, licznik zobaczonych wskazówek (ile / ze wszystkich)</li>
                                 </ul>
                             </li>
@@ -2955,7 +2955,7 @@
                     <td class="mech-name">✳️ Nowe fiszki</td>
                     <td><ul class="cell">
                         <li>✳️ skrót <span class="bracket">Twórz fiszki</span> — pierwszy na liście, nad skrótami formy zapisu</li>
-                        <li>✳️ widoczny tylko przy włączonych fiszkach — przełączenie w <span class="location">Ustawienia</span> zmienia listę skrótów od razu</li>
+                        <li>✳️ widoczny tylko przy włączonych fiszkach — przełączenie w <span class="location">Preferencje</span> zmienia listę skrótów od razu</li>
                     </ul></td>
                     <td><ul class="cell">
                         <li>✳️ otwiera <span class="location">Zapamiętywanie</span> na zakładce <span class="bracket">Luźne fiszki</span> z od razu otwartą serią nowych fiszek — bez wyboru zestawu</li>
