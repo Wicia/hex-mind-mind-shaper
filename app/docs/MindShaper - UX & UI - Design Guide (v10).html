@@ -15,6 +15,7 @@
     --orange-3:#FFA86B;
     --graphite:#48433F;
     --muted:#88807A;
+    --coffee:#6F4E37;
     --hair:#BEBEBE;
     --rule:#E6E6E6;
     --sidebar-w:230px;
@@ -88,7 +89,7 @@
   dl{display:grid; grid-template-columns:130px 1fr; margin:0 0 10px}
   dt{
     font-family:"Baloo 2",system-ui,sans-serif;
-    font-size:13px; font-weight:500; color:var(--muted);
+    font-size:13px; font-weight:500; color:var(--coffee);
     text-transform:uppercase; letter-spacing:.04em; padding:9px 14px 6px 0;
     text-align:right;
   }
@@ -122,6 +123,8 @@
   }
   .tab:hover{background:rgba(255,255,255,.07)}
   .tab.active{background:var(--orange-3); color:#2A1B10; font-weight:600}
+  /* Separator between chapter groups (data-separator-after on a panel) */
+  .tab-sep{height:1px; margin:8px 12px; background:rgba(232,223,214,.25); flex:0 0 auto}
   .panel{display:none}
   .panel.active{display:block}
   .panel > h2:first-child{margin-top:0}
@@ -135,6 +138,7 @@
       background:#12100F;
     }
     .tab{width:auto; text-align:center}
+    .tab-sep{width:1px; height:auto; margin:4px 2px; align-self:stretch}
   }
   @media (max-width:560px){
     dl{grid-template-columns:1fr; gap:2px}
@@ -180,7 +184,7 @@
 </section>
 </div>
 
-<div class="panel" data-tab="Ikony i ich znaczenie">
+<div class="panel" data-tab="Ikony i ich znaczenie" data-separator-after>
 <h2>Ikony i ich znaczenie</h2>
 <section>
   <ul>
@@ -211,6 +215,48 @@
     </li>
   </ul>
 </section>
+
+<div class="comps">
+  <p class="note">Rendery poglądowe w skali ok. 1,15× (inline SVG, 1 jednostka = 1dp) — wymiary i kolory z <code>res/</code>.</p>
+
+  <details class="comp" open>
+    <summary><h3>Speed dial</h3></summary>
+    <dl>
+      <dt>Przeznaczenie</dt>
+      <dd>Kilka akcji tworzenia pod jednym FAB-em — np. <i>Importuj fiszki</i> / <i>Dodaj fiszki</i> w <i>Zapamiętywaniu</i> (zakładka <i>Luźne fiszki</i>) i w szczegółach zestawu.</dd>
+      <dt>Wygląd</dt>
+      <dd>
+        <figure><svg role="img" aria-label="speed-dial" xmlns="http://www.w3.org/2000/svg" width="345" height="230" viewBox="0 0 300 200">
+  <rect width="300" height="200" fill="#59544F"/>
+  <rect x="82" y="28" width="142" height="32" rx="12" fill="#FFFFFF"/>
+  <text x="94" y="44" dominant-baseline="central" font-size="18" fill="#48433F" font-family="Alegreya, Georgia, serif">Importuj fiszki</text>
+  <circle cx="256" cy="44" r="20" fill="#FFA86B"/>
+  <g transform="translate(256,44)" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M0,-8V3M-5,-2L0,3L5,-2M-7,8H7"/></g>
+  <rect x="104" y="80" width="120" height="32" rx="12" fill="#FFFFFF"/>
+  <text x="116" y="96" dominant-baseline="central" font-size="18" fill="#48433F" font-family="Alegreya, Georgia, serif">Dodaj fiszki</text>
+  <circle cx="256" cy="96" r="20" fill="#FFA86B"/>
+  <g transform="translate(256,96)" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round"><path d="M0,-7V7M-7,0H7"/></g>
+  <circle cx="256" cy="156" r="28" fill="#FFA86B"/>
+  <g transform="translate(256,156) rotate(45)" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round"><path d="M0,-9V9M-9,0H9"/></g>
+</svg></figure>
+        <ul>
+          <li>opcje od góry w kolejności dodania — ostatnia stoi tuż nad FAB-em</li>
+          <li>FAB zostaje nad przyciemnieniem; jego „+” obrócone o 45° czyta się jako „x” (zamknięcie)</li>
+        </ul>
+      </dd>
+      <dt>Działanie</dt>
+      <dd>
+        <ul>
+          <li><b>tap w FAB</b> otwiera / zamyka; <b>tap w przyciemnienie</b> i <b>back</b> zamykają</li>
+          <li><b>tap w opcję</b> — mini FAB albo etykietę (większy cel) — zamyka dial od razu, bez animacji, i wykonuje akcję (dialog otwiera się na czystym ekranie)</li>
+          <li>to ekran decyduje, kiedy FAB otwiera dial — np. w <i>Zapamiętywaniu</i> tylko na <i>Luźnych fiszkach</i>, na <i>Zestawach</i> FAB od razu tworzy zestaw</li>
+        </ul>
+      </dd>
+      <dt>Kod</dt>
+      <dd><code>SpeedDial</code> (<code>addOption</code> / <code>toggle</code>), <code>common_speed_dial.xml</code> (include przed FAB-em w <code>CoordinatorLayout</code>), <code>common_speed_dial_option.xml</code> (layout opcji), <code>speed_dial_scrim</code> (kolor)</dd>
+    </dl>
+  </details>
+</div>
 </div>
 
 <div class="panel" data-tab="Chipy i pigułki">
@@ -358,6 +404,7 @@
           <li>do 3 kafelków — zawsze jeden rząd</li>
           <li>4 i więcej — jeden rząd, a gdy kafelek byłby węższy niż 80dp (wąski ekran, duża czcionka), siatka 2 kolumn</li>
           <li>wyłączony — szary i przygaszony</li>
+          <li>wersja <b>compact</b> — niskie kafelki z samą etykietą, bez ikony, np. w dialogu (separator importu fiszek: <i>Enter</i> / <i>Myślnik</i>)</li>
         </ul>
       </dd>
       <dt>Działanie</dt>
@@ -368,7 +415,7 @@
         </ul>
       </dd>
       <dt>Kod</dt>
-      <dd><code>HexOptionTiles</code>, <code>common_option_tile_item_view.xml</code> (layout)</dd>
+      <dd><code>HexOptionTiles</code> (<code>app:compact</code>), <code>common_option_tile_item_view.xml</code> (layout)</dd>
     </dl>
   </details>
 
@@ -553,6 +600,11 @@
       btn.addEventListener('click', function(){ activate(panel, btn); });
       tabbar.appendChild(btn);
       buttons.push(btn);
+      if(panel.hasAttribute('data-separator-after')){
+        var sep = document.createElement('div');
+        sep.className = 'tab-sep';
+        tabbar.appendChild(sep);
+      }
     });
 
     function activate(activePanel, activeBtn){
