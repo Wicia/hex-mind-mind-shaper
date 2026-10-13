@@ -274,7 +274,6 @@ class StreamAdapter(
 
         private fun updateStatusIcon(thought: ThoughtDTO) {
             val iconRes = when (thoughtStatusService.computeState(thought)) {
-                ThoughtState.LOCKED  -> R.drawable.ic_status_locked
                 ThoughtState.WARNING -> R.drawable.ic_status_attention
                 ThoughtState.DORMANT -> R.drawable.ic_status_dormant
                 ThoughtState.ACTIVE  -> null

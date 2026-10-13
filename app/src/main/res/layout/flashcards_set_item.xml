@@ -31,18 +31,16 @@
             android:textStyle="bold"
             android:textColor="@color/text_primary"
             android:fontFamily="@font/alegreya_regular"
-            tools:text="Stolice Azji (12)" />
+            tools:text="Stolice Azji" />
 
-        <!-- Repetitions System stats of the set - gone for an empty set -->
+        <!-- Flashcards count + Repetitions System stats of the set - the count alone for an empty set -->
         <TextView
             android:id="@+id/tv_set_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textColor="@color/text_secondary"
-            android:visibility="gone"
-            tools:text="Do powtórki: 3  ·  Nowe: 5  ·  Utrwalone: 2"
-            tools:visibility="visible" />
+            tools:text="12 fiszek | do powtórki: 3 · utrwalone: 2" />
 
     </LinearLayout>
 

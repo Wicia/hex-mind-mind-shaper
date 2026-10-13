@@ -54,22 +54,12 @@ class AppSettingsStorage @Inject constructor(
 
         private const val PARAM_BACKUP_ENABLED = "param_backup_enabled"
 
-        // Slow mode
-        private const val PARAM_SLOW_MODE_ENABLED = "param_slow_mode_enabled"
-        private const val PARAM_SLOW_MODE_HOURS   = "param_slow_mode_hours"
-
-        const val SLOW_MODE_HOURS_MIN = 1 // TODO: Move to validator when there will be more business logic related to validating settings
-        const val SLOW_MODE_HOURS_MAX = 72
-
         // Flashcards - Repetitions System
         private const val PARAM_FLASHCARDS_NEW_PER_DAY = "param_flashcards_new_per_day"
 
         const val FLASHCARDS_NEW_PER_DAY_DEFAULT = 10
         const val FLASHCARDS_NEW_PER_DAY_MIN     = 1
         const val FLASHCARDS_NEW_PER_DAY_MAX     = 30
-
-        // Due reviews above this number hold the new flashcards back - fixed, shown locked in Settings
-        const val FLASHCARDS_BACKLOG_THRESHOLD = 30
 
         // Flashcards - reminder: one review session reminder a day
         private const val PARAM_FLASHCARDS_REMINDERS_ENABLED = "param_flashcards_reminders_enabled"
@@ -270,22 +260,6 @@ class AppSettingsStorage @Inject constructor(
         val value = sharedPreferences.getString(PARAM_START_SCREEN, "")
         // Unknown value (e.g. saved by another app version) = Home, not a crash
         return StartScreen.entries.firstOrNull { it.name == value } ?: StartScreen.HOME
-    }
-
-    // === SLOW MODE ===
-
-    fun isSlowModeEnabled(): Boolean =
-        sharedPreferences.getBoolean(PARAM_SLOW_MODE_ENABLED, false)
-
-    fun setSlowModeEnabled(enabled: Boolean) {
-        sharedPreferences.edit { putBoolean(PARAM_SLOW_MODE_ENABLED, enabled) }
-    }
-
-    fun getSlowModeHours(): Int =
-        sharedPreferences.getInt(PARAM_SLOW_MODE_HOURS, SLOW_MODE_HOURS_MIN)
-
-    fun setSlowModeHours(hours: Int) {
-        sharedPreferences.edit { putInt(PARAM_SLOW_MODE_HOURS, hours) }
     }
 
     // === DORMANT MODE ===

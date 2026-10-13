@@ -169,7 +169,7 @@ class StreamViewModel @Inject constructor(
         filtered = filtered.filter { thought ->
             when (thoughtStatusService.computeState(thought)) {
                 ThoughtState.DORMANT  -> showDormant
-                else                  -> showActive // ACTIVE, WARNING, LOCKED
+                else                  -> showActive // ACTIVE, WARNING
             }
         }
 

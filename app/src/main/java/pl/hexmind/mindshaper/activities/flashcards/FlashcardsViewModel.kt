@@ -10,6 +10,7 @@ import pl.hexmind.mindshaper.services.FlashcardsService
 import pl.hexmind.mindshaper.services.dto.FlashcardDTO
 import pl.hexmind.mindshaper.services.dto.FlashcardRating
 import pl.hexmind.mindshaper.services.dto.FlashcardSetDTO
+import pl.hexmind.mindshaper.services.dto.FlashcardsLibraryDTO
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,19 +19,50 @@ class FlashcardsViewModel @Inject constructor(
 ) : ViewModel() {
 
     // Live - a rating stored from the scrim refreshes the counts on its own
-    val sets: LiveData<List<FlashcardSetDTO>> = flashcardsService.getAllSetsLive()
+    val library: LiveData<FlashcardsLibraryDTO> = flashcardsService.getLibraryLive()
 
-    /** @param setId null = one session over all the sets */
-    fun planReview(sets: List<FlashcardSetDTO>, setId: Int? = null): FlashcardsReview.Plan =
-        flashcardsService.planReview(sets, setId)
+    /** @param setId null = one session over all the flashcards (sets + loose) */
+    fun planReview(library: FlashcardsLibraryDTO, setId: Int? = null): FlashcardsReview.Plan =
+        flashcardsService.planReview(library, setId)
 
     fun statsOf(set: FlashcardSetDTO): FlashcardsReview.SetStats =
         flashcardsService.statsOf(set)
 
-    // ! Stored one by one - a quick series could outrun the refresh of [sets]
-    fun addFlashcard(setId: Int, flashcard: FlashcardDTO) {
+    /**
+     * @param setId null = a loose flashcard
+     * ! Stored one by one - a quick series could outrun the refresh of [library]
+     */
+    fun addFlashcard(setId: Int?, flashcard: FlashcardDTO) {
         viewModelScope.launch {
             flashcardsService.addFlashcard(setId, flashcard)
+        }
+    }
+
+    /** One transaction - the imported flashcards keep the order of the text */
+    fun importLooseFlashcards(flashcards: List<FlashcardDTO>) {
+        viewModelScope.launch {
+            flashcardsService.addFlashcards(null, flashcards)
+        }
+    }
+
+    fun updateLooseFlashcard(flashcard: FlashcardDTO) {
+        viewModelScope.launch {
+            flashcardsService.updateFlashcard(null, flashcard)
+        }
+    }
+
+    fun deleteLooseFlashcard(flashcard: FlashcardDTO) {
+        val flashcardId = flashcard.id ?: return
+        viewModelScope.launch {
+            flashcardsService.deleteFlashcard(null, flashcardId)
+        }
+    }
+
+    /** A loose flashcard to a set */
+    fun moveLooseFlashcard(flashcard: FlashcardDTO, toSetId: Int?) {
+        val flashcardId = flashcard.id ?: return
+        viewModelScope.launch {
+            flashcardsService.moveFlashcard(flashcardId, fromSetId = null, toSetId = toSetId)
         }
     }
 
@@ -41,9 +73,10 @@ class FlashcardsViewModel @Inject constructor(
         }
     }
 
-    fun deleteSet(setId: Int) {
+    /** @param keepFlashcards true = the set's flashcards become loose */
+    fun deleteSet(setId: Int, keepFlashcards: Boolean) {
         viewModelScope.launch {
-            flashcardsService.deleteSet(setId)
+            flashcardsService.deleteSet(setId, keepFlashcards)
         }
     }
 

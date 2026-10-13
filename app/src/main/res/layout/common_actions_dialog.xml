@@ -27,6 +27,7 @@
         tools:text="A tu jakiś mądry tekst..."
         />
 
+    <!-- Buttons of the row share the height of the tallest one (match_parent in a wrap_content row) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,7 +40,7 @@
             android:id="@+id/btn_cancel_inline"
             style="@style/AuxiliaryActionButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginEnd="6dp"
             android:text="@string/common_btn_cancel"
@@ -49,9 +50,10 @@
             android:id="@+id/btn_action_secondary"
             style="@style/SecondaryActionButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginEnd="6dp"
+            android:lineSpacingMultiplier="@dimen/line_spacing_tight"
             tools:text="Druga akcja"
             />
 
@@ -59,9 +61,10 @@
             android:id="@+id/btn_action_primary"
             style="@style/SecondaryActionButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginStart="6dp"
+            android:lineSpacingMultiplier="@dimen/line_spacing_tight"
             tools:text="Akcja główna"
             />
     </LinearLayout>

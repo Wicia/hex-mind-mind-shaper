@@ -10,6 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
+import pl.hexmind.mindshaper.activities.flashcards.FlashcardsActivity
 import pl.hexmind.mindshaper.activities.stream.StreamActivity
 import pl.hexmind.mindshaper.activities.workshop.WorkshopActivity
 import pl.hexmind.mindshaper.common.formatting.setColoredText
@@ -31,6 +32,13 @@ class HomeActivity : CoreActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Start-screen routing: Home is the launcher, so on a cold launch it hands over to the
+        // user-chosen entry screen before drawing anything (Home stays below it -> BACK returns here)
+        if (openChosenStartScreenIfNeeded(savedInstanceState)) {
+            return
+        }
+
         setContentView(R.layout.home_activity)
 
         initViews()
@@ -39,10 +47,6 @@ class HomeActivity : CoreActivity() {
         onboardingManager.showTooltipForStep(
             OnboardingProgressStep.HOME_TOOLTIP, this
         )
-
-        // Start-screen routing: Home is the launcher, so on a cold launch push the user-chosen
-        // entry screen on top (Home stays as root -> BACK returns here)
-        openChosenStartScreenIfNeeded(savedInstanceState)
     }
 
     private fun initViews() {
@@ -80,10 +84,12 @@ class HomeActivity : CoreActivity() {
     }
 
     /**
-     * Pushes the user-chosen start screen on top of Home on a genuine cold launch from the launcher icon.
-     * Home is left in the stack (no finish), so BACK from Stream/Workshop lands on a fully rendered Home.
+     * Opens the user-chosen start screen on a genuine cold launch from the launcher icon.
+     * This launcher instance finishes before its first frame (no Home flash); the stack becomes
+     * Home -> chosen screen, and that Home is created only when BACK reaches it.
+     * @return true when rerouted (this instance is finishing)
      */
-    private fun openChosenStartScreenIfNeeded(savedInstanceState: Bundle?) {
+    private fun openChosenStartScreenIfNeeded(savedInstanceState: Bundle?): Boolean {
         // Only a real cold launch reroutes: nav-bar navigation to Home carries no MAIN/LAUNCHER intent,
         // and a config-change recreation (e.g. rotation) has a non-null savedInstanceState
         val isColdLaunchFromLauncher = savedInstanceState == null
@@ -92,15 +98,23 @@ class HomeActivity : CoreActivity() {
                 && intent.hasCategory(Intent.CATEGORY_LAUNCHER)
 
         if (!isColdLaunchFromLauncher) {
-            return
+            return false
         }
 
         val targetScreen = when (appSettingsStorage.getStartScreen()) {
-            StartScreen.STREAM   -> StreamActivity::class.java
-            StartScreen.WORKSHOP -> WorkshopActivity::class.java
-            StartScreen.HOME     -> return
+            StartScreen.STREAM     -> StreamActivity::class.java
+            // Flashcards feature off = its screen is hidden, Home stays
+            StartScreen.FLASHCARDS -> if (appSettingsStorage.isFlashcardsFeatureEnabled()) FlashcardsActivity::class.java else return false
+            StartScreen.WORKSHOP   -> WorkshopActivity::class.java
+            StartScreen.HOME       -> return false
         }
 
-        startActivity(Intent(this, targetScreen))
+        // Plain Home intent (no MAIN/LAUNCHER) -> the Home below does not reroute again
+        startActivities(arrayOf(
+            Intent(this, HomeActivity::class.java),
+            Intent(this, targetScreen)
+        ))
+        finish()
+        return true
     }
 }

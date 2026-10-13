@@ -47,16 +47,13 @@ class FlashcardSetsAdapter(
             val context = itemView.context
             val set = item.set
 
-            tvName.text = context.getString(R.string.flashcards_set_name_with_count, set.name, set.flashcards.size)
+            tvName.text = set.name
 
-            // Empty set - nothing to count
-            tvStatus.visibility = if (set.flashcards.isNotEmpty()) View.VISIBLE else View.GONE
-            tvStatus.text = context.getString(
-                R.string.flashcards_set_stats,
-                item.stats.dueCount,
-                item.stats.newCount,
-                item.stats.masteredCount
-            )
+            val count = context.resources.getQuantityString(R.plurals.flashcards_set_count, set.flashcards.size, set.flashcards.size)
+            // Empty set - nothing to review, the count alone
+            tvStatus.text =
+                if (set.flashcards.isEmpty()) count
+                else context.getString(R.string.flashcards_set_stats, count, item.stats.dueCount, item.stats.masteredCount)
 
             // Nothing to review right now - INVISIBLE keeps the card height
             btnReview.visibility = if (item.canReview) View.VISIBLE else View.INVISIBLE

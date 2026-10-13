@@ -130,6 +130,9 @@
     <!-- Web links in rich text -->
     <color name="rich_text_link">#5B86B5</color>
 
+    <!-- Speed dial scrim: graphite_dark at 80% -->
+    <color name="speed_dial_scrim">#CC2F2C2A</color>
+
 <!-- ====================================== -->
 <!--    LIST ITEMS -->
 <!-- ====================================== -->

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mind Shaper — Tech: Flavors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>:root{
+    --cream:#FFF4E6;
+    --surface:#FFFFFF;
+    --orange-1:#FFE1C8;
+    --orange-2:#FFC59A;
+    --orange-3:#FFA86B;
+    --graphite:#48433F;
+    --muted:#88807A;
+    --rule:#E6E6E6;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:40px 20px 80px;
+    background:var(--cream);
+    color:var(--graphite);
+    font-family:"Alegreya",Georgia,serif;
+    font-size:17px; line-height:1.65;
+  }
+  .wrap{max-width:760px; margin:0 auto}
+  h1{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:600; font-size:30px; line-height:1.25;
+    margin:0 0 6px;
+  }
+  .lede{margin:0 0 34px; color:var(--muted); font-style:italic}
+  h2{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:500; font-size:20px;
+    margin:38px 0 8px;
+  }
+  h2::before{
+    content:"\2726";
+    color:var(--orange-3);
+    font-size:1.3em; line-height:1;
+    margin-right:8px;
+  }
+  section{
+    background:var(--surface);
+    border:1px solid var(--orange-1);
+    border-radius:12px;
+    padding:6px 22px 14px;
+  }
+  section > p{margin:12px 0}
+  ul{margin:10px 0; padding-left:20px}
+  li{margin:4px 0}
+  li ul{margin:4px 0}
+  code{
+    font-family:ui-monospace,Consolas,monospace; font-size:14px;
+    background:#FBF4EC; border:1px solid #F0E4D6;
+    padding:1px 5px; border-radius:5px;
+  }
+  figure{margin:10px 0 16px}
+  figure svg{display:block; max-width:100%; height:auto; border-radius:8px}
+  .note{color:var(--muted); font-style:italic; font-size:15px}
+  table{width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:16px}
+  th,td{text-align:left; padding:6px 10px; border-bottom:1px solid var(--rule)}
+  th{font-family:"Baloo 2",system-ui,sans-serif; font-weight:500; color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Tech: applicationId i flavory</h1>
+<p class="lede">Jak dwie instancje aplikacji — <i>standard</i> i <i>sandbox</i> — instalują się obok siebie z osobnymi danymi. Dokument opisuje rzeczy zaimplementowane.</p>
+
+<h2>applicationId</h2>
+<section>
+  <figure>
+    <svg viewBox="0 0 700 120" width="700" height="120" xmlns="http://www.w3.org/2000/svg" font-family="Alegreya, Georgia, serif" font-size="14" fill="#48433F">
+      <rect width="700" height="120" fill="#FFFFFF"/>
+
+      <rect x="10" y="20" width="220" height="50" rx="10" fill="#FFE1C8" stroke="#FFA86B"/>
+      <text x="120" y="42" text-anchor="middle" font-family="Consolas, monospace" font-size="13">pl.hexmind.mindshaper</text>
+      <text x="120" y="60" text-anchor="middle" font-size="12" fill="#88807A">defaultConfig</text>
+      <text x="252" y="51" text-anchor="middle" font-size="20" fill="#C9733A">+</text>
+
+      <rect x="275" y="20" width="180" height="50" rx="10" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="365" y="42" text-anchor="middle" font-family="Consolas, monospace" font-size="13">.sandbox</text>
+      <text x="365" y="60" text-anchor="middle" font-size="12" fill="#88807A">flavor</text>
+      <text x="477" y="51" text-anchor="middle" font-size="20" fill="#C9733A">+</text>
+
+      <rect x="500" y="20" width="180" height="50" rx="10" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="590" y="42" text-anchor="middle" font-family="Consolas, monospace" font-size="13">.debug</text>
+      <text x="590" y="60" text-anchor="middle" font-size="12" fill="#88807A">buildType</text>
+
+      <text x="365" y="98" text-anchor="middle" font-size="12" fill="#88807A">standard → pusty</text>
+      <text x="590" y="98" text-anchor="middle" font-size="12" fill="#88807A">release → pusty</text>
+    </svg>
+  </figure>
+  <ul>
+    <li><b>Trzy człony, stała kolejność</b> — base → flavor → buildType. Odwrócenie wymagałoby ręcznego <code>applicationId</code> w bloku.</li>
+    <li><b><code>namespace</code> ≠ <code>applicationId</code></b> — dwie role, u nas przypadkiem ta sama wartość.
+      <ul>
+        <li><code>namespace</code> — pakiet wygenerowanego <code>R</code>/<code>BuildConfig</code>, rzecz kompilacji; nie zmienia się per wariant</li>
+        <li><code>applicationId</code> — tożsamość aplikacji na urządzeniu i w Google Play; to ona decyduje o współistnieniu</li>
+      </ul>
+    </li>
+  </ul>
+  <table>
+    <thead><tr><th>Wariant</th><th>applicationId</th></tr></thead>
+    <tbody>
+      <tr><td>standardDebug</td><td><code>pl.hexmind.mindshaper.debug</code></td></tr>
+      <tr><td>sandboxDebug</td><td><code>pl.hexmind.mindshaper.sandbox.debug</code></td></tr>
+      <tr><td>standardRelease</td><td><code>pl.hexmind.mindshaper</code> — czyste id produkcyjne</td></tr>
+      <tr><td>sandboxRelease</td><td><code>pl.hexmind.mindshaper.sandbox</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<h2>Flavory — dlaczego dwa</h2>
+<section>
+  <ul>
+    <li><b>Wymiar wymaga flavora.</b> <code>flavorDimensions</code> bez żadnego <code>productFlavor</code> = błąd konfiguracji; każdy flavor musi mieć <code>dimension</code>, nawet przy jednym wymiarze.</li>
+    <li><b><code>standard</code> celowo pusty.</b> Bez suffixu bazowe id zostaje nietknięte → zgodność wstecz z już zainstalowaną aplikacją.</li>
+    <li><b><code>sandbox</code> = jedyna różnica</b> — <code>applicationIdSuffix = ".sandbox"</code>, reszta dziedziczona.</li>
+  </ul>
+</section>
+
+<h2>Instalacja obok siebie</h2>
+<section>
+  <ul>
+    <li><b>Różne id = różne pakiety.</b> Android traktuje je jako osobne aplikacje.</li>
+    <li><b>Izolowane dane.</b> Każda instancja ma własne pliki i własną bazę Room — myśli i tagi się nie współdzielą; sandbox startuje z pustą bazą.</li>
+    <li><b>Podpis kluczem debug.</b> Gradle podpisuje debug automatycznie → zero keystore. Release wymagałby własnego keystore, dlatego druga instancja to build debug.</li>
+    <li><b><code>versionNameSuffix</code> niezależny od id</b> — debug dokłada <code>-DEBUG</code> do <code>versionName</code>, bez wpływu na <code>applicationId</code>.</li>
+    <li><b>Zmiana <code>applicationId</code> po publikacji = nowa aplikacja w Play</b> — dlatego <code>standardRelease</code> zostaje bez suffixów.</li>
+  </ul>
+</section>
+
+<h2>Zasoby flavora</h2>
+<section>
+  <ul>
+    <li><b><code>src/sandbox/</code> nadpisuje <code>src/main/</code></b> — Gradle scala zasoby, folder flavora ma wyższy priorytet.</li>
+    <li><b><code>app_name</code></b> — ten sam klucz w <code>src/sandbox/res/values/strings.xml</code> przykrywa wartość z <code>main</code> tylko dla wariantów <code>sandbox*</code>: „MindShaper” / „MindShaper SB”.
+      <ul>
+        <li>to override, nie drugi wpis → brak błędu „duplicate resources”</li>
+        <li>tą samą drogą można podmienić ikonę (<code>mipmap-*</code>), kolory itd., bez ruszania <code>main</code></li>
+      </ul>
+    </li>
+    <li><b>fileprovider bez kolizji.</b> <code>${applicationId}.fileprovider</code> rozwija się per wariant. Authority jest globalnie unikalne w systemie — dwie aplikacje z tym samym = konflikt przy instalacji.</li>
+  </ul>
+</section>
+
+<h2>Backup — izolacja per flavor</h2>
+<section>
+  <ul>
+    <li><b>Problem.</b> Backup ląduje we wspólnym <code>Downloads/mindshaper_backup/</code>; przy stałej nazwie pliku dwie instancje nadpisywałyby sobie snapshoty, a restore ciągnąłby cudze dane.</li>
+    <li><b>Sufiks na folderze, nie na nazwie pliku.</b> Jedno miejsce — <code>getBackupDirectory()</code> — przez które idą <code>createSnapshot</code>, <code>restoreSnapshot</code> i <code>getSnapshotStats</code>.
+      <ul>
+        <li>izolacja spójna dla zapisu, listy i odczytu; każda instancja widzi tylko swój folder</li>
+        <li>nazwa pliku zostaje prosta: <code>mindshaper_v{ver}_{data}.json</code></li>
+      </ul>
+    </li>
+    <li><b><code>standard</code> na starym folderze.</b> Warunek <code>flavor.isNotBlank() &amp;&amp; flavor != "standard"</code> → <code>_$flavor</code>.
+      <ul>
+        <li><code>standard</code> → <code>mindshaper_backup/</code> — widzi stare backupy, zero migracji</li>
+        <li><code>sandbox</code> → <code>mindshaper_backup_sandbox/</code></li>
+      </ul>
+    </li>
+    <li><b>Bez dodatkowej roboty</b> — <code>createSnapshot</code> woła <code>backupDir.mkdirs()</code>, a <code>getSnapshotStats</code> ma <code>?: emptyArray()</code>, więc brak folderu nie wywala listy.</li>
+  </ul>
+</section>
+
+<h2>Taski testów</h2>
+<section>
+  <ul>
+    <li><b><code>assemble&lt;Wariant&gt;</code> zależy od testów swojego wariantu.</b> Flavory rozbiły <code>testDebugUnitTest</code> na <code>testStandardDebugUnitTest</code> / <code>testSandboxDebugUnitTest</code>, więc nazwa taska jest liczona z wariantu: <code>"test${name.removePrefix("assemble")}UnitTest"</code>.</li>
+    <li><b>Leniwe API.</b> <code>tasks.matching { … }.configureEach { … }</code> i zależność przez <code>tasks.matching { it.name == unitTestTask }</code>:
+      <ul>
+        <li>task <code>assemble</code> bez pasującego taska testów (np. <code>assemble&lt;Wariant&gt;UnitTest</code>/<code>AndroidTest</code>) nie dostaje zależności zamiast błędu „Task not found”</li>
+        <li>brak <code>whenTaskAdded</code> + <code>dependsOn("string")</code> — to API dawało ostrzeżenie o niezgodności z Gradle 9.0</li>
+      </ul>
+    </li>
+    <li><b>Jeden wspólny zestaw testów</b> — gdyby był potrzebny, wiązać na stałe do <code>testStandardDebugUnitTest</code>.</li>
+  </ul>
+</section>
+
+<h2>Nazwy plików APK</h2>
+<section>
+  <ul>
+    <li><b><code>MindShaper-${name}-v${versionCode}-${date}.apk</code></b> — <code>name</code> = pełna nazwa wariantu (np. <code>sandboxDebug</code>), więc warianty nie nadpisują sobie APK.</li>
+  </ul>
+</section>
+
+<h2>Pułapki — nie ruszać</h2>
+<section>
+  <ul>
+    <li><b>Magiczny string <code>"standard"</code> w <code>getBackupDirectory()</code>.</b> Przemianowanie flavora <code>standard</code> „zgubi” stare backupy — dostanie folder z sufiksem.</li>
+    <li><b>Hardkodowane authority</b> w manifeście zamiast <code>${applicationId}</code> — dwie instancje przestaną się instalować obok siebie.</li>
+  </ul>
+</section>
+
+<h2>Implementacja</h2>
+<section>
+  <ul>
+    <li><code>app/build.gradle.kts</code> — flavory, suffixy, nazwy APK, taski testów</li>
+    <li><code>src/sandbox/res/values/strings.xml</code> — <code>app_name</code></li>
+    <li><code>database/initialization/DataSnapshotManager.kt</code> — <code>getBackupDirectory()</code></li>
+    <li><code>AndroidManifest.xml</code> — authority fileprovider</li>
+  </ul>
+</section>
+
+</div>
+</body>
+</html>

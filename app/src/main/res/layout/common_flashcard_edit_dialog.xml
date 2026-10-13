@@ -59,4 +59,17 @@
         android:textColor="@color/graphite_beige"
         android:visibility="gone" />
 
+    <!-- Edit only: Move - goes to the left end of the button bar (ScrimDialogs leading action) -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_flashcard_move"
+        style="@style/SecondaryActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dialog_leading_action_height"
+        android:contentDescription="@string/flashcards_btn_move"
+        android:visibility="gone"
+        app:icon="@drawable/ic_move_item"
+        app:iconGravity="textStart"
+        app:iconSize="@dimen/dialog_leading_action_move_icon_size"
+        />
+
 </LinearLayout>

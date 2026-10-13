@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Speed dial: scrim + options container (SpeedDial) - include in a CoordinatorLayout before the fab -->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Speed dial scrim -->
+    <View
+        android:id="@+id/v_speed_dial_scrim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/speed_dial_scrim"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        />
+
+    <!-- Speed dial options (common_speed_dial_option, added by SpeedDial.addOption)
+         ! marginEnd 24dp = mini fabs centered over the 56dp fab; marginBottom 84dp = 12dp above it -->
+    <LinearLayout
+        android:id="@+id/ll_speed_dial_options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="84dp"
+        android:gravity="end"
+        android:orientation="vertical"
+        android:visibility="gone"
+        />
+
+</merge>

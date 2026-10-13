@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mind Shaper — Tech: Media storage and processing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>:root{
+    --cream:#FFF4E6;
+    --surface:#FFFFFF;
+    --orange-1:#FFE1C8;
+    --orange-2:#FFC59A;
+    --orange-3:#FFA86B;
+    --graphite:#48433F;
+    --muted:#88807A;
+    --rule:#E6E6E6;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:40px 20px 80px;
+    background:var(--cream);
+    color:var(--graphite);
+    font-family:"Alegreya",Georgia,serif;
+    font-size:17px; line-height:1.65;
+  }
+  .wrap{max-width:760px; margin:0 auto}
+  h1{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:600; font-size:30px; line-height:1.25;
+    margin:0 0 6px;
+  }
+  .lede{margin:0 0 34px; color:var(--muted); font-style:italic}
+  h2{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:500; font-size:20px;
+    margin:38px 0 8px;
+  }
+  h2::before{
+    content:"\2726";
+    color:var(--orange-3);
+    font-size:1.3em; line-height:1;
+    margin-right:8px;
+  }
+  section{
+    background:var(--surface);
+    border:1px solid var(--orange-1);
+    border-radius:12px;
+    padding:6px 22px 14px;
+  }
+  section > p{margin:12px 0}
+  ul{margin:10px 0; padding-left:20px}
+  li{margin:4px 0}
+  li ul{margin:4px 0}
+  code{
+    font-family:ui-monospace,Consolas,monospace; font-size:14px;
+    background:#FBF4EC; border:1px solid #F0E4D6;
+    padding:1px 5px; border-radius:5px;
+  }
+  figure{margin:10px 0 16px}
+  figure svg{display:block; max-width:100%; height:auto; border-radius:8px}
+  .note{color:var(--muted); font-style:italic; font-size:15px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Tech: Zdjęcia i nagrania</h1>
+<p class="lede">Jak myśli zapisują i wczytują zdjęcia oraz nagrania głosowe. Dokument opisuje rzeczy zaimplementowane.</p>
+
+<h2>Mechanizm</h2>
+<section>
+  <figure>
+    <svg viewBox="0 0 700 200" width="700" height="200" xmlns="http://www.w3.org/2000/svg" font-family="Alegreya, Georgia, serif" font-size="14" fill="#48433F">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#C9733A"/>
+        </marker>
+      </defs>
+      <rect width="700" height="200" fill="#FFFFFF"/>
+
+      <!-- Write -->
+      <text x="110" y="20" text-anchor="middle" font-size="12" fill="#88807A">zapis</text>
+      <rect x="10" y="30" width="200" height="50" rx="10" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="110" y="51" text-anchor="middle">zdjęcie</text>
+      <text x="110" y="69" text-anchor="middle" font-size="12" fill="#88807A">EXIF → skalowanie → JPEG</text>
+      <rect x="10" y="110" width="200" height="50" rx="10" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="110" y="131" text-anchor="middle">nagranie</text>
+      <text x="110" y="149" text-anchor="middle" font-size="12" fill="#88807A">bez kompresji</text>
+      <path d="M210,55 C240,55 240,95 268,95" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+      <path d="M210,135 C240,135 240,95 268,95" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+
+      <!-- Thought record -->
+      <rect x="270" y="45" width="160" height="100" rx="10" fill="#FFE1C8" stroke="#FFA86B"/>
+      <text x="350" y="68" text-anchor="middle">myśl w bazie</text>
+      <line x1="285" y1="80" x2="415" y2="80" stroke="#FFA86B"/>
+      <text x="350" y="102" text-anchor="middle" font-size="12">metadane: rozmiar, długość</text>
+      <text x="350" y="128" text-anchor="middle" font-size="12">bajty media</text>
+
+      <!-- Read -->
+      <text x="590" y="20" text-anchor="middle" font-size="12" fill="#88807A">wczytywanie</text>
+      <path d="M430,98 L508,55" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+      <path d="M430,128 L508,135" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+      <rect x="510" y="30" width="180" height="50" rx="10" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="600" y="51" text-anchor="middle">listy, szczegóły</text>
+      <text x="600" y="69" text-anchor="middle" font-size="12" fill="#88807A">tylko metadane</text>
+      <rect x="510" y="110" width="180" height="50" rx="10" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="600" y="131" text-anchor="middle">podgląd, odtworzenie</text>
+      <text x="600" y="149" text-anchor="middle" font-size="12" fill="#88807A">bajty jednego rekordu</text>
+      <text x="350" y="185" text-anchor="middle" font-size="12" fill="#88807A">ciężkie dane nigdy nie jadą razem z listą myśli</text>
+    </svg>
+  </figure>
+  <ul>
+    <li><b>Media w bazie, przy myśli</b> — zdjęcie i nagranie jako dane binarne.</li>
+    <li><b>Metadane obok bajtów</b> — rozmiar zdjęcia, długość nagrania. To one, nie same bajty, mówią, czy myśl „ma zdjęcie / ma nagranie”.</li>
+  </ul>
+</section>
+
+<h2>Zapis</h2>
+<section>
+  <ul>
+    <li><b>Zdjęcie — kompresowane przed zapisem:</b>
+      <ul>
+        <li>najpierw korekta orientacji wg EXIF</li>
+        <li>skalowanie do rozsądnego maksimum</li>
+        <li>zapis jako JPEG</li>
+      </ul>
+    </li>
+    <li><b>Nagranie — bez kompresji.</b> Plik audio trafia do bazy w oryginalnej postaci; rozmiar ogranicza pośrednio limit długości nagrania.</li>
+  </ul>
+</section>
+
+<h2>Wczytywanie</h2>
+<section>
+  <p>Wspólna zasada: <b>leniwie, na żądanie</b>.</p>
+  <ul>
+    <li><b>Listy i szczegóły pobierają tylko metadane</b> — wystarczą, by pokazać ikonę / miniaturkę, bez ciężkich danych.</li>
+    <li><b>Bajty osobno, gdy trzeba je pokazać lub odtworzyć:</b>
+      <ul>
+        <li>zdjęcie — dekodowane do miniaturki (podgląd) lub pełnego rozmiaru (po kliknięciu)</li>
+        <li>nagranie — zapisywane chwilowo do pliku tymczasowego, z którego gra odtwarzacz</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<h2>Pułapki — nie ruszać</h2>
+<section>
+  <ul>
+    <li><b>Widoki listy i podglądu nigdy nie ładują media razem z myślą.</b> Media zawsze osobno, per pojedynczy rekord, w momencie faktycznego wyświetlenia lub odtworzenia.</li>
+  </ul>
+</section>
+
+<h2>Implementacja</h2>
+<section>
+  <ul>
+    <li><code>services/ThoughtsService.kt</code> — kompresja i orientacja zdjęć</li>
+  </ul>
+</section>
+
+</div>
+</body>
+</html>

@@ -21,31 +21,39 @@
             android:paddingEnd="16dp"
             android:paddingBottom="80dp">
 
-            <!-- Activity header (icon + set name) -->
-            <include layout="@layout/common_header_activity" />
-
-            <!-- Actions: delete left (app standard: the X always sits on the left), edit + review right -->
+            <!-- Header: set icon + name left, edit + review right -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="24dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_set_delete"
-                    style="@style/SecondaryActionButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:padding="0dp"
+                <!-- Set icon - top: stays by the first line when the name wraps -->
+                <ImageView
+                    style="@style/ImageView_Header_Activity"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="top"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_flashcards_set"
                     android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                    app:icon="@drawable/ic_close"
-                    app:iconGravity="textStart"
-                    app:iconSize="20dp" />
+                    />
 
-                <View
+                <!-- Set name - top and left, right next to the icon -->
+                <TextView
+                    android:id="@+id/tv_set_name"
+                    style="@style/TextView_Header_Activity"
                     android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="top"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="start"
+                    android:textSize="20sp"
+                    tools:text="Stolice Azji"
+                    />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_set_edit"
@@ -95,7 +103,10 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- fab - Add flashcards in a series -->
+    <!-- Speed dial -->
+    <include layout="@layout/common_speed_dial" />
+
+    <!-- fab - speed dial (Add flashcards in a series / Import flashcards) -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_flashcards"
         android:layout_width="wrap_content"

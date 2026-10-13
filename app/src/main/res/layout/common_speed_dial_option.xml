@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One speed dial option: label + mini fab - inflated by SpeedDial.addOption -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <!-- Label -->
+    <TextView
+        android:id="@+id/tv_speed_dial_label"
+        style="@style/TextView_Standard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/shape_speed_dial_label"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="4dp"
+        tools:text="Dodaj fiszki"
+        />
+
+    <!-- Mini fab -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_speed_dial_option"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@color/button_primary_enabled_background"
+        app:fabSize="mini"
+        app:elevation="6dp"
+        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+        />
+
+</LinearLayout>

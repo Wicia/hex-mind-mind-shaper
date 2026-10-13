@@ -7,6 +7,7 @@ import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.google.android.material.button.MaterialButton
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.views.FlashcardEditRow
 import pl.hexmind.mindshaper.common.ui.views.HexInputField
@@ -14,7 +15,7 @@ import pl.hexmind.mindshaper.services.dto.FlashcardDTO
 
 /**
  * One flashcard on the scrim, in one of three modes:
- * - [edit] - an existing flashcard; the rest of the set stays untouched
+ * - [edit] - an existing flashcard; the rest of the set stays untouched, Move (left) when there is somewhere to move it
  * - [addSeries] - new flashcards one after another: "Dodaj kolejną" stores it and clears the fields, "Zakończ" closes
  * - [newSet] - the set's name first ("Utwórz"), then the same dialog goes on as a series - no second dialog
  * The whole set at once: FlashcardsEditDialog.
@@ -24,7 +25,8 @@ class FlashcardEditDialog private constructor(
     private val flashcard: FlashcardDTO?, // null = series of new flashcards
     private var number: Int,              // 1-based position in the set - shown in the header
     private val onSave: (FlashcardDTO) -> Unit,
-    private val newSet: NewSetSteps? = null
+    private val newSet: NewSetSteps? = null,
+    private val onMove: (() -> Unit)? = null // Edit only - null = nowhere to move, no Move button
 ) {
 
     /** Steps around a series that starts with naming a new set */
@@ -36,8 +38,14 @@ class FlashcardEditDialog private constructor(
     )
 
     companion object {
-        fun edit(context: Context, flashcard: FlashcardDTO, number: Int, onSave: (FlashcardDTO) -> Unit) =
-            FlashcardEditDialog(context, flashcard, number, onSave)
+        /** @param onMove null = no Move button; the edits are stored before it runs */
+        fun edit(
+            context: Context,
+            flashcard: FlashcardDTO,
+            number: Int,
+            onSave: (FlashcardDTO) -> Unit,
+            onMove: (() -> Unit)? = null
+        ) = FlashcardEditDialog(context, flashcard, number, onSave, onMove = onMove)
 
         /** @param firstNumber number the first new flashcard gets - the set's size + 1 */
         fun addSeries(context: Context, firstNumber: Int, onAdd: (FlashcardDTO) -> Unit) =
@@ -100,10 +108,18 @@ class FlashcardEditDialog private constructor(
                 }
             }
             else -> {
+                val btnMove = onMove?.let { move ->
+                    dialogView.findViewById<MaterialButton>(R.id.btn_flashcard_move).apply {
+                        visibility = View.VISIBLE
+                        setOnClickListener { if (saveEdited()) move() }
+                    }
+                }
                 ScrimDialogs.create(
                     context, dialogView,
                     positiveText = context.getString(R.string.common_btn_save),
-                    onPositive = { saveEdited() }
+                    onPositive = { saveEdited() },
+                    // Move in one row with Cancel / Save
+                    leadingAction = btnMove
                 )
             }
         }
@@ -126,13 +142,15 @@ class FlashcardEditDialog private constructor(
         return complete
     }
 
-    private fun saveEdited() {
-        if (!validate()) return
+    /** @return false = half-filled, the dialog stays */
+    private fun saveEdited(): Boolean {
+        if (!validate()) return false
         if (row.isLearnedContentChanged()) {
             Toast.makeText(context, R.string.flashcards_edit_progress_info, Toast.LENGTH_LONG).show()
         }
         if (row.isChanged()) onSave(row.getFlashcard())
         dialog.dismiss()
+        return true
     }
 
     private fun addNext() {

@@ -46,7 +46,6 @@
     <string name="common_object_type_thought">Myśl</string>
 
     <!-- Units -->
-    <string name="common_unit_hours">godz.</string>
     <string name="common_unit_days">dni</string>
 
     <!-- Thought age -->
@@ -119,15 +118,23 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="flashcards_btn_add_next">Dodaj kolejną</string>
     <string name="flashcards_btn_finish">Zakończ</string>
     <string name="flashcards_btn_create_set">Utwórz</string>
-    <string name="flashcards_set_name_with_count">%1$s (%2$d)</string>
     <string name="flashcards_end_title">Wszystkie fiszki zostały ogarnięte ;)</string>
     <string name="flashcards_end_ratings">"Mam to: %1$d  ·  Coś świta: %2$d  ·  Pustka: %3$d"</string>
     <string name="flashcards_rating_good">Mam to</string>
     <string name="flashcards_rating_ok">Coś świta</string>
     <string name="flashcards_rating_bad">Pustka</string>
-    <string name="flashcards_set_stats">"Do powtórki: %1$d  ·  Nowe: %2$d  ·  Utrwalone: %3$d"</string>
+    <plurals name="flashcards_set_count">
+        <item quantity="one">%d fiszka</item>
+        <item quantity="few">%d fiszki</item>
+        <item quantity="many">%d fiszek</item>
+        <item quantity="other">%d fiszki</item>
+    </plurals>
+    <string name="flashcards_set_stats">"%1$s | do powtórki: %2$d · utrwalone: %3$d"</string>
     <string name="flashcards_review_today">Dzisiejsza sesja</string>
-    <string name="flashcards_sets_label">Zestawy</string>
+    <string name="flashcards_tab_loose">Luźne fiszki</string>
+    <string name="flashcards_tab_sets">Zestawy</string>
+    <string name="flashcards_loose_empty">Nie masz jeszcze luźnych fiszek…
+Dodaj pierwszą przyciskiem +</string>
     <plurals name="flashcards_review_today_counts">
         <item quantity="one">Masz do powtórki %d fiszkę</item>
         <item quantity="few">Masz do powtórki %d fiszki</item>
@@ -141,14 +148,42 @@ Dodaj pierwszy przyciskiem +</string>
         <item quantity="other">(%d nowe)</item>
     </plurals>
     <string name="flashcards_review_today_done">Na dziś wszystko powtórzone :)</string>
-    <string name="flashcards_new_paused">Nowe fiszki wstrzymane - do nadrobienia: %1$d</string>
+    <string name="flashcards_level">lvl: %1$d</string>
     <string name="flashcards_level_mastered">★</string>
     <string name="flashcards_edit_progress_info">Postęp nauki zostaje, ale zmiana treści może wpłynąć na naukę</string>
     <string name="flashcards_removing_header">Usunąć zestaw fiszek?</string>
     <string name="flashcard_removing_header">Usunąć fiszkę?</string>
-    <string name="flashcards_removing_content">Usunięte zostaną wszystkie jego fiszki. Tego nie da się cofnąć.</string>
+    <string name="flashcards_removing_content">Jego fiszki możesz usunąć razem z nim albo zachować jako luźne. Usunięcia nie da się cofnąć.</string>
     <string name="flashcards_removing_yes">Usuń zestaw</string>
+    <string name="flashcards_removing_with_flashcards">Usuń z fiszkami</string>
+    <string name="flashcards_removing_keep_loose">Fiszki do luźnych</string>
     <string name="flashcard_removing_yes">Usuń fiszkę</string>
+    <string name="flashcard_move_header">Przenieść fiszkę?</string>
+    <string name="flashcard_move_content">Możesz ją przenieść do luźnych fiszek albo do innego zestawu.</string>
+    <string name="flashcard_move_to_set">Do innego zestawu</string>
+    <string name="flashcard_move_to_loose">Do luźnych</string>
+    <string name="flashcard_move_pick_header">Przenieś do zestawu</string>
+    <string name="flashcards_btn_move">Przenieś</string>
+    <string name="flashcards_speed_dial_add">Dodaj fiszki</string>
+    <string name="flashcards_speed_dial_import">Importuj fiszki</string>
+    <string name="flashcards_import_header">Import fiszek</string>
+    <string name="flashcards_import_separator_label">Separator:</string>
+    <string name="flashcards_import_separator_new_line">Enter</string>
+    <string name="flashcards_import_separator_dash">Myślnik</string>
+    <string name="flashcards_import_hint_new_line">"Awers
+Rewers
+Awers
+Rewers…"</string>
+    <string name="flashcards_import_hint_dash">"Awers - Rewers
+Awers - Rewers…"</string>
+    <string name="flashcards_import_btn">Importuj</string>
+    <plurals name="flashcards_import_count">
+        <item quantity="one">Powstanie %d fiszka</item>
+        <item quantity="few">Powstaną %d fiszki</item>
+        <item quantity="many">Powstanie %d fiszek</item>
+        <item quantity="other">Powstanie %d fiszki</item>
+    </plurals>
+    <string name="flashcards_import_skipped">(pominięte linie: %1$d)</string>
 
     <!-- ============================================================ -->
     <!--    WORKSHOP - Onboarding review                              -->
@@ -197,6 +232,7 @@ Dodaj pierwszy przyciskiem +</string>
     <!--    APP SHORTCUTS (long-press launcher icon)                  -->
     <!-- ============================================================ -->
 
+    <string name="shortcut_new_flashcards">Twórz fiszki</string>
     <string name="shortcut_new_text">Złap notatkę</string>
     <string name="shortcut_new_voice">Złap głosówkę</string>
     <string name="shortcut_new_photo">Złap zdjęcie</string>
@@ -342,10 +378,6 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="details_dormant_dialog_message">Ma niską wartość i nie była zmieniana od dłuższego czasu.</string>
     <string name="details_dormant_dialog_wake">Obudź myśl</string>
 
-    <!-- Slow mode -->
-    <string name="details_slow_mode_title">⏳ Tryb powolny aktywny…</string>
-    <string name="details_slow_mode_description">Nadawanie wartości tej myśli będzie możliwe za:</string>
-
     <!-- Linked thought -->
     <string name="details_usage_linked">Wykorzystano w celu:</string>
     <string name="details_usage_not_linked">Nie powiązano z krokiem celu</string>
@@ -449,7 +481,6 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="settings_memorizing_section">🧠 Zapamiętywanie</string>
     <string name="settings_permissions_flashcards">Włącz powtórki z użyciem fiszek</string>
     <string name="settings_flashcards_new_per_day_label">Max. liczba nowych fiszek\ndziennie w powtórkach</string>
-    <string name="settings_flashcards_backlog_label">Wstrzymaj nowe przy\nzaległościach powyżej</string>
     <string name="settings_flashcards_reminders_switch_label">Włącz przypomnienia o powtórkach</string>
     <string name="settings_flashcards_reminders_hint">O tej godzinie przypomnimy o sesji powtórek, jeśli coś na nią czeka</string>
     <string name="settings_flashcards_reminder_hour_label">Godzina wysyłania przypominajek</string>
@@ -483,8 +514,9 @@ Dodaj pierwszy przyciskiem +</string>
 
     <string name="settings_domains_header">🌾 Moje Domeny</string>
     <string name="settings_start_screen_header">🧭 Ekran startowy</string>
-    <string name="settings_start_screen_home">Home</string>
+    <string name="settings_start_screen_home">Dom</string>
     <string name="settings_start_screen_stream">Strumień</string>
+    <string name="settings_start_screen_flashcards">Zapamiętywanie</string>
     <string name="settings_start_screen_workshop">Warsztat</string>
     <string name="settings_domain_edit_title">Edytuj domenę</string>
     <string name="settings_domain_edit_icons_title">| Ikona</string>
@@ -520,12 +552,6 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="settings_backup_error_version_mismatch">Backup z nowszej wersji aplikacji (%1$d) nie może być załadowany (aktualna wersja: %2$d)</string>
     <string name="settings_snapshot_restore_title">Zastąpić dane kopią zapasową?</string>
     <string name="settings_snapshot_restore_warning">Obecne dane zostaną zastąpione danymi z wybranego pliku. Tego nie da się cofnąć.</string>
-
-    <!-- Slow mode -->
-    <string name="settings_slow_mode_header">⏳ Tryb powolny</string>
-    <string name="settings_slow_mode_info">Włącz możliwość nadawania wartości myślom po określonej liczbie godzin</string>
-    <string name="settings_slow_mode_label">Aktywuj tryb Powolny</string>
-    <string name="settings_slow_mode_hours_prefix">Odblokuj nadawanie\nwartości po</string>
 
     <!-- Dormant mode -->
     <string name="settings_dormant_mode_header">🌙 Tryb uśpienia</string>
