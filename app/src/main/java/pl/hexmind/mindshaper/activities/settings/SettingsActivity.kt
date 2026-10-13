@@ -72,8 +72,6 @@ class SettingsActivity : CoreActivity() {
 
     private var selectedBackupUri: Uri? = null
 
-    private var slowModeHours: Int = 1
-
     private var flashcardsNewPerDay: Int = AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_DEFAULT
 
 
@@ -124,7 +122,6 @@ class SettingsActivity : CoreActivity() {
         initDefaultCaptureFormConfig()
         initThoughtsValuesSystemConfig()
         initStartScreenConfig()
-        initSlowModeConfig()
         initDormantModeConfig()
         setupListeners()
         initDomainButtons()
@@ -174,7 +171,6 @@ class SettingsActivity : CoreActivity() {
         setupFlashcardsRemindersToggle()
         setupCalendarRemindersToggle()
         setupBackupFeatureToggle()
-        setupSlowModeListeners()
         setupDormantModeListeners()
     }
 
@@ -272,7 +268,7 @@ class SettingsActivity : CoreActivity() {
     // ========== FLASHCARDS FEATURE ==========
 
     // No permission to ask for - the switch writes straight to the preferences
-    // Repetitions params are stored with the rest on save - same as Slow mode hours
+    // Repetitions params are stored with the rest on save
     private fun setupFlashcardsFeatureToggle() {
         binding.switchFlashcardsFeature.isChecked = appSettingsStorage.isFlashcardsFeatureEnabled()
         binding.switchFlashcardsFeature.setOnCheckedChangeListener { _, isChecked ->
@@ -707,40 +703,6 @@ class SettingsActivity : CoreActivity() {
         binding.tilesStartScreen.setFlashcardsEnabled(appSettingsStorage.isFlashcardsFeatureEnabled())
     }
 
-    // ========== SLOW MODE ==========
-
-    private fun initSlowModeConfig() {
-        slowModeHours = appSettingsStorage.getSlowModeHours()
-        binding.switchSlowMode.isChecked = appSettingsStorage.isSlowModeEnabled()
-        updateSlowModeHoursDisplay()
-        syncSlowModeHoursPickerState()
-    }
-
-    private fun setupSlowModeListeners() {
-        binding.switchSlowMode.setOnCheckedChangeListener { _, _ ->
-            syncSlowModeHoursPickerState()
-        }
-        binding.btnSlowModeDecrease.setOnClickListener {
-            if (slowModeHours > 1) { slowModeHours--; updateSlowModeHoursDisplay() }
-        }
-        binding.btnSlowModeIncrease.setOnClickListener {
-            if (slowModeHours < 12) { slowModeHours++; updateSlowModeHoursDisplay() }
-        }
-    }
-
-    private fun updateSlowModeHoursDisplay() {
-        binding.tvSlowModeHours.text = slowModeHours.toString()
-        binding.btnSlowModeDecrease.isEnabled = slowModeHours > AppSettingsStorage.SLOW_MODE_HOURS_MIN
-        binding.btnSlowModeIncrease.isEnabled = slowModeHours < AppSettingsStorage.SLOW_MODE_HOURS_MAX
-    }
-
-    private fun syncSlowModeHoursPickerState() {
-        val enabled = binding.switchSlowMode.isChecked
-        binding.llSlowModeHoursPicker.alpha = if (enabled) 1f else 0.4f
-        binding.btnSlowModeDecrease.isEnabled = enabled && slowModeHours > AppSettingsStorage.SLOW_MODE_HOURS_MIN
-        binding.btnSlowModeIncrease.isEnabled = enabled && slowModeHours < AppSettingsStorage.SLOW_MODE_HOURS_MAX
-    }
-
     // ========== DORMANT MODE ==========
 
     private fun initDormantModeConfig() {
@@ -971,10 +933,6 @@ class SettingsActivity : CoreActivity() {
         appSettingsStorage.setThoughtValueSystemId(binding.tilesValueSystem.getSelected())
 
         appSettingsStorage.setStartScreen(binding.tilesStartScreen.getSelected())
-
-        // Slow mode
-        appSettingsStorage.setSlowModeEnabled(binding.switchSlowMode.isChecked)
-        appSettingsStorage.setSlowModeHours(slowModeHours)
 
         // Flashcards - Repetitions System
         appSettingsStorage.setFlashcardsNewPerDay(flashcardsNewPerDay)

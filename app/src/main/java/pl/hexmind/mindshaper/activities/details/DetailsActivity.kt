@@ -19,7 +19,6 @@ import pl.hexmind.mindshaper.activities.workshop.GoalDetailActivity
 import pl.hexmind.mindshaper.common.dormant.ThoughtState
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
-import pl.hexmind.mindshaper.common.ui.dialogs.CountdownDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.GuideDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.HexTags
 import pl.hexmind.mindshaper.common.ui.dialogs.HexTagsBottomSheet
@@ -34,8 +33,6 @@ import pl.hexmind.mindshaper.services.ThoughtStatusService
 import pl.hexmind.mindshaper.services.dto.StepWithGoalDTO
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import java.io.File
-import java.time.Duration
-import java.time.Instant
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -157,7 +154,7 @@ class DetailsActivity : ThoughtManagerActivity() {
                 viewModel.decreaseValue()
             }
             vbThoughtValue.setOnClickListener {
-                viewModel.increaseValue() // for not locked thought
+                viewModel.increaseValue()
             }
 
             // SUBJECT
@@ -533,24 +530,7 @@ class DetailsActivity : ThoughtManagerActivity() {
 
         when (state) {
 
-            ThoughtState.LOCKED -> {
-                binding.vbThoughtValue.isLocked = true
-                binding.btnValueIncrease.isEnabled = false
-                binding.btnValueDecrease.isEnabled = false
-                val gray = ColorStateList.valueOf(
-                    ContextCompat.getColor(this, R.color.button_secondary_disabled_background)
-                )
-                binding.btnValueIncrease.imageTintList = gray
-                binding.btnValueDecrease.imageTintList = gray
-                binding.vbThoughtValue.setOnClickListener { animateStatusIconGlow() }
-
-                binding.ivStatus.setImageResource(R.drawable.ic_status_locked)
-                binding.ivStatus.imageTintList = statusColor
-                binding.ivStatus.setOnClickListener { showLockedCountdownDialog(thought) }
-            }
-
             ThoughtState.WARNING -> {
-                binding.vbThoughtValue.isLocked = false
                 binding.vbThoughtValue.currentLevel = thought.value
                 binding.vbThoughtValue.setOnClickListener { viewModel.increaseValue() }
                 binding.btnValueIncrease.isEnabled = viewModel.canIncreaseValue()
@@ -564,7 +544,6 @@ class DetailsActivity : ThoughtManagerActivity() {
             }
 
             ThoughtState.DORMANT -> {
-                binding.vbThoughtValue.isLocked = false
                 binding.vbThoughtValue.currentLevel = thought.value
                 binding.vbThoughtValue.setOnClickListener { viewModel.increaseValue() }
                 binding.btnValueIncrease.isEnabled = viewModel.canIncreaseValue()
@@ -578,7 +557,6 @@ class DetailsActivity : ThoughtManagerActivity() {
             }
 
             ThoughtState.ACTIVE -> {
-                binding.vbThoughtValue.isLocked = false
                 binding.vbThoughtValue.currentLevel = thought.value
                 binding.vbThoughtValue.setOnClickListener { viewModel.increaseValue() }
                 binding.btnValueIncrease.isEnabled = viewModel.canIncreaseValue()
@@ -612,31 +590,6 @@ class DetailsActivity : ThoughtManagerActivity() {
                 viewModel.restoreFromDormant()
             }
             .show()
-    }
-
-    private fun animateStatusIconGlow() {
-        binding.ivStatus.animate()
-            .scaleX(1.35f).scaleY(1.35f).setDuration(130)
-            .withEndAction {
-                binding.ivStatus.animate()
-                    .scaleX(1f).scaleY(1f).setDuration(130).start()
-            }.start()
-    }
-
-    private fun showLockedCountdownDialog(thought: ThoughtDTO) {
-        val hours = appSettingsStorage.getSlowModeHours()
-        val unlockAt = thought.createdAt.plusSeconds(hours * 3600L)
-        val remainingMs = Duration.between(Instant.now(), unlockAt).toMillis()
-
-        if (remainingMs <= 0) return
-
-        CountdownDialog(
-            context    = this,
-            title      = getString(R.string.details_slow_mode_title),
-            durationMs = remainingMs,
-            message    = getString(R.string.details_slow_mode_description),
-            onFinish   = { viewModel.thoughtDetails.value?.let { updateValueUI(it) } }
-        ).show()
     }
 
     override fun onDestroy() {

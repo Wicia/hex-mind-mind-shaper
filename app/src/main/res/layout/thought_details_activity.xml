@@ -96,7 +96,7 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:clickable="true"
                     android:focusable="true"
-                    android:src="@drawable/ic_status_locked"
+                    android:src="@drawable/ic_status_wip"
                     app:tint="@color/_gray_lvl_2" />
 
             </LinearLayout>

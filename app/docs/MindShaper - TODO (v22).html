@@ -1082,6 +1082,20 @@
   <h2>Sprawdzenie i ew. naprawa</h2>
   <details class="item">
     <summary>
+      <span class="prio minor">Drobny</span>
+      <strong>Myśli — ostrzeżenie „wymaga uwagi” od razu po zapisie</strong> — przy minimalnym progu uśpienia (3 dni) każda nowa myśl o niskiej wartości dostaje ostrzeżenie zaraz po zapisaniu.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>ostrzeżenie zaczyna się na <i>próg dni − 3</i> dni przed uśpieniem; przy progu 3 dni to dzień 0</li>
+        <li>wcześniej mógł to ukrywać tryb powolny (blokada przez pierwsze godziny) — usunięty 2026-10-13</li>
+        <li>propozycja: ostrzeżenie najwcześniej po 1 dniu od ostatniej zmiany</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>services/ThoughtStatusService.kt</code> — <code>computeState()</code>, <code>warningThreshold</code></li></ul></div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
       <span class="prio imp">Istotny</span>
       <strong>Fiszki — testy jednostkowe planowania sesji</strong> — <code>FlashcardsReview.plan</code> nie ma żadnego testu.
     </summary>

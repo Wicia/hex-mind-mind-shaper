@@ -46,7 +46,6 @@
     <string name="common_object_type_thought">Myśl</string>
 
     <!-- Units -->
-    <string name="common_unit_hours">godz.</string>
     <string name="common_unit_days">dni</string>
 
     <!-- Thought age -->
@@ -379,10 +378,6 @@ Awers - Rewers…"</string>
     <string name="details_dormant_dialog_message">Ma niską wartość i nie była zmieniana od dłuższego czasu.</string>
     <string name="details_dormant_dialog_wake">Obudź myśl</string>
 
-    <!-- Slow mode -->
-    <string name="details_slow_mode_title">⏳ Tryb powolny aktywny…</string>
-    <string name="details_slow_mode_description">Nadawanie wartości tej myśli będzie możliwe za:</string>
-
     <!-- Linked thought -->
     <string name="details_usage_linked">Wykorzystano w celu:</string>
     <string name="details_usage_not_linked">Nie powiązano z krokiem celu</string>
@@ -557,12 +552,6 @@ Awers - Rewers…"</string>
     <string name="settings_backup_error_version_mismatch">Backup z nowszej wersji aplikacji (%1$d) nie może być załadowany (aktualna wersja: %2$d)</string>
     <string name="settings_snapshot_restore_title">Zastąpić dane kopią zapasową?</string>
     <string name="settings_snapshot_restore_warning">Obecne dane zostaną zastąpione danymi z wybranego pliku. Tego nie da się cofnąć.</string>
-
-    <!-- Slow mode -->
-    <string name="settings_slow_mode_header">⏳ Tryb powolny</string>
-    <string name="settings_slow_mode_info">Włącz możliwość nadawania wartości myślom po określonej liczbie godzin</string>
-    <string name="settings_slow_mode_label">Aktywuj tryb Powolny</string>
-    <string name="settings_slow_mode_hours_prefix">Odblokuj nadawanie\nwartości po</string>
 
     <!-- Dormant mode -->
     <string name="settings_dormant_mode_header">🌙 Tryb uśpienia</string>

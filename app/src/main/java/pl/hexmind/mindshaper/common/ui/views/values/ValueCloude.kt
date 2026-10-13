@@ -34,7 +34,7 @@ class ValueCloude @JvmOverloads constructor(
         set(value) {
             if (value != field) startFlashAnimation()
             field = value
-            tvValue.text = if (isLocked) "?" else "$value"
+            tvValue.text = "$value"
             onLevelChangeListener?.invoke(field)
         }
 
@@ -42,13 +42,6 @@ class ValueCloude @JvmOverloads constructor(
         set(value) {
             field = value
             applyCloudColor()
-        }
-
-    var isLocked: Boolean = false
-        set(value) {
-            field = value
-            applyCloudColor()
-            tvValue.text = if (value) "?" else "$currentLevel"
         }
 
     var showLevelText: Boolean = true
@@ -89,10 +82,9 @@ class ValueCloude @JvmOverloads constructor(
     }
 
     private fun applyCloudColor() {
-        val colorRes = if (isLocked) R.color._gray_lvl_2 else cloudColor
         ImageViewCompat.setImageTintList(
             ivCloud,
-            android.content.res.ColorStateList.valueOf(ContextCompat.getColor(context, colorRes))
+            android.content.res.ColorStateList.valueOf(ContextCompat.getColor(context, cloudColor))
         )
     }
 

@@ -13,8 +13,9 @@ import java.time.Duration
 /**
  * Dialog with a live countdown timer — updates every minute until time runs out.
  * Cancels the timer automatically on dismiss.
+ * Layout: CountdownDialogLegacy_layout.xml (to restore: copy into res/layout/common_countdown_dialog.xml).
  */
-class CountdownDialog(
+class CountdownDialogLegacy(
     private val context: Context,
     private val title: String,
     private val durationMs: Long,
