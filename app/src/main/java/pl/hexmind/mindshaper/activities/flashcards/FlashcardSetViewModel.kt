@@ -26,7 +26,7 @@ class FlashcardSetViewModel @Inject constructor(
     // null = the set is gone (deleted)
     val set: LiveData<FlashcardSetDTO?> = flashcardsService.getSetByIdLive(setId)
 
-    // The set's own session follows the limits counted over all the flashcards (new per day, backlog)
+    // The set's own session follows the limits counted over all the flashcards (new per day)
     val library: LiveData<FlashcardsLibraryDTO> = flashcardsService.getLibraryLive()
 
     fun planReview(library: FlashcardsLibraryDTO): FlashcardsReview.Plan =

@@ -307,11 +307,6 @@ class SettingsActivity : CoreActivity() {
         binding.tvFlashcardsNewPerDay.text = flashcardsNewPerDay.toString()
         binding.btnFlashcardsNewPerDayDecrease.isEnabled = enabled && flashcardsNewPerDay > AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MIN
         binding.btnFlashcardsNewPerDayIncrease.isEnabled = enabled && flashcardsNewPerDay < AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MAX
-
-        // Fixed threshold - shown, but locked
-        binding.tvFlashcardsBacklog.text = AppSettingsStorage.FLASHCARDS_BACKLOG_THRESHOLD.toString()
-        binding.btnFlashcardsBacklogDecrease.isEnabled = false
-        binding.btnFlashcardsBacklogIncrease.isEnabled = false
     }
 
     // ========== FLASHCARDS REMINDERS ==========

@@ -13,13 +13,12 @@ import kotlin.random.Random
  * so leaving the session halfway loses nothing - the answered ones are already rescheduled.
  *
  * Order: planned reviews (lowest level first, random within a level) -> new flashcards.
- * New ones: at most [Params.newPerDay] a day, none while the due reviews exceed [Params.backlogThreshold].
+ * New ones: at most [Params.newPerDay] a day.
  */
 object FlashcardsReview {
 
     data class Params(
-        val newPerDay: Int,
-        val backlogThreshold: Int
+        val newPerDay: Int
     )
 
     /** Flashcard + its set (null = loose) - a set's own session and the order of new ones go by it */
@@ -31,8 +30,7 @@ object FlashcardsReview {
     data class Plan(
         val queue: List<Card>,
         val repetitionsCount: Int, // Planned reviews in the queue
-        val newCount: Int,         // New flashcards in the queue
-        val newPausedBacklog: Int  // > 0 = new flashcards held back, this many reviews to catch up first
+        val newCount: Int          // New flashcards in the queue
     ) {
         val isEmpty: Boolean get() = queue.isEmpty()
     }
@@ -52,7 +50,7 @@ object FlashcardsReview {
     /**
      * @param setId null = all the flashcards (sets + loose)
      * @param random order within a level - so the user does not learn what comes after what
-     * ! The daily limit and the backlog are counted over all the flashcards - a set's own session follows the same rules
+     * ! The daily limit is counted over all the flashcards - a set's own session follows the same rule
      */
     fun plan(
         library: FlashcardsLibraryDTO,
@@ -70,10 +68,8 @@ object FlashcardsReview {
             .shuffled(random)
             .sortedBy { card -> card.flashcard.level }
 
-        val backlog = allCards.count { card -> isDue(card, today) }
         val introducedToday = allCards.count { card -> card.flashcard.introducedOn == today }
-        val isBacklogged = backlog > params.backlogThreshold
-        val newAllowed = if (isBacklogged) 0 else (params.newPerDay - introducedToday).coerceAtLeast(0)
+        val newAllowed = (params.newPerDay - introducedToday).coerceAtLeast(0)
 
         // Order of entering: loose ones first (jotted down on the go), then older sets first (the list is by last edit),
         // within a set its own order (stable sort)
@@ -82,13 +78,10 @@ object FlashcardsReview {
             .sortedBy { card -> card.setId ?: Int.MIN_VALUE }
             .take(newAllowed)
 
-        val hasNewWaiting = cards.any { card -> card.flashcard.status == FlashcardStatus.NEW }
-
         return Plan(
             queue            = planned + newCards,
             repetitionsCount = planned.size,
-            newCount         = newCards.size,
-            newPausedBacklog = if (isBacklogged && hasNewWaiting) backlog - params.backlogThreshold else 0
+            newCount         = newCards.size
         )
     }
 

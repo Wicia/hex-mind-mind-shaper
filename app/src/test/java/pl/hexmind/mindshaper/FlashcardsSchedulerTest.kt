@@ -114,7 +114,7 @@ class FlashcardsSchedulerTest {
                 card(FlashcardStatus.ACTIVE, level = 2, id = 5).copy(dueOn = today.plusDays(1))
             )
         )
-        val plan = FlashcardsReview.plan(FlashcardsLibraryDTO(sets), FlashcardsReview.Params(10, 30), today)
+        val plan = FlashcardsReview.plan(FlashcardsLibraryDTO(sets), FlashcardsReview.Params(newPerDay = 10), today)
         assertEquals(listOf(3, 2, 1), plan.queue.map { card -> card.flashcard.id })
         assertEquals(2, plan.repetitionsCount)
         assertEquals(1, plan.newCount)
@@ -125,7 +125,7 @@ class FlashcardsSchedulerTest {
         val due = (1..20).map { id -> card(FlashcardStatus.ACTIVE, level = 1 + id % 3, id = id).copy(dueOn = today) }
         val sets = listOf(set(1, *due.toTypedArray()))
         val orders = (1..5).map { seed ->
-            FlashcardsReview.plan(FlashcardsLibraryDTO(sets), FlashcardsReview.Params(10, 30), today, random = Random(seed))
+            FlashcardsReview.plan(FlashcardsLibraryDTO(sets), FlashcardsReview.Params(newPerDay = 10), today, random = Random(seed))
                 .queue.map { card -> card.flashcard }
         }
         orders.forEach { order -> assertEquals(order.map { it.level }.sorted(), order.map { it.level }) }
@@ -143,17 +143,8 @@ class FlashcardsSchedulerTest {
                 card(id = 4)
             )
         )
-        val plan = FlashcardsReview.plan(FlashcardsLibraryDTO(sets), FlashcardsReview.Params(newPerDay = 3, backlogThreshold = 30), today)
+        val plan = FlashcardsReview.plan(FlashcardsLibraryDTO(sets), FlashcardsReview.Params(newPerDay = 3), today)
         assertEquals(listOf(2, 3), plan.queue.map { card -> card.flashcard.id })
-    }
-
-    @Test
-    fun `kolejka - zaleglosci ponad prog wstrzymuja nowe`() {
-        val due = (1..6).map { id -> card(FlashcardStatus.ACTIVE, level = 1, id = id).copy(dueOn = today) }
-        val sets = listOf(set(1, *(due + card(id = 99)).toTypedArray()))
-        val plan = FlashcardsReview.plan(FlashcardsLibraryDTO(sets), FlashcardsReview.Params(newPerDay = 10, backlogThreshold = 5), today)
-        assertEquals(0, plan.newCount)
-        assertEquals(1, plan.newPausedBacklog)
     }
 
     @Test
@@ -162,7 +153,7 @@ class FlashcardsSchedulerTest {
             sets  = listOf(set(1, card(id = 1), card(id = 2))),
             loose = listOf(card(id = 3), card(id = 4))
         )
-        val plan = FlashcardsReview.plan(library, FlashcardsReview.Params(newPerDay = 3, backlogThreshold = 30), today)
+        val plan = FlashcardsReview.plan(library, FlashcardsReview.Params(newPerDay = 3), today)
         assertEquals(listOf(3, 4, 1), plan.queue.map { card -> card.flashcard.id })
     }
 }

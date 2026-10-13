@@ -253,9 +253,7 @@ class FlashcardsActivity : CoreActivity() {
             plan.newCount > 0 -> counts + " " + resources.getQuantityString(R.plurals.flashcards_review_today_new, plan.newCount, plan.newCount)
             else              -> counts
         }
-        tvReviewTodayStatus.text =
-            if (plan.newPausedBacklog > 0) status + "\n" + getString(R.string.flashcards_new_paused, plan.newPausedBacklog)
-            else status
+        tvReviewTodayStatus.text = status
 
         btnReviewToday.visibility = if (plan.isEmpty) View.INVISIBLE else View.VISIBLE
         // Rippling frame = "something to do" - smooths out once everything is reviewed

@@ -149,7 +149,6 @@ Dodaj pierwszą przyciskiem +</string>
         <item quantity="other">(%d nowe)</item>
     </plurals>
     <string name="flashcards_review_today_done">Na dziś wszystko powtórzone :)</string>
-    <string name="flashcards_new_paused">Nowe fiszki wstrzymane - do nadrobienia: %1$d</string>
     <string name="flashcards_level">lvl: %1$d</string>
     <string name="flashcards_level_mastered">★</string>
     <string name="flashcards_edit_progress_info">Postęp nauki zostaje, ale zmiana treści może wpłynąć na naukę</string>
@@ -487,7 +486,6 @@ Awers - Rewers…"</string>
     <string name="settings_memorizing_section">🧠 Zapamiętywanie</string>
     <string name="settings_permissions_flashcards">Włącz powtórki z użyciem fiszek</string>
     <string name="settings_flashcards_new_per_day_label">Max. liczba nowych fiszek\ndziennie w powtórkach</string>
-    <string name="settings_flashcards_backlog_label">Wstrzymaj nowe przy\nzaległościach powyżej</string>
     <string name="settings_flashcards_reminders_switch_label">Włącz przypomnienia o powtórkach</string>
     <string name="settings_flashcards_reminders_hint">O tej godzinie przypomnimy o sesji powtórek, jeśli coś na nią czeka</string>
     <string name="settings_flashcards_reminder_hour_label">Godzina wysyłania przypominajek</string>

@@ -56,15 +56,14 @@ class FlashcardsService @Inject constructor(
 
     /**
      * What is up for review right now - with the user's limits (Settings).
-     * @param library all the flashcards - the daily limit of new flashcards and the backlog count over all of them
+     * @param library all the flashcards - the daily limit of new flashcards counts over all of them
      * @param setId null = one session over all the flashcards
      */
     fun planReview(library: FlashcardsLibraryDTO, setId: Int? = null): FlashcardsReview.Plan =
         FlashcardsReview.plan(
             library = library,
             params  = FlashcardsReview.Params(
-                newPerDay        = appSettingsStorage.getFlashcardsNewPerDay(),
-                backlogThreshold = AppSettingsStorage.FLASHCARDS_BACKLOG_THRESHOLD
+                newPerDay = appSettingsStorage.getFlashcardsNewPerDay()
             ),
             today   = LocalDate.now(),
             setId   = setId

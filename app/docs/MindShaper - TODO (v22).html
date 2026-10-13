@@ -330,7 +330,7 @@
   <details class="item">
     <summary>
       <span class="prio imp">Istotny</span>
-      <strong>Fiszki — rozbicie stanu D widżetu „Dzisiejsza sesja”</strong> — „Na dziś wszystko powtórzone :)” skleja 3 różne sytuacje i czasem mówi nieprawdę.
+      <strong>Fiszki — rozbicie stanu „nic nie czeka” (stan C) widżetu „Dzisiejsza sesja”</strong> — „Na dziś wszystko powtórzone :)” skleja 3 różne sytuacje i czasem mówi nieprawdę.
     </summary>
     <div class="body">
       <ul>
@@ -340,6 +340,22 @@
       </ul>
       <div class="gain"><b>Po co:</b> widżet nie wprowadza w błąd — przy wszystkich fiszkach utrwalonych nie twierdzi, że to tylko koniec na dziś.</div>
       <div class="where"><span class="lbl">Gdzie</span><ul><li><code>activities/flashcards/FlashcardsActivity.kt</code> — <code>renderReviewToday()</code></li><li><code>services/FlashcardsReview.kt</code> — <code>Plan</code> (dane do D1–D3: następny termin, czy wszystko utrwalone)</li><li><code>Requirements - Flashcards &amp; Repetitions</code> — „Stany widżetu”, „Znany problem”</li></ul></div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span>
+      <strong>Fiszki — trzy różne liczby „do powtórki”</strong> — każde miejsce liczy fiszki do powtórki inaczej, więc użytkownik widzi różne liczby bez wyjaśnienia.
+    </summary>
+    <div class="body">
+      <ul>
+        <li><i>Dzisiejsza sesja</i> — powtórki do zrobienia + nowe w ramach dziennego limitu</li>
+        <li>lista zestawów — tylko powtórki do zrobienia z danego zestawu, bez nowych</li>
+        <li>przypomnienie — ta sama liczba co w <i>Dzisiejszej sesji</i>, ale bez rozbicia na nowe</li>
+        <li>do decyzji: jedna definicja „do powtórki” wszędzie czy różne liczby z wyraźnym opisem (np. „3 nowe” osobno)</li>
+      </ul>
+      <div class="gain"><b>Po co:</b> liczby w różnych miejscach aplikacji się nie wykluczają i nie budzą pytań.</div>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>services/FlashcardsReview.kt</code> — <code>Plan</code>, <code>statsOf()</code></li><li><code>services/reminders/</code> — treść przypomnienia</li><li><code>Requirements</code> — zakładka „Fiszki”</li></ul></div>
     </div>
   </details>
   <details class="item">
@@ -406,7 +422,7 @@
         <li><strong>Do ustalenia</strong>
           <ul>
             <li>czy 90 dni to stała, czy parametr w <i>Ustawieniach</i></li>
-            <li>czy kontrolne powtórki liczą się do <i>„Masz do powtórki N fiszek”</i> i do zaległości</li>
+            <li>czy kontrolne powtórki liczą się do <i>„Masz do powtórki N fiszek”</i></li>
             <li>jak oznaczyć w podglądzie zestawu utrwaloną fiszkę, która wraca na kontrolę</li>
             <li>powiązanie z punktem <i>„Przywracanie utrwalonych kart do nauki”</i></li>
           </ul>
@@ -417,36 +433,16 @@
   <details class="item">
     <summary>
       <span class="prio minor">Drobny</span>
-      <strong>Fiszki — próg zaległości: stała, parametr czy do usunięcia</strong> — w MVP pole jest widoczne w <i>Ustawieniach</i>, ale zablokowane ze stałą wartością 30; trzeba zdecydować, co z nim dalej.
+      <strong>Fiszki — wstrzymywanie nowych przy nadmiarze powtórek (usunięte)</strong> — mechanizm i parametr usunięte (2026-10-13), zaczynamy od prostszej wersji; wrócić, jeśli w codziennym użyciu powtórki zaczną się piętrzyć.
     </summary>
     <div class="body">
       <ul>
-        <li><strong>Stan w MVP</strong> — pole progu wyszarzone (nieedytowalne), wartość 30; mechanizm wstrzymywania nowych fiszek działa</li>
-        <li><strong>Opcja 1: stała na zawsze</strong>
-          <ul>
-            <li>pole znika z <i>Ustawień</i>, 30 zaszyte w aplikacji</li>
-            <li>najmniej do rozumienia dla użytkownika</li>
-          </ul>
-        </li>
-        <li><strong>Opcja 2: parametr</strong>
-          <ul>
-            <li>pole odblokowane; do ustalenia zakres i krok (w wymaganiach v2: 5–200, co 5)</li>
-            <li>ma sens, jeśli 30 okaże się za niskie albo za wysokie w codziennym użyciu</li>
-          </ul>
-        </li>
-        <li><strong>Opcja 3: usunięcie mechanizmu</strong>
-          <ul>
-            <li>nowe fiszki nigdy nie są wstrzymywane; lawinę powtórek ogranicza tylko dzienny limit nowych</li>
-            <li>znikają: stan C widżetu <i>Dzisiejsza sesja</i> i komunikat <i>„Nowe fiszki wstrzymane”</i></li>
-          </ul>
-        </li>
-        <li><strong>Do sprawdzenia przed decyzją</strong>
-          <ul>
-            <li>jak często próg faktycznie się włącza przy limicie nowych 1–30</li>
-            <li>czy komunikat o wstrzymaniu jest zrozumiały bez czytania dokumentacji</li>
-          </ul>
-        </li>
+        <li>jak działało: przy starcie sesji, gdy powtórek do zrobienia (termin dziś lub wcześniej, wszystkie fiszki) było ponad próg 30, do sesji nie wchodziła żadna nowa fiszka</li>
+        <li>widżet <i>Dzisiejsza sesja</i> pokazywał wtedy <i>„Nowe fiszki wstrzymane - do nadrobienia: N”</i> (N = powtórki ponad próg)</li>
+        <li>teraz przyrost nowych ogranicza tylko dzienny limit nowych fiszek</li>
+        <li>przy powrocie: prostsza nazwa w <i>Ustawieniach</i> (nie „zaległości” — to słowo jest zarezerwowane dla powtórek niezrobionych w terminie)</li>
       </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>services/FlashcardsReview.kt</code> — <code>plan()</code></li><li><code>activities/flashcards/FlashcardsActivity.kt</code> — <code>renderReviewToday()</code></li><li><code>settings_activity.xml</code> — sekcja Zapamiętywanie</li></ul></div>
     </div>
   </details>
   <details class="item">
@@ -489,6 +485,21 @@
   </details>
 
   <h2>Sprzątanie / Refactoring</h2>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span>
+      <strong>Dokumentacja — reguły pisania wymagań: jedno źródło prawdy</strong> — reguły są dziś w dwóch miejscach (Google Doc z zasadami i pamięć Claude'a) i częściowo się rozjeżdżają.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>wspólnie zdefiniować reguły na podstawie doświadczeń z przebudowy zakładki „Fiszki” w Requirements v7</li>
+        <li>zderzyć je z sekcją „Dokumentacja biznesowa/użytkownika” w Google Docu: co się pokrywa, co jest sprzeczne, czego brakuje</li>
+        <li>ustalić jedno źródło prawdy, a w drugim miejscu zostawić tylko odwołanie</li>
+        <li>m.in.: nazwy funkcji na -anie, unikalne tytuły, słowniczek pojęć na górze zakładki, komunikaty jako reguły, wyjątki dla „co trzeba pokazać”, stany z diagramu, jedna funkcja = jeden blok</li>
+      </ul>
+      <div class="gain"><b>Po co:</b> kolejne zakładki wymagań pisane według tych samych, uzgodnionych zasad — bez poprawiania w kółko.</div>
+    </div>
+  </details>
   <details class="item">
     <summary>
       <span class="prio minor">Drobny</span>
@@ -1077,9 +1088,8 @@
     <div class="body">
       <ul>
         <li>dzienny limit nowych (z uwzględnieniem wprowadzonych dziś)</li>
-        <li>próg zaległości: wstrzymanie nowych i liczba „do nadrobienia”</li>
         <li>kolejność: planowe (najniższy poziom najpierw, w obrębie poziomu losowo) → nowe (starsze zestawy, kolejność w zestawie)</li>
-        <li>sesja zestawu: kolejka zawężona, limit i próg liczone globalnie</li>
+        <li>sesja zestawu: kolejka zawężona, limit liczony globalnie</li>
         <li>granice: termin = dziś, utrwalone i puste zestawy pomijane</li>
         <li><code>FlashcardsScheduler</code> ma już <code>FlashcardsSchedulerTest</code> (14 testów)</li>
       </ul>

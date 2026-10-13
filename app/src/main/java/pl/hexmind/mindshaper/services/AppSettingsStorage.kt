@@ -68,9 +68,6 @@ class AppSettingsStorage @Inject constructor(
         const val FLASHCARDS_NEW_PER_DAY_MIN     = 1
         const val FLASHCARDS_NEW_PER_DAY_MAX     = 30
 
-        // Due reviews above this number hold the new flashcards back - fixed, shown locked in Settings
-        const val FLASHCARDS_BACKLOG_THRESHOLD = 30
-
         // Flashcards - reminder: one review session reminder a day
         private const val PARAM_FLASHCARDS_REMINDERS_ENABLED = "param_flashcards_reminders_enabled"
         private const val PARAM_FLASHCARDS_REMINDER_HOUR     = "param_flashcards_review_start_hour"
