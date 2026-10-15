@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.activities.settings
+package pl.hexmind.mindshaper.activities.metadata
 
 import android.annotation.SuppressLint
 import android.content.Context

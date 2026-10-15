@@ -616,50 +616,6 @@
 
     <details class="req">
         <summary>
-            <span class="req-title">Konfigurowanie domen</span>
-            <span class="check" data-date="20/08">
-                <span class="check-main done">🟢 Sprawdzone</span>
-                <span class="check-ago"></span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>Potrzeba organizacji myśli w grupy / ich kategoryzacja</li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Wejścia, Dane, Stany</h3>
-                <ul>
-                    <li>Sekcja „Moje domeny" (Preferencje)
-                        <ul>
-                            <li>Lista domen (max. 10 pozycji)</li>
-                            <li>ikona domeny, nazwa domeny, lista domyślnych ikon (do wyboru)</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Procesy, Opcje, Integracje</h3>
-                <ul>
-                    <li>Seedowanie — wstawienie do bazy danych początkowych/domyślnych nazw dla domen
-                        <ul>
-                            <li>Wykonywane przy pierwszym starcie aplikacji</li>
-                        </ul>
-                    </li>
-                    <li>Zapisywanie i edycja domen
-                        <ul>
-                            <li>Nazwa domeny — max. dł. 36</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </details>
-
-    <details class="req">
-        <summary>
             <span class="req-title">Robienie kopii zapasowej danych</span>
             <span class="check" data-date="15/10">
                 <span class="check-main done">🟢 Sprawdzone</span>
@@ -710,6 +666,7 @@
                             <li>przy starcie aplikacji, tylko gdy opcja włączona</li>
                             <li>max 1 plik dziennie (nadpisywanie)</li>
                             <li>kopia obejmuje fiszki (luźne i zestawy) z postępem powtórek</li>
+                            <li>kopia obejmuje hex tagi i ich powiązania z myślami</li>
                             <li>backup starszy niż aktualna wersja DB może być wczytany; nowszy nie</li>
                             <li>nowe zasoby z nowej wersji aplikacji (np. ikony) są doseedowane po wczytaniu backupu oraz przy każdym starcie</li>
                         </ul>
@@ -742,7 +699,7 @@
             <div class="spec-section">
                 <h3>Wejścia, Dane, Stany</h3>
                 <ul>
-                    <li>Sekcja „Ekran startowy" — w sekcji personalizacji, pod „Moje domeny" <span class="location">Preferencje</span>
+                    <li>Sekcja „Ekran startowy" — w sekcji personalizacji <span class="location">Preferencje</span>
                         <ul>
                             <li>4 kafelki do wyboru: <span class="location">Dom</span> / <span class="location">Strumień</span> / <span class="location">Zapamiętywanie</span> / <span class="location">Warsztat</span> (dokładnie jeden aktywny)</li>
                             <li>domyślnie: <span class="location">Dom</span></li>
@@ -787,52 +744,165 @@
     </details>
 </section>
 
-<section class="panel" data-tab="Metadane" data-row="1">
-    <p class="panel-intro">Przegląd metadanych myśli — hex tagi.</p>
+<section class="panel" data-tab="Tagi i Domeny" data-row="1">
+    <div class="feature-terms"><b>Pojęcia</b><ul>
+        <li>metadane myśli — wszystko, czym myśl jest opisana poza treścią: hex tagi (osoby, projekty) i domena</li>
+        <li>licznik użyć — liczba myśli, do których tag jest przypięty</li>
+        <li>tag „ja” — tag własnej osoby (tag rdzeniowy)</li>
+    </ul></div>
 
     <details class="req">
         <summary>
-            <span class="req-title">Lista tagów Osoby<span class="req-alt">Ekran „Metadane"</span></span>
+            <span class="req-title">Przeglądanie i porządkowanie hex tagów<span class="req-alt">Zakładki „Osoby” i „Projekty”</span></span>
             <span class="check" data-date="15/10">
-                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-main done">🟢 Sprawdzone</span>
                 <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>Przegląd wszystkich osób (hex tagów Osoby) w jednym miejscu — wraz z tym, jak często każda się pojawia</li>
-                    <li>Szybka korekta nazwy taga bez wchodzenia w myśli</li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Wejścia, Dane, Stany</h3>
-                <ul>
-                    <li>Nowe wejście <span class="location">Metadane</span> w nawigacji — między <span class="location">Warsztat</span> a <span class="location">Preferencje</span></li>
-                    <li>Lista pigułek — każdy tag Osoby jako pigułka: nazwa + liczba użyć, po maks. 2 w wierszu
-                        <ul>
-                            <li>nieparzysta liczba tagów → ostatni wiersz z jedną pigułką</li>
-                        </ul>
-                    </li>
-                    <li>Kolejność — tag „ja" zawsze pierwszy (tag rdzeniowy), dalej od najczęściej do najrzadziej używanego (remis → alfabetycznie)</li>
-                    <li>Pusty stan — <span class="msg">Brak osób w tagach</span></li>
-                    <li>Bottom sheet edycji taga — pole nazwy wypełnione obecną nazwą</li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Procesy, Opcje, Integracje</h3>
-                <ul>
-                    <li>Tap pigułki (z efektem tapnięcia) → otwiera bottom sheet edycji</li>
-                    <li><span class="bracket">Zapisz</span> → zmiana nazwy taga
-                        <ul>
-                            <li>pusta nazwa → nie zapisuje, prosi o nazwę</li>
-                            <li>nazwa zajęta przez inny tag → blokada + <span class="msg">Taki tag już istnieje</span>; łączenie tagów to osobna funkcja (przeciągnięcie pigułki na pigułkę)</li>
-                        </ul>
-                    </li>
-                    <li>Lista odświeża się po zmianie nazwy oraz po powrocie na ekran</li>
-                </ul>
-            </div>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>przegląd wszystkich swoich tagów w jednym miejscu i porządkowanie ich nazw bez wchodzenia w pojedyncze myśli</p>
+            <table class="mech-table">
+                <thead>
+                    <tr>
+                        <th>Funkcja</th>
+                        <th>Wejścia, Dane, Stany</th>
+                        <th>Procesy, Opcje, Integracje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="mech-name">Wyświetlanie listy tagów</td>
+                        <td><ul class="cell">
+                            <li>wejście <span class="location">Tagi i Domeny</span> w nawigacji — między <span class="location">Warsztat</span> a <span class="location">Preferencje</span></li>
+                            <li>osobna lista dla każdego rodzaju: osoby i projekty
+                                <ul>
+                                    <li>przy każdym tagu jego nazwa i licznik użyć</li>
+                                    <li>tag bez żadnej myśli zostaje na liście z licznikiem 0</li>
+                                </ul>
+                            </li>
+                            <li>brak tagów danego rodzaju — informacja o pustej liście zamiast niej</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>kolejność: od najczęściej do najrzadziej używanego, przy remisie alfabetycznie
+                                <ul>
+                                    <li>na liście osób tag „ja” zawsze pierwszy — pojawia się dopiero po pierwszym użyciu</li>
+                                </ul>
+                            </li>
+                            <li>lista odświeża się po każdej zmianie oraz po powrocie na ekran</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Przełączanie rodzaju metadanych</td>
+                        <td><ul class="cell">
+                            <li>trzy zakładki: Osoby / Projekty / Domeny — widoczna jedna naraz</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>po powrocie z innego ekranu widoczna ostatnio oglądana zakładka</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Zmienianie nazwy tagu</td>
+                        <td><ul class="cell">
+                            <li>wybranie nazwy tagu na liście otwiera jej edycję — z obecną nazwą wpisaną do poprawienia</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>nowa nazwa obowiązuje we wszystkich myślach z tym tagiem</li>
+                            <li>pusta nazwa — nie zapisuje się, prośba o podanie nazwy</li>
+                            <li>nazwa zajęta przez inny tag tego samego rodzaju — nie zapisuje się, ostrzeżenie, że taki tag już istnieje
+                                <ul>
+                                    <li>ten sam tekst może być osobno osobą i projektem</li>
+                                    <li>łączenie dwóch tagów w jeden — poza zakresem</li>
+                                </ul>
+                            </li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Usuwanie tagu</td>
+                        <td><ul class="cell">
+                            <li>przytrzymanie tagu na liście → pytanie o potwierdzenie
+                                <ul>
+                                    <li>ostrzeżenie mówi wprost, że tag zniknie ze wszystkich myśli, które go używają</li>
+                                </ul>
+                            </li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>tag znika ze słownika i ze wszystkich myśli — same myśli zostają, tracą tylko ten tag</li>
+                            <li>po usunięciu potwierdzenie z nazwą tagu</li>
+                            <li>operacji nie można cofnąć</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Wyszukiwanie myśli z tagiem</td>
+                        <td><ul class="cell">
+                            <li>z licznika użyć przy tagu</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>przejście do <span class="location">Strumień</span> wyszukanego po tym tagu — jako kryterium jego rodzaju (osoba / projekt)
+                                <ul>
+                                    <li>kryterium zastępuje dotychczasowe wyszukiwanie w Strumieniu</li>
+                                    <li>cofnięcie ze Strumienia wraca do <span class="location">Tagi i Domeny</span></li>
+                                </ul>
+                            </li>
+                        </ul></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Konfigurowanie domen<span class="req-alt">Zakładka „Domeny”</span></span>
+            <span class="check" data-date="15/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <p class="feature-goal"><b>Potrzeba i Cel</b>dopasowanie kategorii myśli (domen) do siebie — ich nazw i ikon</p>
+            <table class="mech-table">
+                <thead>
+                    <tr>
+                        <th>Funkcja</th>
+                        <th>Wejścia, Dane, Stany</th>
+                        <th>Procesy, Opcje, Integracje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="mech-name">Wyświetlanie domen</td>
+                        <td><ul class="cell">
+                            <li>zakładka „Domeny” w <span class="location">Tagi i Domeny</span> — obok osób i projektów</li>
+                            <li>stały zestaw 10 domen — każda z ikoną i nazwą</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>domen nie dodaje się ani nie usuwa — tylko się je zmienia</li>
+                            <li>przy pierwszym wejściu na zakładkę podpowiedź, czym są domeny</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Edytowanie domeny</td>
+                        <td><ul class="cell">
+                            <li>wybranie domeny na liście otwiera jej edycję — z obecną nazwą i ikoną do zmiany</li>
+                            <li>ikona wybierana z galerii dostępnych ikon</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>nazwa wymagana, max 36 znaków</li>
+                            <li>zmiana zapisuje się od razu — bez osobnego zapisywania ustawień</li>
+                            <li>nowa nazwa i ikona obowiązują wszędzie, gdzie domena jest pokazywana</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Przygotowanie domen domyślnych</td>
+                        <td><ul class="cell">
+                            <li>pierwsze uruchomienie aplikacji</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>wstawienie 10 domen ze startowymi nazwami — do późniejszej zmiany przez użytkownika</li>
+                        </ul></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </details>
 </section>

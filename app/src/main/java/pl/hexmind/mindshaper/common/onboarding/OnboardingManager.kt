@@ -33,15 +33,17 @@ class OnboardingManager @Inject constructor(
         OnboardingProgressStep.SETTINGS_YOUR_NAME_TOOLTIP to listOf(
             TooltipItemConfig(titleRes = R.string.settings_your_name_title, textRes = R.string.settings_your_name_tooltip)
         ),
-        OnboardingProgressStep.SETTINGS_DOMAINS_TOOLTIP to listOf(
-            TooltipItemConfig(titleRes = R.string.settings_domains_title, textRes = R.string.settings_domains_tooltip),
-        ),
         OnboardingProgressStep.SETTINGS_THOUGHT_VALUE_TOOLTIP to listOf(
             TooltipItemConfig(titleRes = R.string.settings_thought_value_title, textRes = R.string.settings_thought_value_tooltip),
         ),
         OnboardingProgressStep.SETTINGS_BACKUP_TOOLTIP to listOf(
             TooltipItemConfig(titleRes = R.string.settings_backup_title_1, textRes = R.string.settings_backup_tooltip_1),
             TooltipItemConfig(titleRes = R.string.settings_backup_title_2, textRes = R.string.settings_backup_tooltip_2, tracked = false)
+        ),
+
+        // == METADATA ==
+        OnboardingProgressStep.METADATA_DOMAINS_TOOLTIP to listOf(
+            TooltipItemConfig(titleRes = R.string.metadata_domains_title, textRes = R.string.metadata_domains_tooltip),
         ),
 
         // STREAM
@@ -152,10 +154,14 @@ enum class OnboardingSection(
         listOf(
             OnboardingProgressStep.SETTINGS_ENTRY_TOOLTIP,
             OnboardingProgressStep.SETTINGS_YOUR_NAME_TOOLTIP,
-            OnboardingProgressStep.SETTINGS_DOMAINS_TOOLTIP,
             OnboardingProgressStep.SETTINGS_THOUGHT_VALUE_TOOLTIP,
             OnboardingProgressStep.SETTINGS_BACKUP_TOOLTIP
         )
+    ),
+    METADATA(
+        R.string.workshop_onboarding_section_metadata,
+        R.drawable.ic_activity_metadata,
+        listOf(OnboardingProgressStep.METADATA_DOMAINS_TOOLTIP)
     ),
     CAPTURE(
         R.string.workshop_onboarding_section_capture,

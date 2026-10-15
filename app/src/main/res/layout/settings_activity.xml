@@ -55,23 +55,6 @@
 
                     <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
 
-                    <!-- Domains -->
-                    <TextView
-                        android:id="@+id/tv_domains_section_header"
-                        style="@style/AppCardView_Header"
-                        android:text="@string/settings_domains_header" />
-
-                    <GridLayout
-                        android:id="@+id/gl_domains"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:alignmentMode="alignBounds"
-                        android:columnCount="2"
-                        android:columnOrderPreserved="false"
-                        android:rowCount="4" />
-
-                    <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
-
                     <!-- Start screen -->
                     <TextView
                         android:id="@+id/tv_start_screen_section_header"

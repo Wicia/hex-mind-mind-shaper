@@ -12,8 +12,11 @@ enum class OnboardingProgressStep(
     SETTINGS_ENTRY_TOOLTIP("onb_settings_entry_tooltip_shown"),
     SETTINGS_YOUR_NAME_TOOLTIP("onb_settings_your_name_tooltip_shown"),
     SETTINGS_THOUGHT_VALUE_TOOLTIP("onb_settings_thought_value_tooltip_shown"),
-    SETTINGS_DOMAINS_TOOLTIP("onb_settings_domains_tooltip_shown"),
     SETTINGS_BACKUP_TOOLTIP("onb_settings_backup_tooltip_shown"),
+
+    // == METADATA ==
+    // ! Key keeps its "settings" name - a tooltip already seen stays seen
+    METADATA_DOMAINS_TOOLTIP("onb_settings_domains_tooltip_shown"),
 
     DETAILS_TOOLTIP("onb_details_tooltip_shown"),
 

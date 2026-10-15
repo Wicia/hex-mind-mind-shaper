@@ -192,6 +192,7 @@ Awers - Rewers…"</string>
     <string name="workshop_section_onboarding">Moje poznawanie aplikacji</string>
     <string name="workshop_onboarding_section_home">Dom</string>
     <string name="workshop_onboarding_section_settings">Preferencje</string>
+    <string name="workshop_onboarding_section_metadata">Tagi i Domeny</string>
     <string name="workshop_onboarding_section_capture">Łapanie myśli</string>
     <string name="workshop_onboarding_section_stream">Strumień</string>
     <string name="workshop_onboarding_section_details">Szczegóły myśli</string>
@@ -402,13 +403,18 @@ Awers - Rewers…"</string>
     <!-- ============================================================ -->
 
     <!-- Header -->
-    <string name="metadata_title">Metadane</string>
+    <string name="metadata_title">Tagi i Domeny</string>
     <string name="metadata_persons_empty">Brak osób w tagach</string>
     <string name="metadata_projects_empty">Brak projektów w tagach</string>
 
-    <!-- Osoby / Projekty switch -->
+    <!-- Osoby / Projekty / Domeny switch -->
     <string name="metadata_tab_persons">Osoby</string>
     <string name="metadata_tab_projects">Projekty</string>
+    <string name="metadata_tab_domains">Domeny</string>
+
+    <!-- Onboarding - Domains tab -->
+    <string name="metadata_domains_title">Zakładka \"Domeny\"</string>
+    <string name="metadata_domains_tooltip">Zdefiniujesz tutaj \"Domeny\" - swoje kategorie lub szufladki dla myśli</string>
 
     <string name="metadata_tag_edit_title">Edytuj tag</string>
     <string name="metadata_tag_edit_hint_placeholder">Nazwa tagu</string>
@@ -439,8 +445,6 @@ Awers - Rewers…"</string>
     <string name="settings_entry_tooltip_2">Zapraszam Cię do radosnej zmiany ustawień i testów :)</string>
     <string name="settings_your_name_title">Sekcja personalizacji</string>
     <string name="settings_your_name_tooltip">[Jakiś mądry tekst, który nie istnieje a miał w tym miejscu być] </string>
-    <string name="settings_domains_title">Sekcja \"Domeny\"</string>
-    <string name="settings_domains_tooltip">Zdefiniujesz tutaj \"Domeny\" - swoje kategorie lub szufladki dla myśli</string>
     <string name="settings_thought_value_title">Sekcja \"Skala wartości myśli\"</string>
     <string name="settings_thought_value_tooltip">Każdej myśli możesz nadać wartość/wagę/priorytet liczbowy.\nOd ciebie zależą jego wartości… </string>
     <string name="settings_backup_title_1">Sekcja \"Kopia zapasowa\"</string>
@@ -512,7 +516,6 @@ Awers - Rewers…"</string>
     <string name="settings_calendar_permission_info">Bez niego nie dodasz przypomnień.</string>
     <string name="settings_permission_calendar_blockade_title">Odblokować dostęp do kalendarza?</string>
 
-    <string name="settings_domains_header">🌾 Moje Domeny</string>
     <string name="settings_start_screen_header">🧭 Ekran startowy</string>
     <string name="settings_start_screen_home">Dom</string>
     <string name="settings_start_screen_stream">Strumień</string>

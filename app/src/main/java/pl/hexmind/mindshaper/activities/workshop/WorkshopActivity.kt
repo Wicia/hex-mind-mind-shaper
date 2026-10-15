@@ -23,6 +23,7 @@ import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
+import pl.hexmind.mindshaper.activities.metadata.MetadataActivity
 import pl.hexmind.mindshaper.activities.stream.StreamActivity
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.common.onboarding.OnboardingSection
@@ -193,6 +194,7 @@ class WorkshopActivity : CoreActivity() {
         val intent = when (section) {
             OnboardingSection.HOME     -> Intent(this, HomeActivity::class.java)
             OnboardingSection.SETTINGS -> Intent(this, SettingsActivity::class.java)
+            OnboardingSection.METADATA -> Intent(this, MetadataActivity::class.java)
             OnboardingSection.CAPTURE  -> Intent(this, CaptureActivity::class.java)
             OnboardingSection.STREAM   -> Intent(this, StreamActivity::class.java)
             OnboardingSection.DETAILS  -> return openNewestThought() // "Go to Details" needs a thought to open
