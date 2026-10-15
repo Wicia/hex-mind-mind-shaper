@@ -148,7 +148,7 @@ class MetadataActivity : CoreActivity() {
             .setDescription(getString(R.string.metadata_tag_delete_message, tagName))
             .setPrimaryAction(getString(R.string.metadata_tag_delete_yes), caution = true) {
                 viewModel.deleteTag(tagName)
-                showShortToast(R.string.common_deletion_dialog_confirmation, tagName)
+                showShortToast(R.string.metadata_tag_delete_confirmation, tagName)
             }
             .show()
     }

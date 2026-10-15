@@ -72,7 +72,7 @@
     <!-- Hex Tagi: podpowiedzi i warianty -->
     <string name="common_hex_tags_similar_title">Użyć istniejącego tagu?</string>
     <string name="common_hex_tags_similar_description">Masz już podobny tag [%1$s].</string>
-    <string name="common_hex_tags_similar_use">Użyj [%1$s]</string>
+    <string name="common_hex_tags_similar_use">Użyj\n[%1$s]</string>
     <string name="common_hex_tags_similar_keep_mine">Utwórz nowy tag</string>
 
     <string name="common_hex_tags_hint_person">Osoba lub Ekipa</string>
@@ -426,6 +426,7 @@ Awers - Rewers…"</string>
     <string name="metadata_tag_delete_title">Usunąć tag?</string>
     <string name="metadata_tag_delete_message">Tag [%1$s] zniknie ze wszystkich myśli, które go używają.</string>
     <string name="metadata_tag_delete_yes">Usuń tag</string>
+    <string name="metadata_tag_delete_confirmation">Tag [%1$s] usunięto</string>
 
     <!-- Pill count part - opens Stream searched by the tag -->
     <string name="metadata_tag_search">Szukaj myśli z tym tagiem</string>
@@ -486,8 +487,7 @@ Awers - Rewers…"</string>
     <string name="settings_permissions_flashcards">Włącz powtórki z użyciem fiszek</string>
     <string name="settings_flashcards_new_per_day_label">Max. liczba nowych fiszek\ndziennie w powtórkach</string>
     <string name="settings_flashcards_reminders_switch_label">Włącz przypomnienia o powtórkach</string>
-    <string name="settings_flashcards_reminders_hint">O tej godzinie przypomnimy o sesji powtórek, jeśli coś na nią czeka</string>
-    <string name="settings_flashcards_reminder_hour_label">Godzina wysyłania przypominajek</string>
+    <string name="settings_flashcards_reminder_hour_label">O tej godzinie przypomnimy Ci o sesji powtórek - o ile jakieś fiszki czekają na powtórki</string>
     <string name="settings_permission_notifications_title">Zezwolić na powiadomienia?</string>
     <string name="settings_notifications_permission_info">Bez nich nie dostaniesz przypomnień o powtórkach.</string>
     <string name="settings_permission_notifications_blockade_title">Odblokować powiadomienia?</string>

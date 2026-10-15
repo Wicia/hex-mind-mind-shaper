@@ -319,22 +319,15 @@
                         android:layout_marginTop="8dp"
                         android:text="@string/settings_flashcards_reminders_switch_label" />
 
-                    <TextView
-                        style="@style/TextView_Section_Info"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/settings_flashcards_reminders_hint" />
-
                     <!-- Reminder hour - dimmed while flashcards or their reminder are off -->
                     <TextView
                         android:id="@+id/tv_flashcards_reminder_hour_label"
+                        style="@style/TextView_Section_Info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:layout_marginStart="16dp"
-                        android:text="@string/settings_flashcards_reminder_hour_label"
-                        android:textSize="14sp" />
+                        android:text="@string/settings_flashcards_reminder_hour_label" />
 
                     <pl.hexmind.mindshaper.common.ui.views.HexHourPickerView
                         android:id="@+id/hour_picker_flashcards_reminder"
