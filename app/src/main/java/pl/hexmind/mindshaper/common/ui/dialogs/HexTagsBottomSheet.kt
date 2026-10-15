@@ -27,6 +27,7 @@ import pl.hexmind.mindshaper.common.ui.views.HexInputField
 import pl.hexmind.mindshaper.common.ui.views.HexTagsInputView
 import pl.hexmind.mindshaper.database.models.HexTagType
 import pl.hexmind.mindshaper.services.HexTagsService
+import pl.hexmind.mindshaper.services.SimilarTag
 import javax.inject.Inject
 import pl.hexmind.mindshaper.databinding.CommonHexTagsBottomsheetBinding
 
@@ -136,7 +137,7 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
      */
     private fun confirmUnlessSimilarTagExists(result: HexTags) {
         viewLifecycleOwner.lifecycleScope.launch {
-            val similarTag = firstSimilarTag(result)
+            val similarTag = hexTagsService.findFirstSimilarTag(result.person, result.project)
 
             if (similarTag == null) {
                 dismiss()
@@ -162,50 +163,21 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    /**
-     * ! Checked tag by tag, not on the whole field - "ja powiesc" holds two tags, and normalizing
-     * the field as one string would find nothing and then overwrite both with a single name.
-     */
-    private suspend fun firstSimilarTag(result: HexTags): SimilarTag? =
-        firstSimilarTagOfType(HexTagType.PERSON, result.person)
-            ?: firstSimilarTagOfType(HexTagType.PROJECT, result.project)
-
-    private suspend fun firstSimilarTagOfType(tagType: HexTagType, fieldText: String?): SimilarTag? {
-        splitTags(fieldText).forEach { typedTag ->
-            val suggestion = hexTagsService.findSimilarTagNames(tagType, typedTag).firstOrNull()
-            if (suggestion != null) return SimilarTag(tagType, typedTag, suggestion)
-        }
-
-        return null
-    }
-
-    /** Swaps one tag inside the field, leaving the others as they were. */
     private fun applySimilarTag(result: HexTags, similarTag: SimilarTag) {
         val corrected = when (similarTag.tagType) {
-            HexTagType.PERSON  -> result.copy(person = replaceTag(result.person, similarTag))
-            HexTagType.PROJECT -> result.copy(project = replaceTag(result.project, similarTag))
+            HexTagType.PERSON  -> result.copy(person = hexTagsService.replaceTag(result.person, similarTag))
+            HexTagType.PROJECT -> result.copy(project = hexTagsService.replaceTag(result.project, similarTag))
         }
 
         dismiss()
         onConfirm?.invoke(corrected)
     }
 
-    private fun replaceTag(fieldText: String?, similarTag: SimilarTag): String =
-        splitTags(fieldText)
-            .map { tagName -> if (tagName == similarTag.typedTag) similarTag.suggestion else tagName }
-            .joinToString(" ")
-
     private fun splitTags(fieldText: String?): List<String> =
         fieldText?.split(TAG_SEPARATOR_PATTERN)
             ?.map { tagName -> tagName.trim().lowercase() }
             ?.filter { tagName -> tagName.isNotEmpty() }
             .orEmpty()
-
-    private data class SimilarTag(
-        val tagType   : HexTagType,
-        val typedTag  : String,
-        val suggestion: String
-    )
 
     private fun showExternalError(error: ValidationResult.Error) {
         val errorMessage : String = error.resolveMessage(requireContext())

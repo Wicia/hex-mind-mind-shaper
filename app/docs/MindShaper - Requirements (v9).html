@@ -661,7 +661,7 @@
     <details class="req">
         <summary>
             <span class="req-title">Robienie kopii zapasowej danych</span>
-            <span class="check" data-date="20/08">
+            <span class="check" data-date="15/10">
                 <span class="check-main done">🟢 Sprawdzone</span>
                 <span class="check-ago"></span>
             </span>
@@ -709,7 +709,7 @@
                         <ul>
                             <li>przy starcie aplikacji, tylko gdy opcja włączona</li>
                             <li>max 1 plik dziennie (nadpisywanie)</li>
-                            <li>✳️ kopia obejmuje fiszki (luźne i zestawy) z postępem powtórek</li>
+                            <li>kopia obejmuje fiszki (luźne i zestawy) z postępem powtórek</li>
                             <li>backup starszy niż aktualna wersja DB może być wczytany; nowszy nie</li>
                             <li>nowe zasoby z nowej wersji aplikacji (np. ikony) są doseedowane po wczytaniu backupu oraz przy każdym starcie</li>
                         </ul>
@@ -726,41 +726,41 @@
 
     <details class="req">
         <summary>
-            <span class="req-title">✳️ Wybór ekranu startowego</span>
-            <span class="check">
+            <span class="req-title">Wybór ekranu startowego</span>
+            <span class="check" data-date="15/10">
             <span class="check-main verify">🟡 Weryfikacja</span>
-            <span class="check-ago">-</span>
+            <span class="check-ago"></span>
         </span>
         </summary>
         <div class="spec-body">
             <div class="spec-section">
                 <h3>Potrzeba i Cel</h3>
                 <ul>
-                    <li>✳️ Szybki dostęp do najczęściej używanego ekranu — aplikacja otwiera się od razu tam, gdzie użytkownik pracuje najczęściej</li>
+                    <li>Szybki dostęp do najczęściej używanego ekranu — aplikacja otwiera się od razu tam, gdzie użytkownik pracuje najczęściej</li>
                 </ul>
             </div>
             <div class="spec-section">
                 <h3>Wejścia, Dane, Stany</h3>
                 <ul>
-                    <li>✳️ Sekcja „Ekran startowy" — w sekcji personalizacji, pod „Moje domeny" <span class="location">Preferencje</span>
+                    <li>Sekcja „Ekran startowy" — w sekcji personalizacji, pod „Moje domeny" <span class="location">Preferencje</span>
                         <ul>
-                            <li>✳️ 4 kafelki do wyboru: <span class="location">Dom</span> / <span class="location">Strumień</span> / <span class="location">Zapamiętywanie</span> / <span class="location">Warsztat</span> (dokładnie jeden aktywny)</li>
-                            <li>✳️ domyślnie: <span class="location">Dom</span></li>
-                            <li>✳️ fiszki wyłączone w <span class="location">Preferencjach</span> — kafelek <span class="location">Zapamiętywanie</span> wyszarzony, zaznaczenie wraca na <span class="location">Dom</span>; aplikacja startuje wtedy na <span class="location">Dom</span></li>
+                            <li>4 kafelki do wyboru: <span class="location">Dom</span> / <span class="location">Strumień</span> / <span class="location">Zapamiętywanie</span> / <span class="location">Warsztat</span> (dokładnie jeden aktywny)</li>
+                            <li>domyślnie: <span class="location">Dom</span></li>
+                            <li>fiszki wyłączone w <span class="location">Preferencjach</span> — kafelek <span class="location">Zapamiętywanie</span> wyszarzony, zaznaczenie wraca na <span class="location">Dom</span>; aplikacja startuje wtedy na <span class="location">Dom</span></li>
                         </ul>
                     </li>
-                    <li>✳️ Wybór zapamiętywany trwale między uruchomieniami aplikacji</li>
+                    <li>Wybór zapamiętywany trwale między uruchomieniami aplikacji</li>
                 </ul>
             </div>
             <div class="spec-section">
                 <h3>Procesy, Opcje, Integracje</h3>
                 <ul>
-                    <li>✳️ Zapis wyboru — wspólnie z pozostałymi ustawieniami przyciskiem <span class="bracket">Zapisz</span></li>
-                    <li>✳️ Otwieranie wybranego ekranu przy uruchomieniu aplikacji
+                    <li>Zapis wyboru — wspólnie z pozostałymi ustawieniami przyciskiem <span class="bracket">Zapisz</span></li>
+                    <li>Otwieranie wybranego ekranu przy uruchomieniu aplikacji
                         <ul>
-                            <li>✳️ tylko przy starcie z ikony aplikacji — nie przy powrocie z nawigacji ani po obrocie ekranu</li>
-                            <li>✳️ <span class="location">Dom</span> pozostaje „pod spodem" — cofnięcie z wybranego ekranu wraca na <span class="location">Dom</span></li>
-                            <li>✳️ zmiana obowiązuje od następnego uruchomienia (nie przełącza ekranu w trakcie działania)</li>
+                            <li>tylko przy starcie z ikony aplikacji — nie przy powrocie z nawigacji ani po obrocie ekranu</li>
+                            <li><span class="location">Dom</span> pozostaje „pod spodem" — cofnięcie z wybranego ekranu wraca na <span class="location">Dom</span></li>
+                            <li>zmiana obowiązuje od następnego uruchomienia (nie przełącza ekranu w trakcie działania)</li>
                         </ul>
                     </li>
                 </ul>
@@ -793,49 +793,136 @@
     <details class="req">
         <summary>
             <span class="req-title">Lista tagów Osoby<span class="req-alt">Ekran „Metadane"</span></span>
-            <span class="check">
+            <span class="check" data-date="15/10">
                 <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
             <div class="spec-section">
                 <h3>Potrzeba i Cel</h3>
                 <ul>
-                    <li>✳️ Przegląd wszystkich osób (hex tagów Osoby) w jednym miejscu — wraz z tym, jak często każda się pojawia</li>
-                    <li>✳️ Szybka korekta nazwy taga bez wchodzenia w myśli</li>
+                    <li>Przegląd wszystkich osób (hex tagów Osoby) w jednym miejscu — wraz z tym, jak często każda się pojawia</li>
+                    <li>Szybka korekta nazwy taga bez wchodzenia w myśli</li>
                 </ul>
             </div>
             <div class="spec-section">
                 <h3>Wejścia, Dane, Stany</h3>
                 <ul>
-                    <li>✳️ Nowe wejście <span class="location">Metadane</span> w nawigacji — między <span class="location">Warsztat</span> a <span class="location">Preferencje</span></li>
-                    <li>✳️ Lista pigułek — każdy tag Osoby jako pigułka: nazwa + liczba użyć, po maks. 2 w wierszu
+                    <li>Nowe wejście <span class="location">Metadane</span> w nawigacji — między <span class="location">Warsztat</span> a <span class="location">Preferencje</span></li>
+                    <li>Lista pigułek — każdy tag Osoby jako pigułka: nazwa + liczba użyć, po maks. 2 w wierszu
                         <ul>
                             <li>nieparzysta liczba tagów → ostatni wiersz z jedną pigułką</li>
                         </ul>
                     </li>
-                    <li>✳️ Kolejność — tag „ja" zawsze pierwszy (tag rdzeniowy), dalej od najczęściej do najrzadziej używanego (remis → alfabetycznie)</li>
-                    <li>✳️ Pusty stan — <span class="msg">Brak osób w tagach</span></li>
-                    <li>✳️ Bottom sheet edycji taga — pole nazwy wypełnione obecną nazwą</li>
+                    <li>Kolejność — tag „ja" zawsze pierwszy (tag rdzeniowy), dalej od najczęściej do najrzadziej używanego (remis → alfabetycznie)</li>
+                    <li>Pusty stan — <span class="msg">Brak osób w tagach</span></li>
+                    <li>Bottom sheet edycji taga — pole nazwy wypełnione obecną nazwą</li>
                 </ul>
             </div>
             <div class="spec-section">
                 <h3>Procesy, Opcje, Integracje</h3>
                 <ul>
-                    <li>✳️ Tap pigułki (z efektem tapnięcia) → otwiera bottom sheet edycji</li>
-                    <li>✳️ <span class="bracket">Zapisz</span> → zmiana nazwy taga
+                    <li>Tap pigułki (z efektem tapnięcia) → otwiera bottom sheet edycji</li>
+                    <li><span class="bracket">Zapisz</span> → zmiana nazwy taga
                         <ul>
                             <li>pusta nazwa → nie zapisuje, prosi o nazwę</li>
                             <li>nazwa zajęta przez inny tag → blokada + <span class="msg">Taki tag już istnieje</span>; łączenie tagów to osobna funkcja (przeciągnięcie pigułki na pigułkę)</li>
                         </ul>
                     </li>
-                    <li>✳️ Lista odświeża się po zmianie nazwy oraz po powrocie na ekran</li>
+                    <li>Lista odświeża się po zmianie nazwy oraz po powrocie na ekran</li>
                 </ul>
             </div>
         </div>
     </details>
 </section>
+
+<section class="panel" data-tab="* Wspólne dla myśli" data-row="2">
+    <div class="feature-terms"><b>Pojęcia</b><ul>
+        <li>hex tag — etykieta myśli jednego z dwóch rodzajów: osoba (Osoba lub Ekipa) albo projekt (Projekt lub Zajawka)</li>
+        <li>słownik tagów — wszystkie tagi kiedykolwiek nadane; tag zostaje w słowniku także po usunięciu myśli</li>
+        <li>wariant tagu — nazwa różniąca się od istniejącej tylko polskimi znakami (powiesc obok powieść)</li>
+    </ul></div>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Łączenie myśli z hex tagami<span class="req-alt">Wspólne dla łapania i edycji myśli</span></span>
+            <span class="check" data-date="15/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <p class="feature-goal"><b>Potrzeba i Cel</b>ta sama osoba czy projekt zawsze jako jeden tag — niezależnie od tego, gdzie i jak został wpisany</p>
+            <table class="mech-table">
+                <thead>
+                    <tr>
+                        <th>Funkcja</th>
+                        <th>Wejścia, Dane, Stany</th>
+                        <th>Procesy, Opcje, Integracje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="mech-name">Nadawanie tagów myśli</td>
+                        <td><ul class="cell">
+                            <li>wpisywane przy łapaniu i edycji myśli oraz w treści notatki</li>
+                            <li>kilka tagów jednego rodzaju dozwolone; spacja lub przecinek rozdziela tagi</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>limit 16 znaków na tag</li>
+                            <li>wielkość liter nie ma znaczenia — „Ja” to ten sam tag co „ja”</li>
+                            <li>powtórzenie tej samej nazwy nie tworzy duplikatu</li>
+                            <li>nowa nazwa trafia do słownika tagów</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Odczytywanie tagów z treści notatki</td>
+                        <td><ul class="cell">
+                            <li>@słowo → osoba, #słowo → projekt
+                                <ul>
+                                    <li>tagiem jest tylko jedno słowo po znaczniku — reszta zdania zostaje treścią</li>
+                                    <li>znacznik musi zaczynać słowo — adres e-mail nie jest tagiem</li>
+                                </ul>
+                            </li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>przy zapisie notatki tagi dołączane do myśli — obok już nadanych</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Podpowiadanie tagów</td>
+                        <td><ul class="cell">
+                            <li>podczas wpisywania tagu — tylko tagi tego samego rodzaju</li>
+                            <li>podpowiedzi nie zasłaniają wpisywanego tekstu</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>na początku ostatnio używane + najczęstsze tagi</li>
+                            <li>po wpisaniu 3. znaku włącza się wyszukiwanie — zostają tylko tagi zawierające wpisany fragment, bez względu na polskie znaki</li>
+                            <li>wybór z podpowiedzi nie wywołuje ostrzeżenia o wariancie</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Wykrywanie wariantu tagu</td>
+                        <td><ul class="cell">
+                            <li>przy zapisie myśli lub notatki — wpisany tag jest wariantem istniejącego</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>ostrzeżenie z wyborem: użyć istniejącego czy utworzyć nowy
+                                <ul>
+                                    <li>użycie istniejącego poprawia tag także w treści notatki</li>
+                                </ul>
+                            </li>
+                            <li>warianty nigdy nie scalają się same — sad i sąd mogą być osobnymi tagami</li>
+                            <li>brak ostrzeżenia, gdy wpisana wersja tagu już jest w słowniku — wybór został dokonany wcześniej</li>
+                        </ul></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </details>
+</section>
+
 
 <section class="panel" data-tab="Łapanie myśli" data-row="2">
     <p class="panel-intro">Zapisywanie myśli w różnych formach.</p>
@@ -895,14 +982,14 @@
 
     <details class="req">
         <summary>
-            <span class="req-title">Dodawanie metadanych myśli</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="req-title">Dodawanie metadanych przy łapaniu</span>
+            <span class="check" data-date="15/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
-            <p class="feature-goal"><b>Potrzeba i Cel</b>✳️ powiązanie zapisywanej myśli z jej metadanymi — tytułem i hex tagami; wszystko wpisywane w jednym polu, w treści</p>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>nadanie łapanej myśli tytułu i hex tagów jednym wpisem, bez przerywania łapania</p>
             <table class="mech-table">
                 <thead>
                     <tr>
@@ -913,36 +1000,38 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="mech-name">Tytuł (temat)</td>
+                        <td class="mech-name">Wpisywanie tytułu</td>
                         <td><ul class="cell">
-                            <li>✳️ tekst przed pierwszym markerem (max 36 zn.)</li>
+                            <li>tekst przed pierwszym znacznikiem (max 36 zn.)</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>✳️ nagłówek/streszczenie myśli — nie jest tagiem, nie trafia do słownika tagów</li>
+                            <li>krótki opis myśli, widoczny jako jej nagłówek — zwykły tekst, nie tag</li>
                         </ul></td>
                     </tr>
                     <tr>
-                        <td class="mech-name">Hex Tagi</td>
+                        <td class="mech-name">Wpisywanie tagów</td>
                         <td><ul class="cell">
-                            <li>✳️ markery w treści: @tekst → osoba, #tekst → projekt (max 16 zn. na tag)</li>
-                        </ul></td>
-                        <td><ul class="cell">
-                            <li>✳️ parsowanie przy zapisie
+                            <li>tagi wpisywane razem z tytułem, po nim — każdy poprzedzony znacznikiem
                                 <ul>
-                                    <li>każdy marker zaczyna nowy tag: @ja @michal → dwie osoby</li>
-                                    <li>kilka tagów jednego rodzaju dozwolone; spacja lub przecinek rozdziela</li>
+                                    <li>@ → osoba, # → projekt</li>
+                                    <li>każdy znacznik zaczyna nowy tag: @ja @michal → dwie osoby</li>
+                                    <li>przykład: <i>Pomysł na rozdział @ja #powieść</i> → tytuł „Pomysł na rozdział”, osoba „ja”, projekt „powieść”</li>
                                 </ul>
                             </li>
-                            <li>automatyczne skojarzenie myśli z jej tagami</li>
+                            <li>także znaczniki w treści notatki</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>tagi wg <a class="req-link" data-target-tab="* Wspólne dla myśli" data-target-req="Łączenie myśli z hex tagami">Łączenie myśli z hex tagami</a> — w tym podpowiedzi i ostrzeżenie o wariancie przed zapisem</li>
+                            <li>podpowiedzi pojawiają się dopiero po znaczniku i 2 znakach</li>
                         </ul></td>
                     </tr>
                     <tr>
-                        <td class="mech-name">Domena</td>
+                        <td class="mech-name">Przypisywanie domeny</td>
                         <td><ul class="cell">
-                            <li>✳️ w Łapaniu nie ustawiana</li>
+                            <li>przy łapaniu nie ustawiana</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>✳️ przypisywana później w <span class="location">Edycja i szczegóły myśli</span></li>
+                            <li>przypisywana później w <a class="req-link" data-target-tab="Edycja i szczegóły myśli" data-target-req="Edytowanie metadanych myśli">Edytowanie metadanych myśli</a></li>
                         </ul></td>
                     </tr>
                 </tbody>
@@ -953,7 +1042,7 @@
     <details class="req">
         <summary>
             <span class="req-title">Zapis w formie Głosówki</span>
-            <span class="check" data-date="21/08">
+            <span class="check" data-date="15/10">
                 <span class="check-main done">🟢 Sprawdzone</span>
                 <span class="check-ago"></span>
             </span>
@@ -976,7 +1065,7 @@
                             <li>domyślnie wyłączona</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>✴️ żądanie uprawnienia do mikrofonu — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
+                            <li>żądanie uprawnienia do mikrofonu — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
                         </ul></td>
                     </tr>
                     <tr>
@@ -1058,7 +1147,7 @@
     <details class="req">
         <summary>
             <span class="req-title">Zapis w formie Zdjęcia</span>
-            <span class="check" data-date="21/08">
+            <span class="check" data-date="15/10">
                 <span class="check-main done">🟢 Sprawdzone</span>
                 <span class="check-ago"></span>
             </span>
@@ -1081,7 +1170,7 @@
                             <li>domyślnie wyłączona</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>✴️ żądanie uprawnienia do aparatu — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
+                            <li>żądanie uprawnienia do aparatu — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
                         </ul></td>
                     </tr>
                     <tr>
@@ -1497,14 +1586,14 @@
 
     <details class="req">
         <summary>
-            <span class="req-title">Dodawanie metadanych myśli</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="req-title">Edytowanie metadanych myśli</span>
+            <span class="check" data-date="15/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
-            <p class="feature-goal"><b>Potrzeba i Cel</b>✳️ przypisanie i poprawianie metadanych zapisanej myśli — tytułu, domeny i hex tagów (osoby, projekty); inaczej niż w <span class="location">Łapanie myśli</span>, gdzie powstają z markerów w treści</p>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>uzupełnianie i poprawianie metadanych zapisanej myśli — tytułu, domeny i hex tagów</p>
             <table class="mech-table">
                 <thead>
                     <tr>
@@ -1515,62 +1604,32 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="mech-name">Tytuł (temat)</td>
+                        <td class="mech-name">Edytowanie tytułu</td>
                         <td><ul class="cell">
-                            <li>✳️ tap na temat → dialog edycji (max 36 zn.)</li>
+                            <li>obecny tytuł do poprawienia (max 36 zn.)</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>✳️ nagłówek/streszczenie myśli — nie jest tagiem</li>
-                        </ul></td>
-                    </tr>
-                    <tr>
-                        <td class="mech-name">Domena</td>
-                        <td><ul class="cell">
-                            <li>✳️ siatka ikon domen w arkuszu; jedna domena na myśl</li>
-                        </ul></td>
-                        <td><ul class="cell">
-                            <li>✳️ wybór/zmiana podmienia dotychczasową</li>
+                            <li>krótki opis myśli, widoczny jako jej nagłówek — zwykły tekst, nie tag</li>
                         </ul></td>
                     </tr>
                     <tr>
-                        <td class="mech-name">Pola tagów</td>
+                        <td class="mech-name">Przypisywanie domeny</td>
                         <td><ul class="cell">
-                            <li>✳️ osobne pole na osoby (Osoba lub Ekipa) i na projekty (Projekt lub Zajawka)</li>
-                            <li>✳️ podpowiedź w polu nazywa jego rodzaj — ta sama przed i po wejściu w pole</li>
+                            <li>wybór z domen użytkownika; jedna domena na myśl</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>✳️ oba pola działają identycznie</li>
-                        </ul></td>
-                    </tr>
-                    <tr>
-                        <td class="mech-name">Dodawanie tagu</td>
-                        <td><ul class="cell">
-                            <li>✳️ wpisany tekst → chip po spacji albo <span class="bracket">✔</span> obok pola</li>
-                            <li>✳️ kilka tagów jednego rodzaju dozwolone</li>
-                        </ul></td>
-                        <td><ul class="cell">
-                            <li>✳️ przecinek działa jak spacja; powtórzenie tej samej wartości nie tworzy duplikatu</li>
-                            <li>✳️ limit 16 znaków na tag</li>
+                            <li>wybór/zmiana podmienia dotychczasową</li>
                         </ul></td>
                     </tr>
                     <tr>
-                        <td class="mech-name">Podpowiedzi</td>
+                        <td class="mech-name">Edytowanie tagów</td>
                         <td><ul class="cell">
-                            <li>✳️ pokazują się po tapnięciu w pole</li>
+                            <li>każdy rodzaj tagu ma swój dedykowany widget — osoby (Osoba lub Ekipa) i projekty (Projekt lub Zajawka)</li>
+                            <li>dodawanie i usuwanie tagów; obie listy (po jednej na rodzaj tagu) działają identycznie</li>
+                            <li>także znaczniki @/# w treści notatki — przy jej zapisie</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>✳️ domyślnie ostatnie + najczęstsze tagi; od 3 znaków dopasowane do wpisanego fragmentu</li>
-                            <li>✳️ wybór z podpowiedzi nie wywołuje ostrzeżenia</li>
-                        </ul></td>
-                    </tr>
-                    <tr>
-                        <td class="mech-name">Wariant istniejącego tagu</td>
-                        <td><ul class="cell">
-                            <li>✳️ wpisanie odmiany istniejącego tagu (np. powiesc obok powieść)</li>
-                        </ul></td>
-                        <td><ul class="cell">
-                            <li>✳️ ostrzeżenie z wyborem: użyć istniejącego czy zostawić swój — warianty nigdy nie scalają się same</li>
-                            <li>✳️ osobne słowa zostają osobnymi tagami (sad ≠ sąd)</li>
+                            <li>tagi wg <a class="req-link" data-target-tab="* Wspólne dla myśli" data-target-req="Łączenie myśli z hex tagami">Łączenie myśli z hex tagami</a> — w tym podpowiedzi i ostrzeżenie o wariancie przed zapisem</li>
                         </ul></td>
                     </tr>
                 </tbody>
@@ -2744,28 +2803,28 @@
     <details class="req">
         <summary>
             <span class="req-title">Żądanie Uprawnień<span class="req-alt">Wzorzec współdzielony przez funkcje zależne od uprawnień (mikrofon, aparat, kalendarz…)</span></span>
-            <span class="check">
+            <span class="check" data-date="15/10">
                 <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
             <div class="spec-section">
                 <h3>Potrzeba i Cel</h3>
                 <ul>
-                    <li>✳️ Funkcje zależne od uprawnień Androida potrzebują jednego, powtarzalnego sposobu proszenia o zgodę i utrzymania stanu funkcji</li>
+                    <li>Funkcje zależne od uprawnień Androida potrzebują jednego, powtarzalnego sposobu proszenia o zgodę i utrzymania stanu funkcji</li>
                 </ul>
             </div>
             <div class="spec-section">
                 <h3>Procesy, Opcje, Integracje</h3>
                 <ul>
-                    <li>✳️ powiadomienia o wymaganych uprawnieniach do użycia funkcji</li>
-                    <li>✳️ prośba o uprawnienie do danego zasobu (mikrofon / aparat / kalendarz / …), a w przypadku uporczywej odmowy — możliwość zmiany w ustawieniach Androida</li>
-                    <li>✳️ stan ustawienia zapisywany automatycznie po zmianie</li>
-                    <li>✳️ auto-synchronizacja stanu funkcji
+                    <li>powiadomienia o wymaganych uprawnieniach do użycia funkcji</li>
+                    <li>prośba o uprawnienie do danego zasobu (mikrofon / aparat / kalendarz / …), a w przypadku uporczywej odmowy — możliwość zmiany w ustawieniach Androida</li>
+                    <li>stan ustawienia zapisywany automatycznie po zmianie</li>
+                    <li>auto-synchronizacja stanu funkcji
                         <ul>
-                            <li>✳️ na podstawie zapisanego ustawienia oraz przyznanych uprawnień</li>
-                            <li>✳️ podczas startu i powrotu do aktywności</li>
+                            <li>na podstawie zapisanego ustawienia oraz przyznanych uprawnień</li>
+                            <li>podczas startu i powrotu do aktywności</li>
                         </ul>
                     </li>
                 </ul>
@@ -2776,7 +2835,7 @@
     <details class="req">
         <summary>
             <span class="req-title">Panel nawigacyjny</span>
-            <span class="check" data-date="28/08">
+            <span class="check" data-date="15/10">
                 <span class="check-main done">🟢 Sprawdzone</span>
                 <span class="check-ago"></span>
             </span>
@@ -2795,24 +2854,24 @@
                 <tr>
                     <td class="mech-name">Przycisk nawigacji</td>
                     <td><ul class="cell">
-                        <li>✴️ pojedynczy przycisk w lewym dolnym rogu</li>
+                        <li>pojedynczy przycisk w lewym dolnym rogu</li>
                         <li>widoczny na wszystkich ekranach</li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>✳️ jeden przycisk otwiera i zamyka panel — zostaje widoczny także przy otwartym panelu</li>
-                        <li>✳️ zmienia wygląd wg stanu — wyróżniony przy otwartym panelu, stonowany przy zamkniętym</li>
+                        <li>jeden przycisk otwiera i zamyka panel — zostaje widoczny także przy otwartym panelu</li>
+                        <li>zmienia wygląd wg stanu — wyróżniony przy otwartym panelu, stonowany przy zamkniętym</li>
                     </ul></td>
                 </tr>
                 <tr>
                     <td class="mech-name">Pokazywanie i chowanie panelu</td>
                     <td><ul class="cell">
-                        <li>✴️ wysuwany panel przy lewej krawędzi</li>
+                        <li>wysuwany panel przy lewej krawędzi</li>
                         <li>pozycje do pozostałych ekranów: <span class="location">Dom</span> <span class="location">Strumień myśli</span> <span class="location">Warsztat</span> <span class="location">Preferencje</span></li>
-                        <li>✳️ każda pozycja to ikona + podpis</li>
+                        <li>każda pozycja to ikona + podpis</li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>✳️ panel wysuwa się z lewej i chowa z powrotem — z animacją</li>
-                        <li>✳️ wsuwa się pod przyciskiem nawigacji</li>
+                        <li>panel wysuwa się z lewej i chowa z powrotem — z animacją</li>
+                        <li>wsuwa się pod przyciskiem nawigacji</li>
                         <li>auto-zamykanie po wyborze pozycji, tapnięcie w tło również go zamyka</li>
                     </ul></td>
                 </tr>
@@ -2823,7 +2882,7 @@
                     </ul></td>
                     <td><ul class="cell">
                         <li>ikona w trybie „filled"</li>
-                        <li>✳️ podpis w kolorze wyróżnienia, pozostałe stonowane</li>
+                        <li>podpis w kolorze wyróżnienia, pozostałe stonowane</li>
                     </ul></td>
                 </tr>
                 <tr>
@@ -2922,13 +2981,13 @@
     <details class="req">
         <summary>
             <span class="req-title">Skróty aplikacji</span>
-            <span class="check">
+            <span class="check" data-date="15/10">
                 <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
-            <p class="feature-goal"><b>Potrzeba i Cel</b>złapanie myśli w wybranej formie bez wchodzenia w aplikację — prosto z ekranu głównego telefonu; ✳️ tak samo szybkie dopisanie nowych fiszek</p>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>złapanie myśli w wybranej formie bez wchodzenia w aplikację — prosto z ekranu głównego telefonu; tak samo szybkie dopisanie nowych fiszek</p>
             <table class="mech-table">
                 <thead>
                 <tr>
@@ -2941,25 +3000,25 @@
                 <tr>
                     <td class="mech-name">Otwieranie formy</td>
                     <td><ul class="cell">
-                        <li>✴️ trzy skróty, po jednym na formę zapisu — <span class="bracket">Złap notatkę</span>, <span class="bracket">Złap głosówkę</span>, <span class="bracket">Złap zdjęcie</span></li>
+                        <li>trzy skróty, po jednym na formę zapisu — <span class="bracket">Złap notatkę</span>, <span class="bracket">Złap głosówkę</span>, <span class="bracket">Złap zdjęcie</span></li>
                         <li>widoczne po przytrzymaniu ikony aplikacji</li>
                     </ul></td>
                     <td><ul class="cell">
                         <li>wybrany skrót otwiera <span class="location">Łapanie myśli</span></li>
-                        <li>✳️ forma wskazana przez skrót ma pierwszeństwo przed domyślną formą z ustawień</li>
+                        <li>forma wskazana przez skrót ma pierwszeństwo przed domyślną formą z ustawień</li>
                         <li>forma otwiera się od razu — aparat rusza, nagrywanie startuje, notatka czeka na tekst</li>
                         <li>gdy potrzebna funkcja jest wyłączona — informacja z możliwością jej włączenia</li>
                     </ul></td>
                 </tr>
                 <tr>
-                    <td class="mech-name">✳️ Nowe fiszki</td>
+                    <td class="mech-name">Nowe fiszki</td>
                     <td><ul class="cell">
-                        <li>✳️ skrót <span class="bracket">Twórz fiszki</span> — pierwszy na liście, nad skrótami formy zapisu</li>
-                        <li>✳️ widoczny tylko przy włączonych fiszkach — przełączenie w <span class="location">Preferencje</span> zmienia listę skrótów od razu</li>
+                        <li>skrót <span class="bracket">Twórz fiszki</span> — pierwszy na liście, nad skrótami formy zapisu</li>
+                        <li>widoczny tylko przy włączonych fiszkach — przełączenie w <span class="location">Preferencje</span> zmienia listę skrótów od razu</li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>✳️ otwiera <span class="location">Zapamiętywanie</span> na zakładce <span class="bracket">Luźne fiszki</span> z od razu otwartą serią nowych fiszek — bez wyboru zestawu</li>
-                        <li>✳️ zamknięcie serii → lista luźnych fiszek</li>
+                        <li>otwiera <span class="location">Zapamiętywanie</span> na zakładce <span class="bracket">Luźne fiszki</span> z od razu otwartą serią nowych fiszek — bez wyboru zestawu</li>
+                        <li>zamknięcie serii → lista luźnych fiszek</li>
                     </ul></td>
                 </tr>
                 <tr>
@@ -2969,7 +3028,7 @@
                     </ul></td>
                     <td><ul class="cell">
                         <li>cofnięcie prowadzi do <span class="location">Dom</span>, nie wyrzuca z aplikacji</li>
-                        <li>✳️ z nowych fiszek: <span class="location">Zapamiętywanie</span> → <span class="location">Dom</span></li>
+                        <li>z nowych fiszek: <span class="location">Zapamiętywanie</span> → <span class="location">Dom</span></li>
                     </ul></td>
                 </tr>
                 </tbody>
