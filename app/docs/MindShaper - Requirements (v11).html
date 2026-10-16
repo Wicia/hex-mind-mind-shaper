@@ -25,7 +25,7 @@
             --line:#EAD9C6;
             --col-head:#eee9e3;
             --loc-bg:#DCE8F2;
-            --loc-ink:#2F5C82;
+            --loc-ink:#3A6A95;
             --sidebar-w:230px;
         }
         *{box-sizing:border-box;}
@@ -34,6 +34,7 @@
             background:var(--cream);
             color:var(--graphite);
             font-family:'Alegreya',Georgia,serif;
+            font-weight:500;
             font-size:17px;
             line-height:1.5;
         }
@@ -346,43 +347,29 @@
             padding:1px 7px;
             border-radius:6px;
         }
-        /* Location/screen marker — cool blue tag with an arrow notch on the left */
+        /* Location/screen marker — blue text with a left arrow; only actions are chips */
         .location{
-            display:inline-block;
-            line-height:1.3;
             font-family:'Baloo 2',system-ui,sans-serif;
-            font-size:13px;
+            font-size:15px;
             font-weight:500;
             color:var(--loc-ink);
-            background:var(--loc-bg);
-            padding:1px 8px 1px 14px;
-            border-radius:0 5px 5px 0;
-            clip-path:polygon(6px 0, 100% 0, 100% 100%, 6px 100%, 0 50%);
+            white-space:nowrap;
         }
+        .location::before{content:"[";}
+        .location::after{content:"]";}
         /* Cross-reference to an extracted, abstract pattern/module (own family — not a screen/location) */
         .req-link{
-            display:inline-block;
-            line-height:1.3;
             font-family:'Baloo 2',system-ui,sans-serif;
-            font-size:13px;
+            font-size:14px;
             font-weight:500;
-            background:#EDE3DA;
-            padding:1px 8px;
-            border-radius:6px;
             cursor:pointer;
             text-decoration:none;
             border-bottom:1px dashed var(--coffee);
-            /* Long block names end with "…" - max 45 characters and never wider than the cell; full name in the tooltip */
-            max-width:min(45ch, 100%);
-            white-space:nowrap;
-            overflow:hidden;
-            text-overflow:ellipsis;
-            vertical-align:bottom;
         }
-        .req-link::before{content:"\21B3";margin-right:4px;opacity:.8;}
+        .req-link::before{content:"↳";margin-right:3px;opacity:.8;}
         /* higher specificity so the coffee survives inside table cells */
         .spec-body a.req-link{color:var(--coffee);}
-        .spec-body a.req-link:hover{background:#E4D6C8;}
+        .spec-body a.req-link:hover{border-bottom-style:solid;}
         /* User-facing messages/toasts — gray + italic, no bracket */
         .msg{color:var(--muted);font-style:italic;}
         /* ── Mechanisms table (new spec format) ── */
@@ -541,7 +528,7 @@
         <ul>
             <li>Klikalne zakładki (poniżej) to grupy celów biznesowych/moduły głównych funkcji, nie ekrany w aplikacji (chociaż takie odwzorowanie/mapowanie może wystąpić)</li>
             <li>Każdy feature jest opisany w jednym miejscu — tam, gdzie jego cel biznesowy</li>
-            <li>Jeśli część feature'u pojawia się na innym ekranie (np. przełącznik w Ustawieniach), jest tam tylko wzmiankowana, a pełny opis zostaje w karcie feature'u</li>
+            <li>Jeśli część feature'u pojawia się na innym ekranie (np. przełącznik w Preferencjach), jest tam tylko wzmiankowana, a pełny opis zostaje w karcie feature'u</li>
         </ul>
     </details>
 
@@ -569,6 +556,281 @@
 </svg>
 
 <!-- ══ Each panel = one app module (level-1). Requirements inside = level-2 items. ══ -->
+
+<section class="panel" data-tab="* Wspólne &amp; Podstawy" data-row="1">
+    <p class="panel-intro">Elementy wspólne dla całej aplikacji.</p>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Żądanie Uprawnień<span class="req-alt">Wzorzec współdzielony przez funkcje zależne od uprawnień (mikrofon, aparat, kalendarz…)</span></span>
+            <span class="check" data-date="15/10">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago"></span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>Funkcje zależne od uprawnień Androida potrzebują jednego, powtarzalnego sposobu proszenia o zgodę i utrzymania stanu funkcji</li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Procesy, Opcje, Integracje</h3>
+                <ul>
+                    <li>powiadomienia o wymaganych uprawnieniach do użycia funkcji</li>
+                    <li>prośba o uprawnienie do danego zasobu (mikrofon / aparat / kalendarz / …), a w przypadku uporczywej odmowy — możliwość zmiany w ustawieniach Androida</li>
+                    <li>stan ustawienia zapisywany automatycznie po zmianie</li>
+                    <li>auto-synchronizacja stanu funkcji
+                        <ul>
+                            <li>na podstawie zapisanego ustawienia oraz przyznanych uprawnień</li>
+                            <li>podczas startu i powrotu do aktywności</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Panel nawigacyjny</span>
+            <span class="check" data-date="15/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <p class="feature-goal"><b>Potrzeba i Cel</b>szybkie przejście do dowolnego ekranu z każdego miejsca aplikacji, bez zabierania stałego miejsca na ekranie</p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Przycisk nawigacji</td>
+                    <td><ul class="cell">
+                        <li>pojedynczy przycisk w lewym dolnym rogu</li>
+                        <li>widoczny na wszystkich ekranach</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>jeden przycisk otwiera i zamyka panel — zostaje widoczny także przy otwartym panelu</li>
+                        <li>zmienia wygląd wg stanu — wyróżniony przy otwartym panelu, stonowany przy zamkniętym</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Pokazywanie i chowanie panelu</td>
+                    <td><ul class="cell">
+                        <li>wysuwany panel przy lewej krawędzi</li>
+                        <li>pozycje do pozostałych ekranów: <span class="location">Dom</span> <span class="location">Strumień myśli</span> <span class="location">Warsztat</span> <span class="location">Preferencje</span></li>
+                        <li>każda pozycja to ikona + podpis</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>panel wysuwa się z lewej i chowa z powrotem — z animacją</li>
+                        <li>wsuwa się pod przyciskiem nawigacji</li>
+                        <li>auto-zamykanie po wyborze pozycji, tapnięcie w tło również go zamyka</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Zaznaczenie aktywnego ekranu</td>
+                    <td><ul class="cell">
+                        <li>pozycja odpowiadająca bieżącemu ekranowi</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>ikona w trybie „filled"</li>
+                        <li>podpis w kolorze wyróżnienia, pozostałe stonowane</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Zgodność z systemem</td>
+                    <td><ul class="cell">
+                        <li>tryby nawigacji Androida
+                            <ul>
+                                <li>nawigacja 3-przyciskowa (classic)</li>
+                                <li>nawigacja gestami (od Android 10)</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>poprawne wyświetlanie w obu trybach</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Onboarding<span class="req-alt">Inaczej: „Moje poznawanie aplikacji" / „Onboarding review"</span></span>
+            <span class="check" data-date="16/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <p class="feature-goal"><b>Potrzeba i Cel</b>poznanie ekranów i funkcji aplikacji w sposób lekki, praktyczny (do wypróbowania od razu po wskazówce) i przejrzysty — z możliwością powrotu do wskazówek pominiętych lub zapomnianych</p>
+            <div class="feature-terms"><b>Pojęcia</b><ul>
+                <li>wskazówka — krótki opis funkcji pokazywany raz, na ekranie, którego dotyczy</li>
+                <li>krok — zestaw wskazówek pokazywanych razem; wszystkie dzielą stan „zobaczona / nie"</li>
+                <li>sekcja — wskazówki jednego ekranu aplikacji</li>
+                <li>wskazówka dodatkowa — rozszerza inną wskazówkę albo jest dodatkową częścią procesu; poza przeglądem i liczeniem postępu</li>
+            </ul></div>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Pokazywanie wskazówek</td>
+                    <td><ul class="cell">
+                        <li>na ekranie, którego dotyczą — przy pierwszym wejściu lub pierwszym użyciu funkcji</li>
+                        <li>wskazówka: tytuł, treść, ilustracja</li>
+                        <li>informacja, ile wskazówek jest w kroku</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>każdy krok pokazywany tylko raz</li>
+                        <li>przejście do kolejnej wskazówki albo zakończenie kroku</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Wchodzenie do przeglądu wskazówek</td>
+                    <td><ul class="cell">
+                        <li>osobny ekran, wejście z <span class="location">Dom</span></li>
+                        <li>w nawigacji zaznaczony <span class="location">Dom</span> — jak w <a class="req-link" data-target-tab="* Wspólne &amp; Podstawy" data-target-req="Panel nawigacyjny">Panel nawigacyjny</a></li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>cofnięcie wraca na <span class="location">Dom</span></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Wyświetlanie postępu</td>
+                    <td><ul class="cell">
+                        <li>ogólny postęp — jaka część wszystkich wskazówek (bez dodatkowych) została zobaczona (procent)</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>liczony z tych samych wskazówek co sekcje — postęp i liczniki sekcji zawsze zgodne</li>
+                        <li>przeliczany po powrocie na ekran (wskazówki mogły zostać zobaczone gdzie indziej)</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Wyświetlanie sekcji</td>
+                    <td><ul class="cell">
+                        <li>sekcje = ekrany aplikacji
+                            <ul>
+                                <li>stała kolejność: <span class="location">Dom</span> <span class="location">Preferencje</span> <span class="location">Tagi i Domeny</span> <span class="location">Łapanie myśli</span> <span class="location">Strumień</span> <span class="location">Szczegóły myśli</span></li>
+                                <li>pogrupowane wg funkcjonalności — każda osobno
+                                    <ul>
+                                        <li><span class="location">Strumień</span> i <span class="location">Szczegóły myśli</span> razem (ta sama funkcjonalność)</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>sekcja: nazwa ekranu, licznik zobaczonych wskazówek (ile / ze wszystkich), lista wskazówek — tytuł i stan „zobaczona / nie"</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>wskazówki dodatkowe
+                            <ul>
+                                <li>nie trafiają na listę ani do licznika</li>
+                                <li>nadal pokazywane na ekranie, którego dotyczą</li>
+                                <li>reset sekcji obejmuje je mimo ukrycia</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Przechodzenie do ekranu sekcji</td>
+                    <td><ul class="cell">
+                        <li><span class="bracket">Idź do</span> przy każdej sekcji</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>otwiera ekran sekcji</li>
+                        <li><span class="location">Szczegóły myśli</span> — otwiera ostatnio utworzoną myśl; przy braku myśli komunikat, że najpierw trzeba jakąś złapać</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Resetowanie sekcji</td>
+                    <td><ul class="cell">
+                        <li><span class="bracket">Resetuj</span> przy każdej sekcji</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>działa tylko na swoją sekcję, z potwierdzeniem</li>
+                        <li>wskazówki sekcji znów pojawią się na swoich ekranach</li>
+                        <li>postęp i licznik sekcji przeliczane od razu</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Skróty aplikacji</span>
+            <span class="check" data-date="15/10">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago"></span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <p class="feature-goal"><b>Potrzeba i Cel</b>złapanie myśli w wybranej formie bez wchodzenia w aplikację — prosto z ekranu głównego telefonu; tak samo szybkie dopisanie nowych fiszek</p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Otwieranie formy</td>
+                    <td><ul class="cell">
+                        <li>trzy skróty, po jednym na formę zapisu — <span class="bracket">Złap notatkę</span>, <span class="bracket">Złap głosówkę</span>, <span class="bracket">Złap zdjęcie</span></li>
+                        <li>widoczne po przytrzymaniu ikony aplikacji</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>wybrany skrót otwiera <span class="location">Łapanie myśli</span></li>
+                        <li>forma wskazana przez skrót ma pierwszeństwo przed domyślną formą z ustawień</li>
+                        <li>forma otwiera się od razu — aparat rusza, nagrywanie startuje, notatka czeka na tekst</li>
+                        <li>gdy potrzebna funkcja jest wyłączona — informacja z możliwością jej włączenia</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Nowe fiszki</td>
+                    <td><ul class="cell">
+                        <li>skrót <span class="bracket">Twórz fiszki</span> — pierwszy na liście, nad skrótami formy zapisu</li>
+                        <li>widoczny tylko przy włączonych fiszkach — przełączenie w <span class="location">Preferencje</span> zmienia listę skrótów od razu</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>otwiera <span class="location">Zapamiętywanie</span> na zakładce <span class="bracket">Luźne fiszki</span> z od razu otwartą serią nowych fiszek — bez wyboru zestawu</li>
+                        <li>zamknięcie serii → lista luźnych fiszek</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Powrót z poziomu skrótu</td>
+                    <td><ul class="cell">
+                        <li>wejście do aplikacji przy zamkniętej aplikacji</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>cofnięcie prowadzi do <span class="location">Dom</span>, nie wyrzuca z aplikacji</li>
+                        <li>z nowych fiszek: <span class="location">Zapamiętywanie</span> → <span class="location">Dom</span></li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </details>
+</section>
+
 
 <section class="panel" data-tab="Ekran Startowy" data-row="1">
     <p class="panel-intro">Pierwszy ekran po uruchomieniu aplikacji.</p>
@@ -611,57 +873,13 @@
 </section>
 
 
-<section class="panel" data-tab="Ustawienia" data-row="1">
-    <p class="panel-intro">Konfiguracja aplikacji, dane oraz przełączniki funkcji.</p>
-
-    <details class="req">
-        <summary>
-            <span class="req-title">Konfigurowanie domen</span>
-            <span class="check" data-date="20/08">
-                <span class="check-main done">🟢 Sprawdzone</span>
-                <span class="check-ago"></span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>Potrzeba organizacji myśli w grupy / ich kategoryzacja</li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Wejścia, Dane, Stany</h3>
-                <ul>
-                    <li>Sekcja „Moje domeny" (Ustawienia)
-                        <ul>
-                            <li>Lista domen (max. 10 pozycji)</li>
-                            <li>ikona domeny, nazwa domeny, lista domyślnych ikon (do wyboru)</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Procesy, Opcje, Integracje</h3>
-                <ul>
-                    <li>Seedowanie — wstawienie do bazy danych początkowych/domyślnych nazw dla domen
-                        <ul>
-                            <li>Wykonywane przy pierwszym starcie aplikacji</li>
-                        </ul>
-                    </li>
-                    <li>Zapisywanie i edycja domen
-                        <ul>
-                            <li>Nazwa domeny — max. dł. 36</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </details>
+<section class="panel" data-tab="Preferencje" data-row="1">
+    <p class="panel-intro">Konfiguracja aplikacji, dane, przełączniki funkcji oraz dostosowanie aplikacji do preferencji użytkownika.</p>
 
     <details class="req">
         <summary>
             <span class="req-title">Robienie kopii zapasowej danych</span>
-            <span class="check" data-date="20/08">
+            <span class="check" data-date="15/10">
                 <span class="check-main done">🟢 Sprawdzone</span>
                 <span class="check-ago"></span>
             </span>
@@ -676,7 +894,7 @@
             <div class="spec-section">
                 <h3>Wejścia, Dane, Stany</h3>
                 <ul>
-                    <li>Sekcja „Kopia zapasowa danych" (Ustawienia)
+                    <li>Sekcja „Kopia zapasowa danych" (Preferencje)
                         <ul>
                             <li>włącz / wyłącz robienie backupu (domyślnie wyłączony)</li>
                             <li>metadane backupu
@@ -709,7 +927,8 @@
                         <ul>
                             <li>przy starcie aplikacji, tylko gdy opcja włączona</li>
                             <li>max 1 plik dziennie (nadpisywanie)</li>
-                            <li>✳️ kopia obejmuje fiszki (luźne i zestawy) z postępem powtórek</li>
+                            <li>kopia obejmuje fiszki (luźne i zestawy) z postępem powtórek</li>
+                            <li>kopia obejmuje hex tagi i ich powiązania z myślami</li>
                             <li>backup starszy niż aktualna wersja DB może być wczytany; nowszy nie</li>
                             <li>nowe zasoby z nowej wersji aplikacji (np. ikony) są doseedowane po wczytaniu backupu oraz przy każdym starcie</li>
                         </ul>
@@ -719,123 +938,300 @@
         </div>
     </details>
 
-</section>
-
-<section class="panel" data-tab="Personalizacja" data-row="1">
-    <p class="panel-intro">Dostosowanie wyglądu i zachowania aplikacji do preferencji użytkownika.</p>
-
     <details class="req">
         <summary>
-            <span class="req-title">✳️ Wybór ekranu startowego</span>
-            <span class="check">
+            <span class="req-title">Wybór ekranu startowego</span>
+            <span class="check" data-date="15/10">
             <span class="check-main verify">🟡 Weryfikacja</span>
-            <span class="check-ago">-</span>
+            <span class="check-ago"></span>
         </span>
         </summary>
         <div class="spec-body">
             <div class="spec-section">
                 <h3>Potrzeba i Cel</h3>
                 <ul>
-                    <li>✳️ Szybki dostęp do najczęściej używanego ekranu — aplikacja otwiera się od razu tam, gdzie użytkownik pracuje najczęściej</li>
+                    <li>Szybki dostęp do najczęściej używanego ekranu — aplikacja otwiera się od razu tam, gdzie użytkownik pracuje najczęściej</li>
                 </ul>
             </div>
             <div class="spec-section">
                 <h3>Wejścia, Dane, Stany</h3>
                 <ul>
-                    <li>✳️ Sekcja „Ekran startowy" — w sekcji personalizacji, pod „Moje domeny" <span class="location">Ustawienia</span>
+                    <li>Sekcja „Ekran startowy" — w sekcji personalizacji <span class="location">Preferencje</span>
                         <ul>
-                            <li>✳️ 4 kafelki do wyboru: <span class="location">Dom</span> / <span class="location">Strumień</span> / <span class="location">Zapamiętywanie</span> / <span class="location">Warsztat</span> (dokładnie jeden aktywny)</li>
-                            <li>✳️ domyślnie: <span class="location">Dom</span></li>
-                            <li>✳️ fiszki wyłączone w <span class="location">Ustawieniach</span> — kafelek <span class="location">Zapamiętywanie</span> wyszarzony, zaznaczenie wraca na <span class="location">Dom</span>; aplikacja startuje wtedy na <span class="location">Dom</span></li>
+                            <li>4 kafelki do wyboru: <span class="location">Dom</span> / <span class="location">Strumień</span> / <span class="location">Zapamiętywanie</span> / <span class="location">Warsztat</span> (dokładnie jeden aktywny)</li>
+                            <li>domyślnie: <span class="location">Dom</span></li>
+                            <li>fiszki wyłączone w <span class="location">Preferencjach</span> — kafelek <span class="location">Zapamiętywanie</span> wyszarzony, zaznaczenie wraca na <span class="location">Dom</span>; aplikacja startuje wtedy na <span class="location">Dom</span></li>
                         </ul>
                     </li>
-                    <li>✳️ Wybór zapamiętywany trwale między uruchomieniami aplikacji</li>
+                    <li>Wybór zapamiętywany trwale między uruchomieniami aplikacji</li>
                 </ul>
             </div>
             <div class="spec-section">
                 <h3>Procesy, Opcje, Integracje</h3>
                 <ul>
-                    <li>✳️ Zapis wyboru — wspólnie z pozostałymi ustawieniami przyciskiem <span class="bracket">Zapisz</span></li>
-                    <li>✳️ Otwieranie wybranego ekranu przy uruchomieniu aplikacji
+                    <li>Zapis wyboru — wspólnie z pozostałymi ustawieniami przyciskiem <span class="bracket">Zapisz</span></li>
+                    <li>Otwieranie wybranego ekranu przy uruchomieniu aplikacji
                         <ul>
-                            <li>✳️ tylko przy starcie z ikony aplikacji — nie przy powrocie z nawigacji ani po obrocie ekranu</li>
-                            <li>✳️ <span class="location">Dom</span> pozostaje „pod spodem" — cofnięcie z wybranego ekranu wraca na <span class="location">Dom</span></li>
-                            <li>✳️ zmiana obowiązuje od następnego uruchomienia (nie przełącza ekranu w trakcie działania)</li>
+                            <li>tylko przy starcie z ikony aplikacji — nie przy powrocie z nawigacji ani po obrocie ekranu</li>
+                            <li><span class="location">Dom</span> pozostaje „pod spodem" — cofnięcie z wybranego ekranu wraca na <span class="location">Dom</span></li>
+                            <li>zmiana obowiązuje od następnego uruchomienia (nie przełącza ekranu w trakcie działania)</li>
                         </ul>
                     </li>
-                </ul>
-            </div>
-        </div>
-    </details>
-
-    <details class="req">
-        <summary>
-            <span class="req-title">—</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>—</li>
                 </ul>
             </div>
         </div>
     </details>
 </section>
 
-<section class="panel" data-tab="Metadane" data-row="1">
-    <p class="panel-intro">Przegląd metadanych myśli — hex tagi.</p>
+<section class="panel" data-tab="Tagi i Domeny" data-row="1">
+    <div class="feature-terms"><b>Pojęcia</b><ul>
+        <li>metadane myśli — wszystko, czym myśl jest opisana poza treścią: hex tagi (osoby, projekty) i domena</li>
+        <li>licznik użyć — liczba myśli, do których tag jest przypięty</li>
+        <li>tag „ja” — tag własnej osoby (tag rdzeniowy)</li>
+    </ul></div>
 
     <details class="req">
         <summary>
-            <span class="req-title">Lista tagów Osoby<span class="req-alt">Ekran „Metadane"</span></span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="req-title">Przeglądanie i porządkowanie hex tagów<span class="req-alt">Zakładki „Osoby” i „Projekty”</span></span>
+            <span class="check" data-date="15/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>✳️ Przegląd wszystkich osób (hex tagów Osoby) w jednym miejscu — wraz z tym, jak często każda się pojawia</li>
-                    <li>✳️ Szybka korekta nazwy taga bez wchodzenia w myśli</li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Wejścia, Dane, Stany</h3>
-                <ul>
-                    <li>✳️ Nowe wejście <span class="location">Metadane</span> w nawigacji — między <span class="location">Warsztat</span> a <span class="location">Ustawienia</span></li>
-                    <li>✳️ Lista pigułek — każdy tag Osoby jako pigułka: nazwa + liczba użyć, po maks. 2 w wierszu
-                        <ul>
-                            <li>nieparzysta liczba tagów → ostatni wiersz z jedną pigułką</li>
-                        </ul>
-                    </li>
-                    <li>✳️ Kolejność — tag „ja" zawsze pierwszy (tag rdzeniowy), dalej od najczęściej do najrzadziej używanego (remis → alfabetycznie)</li>
-                    <li>✳️ Pusty stan — <span class="msg">Brak osób w tagach</span></li>
-                    <li>✳️ Bottom sheet edycji taga — pole nazwy wypełnione obecną nazwą</li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Procesy, Opcje, Integracje</h3>
-                <ul>
-                    <li>✳️ Tap pigułki (z efektem tapnięcia) → otwiera bottom sheet edycji</li>
-                    <li>✳️ <span class="bracket">Zapisz</span> → zmiana nazwy taga
-                        <ul>
-                            <li>pusta nazwa → nie zapisuje, prosi o nazwę</li>
-                            <li>nazwa zajęta przez inny tag → blokada + <span class="msg">Taki tag już istnieje</span>; łączenie tagów to osobna funkcja (przeciągnięcie pigułki na pigułkę)</li>
-                        </ul>
-                    </li>
-                    <li>✳️ Lista odświeża się po zmianie nazwy oraz po powrocie na ekran</li>
-                </ul>
-            </div>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>przegląd wszystkich swoich tagów w jednym miejscu i porządkowanie ich nazw bez wchodzenia w pojedyncze myśli</p>
+            <table class="mech-table">
+                <thead>
+                    <tr>
+                        <th>Funkcja</th>
+                        <th>Wejścia, Dane, Stany</th>
+                        <th>Procesy, Opcje, Integracje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="mech-name">Wyświetlanie listy tagów</td>
+                        <td><ul class="cell">
+                            <li>wejście <span class="location">Tagi i Domeny</span> w nawigacji — między <span class="location">Warsztat</span> a <span class="location">Preferencje</span></li>
+                            <li>osobna lista dla każdego rodzaju: osoby i projekty
+                                <ul>
+                                    <li>przy każdym tagu jego nazwa i licznik użyć</li>
+                                    <li>tag bez żadnej myśli zostaje na liście z licznikiem 0</li>
+                                </ul>
+                            </li>
+                            <li>brak tagów danego rodzaju — informacja o pustej liście zamiast niej</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>kolejność: od najczęściej do najrzadziej używanego, przy remisie alfabetycznie
+                                <ul>
+                                    <li>na liście osób tag „ja” zawsze pierwszy — pojawia się dopiero po pierwszym użyciu</li>
+                                </ul>
+                            </li>
+                            <li>lista odświeża się po każdej zmianie oraz po powrocie na ekran</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Przełączanie rodzaju metadanych</td>
+                        <td><ul class="cell">
+                            <li>trzy zakładki: Osoby / Projekty / Domeny — widoczna jedna naraz</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>po powrocie z innego ekranu widoczna ostatnio oglądana zakładka</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Zmienianie nazwy tagu</td>
+                        <td><ul class="cell">
+                            <li>wybranie nazwy tagu na liście otwiera jej edycję — z obecną nazwą wpisaną do poprawienia</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>nowa nazwa obowiązuje we wszystkich myślach z tym tagiem</li>
+                            <li>pusta nazwa — nie zapisuje się, prośba o podanie nazwy</li>
+                            <li>nazwa zajęta przez inny tag tego samego rodzaju — nie zapisuje się, ostrzeżenie, że taki tag już istnieje
+                                <ul>
+                                    <li>ten sam tekst może być osobno osobą i projektem</li>
+                                    <li>łączenie dwóch tagów w jeden — poza zakresem</li>
+                                </ul>
+                            </li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Usuwanie tagu</td>
+                        <td><ul class="cell">
+                            <li>przytrzymanie tagu na liście → pytanie o potwierdzenie
+                                <ul>
+                                    <li>ostrzeżenie mówi wprost, że tag zniknie ze wszystkich myśli, które go używają</li>
+                                </ul>
+                            </li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>tag znika ze słownika i ze wszystkich myśli — same myśli zostają, tracą tylko ten tag</li>
+                            <li>po usunięciu potwierdzenie z nazwą tagu</li>
+                            <li>operacji nie można cofnąć</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Wyszukiwanie myśli z tagiem</td>
+                        <td><ul class="cell">
+                            <li>z licznika użyć przy tagu</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>przejście do <span class="location">Strumień</span> wyszukanego po tym tagu — jako kryterium jego rodzaju (osoba / projekt)
+                                <ul>
+                                    <li>kryterium zastępuje dotychczasowe wyszukiwanie w Strumieniu</li>
+                                    <li>cofnięcie ze Strumienia wraca do <span class="location">Tagi i Domeny</span></li>
+                                </ul>
+                            </li>
+                        </ul></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Konfigurowanie domen<span class="req-alt">Zakładka „Domeny”</span></span>
+            <span class="check" data-date="15/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <p class="feature-goal"><b>Potrzeba i Cel</b>dopasowanie kategorii myśli (domen) do siebie — ich nazw i ikon</p>
+            <table class="mech-table">
+                <thead>
+                    <tr>
+                        <th>Funkcja</th>
+                        <th>Wejścia, Dane, Stany</th>
+                        <th>Procesy, Opcje, Integracje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="mech-name">Wyświetlanie domen</td>
+                        <td><ul class="cell">
+                            <li>zakładka „Domeny” w <span class="location">Tagi i Domeny</span> — obok osób i projektów</li>
+                            <li>stały zestaw 10 domen — każda z ikoną i nazwą</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>domen nie dodaje się ani nie usuwa — tylko się je zmienia</li>
+                            <li>przy pierwszym wejściu na zakładkę podpowiedź, czym są domeny</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Edytowanie domeny</td>
+                        <td><ul class="cell">
+                            <li>wybranie domeny na liście otwiera jej edycję — z obecną nazwą i ikoną do zmiany</li>
+                            <li>ikona wybierana z galerii dostępnych ikon</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>nazwa wymagana, max 36 znaków</li>
+                            <li>zmiana zapisuje się od razu — bez osobnego zapisywania ustawień</li>
+                            <li>nowa nazwa i ikona obowiązują wszędzie, gdzie domena jest pokazywana</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Przygotowanie domen domyślnych</td>
+                        <td><ul class="cell">
+                            <li>pierwsze uruchomienie aplikacji</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>wstawienie 10 domen ze startowymi nazwami — do późniejszej zmiany przez użytkownika</li>
+                        </ul></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </details>
 </section>
+
+<section class="panel" data-tab="* Wspólne &amp; Podstawy" data-row="2">
+    <div class="feature-terms"><b>Pojęcia</b><ul>
+        <li>hex tag — etykieta myśli jednego z dwóch rodzajów: osoba (Osoba lub Ekipa) albo projekt (Projekt lub Zajawka)</li>
+        <li>słownik tagów — wszystkie tagi kiedykolwiek nadane; tag zostaje w słowniku także po usunięciu myśli</li>
+        <li>wariant tagu — nazwa różniąca się od istniejącej tylko polskimi znakami (powiesc obok powieść)</li>
+    </ul></div>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Łączenie myśli z hex tagami<span class="req-alt">Wspólne dla łapania i edycji myśli</span></span>
+            <span class="check" data-date="15/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <p class="feature-goal"><b>Potrzeba i Cel</b>ta sama osoba czy projekt zawsze jako jeden tag — niezależnie od tego, gdzie i jak został wpisany</p>
+            <table class="mech-table">
+                <thead>
+                    <tr>
+                        <th>Funkcja</th>
+                        <th>Wejścia, Dane, Stany</th>
+                        <th>Procesy, Opcje, Integracje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="mech-name">Nadawanie tagów myśli</td>
+                        <td><ul class="cell">
+                            <li>wpisywane przy łapaniu i edycji myśli oraz w treści notatki</li>
+                            <li>kilka tagów jednego rodzaju dozwolone; spacja lub przecinek rozdziela tagi</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>limit 16 znaków na tag</li>
+                            <li>wielkość liter nie ma znaczenia — „Ja” to ten sam tag co „ja”</li>
+                            <li>powtórzenie tej samej nazwy nie tworzy duplikatu</li>
+                            <li>nowa nazwa trafia do słownika tagów</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Odczytywanie tagów z treści notatki</td>
+                        <td><ul class="cell">
+                            <li>@słowo → osoba, #słowo → projekt
+                                <ul>
+                                    <li>tagiem jest tylko jedno słowo po znaczniku — reszta zdania zostaje treścią</li>
+                                    <li>znacznik musi zaczynać słowo — adres e-mail nie jest tagiem</li>
+                                </ul>
+                            </li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>przy zapisie notatki tagi dołączane do myśli — obok już nadanych</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Podpowiadanie tagów</td>
+                        <td><ul class="cell">
+                            <li>podczas wpisywania tagu — tylko tagi tego samego rodzaju</li>
+                            <li>podpowiedzi nie zasłaniają wpisywanego tekstu</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>na początku ostatnio używane + najczęstsze tagi</li>
+                            <li>po wpisaniu 3. znaku włącza się wyszukiwanie — zostają tylko tagi zawierające wpisany fragment, bez względu na polskie znaki</li>
+                            <li>wybór z podpowiedzi nie wywołuje ostrzeżenia o wariancie</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td class="mech-name">Wykrywanie wariantu tagu</td>
+                        <td><ul class="cell">
+                            <li>przy zapisie myśli lub notatki — wpisany tag jest wariantem istniejącego</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>ostrzeżenie z wyborem: użyć istniejącego czy utworzyć nowy
+                                <ul>
+                                    <li>użycie istniejącego poprawia tag także w treści notatki</li>
+                                </ul>
+                            </li>
+                            <li>warianty nigdy nie scalają się same — sad i sąd mogą być osobnymi tagami</li>
+                            <li>brak ostrzeżenia, gdy wpisana wersja tagu już jest w słowniku — wybór został dokonany wcześniej</li>
+                        </ul></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </details>
+</section>
+
 
 <section class="panel" data-tab="Łapanie myśli" data-row="2">
     <p class="panel-intro">Zapisywanie myśli w różnych formach.</p>
@@ -895,14 +1291,14 @@
 
     <details class="req">
         <summary>
-            <span class="req-title">Dodawanie metadanych myśli</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="req-title">Dodawanie metadanych przy łapaniu</span>
+            <span class="check" data-date="15/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
-            <p class="feature-goal"><b>Potrzeba i Cel</b>✳️ powiązanie zapisywanej myśli z jej metadanymi — tytułem i hex tagami; wszystko wpisywane w jednym polu, w treści</p>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>nadanie łapanej myśli tytułu i hex tagów jednym wpisem, bez przerywania łapania</p>
             <table class="mech-table">
                 <thead>
                     <tr>
@@ -913,36 +1309,38 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="mech-name">Tytuł (temat)</td>
+                        <td class="mech-name">Wpisywanie tytułu</td>
                         <td><ul class="cell">
-                            <li>✳️ tekst przed pierwszym markerem (max 36 zn.)</li>
+                            <li>tekst przed pierwszym znacznikiem (max 36 zn.)</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>✳️ nagłówek/streszczenie myśli — nie jest tagiem, nie trafia do słownika tagów</li>
+                            <li>krótki opis myśli, widoczny jako jej nagłówek — zwykły tekst, nie tag</li>
                         </ul></td>
                     </tr>
                     <tr>
-                        <td class="mech-name">Hex Tagi</td>
+                        <td class="mech-name">Wpisywanie tagów</td>
                         <td><ul class="cell">
-                            <li>✳️ markery w treści: @tekst → osoba, #tekst → projekt (max 16 zn. na tag)</li>
-                        </ul></td>
-                        <td><ul class="cell">
-                            <li>✳️ parsowanie przy zapisie
+                            <li>tagi wpisywane razem z tytułem, po nim — każdy poprzedzony znacznikiem
                                 <ul>
-                                    <li>każdy marker zaczyna nowy tag: @ja @michal → dwie osoby</li>
-                                    <li>kilka tagów jednego rodzaju dozwolone; spacja lub przecinek rozdziela</li>
+                                    <li>@ → osoba, # → projekt</li>
+                                    <li>każdy znacznik zaczyna nowy tag: @ja @michal → dwie osoby</li>
+                                    <li>przykład: <i>Pomysł na rozdział @ja #powieść</i> → tytuł „Pomysł na rozdział”, osoba „ja”, projekt „powieść”</li>
                                 </ul>
                             </li>
-                            <li>automatyczne skojarzenie myśli z jej tagami</li>
+                            <li>także znaczniki w treści notatki</li>
+                        </ul></td>
+                        <td><ul class="cell">
+                            <li>tagi wg <a class="req-link" data-target-tab="* Wspólne &amp; Podstawy" data-target-req="Łączenie myśli z hex tagami">Łączenie myśli z hex tagami</a> — w tym podpowiedzi i ostrzeżenie o wariancie przed zapisem</li>
+                            <li>podpowiedzi pojawiają się dopiero po znaczniku i 2 znakach</li>
                         </ul></td>
                     </tr>
                     <tr>
-                        <td class="mech-name">Domena</td>
+                        <td class="mech-name">Przypisywanie domeny</td>
                         <td><ul class="cell">
-                            <li>✳️ w Łapaniu nie ustawiana</li>
+                            <li>przy łapaniu nie ustawiana</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>✳️ przypisywana później w <span class="location">Edycja i szczegóły myśli</span></li>
+                            <li>przypisywana później w <a class="req-link" data-target-tab="Edycja i szczegóły myśli" data-target-req="Edytowanie metadanych myśli">Edytowanie metadanych myśli</a></li>
                         </ul></td>
                     </tr>
                 </tbody>
@@ -953,7 +1351,7 @@
     <details class="req">
         <summary>
             <span class="req-title">Zapis w formie Głosówki</span>
-            <span class="check" data-date="21/08">
+            <span class="check" data-date="15/10">
                 <span class="check-main done">🟢 Sprawdzone</span>
                 <span class="check-ago"></span>
             </span>
@@ -972,11 +1370,11 @@
                     <tr>
                         <td class="mech-name">Włączanie funkcji</td>
                         <td><ul class="cell">
-                            <li><span class="bracket">Włącz nagrania dźwiękowe</span> (toggle) <span class="location">Ustawienia</span></li>
+                            <li><span class="bracket">Włącz nagrania dźwiękowe</span> (toggle) <span class="location">Preferencje</span></li>
                             <li>domyślnie wyłączona</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>✴️ żądanie uprawnienia do mikrofonu — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
+                            <li>żądanie uprawnienia do mikrofonu — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne &amp; Podstawy" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
                         </ul></td>
                     </tr>
                     <tr>
@@ -986,13 +1384,13 @@
                             <li><span class="bracket">Dodaj nagranie głosowe</span> — gdy myśl nie ma jeszcze nagrania
                                 <ul>
                                     <li>funkcja włączona = aktywny; </li>
-                                    <li>wyłączona = nieaktywny (szary) + info z możliwością przejścia do ustawień</li>
+                                    <li>wyłączona = nieaktywny (szary) + info z możliwością przejścia do Preferencji</li>
                                 </ul>
                             </li>
                             <li>widget do nagrań — gdy myśl ma już podpięte nagranie</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>info dla użytkownika, gdy funkcja wyłączona — z opcją <span class="bracket">Idź do ustawień</span></li>
+                            <li>info dla użytkownika, gdy funkcja wyłączona — z opcją <span class="bracket">Przejdź do Preferencji</span></li>
                         </ul></td>
                     </tr>
                     <tr>
@@ -1058,7 +1456,7 @@
     <details class="req">
         <summary>
             <span class="req-title">Zapis w formie Zdjęcia</span>
-            <span class="check" data-date="21/08">
+            <span class="check" data-date="15/10">
                 <span class="check-main done">🟢 Sprawdzone</span>
                 <span class="check-ago"></span>
             </span>
@@ -1077,11 +1475,11 @@
                     <tr>
                         <td class="mech-name">Włączanie funkcji</td>
                         <td><ul class="cell">
-                            <li><span class="bracket">Włącz robienie zdjęć</span> (toggle) <span class="location">Ustawienia</span></li>
+                            <li><span class="bracket">Włącz robienie zdjęć</span> (toggle) <span class="location">Preferencje</span></li>
                             <li>domyślnie wyłączona</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>✴️ żądanie uprawnienia do aparatu — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
+                            <li>żądanie uprawnienia do aparatu — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne &amp; Podstawy" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
                         </ul></td>
                     </tr>
                     <tr>
@@ -1091,13 +1489,13 @@
                             <li><span class="bracket">Dodaj zdjęcie</span> — gdy myśl nie ma jeszcze zdjęcia
                                 <ul>
                                     <li>funkcja włączona = aktywny; </li>
-                                    <li>wyłączona = nieaktywny (szary) + info z możliwością przejścia do ustawień</li>
+                                    <li>wyłączona = nieaktywny (szary) + info z możliwością przejścia do Preferencji</li>
                                 </ul>
                             </li>
                             <li>widget do zdjęć — wyświetlanie miniaturki (gdy myśl ma podpięte zdjęcie)</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>info dla użytkownika, gdy funkcja wyłączona — z opcją <span class="bracket">Idź do ustawień</span></li>
+                            <li>info dla użytkownika, gdy funkcja wyłączona — z opcją <span class="bracket">Przejdź do Preferencji</span></li>
                         </ul></td>
                     </tr>
                     <tr>
@@ -1161,7 +1559,7 @@
                     <tr>
                         <td class="mech-name">Wybór domyślnej formy</td>
                         <td><ul class="cell">
-                            <li>domyślna forma zapisu myśli <span class="location">Ustawienia</span>
+                            <li>domyślna forma zapisu myśli <span class="location">Preferencje</span>
                                 <ul>
                                     <li>tekstowa (default)</li>
                                     <li>głosowa</li>
@@ -1497,14 +1895,14 @@
 
     <details class="req">
         <summary>
-            <span class="req-title">Dodawanie metadanych myśli</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="req-title">Edytowanie metadanych myśli</span>
+            <span class="check" data-date="15/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
-            <p class="feature-goal"><b>Potrzeba i Cel</b>✳️ przypisanie i poprawianie metadanych zapisanej myśli — tytułu, domeny i hex tagów (osoby, projekty); inaczej niż w <span class="location">Łapanie myśli</span>, gdzie powstają z markerów w treści</p>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>uzupełnianie i poprawianie metadanych zapisanej myśli — tytułu, domeny i hex tagów</p>
             <table class="mech-table">
                 <thead>
                     <tr>
@@ -1515,62 +1913,32 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="mech-name">Tytuł (temat)</td>
+                        <td class="mech-name">Edytowanie tytułu</td>
                         <td><ul class="cell">
-                            <li>✳️ tap na temat → dialog edycji (max 36 zn.)</li>
+                            <li>obecny tytuł do poprawienia (max 36 zn.)</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>✳️ nagłówek/streszczenie myśli — nie jest tagiem</li>
-                        </ul></td>
-                    </tr>
-                    <tr>
-                        <td class="mech-name">Domena</td>
-                        <td><ul class="cell">
-                            <li>✳️ siatka ikon domen w arkuszu; jedna domena na myśl</li>
-                        </ul></td>
-                        <td><ul class="cell">
-                            <li>✳️ wybór/zmiana podmienia dotychczasową</li>
+                            <li>krótki opis myśli, widoczny jako jej nagłówek — zwykły tekst, nie tag</li>
                         </ul></td>
                     </tr>
                     <tr>
-                        <td class="mech-name">Pola tagów</td>
+                        <td class="mech-name">Przypisywanie domeny</td>
                         <td><ul class="cell">
-                            <li>✳️ osobne pole na osoby (Osoba lub Ekipa) i na projekty (Projekt lub Zajawka)</li>
-                            <li>✳️ podpowiedź w polu nazywa jego rodzaj — ta sama przed i po wejściu w pole</li>
+                            <li>wybór z domen użytkownika; jedna domena na myśl</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>✳️ oba pola działają identycznie</li>
-                        </ul></td>
-                    </tr>
-                    <tr>
-                        <td class="mech-name">Dodawanie tagu</td>
-                        <td><ul class="cell">
-                            <li>✳️ wpisany tekst → chip po spacji albo <span class="bracket">✔</span> obok pola</li>
-                            <li>✳️ kilka tagów jednego rodzaju dozwolone</li>
-                        </ul></td>
-                        <td><ul class="cell">
-                            <li>✳️ przecinek działa jak spacja; powtórzenie tej samej wartości nie tworzy duplikatu</li>
-                            <li>✳️ limit 16 znaków na tag</li>
+                            <li>wybór/zmiana podmienia dotychczasową</li>
                         </ul></td>
                     </tr>
                     <tr>
-                        <td class="mech-name">Podpowiedzi</td>
+                        <td class="mech-name">Edytowanie tagów</td>
                         <td><ul class="cell">
-                            <li>✳️ pokazują się po tapnięciu w pole</li>
+                            <li>każdy rodzaj tagu ma swój dedykowany widget — osoby (Osoba lub Ekipa) i projekty (Projekt lub Zajawka)</li>
+                            <li>dodawanie i usuwanie tagów; obie listy (po jednej na rodzaj tagu) działają identycznie</li>
+                            <li>także znaczniki @/# w treści notatki — przy jej zapisie</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>✳️ domyślnie ostatnie + najczęstsze tagi; od 3 znaków dopasowane do wpisanego fragmentu</li>
-                            <li>✳️ wybór z podpowiedzi nie wywołuje ostrzeżenia</li>
-                        </ul></td>
-                    </tr>
-                    <tr>
-                        <td class="mech-name">Wariant istniejącego tagu</td>
-                        <td><ul class="cell">
-                            <li>✳️ wpisanie odmiany istniejącego tagu (np. powiesc obok powieść)</li>
-                        </ul></td>
-                        <td><ul class="cell">
-                            <li>✳️ ostrzeżenie z wyborem: użyć istniejącego czy zostawić swój — warianty nigdy nie scalają się same</li>
-                            <li>✳️ osobne słowa zostają osobnymi tagami (sad ≠ sąd)</li>
+                            <li>tagi wg <a class="req-link" data-target-tab="* Wspólne &amp; Podstawy" data-target-req="Łączenie myśli z hex tagami">Łączenie myśli z hex tagami</a> — w tym podpowiedzi i ostrzeżenie o wariancie przed zapisem</li>
                         </ul></td>
                     </tr>
                 </tbody>
@@ -1794,11 +2162,11 @@
                 <tr>
                     <td class="mech-name">Włączanie funkcji</td>
                     <td><ul class="cell">
-                        <li><span class="bracket">Włącz wpisy do kalendarza</span> (toggle) <span class="location">Ustawienia</span></li>
+                        <li><span class="bracket">Włącz wpisy do kalendarza</span> (toggle) <span class="location">Preferencje</span></li>
                         <li>domyślnie wyłączona</li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>żądanie uprawnienia do kalendarza — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
+                        <li>żądanie uprawnienia do kalendarza — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne &amp; Podstawy" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
                     </ul></td>
                 </tr>
                 <tr>
@@ -1872,7 +2240,7 @@
     </details>
 </section>
 
-<section class="panel" data-tab="* Wstęp &amp; Podstawy" data-row="4">
+<section class="panel" data-tab="* Wspólne &amp; Podstawy" data-row="4">
     <div class="feature-terms"><b>Pojęcia</b><ul>
         <li>fiszka — awers (pytanie) + rewers (odpowiedź), oba wymagane; osobny system, nie forma myśli</li>
         <li>luźna fiszka — fiszka bez zestawu: zapisana w biegu, do uporządkowania później</li>
@@ -1894,9 +2262,9 @@
     <details class="req">
         <summary>
             <span class="req-title">Włączanie modułu fiszek<span class="req-alt">Zapamiętywanie</span></span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="13/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
@@ -1914,7 +2282,7 @@
                 <tr>
                     <td class="mech-name">Włączanie i wyłączanie fiszek</td>
                     <td><ul class="cell">
-                        <li>przełącznik <span class="bracket">Włącz powtórki z użyciem fiszek</span> w <span class="location">Ustawienia</span>
+                        <li>przełącznik <span class="bracket">Włącz powtórki z użyciem fiszek</span> w <span class="location">Preferencje</span>
                             <ul>
                                 <li>domyślnie wyłączony</li>
                             </ul>
@@ -1948,9 +2316,9 @@
     <details class="req">
         <summary>
             <span class="req-title">Tworzenie i zarządzanie luźnymi fiszkami<span class="req-alt">Zakładka „Luźne fiszki”</span></span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="13/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
@@ -1985,7 +2353,7 @@
                     <td class="mech-name">Dodawanie fiszki do luźnych fiszek</td>
                     <td><ul class="cell">
                         <li>dodawanie z zakładki <span class="bracket">Luźne fiszki</span></li>
-                        <li>dodawanie skrótem <span class="bracket">Twórz fiszki</span> na ikonie aplikacji — <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Skróty aplikacji">Skróty aplikacji</a></li>
+                        <li>dodawanie skrótem <span class="bracket">Twórz fiszki</span> na ikonie aplikacji — <a class="req-link" data-target-tab="* Wspólne &amp; Podstawy" data-target-req="Skróty aplikacji">Skróty aplikacji</a></li>
                         <li>dodawanie serią — fiszka po fiszce, bez wychodzenia z dodawania
                             <ul>
                                 <li>widać, która to fiszka z kolei</li>
@@ -2067,9 +2435,9 @@
     <details class="req">
         <summary>
             <span class="req-title">Tworzenie i zarządzanie zestawami fiszek<span class="req-alt">Zakładka „Zestawy”</span></span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="13/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
@@ -2149,9 +2517,9 @@
     <details class="req">
         <summary>
             <span class="req-title">Szczegóły zestawu fiszek</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="13/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
@@ -2237,9 +2605,9 @@
     <details class="req">
         <summary>
             <span class="req-title">Dzisiejsza sesja powtórek<span class="req-alt">Widżet „Dzisiejsza sesja” na górze „Zapamiętywania”</span></span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="13/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
@@ -2405,7 +2773,7 @@
                 <tr>
                     <td class="mech-name">Ustawianie dziennego limitu nowych fiszek</td>
                     <td><ul class="cell">
-                        <li>dzienny limit nowych fiszek w <span class="location">Ustawienia</span> — ile nowych fiszek dziennie może zacząć powtórki
+                        <li>dzienny limit nowych fiszek w <span class="location">Preferencje</span> — ile nowych fiszek dziennie może zacząć powtórki
                             <ul>
                                 <li>domyślnie 10, zakres 1–30</li>
                                 <li>do zmiany tylko przy włączonych fiszkach</li>
@@ -2429,9 +2797,9 @@
     <details class="req">
         <summary>
             <span class="req-title">Przebieg sesji powtórek<span class="req-alt">System Powtórek</span></span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="13/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
@@ -2641,9 +3009,9 @@
     <details class="req">
         <summary>
             <span class="req-title">Przypomnienia o sesjach powtórek<span class="req-alt">Przypominajki systemowe (notyfikacje)</span></span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="check" data-date="13/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
@@ -2692,7 +3060,7 @@
                 <tr>
                     <td class="mech-name">Włączanie przypomnień</td>
                     <td><ul class="cell">
-                        <li>przełącznik <span class="bracket">Włącz przypomnienia o powtórkach</span> w <span class="location">Ustawienia</span>
+                        <li>przełącznik <span class="bracket">Włącz przypomnienia o powtórkach</span> w <span class="location">Preferencje</span>
                             <ul>
                                 <li>domyślnie wyłączony</li>
                                 <li>dostępny tylko przy włączonych fiszkach</li>
@@ -2738,245 +3106,6 @@
     </details>
 </section>
 
-<section class="panel" data-tab="* Wspólne / Core" data-row="5">
-    <p class="panel-intro">Elementy wspólne dla całej aplikacji.</p>
-
-    <details class="req">
-        <summary>
-            <span class="req-title">Żądanie Uprawnień<span class="req-alt">Wzorzec współdzielony przez funkcje zależne od uprawnień (mikrofon, aparat, kalendarz…)</span></span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>✳️ Funkcje zależne od uprawnień Androida potrzebują jednego, powtarzalnego sposobu proszenia o zgodę i utrzymania stanu funkcji</li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Procesy, Opcje, Integracje</h3>
-                <ul>
-                    <li>✳️ powiadomienia o wymaganych uprawnieniach do użycia funkcji</li>
-                    <li>✳️ prośba o uprawnienie do danego zasobu (mikrofon / aparat / kalendarz / …), a w przypadku uporczywej odmowy — możliwość zmiany w ustawieniach Androida</li>
-                    <li>✳️ stan ustawienia zapisywany automatycznie po zmianie</li>
-                    <li>✳️ auto-synchronizacja stanu funkcji
-                        <ul>
-                            <li>✳️ na podstawie zapisanego ustawienia oraz przyznanych uprawnień</li>
-                            <li>✳️ podczas startu i powrotu do aktywności</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </details>
-
-    <details class="req">
-        <summary>
-            <span class="req-title">Panel nawigacyjny</span>
-            <span class="check" data-date="28/08">
-                <span class="check-main done">🟢 Sprawdzone</span>
-                <span class="check-ago"></span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <p class="feature-goal"><b>Potrzeba i Cel</b>szybkie przejście do dowolnego ekranu z każdego miejsca aplikacji, bez zabierania stałego miejsca na ekranie</p>
-            <table class="mech-table">
-                <thead>
-                <tr>
-                    <th>Funkcja</th>
-                    <th>Wejścia, Dane, Stany</th>
-                    <th>Procesy, Opcje, Integracje</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="mech-name">Przycisk nawigacji</td>
-                    <td><ul class="cell">
-                        <li>✴️ pojedynczy przycisk w lewym dolnym rogu</li>
-                        <li>widoczny na wszystkich ekranach</li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>✳️ jeden przycisk otwiera i zamyka panel — zostaje widoczny także przy otwartym panelu</li>
-                        <li>✳️ zmienia wygląd wg stanu — wyróżniony przy otwartym panelu, stonowany przy zamkniętym</li>
-                    </ul></td>
-                </tr>
-                <tr>
-                    <td class="mech-name">Pokazywanie i chowanie panelu</td>
-                    <td><ul class="cell">
-                        <li>✴️ wysuwany panel przy lewej krawędzi</li>
-                        <li>pozycje do pozostałych ekranów: <span class="location">Dom</span> <span class="location">Strumień myśli</span> <span class="location">Warsztat</span> <span class="location">Ustawienia</span></li>
-                        <li>✳️ każda pozycja to ikona + podpis</li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>✳️ panel wysuwa się z lewej i chowa z powrotem — z animacją</li>
-                        <li>✳️ wsuwa się pod przyciskiem nawigacji</li>
-                        <li>auto-zamykanie po wyborze pozycji, tapnięcie w tło również go zamyka</li>
-                    </ul></td>
-                </tr>
-                <tr>
-                    <td class="mech-name">Zaznaczenie aktywnego ekranu</td>
-                    <td><ul class="cell">
-                        <li>pozycja odpowiadająca bieżącemu ekranowi</li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>ikona w trybie „filled"</li>
-                        <li>✳️ podpis w kolorze wyróżnienia, pozostałe stonowane</li>
-                    </ul></td>
-                </tr>
-                <tr>
-                    <td class="mech-name">Zgodność z systemem</td>
-                    <td><ul class="cell">
-                        <li>tryby nawigacji Androida
-                            <ul>
-                                <li>nawigacja 3-przyciskowa (classic)</li>
-                                <li>nawigacja gestami (od Android 10)</li>
-                            </ul>
-                        </li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>poprawne wyświetlanie w obu trybach</li>
-                    </ul></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </details>
-
-    <details class="req">
-        <summary>
-            <span class="req-title">Onboarding<span class="req-alt">Inaczej: „Poznawanie aplikacji" / „Onboarding review"</span></span>
-            <span class="check" data-date="05/08">
-                <span class="check-main done">🟢 Sprawdzone</span>
-                <span class="check-ago"></span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>Zaprezentowanie wszystkich ekranów oraz funkcji aplikacji w sposób
-                        <ul>
-                            <li>lekki / nienachalny</li>
-                            <li>praktyczny — możliwy do szybkiego wypróbowania po zobaczeniu wskazówki („zrób coś" od razu)</li>
-                            <li>przejrzysty / zrozumiały</li>
-                        </ul>
-                    </li>
-                    <li>Powrót do pominiętej wiedzy — wskazówka pokazuje się raz i znika; bez tego panelu nie da się jej odzyskać ani sprawdzić, czego się nie widziało</li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Wejścia, Dane, Stany</h3>
-                <ul>
-                    <li>Na każdym wejściu / ekranie — pop-up ze wskazówkami
-                        <ul>
-                            <li>treść tekstowa, ikona/zasób do wyświetlenia</li>
-                            <li><span class="bracket">Zakończ / Zaakceptuj</span></li>
-                            <li><span class="bracket">Kolejna wskazówka</span> + indicator (ile wskazówek w zestawie)</li>
-                        </ul>
-                    </li>
-                    <li>Karta „Poznawanie aplikacji" — w Warsztacie / pod Ścieżkami Doświadczeń
-                        <ul>
-                            <li>Sekcje = ekrany aplikacji
-                                <ul>
-                                    <li>stała kolejność: Dom, Ustawienia, Łapanie myśli, Strumień, Szczegóły myśli</li>
-                                    <li>ikona ekranu, nazwa, licznik zobaczonych wskazówek (ile / ze wszystkich)</li>
-                                </ul>
-                            </li>
-                            <li>Wiersz wskazówki — pierścień stanu (zobaczona/nie), tytuł</li>
-                            <li>Wspólny stan w obrębie kroku — jeden krok onboardingu może mieć kilka wskazówek; wszystkie dzielą oznaczenie „zobaczono/nie"</li>
-                            <li>Wskazówki pominięte w przeglądzie — nie trafiają na listę (rozszerzają inną wskazówkę / są dodatkową częścią procesu), ale są nadal widoczne na ekranie, którego dotyczą
-                                <ul>
-                                    <li>reset sekcji obejmuje je mimo ukrycia</li>
-                                    <li>nie wliczają się do licznika „zobaczenia"</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Procesy, Opcje, Integracje</h3>
-                <ul>
-                    <li>Ekrany aplikacji — pokazywanie każdego pop-upu tylko raz</li>
-                    <li>Karta „Poznawanie aplikacji"
-                        <ul>
-                            <li><span class="bracket">Idź do</span> — przechodzi do ekranu z nagłówka; dla Szczegółów myśli otwiera ostatnio utworzoną myśl, a przy jej braku pokazuje odpowiedni komunikat</li>
-                            <li><span class="bracket">Resetuj</span> — przywraca wskazówki tej sekcji do ponownego zobaczenia
-                                <ul>
-                                    <li>reset działa tylko na swoją sekcję</li>
-                                    <li>potwierdzenie dialogiem</li>
-                                    <li>po potwierdzeniu wskazówki sekcji znów pojawią się w określonych miejscach</li>
-                                </ul>
-                            </li>
-                            <li>Odświeżanie po powrocie — wejście do Warsztatu przelicza oznaczenia</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </details>
-
-    <details class="req">
-        <summary>
-            <span class="req-title">Skróty aplikacji</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <p class="feature-goal"><b>Potrzeba i Cel</b>złapanie myśli w wybranej formie bez wchodzenia w aplikację — prosto z ekranu głównego telefonu; ✳️ tak samo szybkie dopisanie nowych fiszek</p>
-            <table class="mech-table">
-                <thead>
-                <tr>
-                    <th>Funkcja</th>
-                    <th>Wejścia, Dane, Stany</th>
-                    <th>Procesy, Opcje, Integracje</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="mech-name">Otwieranie formy</td>
-                    <td><ul class="cell">
-                        <li>✴️ trzy skróty, po jednym na formę zapisu — <span class="bracket">Złap notatkę</span>, <span class="bracket">Złap głosówkę</span>, <span class="bracket">Złap zdjęcie</span></li>
-                        <li>widoczne po przytrzymaniu ikony aplikacji</li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>wybrany skrót otwiera <span class="location">Łapanie myśli</span></li>
-                        <li>✳️ forma wskazana przez skrót ma pierwszeństwo przed domyślną formą z ustawień</li>
-                        <li>forma otwiera się od razu — aparat rusza, nagrywanie startuje, notatka czeka na tekst</li>
-                        <li>gdy potrzebna funkcja jest wyłączona — informacja z możliwością jej włączenia</li>
-                    </ul></td>
-                </tr>
-                <tr>
-                    <td class="mech-name">✳️ Nowe fiszki</td>
-                    <td><ul class="cell">
-                        <li>✳️ skrót <span class="bracket">Twórz fiszki</span> — pierwszy na liście, nad skrótami formy zapisu</li>
-                        <li>✳️ widoczny tylko przy włączonych fiszkach — przełączenie w <span class="location">Ustawienia</span> zmienia listę skrótów od razu</li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>✳️ otwiera <span class="location">Zapamiętywanie</span> na zakładce <span class="bracket">Luźne fiszki</span> z od razu otwartą serią nowych fiszek — bez wyboru zestawu</li>
-                        <li>✳️ zamknięcie serii → lista luźnych fiszek</li>
-                    </ul></td>
-                </tr>
-                <tr>
-                    <td class="mech-name">Powrót z poziomu skrótu</td>
-                    <td><ul class="cell">
-                        <li>wejście do aplikacji przy zamkniętej aplikacji</li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>cofnięcie prowadzi do <span class="location">Dom</span>, nie wyrzuca z aplikacji</li>
-                        <li>✳️ z nowych fiszek: <span class="location">Zapamiętywanie</span> → <span class="location">Dom</span></li>
-                    </ul></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </details>
-</section>
 
 <script>
     // Build the tab bar from the panels, so adding a module = adding one <section>
@@ -2987,7 +3116,7 @@
         var buttons = [];
 
         // Group name shown above each row of tabs (key = data-row)
-        var ROW_NAMES = {'1':'Aplikacja', '2':'Myśli', '3':'Rozwój', '4':'Zapamiętywanie', '5':'Core'};
+        var ROW_NAMES = {'1':'Aplikacja', '2':'Myśli', '3':'Rozwój', '4':'Zapamiętywanie'};
 
         panels.forEach(function(panel){
             var row = panel.getAttribute('data-row') || '1';
@@ -3050,23 +3179,30 @@
 <script>
     // Cross-reference links: jump to another panel's requirement and open it
     (function(){
+        // Several tabs share a label (one per group), so the target is the panel that holds the requirement
         function go(tabLabel, reqTitle){
-            var tabs = document.querySelectorAll('#tabbar .tab');
-            for(var i=0;i<tabs.length;i++){
-                if(tabs[i].textContent === tabLabel){ tabs[i].click(); break; }
+            for(var i=0;i<panels.length;i++){
+                if(panels[i].getAttribute('data-tab') !== tabLabel) continue;
+
+                var req = findReq(panels[i], reqTitle);
+                if(reqTitle && !req) continue;
+
+                activate(panels[i], buttons[i]);
+                if(req){
+                    req.open = true;
+                    req.scrollIntoView({behavior:'smooth', block:'start'});
+                }
+                return;
             }
-            if(!reqTitle) return;
-            var panel = document.querySelector('.panel[data-tab="'+tabLabel+'"]');
-            if(!panel) return;
+        }
+        function findReq(panel, reqTitle){
+            if(!reqTitle) return null;
             var reqs = panel.querySelectorAll('details.req');
             for(var j=0;j<reqs.length;j++){
                 var title = reqs[j].querySelector('.req-title');
-                if(title && title.textContent.indexOf(reqTitle) === 0){
-                    reqs[j].open = true;
-                    reqs[j].scrollIntoView({behavior:'smooth', block:'start'});
-                    break;
-                }
+                if(title && title.textContent.indexOf(reqTitle) === 0) return reqs[j];
             }
+            return null;
         }
         document.querySelectorAll('.req-link').forEach(function(link){
             link.title = link.textContent;

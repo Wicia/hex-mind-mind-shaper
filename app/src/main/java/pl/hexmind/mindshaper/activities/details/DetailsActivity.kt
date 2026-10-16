@@ -30,6 +30,8 @@ import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
 import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
 import pl.hexmind.mindshaper.databinding.ThoughtDetailsActivityBinding
 import pl.hexmind.mindshaper.services.ThoughtStatusService
+import pl.hexmind.mindshaper.services.HexTagsService
+import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.services.dto.StepWithGoalDTO
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import java.io.File
@@ -43,6 +45,9 @@ class DetailsActivity : ThoughtManagerActivity() {
 
     @Inject
     lateinit var thoughtStatusService: ThoughtStatusService
+
+    @Inject
+    lateinit var hexTagsService: HexTagsService
 
     private var currentPhotoUri: Uri? = null
 
@@ -360,9 +365,9 @@ class DetailsActivity : ThoughtManagerActivity() {
         ).show()
     }
 
-    private fun showEditRichTextDialog() {
+    private fun showEditRichTextDialog(textInput: String? = null) {
         val thought = viewModel.thoughtDetails.value ?: return
-        val currentText = thought.richText ?: ""
+        val currentText = textInput ?: thought.richText ?: ""
 
         TextEditDialog(
             context = this,
@@ -370,9 +375,41 @@ class DetailsActivity : ThoughtManagerActivity() {
             title = getString(R.string.common_edit_note_header),
             notesStyle = true,
             onSave = { newText ->
-                viewModel.updateRichText(newText)
+                saveRichTextUnlessSimilarTagExists(newText)
             }
         ).show()
+    }
+
+    /**
+     * Inline @/# markers become tags on save, so a variant typed in the note gets the same choice
+     * as one typed in the tag fields.
+     */
+    private fun saveRichTextUnlessSimilarTagExists(richText: String) {
+        lifecycleScope.launch {
+            val embeddedTags = HexTagsUtils.extractEmbeddedTags(richText)
+            val similarTag = hexTagsService.findFirstSimilarTag(embeddedTags.person, embeddedTags.project)
+
+            if (similarTag == null) {
+                viewModel.updateRichText(richText)
+                return@launch
+            }
+
+            ActionsDialog.Builder(this@DetailsActivity)
+                .setTitle(getString(R.string.common_hex_tags_similar_title))
+                .setDescription(getString(R.string.common_hex_tags_similar_description, similarTag.suggestion))
+                .setSecondaryAction(getString(R.string.common_hex_tags_similar_keep_mine)) {
+                    viewModel.updateRichText(richText)
+                }
+                .setPrimaryAction(getString(R.string.common_hex_tags_similar_use, similarTag.suggestion)) {
+                    val correctedRichText = HexTagsUtils.replaceEmbeddedTag(
+                        richText, similarTag.tagType, similarTag.typedTag, similarTag.suggestion
+                    )
+                    viewModel.updateRichText(correctedRichText ?: richText)
+                }
+                // ! The note is not saved yet - back to the editor, so the typed text is not lost
+                .setOnCancel { showEditRichTextDialog(richText) }
+                .show()
+        }
     }
 
     private fun takePhoto() {

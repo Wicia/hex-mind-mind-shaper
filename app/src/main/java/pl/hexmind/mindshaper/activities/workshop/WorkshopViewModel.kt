@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.database.models.GoalEntity
 import pl.hexmind.mindshaper.services.GoalsService
 import pl.hexmind.mindshaper.services.PathsService
-import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.GoalDTO
 import javax.inject.Inject
 
@@ -59,8 +58,7 @@ data class PathItem(
 @HiltViewModel
 class WorkshopViewModel @Inject constructor(
     private val goalsService: GoalsService,
-    private val pathsService: PathsService,
-    private val thoughtsService: ThoughtsService
+    private val pathsService: PathsService
 ) : ViewModel() {
 
 
@@ -74,9 +72,6 @@ class WorkshopViewModel @Inject constructor(
     // PATHS
     private val _pickedPaths = MutableLiveData<List<PathItem>>()
     val pickedPaths: LiveData<List<PathItem>> = _pickedPaths
-
-    // ONBOARDING
-    suspend fun getNewestThoughtId(): Int? = thoughtsService.getNewestThoughtId()
 
     init {
         loadGoals()

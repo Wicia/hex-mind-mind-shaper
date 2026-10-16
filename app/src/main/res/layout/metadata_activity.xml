@@ -18,7 +18,7 @@
         <!-- Activity header (icon + title) -->
         <include layout="@layout/common_header_activity" />
 
-        <!-- Tag type switch (Osoby / Projekty) -->
+        <!-- Metadata type switch (Osoby / Projekty / Domeny) -->
         <pl.hexmind.mindshaper.common.ui.views.HexTabSwitch
             android:id="@+id/tabs_tag_type"
             android:layout_width="match_parent"
@@ -46,6 +46,19 @@
             android:layout_marginTop="48dp"
             android:gravity="center"
             android:text="@string/metadata_persons_empty"
+            android:visibility="gone"
+            />
+
+        <!-- Domains grid -->
+        <GridLayout
+            android:id="@+id/gl_domains"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:alignmentMode="alignBounds"
+            android:columnCount="2"
+            android:columnOrderPreserved="false"
+            android:rowCount="4"
             android:visibility="gone"
             />
 

@@ -27,7 +27,16 @@ class MetadataViewModel @Inject constructor(
     var currentType = HexTagType.PERSON
         private set
 
+    // Domains are not a tag type, so their tab is tracked on its own
+    var domainsSelected = false
+        private set
+
+    fun selectDomains() {
+        domainsSelected = true
+    }
+
     fun loadTags(tagType: HexTagType) {
+        domainsSelected = false
         currentType = tagType
         viewModelScope.launch {
             val tags = hexTagsService.getTagsWithUsage(tagType)

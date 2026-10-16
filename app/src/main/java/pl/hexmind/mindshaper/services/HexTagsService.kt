@@ -57,6 +57,23 @@ class HexTagsService @Inject constructor(
     }
 
     /**
+     * First typed tag spelled almost like an existing one - usually a slip, so the caller asks
+     * before a second entry lands in the dictionary.
+     *
+     * ! Checked tag by tag, not on the whole field - "ja powiesc" holds two tags, and normalizing
+     * the field as one string would find nothing and then overwrite both with a single name.
+     */
+    suspend fun findFirstSimilarTag(person: String?, project: String?): SimilarTag? =
+        findFirstSimilarTagOfType(HexTagType.PERSON, person)
+            ?: findFirstSimilarTagOfType(HexTagType.PROJECT, project)
+
+    /** Swaps one tag inside a space-separated field, leaving the others as they were. */
+    fun replaceTag(fieldText: String?, similarTag: SimilarTag): String =
+        splitTags(fieldText)
+            .map { tagName -> if (tagName == similarTag.typedTag) similarTag.suggestion else tagName }
+            .joinToString(" ")
+
+    /**
      * Tags of one type for the Metadata list: the self tag "ja" first (a core tag), then the rest
      * most-used to least-used. Count 0 is kept, so a never-linked tag still shows.
      */
@@ -118,6 +135,21 @@ class HexTagsService @Inject constructor(
             .take(SUGGESTIONS_LIMIT)
     }
 
+    private suspend fun findFirstSimilarTagOfType(tagType: HexTagType, fieldText: String?): SimilarTag? {
+        splitTags(fieldText).forEach { typedTag ->
+            val suggestion = findSimilarTagNames(tagType, typedTag).firstOrNull()
+            if (suggestion != null) return SimilarTag(tagType, typedTag, suggestion)
+        }
+
+        return null
+    }
+
+    private fun splitTags(fieldText: String?): List<String> =
+        fieldText?.split(TAG_SEPARATOR_PATTERN)
+            ?.map { tagName -> tagName.trim().lowercase(Locale.ROOT) }
+            ?.filter { tagName -> tagName.isNotEmpty() }
+            .orEmpty()
+
     private fun lastTag(typedText: String): String {
         if (typedText.isEmpty()) return ""
 
@@ -141,6 +173,12 @@ class HexTagsService @Inject constructor(
         const val SELF_TAG_NAME = "ja"
     }
 }
+
+data class SimilarTag(
+    val tagType   : HexTagType,
+    val typedTag  : String,
+    val suggestion: String
+)
 
 enum class RenameOutcome {
     RENAMED,

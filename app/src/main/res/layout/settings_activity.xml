@@ -55,23 +55,6 @@
 
                     <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
 
-                    <!-- Domains -->
-                    <TextView
-                        android:id="@+id/tv_domains_section_header"
-                        style="@style/AppCardView_Header"
-                        android:text="@string/settings_domains_header" />
-
-                    <GridLayout
-                        android:id="@+id/gl_domains"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:alignmentMode="alignBounds"
-                        android:columnCount="2"
-                        android:columnOrderPreserved="false"
-                        android:rowCount="4" />
-
-                    <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
-
                     <!-- Start screen -->
                     <TextView
                         android:id="@+id/tv_start_screen_section_header"
@@ -336,22 +319,15 @@
                         android:layout_marginTop="8dp"
                         android:text="@string/settings_flashcards_reminders_switch_label" />
 
-                    <TextView
-                        style="@style/TextView_Section_Info"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/settings_flashcards_reminders_hint" />
-
                     <!-- Reminder hour - dimmed while flashcards or their reminder are off -->
                     <TextView
                         android:id="@+id/tv_flashcards_reminder_hour_label"
+                        style="@style/TextView_Section_Info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:layout_marginStart="16dp"
-                        android:text="@string/settings_flashcards_reminder_hour_label"
-                        android:textSize="14sp" />
+                        android:text="@string/settings_flashcards_reminder_hour_label" />
 
                     <pl.hexmind.mindshaper.common.ui.views.HexHourPickerView
                         android:id="@+id/hour_picker_flashcards_reminder"

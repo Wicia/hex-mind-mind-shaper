@@ -10,12 +10,9 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.RadioButton
 import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
-import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,13 +26,9 @@ import pl.hexmind.mindshaper.databinding.SettingsActivityBinding
 import pl.hexmind.mindshaper.services.CalendarService
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.AppShortcuts
-import pl.hexmind.mindshaper.services.DomainIconsService
-import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.MediaStorageService
 import pl.hexmind.mindshaper.services.WritableCalendar
-import pl.hexmind.mindshaper.services.dto.DomainDTO
 import pl.hexmind.mindshaper.services.reminders.FlashcardsReminders
-import pl.hexmind.mindshaper.services.validators.DomainValidator
 import javax.inject.Inject
 
 /**
@@ -45,16 +38,7 @@ import javax.inject.Inject
 class SettingsActivity : CoreActivity() {
 
     @Inject
-    lateinit var domainService : DomainsService
-
-    @Inject
-    lateinit var domainIconsService : DomainIconsService
-
-    @Inject
     lateinit var mediaStorageService : MediaStorageService
-
-    @Inject
-    lateinit var domainValidator: DomainValidator
 
     @Inject
     lateinit var dataSnapshotManager: DataSnapshotManager
@@ -124,7 +108,6 @@ class SettingsActivity : CoreActivity() {
         initStartScreenConfig()
         initDormantModeConfig()
         setupListeners()
-        initDomainButtons()
     }
 
     private fun setupListeners() {
@@ -137,11 +120,6 @@ class SettingsActivity : CoreActivity() {
         binding.tvThoughtValueScaleSectionHeader.setOnClickListener {
             onboardingManager.showTooltipForStep(
                 OnboardingProgressStep.SETTINGS_THOUGHT_VALUE_TOOLTIP, this
-            )
-        }
-        binding.tvDomainsSectionHeader.setOnClickListener {
-            onboardingManager.showTooltipForStep(
-                OnboardingProgressStep.SETTINGS_DOMAINS_TOOLTIP, this
             )
         }
         binding.tvBackupSectionHeader.setOnClickListener {
@@ -690,7 +668,7 @@ class SettingsActivity : CoreActivity() {
             .show()
     }
 
-    // ========== THOUGHTS VALUES SYSTEM & DOMAINS ==========
+    // ========== THOUGHTS VALUES SYSTEM ==========
 
     private fun initThoughtsValuesSystemConfig() {
         binding.tilesValueSystem.setSelected(appSettingsStorage.getThoughtValueSystem())
@@ -778,42 +756,6 @@ class SettingsActivity : CoreActivity() {
     private fun readDormantValue(): Int? {
         val raw = binding.etDormantValue.text?.toString()?.toIntOrNull() ?: return null
         return raw.coerceIn(AppSettingsStorage.DORMANT_VALUE_MIN, appSettingsStorage.getDormantValueMax())
-    }
-
-    // ========== DOMAINS ==========
-
-    private fun initDomainButtons() {
-        lifecycleScope.launch {
-            val titles = domainService.getAllDomains()
-
-            try {
-                // Create buttons with loaded icons
-                titles.forEachIndexed { domainIndex , domainDTO ->
-                    val buttonView = layoutInflater.inflate(R.layout.settings_domain_item, binding.glDomains, false)
-
-                    buttonView.findViewById<TextView>(R.id.tv_domain_name).text = domainDTO.name
-
-                    val resourceId = domainIconsService.getIconResourceId(domainDTO.iconId)
-                    buttonView.findViewById<ImageView>(R.id.iv_domain_icon).setImageResource(resourceId)
-
-                    buttonView.setOnClickListener {
-                        onDomainButtonClick(domainIndex, domainDTO)
-                    }
-
-                    binding.glDomains.addView(buttonView)
-                }
-            }
-            catch (e: Exception) {
-                // TODO: add UI control + handle error using: R.string.settings_domains_loading_error))
-            }
-        }
-    }
-
-    private fun onDomainButtonClick(domainTileIndex: Int, currentDomainDTO : DomainDTO) {
-        showDomainEditBottomSheet(currentDomainDTO) { updatedDTO ->
-            updateDomainButton(domainTileIndex, updatedDTO)
-            lifecycleScope.launch { domainService.updateDomain(dto = updatedDTO) }
-        }
     }
 
     /**
@@ -958,50 +900,6 @@ class SettingsActivity : CoreActivity() {
 
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
-    }
-
-    private fun showDomainEditBottomSheet(currentDomainDTO: DomainDTO, onDTOUpdated: (DomainDTO) -> Unit) {
-        lifecycleScope.launch {
-            try {
-                val availableIconsIds = domainIconsService.getAvailableIconsIds()
-                val iconsMap = domainIconsService.loadIconsBatch(availableIconsIds)
-
-                // Convert to IconsGridItem list expected by IconsGridView
-                val iconItems = availableIconsIds.mapNotNull { id ->
-                    iconsMap[id]?.let { resId -> IconsGridItem(id = id, iconResId = resId) }
-                }
-
-                DomainEditBottomSheet.show(
-                    fragmentManager = supportFragmentManager,
-                    items = iconItems,
-                    domainName = currentDomainDTO.name,
-                    selectedIconId = currentDomainDTO.iconId,
-                    validator = domainValidator
-                ) { name, iconId ->
-                    val updatedDTO = DomainDTO(id = currentDomainDTO.id, name = name, iconId = iconId)
-                    onDTOUpdated(updatedDTO)
-                }
-            }
-            catch (e: Exception) {
-                // TODO: Handling exception is needed?
-            }
-        }
-    }
-
-    /**
-     * Helper method to update button icon after selection
-     */
-    private fun updateDomainButton(buttonIndex: Int, updatedDomainDTO : DomainDTO) {
-        lifecycleScope.launch {
-            // Find the button in GridLayout and update its icon
-            if (buttonIndex < binding.glDomains.childCount) {
-                val buttonView = binding.glDomains.getChildAt(buttonIndex)
-
-                val resourceId = domainIconsService.getIconResourceId(updatedDomainDTO.iconId)
-                buttonView.findViewById<ImageView>(R.id.iv_domain_icon).setImageResource(resourceId)
-                buttonView.findViewById<TextView>(R.id.tv_domain_name).text = updatedDomainDTO.name
-            }
-        }
     }
 
     /**

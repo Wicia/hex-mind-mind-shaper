@@ -2,6 +2,7 @@ package pl.hexmind.mindshaper.common.regex
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import pl.hexmind.mindshaper.database.models.HexTagType
 
 class HexTagsUtils {
 
@@ -60,6 +61,25 @@ class HexTagsUtils {
                 person  = people.joinToString(" ").ifEmpty { null },
                 project = projects.joinToString(" ").ifEmpty { null }
             )
+        }
+
+        /**
+         * Rewrites one inline tag in free-form text, leaving the prose around it untouched.
+         * Matched ignoring case, since the tag itself is stored lower case.
+         */
+        fun replaceEmbeddedTag(text: String?, tagType: HexTagType, typedName: String, newName: String): String? {
+            if (text == null) return null
+            val tagMarker = if (tagType == HexTagType.PERSON) PERSON_MARKER else PROJECT_MARKER
+
+            return EMBEDDED_TAG_PATTERN.replace(text) { match ->
+                val (marker, value) = match.destructured
+                if (marker[0] == tagMarker && value.equals(typedName, ignoreCase = true)) {
+                    "$tagMarker$newName"
+                }
+                else {
+                    match.value
+                }
+            }
         }
 
         /**

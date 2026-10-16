@@ -24,7 +24,7 @@
     <string name="common_btn_decrease">-</string>
     <string name="common_btn_grant_permission">Zezwól</string>
     <string name="common_btn_confirm_replace">Zastąp dane</string>
-    <string name="common_btn_go_to_settings">Przejdź do Ustawień</string>
+    <string name="common_btn_go_to_settings">Przejdź do Preferencji</string>
     <string name="common_guide_btn_next">Mów dalej...</string>
     <string name="common_guide_btn_dismiss">Dzięki</string>
 
@@ -39,7 +39,7 @@
     <string name="common_edit_note_header">Edytuj notatkę</string>
     <string name="common_list_dialog_title">Wybierz coś sobie…</string>
     <string name="common_thoughts_forms_inactive_header">Włączyć nową formę zapisu?</string>
-    <string name="common_thoughts_forms_permissions_needed">Nagrania i zdjęcia włączysz w Ustawieniach.</string>
+    <string name="common_thoughts_forms_permissions_needed">Nagrania i zdjęcia włączysz w Preferencjach.</string>
     <string name="common_dialog_open_android_settings">Otwórz ustawienia Androida</string>
 
     <!-- Validation -->
@@ -72,7 +72,7 @@
     <!-- Hex Tagi: podpowiedzi i warianty -->
     <string name="common_hex_tags_similar_title">Użyć istniejącego tagu?</string>
     <string name="common_hex_tags_similar_description">Masz już podobny tag [%1$s].</string>
-    <string name="common_hex_tags_similar_use">Użyj [%1$s]</string>
+    <string name="common_hex_tags_similar_use">Użyj\n[%1$s]</string>
     <string name="common_hex_tags_similar_keep_mine">Utwórz nowy tag</string>
 
     <string name="common_hex_tags_hint_person">Osoba lub Ekipa</string>
@@ -191,7 +191,8 @@ Awers - Rewers…"</string>
 
     <string name="workshop_section_onboarding">Moje poznawanie aplikacji</string>
     <string name="workshop_onboarding_section_home">Dom</string>
-    <string name="workshop_onboarding_section_settings">Ustawienia</string>
+    <string name="workshop_onboarding_section_settings">Preferencje</string>
+    <string name="workshop_onboarding_section_metadata">Tagi i Domeny</string>
     <string name="workshop_onboarding_section_capture">Łapanie myśli</string>
     <string name="workshop_onboarding_section_stream">Strumień</string>
     <string name="workshop_onboarding_section_details">Szczegóły myśli</string>
@@ -200,6 +201,8 @@ Awers - Rewers…"</string>
     <string name="workshop_dialog_reset_onboarding">Wszystkie wskazówki w tej sekcji pojawią się ponownie.</string>
     <string name="workshop_dialog_reset_onboarding_yes">Pokaż wskazówki</string>
     <string name="workshop_onboarding_no_thoughts">Najpierw złap jakąś myśl</string>
+    <string name="workshop_onboarding_progress">Postęp</string>
+    <string name="workshop_onboarding_progress_percent">%1$d%%</string>
 
     <!-- ============================================================ -->
     <!--    HOME Activity                                             -->
@@ -402,13 +405,18 @@ Awers - Rewers…"</string>
     <!-- ============================================================ -->
 
     <!-- Header -->
-    <string name="metadata_title">Metadane</string>
+    <string name="metadata_title">Tagi i Domeny</string>
     <string name="metadata_persons_empty">Brak osób w tagach</string>
     <string name="metadata_projects_empty">Brak projektów w tagach</string>
 
-    <!-- Osoby / Projekty switch -->
+    <!-- Osoby / Projekty / Domeny switch -->
     <string name="metadata_tab_persons">Osoby</string>
     <string name="metadata_tab_projects">Projekty</string>
+    <string name="metadata_tab_domains">Domeny</string>
+
+    <!-- Onboarding - Domains tab -->
+    <string name="metadata_domains_title">Zakładka \"Domeny\"</string>
+    <string name="metadata_domains_tooltip">Zdefiniujesz tutaj \"Domeny\" - swoje kategorie lub szufladki dla myśli</string>
 
     <string name="metadata_tag_edit_title">Edytuj tag</string>
     <string name="metadata_tag_edit_hint_placeholder">Nazwa tagu</string>
@@ -420,6 +428,7 @@ Awers - Rewers…"</string>
     <string name="metadata_tag_delete_title">Usunąć tag?</string>
     <string name="metadata_tag_delete_message">Tag [%1$s] zniknie ze wszystkich myśli, które go używają.</string>
     <string name="metadata_tag_delete_yes">Usuń tag</string>
+    <string name="metadata_tag_delete_confirmation">Tag [%1$s] usunięto</string>
 
     <!-- Pill count part - opens Stream searched by the tag -->
     <string name="metadata_tag_search">Szukaj myśli z tym tagiem</string>
@@ -429,7 +438,7 @@ Awers - Rewers…"</string>
     <!-- ============================================================ -->
 
     <!-- Onboarding -->
-    <string name="settings_entry_title_1">Ustawienia</string>
+    <string name="settings_entry_title_1">Preferencje</string>
     <string name="settings_entry_tooltip_1">
     <![CDATA[
         W tym kreatywnym miejscu skroisz aplikację pod siebie!\n\n
@@ -439,8 +448,6 @@ Awers - Rewers…"</string>
     <string name="settings_entry_tooltip_2">Zapraszam Cię do radosnej zmiany ustawień i testów :)</string>
     <string name="settings_your_name_title">Sekcja personalizacji</string>
     <string name="settings_your_name_tooltip">[Jakiś mądry tekst, który nie istnieje a miał w tym miejscu być] </string>
-    <string name="settings_domains_title">Sekcja \"Domeny\"</string>
-    <string name="settings_domains_tooltip">Zdefiniujesz tutaj \"Domeny\" - swoje kategorie lub szufladki dla myśli</string>
     <string name="settings_thought_value_title">Sekcja \"Skala wartości myśli\"</string>
     <string name="settings_thought_value_tooltip">Każdej myśli możesz nadać wartość/wagę/priorytet liczbowy.\nOd ciebie zależą jego wartości… </string>
     <string name="settings_backup_title_1">Sekcja \"Kopia zapasowa\"</string>
@@ -449,7 +456,7 @@ Awers - Rewers…"</string>
     <string name="settings_backup_tooltip_2">Gdy uruchomisz aplikację jej mechanizm zapisze dane twoich myśli.\n\nMoże się to wydarzyć maksymalnie raz na godzinę.</string>
 
     <!-- Header -->
-    <string name="settings_title">Ustawienia</string>
+    <string name="settings_title">Preferencje</string>
 
     <!-- Name -->
     <string name="settings_your_name_header">✒️ Moje Prawdziwe Imię?</string>
@@ -482,8 +489,7 @@ Awers - Rewers…"</string>
     <string name="settings_permissions_flashcards">Włącz powtórki z użyciem fiszek</string>
     <string name="settings_flashcards_new_per_day_label">Max. liczba nowych fiszek\ndziennie w powtórkach</string>
     <string name="settings_flashcards_reminders_switch_label">Włącz przypomnienia o powtórkach</string>
-    <string name="settings_flashcards_reminders_hint">O tej godzinie przypomnimy o sesji powtórek, jeśli coś na nią czeka</string>
-    <string name="settings_flashcards_reminder_hour_label">Godzina wysyłania przypominajek</string>
+    <string name="settings_flashcards_reminder_hour_label">O tej godzinie przypomnimy Ci o sesji powtórek - o ile jakieś fiszki czekają na powtórki</string>
     <string name="settings_permission_notifications_title">Zezwolić na powiadomienia?</string>
     <string name="settings_notifications_permission_info">Bez nich nie dostaniesz przypomnień o powtórkach.</string>
     <string name="settings_permission_notifications_blockade_title">Odblokować powiadomienia?</string>
@@ -512,7 +518,6 @@ Awers - Rewers…"</string>
     <string name="settings_calendar_permission_info">Bez niego nie dodasz przypomnień.</string>
     <string name="settings_permission_calendar_blockade_title">Odblokować dostęp do kalendarza?</string>
 
-    <string name="settings_domains_header">🌾 Moje Domeny</string>
     <string name="settings_start_screen_header">🧭 Ekran startowy</string>
     <string name="settings_start_screen_home">Dom</string>
     <string name="settings_start_screen_stream">Strumień</string>

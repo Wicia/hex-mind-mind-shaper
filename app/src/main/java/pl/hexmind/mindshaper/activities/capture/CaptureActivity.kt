@@ -28,6 +28,8 @@ import androidx.core.widget.addTextChangedListener
 import android.widget.TextView
 import pl.hexmind.mindshaper.database.models.HexTagType
 import pl.hexmind.mindshaper.services.HexTagsService
+import pl.hexmind.mindshaper.services.SimilarTag
+import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.DefaultCaptureForm
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
@@ -386,11 +388,14 @@ class CaptureActivity : ThoughtManagerActivity() {
         // Pick up @/# markers typed inline in the note text and fold them into the same tags
         val embeddedTags = HexTagsUtils.extractEmbeddedTags(viewModel.draftThought.value?.richText)
 
+        val project = HexTagsUtils.mergeTagNames(tags.project, embeddedTags.project)
+        val person = HexTagsUtils.mergeTagNames(tags.person, embeddedTags.person)
+
         // Update draft with hex tags
         viewModel.updateHexTags(
             subject = tags.subject,
-            project = HexTagsUtils.mergeTagNames(tags.project, embeddedTags.project),
-            person = HexTagsUtils.mergeTagNames(tags.person, embeddedTags.person)
+            project = project,
+            person = person
         )
 
         // Validate
@@ -402,7 +407,46 @@ class CaptureActivity : ThoughtManagerActivity() {
             return
         }
 
-        // Save to DB
+        val similarTag = hexTagsService.findFirstSimilarTag(person, project)
+        if (similarTag == null) {
+            saveNewThought()
+            return
+        }
+
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.common_hex_tags_similar_title))
+            .setDescription(getString(R.string.common_hex_tags_similar_description, similarTag.suggestion))
+            .setSecondaryAction(getString(R.string.common_hex_tags_similar_keep_mine)) {
+                lifecycleScope.launch { saveNewThought() }
+            }
+            .setPrimaryAction(getString(R.string.common_hex_tags_similar_use, similarTag.suggestion)) {
+                applySimilarTag(tags.subject, person, project, similarTag)
+                lifecycleScope.launch { saveNewThought() }
+            }
+            .show()
+    }
+
+    /**
+     * ! The note text is rewritten too - an inline "#powiesc" left in the note would show a tag
+     * the thought is no longer linked to.
+     */
+    private fun applySimilarTag(subject: String?, person: String?, project: String?, similarTag: SimilarTag) {
+        viewModel.updateHexTags(
+            subject = subject,
+            project = if (similarTag.tagType == HexTagType.PROJECT) hexTagsService.replaceTag(project, similarTag) else project,
+            person = if (similarTag.tagType == HexTagType.PERSON) hexTagsService.replaceTag(person, similarTag) else person
+        )
+
+        val richText = viewModel.draftThought.value?.richText
+        val correctedRichText = HexTagsUtils.replaceEmbeddedTag(
+            richText, similarTag.tagType, similarTag.typedTag, similarTag.suggestion
+        )
+        if (correctedRichText != null && correctedRichText != richText) {
+            viewModel.updateRichText(correctedRichText)
+        }
+    }
+
+    private suspend fun saveNewThought() {
         val result = viewModel.saveNewThought()
 
         if (result.isSuccess) {

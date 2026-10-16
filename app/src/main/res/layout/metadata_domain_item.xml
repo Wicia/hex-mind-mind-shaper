@@ -28,6 +28,8 @@
         android:textSize="13sp"
         android:textColor="@color/text_primary"
         android:textAlignment="center"
-        android:maxLines="2" />
+        android:lineSpacingMultiplier="0.85"
+        android:maxLines="2"
+        />
 
 </LinearLayout>

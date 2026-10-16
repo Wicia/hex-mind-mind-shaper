@@ -83,10 +83,36 @@
         android:id="@+id/tv_build_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="bottom|center_horizontal"
         android:layout_margin="12dp"
         android:textSize="12sp"
         android:textColor="@color/_gray_lvl_2"
         />
+
+    <!-- Onboarding review entry - the space above the icon is where the bubbles rise -->
+    <FrameLayout
+        android:id="@+id/fl_onboarding_entry"
+        android:layout_width="48dp"
+        android:layout_height="120dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="8dp"
+        android:clipChildren="false">
+
+        <!-- Onboarding icon -->
+        <ImageView
+            android:id="@+id/iv_onboarding"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom"
+            android:padding="5dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_activity_onboarding"
+            app:tint="@color/_orange_lvl_2"
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+            />
+
+    </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
