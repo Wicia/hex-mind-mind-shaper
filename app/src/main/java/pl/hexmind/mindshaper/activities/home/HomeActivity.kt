@@ -3,6 +3,7 @@ package pl.hexmind.mindshaper.activities.home
 import android.content.Intent
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -11,6 +12,7 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.flashcards.FlashcardsActivity
+import pl.hexmind.mindshaper.activities.onboarding.OnboardingActivity
 import pl.hexmind.mindshaper.activities.stream.StreamActivity
 import pl.hexmind.mindshaper.activities.workshop.WorkshopActivity
 import pl.hexmind.mindshaper.common.formatting.setColoredText
@@ -29,6 +31,8 @@ class HomeActivity : CoreActivity() {
     private lateinit var tvHeaderGreetings : TextView
 
     private lateinit var tvBuildVersion : TextView
+
+    private lateinit var labBubbles: LabBubblesAnimator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,10 +53,25 @@ class HomeActivity : CoreActivity() {
         )
     }
 
+    // ! Guarded: a rerouted cold launch finishes in onCreate before the views exist
+    override fun onResume() {
+        super.onResume()
+        if (::labBubbles.isInitialized) labBubbles.start()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (::labBubbles.isInitialized) labBubbles.stop()
+    }
+
     private fun initViews() {
         setupHeader(R.drawable.ic_activity_home, R.string.common_foobar)
         fabNewThought = findViewById(R.id.fab_new_thought)
         tvBuildVersion = findViewById(R.id.tv_build_version)
+        labBubbles = LabBubblesAnimator(
+            container = findViewById(R.id.fl_onboarding_entry),
+            flaskIcon = findViewById(R.id.iv_onboarding)
+        )
         setupHeaderWithGreetings()
         setupBuildVersion()
     }
@@ -80,6 +99,10 @@ class HomeActivity : CoreActivity() {
         fabNewThought.setOnClickListener {
             val intent = Intent(this, CaptureActivity::class.java)
             startActivity(intent)
+        }
+
+        findViewById<ImageView>(R.id.iv_onboarding).setOnClickListener {
+            startActivity(Intent(this, OnboardingActivity::class.java))
         }
     }
 

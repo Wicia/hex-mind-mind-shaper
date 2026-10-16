@@ -136,7 +136,7 @@ class OnboardingManager @Inject constructor(
 }
 
 /**
- * Review panel grouping. Order here IS the order shown in the Workshop card.
+ * Review panel grouping: tips reviewed together. Card order and which sections share a card are set in OnboardingActivity.
  */
 enum class OnboardingSection(
     @StringRes val labelRes: Int,
