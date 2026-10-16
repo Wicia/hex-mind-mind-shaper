@@ -34,6 +34,7 @@
             background:var(--cream);
             color:var(--graphite);
             font-family:'Alegreya',Georgia,serif;
+            font-weight:500;
             font-size:17px;
             line-height:1.5;
         }
@@ -570,6 +571,281 @@
 
 <!-- ══ Each panel = one app module (level-1). Requirements inside = level-2 items. ══ -->
 
+<section class="panel" data-tab="* Wspólne / Core" data-row="1">
+    <p class="panel-intro">Elementy wspólne dla całej aplikacji.</p>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Żądanie Uprawnień<span class="req-alt">Wzorzec współdzielony przez funkcje zależne od uprawnień (mikrofon, aparat, kalendarz…)</span></span>
+            <span class="check" data-date="15/10">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago"></span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <div class="spec-section">
+                <h3>Potrzeba i Cel</h3>
+                <ul>
+                    <li>Funkcje zależne od uprawnień Androida potrzebują jednego, powtarzalnego sposobu proszenia o zgodę i utrzymania stanu funkcji</li>
+                </ul>
+            </div>
+            <div class="spec-section">
+                <h3>Procesy, Opcje, Integracje</h3>
+                <ul>
+                    <li>powiadomienia o wymaganych uprawnieniach do użycia funkcji</li>
+                    <li>prośba o uprawnienie do danego zasobu (mikrofon / aparat / kalendarz / …), a w przypadku uporczywej odmowy — możliwość zmiany w ustawieniach Androida</li>
+                    <li>stan ustawienia zapisywany automatycznie po zmianie</li>
+                    <li>auto-synchronizacja stanu funkcji
+                        <ul>
+                            <li>na podstawie zapisanego ustawienia oraz przyznanych uprawnień</li>
+                            <li>podczas startu i powrotu do aktywności</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Panel nawigacyjny</span>
+            <span class="check" data-date="15/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <p class="feature-goal"><b>Potrzeba i Cel</b>szybkie przejście do dowolnego ekranu z każdego miejsca aplikacji, bez zabierania stałego miejsca na ekranie</p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Przycisk nawigacji</td>
+                    <td><ul class="cell">
+                        <li>pojedynczy przycisk w lewym dolnym rogu</li>
+                        <li>widoczny na wszystkich ekranach</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>jeden przycisk otwiera i zamyka panel — zostaje widoczny także przy otwartym panelu</li>
+                        <li>zmienia wygląd wg stanu — wyróżniony przy otwartym panelu, stonowany przy zamkniętym</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Pokazywanie i chowanie panelu</td>
+                    <td><ul class="cell">
+                        <li>wysuwany panel przy lewej krawędzi</li>
+                        <li>pozycje do pozostałych ekranów: <span class="location">Dom</span> <span class="location">Strumień myśli</span> <span class="location">Warsztat</span> <span class="location">Preferencje</span></li>
+                        <li>każda pozycja to ikona + podpis</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>panel wysuwa się z lewej i chowa z powrotem — z animacją</li>
+                        <li>wsuwa się pod przyciskiem nawigacji</li>
+                        <li>auto-zamykanie po wyborze pozycji, tapnięcie w tło również go zamyka</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Zaznaczenie aktywnego ekranu</td>
+                    <td><ul class="cell">
+                        <li>pozycja odpowiadająca bieżącemu ekranowi</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>ikona w trybie „filled"</li>
+                        <li>podpis w kolorze wyróżnienia, pozostałe stonowane</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Zgodność z systemem</td>
+                    <td><ul class="cell">
+                        <li>tryby nawigacji Androida
+                            <ul>
+                                <li>nawigacja 3-przyciskowa (classic)</li>
+                                <li>nawigacja gestami (od Android 10)</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>poprawne wyświetlanie w obu trybach</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Onboarding<span class="req-alt">Inaczej: „Moje poznawanie aplikacji" / „Onboarding review"</span></span>
+            <span class="check" data-date="16/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <p class="feature-goal"><b>Potrzeba i Cel</b>poznanie ekranów i funkcji aplikacji w sposób lekki, praktyczny (do wypróbowania od razu po wskazówce) i przejrzysty — z możliwością powrotu do wskazówek pominiętych lub zapomnianych</p>
+            <div class="feature-terms"><b>Pojęcia</b><ul>
+                <li>wskazówka — krótki opis funkcji pokazywany raz, na ekranie, którego dotyczy</li>
+                <li>krok — zestaw wskazówek pokazywanych razem; wszystkie dzielą stan „zobaczona / nie"</li>
+                <li>sekcja — wskazówki jednego ekranu aplikacji</li>
+                <li>wskazówka dodatkowa — rozszerza inną wskazówkę albo jest dodatkową częścią procesu; poza przeglądem i liczeniem postępu</li>
+            </ul></div>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Pokazywanie wskazówek</td>
+                    <td><ul class="cell">
+                        <li>na ekranie, którego dotyczą — przy pierwszym wejściu lub pierwszym użyciu funkcji</li>
+                        <li>wskazówka: tytuł, treść, ilustracja</li>
+                        <li>informacja, ile wskazówek jest w kroku</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>każdy krok pokazywany tylko raz</li>
+                        <li>przejście do kolejnej wskazówki albo zakończenie kroku</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Wchodzenie do przeglądu wskazówek</td>
+                    <td><ul class="cell">
+                        <li>osobny ekran, wejście z <span class="location">Dom</span></li>
+                        <li>w nawigacji zaznaczony <span class="location">Dom</span> — jak w <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Panel nawigacyjny">Panel nawigacyjny</a></li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>cofnięcie wraca na <span class="location">Dom</span></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Wyświetlanie postępu</td>
+                    <td><ul class="cell">
+                        <li>ogólny postęp — jaka część wszystkich wskazówek (bez dodatkowych) została zobaczona (procent)</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>liczony z tych samych wskazówek co sekcje — postęp i liczniki sekcji zawsze zgodne</li>
+                        <li>przeliczany po powrocie na ekran (wskazówki mogły zostać zobaczone gdzie indziej)</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Wyświetlanie sekcji</td>
+                    <td><ul class="cell">
+                        <li>sekcje = ekrany aplikacji
+                            <ul>
+                                <li>stała kolejność: <span class="location">Dom</span> <span class="location">Preferencje</span> <span class="location">Tagi i Domeny</span> <span class="location">Łapanie myśli</span> <span class="location">Strumień</span> <span class="location">Szczegóły myśli</span></li>
+                                <li>pogrupowane wg funkcjonalności — każda osobno
+                                    <ul>
+                                        <li><span class="location">Strumień</span> i <span class="location">Szczegóły myśli</span> razem (ta sama funkcjonalność)</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>sekcja: nazwa ekranu, licznik zobaczonych wskazówek (ile / ze wszystkich), lista wskazówek — tytuł i stan „zobaczona / nie"</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>wskazówki dodatkowe
+                            <ul>
+                                <li>nie trafiają na listę ani do licznika</li>
+                                <li>nadal pokazywane na ekranie, którego dotyczą</li>
+                                <li>reset sekcji obejmuje je mimo ukrycia</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Przechodzenie do ekranu sekcji</td>
+                    <td><ul class="cell">
+                        <li><span class="bracket">Idź do</span> przy każdej sekcji</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>otwiera ekran sekcji</li>
+                        <li><span class="location">Szczegóły myśli</span> — otwiera ostatnio utworzoną myśl; przy braku myśli komunikat, że najpierw trzeba jakąś złapać</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Resetowanie sekcji</td>
+                    <td><ul class="cell">
+                        <li><span class="bracket">Resetuj</span> przy każdej sekcji</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>działa tylko na swoją sekcję, z potwierdzeniem</li>
+                        <li>wskazówki sekcji znów pojawią się na swoich ekranach</li>
+                        <li>postęp i licznik sekcji przeliczane od razu</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </details>
+
+    <details class="req">
+        <summary>
+            <span class="req-title">Skróty aplikacji</span>
+            <span class="check" data-date="15/10">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago"></span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <p class="feature-goal"><b>Potrzeba i Cel</b>złapanie myśli w wybranej formie bez wchodzenia w aplikację — prosto z ekranu głównego telefonu; tak samo szybkie dopisanie nowych fiszek</p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Otwieranie formy</td>
+                    <td><ul class="cell">
+                        <li>trzy skróty, po jednym na formę zapisu — <span class="bracket">Złap notatkę</span>, <span class="bracket">Złap głosówkę</span>, <span class="bracket">Złap zdjęcie</span></li>
+                        <li>widoczne po przytrzymaniu ikony aplikacji</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>wybrany skrót otwiera <span class="location">Łapanie myśli</span></li>
+                        <li>forma wskazana przez skrót ma pierwszeństwo przed domyślną formą z ustawień</li>
+                        <li>forma otwiera się od razu — aparat rusza, nagrywanie startuje, notatka czeka na tekst</li>
+                        <li>gdy potrzebna funkcja jest wyłączona — informacja z możliwością jej włączenia</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Nowe fiszki</td>
+                    <td><ul class="cell">
+                        <li>skrót <span class="bracket">Twórz fiszki</span> — pierwszy na liście, nad skrótami formy zapisu</li>
+                        <li>widoczny tylko przy włączonych fiszkach — przełączenie w <span class="location">Preferencje</span> zmienia listę skrótów od razu</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>otwiera <span class="location">Zapamiętywanie</span> na zakładce <span class="bracket">Luźne fiszki</span> z od razu otwartą serią nowych fiszek — bez wyboru zestawu</li>
+                        <li>zamknięcie serii → lista luźnych fiszek</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Powrót z poziomu skrótu</td>
+                    <td><ul class="cell">
+                        <li>wejście do aplikacji przy zamkniętej aplikacji</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>cofnięcie prowadzi do <span class="location">Dom</span>, nie wyrzuca z aplikacji</li>
+                        <li>z nowych fiszek: <span class="location">Zapamiętywanie</span> → <span class="location">Dom</span></li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </details>
+</section>
+
+
 <section class="panel" data-tab="Ekran Startowy" data-row="1">
     <p class="panel-intro">Pierwszy ekran po uruchomieniu aplikacji.</p>
 
@@ -612,7 +888,7 @@
 
 
 <section class="panel" data-tab="Preferencje" data-row="1">
-    <p class="panel-intro">Konfiguracja aplikacji, dane oraz przełączniki funkcji.</p>
+    <p class="panel-intro">Konfiguracja aplikacji, dane, przełączniki funkcji oraz dostosowanie aplikacji do preferencji użytkownika.</p>
 
     <details class="req">
         <summary>
@@ -676,11 +952,6 @@
         </div>
     </details>
 
-</section>
-
-<section class="panel" data-tab="Personalizacja" data-row="1">
-    <p class="panel-intro">Dostosowanie wyglądu i zachowania aplikacji do preferencji użytkownika.</p>
-
     <details class="req">
         <summary>
             <span class="req-title">Wybór ekranu startowego</span>
@@ -720,24 +991,6 @@
                             <li>zmiana obowiązuje od następnego uruchomienia (nie przełącza ekranu w trakcie działania)</li>
                         </ul>
                     </li>
-                </ul>
-            </div>
-        </div>
-    </details>
-
-    <details class="req">
-        <summary>
-            <span class="req-title">—</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>—</li>
                 </ul>
             </div>
         </div>
@@ -2867,245 +3120,6 @@
     </details>
 </section>
 
-<section class="panel" data-tab="* Wspólne / Core" data-row="5">
-    <p class="panel-intro">Elementy wspólne dla całej aplikacji.</p>
-
-    <details class="req">
-        <summary>
-            <span class="req-title">Żądanie Uprawnień<span class="req-alt">Wzorzec współdzielony przez funkcje zależne od uprawnień (mikrofon, aparat, kalendarz…)</span></span>
-            <span class="check" data-date="15/10">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago"></span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>Funkcje zależne od uprawnień Androida potrzebują jednego, powtarzalnego sposobu proszenia o zgodę i utrzymania stanu funkcji</li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Procesy, Opcje, Integracje</h3>
-                <ul>
-                    <li>powiadomienia o wymaganych uprawnieniach do użycia funkcji</li>
-                    <li>prośba o uprawnienie do danego zasobu (mikrofon / aparat / kalendarz / …), a w przypadku uporczywej odmowy — możliwość zmiany w ustawieniach Androida</li>
-                    <li>stan ustawienia zapisywany automatycznie po zmianie</li>
-                    <li>auto-synchronizacja stanu funkcji
-                        <ul>
-                            <li>na podstawie zapisanego ustawienia oraz przyznanych uprawnień</li>
-                            <li>podczas startu i powrotu do aktywności</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </details>
-
-    <details class="req">
-        <summary>
-            <span class="req-title">Panel nawigacyjny</span>
-            <span class="check" data-date="15/10">
-                <span class="check-main done">🟢 Sprawdzone</span>
-                <span class="check-ago"></span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <p class="feature-goal"><b>Potrzeba i Cel</b>szybkie przejście do dowolnego ekranu z każdego miejsca aplikacji, bez zabierania stałego miejsca na ekranie</p>
-            <table class="mech-table">
-                <thead>
-                <tr>
-                    <th>Funkcja</th>
-                    <th>Wejścia, Dane, Stany</th>
-                    <th>Procesy, Opcje, Integracje</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="mech-name">Przycisk nawigacji</td>
-                    <td><ul class="cell">
-                        <li>pojedynczy przycisk w lewym dolnym rogu</li>
-                        <li>widoczny na wszystkich ekranach</li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>jeden przycisk otwiera i zamyka panel — zostaje widoczny także przy otwartym panelu</li>
-                        <li>zmienia wygląd wg stanu — wyróżniony przy otwartym panelu, stonowany przy zamkniętym</li>
-                    </ul></td>
-                </tr>
-                <tr>
-                    <td class="mech-name">Pokazywanie i chowanie panelu</td>
-                    <td><ul class="cell">
-                        <li>wysuwany panel przy lewej krawędzi</li>
-                        <li>pozycje do pozostałych ekranów: <span class="location">Dom</span> <span class="location">Strumień myśli</span> <span class="location">Warsztat</span> <span class="location">Preferencje</span></li>
-                        <li>każda pozycja to ikona + podpis</li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>panel wysuwa się z lewej i chowa z powrotem — z animacją</li>
-                        <li>wsuwa się pod przyciskiem nawigacji</li>
-                        <li>auto-zamykanie po wyborze pozycji, tapnięcie w tło również go zamyka</li>
-                    </ul></td>
-                </tr>
-                <tr>
-                    <td class="mech-name">Zaznaczenie aktywnego ekranu</td>
-                    <td><ul class="cell">
-                        <li>pozycja odpowiadająca bieżącemu ekranowi</li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>ikona w trybie „filled"</li>
-                        <li>podpis w kolorze wyróżnienia, pozostałe stonowane</li>
-                    </ul></td>
-                </tr>
-                <tr>
-                    <td class="mech-name">Zgodność z systemem</td>
-                    <td><ul class="cell">
-                        <li>tryby nawigacji Androida
-                            <ul>
-                                <li>nawigacja 3-przyciskowa (classic)</li>
-                                <li>nawigacja gestami (od Android 10)</li>
-                            </ul>
-                        </li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>poprawne wyświetlanie w obu trybach</li>
-                    </ul></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </details>
-
-    <details class="req">
-        <summary>
-            <span class="req-title">Onboarding<span class="req-alt">Inaczej: „Poznawanie aplikacji" / „Onboarding review"</span></span>
-            <span class="check" data-date="05/08">
-                <span class="check-main done">🟢 Sprawdzone</span>
-                <span class="check-ago"></span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>Zaprezentowanie wszystkich ekranów oraz funkcji aplikacji w sposób
-                        <ul>
-                            <li>lekki / nienachalny</li>
-                            <li>praktyczny — możliwy do szybkiego wypróbowania po zobaczeniu wskazówki („zrób coś" od razu)</li>
-                            <li>przejrzysty / zrozumiały</li>
-                        </ul>
-                    </li>
-                    <li>Powrót do pominiętej wiedzy — wskazówka pokazuje się raz i znika; bez tego panelu nie da się jej odzyskać ani sprawdzić, czego się nie widziało</li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Wejścia, Dane, Stany</h3>
-                <ul>
-                    <li>Na każdym wejściu / ekranie — pop-up ze wskazówkami
-                        <ul>
-                            <li>treść tekstowa, ikona/zasób do wyświetlenia</li>
-                            <li><span class="bracket">Zakończ / Zaakceptuj</span></li>
-                            <li><span class="bracket">Kolejna wskazówka</span> + indicator (ile wskazówek w zestawie)</li>
-                        </ul>
-                    </li>
-                    <li>Karta „Poznawanie aplikacji" — w Warsztacie / pod Ścieżkami Doświadczeń
-                        <ul>
-                            <li>Sekcje = ekrany aplikacji
-                                <ul>
-                                    <li>stała kolejność: Dom, Preferencje, Łapanie myśli, Strumień, Szczegóły myśli</li>
-                                    <li>ikona ekranu, nazwa, licznik zobaczonych wskazówek (ile / ze wszystkich)</li>
-                                </ul>
-                            </li>
-                            <li>Wiersz wskazówki — pierścień stanu (zobaczona/nie), tytuł</li>
-                            <li>Wspólny stan w obrębie kroku — jeden krok onboardingu może mieć kilka wskazówek; wszystkie dzielą oznaczenie „zobaczono/nie"</li>
-                            <li>Wskazówki pominięte w przeglądzie — nie trafiają na listę (rozszerzają inną wskazówkę / są dodatkową częścią procesu), ale są nadal widoczne na ekranie, którego dotyczą
-                                <ul>
-                                    <li>reset sekcji obejmuje je mimo ukrycia</li>
-                                    <li>nie wliczają się do licznika „zobaczenia"</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Procesy, Opcje, Integracje</h3>
-                <ul>
-                    <li>Ekrany aplikacji — pokazywanie każdego pop-upu tylko raz</li>
-                    <li>Karta „Poznawanie aplikacji"
-                        <ul>
-                            <li><span class="bracket">Idź do</span> — przechodzi do ekranu z nagłówka; dla Szczegółów myśli otwiera ostatnio utworzoną myśl, a przy jej braku pokazuje odpowiedni komunikat</li>
-                            <li><span class="bracket">Resetuj</span> — przywraca wskazówki tej sekcji do ponownego zobaczenia
-                                <ul>
-                                    <li>reset działa tylko na swoją sekcję</li>
-                                    <li>potwierdzenie dialogiem</li>
-                                    <li>po potwierdzeniu wskazówki sekcji znów pojawią się w określonych miejscach</li>
-                                </ul>
-                            </li>
-                            <li>Odświeżanie po powrocie — wejście do Warsztatu przelicza oznaczenia</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </details>
-
-    <details class="req">
-        <summary>
-            <span class="req-title">Skróty aplikacji</span>
-            <span class="check" data-date="15/10">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago"></span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <p class="feature-goal"><b>Potrzeba i Cel</b>złapanie myśli w wybranej formie bez wchodzenia w aplikację — prosto z ekranu głównego telefonu; tak samo szybkie dopisanie nowych fiszek</p>
-            <table class="mech-table">
-                <thead>
-                <tr>
-                    <th>Funkcja</th>
-                    <th>Wejścia, Dane, Stany</th>
-                    <th>Procesy, Opcje, Integracje</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="mech-name">Otwieranie formy</td>
-                    <td><ul class="cell">
-                        <li>trzy skróty, po jednym na formę zapisu — <span class="bracket">Złap notatkę</span>, <span class="bracket">Złap głosówkę</span>, <span class="bracket">Złap zdjęcie</span></li>
-                        <li>widoczne po przytrzymaniu ikony aplikacji</li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>wybrany skrót otwiera <span class="location">Łapanie myśli</span></li>
-                        <li>forma wskazana przez skrót ma pierwszeństwo przed domyślną formą z ustawień</li>
-                        <li>forma otwiera się od razu — aparat rusza, nagrywanie startuje, notatka czeka na tekst</li>
-                        <li>gdy potrzebna funkcja jest wyłączona — informacja z możliwością jej włączenia</li>
-                    </ul></td>
-                </tr>
-                <tr>
-                    <td class="mech-name">Nowe fiszki</td>
-                    <td><ul class="cell">
-                        <li>skrót <span class="bracket">Twórz fiszki</span> — pierwszy na liście, nad skrótami formy zapisu</li>
-                        <li>widoczny tylko przy włączonych fiszkach — przełączenie w <span class="location">Preferencje</span> zmienia listę skrótów od razu</li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>otwiera <span class="location">Zapamiętywanie</span> na zakładce <span class="bracket">Luźne fiszki</span> z od razu otwartą serią nowych fiszek — bez wyboru zestawu</li>
-                        <li>zamknięcie serii → lista luźnych fiszek</li>
-                    </ul></td>
-                </tr>
-                <tr>
-                    <td class="mech-name">Powrót z poziomu skrótu</td>
-                    <td><ul class="cell">
-                        <li>wejście do aplikacji przy zamkniętej aplikacji</li>
-                    </ul></td>
-                    <td><ul class="cell">
-                        <li>cofnięcie prowadzi do <span class="location">Dom</span>, nie wyrzuca z aplikacji</li>
-                        <li>z nowych fiszek: <span class="location">Zapamiętywanie</span> → <span class="location">Dom</span></li>
-                    </ul></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </details>
-</section>
 
 <script>
     // Build the tab bar from the panels, so adding a module = adding one <section>
@@ -3116,7 +3130,7 @@
         var buttons = [];
 
         // Group name shown above each row of tabs (key = data-row)
-        var ROW_NAMES = {'1':'Aplikacja', '2':'Myśli', '3':'Rozwój', '4':'Zapamiętywanie', '5':'Core'};
+        var ROW_NAMES = {'1':'Aplikacja', '2':'Myśli', '3':'Rozwój', '4':'Zapamiętywanie'};
 
         panels.forEach(function(panel){
             var row = panel.getAttribute('data-row') || '1';
