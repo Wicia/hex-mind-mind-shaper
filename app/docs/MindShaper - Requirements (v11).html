@@ -25,7 +25,7 @@
             --line:#EAD9C6;
             --col-head:#eee9e3;
             --loc-bg:#DCE8F2;
-            --loc-ink:#2F5C82;
+            --loc-ink:#3A6A95;
             --sidebar-w:230px;
         }
         *{box-sizing:border-box;}
@@ -347,43 +347,29 @@
             padding:1px 7px;
             border-radius:6px;
         }
-        /* Location/screen marker — cool blue tag with an arrow notch on the left */
+        /* Location/screen marker — blue text with a left arrow; only actions are chips */
         .location{
-            display:inline-block;
-            line-height:1.3;
             font-family:'Baloo 2',system-ui,sans-serif;
-            font-size:13px;
+            font-size:15px;
             font-weight:500;
             color:var(--loc-ink);
-            background:var(--loc-bg);
-            padding:1px 8px 1px 14px;
-            border-radius:0 5px 5px 0;
-            clip-path:polygon(6px 0, 100% 0, 100% 100%, 6px 100%, 0 50%);
+            white-space:nowrap;
         }
+        .location::before{content:"[";}
+        .location::after{content:"]";}
         /* Cross-reference to an extracted, abstract pattern/module (own family — not a screen/location) */
         .req-link{
-            display:inline-block;
-            line-height:1.3;
             font-family:'Baloo 2',system-ui,sans-serif;
-            font-size:13px;
+            font-size:14px;
             font-weight:500;
-            background:#EDE3DA;
-            padding:1px 8px;
-            border-radius:6px;
             cursor:pointer;
             text-decoration:none;
             border-bottom:1px dashed var(--coffee);
-            /* Long block names end with "…" - max 45 characters and never wider than the cell; full name in the tooltip */
-            max-width:min(45ch, 100%);
-            white-space:nowrap;
-            overflow:hidden;
-            text-overflow:ellipsis;
-            vertical-align:bottom;
         }
-        .req-link::before{content:"\21B3";margin-right:4px;opacity:.8;}
+        .req-link::before{content:"↳";margin-right:3px;opacity:.8;}
         /* higher specificity so the coffee survives inside table cells */
         .spec-body a.req-link{color:var(--coffee);}
-        .spec-body a.req-link:hover{background:#E4D6C8;}
+        .spec-body a.req-link:hover{border-bottom-style:solid;}
         /* User-facing messages/toasts — gray + italic, no bracket */
         .msg{color:var(--muted);font-style:italic;}
         /* ── Mechanisms table (new spec format) ── */
@@ -571,7 +557,7 @@
 
 <!-- ══ Each panel = one app module (level-1). Requirements inside = level-2 items. ══ -->
 
-<section class="panel" data-tab="* Wspólne / Core" data-row="1">
+<section class="panel" data-tab="* Wspólne &amp; Podstawy" data-row="1">
     <p class="panel-intro">Elementy wspólne dla całej aplikacji.</p>
 
     <details class="req">
@@ -719,7 +705,7 @@
                     <td class="mech-name">Wchodzenie do przeglądu wskazówek</td>
                     <td><ul class="cell">
                         <li>osobny ekran, wejście z <span class="location">Dom</span></li>
-                        <li>w nawigacji zaznaczony <span class="location">Dom</span> — jak w <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Panel nawigacyjny">Panel nawigacyjny</a></li>
+                        <li>w nawigacji zaznaczony <span class="location">Dom</span> — jak w <a class="req-link" data-target-tab="* Wspólne &amp; Podstawy" data-target-req="Panel nawigacyjny">Panel nawigacyjny</a></li>
                     </ul></td>
                     <td><ul class="cell">
                         <li>cofnięcie wraca na <span class="location">Dom</span></li>
@@ -1160,7 +1146,7 @@
     </details>
 </section>
 
-<section class="panel" data-tab="* Wspólne dla myśli" data-row="2">
+<section class="panel" data-tab="* Wspólne &amp; Podstawy" data-row="2">
     <div class="feature-terms"><b>Pojęcia</b><ul>
         <li>hex tag — etykieta myśli jednego z dwóch rodzajów: osoba (Osoba lub Ekipa) albo projekt (Projekt lub Zajawka)</li>
         <li>słownik tagów — wszystkie tagi kiedykolwiek nadane; tag zostaje w słowniku także po usunięciu myśli</li>
@@ -1344,7 +1330,7 @@
                             <li>także znaczniki w treści notatki</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>tagi wg <a class="req-link" data-target-tab="* Wspólne dla myśli" data-target-req="Łączenie myśli z hex tagami">Łączenie myśli z hex tagami</a> — w tym podpowiedzi i ostrzeżenie o wariancie przed zapisem</li>
+                            <li>tagi wg <a class="req-link" data-target-tab="* Wspólne &amp; Podstawy" data-target-req="Łączenie myśli z hex tagami">Łączenie myśli z hex tagami</a> — w tym podpowiedzi i ostrzeżenie o wariancie przed zapisem</li>
                             <li>podpowiedzi pojawiają się dopiero po znaczniku i 2 znakach</li>
                         </ul></td>
                     </tr>
@@ -1388,7 +1374,7 @@
                             <li>domyślnie wyłączona</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>żądanie uprawnienia do mikrofonu — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
+                            <li>żądanie uprawnienia do mikrofonu — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne &amp; Podstawy" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
                         </ul></td>
                     </tr>
                     <tr>
@@ -1493,7 +1479,7 @@
                             <li>domyślnie wyłączona</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>żądanie uprawnienia do aparatu — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
+                            <li>żądanie uprawnienia do aparatu — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne &amp; Podstawy" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
                         </ul></td>
                     </tr>
                     <tr>
@@ -1952,7 +1938,7 @@
                             <li>także znaczniki @/# w treści notatki — przy jej zapisie</li>
                         </ul></td>
                         <td><ul class="cell">
-                            <li>tagi wg <a class="req-link" data-target-tab="* Wspólne dla myśli" data-target-req="Łączenie myśli z hex tagami">Łączenie myśli z hex tagami</a> — w tym podpowiedzi i ostrzeżenie o wariancie przed zapisem</li>
+                            <li>tagi wg <a class="req-link" data-target-tab="* Wspólne &amp; Podstawy" data-target-req="Łączenie myśli z hex tagami">Łączenie myśli z hex tagami</a> — w tym podpowiedzi i ostrzeżenie o wariancie przed zapisem</li>
                         </ul></td>
                     </tr>
                 </tbody>
@@ -2180,7 +2166,7 @@
                         <li>domyślnie wyłączona</li>
                     </ul></td>
                     <td><ul class="cell">
-                        <li>żądanie uprawnienia do kalendarza — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
+                        <li>żądanie uprawnienia do kalendarza — wg wzorca funkcji <a class="req-link" data-target-tab="* Wspólne &amp; Podstawy" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
                     </ul></td>
                 </tr>
                 <tr>
@@ -2254,7 +2240,7 @@
     </details>
 </section>
 
-<section class="panel" data-tab="* Wstęp &amp; Podstawy" data-row="4">
+<section class="panel" data-tab="* Wspólne &amp; Podstawy" data-row="4">
     <div class="feature-terms"><b>Pojęcia</b><ul>
         <li>fiszka — awers (pytanie) + rewers (odpowiedź), oba wymagane; osobny system, nie forma myśli</li>
         <li>luźna fiszka — fiszka bez zestawu: zapisana w biegu, do uporządkowania później</li>
@@ -2367,7 +2353,7 @@
                     <td class="mech-name">Dodawanie fiszki do luźnych fiszek</td>
                     <td><ul class="cell">
                         <li>dodawanie z zakładki <span class="bracket">Luźne fiszki</span></li>
-                        <li>dodawanie skrótem <span class="bracket">Twórz fiszki</span> na ikonie aplikacji — <a class="req-link" data-target-tab="* Wspólne / Core" data-target-req="Skróty aplikacji">Skróty aplikacji</a></li>
+                        <li>dodawanie skrótem <span class="bracket">Twórz fiszki</span> na ikonie aplikacji — <a class="req-link" data-target-tab="* Wspólne &amp; Podstawy" data-target-req="Skróty aplikacji">Skróty aplikacji</a></li>
                         <li>dodawanie serią — fiszka po fiszce, bez wychodzenia z dodawania
                             <ul>
                                 <li>widać, która to fiszka z kolei</li>
@@ -3193,23 +3179,30 @@
 <script>
     // Cross-reference links: jump to another panel's requirement and open it
     (function(){
+        // Several tabs share a label (one per group), so the target is the panel that holds the requirement
         function go(tabLabel, reqTitle){
-            var tabs = document.querySelectorAll('#tabbar .tab');
-            for(var i=0;i<tabs.length;i++){
-                if(tabs[i].textContent === tabLabel){ tabs[i].click(); break; }
+            for(var i=0;i<panels.length;i++){
+                if(panels[i].getAttribute('data-tab') !== tabLabel) continue;
+
+                var req = findReq(panels[i], reqTitle);
+                if(reqTitle && !req) continue;
+
+                activate(panels[i], buttons[i]);
+                if(req){
+                    req.open = true;
+                    req.scrollIntoView({behavior:'smooth', block:'start'});
+                }
+                return;
             }
-            if(!reqTitle) return;
-            var panel = document.querySelector('.panel[data-tab="'+tabLabel+'"]');
-            if(!panel) return;
+        }
+        function findReq(panel, reqTitle){
+            if(!reqTitle) return null;
             var reqs = panel.querySelectorAll('details.req');
             for(var j=0;j<reqs.length;j++){
                 var title = reqs[j].querySelector('.req-title');
-                if(title && title.textContent.indexOf(reqTitle) === 0){
-                    reqs[j].open = true;
-                    reqs[j].scrollIntoView({behavior:'smooth', block:'start'});
-                    break;
-                }
+                if(title && title.textContent.indexOf(reqTitle) === 0) return reqs[j];
             }
+            return null;
         }
         document.querySelectorAll('.req-link').forEach(function(link){
             link.title = link.textContent;
