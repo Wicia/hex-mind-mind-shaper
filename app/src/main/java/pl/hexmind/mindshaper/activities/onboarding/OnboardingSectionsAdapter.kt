@@ -1,4 +1,4 @@
-package pl.hexmind.mindshaper.activities.workshop
+package pl.hexmind.mindshaper.activities.onboarding
 
 import android.view.LayoutInflater
 import android.view.View
@@ -15,59 +15,72 @@ import pl.hexmind.mindshaper.common.onboarding.OnboardingSection
 import pl.hexmind.mindshaper.common.onboarding.OnboardingTipStatus
 
 class OnboardingSectionsAdapter(
+    private val cards: List<List<OnboardingSection>>,
     private val onOpenScreen: (OnboardingSection) -> Unit,
     private val onResetSection: (OnboardingSection) -> Unit,
     private val tipsProvider: (OnboardingSection) -> List<OnboardingTipStatus>
 ) : RecyclerView.Adapter<OnboardingSectionsAdapter.ViewHolder>() {
 
-    private val sections = OnboardingSection.entries
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val ivIcon: ImageView        = itemView.findViewById(R.id.iv_section_icon)
-        val tvLabel: TextView        = itemView.findViewById(R.id.tv_section_label)
-        val tvCounter: TextView      = itemView.findViewById(R.id.tv_section_counter)
-        val btnOpen: MaterialButton  = itemView.findViewById(R.id.btn_section_open)
-        val btnReset: MaterialButton = itemView.findViewById(R.id.btn_section_reset)
-        val llTips: LinearLayout     = itemView.findViewById(R.id.ll_section_tips)
+        val llSections: LinearLayout = itemView.findViewById(R.id.ll_card_sections)
+    }
+
+    private class SectionViews(sectionView: View) {
+        val ivIcon: ImageView        = sectionView.findViewById(R.id.iv_section_icon)
+        val tvLabel: TextView        = sectionView.findViewById(R.id.tv_section_label)
+        val tvCounter: TextView      = sectionView.findViewById(R.id.tv_section_counter)
+        val btnOpen: MaterialButton  = sectionView.findViewById(R.id.btn_section_open)
+        val btnReset: MaterialButton = sectionView.findViewById(R.id.btn_section_reset)
+        val llTips: LinearLayout     = sectionView.findViewById(R.id.ll_section_tips)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.onboarding_section_item, parent, false)
+            .inflate(R.layout.onboarding_card_item, parent, false)
 
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = sections.size
+    override fun getItemCount(): Int = cards.size
 
+    // Section items are rebuilt on every bind: a card holds at most a few of them
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val section = sections[position]
-        val context = holder.itemView.context
+        holder.llSections.removeAllViews()
+        val inflater = LayoutInflater.from(holder.itemView.context)
+
+        cards[position].forEach { section ->
+            val sectionView = inflater.inflate(R.layout.onboarding_section_item, holder.llSections, false)
+            bindSection(SectionViews(sectionView), section)
+            holder.llSections.addView(sectionView)
+        }
+    }
+
+    private fun bindSection(views: SectionViews, section: OnboardingSection) {
+        val context = views.tvCounter.context
         val tips = tipsProvider(section)
 
-        holder.ivIcon.setImageResource(section.iconRes)
-        holder.tvLabel.setText(section.labelRes)
-        holder.tvCounter.text = context.getString(
+        views.ivIcon.setImageResource(section.iconRes)
+        views.tvLabel.setText(section.labelRes)
+        views.tvCounter.text = context.getString(
             R.string.workshop_onboarding_section_counter,
             tips.count { tip -> tip.wasSeen },
             tips.size
         )
 
-        bindTips(holder, tips)
+        bindTips(views.llTips, tips)
 
-        holder.btnOpen.setOnClickListener { onOpenScreen(section) }
-        holder.btnReset.setOnClickListener { onResetSection(section) }
+        views.btnOpen.setOnClickListener { onOpenScreen(section) }
+        views.btnReset.setOnClickListener { onResetSection(section) }
     }
 
-    // Rows are rebuilt on every bind: the list is short and its length changes only on reset
-    private fun bindTips(holder: ViewHolder, tips: List<OnboardingTipStatus>) {
-        holder.llTips.removeAllViews()
-        val inflater = LayoutInflater.from(holder.itemView.context)
+    private fun bindTips(llTips: LinearLayout, tips: List<OnboardingTipStatus>) {
+        llTips.removeAllViews()
+        val inflater = LayoutInflater.from(llTips.context)
 
         tips.forEach { tip ->
-            val row = inflater.inflate(R.layout.onboarding_tip_item, holder.llTips, false)
+            val row = inflater.inflate(R.layout.onboarding_tip_item, llTips, false)
             bindTipRow(row, tip)
-            holder.llTips.addView(row)
+            llTips.addView(row)
         }
     }
 

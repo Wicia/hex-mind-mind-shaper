@@ -201,6 +201,8 @@ Awers - Rewers…"</string>
     <string name="workshop_dialog_reset_onboarding">Wszystkie wskazówki w tej sekcji pojawią się ponownie.</string>
     <string name="workshop_dialog_reset_onboarding_yes">Pokaż wskazówki</string>
     <string name="workshop_onboarding_no_thoughts">Najpierw złap jakąś myśl</string>
+    <string name="workshop_onboarding_progress">Postęp</string>
+    <string name="workshop_onboarding_progress_percent">%1$d%%</string>
 
     <!-- ============================================================ -->
     <!--    HOME Activity                                             -->

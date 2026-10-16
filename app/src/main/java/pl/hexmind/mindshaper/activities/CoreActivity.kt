@@ -26,6 +26,7 @@ import pl.hexmind.mindshaper.activities.flashcards.FlashcardSetActivity
 import pl.hexmind.mindshaper.activities.flashcards.FlashcardsActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.activities.metadata.MetadataActivity
+import pl.hexmind.mindshaper.activities.onboarding.OnboardingActivity
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
 import pl.hexmind.mindshaper.activities.stream.StreamActivity
 import pl.hexmind.mindshaper.activities.workshop.GoalDetailActivity
@@ -59,6 +60,7 @@ open class CoreActivity : AppCompatActivity() {
         private val activityToIndex = mapOf(
                 HomeActivity::class.java.simpleName to 0,
              CaptureActivity::class.simpleName      to 0, // Highlight Home icon when in Capture
+          OnboardingActivity::class.java.simpleName to 0, // Highlight Home icon when in Onboarding
               StreamActivity::class.java.simpleName to 1,
              DetailsActivity::class.simpleName      to 1, // Highlight Stream icon when in Thought Details
           FlashcardsActivity::class.java.simpleName to 2,
