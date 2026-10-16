@@ -832,42 +832,84 @@
 </section>
 
 
-<section class="panel" data-tab="Ekran Startowy" data-row="1">
-    <p class="panel-intro">Pierwszy ekran po uruchomieniu aplikacji.</p>
+<section class="panel" data-tab="Dom" data-row="1">
+    <p class="panel-intro">Ekran główny aplikacji — punkt wyjścia do łapania myśli i poznawania aplikacji.</p>
 
     <details class="req">
         <summary>
-            <span class="req-title">Powitanie</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+            <span class="req-title">Ekran Dom</span>
+            <span class="check" data-date="16/10">
+                <span class="check-main done">🟢 Sprawdzone</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>—</li>
-                </ul>
-            </div>
-        </div>
-    </details>
-
-    <details class="req">
-        <summary>
-            <span class="req-title">Data wersji</span>
-            <span class="check">
-                <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
-            </span>
-        </summary>
-        <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>—</li>
-                </ul>
-            </div>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>jedno proste miejsce, z którego od razu można złapać myśl — z osobistym powitaniem</p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Otwieranie Domu</td>
+                    <td><ul class="cell">
+                        <li>domyślny ekran po uruchomieniu aplikacji</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>inny ekran na starcie — wg <a class="req-link" data-target-tab="Preferencje" data-target-req="Wybór ekranu startowego">Wybór ekranu startowego</a>
+                            <ul>
+                                <li><span class="location">Dom</span> zostaje pod spodem — cofnięcie wraca na niego</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Wyświetlanie powitania</td>
+                    <td><ul class="cell">
+                        <li>powitanie losowane z listy, z imieniem użytkownika
+                            <ul>
+                                <li>imię wyróżnione</li>
+                                <li>imię ustawiane w <span class="location">Preferencje</span>; bez ustawienia — imię domyślne</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>losowanie przy każdym wejściu na ekran</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Łapanie myśli</td>
+                    <td><ul class="cell">
+                        <li>główne działanie ekranu</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>przejście do <span class="location">Łapanie myśli</span></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Wchodzenie do przeglądu wskazówek</td>
+                    <td><ul class="cell">
+                        <li>wejście wyróżnione, by przyciągało uwagę</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>przejście do przeglądu — jak w <a class="req-link" data-target-tab="* Wspólne &amp; Podstawy" data-target-req="Onboarding">Onboarding</a></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Wyświetlanie wersji</td>
+                    <td><ul class="cell">
+                        <li>data instalacji / ostatniej aktualizacji aplikacji</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>pozwala sprawdzić, która wersja jest na telefonie</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </details>
 </section>
