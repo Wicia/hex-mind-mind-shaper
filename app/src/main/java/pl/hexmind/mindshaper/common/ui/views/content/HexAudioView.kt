@@ -255,6 +255,15 @@ class HexAudioView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Stops an ongoing recording - the recording is kept, as after tapping stop
+     */
+    fun stopRecordingIfActive() {
+        if (state == State.RECORDING) {
+            stopRecording()
+        }
+    }
+
     private fun setMode(newMode: Mode) {
         mode = newMode
         setupUIForMode()

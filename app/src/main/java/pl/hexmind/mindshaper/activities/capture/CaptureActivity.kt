@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -72,6 +73,7 @@ class CaptureActivity : ThoughtManagerActivity() {
         setupUI()
         setupListeners()
         setupObservers()
+        setupBackHandling()
 
         onboardingManager.showTooltipForStep(
             OnboardingProgressStep.CAPTURE_ENTRY_TOOLTIP, this
@@ -222,6 +224,34 @@ class CaptureActivity : ThoughtManagerActivity() {
                 }
             })
         }
+    }
+
+    /**
+     * System back - a draft with any form asks before it's dropped, an empty one just closes
+     */
+    private fun setupBackHandling() {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // An ongoing recording is kept - it counts as a form like a finished one
+                binding.audioRecordingPlayback.stopRecordingIfActive()
+
+                if (!viewModel.hasContent()) {
+                    finish()
+                    return
+                }
+
+                ActionsDialog.Builder(this@CaptureActivity)
+                    .setTitle(getString(R.string.capture_exit_dialog_title))
+                    .setDescription(getString(R.string.capture_exit_dialog_description))
+                    .setSecondaryAction(getString(R.string.capture_exit_dialog_discard)) {
+                        finish()
+                    }
+                    .setPrimaryAction(getString(R.string.capture_exit_dialog_save)) {
+                        lifecycleScope.launch { saveDraft() }
+                    }
+                    .show()
+            }
+        })
     }
 
     private fun showFullscreenPhoto() {

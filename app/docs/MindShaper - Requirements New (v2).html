@@ -702,7 +702,15 @@
         {fn: "Zapisywanie myśli", col: "proc", process: ["Łapanie myśli", "Wartościowanie myśli"], place: CAP,
             text: "nowa myśl: wartość 1, bez domeny"},
         {fn: "Zapisywanie myśli", col: "proc", process: ["Łapanie myśli"], place: CAP,
-            text: "nic nie trafia do bazy przed Zapisz — wyjście bez zapisu porzuca szkic bez pytania"},
+            text: "nic nie trafia do bazy przed Zapisz"},
+        {fn: "Wychodzenie bez zapisu", col: "data", process: ["Łapanie myśli"], place: CAP,
+            text: "pytanie „Zapisać myśl?”: Zapisz myśl, Porzuć, Anuluj"},
+        {fn: "Wychodzenie bez zapisu", col: "proc", process: ["Łapanie myśli"], place: CAP,
+            text: "pytanie tylko przy co najmniej jednej formie — notatka, nagranie albo zdjęcie; bez formy wyjście od razu"},
+        {fn: "Wychodzenie bez zapisu", col: "proc", process: ["Łapanie myśli"], place: CAP,
+            text: "Zapisz myśl — jak Zapisz, z tymi samymi sprawdzeniami; Porzuć — wyjście, szkic porzucony; Anuluj — zostaje na ekranie"},
+        {fn: "Wychodzenie bez zapisu", col: "proc", process: ["Łapanie myśli", "Zapis w formie Głosówki"], place: CAP,
+            text: "trwające nagrywanie zatrzymane przed pytaniem — nagranie zostaje jako forma"},
         {fn: "Wpisywanie tytułu i tagów", col: "data", process: ["Łapanie myśli", "Łączenie myśli z hex tagami"], place: CAP,
             text: "jedno pole: najpierw tytuł, potem tagi — każdy ze znacznikiem: @ osoba, # projekt"},
         {fn: "Wpisywanie tytułu i tagów", col: "data", process: ["Łapanie myśli", "Łączenie myśli z hex tagami"], place: CAP,
@@ -1251,6 +1259,8 @@
 
     // Differences from Requirements v12 and doubts found in the code — for the verification pass
     const CHANGE_NOTES = {
+        "Wychodzenie bez zapisu": "nowe — pytanie o zapis przy wyjściu z Łapania myśli",
+        "Zapisywanie myśli": "zmiana — wyjście bez zapisu przeniesione do „Wychodzenie bez zapisu”",
         "Oglądanie zdjęcia": "zmiana — Strumień i Szczegóły pokazują całe zdjęcie zamiast kwadratowej miniatury",
         "Dopasowywanie myśli": "inaczej niż v12 — tagi dopasowywane w całości, nie po fragmencie",
         "Definiowanie kryteriów": "inaczej niż v12 — kilka tagów jednego rodzaju w jednym kryterium",

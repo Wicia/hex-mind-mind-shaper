@@ -272,6 +272,12 @@ Awers - Rewers…"</string>
     <string name="capture_hex_tags_tooltip">temat @osoba #projekt</string>
     <string name="capture_error_no_content">Potrzebujesz cos zapisać (tekst, nagranie, obraz lub fiszki)</string>
 
+    <!-- Leaving without saving -->
+    <string name="capture_exit_dialog_title">Zapisać myśl?</string>
+    <string name="capture_exit_dialog_description">Bez zapisu złapana myśl przepadnie.</string>
+    <string name="capture_exit_dialog_save">Zapisz myśl</string>
+    <string name="capture_exit_dialog_discard">Porzuć</string>
+
     <!-- Rich text -->
     <string name="capture_rich_text_error_note_empty">To wyżej nie może być puste</string>
 
