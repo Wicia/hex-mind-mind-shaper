@@ -17,6 +17,7 @@
             --orange-ink:#C2610A;
             --tab-ink:#7A2E12;
             --coffee:#6F4E37;
+            --coffee-soft:#9A7B62;
             --ribbon:#FFF0E2;
             --ribbon-bg:#E8D5C4;
             --graphite:#3A3A3A;
@@ -61,8 +62,8 @@
         .tabs{
             display:flex;
             flex-direction:column;
-            gap:14px;
-            padding:22px 14px 28px;
+            gap:10px;
+            padding:14px 14px 16px;
             width:var(--sidebar-w);
             position:fixed;
             top:0;
@@ -76,8 +77,8 @@
         .tab-row{
             display:flex;
             flex-direction:column;
-            gap:4px;
-            padding-bottom:12px;
+            gap:1px;
+            padding-bottom:8px;
             border-bottom:1px solid rgba(255,255,255,.08);
         }
         .tab-row:last-child{border-bottom:none;}
@@ -95,7 +96,7 @@
             font-family:'Baloo 2',system-ui,sans-serif;
             font-weight:500;
             font-size:14px;
-            padding:10px 12px;
+            padding:8px 12px;
             border:none;
             border-radius:9px;
             background:transparent;
@@ -350,7 +351,7 @@
         /* Location/screen marker — blue text with a left arrow; only actions are chips */
         .location{
             font-family:'Baloo 2',system-ui,sans-serif;
-            font-size:15px;
+            font-size:14px;
             font-weight:500;
             color:var(--loc-ink);
             white-space:nowrap;
@@ -364,12 +365,11 @@
             font-weight:500;
             cursor:pointer;
             text-decoration:none;
-            border-bottom:1px dashed var(--coffee);
         }
         .req-link::before{content:"↳";margin-right:3px;opacity:.8;}
         /* higher specificity so the coffee survives inside table cells */
-        .spec-body a.req-link{color:var(--coffee);}
-        .spec-body a.req-link:hover{border-bottom-style:solid;}
+        .spec-body a.req-link{color:var(--coffee-soft);}
+        .spec-body a.req-link:hover{text-decoration:underline;text-underline-offset:3px;}
         /* User-facing messages/toasts — gray + italic, no bracket */
         .msg{color:var(--muted);font-style:italic;}
         /* ── Mechanisms table (new spec format) ── */
@@ -515,6 +515,59 @@
         .fab-toggle:hover{background:var(--orange-ink);}
         .fab-toggle svg{width:18px;height:18px;transition:transform .2s;}
         .fab-toggle.collapse svg{transform:rotate(180deg);}
+
+        /* ── Changelog: one entry per requirement, grouped by check status ── */
+        .log-head{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-weight:600;
+            font-size:18px;
+            color:var(--orange-ink);
+            margin:8px 0 10px;
+        }
+        .log-count{color:var(--muted);font-weight:500;}
+        .log-list{
+            display:flex;
+            flex-direction:column;
+            gap:8px;
+            margin-bottom:24px;
+        }
+        .log-empty{color:var(--muted);font-style:italic;}
+        .log-entry{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:10px 16px;
+            border:1px solid var(--line);
+            border-radius:12px;
+            background:var(--surface);
+            color:var(--graphite);
+            text-decoration:none;
+        }
+        .log-entry:hover{background:var(--orange-1);}
+        .log-text{
+            flex:1;
+            min-width:0;
+            display:flex;
+            flex-direction:column;
+        }
+        .log-where{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-size:12px;
+            letter-spacing:.06em;
+            text-transform:uppercase;
+            color:var(--muted);
+        }
+        .log-title{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-weight:600;
+            font-size:16px;
+        }
+        .log-change{
+            font-size:14px;
+            font-style:italic;
+            color:var(--graphite-soft);
+        }
+        details.log-done>summary{cursor:pointer;}
     </style>
 </head>
 <body>
@@ -918,109 +971,222 @@
 <section class="panel" data-tab="Preferencje" data-row="1">
     <p class="panel-intro">Konfiguracja aplikacji, dane, przełączniki funkcji oraz dostosowanie aplikacji do preferencji użytkownika.</p>
 
-    <details class="req">
+    <details class="req" data-change="wiersz na każdą sekcję ekranu, imię i powitanie, wspólny zapis ustawień, przełączniki funkcji, błędne progi blokują zapis">
         <summary>
-            <span class="req-title">Robienie kopii zapasowej danych</span>
-            <span class="check" data-date="15/10">
-                <span class="check-main done">🟢 Sprawdzone</span>
+            <span class="req-title">Zapisywanie preferencji</span>
+            <span class="check" data-date="16/10">
+                <span class="check-main verify">🟡 Weryfikacja</span>
                 <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>zachowanie kluczowych danych między wydaniami / wersjami aplikacji do ponownego wgrania</li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Wejścia, Dane, Stany</h3>
-                <ul>
-                    <li>Sekcja „Kopia zapasowa danych" (Preferencje)
-                        <ul>
-                            <li>włącz / wyłącz robienie backupu (domyślnie wyłączony)</li>
-                            <li>metadane backupu
-                                <ul>
-                                    <li>liczba plików backupu</li>
-                                    <li>ich wielkość w MB</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Procesy, Opcje, Integracje</h3>
-                <ul>
-                    <li>Włączanie ustawienia
-                        <ul>
-                            <li>powiadomienia o wymaganych uprawnieniach do użycia funkcji</li>
-                            <li>prośba o uprawnienie do zapisu plików, a w przypadku uporczywej odmowy — możliwość zmiany w ustawieniach Androida</li>
-                            <li>stan ustawienia zapisywany automatycznie po zmianie</li>
-                        </ul>
-                    </li>
-                    <li>Synchronizacja opcji i metadanych — na podstawie zapisanego ustawienia oraz przyznanych uprawnień
-                        <ul>
-                            <li>podczas startu aktywności</li>
-                            <li>podczas powrotu do aktywności</li>
-                        </ul>
-                    </li>
-                    <li>Robienie backupu
-                        <ul>
-                            <li>przy starcie aplikacji, tylko gdy opcja włączona</li>
-                            <li>max 1 plik dziennie (nadpisywanie)</li>
-                            <li>kopia obejmuje fiszki (luźne i zestawy) z postępem powtórek</li>
-                            <li>kopia obejmuje hex tagi i ich powiązania z myślami</li>
-                            <li>backup starszy niż aktualna wersja DB może być wczytany; nowszy nie</li>
-                            <li>nowe zasoby z nowej wersji aplikacji (np. ikony) są doseedowane po wczytaniu backupu oraz przy każdym starcie</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>✳️ jedno miejsce do dopasowania aplikacji do siebie — dane osobiste, formy zapisu, włączanie funkcji i dbanie o dane</p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Personalizowanie</td>
+                    <td><ul class="cell">
+                        <li>✳️ sekcje „Moje Prawdziwe Imię?” i „Ekran startowy”</li>
+                        <li>✳️ puste imię — zastępowane domyślnym „Bezimienn(y/a)”</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>✳️ imię używane w powitaniu — <a class="req-link" data-target-tab="Dom" data-target-req="Ekran Dom">Ekran Dom</a></li>
+                        <li>✳️ ekran startowy — <a class="req-link" data-target-tab="Preferencje" data-target-req="Wybór ekranu startowego">Wybór ekranu startowego</a></li>
+                        <li>✳️ wskazówka do imienia — na żądanie, z nagłówka sekcji</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Ustawianie form zapisu myśli</td>
+                    <td><ul class="cell">
+                        <li>✳️ sekcje „Formy zapisu myśli” i „Domyślna forma zapisu myśli” — włączanie głosówek i zdjęć, wybór domyślnej formy</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>✳️ <a class="req-link" data-target-tab="Łapanie myśli" data-target-req="Zapis w formie Głosówki">Zapis w formie Głosówki</a> <a class="req-link" data-target-tab="Łapanie myśli" data-target-req="Zapis w formie Zdjęcia">Zapis w formie Zdjęcia</a> <a class="req-link" data-target-tab="Łapanie myśli" data-target-req="Wybieranie domyślnej formy zapisu myśli">Wybieranie domyślnej formy zapisu myśli</a></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Ustawianie wartości myśli</td>
+                    <td><ul class="cell">
+                        <li>✳️ sekcje „Skala wartości myśli” i „Tryb uśpienia”</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>✳️ <a class="req-link" data-target-tab="Wartościowanie myśli" data-target-req="Wybieranie skali ocen dla myśli">Wybieranie skali ocen dla myśli</a> <a class="req-link" data-target-tab="Kształtowanie Umysłu" data-target-req="Tryb „Uśpienia&quot;">Tryb „Uśpienia”</a></li>
+                        <li>✳️ wskazówka do skali wartości — na żądanie, z nagłówka sekcji</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Ustawianie zapamiętywania</td>
+                    <td><ul class="cell">
+                        <li>✳️ sekcja „Zapamiętywanie” — włączanie fiszek, dzienny limit nowych fiszek, przypomnienia o powtórkach i ich godzina</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>✳️ <a class="req-link" data-target-tab="* Wspólne &amp; Podstawy" data-target-req="Włączanie modułu fiszek">Włączanie modułu fiszek</a> <a class="req-link" data-target-tab="Powtarzanie z fiszkami" data-target-req="Dzisiejsza sesja powtórek">Dzisiejsza sesja powtórek (dzienny limit nowych fiszek)</a> <a class="req-link" data-target-tab="Powtarzanie z fiszkami" data-target-req="Przypomnienia o sesjach powtórek">Przypomnienia o sesjach powtórek</a></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Ustawianie przypomnień w kalendarzu</td>
+                    <td><ul class="cell">
+                        <li>✳️ sekcja „Przypomnienia w kalendarzu” — włączanie wpisów, wybór kalendarza</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>✳️ <a class="req-link" data-target-tab="Kształtowanie Umysłu" data-target-req="Przypomnienia kroków w kalendarzu">Przypomnienia kroków w kalendarzu</a></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Ustawianie kopii zapasowej</td>
+                    <td><ul class="cell">
+                        <li>✳️ sekcja „Kopia zapasowa twoich myśli” — włączanie, wybór i wczytanie pliku kopii</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>✳️ <a class="req-link" data-target-tab="Preferencje" data-target-req="Robienie kopii zapasowej danych">Robienie kopii zapasowej danych</a></li>
+                        <li>✳️ wskazówka do kopii zapasowej — na żądanie, z nagłówka sekcji</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Zapisywanie</td>
+                    <td><ul class="cell">
+                        <li>✳️ <span class="bracket">Zapisz</span> na dole ekranu</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>✳️ zapisuje: imię, domyślną formę zapisu, skalę wartości, ekran startowy, dzienny limit nowych fiszek, godzinę przypomnienia i tryb uśpienia</li>
+                        <li>✳️ przełączniki funkcji (głosówki, zdjęcia, fiszki, przypomnienia o powtórkach, kalendarz, kopia) — zapisywane od razu, bez <span class="bracket">Zapisz</span></li>
+                        <li>✳️ błędne progi trybu uśpienia blokują zapis — z komunikatem, co poprawić</li>
+                        <li>✳️ po zapisie komunikat i powrót na <span class="location">Dom</span></li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </details>
 
-    <details class="req">
+    <details class="req" data-change="zapis wyboru wspólnie z pozostałymi ustawieniami">
         <summary>
             <span class="req-title">Wybór ekranu startowego</span>
-            <span class="check" data-date="15/10">
-            <span class="check-main verify">🟡 Weryfikacja</span>
-            <span class="check-ago"></span>
-        </span>
+            <span class="check" data-date="16/10">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago"></span>
+            </span>
         </summary>
         <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>Szybki dostęp do najczęściej używanego ekranu — aplikacja otwiera się od razu tam, gdzie użytkownik pracuje najczęściej</li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Wejścia, Dane, Stany</h3>
-                <ul>
-                    <li>Sekcja „Ekran startowy" — w sekcji personalizacji <span class="location">Preferencje</span>
-                        <ul>
-                            <li>4 kafelki do wyboru: <span class="location">Dom</span> / <span class="location">Strumień</span> / <span class="location">Zapamiętywanie</span> / <span class="location">Warsztat</span> (dokładnie jeden aktywny)</li>
-                            <li>domyślnie: <span class="location">Dom</span></li>
-                            <li>fiszki wyłączone w <span class="location">Preferencjach</span> — kafelek <span class="location">Zapamiętywanie</span> wyszarzony, zaznaczenie wraca na <span class="location">Dom</span>; aplikacja startuje wtedy na <span class="location">Dom</span></li>
-                        </ul>
-                    </li>
-                    <li>Wybór zapamiętywany trwale między uruchomieniami aplikacji</li>
-                </ul>
-            </div>
-            <div class="spec-section">
-                <h3>Procesy, Opcje, Integracje</h3>
-                <ul>
-                    <li>Zapis wyboru — wspólnie z pozostałymi ustawieniami przyciskiem <span class="bracket">Zapisz</span></li>
-                    <li>Otwieranie wybranego ekranu przy uruchomieniu aplikacji
-                        <ul>
-                            <li>tylko przy starcie z ikony aplikacji — nie przy powrocie z nawigacji ani po obrocie ekranu</li>
-                            <li><span class="location">Dom</span> pozostaje „pod spodem" — cofnięcie z wybranego ekranu wraca na <span class="location">Dom</span></li>
-                            <li>zmiana obowiązuje od następnego uruchomienia (nie przełącza ekranu w trakcie działania)</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>Szybki dostęp do najczęściej używanego ekranu — aplikacja otwiera się od razu tam, gdzie użytkownik pracuje najczęściej</p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Wybieranie ekranu startowego</td>
+                    <td><ul class="cell">
+                        <li>Sekcja „Ekran startowy" — w sekcji personalizacji <span class="location">Preferencje</span>
+                            <ul>
+                                <li>4 kafelki do wyboru: <span class="location">Dom</span> / <span class="location">Strumień</span> / <span class="location">Zapamiętywanie</span> / <span class="location">Warsztat</span> (dokładnie jeden aktywny)</li>
+                                <li>domyślnie: <span class="location">Dom</span></li>
+                                <li>fiszki wyłączone w <span class="location">Preferencjach</span> — kafelek <span class="location">Zapamiętywanie</span> wyszarzony, zaznaczenie wraca na <span class="location">Dom</span>; aplikacja startuje wtedy na <span class="location">Dom</span></li>
+                            </ul>
+                        </li>
+                        <li>Wybór zapamiętywany trwale między uruchomieniami aplikacji</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>✴️ Zapis wyboru — wspólnie z pozostałymi ustawieniami, wg <a class="req-link" data-target-tab="Preferencje" data-target-req="Zapisywanie preferencji">Zapisywanie preferencji</a></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Otwieranie wybranego ekranu</td>
+                    <td><ul class="cell">
+                        <li>tylko przy starcie z ikony aplikacji — nie przy powrocie z nawigacji ani po obrocie ekranu</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li><span class="location">Dom</span> pozostaje „pod spodem" — cofnięcie z wybranego ekranu wraca na <span class="location">Dom</span></li>
+                        <li>zmiana obowiązuje od następnego uruchomienia (nie przełącza ekranu w trakcie działania)</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </details>
+
+    <details class="req" data-change="brak kopii, uprawnienie do zapisu plików, wybór pliku, potwierdzenie i komunikat wczytania">
+        <summary>
+            <span class="req-title">Robienie kopii zapasowej danych</span>
+            <span class="check" data-date="16/10">
+                <span class="check-main verify">🟡 Weryfikacja</span>
+                <span class="check-ago"></span>
+            </span>
+        </summary>
+        <div class="spec-body">
+            <p class="feature-goal"><b>Potrzeba i Cel</b>zachowanie kluczowych danych między wydaniami / wersjami aplikacji do ponownego wgrania</p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Włączanie kopii</td>
+                    <td><ul class="cell">
+                        <li>✴️ sekcja „Kopia zapasowa twoich myśli” — <span class="location">Preferencje</span></li>
+                        <li>włącz / wyłącz robienie backupu (domyślnie wyłączony)</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>✴️ uprawnienie do zapisu plików — wg <a class="req-link" data-target-tab="* Wspólne &amp; Podstawy" data-target-req="Żądanie Uprawnień">Żądanie Uprawnień</a></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Wyświetlanie informacji o kopiach</td>
+                    <td><ul class="cell">
+                        <li>metadane backupu
+                            <ul>
+                                <li>liczba plików backupu</li>
+                                <li>ich wielkość w MB</li>
+                            </ul>
+                        </li>
+                        <li>✳️ brak kopii — informacja, że nie ma zapisanych kopii</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>✴️ odświeżane przy wejściu i powrocie na ekran</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Robienie backupu</td>
+                    <td><ul class="cell">
+                        <li>przy starcie aplikacji, tylko gdy opcja włączona</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>max 1 plik dziennie (nadpisywanie)</li>
+                        <li>kopia obejmuje fiszki (luźne i zestawy) z postępem powtórek</li>
+                        <li>kopia obejmuje hex tagi i ich powiązania z myślami</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Wczytywanie kopii</td>
+                    <td><ul class="cell">
+                        <li>✳️ <span class="bracket">Wybierz</span> — wybór pliku kopii z folderu kopii zapasowych</li>
+                        <li>✳️ nazwa wybranego pliku widoczna przed wczytaniem</li>
+                        <li>✳️ <span class="bracket">Wczytaj</span> — dostępne dopiero po wybraniu pliku</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>✳️ potwierdzenie przed wczytaniem — obecne dane zostaną zastąpione, nie da się tego cofnąć</li>
+                        <li>✳️ komunikat o powodzeniu albo błędzie wczytania</li>
+                        <li>backup starszy niż aktualna wersja DB może być wczytany; nowszy nie</li>
+                        <li>nowe zasoby z nowej wersji aplikacji (np. ikony) są doseedowane po wczytaniu backupu oraz przy każdym starcie</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </details>
 </section>
@@ -2028,21 +2194,53 @@
 <section class="panel" data-tab="Wartościowanie myśli" data-row="2">
     <p class="panel-intro">Nadawanie myślom wartości i ocen.</p>
 
-    <details class="req">
+    <details class="req" data-change="dwie skale do wyboru, zmiana skali nie przelicza istniejących wartości">
         <summary>
             <span class="req-title">Wybieranie skali ocen dla myśli</span>
-            <span class="check">
+            <span class="check" data-date="16/10">
                 <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>—</li>
-                </ul>
-            </div>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>✳️ dopasowanie dokładności oceniania myśli do własnych potrzeb — drobniejsza albo prostsza skala</p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Wybieranie skali</td>
+                    <td><ul class="cell">
+                        <li>✳️ sekcja „Skala wartości myśli” — <span class="location">Preferencje</span></li>
+                        <li>✳️ dwie skale do wyboru (dokładnie jedna aktywna)
+                            <ul>
+                                <li>od 1 do 10 — domyślna</li>
+                                <li>od 1 do 6</li>
+                            </ul>
+                        </li>
+                        <li>✳️ informacja, że zmiana skali może wymagać przeskalowania wartości wszystkich myśli</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>✳️ zapis wspólnie z pozostałymi ustawieniami — wg <a class="req-link" data-target-tab="Preferencje" data-target-req="Zapisywanie preferencji">Zapisywanie preferencji</a></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Działanie skali</td>
+                    <td><ul class="cell">
+                        <li>✳️ skala wyznacza najwyższą wartość, jaką można nadać myśli</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>✳️ zmiana skali nie przelicza wartości istniejących myśli — myśl z wartością powyżej nowego maksimum zachowuje ją do pierwszej zmiany</li>
+                        <li>✳️ najwyższy próg wartości w <a class="req-link" data-target-tab="Kształtowanie Umysłu" data-target-req="Tryb „Uśpienia&quot;">Tryb „Uśpienia”</a> = maksimum skali</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </details>
 
@@ -2162,21 +2360,82 @@
 <section class="panel" data-tab="Kształtowanie Umysłu" data-row="3">
     <p class="panel-intro">Tryby pracy i przypomnienia wspierające nawyki.</p>
 
-    <details class="req">
+    <details class="req" data-change="progi i ich sprawdzanie, trzy stany myśli, oznaczenia na liście">
         <summary>
             <span class="req-title">Tryb „Uśpienia"</span>
-            <span class="check">
+            <span class="check" data-date="16/10">
                 <span class="check-main verify">🟡 Weryfikacja</span>
-                <span class="check-ago">-</span>
+                <span class="check-ago"></span>
             </span>
         </summary>
         <div class="spec-body">
-            <div class="spec-section">
-                <h3>Potrzeba i Cel</h3>
-                <ul>
-                    <li>—</li>
-                </ul>
-            </div>
+            <p class="feature-goal"><b>Potrzeba i Cel</b>✳️ myśli o niskiej wartości, do których się nie wraca, same schodzą z widoku — Strumień zostaje lekki, a nic nie jest usuwane</p>
+            <table class="mech-table">
+                <thead>
+                <tr>
+                    <th>Funkcja</th>
+                    <th>Wejścia, Dane, Stany</th>
+                    <th>Procesy, Opcje, Integracje</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="mech-name">Włączanie trybu</td>
+                    <td><ul class="cell">
+                        <li>✳️ sekcja „Tryb uśpienia” — <span class="location">Preferencje</span></li>
+                        <li>✳️ <span class="bracket">Aktywuj tryb Uśpienia</span> — domyślnie wyłączony</li>
+                        <li>✳️ dwa progi (dostępne tylko przy włączonym trybie)
+                            <ul>
+                                <li>liczba dni bez zmian — od 3 do 90, domyślnie 7</li>
+                                <li>wartość myśli ≤ — od 1 do maksimum skali ocen, domyślnie 1</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>✳️ sprawdzanie progów na bieżąco — błąd pokazuje dozwolony zakres</li>
+                        <li>✳️ błędny próg blokuje zapis — wg <a class="req-link" data-target-tab="Preferencje" data-target-req="Zapisywanie preferencji">Zapisywanie preferencji</a></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Wyznaczanie stanu myśli</td>
+                    <td><ul class="cell">
+                        <li>✳️ trzy stany myśli
+                            <ul>
+                                <li>aktywna</li>
+                                <li>bliska uśpienia — zostały 3 dni do uśpienia</li>
+                                <li>uśpiona</li>
+                            </ul>
+                        </li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>✳️ uśpiona — wartość nie wyższa niż próg i brak zmian od co najmniej progu dni</li>
+                        <li>✳️ bliska uśpienia — te same warunki, ale 3 dni przed progiem (np. próg 7 dni → ostrzeżenie od 4. dnia)</li>
+                        <li>✳️ myśl powyżej progu wartości zawsze aktywna</li>
+                        <li>✳️ tryb wyłączony — wszystkie myśli aktywne</li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Wyświetlanie w Strumieniu</td>
+                    <td><ul class="cell">
+                        <li>✳️ oznaczenie myśli bliskich uśpienia i uśpionych na liście</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>✳️ uśpione myśli domyślnie ukryte — odsłanianie wg <a class="req-link" data-target-tab="Przeglądanie myśli" data-target-req="Filtrowanie myśli">Filtrowanie myśli</a></li>
+                    </ul></td>
+                </tr>
+                <tr>
+                    <td class="mech-name">Wyświetlanie w Szczegółach myśli</td>
+                    <td><ul class="cell">
+                        <li>✳️ oznaczenie stanu myśli; uśpiona myśl wyraźnie odróżniona od aktywnej</li>
+                    </ul></td>
+                    <td><ul class="cell">
+                        <li>✳️ bliska uśpienia — wyjaśnienie, ile zostało i jak ją zachować (edycja albo wyższa wartość)</li>
+                        <li>✳️ uśpiona — <span class="bracket">Obudź myśl</span> z potwierdzeniem; myśl liczy się jak świeżo zmieniona i wraca do aktywnych</li>
+                        <li>✳️ zmiana tytułu, domeny albo wartości myśli liczy dni od nowa</li>
+                    </ul></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </details>
 
@@ -3148,6 +3407,19 @@
     </details>
 </section>
 
+<!-- Changelog: entries are built by JS from each requirement's check status and data-change note -->
+<section class="panel" id="changelog" data-tab="Changelog" data-row="5">
+    <p class="panel-intro">Sekcje według statusu, od najnowszych. Kliknięcie otwiera sekcję w jej zakładce.</p>
+
+    <h2 class="log-head">🟡 Do weryfikacji <span class="log-count" id="logVerifyCount"></span></h2>
+    <div class="log-list" id="logVerify"></div>
+
+    <details class="log-done">
+        <summary class="log-head">🟢 Sprawdzone <span class="log-count" id="logDoneCount"></span></summary>
+        <div class="log-list" id="logDone"></div>
+    </details>
+</section>
+
 
 <script>
     // Build the tab bar from the panels, so adding a module = adding one <section>
@@ -3158,7 +3430,7 @@
         var buttons = [];
 
         // Group name shown above each row of tabs (key = data-row)
-        var ROW_NAMES = {'1':'Aplikacja', '2':'Myśli', '3':'Rozwój', '4':'Zapamiętywanie'};
+        var ROW_NAMES = {'1':'Aplikacja', '2':'Myśli', '3':'Rozwój', '4':'Zapamiętywanie', '5':'Dokumentacja'};
 
         panels.forEach(function(panel){
             var row = panel.getAttribute('data-row') || '1';
@@ -3191,22 +3463,36 @@
 
         activate(panels[0], buttons[0]);
 
-        // Fill in "how long ago" for each checked date (format DD/MM, year assumed)
-        document.querySelectorAll('.check[data-date]').forEach(function(el){
-            var ago = el.querySelector('.check-ago');
-            if(!ago) return;
+        // Switch to the panel's tab and open its requirement
+        function showReq(panelIndex, req){
+            activate(panels[panelIndex], buttons[panelIndex]);
+            if(req){
+                req.open = true;
+                req.scrollIntoView({behavior:'smooth', block:'start'});
+            }
+        }
 
+        // Checked date has the format DD/MM, year assumed
+        function checkedDate(el){
             var parts = el.getAttribute('data-date').split('/');
             var day = parseInt(parts[0], 10);
             var month = parseInt(parts[1], 10);
-            if(isNaN(day) || isNaN(month)) return;
+            if(isNaN(day) || isNaN(month)) return null;
 
             var now = new Date();
             var checked = new Date(now.getFullYear(), month - 1, day);
             // A date that lands in the future means it belongs to the previous year
             if(checked > now) checked.setFullYear(now.getFullYear() - 1);
+            return checked;
+        }
 
-            var days = Math.floor((now - checked) / 86400000);
+        // Fill in "how long ago" for each checked date
+        document.querySelectorAll('.check[data-date]').forEach(function(el){
+            var ago = el.querySelector('.check-ago');
+            var checked = checkedDate(el);
+            if(!ago || !checked) return;
+
+            var days = Math.floor((new Date() - checked) / 86400000);
             ago.textContent = agoLabel(days);
         });
 
@@ -3215,12 +3501,98 @@
             if(days === 1) return 'wczoraj';
             return days + ' dni temu';
         }
-    })();
-</script>
 
-<script>
-    // Cross-reference links: jump to another panel's requirement and open it
-    (function(){
+        // Changelog: every requirement with a check status, newest first
+        (function(){
+            var verifyList = document.getElementById('logVerify');
+            var doneList = document.getElementById('logDone');
+            if(!verifyList || !doneList) return;
+
+            var entries = [];
+            panels.forEach(function(panel, panelIndex){
+                panel.querySelectorAll('details.req').forEach(function(req){
+                    var check = req.querySelector('.check');
+                    var main = check && check.querySelector('.check-main');
+                    if(!main) return;
+                    entries.push({
+                        panelIndex: panelIndex,
+                        req: req,
+                        check: check,
+                        done: main.classList.contains('done'),
+                        date: check.hasAttribute('data-date') ? checkedDate(check) : null
+                    });
+                });
+            });
+            entries.sort(function(a, b){ return (b.date || 0) - (a.date || 0); });
+
+            var verifyCount = 0;
+            var doneCount = 0;
+            entries.forEach(function(entry){
+                if(entry.done){
+                    doneList.appendChild(logEntry(entry));
+                    doneCount++;
+                }
+                else{
+                    verifyList.appendChild(logEntry(entry));
+                    verifyCount++;
+                }
+            });
+            if(!verifyCount){
+                var empty = document.createElement('p');
+                empty.className = 'log-empty';
+                empty.textContent = 'Wszystko sprawdzone.';
+                verifyList.appendChild(empty);
+            }
+            document.getElementById('logVerifyCount').textContent = '(' + verifyCount + ')';
+            document.getElementById('logDoneCount').textContent = '(' + doneCount + ')';
+        })();
+
+        function logEntry(entry){
+            var panel = panels[entry.panelIndex];
+            var link = document.createElement('a');
+            link.className = 'log-entry';
+            link.href = '#';
+
+            var text = document.createElement('span');
+            text.className = 'log-text';
+
+            // Group name included, because several tabs share a label
+            var where = document.createElement('span');
+            where.className = 'log-where';
+            var group = ROW_NAMES[panel.getAttribute('data-row')];
+            where.textContent = (group ? group + ' · ' : '') + panel.getAttribute('data-tab');
+            text.appendChild(where);
+
+            var title = document.createElement('span');
+            title.className = 'log-title';
+            title.textContent = reqTitleText(entry.req);
+            text.appendChild(title);
+
+            var change = entry.req.getAttribute('data-change');
+            if(change){
+                var note = document.createElement('span');
+                note.className = 'log-change';
+                note.textContent = change;
+                text.appendChild(note);
+            }
+
+            link.appendChild(text);
+            link.appendChild(entry.check.cloneNode(true));
+            link.addEventListener('click', function(e){
+                e.preventDefault();
+                showReq(entry.panelIndex, entry.req);
+            });
+            return link;
+        }
+
+        // Title without its alternative-name subline
+        function reqTitleText(req){
+            var title = req.querySelector('.req-title').cloneNode(true);
+            title.querySelectorAll('.req-alt').forEach(function(alt){ alt.remove(); });
+            return title.textContent.trim();
+        }
+
+        // Cross-reference links: jump to another panel's requirement and open it
         // Several tabs share a label (one per group), so the target is the panel that holds the requirement
         function go(tabLabel, reqTitle){
             for(var i=0;i<panels.length;i++){
@@ -3229,11 +3601,7 @@
                 var req = findReq(panels[i], reqTitle);
                 if(reqTitle && !req) continue;
 
-                activate(panels[i], buttons[i]);
-                if(req){
-                    req.open = true;
-                    req.scrollIntoView({behavior:'smooth', block:'start'});
-                }
+                showReq(i, req);
                 return;
             }
         }

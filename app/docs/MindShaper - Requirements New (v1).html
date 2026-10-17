@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind Shaper — Wymagania (New)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --sidebar-w:279px;
+            --orange-3:#FFA86B;
+            --tab-ink:#7A2E12;
+            --ribbon-bg:#E8D5C4;
+            --ribbon:#FFF0E2;
+            --cream:#FFF4E6;
+            --surface:#FFFFFF;
+            --orange-1:#FFE1C8;
+            --orange-2:#FFC59A;
+            --orange-ink:#C2610A;
+            --coffee:#6F4E37;
+            --coffee-soft:#9A7B62;
+            --graphite:#3A3A3A;
+            --muted:#8A7A6C;
+            --graphite-soft:#5C574F;
+            --line:#EAD9C6;
+            --loc-ink:#3A6A95;
+        }
+        *{box-sizing:border-box;}
+        body{
+            margin:0;
+            background:var(--cream);
+            color:var(--graphite);
+            font-family:'Alegreya',Georgia,serif;
+            font-weight:500;
+            font-size:17px;
+            line-height:1.5;
+        }
+        .wrap{
+            max-width:953px;
+            margin-left:calc(var(--sidebar-w) * 2 - 32px);
+            padding:28px 32px 48px;
+        }
+        h1{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-weight:700;
+            font-size:26px;
+            margin:0 0 4px;
+            color:var(--orange-ink);
+        }
+        .subtitle{
+            color:var(--muted);
+            font-size:15px;
+            margin:0 0 20px;
+        }
+
+        /* ── Collapsible "how to read" note under the title ── */
+        .doc-note{
+            margin:0 0 24px;
+            padding:12px 16px;
+            background:var(--ribbon);
+            border-left:3px solid var(--orange-3);
+            border-radius:8px;
+            font-size:15px;
+            color:var(--graphite-soft);
+            line-height:1.5;
+        }
+        .doc-note>summary{
+            list-style:none;
+            cursor:pointer;
+            display:flex;
+            align-items:center;
+            gap:8px;
+            color:var(--graphite);
+        }
+        .doc-note>summary::-webkit-details-marker{display:none;}
+        .doc-note>summary::before{
+            content:"▸";
+            color:var(--orange-3);
+            font-size:18px;
+            transition:transform .15s;
+        }
+        .doc-note[open]>summary::before{transform:rotate(90deg);}
+        .doc-note b{color:var(--graphite);}
+        .doc-note ul{margin:10px 0 0;padding-left:20px;}
+        .doc-note li{padding:2px 0;}
+
+        /* ── Side bar — same look as in Requirements ── */
+        .sidebar{
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+            padding:14px 14px 16px;
+            width:var(--sidebar-w);
+            position:fixed;
+            top:0;
+            left:0;
+            bottom:0;
+            overflow-y:auto;
+            scrollbar-gutter:stable;
+            background:linear-gradient(to right, #12100F 0%, #12100F 72%, #1E1A17 100%);
+            z-index:20;
+        }
+
+        /* Mode tabs at the top of the side bar: which tag dimension builds the list below; stays on top while the list scrolls */
+        .modes{
+            display:flex;
+            gap:4px;
+            padding:3px;
+            border-radius:11px;
+            background:linear-gradient(rgba(255,255,255,.07), rgba(255,255,255,.07)), #12100F;
+            position:sticky;
+            top:0;
+            z-index:1;
+            box-shadow:0 0 0 8px #12100F, 0 -14px 0 8px #12100F;
+        }
+        .mode-tab{
+            flex:1;
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-size:14px;
+            font-weight:600;
+            border:0;
+            border-radius:9px;
+            background:none;
+            color:#E8DFD6;
+            padding:6px 8px;
+            cursor:pointer;
+        }
+        .mode-tab:hover{background:rgba(255,255,255,.07);}
+        .mode-tab[aria-selected="true"]{
+            background:var(--orange-2);
+            color:#2A1B10;
+        }
+        .toggle-all{
+            flex:0 0 auto;
+            font-size:15px;
+            line-height:1;
+            border:0;
+            border-radius:9px;
+            background:none;
+            color:#E8DFD6;
+            padding:6px 9px;
+            cursor:pointer;
+        }
+        .toggle-all:hover{background:rgba(255,255,255,.07);}
+
+        /* Generated list, split into collapsible sections */
+        .tabs{display:flex;flex-direction:column;}
+        .tab-row{
+            display:flex;
+            flex-direction:column;
+            gap:1px;
+            padding:8px 0;
+            border-bottom:1px solid rgba(255,255,255,.08);
+        }
+        .tab-row:last-child{border-bottom:none;}
+        .tab-group-name{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-weight:600;
+            font-size:11px;
+            letter-spacing:.08em;
+            text-transform:uppercase;
+            color:#C9A35E;
+            padding:0 0 7px;
+            border:0;
+            background:none;
+            text-align:left;
+            cursor:pointer;
+        }
+        .tab-group-name::before{content:"▾";margin-right:6px;}
+        .tab-group-name:hover{color:#E6C47F;}
+        .tab-row.collapsed .tab-group-name::before{content:"▸";}
+        .tab-row.collapsed .tab{display:none;}
+        .tab-row.collapsed .tab-group-name{padding-bottom:0;}
+        .tab{
+            display:flex;
+            justify-content:space-between;
+            gap:8px;
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-weight:400;
+            font-size:14px;
+            padding:8px 12px;
+            border:none;
+            border-radius:9px;
+            background:transparent;
+            color:#E8DFD6;
+            cursor:pointer;
+            width:100%;
+            text-align:left;
+            line-height:1.3;
+        }
+        .tab:hover{background:rgba(255,255,255,.07);}
+        .tab[aria-selected="true"]{
+            background:var(--orange-3);
+            color:#2A1B10;
+        }
+        .tab .count{opacity:.6;}
+        .tab .dot{
+            display:inline-block;
+            width:8px;
+            height:8px;
+            border-radius:50%;
+            margin-right:7px;
+            vertical-align:middle;
+            box-shadow:0 0 0 1.5px rgba(0,0,0,.25);
+        }
+        .tab .dot.verify{background:#F2C230;}
+        .tab .dot.done{background:#5CB85C;}
+        .tab .dot.tbd{background:#D9534F;}
+
+        /* Narrow screens: side bar becomes a top strip */
+        @media (max-width:900px){
+            .sidebar{position:static;width:100%;padding:14px 16px;background:#12100F;}
+            .tab-row{flex-direction:row;flex-wrap:wrap;gap:6px;}
+            .tab{width:auto;}
+            .tab-group-name{flex-basis:100%;}
+            .wrap{margin-left:0;padding:24px 16px 48px;}
+        }
+
+        /* ── Rule groups: one Requirements-style table each ── */
+        .group{margin-bottom:28px;}
+        .group h2{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-size:18px;
+            font-weight:700;
+            margin:0;
+            color:var(--coffee);
+        }
+        .mech-table{
+            border-collapse:separate;
+            border-spacing:0;
+            table-layout:fixed;
+            width:100%;
+            margin-top:8px;
+            background:var(--surface);
+            border:1px solid var(--line);
+            border-radius:10px;
+            overflow:hidden;
+        }
+        .mech-table thead th{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-weight:600;
+            font-size:12px;
+            text-transform:uppercase;
+            letter-spacing:.03em;
+            color:var(--tab-ink);
+            background:var(--ribbon-bg);
+            text-align:left;
+            padding:10px 14px;
+            border-bottom:2px solid var(--orange-2);
+        }
+        .mech-table thead th:first-child{width:190px;}
+        .mech-table thead th:nth-child(3){width:calc((100% - 190px) * 0.524);}
+        .mech-table tbody td{
+            padding:12px 14px;
+            border-bottom:1px solid var(--line);
+            vertical-align:top;
+            font-size:15px;
+        }
+        .mech-table tbody tr:last-child td{border-bottom:none;}
+        .mech-table td:not(:first-child),
+        .mech-table th:not(:first-child){border-left:1px solid var(--line);}
+        .mech-name{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-weight:600;
+            font-size:14px;
+            color:var(--graphite);
+            background:var(--orange-1);
+        }
+        ul.cell{margin:0;padding-left:16px;list-style:none;}
+        ul.cell>li{padding:3px 0;position:relative;line-height:1.4;}
+        ul.cell>li::before{
+            content:"";position:absolute;left:-14px;top:9px;
+            width:6px;height:6px;border-radius:50%;background:var(--orange-3);
+        }
+        ul.cell ul{list-style:none;padding-left:15px;margin:2px 0;}
+        ul.cell ul>li{padding:2px 0;position:relative;color:var(--graphite-soft);font-size:14px;}
+        ul.cell ul>li::before{
+            content:"";position:absolute;left:-13px;top:9px;
+            width:5px;height:5px;border-radius:50%;background:var(--graphite);
+        }
+
+        /* ── Collapsible links of a rule (small, under its bullet): places | processes ── */
+        .links>summary{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-size:12px;
+            color:var(--muted);
+            cursor:pointer;
+            list-style:none;
+            width:max-content;
+            line-height:1.6;
+        }
+        .links>summary::-webkit-details-marker{display:none;}
+        .links>summary::before{content:"▸";margin-right:4px;}
+        .links[open]>summary::before{content:"▾";}
+        .links>summary:hover{color:var(--coffee);}
+        .links-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:2px 12px;
+            margin:4px 0 2px;
+            padding:4px 8px;
+            border-radius:8px;
+            background:var(--cream);
+        }
+        .links-head{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-size:11px;
+            font-weight:600;
+            color:var(--muted);
+            text-transform:uppercase;
+            letter-spacing:.04em;
+        }
+        .links-col{display:flex;flex-direction:column;align-items:flex-start;gap:0;}
+        .link{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-size:13px;
+            font-weight:500;
+            border:0;
+            background:none;
+            padding:0;
+            cursor:pointer;
+            text-align:left;
+        }
+        .link:hover{text-decoration:underline;text-underline-offset:3px;}
+        .link.place{color:var(--loc-ink);}
+        .link.process{color:var(--coffee-soft);}
+        .link.current{color:var(--muted);cursor:default;text-decoration:none;}
+
+        /* ── View header: process need & goal / place intro ── */
+        .view-title{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-size:22px;
+            font-weight:700;
+            margin:0 0 6px;
+            color:var(--tab-ink);
+        }
+        .feature-goal,
+        .feature-terms,
+        .place-intro{
+            color:var(--graphite-soft);
+            font-size:15px;
+            margin:0 0 16px;
+        }
+        .feature-goal b,
+        .feature-terms b{
+            display:block;
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-size:12px;
+            font-weight:600;
+            text-transform:uppercase;
+            letter-spacing:.03em;
+            color:var(--muted);
+        }
+        /* Content indented under its label */
+        .feature-goal,
+        .feature-terms{padding-left:16px;}
+        .feature-goal b,
+        .feature-terms b{margin-left:-16px;}
+        .feature-terms ul{margin:2px 0 0;padding-left:18px;}
+        .place-intro{font-style:italic;}
+
+        /* ── Status of a function — under its name ── */
+        .check{
+            display:flex;
+            flex-direction:column;
+            align-items:flex-start;
+            gap:1px;
+            margin-top:6px;
+        }
+        .check-main{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-size:12px;
+            font-weight:600;
+            padding:1px 9px;
+            border-radius:20px;
+            white-space:nowrap;
+        }
+        .check-main.verify{background:#FCEFC7;color:#8A6D00;}
+        .check-main.done{background:#DFF0D8;color:#3C763D;}
+        .check-main.tbd{background:#F8D7DA;color:#A94442;}
+        .check-ago,
+        .check-change{
+            font-family:'Baloo 2',system-ui,sans-serif;
+            font-size:12px;
+            font-weight:500;
+            color:var(--muted);
+        }
+        .check-change{font-style:italic;line-height:1.3;}
+    </style>
+</head>
+<body>
+<nav class="sidebar">
+    <div class="modes" role="tablist">
+        <button type="button" class="mode-tab" role="tab" data-mode="process" aria-selected="true">Procesy</button>
+        <button type="button" class="mode-tab" role="tab" data-mode="place" aria-selected="false">Miejsca</button>
+        <button type="button" class="toggle-all" id="toggle-all"></button>
+    </div>
+    <div class="tabs" id="tabs" role="tablist"></div>
+</nav>
+
+<div class="wrap">
+    <h1>Mind Shaper — Wymagania</h1>
+    <p class="subtitle">Wersja beta — cała aplikacja opisana z kodu (17/10), do weryfikacji krok po kroku.</p>
+
+    <details class="doc-note">
+        <summary><b>Jak czytać i rozwijać dokumentację?</b></summary>
+        <ul>
+            <li>Każda reguła jest zapisana raz i otagowana miejscem oraz procesem — widoki to tylko różne perspektywy na te same reguły</li>
+            <li>Widok „Procesy” odpowiada na pytanie „jak działa ta rzecz” — Potrzeba i Cel, Pojęcia oraz jedna tabela procesu</li>
+            <li>Widok „Miejsca” odpowiada na pytanie „co jest w tym miejscu” — krótki opis miejsca i tabela na każdy proces, który go dotyczy; miejsca to ekrany aplikacji, a także to, co poza nią (ikona, kalendarz, powiadomienie)</li>
+            <li>Reguły ogólne, niezwiązane z żadnym ekranem, są w miejscu „Cała aplikacja” — mechanizm opisany raz, a miejsca zawierają tylko swój konkretny udział</li>
+            <li>Gdy proces występuje w danym miejscu, reguła opisuje jego konkretny udział w tym miejscu (np. jakie wskazówki onboardingu dotyczą Domu), a nie powtarza wszystkiego</li>
+            <li>„Powiązania” pod regułą pokazują jej miejsca i procesy — kliknięcie przełącza widok</li>
+            <li>Status funkcji pod jej nazwą: 🟡 Robocze / 🟢 Gotowe / 🔴 TBD (do zrobienia — pomijane w weryfikacji), ile dni temu sprawdzona i „zmiana” — co się zmieniło od ostatniego sprawdzenia; status jest per miejsce — w widoku „Procesy” 🟢 dopiero, gdy funkcja jest sprawdzona we wszystkich swoich miejscach, wcześniej z listą miejsc już sprawdzonych</li>
+        </ul>
+    </details>
+
+    <main id="content"></main>
+</div>
+
+<script>
+    // Side bar sections per mode (names as the groups in Requirements); order defines list order
+    const SECTIONS = {
+        process: [
+            {name: "Aplikacja", items: ["Nawigowanie po aplikacji", "Zapisywanie preferencji", "Personalizowanie", "Wybór ekranu startowego", "Żądanie Uprawnień", "Onboarding", "Skróty aplikacji", "Sprawdzanie wersji aplikacji", "Robienie kopii zapasowej danych"]},
+            {name: "Myśli", items: ["Łapanie myśli", "Zapis w formie Notatki", "Zapis w formie Głosówki", "Zapis w formie Zdjęcia", "Łączenie myśli z hex tagami", "Porządkowanie hex tagów", "Konfigurowanie domen", "Przeglądanie myśli", "Wyszukiwanie myśli", "Sortowanie myśli", "Filtrowanie myśli", "Edytowanie myśli", "Usuwanie myśli", "Wartościowanie myśli"]},
+            {name: "Rozwój", items: ["Tryb „Uśpienia”", "Wyznaczanie celów", "Realizowanie kroków", "Łączenie myśli z krokami", "Przypomnienia kroków w kalendarzu", "Ścieżki doświadczeń"]},
+            {name: "Zapamiętywanie", items: ["Zapisywanie luźnych fiszek", "Prowadzenie zestawów fiszek", "Importowanie fiszek z tekstu", "Powtarzanie z fiszkami"]},
+        ],
+        place: [
+            {name: "Aplikacja", items: ["Cała aplikacja", "Dom", "Poznawanie aplikacji", "Panel nawigacyjny", "Tagi i Domeny", "Preferencje"]},
+            {name: "Myśli", items: ["Łapanie myśli", "Strumień myśli", "Szczegóły myśli"]},
+            {name: "Rozwój", items: ["Warsztat", "Szczegóły celu"]},
+            {name: "Zapamiętywanie", items: ["Zapamiętywanie", "Zestaw fiszek"]},
+            {name: "Poza aplikacją", items: ["Ikona aplikacji", "Kalendarz", "Powiadomienie"]},
+        ],
+    };
+    const PROCESSES = SECTIONS.process.flatMap(s => s.items);
+
+    // Places as tags; GEN = general rule, not tied to any screen
+    const P = ["Preferencje"];
+    const NAV = ["Panel nawigacyjny"], HOME = ["Dom"], ONB = ["Poznawanie aplikacji"], META = ["Tagi i Domeny"];
+    const CAP = ["Łapanie myśli"], STR = ["Strumień myśli"], DET = ["Szczegóły myśli"];
+    const WS = ["Warsztat"], GOAL = ["Szczegóły celu"], FC = ["Zapamiętywanie"], SET = ["Zestaw fiszek"];
+    const ICON = ["Ikona aplikacji"], CAL = ["Kalendarz"], NOTIF = ["Powiadomienie"], GEN = ["Cała aplikacja"];
+
+    // One entry per business rule: fn = function (table row), col = data | proc column, process/place = tags
+    const RULES = [
+        // Zapisywanie preferencji
+        {fn: "Zapisywanie zmian", col: "data", process: ["Zapisywanie preferencji"], place: P,
+            text: "wspólny Zapisz obejmuje: imię, domyślną formę zapisu, skalę wartości, ekran startowy, limit nowych fiszek, godzinę przypomnienia, tryb uśpienia z progami"},
+        {fn: "Zapisywanie zmian", col: "proc", process: ["Zapisywanie preferencji"], place: P,
+            text: "włączniki form zapisu, kopii, fiszek, przypomnień i kalendarza oraz wybór kalendarza — zapisywane od razu, bez Zapisz"},
+        {fn: "Zapisywanie zmian", col: "proc", process: ["Zapisywanie preferencji"], place: P,
+            text: "po zapisie — komunikat „Zmiany zostały zapisane” i przejście do Domu"},
+        {fn: "Zapisywanie zmian", col: "proc", process: ["Zapisywanie preferencji"], place: P,
+            text: "wyjście bez Zapisz — zmiany porzucone, bez pytania"},
+        {fn: "Wyświetlanie wskazówek", col: "data", process: ["Zapisywanie preferencji", "Onboarding"], place: P,
+            text: "Preferencje — pierwsze wejście<ul><li>do czego służą — dopasowanie aplikacji do siebie; nagłówki sekcji rozwijają opcje</li><li>dodatkowa: zachęta do zmieniania i testowania ustawień</li></ul>"},
+        {fn: "Wyświetlanie wskazówek", col: "data", process: ["Zapisywanie preferencji", "Onboarding"], place: P,
+            text: "Preferencje — pierwsze wybranie nagłówka sekcji<ul><li>Personalizacja — podanie imienia</li><li>Skala wartości myśli — czym jest wartość myśli i że jej zakres zależy od użytkownika</li><li>Kopia zapasowa — po co ją włączyć; dodatkowa: jak często powstaje</li></ul>"},
+
+        // Personalizowanie
+        {fn: "Podawanie imienia", col: "data", process: ["Personalizowanie"], place: P,
+            text: "sekcja „Moje Prawdziwe Imię?” — jedno pole"},
+        {fn: "Podawanie imienia", col: "proc", process: ["Personalizowanie"], place: P,
+            text: "puste imię — zastępowane „Bezimienn(y/a)”; spacje z brzegów usuwane"},
+
+        // Wybór ekranu startowego
+        {fn: "Wybieranie ekranu", col: "data", process: ["Wybór ekranu startowego"], place: P,
+            text: "sekcja „Ekran startowy”<ul><li>Dom — domyślnie</li><li>Strumień</li><li>Zapamiętywanie</li><li>Warsztat</li></ul>"},
+        {fn: "Wybieranie ekranu", col: "proc", process: ["Wybór ekranu startowego", "Powtarzanie z fiszkami"], place: P,
+            text: "fiszki wyłączone — Zapamiętywanie niedostępne; jeśli było wybrane, wybór wraca na Dom"},
+
+        // Łapanie myśli
+        {fn: "Włączanie form zapisu", col: "data", process: ["Łapanie myśli"], place: P,
+            text: "sekcja „Formy zapisu myśli”<ul><li>„Włącz zapis w formie głosówek” — domyślnie wyłączone</li><li>„Włącz zapis w formie zdjęć” — domyślnie włączone</li></ul>"},
+        {fn: "Włączanie form zapisu", col: "proc", process: ["Łapanie myśli", "Żądanie Uprawnień"], place: P,
+            text: "włączenie wymaga uprawnienia — mikrofon (głosówki), kamera (zdjęcia)"},
+        {fn: "Włączanie form zapisu", col: "proc", process: ["Łapanie myśli", "Żądanie Uprawnień"], place: P,
+            text: "forma pokazana jako włączona tylko przy nadanym uprawnieniu; stan odświeżany po każdym powrocie na ekran"},
+        {fn: "Wybieranie domyślnej formy zapisu myśli", col: "data", process: ["Łapanie myśli"], place: P,
+            text: "sekcja „Domyślna forma zapisu myśli”<ul><li>Tekst — domyślnie</li><li>Głosówka</li><li>Zdjęcie</li></ul>"},
+        {fn: "Wybieranie domyślnej formy zapisu myśli", col: "proc", process: ["Łapanie myśli"], place: P,
+            text: "Głosówka i Zdjęcie dostępne tylko przy włączonej formie i nadanym uprawnieniu"},
+
+        // Żądanie Uprawnień
+        {fn: "Prośba o uprawnienie", col: "data", process: ["Żądanie Uprawnień"], place: P,
+            text: "dotyczy: mikrofonu, kamery, powiadomień, kalendarza, pamięci urządzenia"},
+        {fn: "Prośba o uprawnienie", col: "proc", process: ["Żądanie Uprawnień"], place: P,
+            text: "brak uprawnienia — okno z wyjaśnieniem („Zezwolić na…?” + po co), potem prośba systemowa"},
+        {fn: "Prośba o uprawnienie", col: "proc", process: ["Żądanie Uprawnień"], place: P,
+            text: "odmowa albo anulowanie — funkcja zostaje wyłączona"},
+        {fn: "Prośba o uprawnienie", col: "proc", process: ["Żądanie Uprawnień"], place: P,
+            text: "trwała blokada — okno z przejściem do ustawień Androida"},
+
+        // Wartościowanie myśli
+        {fn: "Wybieranie skali", col: "data", process: ["Wartościowanie myśli"], place: P,
+            text: "sekcja „Skala wartości myśli”<ul><li>od 1 do 6</li><li>od 1 do 10 — domyślnie</li></ul>"},
+        {fn: "Wybieranie skali", col: "data", process: ["Wartościowanie myśli"], place: P,
+            text: "informacja, że zmiana skali może wymagać przeskalowania wartości wszystkich myśli"},
+
+        // Tryb „Uśpienia”
+        {fn: "Włączanie trybu", col: "data", process: ["Tryb „Uśpienia”"], place: P,
+            text: "sekcja „Tryb uśpienia” z opisem; „Aktywuj tryb Uśpienia” — domyślnie wyłączone"},
+        {fn: "Włączanie trybu", col: "data", process: ["Tryb „Uśpienia”", "Wartościowanie myśli"], place: P,
+            text: "dwa progi<ul><li>„Ukryj myśli niezmieniane od” — od 3 do 90 dni, domyślnie 7</li><li>„oraz których wartość jest ≤” — od 1 do maksimum skali, domyślnie 1</li></ul>"},
+        {fn: "Włączanie trybu", col: "data", process: ["Tryb „Uśpienia”"], place: P,
+            text: "progi niedostępne przy wyłączonym trybie"},
+        {fn: "Włączanie trybu", col: "proc", process: ["Tryb „Uśpienia”"], place: P,
+            text: "sprawdzanie progów na bieżąco — błąd podaje dozwolony zakres"},
+
+        // Powtarzanie z fiszkami
+        {fn: "Włączanie modułu fiszek", col: "data", process: ["Powtarzanie z fiszkami"], place: P,
+            text: "sekcja „Zapamiętywanie”; „Włącz powtórki z użyciem fiszek” — domyślnie wyłączone"},
+        {fn: "Włączanie modułu fiszek", col: "proc", process: ["Powtarzanie z fiszkami"], place: P,
+            text: "wyłączenie<ul><li>limit i przypomnienia niedostępne</li><li>ekran startowy Zapamiętywanie niedostępny</li><li>przypomnienia o powtórkach odwołane</li><li>skrót nowej fiszki znika z ikony aplikacji</li></ul>"},
+        {fn: "Ustawianie limitu nowych fiszek", col: "data", process: ["Powtarzanie z fiszkami"], place: P,
+            text: "„Max. liczba nowych fiszek dziennie w powtórkach” — od 1 do 30, domyślnie 10"},
+        {fn: "Przypomnienia o sesjach powtórek", col: "data", process: ["Powtarzanie z fiszkami"], place: P,
+            text: "„Włącz przypomnienia o powtórkach” — domyślnie wyłączone"},
+        {fn: "Przypomnienia o sesjach powtórek", col: "data", process: ["Powtarzanie z fiszkami"], place: P,
+            text: "godzina przypomnienia — pełne godziny, domyślnie 9:00"},
+        {fn: "Przypomnienia o sesjach powtórek", col: "data", process: ["Powtarzanie z fiszkami"], place: P,
+            text: "informacja, że przypomnienie przychodzi tylko wtedy, gdy fiszki czekają na powtórki"},
+        {fn: "Przypomnienia o sesjach powtórek", col: "proc", process: ["Powtarzanie z fiszkami", "Żądanie Uprawnień"], place: P,
+            text: "wymaga powiadomień (Android 13+)"},
+        {fn: "Przypomnienia o sesjach powtórek", col: "proc", process: ["Powtarzanie z fiszkami"], place: P,
+            text: "przypomnienia dostępne tylko przy włączonych fiszkach; godzina — tylko przy włączonych przypomnieniach"},
+
+        // Przypomnienia kroków w kalendarzu
+        {fn: "Włączanie wpisów do kalendarza", col: "data", process: ["Przypomnienia kroków w kalendarzu"], place: P,
+            text: "sekcja „Przypomnienia w kalendarzu”; „Włącz wpisy do kalendarza” — domyślnie wyłączone"},
+        {fn: "Włączanie wpisów do kalendarza", col: "data", process: ["Przypomnienia kroków w kalendarzu"], place: P,
+            text: "informacja: kroki celu z przypomnieniem trafiają do wybranego kalendarza jako cykliczne wydarzenia; do Kalendarza Google — po synchronizacji przez sieć"},
+        {fn: "Włączanie wpisów do kalendarza", col: "proc", process: ["Przypomnienia kroków w kalendarzu", "Żądanie Uprawnień"], place: P,
+            text: "wymaga uprawnienia do kalendarza — odczyt i zapis"},
+        {fn: "Wybieranie kalendarza", col: "data", process: ["Przypomnienia kroków w kalendarzu"], place: P,
+            text: "lista kalendarzy z możliwością zapisu — widoczna przy włączonych wpisach"},
+        {fn: "Wybieranie kalendarza", col: "proc", process: ["Przypomnienia kroków w kalendarzu"], place: P,
+            text: "domyślnie główny kalendarz konta (brak głównego — pierwszy z listy)"},
+        {fn: "Wybieranie kalendarza", col: "proc", process: ["Przypomnienia kroków w kalendarzu"], place: P,
+            text: "jeden kalendarz — wybrany, bez możliwości zmiany; brak kalendarzy — lista ukryta"},
+
+        // Robienie kopii zapasowej danych
+        {fn: "Włączanie kopii", col: "data", process: ["Robienie kopii zapasowej danych"], place: P,
+            text: "„Włącz tworzenie kopii zapasowych” — domyślnie wyłączone"},
+        {fn: "Włączanie kopii", col: "data", process: ["Robienie kopii zapasowej danych"], place: P,
+            text: "liczba plików kopii i ich rozmiar w MB albo „Brak zapisanych kopii zapasowych…”"},
+        {fn: "Włączanie kopii", col: "proc", process: ["Robienie kopii zapasowej danych", "Żądanie Uprawnień"], place: P,
+            text: "wymaga uprawnienia do pamięci urządzenia"},
+        {fn: "Wczytywanie kopii", col: "data", process: ["Robienie kopii zapasowej danych"], place: P,
+            text: "Wybierz — plik kopii (JSON); nazwa wybranego pliku"},
+        {fn: "Wczytywanie kopii", col: "data", process: ["Robienie kopii zapasowej danych"], place: P,
+            text: "Wczytaj — dostępne dopiero po wybraniu pliku"},
+        {fn: "Wczytywanie kopii", col: "proc", process: ["Robienie kopii zapasowej danych"], place: P,
+            text: "potwierdzenie „Zastąpić dane kopią zapasową?” — obecne dane zostaną zastąpione, nie da się tego cofnąć"},
+        {fn: "Wczytywanie kopii", col: "proc", process: ["Robienie kopii zapasowej danych"], place: P,
+            text: "sukces — komunikat i wyczyszczenie wyboru; błąd — komunikat"},
+
+        // ══════════ Beta — reszta aplikacji, opis z kodu ══════════
+
+        // Nawigowanie po aplikacji
+        {fn: "Otwieranie panelu nawigacji", col: "data", process: ["Nawigowanie po aplikacji"], place: NAV,
+            text: "przycisk nawigacji dostępny na każdym ekranie aplikacji"},
+        {fn: "Otwieranie panelu nawigacji", col: "proc", process: ["Nawigowanie po aplikacji"], place: NAV,
+            text: "ten sam przycisk otwiera i zamyka panel; zamyka go też wybór pozycji albo dotknięcie poza panelem"},
+        {fn: "Przechodzenie do ekranu", col: "data", process: ["Nawigowanie po aplikacji"], place: NAV,
+            text: "pozycje panelu<ul><li>Dom</li><li>Strumień myśli</li><li>Zapamiętywanie</li><li>Warsztat</li><li>Tagi i Domeny</li><li>Preferencje</li></ul>"},
+        {fn: "Przechodzenie do ekranu", col: "proc", process: ["Nawigowanie po aplikacji", "Powtarzanie z fiszkami"], place: NAV,
+            text: "Zapamiętywanie tylko przy włączonych fiszkach — przełączenie w Preferencjach zmienia panel od następnego otwartego ekranu"},
+        {fn: "Przechodzenie do ekranu", col: "proc", process: ["Nawigowanie po aplikacji"], place: NAV,
+            text: "wybór bieżącego ekranu nic nie zmienia; przejście na ekran otwarty wcześniej wraca do niego, a ekrany otwarte po nim się zamykają"},
+        {fn: "Zaznaczanie bieżącego ekranu", col: "data", process: ["Nawigowanie po aplikacji"], place: NAV,
+            text: "wyróżniona pozycja bieżącego ekranu"},
+        {fn: "Zaznaczanie bieżącego ekranu", col: "proc", process: ["Nawigowanie po aplikacji"], place: NAV,
+            text: "ekrany podrzędne zaznaczają swój ekran nadrzędny<ul><li>Łapanie myśli, Poznawanie aplikacji → Dom</li><li>Szczegóły myśli → Strumień myśli</li><li>Zestaw fiszek → Zapamiętywanie</li><li>Szczegóły celu → Warsztat</li></ul>"},
+        {fn: "Zgodność z systemem", col: "data", process: ["Nawigowanie po aplikacji"], place: NAV,
+            text: "tryby nawigacji Androida — 3 przyciski i gesty"},
+        {fn: "Zgodność z systemem", col: "proc", process: ["Nawigowanie po aplikacji"], place: NAV,
+            text: "treść i panel nie chowają się pod paskami systemu"},
+
+        // Personalizowanie
+        {fn: "Wyświetlanie powitania", col: "data", process: ["Personalizowanie"], place: HOME,
+            text: "powitanie losowane z listy, z wyróżnionym imieniem użytkownika"},
+        {fn: "Wyświetlanie powitania", col: "proc", process: ["Personalizowanie"], place: HOME,
+            text: "losowane przy każdym wejściu na ekran — inne niż poprzednie"},
+
+        // Wybór ekranu startowego
+        {fn: "Przekierowanie na ekran startowy", col: "data", process: ["Wybór ekranu startowego"], place: HOME,
+            text: "ekran wybrany w Preferencjach — domyślnie zostaje Dom"},
+        {fn: "Przekierowanie na ekran startowy", col: "proc", process: ["Wybór ekranu startowego"], place: HOME,
+            text: "tylko przy uruchomieniu z ikony aplikacji — nie przy powrocie na Dom ani po obrocie ekranu"},
+        {fn: "Przekierowanie na ekran startowy", col: "proc", process: ["Wybór ekranu startowego"], place: HOME,
+            text: "Dom zostaje pod spodem — cofnięcie z ekranu startowego wraca na Dom"},
+        {fn: "Przekierowanie na ekran startowy", col: "proc", process: ["Wybór ekranu startowego", "Powtarzanie z fiszkami"], place: HOME,
+            text: "wybrane Zapamiętywanie przy wyłączonych fiszkach — zostaje Dom"},
+
+        // Sprawdzanie wersji aplikacji
+        {fn: "Wyświetlanie wersji", col: "data", process: ["Sprawdzanie wersji aplikacji"], place: HOME,
+            text: "data instalacji / ostatniej aktualizacji aplikacji"},
+        {fn: "Wyświetlanie wersji", col: "proc", process: ["Sprawdzanie wersji aplikacji"], place: HOME,
+            text: "pozwala sprawdzić, która wersja jest na telefonie"},
+
+        // Onboarding
+        {fn: "Wyświetlanie wskazówek", col: "data", process: ["Onboarding"], place: GEN,
+            text: "wskazówka: tytuł, treść, czasem ilustracja; wskazówki jednego kroku pokazywane po kolei"},
+        {fn: "Wyświetlanie wskazówek", col: "data", process: ["Onboarding"], place: GEN,
+            text: "kiedy<ul><li>pierwsze wejście na ekran</li><li>pierwsze użycie funkcji ekranu</li></ul>"},
+        {fn: "Wyświetlanie wskazówek", col: "proc", process: ["Onboarding"], place: GEN,
+            text: "każdy krok pokazywany tylko raz — zamknięcie kroku oznacza go jako zobaczony"},
+        {fn: "Wyświetlanie wskazówek", col: "data", process: ["Onboarding"], place: HOME,
+            text: "Dom — pierwsze wejście<ul><li>rozpoczynanie łapania myśli</li><li>dodatkowa: dojście do Preferencji przez panel nawigacji</li></ul>"},
+        {fn: "Wyświetlanie wskazówek", col: "data", process: ["Onboarding"], place: CAP,
+            text: "Łapanie myśli — pierwsze wejście<ul><li>formy zapisu myśli — notatka, głosówka, zdjęcie — i dokładanie kolejnych</li><li>pole skojarzeń / tagów — zachęta do użycia</li></ul>"},
+        {fn: "Wyświetlanie wskazówek", col: "data", process: ["Onboarding", "Łączenie myśli z hex tagami"], place: CAP,
+            text: "Łapanie myśli — pierwsze użycie pola skojarzeń / tagów<ul><li>rodzaje tagów — osoba, projekt, temat</li><li>przykład do wypróbowania od razu — zapis myśli z tagami i podgląd jej szczegółów</li></ul>"},
+        {fn: "Wyświetlanie wskazówek", col: "data", process: ["Onboarding"], place: STR,
+            text: "Strumień myśli — pierwsze wejście<ul><li>przeglądanie myśli</li><li>wyszukiwanie — gdzie jest podpowiedź, jak szukać</li><li>usuwanie myśli</li><li>wejście w szczegóły myśli</li></ul>"},
+        {fn: "Wyświetlanie wskazówek", col: "data", process: ["Onboarding"], place: DET,
+            text: "Szczegóły myśli — pierwsze wejście<ul><li>do czego służą — rozwijanie myśli</li><li>edytowanie pól myśli</li><li>zmienianie wartości myśli</li><li>dodawanie kolejnych form zapisu</li></ul>"},
+        {fn: "Wchodzenie do przeglądu wskazówek", col: "data", process: ["Onboarding"], place: HOME,
+            text: "wejście do Poznawania aplikacji — wyróżnione, by przyciągało uwagę"},
+        {fn: "Wchodzenie do przeglądu wskazówek", col: "proc", process: ["Onboarding"], place: [...HOME, ...ONB],
+            text: "osobny ekran; cofnięcie wraca na Dom"},
+        {fn: "Wyświetlanie postępu", col: "data", process: ["Onboarding"], place: ONB,
+            text: "ogólny postęp — jaka część wszystkich wskazówek (bez dodatkowych) została zobaczona, w procentach"},
+        {fn: "Wyświetlanie postępu", col: "proc", process: ["Onboarding"], place: ONB,
+            text: "liczony z tych samych wskazówek co sekcje — postęp i liczniki sekcji zawsze zgodne"},
+        {fn: "Wyświetlanie postępu", col: "proc", process: ["Onboarding"], place: ONB,
+            text: "przeliczany po powrocie na ekran — wskazówki mogły zostać zobaczone gdzie indziej"},
+        {fn: "Wyświetlanie sekcji wskazówek", col: "data", process: ["Onboarding"], place: ONB,
+            text: "sekcje = ekrany, w stałej kolejności<ul><li>Dom</li><li>Preferencje</li><li>Tagi i Domeny</li><li>Łapanie myśli</li><li>Strumień + Szczegóły myśli — razem, ta sama funkcjonalność</li></ul>"},
+        {fn: "Wyświetlanie sekcji wskazówek", col: "data", process: ["Onboarding"], place: ONB,
+            text: "sekcja: nazwa ekranu, licznik zobaczonych (ile / ze wszystkich), lista wskazówek — tytuł i stan „zobaczona / nie”"},
+        {fn: "Wyświetlanie sekcji wskazówek", col: "proc", process: ["Onboarding"], place: ONB,
+            text: "wskazówki dodatkowe poza listą i licznikiem — nadal pokazywane na swoich ekranach"},
+        {fn: "Przechodzenie do ekranu sekcji", col: "data", process: ["Onboarding"], place: ONB,
+            text: "przejście do ekranu przy każdej sekcji"},
+        {fn: "Przechodzenie do ekranu sekcji", col: "proc", process: ["Onboarding"], place: ONB,
+            text: "Szczegóły myśli — otwiera ostatnio utworzoną myśl; brak myśli — informacja, że najpierw trzeba jakąś złapać"},
+        {fn: "Resetowanie sekcji", col: "data", process: ["Onboarding"], place: ONB,
+            text: "reset przy każdej sekcji"},
+        {fn: "Resetowanie sekcji", col: "proc", process: ["Onboarding"], place: ONB,
+            text: "z potwierdzeniem; działa tylko na swoją sekcję — także na jej wskazówki dodatkowe"},
+        {fn: "Resetowanie sekcji", col: "proc", process: ["Onboarding"], place: ONB,
+            text: "wskazówki sekcji znów pojawią się na swoich ekranach; postęp i licznik przeliczane od razu"},
+
+        // Skróty aplikacji
+        {fn: "Otwieranie formy ze skrótu", col: "data", process: ["Skróty aplikacji", "Łapanie myśli"], place: ICON,
+            text: "skróty na ikonie aplikacji — po jednym na formę: Złap notatkę, Złap głosówkę, Złap zdjęcie"},
+        {fn: "Otwieranie formy ze skrótu", col: "proc", process: ["Skróty aplikacji", "Łapanie myśli"], place: [...ICON, ...CAP],
+            text: "otwiera Łapanie myśli od razu w formie skrótu — ma pierwszeństwo przed domyślną formą z Preferencji"},
+        {fn: "Otwieranie formy ze skrótu", col: "proc", process: ["Skróty aplikacji", "Łapanie myśli"], place: [...ICON, ...CAP],
+            text: "forma wyłączona — informacja z przejściem do Preferencji"},
+        {fn: "Dodawanie fiszek ze skrótu", col: "data", process: ["Skróty aplikacji", "Zapisywanie luźnych fiszek"], place: ICON,
+            text: "skrót Twórz fiszki — pierwszy na liście, tylko przy włączonych fiszkach"},
+        {fn: "Dodawanie fiszek ze skrótu", col: "proc", process: ["Skróty aplikacji", "Zapisywanie luźnych fiszek"], place: [...ICON, ...FC],
+            text: "otwiera Zapamiętywanie na Luźnych fiszkach z od razu otwartym dodawaniem serią — bez wyboru zestawu"},
+        {fn: "Powrót ze skrótu", col: "proc", process: ["Skróty aplikacji"], place: ICON,
+            text: "cofnięcie prowadzi do Domu, nie wyrzuca z aplikacji"},
+
+        // Robienie kopii zapasowej danych
+        {fn: "Robienie kopii", col: "proc", process: ["Robienie kopii zapasowej danych"], place: P,
+            text: "przy starcie aplikacji, tylko przy włączonej opcji"},
+        {fn: "Robienie kopii", col: "proc", process: ["Robienie kopii zapasowej danych"], place: P,
+            text: "jeden plik na dzień — kolejne uruchomienia tego dnia go nadpisują"},
+        {fn: "Robienie kopii", col: "proc", process: ["Robienie kopii zapasowej danych"], place: P,
+            text: "kopia obejmuje myśli z formami, hex tagi i ich powiązania, domeny, cele z krokami, ścieżki, fiszki (luźne i zestawy) z postępem powtórek"},
+        {fn: "Wczytywanie kopii", col: "proc", process: ["Robienie kopii zapasowej danych"], place: P,
+            text: "kopia ze starszej wersji aplikacji — wczytywana; z nowszej — odrzucana z informacją"},
+        {fn: "Wczytywanie kopii", col: "proc", process: ["Robienie kopii zapasowej danych"], place: P,
+            text: "zasoby dodane w nowszej wersji (np. ikony, ścieżki) uzupełniane po wczytaniu kopii"},
+
+        // Wybieranie kalendarza — uzupełnienie z kodu
+        {fn: "Wybieranie kalendarza", col: "proc", process: ["Przypomnienia kroków w kalendarzu"], place: P,
+            text: "tylko kalendarze kont — kalendarze lokalne telefonu pomijane"},
+
+        // Łapanie myśli
+        {fn: "Rozpoczynanie łapania myśli", col: "data", process: ["Łapanie myśli"], place: [...HOME, ...STR, ...WS],
+            text: "główne działanie Domu; dostępne też w Strumieniu myśli i Warsztacie"},
+        {fn: "Rozpoczynanie łapania myśli", col: "proc", process: ["Łapanie myśli"], place: [...HOME, ...STR, ...WS],
+            text: "otwiera Łapanie myśli; po zapisie albo cofnięciu — powrót na ekran, z którego zaczęto"},
+        {fn: "Otwieranie formularza", col: "data", process: ["Łapanie myśli"], place: CAP,
+            text: "formularz: tytuł i tagi (jedno pole), notatka, głosówka, zdjęcie"},
+        {fn: "Otwieranie formularza", col: "proc", process: ["Łapanie myśli"], place: CAP,
+            text: "start w domyślnej formie<ul><li>Tekst — od razu edycja notatki</li><li>Głosówka — od razu startuje nagrywanie</li><li>Zdjęcie — od razu aparat</li></ul>"},
+        {fn: "Otwieranie formularza", col: "proc", process: ["Łapanie myśli"], place: CAP,
+            text: "domyślna forma wyłączona — informacja z przejściem do Preferencji"},
+        {fn: "Dodawanie form zapisu", col: "data", process: ["Łapanie myśli", "Edytowanie myśli"], place: [...CAP, ...DET],
+            text: "dodanie każdej formy, której myśl jeszcze nie ma; forma wyłączona w Preferencjach — dodanie nieaktywne"},
+        {fn: "Dodawanie form zapisu", col: "proc", process: ["Łapanie myśli", "Edytowanie myśli"], place: [...CAP, ...DET],
+            text: "wybranie nieaktywnej formy — pytanie o włączenie, z przejściem do Preferencji"},
+        {fn: "Zapisywanie myśli", col: "data", process: ["Łapanie myśli"], place: CAP,
+            text: "Zapisz"},
+        {fn: "Zapisywanie myśli", col: "proc", process: ["Łapanie myśli"], place: CAP,
+            text: "wymagana co najmniej jedna forma — notatka, nagranie albo zdjęcie; sam tytuł czy tagi nie wystarczą"},
+        {fn: "Zapisywanie myśli", col: "proc", process: ["Łapanie myśli"], place: CAP,
+            text: "przed zapisem sprawdzane limity tytułu i tagów oraz nagranie (nie może mieć 0 sekund) — błąd pod polem tytułu i tagów"},
+        {fn: "Zapisywanie myśli", col: "proc", process: ["Łapanie myśli", "Wartościowanie myśli"], place: CAP,
+            text: "nowa myśl: wartość 1, bez domeny"},
+        {fn: "Zapisywanie myśli", col: "proc", process: ["Łapanie myśli"], place: CAP,
+            text: "nic nie trafia do bazy przed Zapisz — wyjście bez zapisu porzuca szkic bez pytania"},
+        {fn: "Wpisywanie tytułu i tagów", col: "data", process: ["Łapanie myśli", "Łączenie myśli z hex tagami"], place: CAP,
+            text: "jedno pole: najpierw tytuł, potem tagi — każdy ze znacznikiem: @ osoba, # projekt"},
+        {fn: "Wpisywanie tytułu i tagów", col: "data", process: ["Łapanie myśli", "Łączenie myśli z hex tagami"], place: CAP,
+            text: "przykład: Pomysł na rozdział @ja #powieść → tytuł „Pomysł na rozdział”, osoba „ja”, projekt „powieść”"},
+        {fn: "Wpisywanie tytułu i tagów", col: "proc", process: ["Łapanie myśli", "Łączenie myśli z hex tagami"], place: CAP,
+            text: "tytuł — tekst przed pierwszym znacznikiem, max 36 znaków; zwykły tekst, nie tag"},
+        {fn: "Wpisywanie tytułu i tagów", col: "proc", process: ["Łapanie myśli", "Łączenie myśli z hex tagami"], place: CAP,
+            text: "każdy znacznik zaczyna nowy tag: @ja @michal → dwie osoby"},
+        {fn: "Wpisywanie tytułu i tagów", col: "proc", process: ["Łapanie myśli", "Konfigurowanie domen"], place: CAP,
+            text: "domeny przy łapaniu się nie ustawia — przypisywana w Szczegółach myśli"},
+
+        // Zapis w formie Notatki
+        {fn: "Pisanie notatki", col: "data", process: ["Zapis w formie Notatki"], place: [...CAP, ...DET],
+            text: "edytor notatki z dodawaniem punktorów"},
+        {fn: "Pisanie notatki", col: "proc", process: ["Zapis w formie Notatki"], place: [...CAP, ...DET],
+            text: "lista punktorów kontynuowana w kolejnej linii; pusty punktor kończy listę"},
+        {fn: "Pisanie notatki", col: "proc", process: ["Zapis w formie Notatki"], place: [...CAP, ...DET],
+            text: "pusta notatka się nie zapisuje"},
+        {fn: "Wyświetlanie notatki", col: "data", process: ["Zapis w formie Notatki"], place: [...CAP, ...STR, ...DET],
+            text: "formatowanie wzięte z Markdowna — punktory, akapity"},
+        {fn: "Wyświetlanie notatki", col: "data", process: ["Zapis w formie Notatki", "Łączenie myśli z hex tagami"], place: [...CAP, ...STR, ...DET],
+            text: "tagi @/# w treści wyróżnione"},
+        {fn: "Wyświetlanie notatki", col: "data", process: ["Zapis w formie Notatki"], place: [...CAP, ...STR, ...DET],
+            text: "adresy WWW i linki Markdowna jako linki"},
+        {fn: "Wyświetlanie notatki", col: "proc", process: ["Zapis w formie Notatki"], place: [...CAP, ...STR, ...DET],
+            text: "wybranie linku otwiera go w przeglądarce; reszta notatki działa jak zwykle (edycja / wejście w myśl)"},
+        {fn: "Usuwanie notatki", col: "proc", process: ["Zapis w formie Notatki"], place: [...CAP, ...DET],
+            text: "z potwierdzeniem; nie da się cofnąć"},
+
+        // Zapis w formie Głosówki
+        {fn: "Nagrywanie głosówki", col: "data", process: ["Zapis w formie Głosówki"], place: [...CAP, ...DET],
+            text: "czas nagrania i czas, który jeszcze został"},
+        {fn: "Nagrywanie głosówki", col: "proc", process: ["Zapis w formie Głosówki"], place: [...CAP, ...DET],
+            text: "max 3 minuty — po limicie nagrywanie się zatrzymuje, z informacją"},
+        {fn: "Nagrywanie głosówki", col: "proc", process: ["Zapis w formie Głosówki"], place: [...CAP, ...DET],
+            text: "Łapanie myśli — nagranie zapisuje się razem z myślą; Szczegóły myśli — od razu po zatrzymaniu"},
+        {fn: "Odtwarzanie głosówki", col: "data", process: ["Zapis w formie Głosówki"], place: [...CAP, ...STR, ...DET],
+            text: "wizualizacja nagrania, bieżący moment i długość nagrania"},
+        {fn: "Odtwarzanie głosówki", col: "proc", process: ["Zapis w formie Głosówki"], place: [...CAP, ...STR, ...DET],
+            text: "podczas odtwarzania — przewinięcie o 5 s w przód i w tył; zatrzymanie"},
+        {fn: "Odtwarzanie głosówki", col: "proc", process: ["Zapis w formie Głosówki"], place: STR,
+            text: "Strumień myśli — tylko odtwarzanie, bez zmiany nagrania"},
+        {fn: "Zmienianie nagrania", col: "data", process: ["Zapis w formie Głosówki"], place: [...CAP, ...DET],
+            text: "dla istniejącego nagrania — Nagraj od nowa albo Usuń nagranie"},
+        {fn: "Zmienianie nagrania", col: "proc", process: ["Zapis w formie Głosówki"], place: [...CAP, ...DET],
+            text: "w obu przypadkach obecne nagranie znika"},
+        {fn: "Pokazywanie wyłączonej formy", col: "proc", process: ["Zapis w formie Głosówki", "Zapis w formie Zdjęcia"], place: [...STR, ...DET],
+            text: "głosówki albo zdjęcia wyłączone w Preferencjach — zapisane nagranie / zdjęcie nie jest pokazywane, ale zostaje w myśli"},
+
+        // Zapis w formie Zdjęcia
+        {fn: "Dodawanie zdjęcia", col: "data", process: ["Zapis w formie Zdjęcia"], place: [...CAP, ...DET],
+            text: "zrobienie zdjęcia aparatem albo wybór z galerii"},
+        {fn: "Dodawanie zdjęcia", col: "proc", process: ["Zapis w formie Zdjęcia"], place: [...CAP, ...DET],
+            text: "zdjęcie zapisywane w zmniejszonym rozmiarze, z poprawną orientacją"},
+        {fn: "Dodawanie zdjęcia", col: "proc", process: ["Zapis w formie Zdjęcia"], place: [...CAP, ...DET],
+            text: "Łapanie myśli — zapis razem z myślą; Szczegóły myśli — od razu"},
+        {fn: "Oglądanie zdjęcia", col: "data", process: ["Zapis w formie Zdjęcia"], place: [...CAP, ...STR, ...DET],
+            text: "miniatura zdjęcia"},
+        {fn: "Oglądanie zdjęcia", col: "proc", process: ["Zapis w formie Zdjęcia"], place: [...CAP, ...DET],
+            text: "pełny rozmiar po wybraniu miniatury"},
+        {fn: "Usuwanie zdjęcia", col: "proc", process: ["Zapis w formie Zdjęcia"], place: [...CAP, ...DET],
+            text: "z potwierdzeniem; nie da się cofnąć"},
+
+        // Łączenie myśli z hex tagami
+        {fn: "Nadawanie tagów myśli", col: "data", process: ["Łączenie myśli z hex tagami"], place: [...CAP, ...DET],
+            text: "dwa rodzaje tagów: osoba (Osoba lub Ekipa) i projekt (Projekt lub Zajawka); kilka tagów jednego rodzaju dozwolone"},
+        {fn: "Nadawanie tagów myśli", col: "proc", process: ["Łączenie myśli z hex tagami"], place: [...CAP, ...DET],
+            text: "tag to jedno słowo — max 16 znaków; spacja lub przecinek rozdziela tagi"},
+        {fn: "Nadawanie tagów myśli", col: "proc", process: ["Łączenie myśli z hex tagami"], place: [...CAP, ...DET],
+            text: "wielkość liter nie ma znaczenia — „Ja” to ten sam tag co „ja”; powtórzona nazwa nie tworzy duplikatu"},
+        {fn: "Nadawanie tagów myśli", col: "proc", process: ["Łączenie myśli z hex tagami"], place: [...CAP, ...DET],
+            text: "nowa nazwa trafia do słownika tagów"},
+        {fn: "Odczytywanie tagów z notatki", col: "data", process: ["Łączenie myśli z hex tagami", "Zapis w formie Notatki"], place: [...CAP, ...DET],
+            text: "@słowo → osoba, #słowo → projekt; tagiem jest tylko jedno słowo po znaczniku"},
+        {fn: "Odczytywanie tagów z notatki", col: "proc", process: ["Łączenie myśli z hex tagami", "Zapis w formie Notatki"], place: [...CAP, ...DET],
+            text: "znacznik musi zaczynać słowo — adres e-mail nie jest tagiem"},
+        {fn: "Odczytywanie tagów z notatki", col: "proc", process: ["Łączenie myśli z hex tagami", "Zapis w formie Notatki"], place: [...CAP, ...DET],
+            text: "przy zapisie notatki tagi dołączane do myśli — obok już nadanych; usunięcie znacznika z treści nie zdejmuje tagu"},
+        {fn: "Podpowiadanie tagów", col: "data", process: ["Łączenie myśli z hex tagami"], place: [...CAP, ...DET, ...STR],
+            text: "podpowiedzi tylko z tagów tego samego rodzaju, do 5 naraz"},
+        {fn: "Podpowiadanie tagów", col: "proc", process: ["Łączenie myśli z hex tagami"], place: [...CAP, ...DET, ...STR],
+            text: "do 2 wpisanych znaków — 2 ostatnio używane i najczęstsze; od 3. znaku — tagi zawierające fragment, bez względu na polskie znaki, najkrótsze najpierw"},
+        {fn: "Podpowiadanie tagów", col: "proc", process: ["Łączenie myśli z hex tagami"], place: [...CAP, ...DET, ...STR],
+            text: "kiedy się pojawiają<ul><li>Łapanie myśli — po znaczniku i 2 znakach</li><li>Szczegóły myśli — od pierwszego znaku</li><li>Strumień myśli (wyszukiwanie) — od razu po wejściu w pole</li></ul>"},
+        {fn: "Podpowiadanie tagów", col: "proc", process: ["Łączenie myśli z hex tagami"], place: [...CAP, ...DET, ...STR],
+            text: "wybór podpowiedzi nie wywołuje pytania o wariant"},
+        {fn: "Wykrywanie wariantu tagu", col: "data", process: ["Łączenie myśli z hex tagami"], place: [...CAP, ...DET],
+            text: "przy zapisie myśli, tagów albo notatki — wpisany tag jest wariantem istniejącego"},
+        {fn: "Wykrywanie wariantu tagu", col: "proc", process: ["Łączenie myśli z hex tagami"], place: [...CAP, ...DET],
+            text: "pytanie z wyborem: użyć istniejącego czy utworzyć nowy tag; dotyczy pierwszego znalezionego wariantu"},
+        {fn: "Wykrywanie wariantu tagu", col: "proc", process: ["Łączenie myśli z hex tagami", "Zapis w formie Notatki"], place: [...CAP, ...DET],
+            text: "użycie istniejącego poprawia tag także w treści notatki"},
+        {fn: "Wykrywanie wariantu tagu", col: "proc", process: ["Łączenie myśli z hex tagami"], place: [...CAP, ...DET],
+            text: "warianty nigdy nie scalają się same — sad i sąd mogą być osobnymi tagami; brak pytania, gdy wpisana wersja już jest w słowniku"},
+        {fn: "Wykrywanie wariantu tagu", col: "proc", process: ["Łączenie myśli z hex tagami", "Zapis w formie Notatki"], place: DET,
+            text: "rezygnacja z pytania przy notatce — powrót do edycji z wpisanym tekstem"},
+
+        // Porządkowanie hex tagów
+        {fn: "Wyświetlanie listy tagów", col: "data", process: ["Porządkowanie hex tagów"], place: META,
+            text: "osobna lista dla osób i projektów — nazwa tagu i licznik użyć"},
+        {fn: "Wyświetlanie listy tagów", col: "data", process: ["Porządkowanie hex tagów"], place: META,
+            text: "tag bez żadnej myśli zostaje na liście z licznikiem 0; brak tagów danego rodzaju — informacja o pustej liście"},
+        {fn: "Wyświetlanie listy tagów", col: "proc", process: ["Porządkowanie hex tagów"], place: META,
+            text: "kolejność: od najczęściej używanego, przy remisie alfabetycznie; na liście osób tag „ja” zawsze pierwszy (pojawia się po pierwszym użyciu)"},
+        {fn: "Wyświetlanie listy tagów", col: "proc", process: ["Porządkowanie hex tagów"], place: META,
+            text: "lista odświeżana po każdej zmianie i po powrocie na ekran"},
+        {fn: "Przełączanie zakładek metadanych", col: "data", process: ["Porządkowanie hex tagów", "Konfigurowanie domen"], place: META,
+            text: "trzy zakładki: Osoby / Projekty / Domeny — widoczna jedna naraz, na start Osoby"},
+        {fn: "Przełączanie zakładek metadanych", col: "proc", process: ["Porządkowanie hex tagów", "Konfigurowanie domen"], place: META,
+            text: "po powrocie z innego ekranu — ostatnio oglądana zakładka"},
+        {fn: "Zmienianie nazwy tagu", col: "data", process: ["Porządkowanie hex tagów"], place: META,
+            text: "edycja z obecną nazwą wpisaną do poprawienia"},
+        {fn: "Zmienianie nazwy tagu", col: "proc", process: ["Porządkowanie hex tagów"], place: META,
+            text: "nowa nazwa obowiązuje we wszystkich myślach z tym tagiem"},
+        {fn: "Zmienianie nazwy tagu", col: "proc", process: ["Porządkowanie hex tagów"], place: META,
+            text: "pusta nazwa — nie zapisuje się, prośba o nazwę; nazwa zajęta przez inny tag tego rodzaju — nie zapisuje się, ostrzeżenie"},
+        {fn: "Zmienianie nazwy tagu", col: "proc", process: ["Porządkowanie hex tagów"], place: META,
+            text: "ten sam tekst może być osobno osobą i projektem; łączenie dwóch tagów w jeden — poza zakresem"},
+        {fn: "Usuwanie tagu", col: "proc", process: ["Porządkowanie hex tagów"], place: META,
+            text: "pytanie o potwierdzenie — mówi wprost, że tag zniknie ze wszystkich myśli, które go używają"},
+        {fn: "Usuwanie tagu", col: "proc", process: ["Porządkowanie hex tagów"], place: META,
+            text: "tag znika ze słownika i z myśli — same myśli zostają; potwierdzenie z nazwą tagu; nie da się cofnąć"},
+        {fn: "Wyszukiwanie myśli z tagiem", col: "data", process: ["Porządkowanie hex tagów", "Wyszukiwanie myśli"], place: META,
+            text: "z licznika użyć przy tagu"},
+        {fn: "Wyszukiwanie myśli z tagiem", col: "proc", process: ["Porządkowanie hex tagów", "Wyszukiwanie myśli"], place: [...META, ...STR],
+            text: "otwiera Strumień myśli wyszukany po tym tagu — kryterium zastępuje dotychczasowe wyszukiwanie"},
+        {fn: "Wyszukiwanie myśli z tagiem", col: "proc", process: ["Porządkowanie hex tagów", "Wyszukiwanie myśli"], place: [...META, ...STR],
+            text: "cofnięcie ze Strumienia wraca do Tagi i Domeny"},
+
+        // Konfigurowanie domen
+        {fn: "Wyświetlanie domen", col: "data", process: ["Konfigurowanie domen"], place: META,
+            text: "zakładka Domeny — stały zestaw 10 domen, każda z ikoną i nazwą"},
+        {fn: "Wyświetlanie domen", col: "proc", process: ["Konfigurowanie domen"], place: META,
+            text: "domen nie dodaje się ani nie usuwa — tylko się je zmienia"},
+        {fn: "Wyświetlanie wskazówek", col: "data", process: ["Konfigurowanie domen", "Onboarding"], place: META,
+            text: "Tagi i Domeny — pierwsze wejście na zakładkę domen<ul><li>czym są domeny</li></ul>"},
+        {fn: "Edytowanie domeny", col: "data", process: ["Konfigurowanie domen"], place: META,
+            text: "obecna nazwa i ikona do zmiany; ikona z galerii dostępnych ikon"},
+        {fn: "Edytowanie domeny", col: "proc", process: ["Konfigurowanie domen"], place: META,
+            text: "nazwa wymagana, max 36 znaków"},
+        {fn: "Edytowanie domeny", col: "proc", process: ["Konfigurowanie domen"], place: META,
+            text: "zmiana zapisuje się od razu; nowa nazwa i ikona obowiązują wszędzie, gdzie domena jest pokazywana"},
+        {fn: "Przygotowanie domen domyślnych", col: "proc", process: ["Konfigurowanie domen"], place: META,
+            text: "pierwsze uruchomienie aplikacji — 10 domen ze startowymi nazwami (np. „Rozwój, Praca, Biznes”), do późniejszej zmiany"},
+
+        // Przeglądanie myśli
+        {fn: "Wyświetlanie karty myśli", col: "data", process: ["Przeglądanie myśli"], place: STR,
+            text: "jedna myśl na ekranie — wszystkie jej zapisane formy: notatka, nagranie, zdjęcie"},
+        {fn: "Wyświetlanie karty myśli", col: "data", process: ["Przeglądanie myśli"], place: STR,
+            text: "tytuł myśli u góry — chyba że sortowanie jest po temacie (wtedy bez powtarzania)"},
+        {fn: "Wyświetlanie karty myśli", col: "proc", process: ["Przeglądanie myśli"], place: STR,
+            text: "myśl bez żadnej formy — informacja, że jest pusta"},
+        {fn: "Wyświetlanie metadanej na karcie", col: "data", process: ["Przeglądanie myśli", "Sortowanie myśli"], place: STR,
+            text: "jedna informacja dobrana do kryterium sortowania<ul><li>Wartość — wartość myśli</li><li>Wiek — etap wzrostu i ile dni temu złapana</li><li>Data zmiany — ile dni temu zmieniona</li><li>Temat / Osoba / Projekt — tytuł albo tagi danego rodzaju</li></ul>"},
+        {fn: "Wyświetlanie metadanej na karcie", col: "proc", process: ["Przeglądanie myśli", "Sortowanie myśli"], place: STR,
+            text: "myśl bez wartości tego kryterium — oznaczenie braku"},
+        {fn: "Przewijanie strumienia", col: "data", process: ["Przeglądanie myśli"], place: STR,
+            text: "wskaźnik położenia w strumieniu"},
+        {fn: "Przewijanie strumienia", col: "proc", process: ["Przeglądanie myśli"], place: STR,
+            text: "przejście do następnej / poprzedniej myśli; długą treść przewija się wewnątrz karty, bez przeskakiwania do sąsiedniej myśli"},
+        {fn: "Przewijanie strumienia", col: "proc", process: ["Przeglądanie myśli", "Wyszukiwanie myśli", "Sortowanie myśli"], place: STR,
+            text: "po zmianie wyszukiwania albo sortowania — od pierwszej myśli"},
+        {fn: "Wchodzenie w szczegóły myśli", col: "proc", process: ["Przeglądanie myśli", "Edytowanie myśli"], place: [...STR, ...DET],
+            text: "wybranie karty otwiera Szczegóły myśli"},
+
+        // Usuwanie myśli
+        {fn: "Usuwanie myśli", col: "proc", process: ["Usuwanie myśli"], place: STR,
+            text: "pytanie o potwierdzenie — myśl znika razem ze wszystkimi formami, nie da się cofnąć"},
+        {fn: "Usuwanie myśli", col: "proc", process: ["Usuwanie myśli"], place: STR,
+            text: "po usunięciu komunikat; strumień pokazuje kolejną myśl"},
+        {fn: "Usuwanie myśli", col: "proc", process: ["Usuwanie myśli", "Łączenie myśli z krokami"], place: [...STR, ...DET],
+            text: "usunięcie myśli powiązanej z krokiem odpina ją od kroku — krok zostaje"},
+        {fn: "Usuwanie pustej myśli", col: "proc", process: ["Usuwanie myśli", "Edytowanie myśli"], place: DET,
+            text: "usunięcie ostatniej formy — pytanie, czy usunąć pustą myśl; odmowa — myśl zostaje pusta"},
+
+        // Wyszukiwanie myśli
+        {fn: "Szukajka", col: "data", process: ["Wyszukiwanie myśli"], place: STR,
+            text: "pasek z wybranymi kryteriami — każde osobno, z oznaczeniem rodzaju; bez kryteriów — zachęta do szukania"},
+        {fn: "Szukajka", col: "proc", process: ["Wyszukiwanie myśli"], place: STR,
+            text: "każde kryterium usuwane pojedynczo, bez ruszania pozostałych; usunięcie ostatniego przywraca pełny strumień"},
+        {fn: "Definiowanie kryteriów", col: "data", process: ["Wyszukiwanie myśli"], place: STR,
+            text: "okno z trzema polami: Temat, Osoba lub Ekipa, Projekt lub Zajawka — wypełnione bieżącymi kryteriami"},
+        {fn: "Definiowanie kryteriów", col: "proc", process: ["Wyszukiwanie myśli"], place: STR,
+            text: "w polach osoby i projektu kilka tagów naraz; podpowiedzi — wg Podpowiadanie tagów"},
+        {fn: "Definiowanie kryteriów", col: "proc", process: ["Wyszukiwanie myśli"], place: STR,
+            text: "zatwierdzenie zamyka okno i zawęża strumień; puste pole = brak kryterium"},
+        {fn: "Dopasowywanie myśli", col: "proc", process: ["Wyszukiwanie myśli"], place: STR,
+            text: "temat — po fragmencie, bez względu na wielkość liter"},
+        {fn: "Dopasowywanie myśli", col: "proc", process: ["Wyszukiwanie myśli"], place: STR,
+            text: "osoba, projekt — pełna nazwa tagu, bez względu na wielkość liter; kilka tagów — myśl musi mieć każdy z nich"},
+        {fn: "Dopasowywanie myśli", col: "proc", process: ["Wyszukiwanie myśli", "Filtrowanie myśli"], place: STR,
+            text: "kilka kryteriów — myśl pasuje do każdego; wyszukiwanie łączy się z filtrem"},
+        {fn: "Dopasowywanie myśli", col: "proc", process: ["Wyszukiwanie myśli"], place: STR,
+            text: "kryteria przeżywają obrót ekranu"},
+
+        // Sortowanie myśli
+        {fn: "Ustawianie sortowania", col: "data", process: ["Sortowanie myśli"], place: STR,
+            text: "przycisk pokazuje aktualne kryterium i kierunek"},
+        {fn: "Ustawianie sortowania", col: "data", process: ["Sortowanie myśli"], place: STR,
+            text: "kryteria: Wartość, Wiek, Data zmiany, Temat, Osoba, Projekt"},
+        {fn: "Ustawianie sortowania", col: "data", process: ["Sortowanie myśli"], place: STR,
+            text: "kierunek<ul><li>daty — od Młodych / od Starych</li><li>wartość — od Ważnych / od Drobnych</li><li>tekst — A → Z / Z → A</li></ul>"},
+        {fn: "Ustawianie sortowania", col: "data", process: ["Sortowanie myśli"], place: STR,
+            text: "domyślnie: Data zmiany, od Młodych"},
+        {fn: "Ustawianie sortowania", col: "proc", process: ["Sortowanie myśli"], place: STR,
+            text: "wybór kierunku zatwierdza sortowanie i zamyka okno"},
+        {fn: "Ustawianie sortowania", col: "proc", process: ["Sortowanie myśli"], place: STR,
+            text: "myśl z kilkoma tagami — sortowana po pierwszym alfabetycznie"},
+        {fn: "Ustawianie sortowania", col: "proc", process: ["Sortowanie myśli"], place: STR,
+            text: "myśli bez wartości pola — na końcu przy kierunku rosnącym, na początku przy malejącym"},
+
+        // Filtrowanie myśli
+        {fn: "Otwieranie filtra", col: "data", process: ["Filtrowanie myśli"], place: STR,
+            text: "Filtruj — przycisk z liczbą aktywnych kryteriów"},
+        {fn: "Otwieranie filtra", col: "proc", process: ["Filtrowanie myśli"], place: STR,
+            text: "okno startuje z bieżącymi ustawieniami filtra"},
+        {fn: "Filtrowanie po stanie", col: "data", process: ["Filtrowanie myśli", "Tryb „Uśpienia”"], place: STR,
+            text: "sekcja Stany — dwa niezależne zaznaczenia, z liczbą myśli<ul><li>Aktywne myśli — domyślnie tak</li><li>Uśpione myśli — domyślnie nie</li></ul>"},
+        {fn: "Filtrowanie po stanie", col: "proc", process: ["Filtrowanie myśli", "Tryb „Uśpienia”"], place: STR,
+            text: "sekcja ukryta przy wyłączonym trybie uśpienia — wtedy wszystkie myśli"},
+        {fn: "Filtrowanie po stanie", col: "proc", process: ["Filtrowanie myśli", "Tryb „Uśpienia”"], place: STR,
+            text: "liczby ze wszystkich myśli, nie tylko przefiltrowanych — ustalane w chwili otwarcia okna; bliskie uśpienia liczą się jako aktywne"},
+        {fn: "Filtrowanie po domenie", col: "data", process: ["Filtrowanie myśli", "Konfigurowanie domen"], place: STR,
+            text: "domeny — jedna do wyboru"},
+        {fn: "Filtrowanie po domenie", col: "proc", process: ["Filtrowanie myśli"], place: STR,
+            text: "ponowny wybór zaznaczonej domeny ją odznacza"},
+        {fn: "Zatwierdzanie filtra", col: "proc", process: ["Filtrowanie myśli"], place: STR,
+            text: "po zastosowaniu — komunikat z liczbą wybranych myśli"},
+        {fn: "Zatwierdzanie filtra", col: "proc", process: ["Filtrowanie myśli", "Wyszukiwanie myśli"], place: STR,
+            text: "kryteria działają łącznie — stan i domena naraz, razem z wyszukiwaniem; przeżywają obrót ekranu"},
+
+        // Edytowanie myśli
+        {fn: "Wchodzenie do Szczegółów myśli", col: "data", process: ["Edytowanie myśli"], place: DET,
+            text: "wejścia: ze Strumienia myśli, z Poznawania aplikacji (najnowsza myśl), z kroku celu (powiązana myśl)"},
+        {fn: "Edytowanie tytułu", col: "data", process: ["Edytowanie myśli"], place: DET,
+            text: "obecny tytuł do poprawienia; brak tytułu — miejsce na jego dodanie"},
+        {fn: "Edytowanie tytułu", col: "proc", process: ["Edytowanie myśli"], place: DET,
+            text: "zmiana zapisuje się od razu"},
+        {fn: "Edytowanie tagów i domeny", col: "data", process: ["Edytowanie myśli", "Łączenie myśli z hex tagami", "Konfigurowanie domen"], place: DET,
+            text: "okno Tagowanie: osoby, projekty (po jednym polu na rodzaj) i domena"},
+        {fn: "Edytowanie tagów i domeny", col: "data", process: ["Edytowanie myśli"], place: DET,
+            text: "przycisk okna pokazuje liczbę nadanych tagów i domeny"},
+        {fn: "Edytowanie tagów i domeny", col: "proc", process: ["Edytowanie myśli", "Łączenie myśli z hex tagami"], place: DET,
+            text: "tag dodawany po spacji albo zatwierdzeniu pola; tagi usuwane pojedynczo"},
+        {fn: "Edytowanie tagów i domeny", col: "proc", process: ["Edytowanie myśli", "Konfigurowanie domen"], place: DET,
+            text: "jedna domena na myśl; ponowny wybór zaznaczonej ją odznacza"},
+        {fn: "Edytowanie tagów i domeny", col: "proc", process: ["Edytowanie myśli", "Łączenie myśli z hex tagami"], place: DET,
+            text: "przed zapisem — limit znaków tagu i pytanie o wariant"},
+        {fn: "Edytowanie form zapisu", col: "proc", process: ["Edytowanie myśli"], place: DET,
+            text: "dodawanie brakujących form, zmiana i usuwanie istniejących — wg Zapis w formie Notatki / Głosówki / Zdjęcia"},
+        {fn: "Edytowanie form zapisu", col: "proc", process: ["Edytowanie myśli"], place: DET,
+            text: "każda zmiana zapisuje się od razu — bez osobnego Zapisz"},
+
+        // Wartościowanie myśli
+        {fn: "Zmienianie wartości myśli", col: "data", process: ["Wartościowanie myśli"], place: DET,
+            text: "wartość myśli z możliwością podbicia i obniżenia o 1"},
+        {fn: "Zmienianie wartości myśli", col: "proc", process: ["Wartościowanie myśli"], place: DET,
+            text: "wartość od 1 do maksimum skali; podbicie przez wybranie samej wartości po maksimum wraca do 1"},
+        {fn: "Zmienianie wartości myśli", col: "proc", process: ["Wartościowanie myśli", "Tryb „Uśpienia”"], place: DET,
+            text: "zmiana zapisuje się od razu i liczy dni uśpienia od nowa"},
+        {fn: "Działanie skali", col: "proc", process: ["Wartościowanie myśli"], place: P,
+            text: "skala wyznacza najwyższą wartość, jaką można nadać myśli"},
+        {fn: "Działanie skali", col: "proc", process: ["Wartościowanie myśli"], place: P,
+            text: "zmiana skali nie przelicza wartości istniejących myśli — myśl powyżej nowego maksimum zachowuje ją do pierwszej zmiany"},
+        {fn: "Działanie skali", col: "proc", process: ["Wartościowanie myśli", "Tryb „Uśpienia”"], place: P,
+            text: "najwyższy próg wartości w trybie uśpienia = maksimum skali"},
+
+        // Tryb „Uśpienia”
+        {fn: "Wyznaczanie stanu myśli", col: "data", process: ["Tryb „Uśpienia”"], place: [...STR, ...DET],
+            text: "trzy stany myśli<ul><li>aktywna</li><li>bliska uśpienia</li><li>uśpiona</li></ul>"},
+        {fn: "Wyznaczanie stanu myśli", col: "proc", process: ["Tryb „Uśpienia”"], place: [...STR, ...DET],
+            text: "uśpiona — wartość nie wyższa niż próg i brak zmian od co najmniej progu dni"},
+        {fn: "Wyznaczanie stanu myśli", col: "proc", process: ["Tryb „Uśpienia”"], place: [...STR, ...DET],
+            text: "bliska uśpienia — te same warunki, ale 3 dni przed progiem (np. próg 7 dni → od 4. dnia)"},
+        {fn: "Wyznaczanie stanu myśli", col: "proc", process: ["Tryb „Uśpienia”"], place: [...STR, ...DET],
+            text: "myśl powyżej progu wartości zawsze aktywna; tryb wyłączony — wszystkie myśli aktywne"},
+        {fn: "Wyznaczanie stanu myśli", col: "proc", process: ["Tryb „Uśpienia”"], place: [...STR, ...DET],
+            text: "każda zmiana myśli — treść, formy, tytuł, tagi, domena, wartość — liczy dni od nowa"},
+        {fn: "Oznaczanie stanu myśli", col: "data", process: ["Tryb „Uśpienia”", "Przeglądanie myśli"], place: STR,
+            text: "Strumień myśli — oznaczenie tylko myśli bliskich uśpienia i uśpionych"},
+        {fn: "Oznaczanie stanu myśli", col: "data", process: ["Tryb „Uśpienia”"], place: DET,
+            text: "Szczegóły myśli — stan zawsze widoczny; uśpiona myśl wyraźnie odróżniona od aktywnej"},
+        {fn: "Oznaczanie stanu myśli", col: "proc", process: ["Tryb „Uśpienia”", "Filtrowanie myśli"], place: STR,
+            text: "uśpione myśli domyślnie ukryte — odsłanianie wg Filtrowanie po stanie"},
+        {fn: "Budzenie myśli", col: "proc", process: ["Tryb „Uśpienia”"], place: DET,
+            text: "bliska uśpienia — wyjaśnienie, ile zostało i jak ją zachować (edycja albo wyższa wartość)"},
+        {fn: "Budzenie myśli", col: "proc", process: ["Tryb „Uśpienia”"], place: DET,
+            text: "uśpiona — Obudź myśl z potwierdzeniem; myśl liczy się jak świeżo zmieniona i wraca do aktywnych"},
+
+        // Wyznaczanie celów
+        {fn: "Wyświetlanie listy celów", col: "data", process: ["Wyznaczanie celów"], place: WS,
+            text: "zakładka Cele — domyślna, obok Ścieżki"},
+        {fn: "Wyświetlanie listy celów", col: "data", process: ["Wyznaczanie celów"], place: WS,
+            text: "przy celu: opis i ważność (od 1 do 3)"},
+        {fn: "Wyświetlanie listy celów", col: "proc", process: ["Wyznaczanie celów"], place: WS,
+            text: "kolejność: od najważniejszych, przy remisie ostatnio zmienione"},
+        {fn: "Wyświetlanie listy celów", col: "proc", process: ["Wyznaczanie celów"], place: WS,
+            text: "widać do 6 celów — reszta pod „Pokaż jeszcze N…”, zwijana z powrotem"},
+        {fn: "Wyświetlanie listy celów", col: "proc", process: ["Wyznaczanie celów", "Realizowanie kroków"], place: [...WS, ...GOAL],
+            text: "wybranie celu otwiera Szczegóły celu; lista odświeżana po powrocie"},
+        {fn: "Dodawanie celu", col: "data", process: ["Wyznaczanie celów"], place: WS,
+            text: "nowy cel / kierunek — opis"},
+        {fn: "Dodawanie celu", col: "proc", process: ["Wyznaczanie celów"], place: WS,
+            text: "nowy cel ma ważność 1"},
+        {fn: "Zmienianie ważności celu", col: "proc", process: ["Wyznaczanie celów"], place: [...WS, ...GOAL],
+            text: "ważność zmienia się kolejno 1 → 2 → 3 → 1; cel od razu przestawiany w kolejności"},
+        {fn: "Zmienianie ważności celu", col: "proc", process: ["Wyznaczanie celów"], place: [...WS, ...GOAL],
+            text: "cel w archiwum — ważności nie da się zmienić"},
+        {fn: "Edytowanie opisu celu", col: "proc", process: ["Wyznaczanie celów"], place: GOAL,
+            text: "opis celu do poprawienia w Szczegółach celu"},
+        {fn: "Usuwanie celu", col: "proc", process: ["Wyznaczanie celów"], place: WS,
+            text: "pytanie z wyborem: usunąć cel razem z krokami albo przenieść go do archiwum (zachowuje cel z krokami)"},
+        {fn: "Archiwizowanie celów", col: "data", process: ["Wyznaczanie celów"], place: WS,
+            text: "Archiwum z liczbą celów — pod listą, zwinięte; ukryte, gdy puste"},
+        {fn: "Archiwizowanie celów", col: "data", process: ["Wyznaczanie celów"], place: WS,
+            text: "od ostatnio zmienionych; po 5 naraz — „Pokaż starsze…” dokłada kolejne"},
+        {fn: "Archiwizowanie celów", col: "proc", process: ["Wyznaczanie celów"], place: WS,
+            text: "cel w archiwum traci ważność; przywrócenie — wraca na listę z ważnością 1"},
+        {fn: "Archiwizowanie celów", col: "proc", process: ["Wyznaczanie celów"], place: WS,
+            text: "cel z archiwum: przywrócenie albo usunięcie z krokami — z potwierdzeniem, nie da się cofnąć"},
+
+        // Realizowanie kroków
+        {fn: "Wyświetlanie kroków", col: "data", process: ["Realizowanie kroków"], place: GOAL,
+            text: "nagłówek: ważność i opis celu"},
+        {fn: "Wyświetlanie kroków", col: "data", process: ["Realizowanie kroków"], place: GOAL,
+            text: "krok: opis, postęp (ile powtórzeń zrobionych / ile trzeba), powiązana myśl"},
+        {fn: "Wyświetlanie kroków", col: "proc", process: ["Realizowanie kroków"], place: GOAL,
+            text: "ukończone kroki w osobnym bloku pod nieukończonymi"},
+        {fn: "Wyświetlanie kroków", col: "proc", process: ["Realizowanie kroków"], place: GOAL,
+            text: "właśnie ukończony krok — pierwszy wśród ukończonych; cofnięty do nieukończonych — ostatni wśród nich"},
+        {fn: "Dodawanie kroku", col: "data", process: ["Realizowanie kroków"], place: GOAL,
+            text: "opis i liczba powtórzeń: Jeden raz, 7, 14, 21, 31 albo własna — od 1 do 31"},
+        {fn: "Dodawanie kroku", col: "proc", process: ["Realizowanie kroków"], place: GOAL,
+            text: "opis i liczba wymagane; nowy krok na końcu nieukończonych"},
+        {fn: "Edytowanie kroku", col: "proc", process: ["Realizowanie kroków"], place: GOAL,
+            text: "te same dane co przy dodawaniu; postęp nie przekracza nowej liczby powtórzeń"},
+        {fn: "Odhaczanie powtórzeń", col: "proc", process: ["Realizowanie kroków"], place: GOAL,
+            text: "zaliczenie powtórzenia — postęp +1; ukończony krok zaliczony ponownie — postęp od zera"},
+        {fn: "Odhaczanie powtórzeń", col: "proc", process: ["Realizowanie kroków"], place: GOAL,
+            text: "cofnięcie o jedno powtórzenie — najmniej do 0"},
+        {fn: "Kończenie wszystkich kroków", col: "data", process: ["Realizowanie kroków"], place: GOAL,
+            text: "dostępne, gdy każdy krok jest jednorazowy i choć jeden nieukończony"},
+        {fn: "Kończenie wszystkich kroków", col: "proc", process: ["Realizowanie kroków"], place: GOAL,
+            text: "oznacza wszystkie kroki jako ukończone — z komunikatem"},
+        {fn: "Zmienianie kolejności kroków", col: "data", process: ["Realizowanie kroków"], place: GOAL,
+            text: "Przesuń w górę / Przesuń w dół — tylko dla nieukończonych"},
+        {fn: "Zmienianie kolejności kroków", col: "proc", process: ["Realizowanie kroków"], place: GOAL,
+            text: "nieaktywne na brzegach listy; kolejność ukończonych wynika z kończenia"},
+        {fn: "Usuwanie kroku", col: "proc", process: ["Realizowanie kroków", "Przypomnienia kroków w kalendarzu"], place: GOAL,
+            text: "z potwierdzeniem; krok z przypomnieniem — usuwa też jego wpis w kalendarzu"},
+
+        // Łączenie myśli z krokami
+        {fn: "Łączenie nowej myśli z krokiem", col: "data", process: ["Łączenie myśli z krokami"], place: GOAL,
+            text: "Nowa połączona myśl / Zmień połączoną myśl — w menu kroku"},
+        {fn: "Łączenie nowej myśli z krokiem", col: "proc", process: ["Łączenie myśli z krokami", "Łapanie myśli"], place: [...GOAL, ...CAP],
+            text: "otwiera Łapanie myśli; zapisana myśl zostaje powiązana z krokiem — poprzednia odpięta"},
+        {fn: "Łączenie nowej myśli z krokiem", col: "proc", process: ["Łączenie myśli z krokami"], place: GOAL,
+            text: "jeden krok — najwyżej jedna myśl; myśl — najwyżej jeden krok"},
+        {fn: "Wyświetlanie powiązanej myśli", col: "data", process: ["Łączenie myśli z krokami"], place: GOAL,
+            text: "tytuł myśli przy kroku; myśl bez tytułu — „Powiązana myśl”"},
+        {fn: "Wyświetlanie powiązanej myśli", col: "proc", process: ["Łączenie myśli z krokami", "Edytowanie myśli"], place: [...GOAL, ...DET],
+            text: "wybranie otwiera Szczegóły myśli"},
+        {fn: "Wyświetlanie powiązanej myśli", col: "proc", process: ["Łączenie myśli z krokami"], place: GOAL,
+            text: "odpięcie z potwierdzeniem — myśl zostaje w Strumieniu"},
+        {fn: "Wykorzystanie myśli w celu", col: "data", process: ["Łączenie myśli z krokami"], place: DET,
+            text: "powiązana — opis celu, do którego myśl wykorzystano; niepowiązana — informacja i Powiąż"},
+        {fn: "Wykorzystanie myśli w celu", col: "proc", process: ["Łączenie myśli z krokami"], place: DET,
+            text: "Powiąż — wybór kroku: cele z krokami bez myśli, rozwijane po jednym; brak wolnych kroków — informacja, że najpierw trzeba jakąś odpiąć"},
+        {fn: "Wykorzystanie myśli w celu", col: "proc", process: ["Łączenie myśli z krokami", "Wyznaczanie celów"], place: [...DET, ...GOAL],
+            text: "wybranie powiązanego celu otwiera Szczegóły celu"},
+        {fn: "Wykorzystanie myśli w celu", col: "proc", process: ["Łączenie myśli z krokami"], place: DET,
+            text: "zmiana powiązania: Odepnij od kroku albo Podmień krok — odpięcie nie usuwa ani myśli, ani kroku"},
+
+        // Przypomnienia kroków w kalendarzu
+        {fn: "Ustawianie przypomnienia", col: "data", process: ["Przypomnienia kroków w kalendarzu", "Realizowanie kroków"], place: GOAL,
+            text: "w kroku: wpisy do kalendarza — tyle, ile powtórzeń kroku"},
+        {fn: "Ustawianie przypomnienia", col: "data", process: ["Przypomnienia kroków w kalendarzu"], place: GOAL,
+            text: "godzina (co 30 min, domyślnie 18:00) i dni tygodnia"},
+        {fn: "Ustawianie przypomnienia", col: "proc", process: ["Przypomnienia kroków w kalendarzu"], place: GOAL,
+            text: "dostępne tylko przy włączonych wpisach do kalendarza i nadanym uprawnieniu"},
+        {fn: "Ustawianie przypomnienia", col: "proc", process: ["Przypomnienia kroków w kalendarzu"], place: GOAL,
+            text: "wymagany co najmniej jeden dzień; po zapisie kroku z przypomnieniem — komunikat, że wpis trafił do kalendarza"},
+        {fn: "Wpis w kalendarzu", col: "data", process: ["Przypomnienia kroków w kalendarzu"], place: CAL,
+            text: "tytuł wpisu = opis kroku; wpis trwa 30 min"},
+        {fn: "Wpis w kalendarzu", col: "data", process: ["Przypomnienia kroków w kalendarzu"], place: CAL,
+            text: "kolor zbliżony do pomarańczu aplikacji — o ile kalendarz konta ma własną paletę"},
+        {fn: "Wpis w kalendarzu", col: "proc", process: ["Przypomnienia kroków w kalendarzu"], place: CAL,
+            text: "wydarzenie cykliczne w wybrane dni — tyle wystąpień, ile powtórzeń kroku"},
+        {fn: "Wpis w kalendarzu", col: "proc", process: ["Przypomnienia kroków w kalendarzu"], place: CAL,
+            text: "powiadomienie 30 min przed — wysyła je aplikacja kalendarza"},
+        {fn: "Wpis w kalendarzu", col: "proc", process: ["Przypomnienia kroków w kalendarzu"], place: [...CAL, ...GOAL],
+            text: "zmiana kroku zastępuje wpis nowym; wyłączenie przypomnienia w kroku usuwa wpis"},
+        {fn: "Wpis w kalendarzu", col: "proc", process: ["Przypomnienia kroków w kalendarzu"], place: CAL,
+            text: "aplikacja prosi o szybką synchronizację; w Kalendarzu Google wpis pojawia się po synchronizacji (wymaga sieci)"},
+        {fn: "Oznaczanie kroku z kalendarza", col: "data", process: ["Przypomnienia kroków w kalendarzu", "Realizowanie kroków"], place: CAL,
+            text: "opis każdego wystąpienia wpisu zawiera link do oznaczenia kroku jako ukończonego"},
+        {fn: "Oznaczanie kroku z kalendarza", col: "proc", process: ["Przypomnienia kroków w kalendarzu", "Realizowanie kroków"], place: CAL,
+            text: "link zalicza jedno powtórzenie i zamyka podgląd — komunikat, ile powtórzeń zrobiono z ilu; przy ostatnim — że krok ukończony"},
+        {fn: "Oznaczanie kroku z kalendarza", col: "proc", process: ["Przypomnienia kroków w kalendarzu", "Realizowanie kroków"], place: CAL,
+            text: "krok już ukończony — nic się nie zmienia, komunikat"},
+        {fn: "Usuwanie wpisów kroku", col: "proc", process: ["Przypomnienia kroków w kalendarzu"], place: CAL,
+            text: "wpis usuwany także przy wyłączonych wpisach do kalendarza — o ile jest uprawnienie"},
+
+        // Ścieżki doświadczeń
+        {fn: "Losowanie ścieżek", col: "data", process: ["Ścieżki doświadczeń"], place: WS,
+            text: "zakładka Ścieżki — dwie ścieżki na dziś"},
+        {fn: "Losowanie ścieżek", col: "proc", process: ["Ścieżki doświadczeń"], place: WS,
+            text: "brakujące losowane przy wejściu — z puli nieukończonych i niewylosowanych dziś"},
+        {fn: "Losowanie ścieżek", col: "proc", process: ["Ścieżki doświadczeń"], place: WS,
+            text: "pula pusta — informacja, że nie ma już nic do nauki"},
+        {fn: "Odkrywanie ścieżki", col: "data", process: ["Ścieżki doświadczeń"], place: WS,
+            text: "zakryta ścieżka: kategoria i liczba kroków"},
+        {fn: "Odkrywanie ścieżki", col: "proc", process: ["Ścieżki doświadczeń"], place: WS,
+            text: "odkrycie pokazuje pierwszy krok"},
+        {fn: "Przechodzenie kroków ścieżki", col: "data", process: ["Ścieżki doświadczeń"], place: WS,
+            text: "treść bieżącego kroku"},
+        {fn: "Przechodzenie kroków ścieżki", col: "proc", process: ["Ścieżki doświadczeń"], place: WS,
+            text: "zaliczenie kroku — następny; po ostatnim ścieżka ukończona, na jej miejsce losowana nowa"},
+        {fn: "Zmienianie ścieżki", col: "proc", process: ["Ścieżki doświadczeń"], place: WS,
+            text: "losuje inną ścieżkę; odłożona wraca do puli z postępem od zera"},
+        {fn: "Resetowanie postępu ścieżek", col: "proc", process: ["Ścieżki doświadczeń"], place: WS,
+            text: "z potwierdzeniem; ukończone ścieżki wracają do puli od zera, rozpoczęte i wylosowane zostają; nie da się cofnąć"},
+        {fn: "Przygotowanie ścieżek", col: "proc", process: ["Ścieżki doświadczeń"], place: WS,
+            text: "nowe ścieżki z aplikacji dodawane przy każdym uruchomieniu"},
+
+        // Zapisywanie luźnych fiszek
+        {fn: "Wyświetlanie listy luźnych fiszek", col: "data", process: ["Zapisywanie luźnych fiszek"], place: FC,
+            text: "zakładka Luźne fiszki (domyślna), pod informacjami Dzisiejsza sesja"},
+        {fn: "Wyświetlanie listy luźnych fiszek", col: "data", process: ["Zapisywanie luźnych fiszek"], place: [...FC, ...SET],
+            text: "fiszka: awers i rewers, poziom w powtórkach — od nowej do najwyższego; utrwalona wyróżniona"},
+        {fn: "Wyświetlanie listy luźnych fiszek", col: "data", process: ["Zapisywanie luźnych fiszek"], place: FC,
+            text: "kolejność dodania; brak luźnych fiszek — informacja, że jeszcze ich nie ma"},
+        {fn: "Wyświetlanie listy luźnych fiszek", col: "proc", process: ["Zapisywanie luźnych fiszek", "Prowadzenie zestawów fiszek"], place: [...FC, ...SET],
+            text: "ten sam widok listy co w Zestawie fiszek"},
+        {fn: "Dodawanie fiszek serią", col: "data", process: ["Zapisywanie luźnych fiszek", "Prowadzenie zestawów fiszek"], place: [...FC, ...SET],
+            text: "fiszka po fiszce — widać, która to z kolei i ile już dodano"},
+        {fn: "Dodawanie fiszek serią", col: "proc", process: ["Zapisywanie luźnych fiszek", "Prowadzenie zestawów fiszek"], place: [...FC, ...SET],
+            text: "Dodaj kolejną zapisuje fiszkę i otwiera następną; Zakończ kończy serię"},
+        {fn: "Dodawanie fiszek serią", col: "proc", process: ["Zapisywanie luźnych fiszek", "Prowadzenie zestawów fiszek"], place: [...FC, ...SET],
+            text: "wymagany awers i rewers; niewypełniona fiszka przy zakończeniu nie jest zapisywana"},
+        {fn: "Dodawanie fiszek serią", col: "proc", process: ["Zapisywanie luźnych fiszek", "Prowadzenie zestawów fiszek"], place: [...FC, ...SET],
+            text: "wpisywana fiszka nie gubi się przez przypadkowe zamknięcie"},
+        {fn: "Edytowanie fiszki", col: "data", process: ["Zapisywanie luźnych fiszek"], place: [...FC, ...SET],
+            text: "awers i rewers do zmiany"},
+        {fn: "Edytowanie fiszki", col: "proc", process: ["Zapisywanie luźnych fiszek"], place: [...FC, ...SET],
+            text: "edycja zawsze dozwolona, nie zmienia postępu; zmiana treści fiszki w nauce — ostrzeżenie, że może to wpłynąć na naukę"},
+        {fn: "Usuwanie fiszki", col: "proc", process: ["Zapisywanie luźnych fiszek"], place: [...FC, ...SET],
+            text: "z potwierdzeniem"},
+        {fn: "Przenoszenie fiszki", col: "data", process: ["Zapisywanie luźnych fiszek", "Prowadzenie zestawów fiszek"], place: [...FC, ...SET],
+            text: "Przenieś w edycji fiszki<ul><li>luźna — do zestawu, tylko gdy jakiś istnieje; od razu wybór zestawu</li><li>z zestawu — do luźnych albo do innego zestawu (gdy istnieje)</li></ul>"},
+        {fn: "Przenoszenie fiszki", col: "proc", process: ["Zapisywanie luźnych fiszek", "Prowadzenie zestawów fiszek"], place: [...FC, ...SET],
+            text: "fiszka trafia na koniec docelowego miejsca; postęp powtórek zostaje; oba zestawy liczą się jako edytowane"},
+
+        // Prowadzenie zestawów fiszek
+        {fn: "Wyświetlanie listy zestawów", col: "data", process: ["Prowadzenie zestawów fiszek"], place: FC,
+            text: "zakładka Zestawy, pod informacjami Dzisiejsza sesja"},
+        {fn: "Wyświetlanie listy zestawów", col: "data", process: ["Prowadzenie zestawów fiszek"], place: FC,
+            text: "zestaw: nazwa, liczba fiszek, ile czeka na powtórkę (termin dziś lub wcześniej, bez nowych), ile utrwalonych"},
+        {fn: "Wyświetlanie listy zestawów", col: "data", process: ["Prowadzenie zestawów fiszek"], place: FC,
+            text: "brak zestawów — informacja, że jeszcze ich nie ma"},
+        {fn: "Wyświetlanie listy zestawów", col: "proc", process: ["Prowadzenie zestawów fiszek"], place: FC,
+            text: "ostatnio edytowane na górze — powtórki nie zmieniają kolejności; wybranie otwiera Zestaw fiszek"},
+        {fn: "Tworzenie zestawu", col: "data", process: ["Prowadzenie zestawów fiszek"], place: FC,
+            text: "nazwa zestawu, potem pierwsze fiszki serią"},
+        {fn: "Tworzenie zestawu", col: "proc", process: ["Prowadzenie zestawów fiszek"], place: [...FC, ...SET],
+            text: "nazwa wymagana; po zakończeniu otwiera się Zestaw fiszek"},
+        {fn: "Wyświetlanie zestawu", col: "data", process: ["Prowadzenie zestawów fiszek"], place: SET,
+            text: "nazwa zestawu i lista jego fiszek; pusty — informacja"},
+        {fn: "Wyświetlanie zestawu", col: "proc", process: ["Prowadzenie zestawów fiszek", "Powtarzanie z fiszkami"], place: SET,
+            text: "sesja tylko z tego zestawu — dostępna, gdy jest co powtarzać"},
+        {fn: "Edytowanie zestawu", col: "data", process: ["Prowadzenie zestawów fiszek"], place: SET,
+            text: "edycja całego zestawu naraz — nazwa i wszystkie fiszki: zmiana, dodawanie, usuwanie"},
+        {fn: "Edytowanie zestawu", col: "proc", process: ["Prowadzenie zestawów fiszek"], place: SET,
+            text: "puste fiszki pomijane; wymagana nazwa oraz awers i rewers każdej fiszki; zmiana treści w nauce — ostrzeżenie"},
+        {fn: "Usuwanie zestawu", col: "proc", process: ["Prowadzenie zestawów fiszek"], place: FC,
+            text: "wybór: usunąć fiszki razem z zestawem albo zachować je jako luźne; nie da się cofnąć"},
+
+        // Importowanie fiszek z tekstu
+        {fn: "Importowanie fiszek", col: "data", process: ["Importowanie fiszek z tekstu"], place: [...FC, ...SET],
+            text: "Importuj fiszki — wklejony tekst, z którego powstaje wiele fiszek naraz"},
+        {fn: "Importowanie fiszek", col: "data", process: ["Importowanie fiszek z tekstu"], place: [...FC, ...SET],
+            text: "separator<ul><li>Enter — awers i rewers w kolejnych liniach, para po parze</li><li>Myślnik — awers i rewers w jednej linii, rozdzielone myślnikiem ze spacjami</li></ul>"},
+        {fn: "Importowanie fiszek", col: "data", process: ["Importowanie fiszek z tekstu"], place: [...FC, ...SET],
+            text: "przed importem widać, ile fiszek powstanie i ile linii zostanie pominiętych"},
+        {fn: "Importowanie fiszek", col: "proc", process: ["Importowanie fiszek z tekstu"], place: [...FC, ...SET],
+            text: "puste linie nie liczą się ani jako fiszka, ani jako pominięte"},
+        {fn: "Importowanie fiszek", col: "proc", process: ["Importowanie fiszek z tekstu"], place: [...FC, ...SET],
+            text: "pominięte linie<ul><li>Enter — ostatnia linia bez pary</li><li>Myślnik — linia bez myślnika albo z pustym awersem lub rewersem</li></ul>"},
+        {fn: "Importowanie fiszek", col: "proc", process: ["Importowanie fiszek z tekstu"], place: [...FC, ...SET],
+            text: "Myślnik — liczy się pierwszy myślnik ze spacjami; słowa z łącznikiem (biało-czerwony) zostają całe"},
+        {fn: "Importowanie fiszek", col: "proc", process: ["Importowanie fiszek z tekstu"], place: [...FC, ...SET],
+            text: "z Luźnych fiszek — nowe luźne fiszki; z Zestawu fiszek — na koniec zestawu"},
+
+        // Powtarzanie z fiszkami
+        {fn: "Informacje o dzisiejszej sesji", col: "data", process: ["Powtarzanie z fiszkami"], place: FC,
+            text: "Dzisiejsza sesja — ze wszystkich fiszek, luźnych i z zestawów<ul><li>ile fiszek czeka dziś na powtórkę</li><li>ile z nich to nowe — w ramach dziennego limitu</li></ul>"},
+        {fn: "Informacje o dzisiejszej sesji", col: "proc", process: ["Powtarzanie z fiszkami"], place: FC,
+            text: "brak fiszek — informacje niepokazywane; nic nie czeka — informacja, że na dziś wszystko powtórzone"},
+        {fn: "Informacje o dzisiejszej sesji", col: "proc", process: ["Powtarzanie z fiszkami"], place: FC,
+            text: "start sesji ze wszystkich fiszek"},
+        {fn: "Układanie kolejki", col: "proc", process: ["Powtarzanie z fiszkami"], place: [...FC, ...SET],
+            text: "zakres sesji: z Dzisiejszej sesji i z przypomnienia — wszystkie fiszki; z zestawu — tylko ten zestaw"},
+        {fn: "Układanie kolejki", col: "proc", process: ["Powtarzanie z fiszkami"], place: [...FC, ...SET],
+            text: "kolejność<ul><li>planowe powtórki — najniższy poziom najpierw, w obrębie poziomu losowo</li><li>potem nowe — najpierw luźne, potem starsze zestawy</li></ul>"},
+        {fn: "Układanie kolejki", col: "proc", process: ["Powtarzanie z fiszkami"], place: [...FC, ...SET],
+            text: "kolejka ustalona na początku sesji — fiszki, którym termin minie w trakcie, czekają do następnej"},
+        {fn: "Dzienny limit nowych fiszek", col: "proc", process: ["Powtarzanie z fiszkami"], place: [...FC, ...SET],
+            text: "limit na dzień kalendarzowy, zawsze dla wszystkich fiszek — także w sesji z jednego zestawu; nowe ocenione wcześniej tego dnia go zmniejszają"},
+        {fn: "Dzienny limit nowych fiszek", col: "proc", process: ["Powtarzanie z fiszkami"], place: [...FC, ...SET],
+            text: "pozostałe nowe czekają na kolejne dni — przykład: 25 nowych przy limicie 10 → dziś 10, jutro 10, pojutrze 5"},
+        {fn: "Przebieg sesji", col: "data", process: ["Powtarzanie z fiszkami"], place: [...FC, ...SET],
+            text: "fiszka po fiszce — najpierw awers, potem odkrycie rewersu i ocena: Mam to / Coś świta / Pustka"},
+        {fn: "Przebieg sesji", col: "proc", process: ["Powtarzanie z fiszkami"], place: [...FC, ...SET],
+            text: "przed odkryciem fiszkę można pominąć — wraca na koniec kolejki; ostatniej w kolejce nie da się pominąć"},
+        {fn: "Przebieg sesji", col: "proc", process: ["Powtarzanie z fiszkami"], place: [...FC, ...SET],
+            text: "po Pustka fiszka wraca w tej sesji, aż padnie Mam to albo Coś świta"},
+        {fn: "Ocenianie fiszki", col: "proc", process: ["Powtarzanie z fiszkami"], place: [...FC, ...SET],
+            text: "ocena znaczy zawsze to samo<ul><li>Mam to — poziom +1; na poziomie 5 = utrwalenie</li><li>Coś świta — poziom bez zmian</li><li>Pustka — poziom −1 (najniżej 1), kolejna powtórka jutro</li></ul>"},
+        {fn: "Ocenianie fiszki", col: "proc", process: ["Powtarzanie z fiszkami"], place: [...FC, ...SET],
+            text: "nowa fiszka — po pierwszej ocenie poziom 1, kolejna powtórka jutro"},
+        {fn: "Ocenianie fiszki", col: "proc", process: ["Powtarzanie z fiszkami"], place: [...FC, ...SET],
+            text: "o poziomie i terminie decyduje tylko pierwsza ocena w sesji — powroty po Pustka nic nie zmieniają"},
+        {fn: "Ocenianie fiszki", col: "proc", process: ["Powtarzanie z fiszkami"], place: [...FC, ...SET],
+            text: "odstęp do kolejnej powtórki wg poziomu: 1 — 1 dzień, 2 — 3 dni, 3 — 7 dni, 4 — 14 dni, 5 — 30 dni"},
+        {fn: "Ocenianie fiszki", col: "proc", process: ["Powtarzanie z fiszkami"], place: [...FC, ...SET],
+            text: "odstęp liczony od dnia faktycznej powtórki; zaległości nie obniżają poziomu"},
+        {fn: "Kończenie sesji", col: "data", process: ["Powtarzanie z fiszkami"], place: [...FC, ...SET],
+            text: "podsumowanie — ile fiszek dostało każdą z ocen (liczy się pierwsza ocena)"},
+        {fn: "Kończenie sesji", col: "proc", process: ["Powtarzanie z fiszkami"], place: [...FC, ...SET],
+            text: "każda ocena zapisuje się od razu — przerwanie niczego nie gubi; nieocenione planowe powtórki zostają zaległościami, nieocenione nowe — nowymi"},
+        {fn: "Powiadomienie o powtórkach", col: "data", process: ["Powtarzanie z fiszkami"], place: NOTIF,
+            text: "jedno powiadomienie dziennie o wybranej godzinie — ile fiszek czeka dziś na powtórkę (bez rozbicia na nowe)"},
+        {fn: "Powiadomienie o powtórkach", col: "proc", process: ["Powtarzanie z fiszkami"], place: NOTIF,
+            text: "nic nie czeka — brak powiadomienia; liczba aktualna w chwili przypomnienia"},
+        {fn: "Powiadomienie o powtórkach", col: "proc", process: ["Powtarzanie z fiszkami"], place: NOTIF,
+            text: "może przyjść z kilkunastominutowym opóźnieniem (oszczędzanie baterii przez system); przypomnienia wznawiane po restarcie telefonu i zmianie czasu"},
+        {fn: "Powiadomienie o powtórkach", col: "proc", process: ["Powtarzanie z fiszkami"], place: [...NOTIF, ...FC],
+            text: "otwarcie — od razu sesja w Zapamiętywaniu; cofnięcie zostaje w aplikacji"},
+    ];
+
+    // Status per function (row of the table); date = dd/mm of the last check, change = what changed since (Changelog)
+    // Functions described only in Preferencje come from the first pass; the rest is the beta pass over the whole app
+    const PREFS_ONLY = fn => RULES.filter(r => r.fn === fn).every(r => r.place.length === 1 && r.place[0] === "Preferencje");
+
+    // Differences from Requirements v12 and doubts found in the code — for the verification pass
+    const CHANGE_NOTES = {
+        "Dopasowywanie myśli": "inaczej niż v12 — tagi dopasowywane w całości, nie po fragmencie",
+        "Definiowanie kryteriów": "inaczej niż v12 — kilka tagów jednego rodzaju w jednym kryterium",
+        "Ustawianie sortowania": "do decyzji — myśli bez wartości pola na początku przy malejącym (v12: zawsze na końcu)",
+        "Wyznaczanie stanu myśli": "inaczej niż v12 — dni od nowa liczy każda zmiana myśli, nie tylko tytuł, domena i wartość",
+        "Edytowanie tytułu": "do sprawdzenia — w Szczegółach myśli brak limitu 36 znaków tytułu",
+        "Edytowanie domeny": "do sprawdzenia — bez wybranej ikony zmiana się nie zapisuje i nie ma komunikatu",
+        "Edytowanie kroku": "do sprawdzenia — po zmniejszeniu liczby powtórzeń ekran pokazuje postęp 0, a zapis tylko przycina go do nowej liczby",
+        "Dodawanie celu": "do sprawdzenia — opis celu nie jest wymagany (pusty cel się zapisuje)",
+        "Usuwanie celu": "do sprawdzenia — usunięcie celu nie usuwa wpisów jego kroków w kalendarzu",
+        "Zmienianie ścieżki": "do sprawdzenia — odłożona ścieżka może od razu zostać wylosowana ponownie",
+        "Oznaczanie kroku z kalendarza": "inaczej niż v12 — komunikat „Realizowano X z Y powtórzeń kroku” zamiast „Zaliczono: X/Y”",
+        "Wyświetlanie wskazówek": "do sprawdzenia — wskazówka sekcji Personalizacja ma tekst-zaślepkę zamiast treści",
+        "Usuwanie myśli": "nowe względem v12 — odpinanie myśli od kroku przy usunięciu",
+    };
+
+    // Places where the user verified a function; value = dd/mm of the check.
+    // A rule counts as checked when one of its places is checked for its function
+    const CHECKED = {
+        "Wyświetlanie powitania": {"Dom": "17/10"},
+        "Przekierowanie na ekran startowy": {"Dom": "17/10"},
+        "Wyświetlanie wersji": {"Dom": "17/10"},
+        "Wchodzenie do przeglądu wskazówek": {"Dom": "17/10"},
+        "Rozpoczynanie łapania myśli": {"Dom": "17/10"},
+        "Wyświetlanie wskazówek": {"Dom": "17/10"},
+        "Otwieranie panelu nawigacji": {"Panel nawigacyjny": "17/10"},
+        "Przechodzenie do ekranu": {"Panel nawigacyjny": "17/10"},
+        "Zaznaczanie bieżącego ekranu": {"Panel nawigacyjny": "17/10"},
+        "Zgodność z systemem": {"Panel nawigacyjny": "17/10"},
+        "Zapisywanie zmian": {"Preferencje": "17/10"},
+        "Podawanie imienia": {"Preferencje": "17/10"},
+        "Wybieranie ekranu": {"Preferencje": "17/10"},
+        "Włączanie form zapisu": {"Preferencje": "17/10"},
+        "Wybieranie domyślnej formy zapisu myśli": {"Preferencje": "17/10"},
+        "Prośba o uprawnienie": {"Preferencje": "17/10"},
+        "Wybieranie skali": {"Preferencje": "17/10"},
+        "Działanie skali": {"Preferencje": "17/10"},
+        "Włączanie trybu": {"Preferencje": "17/10"},
+        "Włączanie modułu fiszek": {"Preferencje": "17/10"},
+        "Ustawianie limitu nowych fiszek": {"Preferencje": "17/10"},
+        "Przypomnienia o sesjach powtórek": {"Preferencje": "17/10"},
+        "Włączanie wpisów do kalendarza": {"Preferencje": "17/10"},
+        "Wybieranie kalendarza": {"Preferencje": "17/10"},
+        "Włączanie kopii": {"Preferencje": "17/10"},
+        "Wczytywanie kopii": {"Preferencje": "17/10"},
+        "Robienie kopii": {"Preferencje": "17/10"},
+    };
+
+    // Functions to be done (TBD) — skipped in the verification pass
+    const TBD = new Set(["Wyświetlanie wskazówek", "Wchodzenie do przeglądu wskazówek", "Wyświetlanie postępu",
+        "Wyświetlanie sekcji wskazówek", "Przechodzenie do ekranu sekcji", "Resetowanie sekcji"]);
+
+    // Date of the beta pass — the starting point for functions not checked yet
+    const BASE_DATE = "17/10";
+
+    const checkDates = rule => rule.place.map(p => CHECKED[rule.fn]?.[p]).filter(Boolean);
+
+    // Status of a function for the rules shown in one table row: done only when all of them are checked;
+    // date = dd/mm of the last check, change = what changed since (Changelog)
+    function functionStatus(fn, rows) {
+        if (TBD.has(fn)) return {status: "tbd", date: null, change: "", checkedIn: []};
+        if (rows.every(r => checkDates(r).length)) {
+            const latest = d => d.split("/").reverse().join("/");
+            return {status: "done", date: rows.flatMap(checkDates).sort((a, b) => latest(b).localeCompare(latest(a)))[0], change: "", checkedIn: []};
+        }
+        return {
+            status: "verify",
+            date: BASE_DATE,
+            change: CHANGE_NOTES[fn] || (PREFS_ONLY(fn) ? "opis z kodu — Preferencje" : "beta — opis z kodu"),
+            checkedIn: Object.keys(CHECKED[fn] || {}).filter(p => rows.some(r => r.place.includes(p)))
+        };
+    }
+
+    const PROCESS_INFO = {
+        // Aplikacja
+        "Nawigowanie po aplikacji": {goal: "szybkie przejście do dowolnego ekranu z każdego miejsca aplikacji, bez zabierania stałego miejsca na ekranie", terms: []},
+        "Zapisywanie preferencji": {goal: "jedno miejsce do dopasowania aplikacji do siebie — dane osobiste, formy zapisu, włączanie funkcji i dbanie o dane", terms: []},
+        "Personalizowanie": {goal: "aplikacja zwraca się do użytkownika po imieniu — osobiste powitanie przy każdym wejściu", terms: []},
+        "Wybór ekranu startowego": {goal: "szybki dostęp do najczęściej używanego ekranu — aplikacja otwiera się od razu tam, gdzie użytkownik pracuje najczęściej", terms: []},
+        "Żądanie Uprawnień": {goal: "funkcje zależne od uprawnień Androida potrzebują jednego, powtarzalnego sposobu proszenia o zgodę i utrzymania stanu funkcji", terms: []},
+        "Onboarding": {goal: "poznanie ekranów i funkcji aplikacji w sposób lekki, praktyczny (do wypróbowania od razu po wskazówce) i przejrzysty — z możliwością powrotu do wskazówek pominiętych lub zapomnianych", terms: [
+            "wskazówka — krótki opis funkcji pokazywany raz, na ekranie, którego dotyczy",
+            "krok — zestaw wskazówek pokazywanych razem; wszystkie dzielą stan „zobaczona / nie”",
+            "sekcja — wskazówki jednego ekranu aplikacji",
+            "wskazówka dodatkowa — rozszerza inną wskazówkę; poza przeglądem i liczeniem postępu",
+        ]},
+        "Skróty aplikacji": {goal: "złapanie myśli w wybranej formie bez wchodzenia w aplikację — prosto z ekranu głównego telefonu; tak samo szybkie dopisanie nowych fiszek", terms: []},
+        "Sprawdzanie wersji aplikacji": {goal: "wiadomo, która wersja aplikacji jest na telefonie — np. przy zgłaszaniu uwag", terms: []},
+        "Robienie kopii zapasowej danych": {goal: "zachowanie kluczowych danych między wydaniami / wersjami aplikacji do ponownego wgrania", terms: []},
+
+        // Myśli
+        "Łapanie myśli": {goal: "zapisywanie myśli w różnych formach", terms: [
+            "myśl — zapis w co najmniej jednej formie, z metadanymi",
+            "forma zapisu — notatka (tekst), głosówka (nagranie) albo zdjęcie",
+            "metadane myśli — wszystko poza formami: tytuł, hex tagi (osoby, projekty), domena, wartość",
+            "szkic — myśl w trakcie łapania; trafia do aplikacji dopiero po Zapisz",
+        ]},
+        "Zapis w formie Notatki": {goal: "możliwość zapisania myśli w wersji tekstowej — podstawowa i najszybsza forma", terms: []},
+        "Zapis w formie Głosówki": {goal: "możliwość zapisania myśli jako nagranie głosowe — gdy szybciej powiedzieć niż napisać albo chcesz uchwycić emocje", terms: []},
+        "Zapis w formie Zdjęcia": {goal: "możliwość dołączenia do myśli zdjęcia — gdy obraz oddaje więcej niż słowa albo chcesz zachować wizualny kontekst", terms: []},
+        "Łączenie myśli z hex tagami": {goal: "ta sama osoba czy projekt zawsze jako jeden tag — niezależnie od tego, gdzie i jak został wpisany", terms: [
+            "hex tag — etykieta myśli jednego z dwóch rodzajów: osoba (Osoba lub Ekipa) albo projekt (Projekt lub Zajawka)",
+            "słownik tagów — wszystkie tagi kiedykolwiek nadane; tag zostaje w słowniku także po usunięciu myśli",
+            "wariant tagu — nazwa różniąca się od istniejącej tylko polskimi znakami (powiesc obok powieść)",
+        ]},
+        "Porządkowanie hex tagów": {goal: "przegląd wszystkich swoich tagów w jednym miejscu i porządkowanie ich nazw bez wchodzenia w pojedyncze myśli", terms: [
+            "licznik użyć — liczba myśli, do których tag jest przypięty",
+            "tag „ja” — tag własnej osoby (tag rdzeniowy)",
+        ]},
+        "Konfigurowanie domen": {goal: "dopasowanie kategorii myśli (domen) do siebie — ich nazw i ikon", terms: [
+            "domena — kategoria / szufladka myśli; jedna na myśl",
+        ]},
+        "Przeglądanie myśli": {goal: "spokojne wracanie do zapisanych myśli — jedna myśl na ekranie, bez natłoku listy", terms: [
+            "etap wzrostu myśli — wg wieku: do 1 dnia, do tygodnia, do miesiąca, do 3 miesięcy, starsza",
+        ]},
+        "Wyszukiwanie myśli": {goal: "odnalezienie myśli po tym, czego się o niej pamięta — temacie, osobie lub projekcie", terms: []},
+        "Sortowanie myśli": {goal: "ustawienie myśli w kolejności, która teraz pomaga — od najnowszych, najstarszych, po nazwie czy wartości", terms: []},
+        "Filtrowanie myśli": {goal: "zawężenie strumienia do myśli, które teraz interesują — wg stanu myśli i domeny", terms: []},
+        "Edytowanie myśli": {goal: "uzupełnianie i poprawianie zapisanej myśli — jej form i metadanych", terms: []},
+        "Usuwanie myśli": {goal: "pozbycie się myśli, które nie są już potrzebne — świadomie, bez przypadkowej utraty", terms: []},
+        "Wartościowanie myśli": {goal: "nadawanie myślom wartości i ocen", terms: [
+            "wartość myśli — liczba od 1 do maksimum wybranej skali; im wyższa, tym ważniejsza myśl",
+        ]},
+
+        // Rozwój
+        "Tryb „Uśpienia”": {goal: "myśli o niskiej wartości, do których się nie wraca, same schodzą z widoku — Strumień zostaje lekki, a nic nie jest usuwane", terms: [
+            "stan myśli — aktywna, bliska uśpienia albo uśpiona; liczony na bieżąco z wartości i daty ostatniej zmiany",
+        ]},
+        "Wyznaczanie celów": {goal: "kierunki, w których zmierzasz, zebrane w jednym miejscu — najważniejsze na wierzchu, zamknięte w archiwum", terms: [
+            "cel / kierunek — opis tego, do czego zmierzasz, z ważnością i krokami",
+            "ważność — 1, 2 albo 3; cel w archiwum nie ma ważności",
+        ]},
+        "Realizowanie kroków": {goal: "rozbicie celu na konkretne kroki i odhaczanie postępu — także kroków powtarzanych wiele razy", terms: [
+            "krok — część celu; ma liczbę powtórzeń do wykonania",
+            "postęp kroku — ile powtórzeń zrobiono; krok ukończony, gdy postęp = liczba powtórzeń",
+        ]},
+        "Łączenie myśli z krokami": {goal: "myśl, z której wyrósł krok albo która go dokumentuje, jest pod ręką — z obu stron", terms: []},
+        "Przypomnienia kroków w kalendarzu": {goal: "wykonywanie kroków do celu wymaga wsparcia poprzez przypomnienia poza aplikacją", terms: []},
+        "Ścieżki doświadczeń": {goal: "codzienna porcja małych wyzwań do przejścia krok po kroku — bez planowania, z losowania", terms: [
+            "ścieżka — kategoria i kroki do przejścia po kolei",
+            "pula — ścieżki jeszcze nieukończone, z których losowane są dzisiejsze",
+        ]},
+
+        // Zapamiętywanie
+        "Zapisywanie luźnych fiszek": {goal: "szybki zapis fiszki w biegu, bez wybierania zestawu — porządek można zrobić później", terms: [
+            "fiszka — awers (pytanie) + rewers (odpowiedź), oba wymagane; osobny system, nie forma myśli",
+            "luźna fiszka — fiszka bez zestawu",
+        ]},
+        "Prowadzenie zestawów fiszek": {goal: "fiszki jednego tematu trzymane razem — widać, ile ich jest i ile czeka na powtórkę", terms: [
+            "zestaw — nazwa + fiszki jednego tematu w kolejności dodania",
+        ]},
+        "Importowanie fiszek z tekstu": {goal: "wiele fiszek naraz z gotowego tekstu — bez przepisywania po jednej", terms: []},
+        "Powtarzanie z fiszkami": {goal: "trwałe zapamiętywanie: fiszki wracają w rosnących odstępach, tuż przed zapomnieniem", terms: [
+            "etap fiszki — nowa (jeszcze nie powtarzana), aktywna (w planowych powtórkach, ma poziom), utrwalona (już nie wraca)",
+            "poziom — od 1 do 5 dla aktywnej fiszki; im wyższy, tym dłuższy odstęp do kolejnej powtórki",
+            "powtórki do zrobienia — fiszki z terminem na dziś lub wcześniej; dzień kończy się o północy",
+            "zaległości — powtórki niezrobione w swoim terminie (np. po przerwaniu sesji); wracają w kolejnej sesji",
+            "sesja powtórek — przejście przez fiszki, które czekają dziś na powtórkę: wszystkie albo z jednego zestawu",
+        ]},
+    };
+
+    const PLACE_INFO = {
+        "Cała aplikacja": "mechanizmy działające w tle, niezwiązane z jednym ekranem — opisane raz, a ekrany zawierają tylko swój udział",
+        "Dom": "ekran główny aplikacji — punkt wyjścia do łapania myśli i poznawania aplikacji",
+        "Poznawanie aplikacji": "przegląd wskazówek wszystkich ekranów — co już widziane, z powrotem do ekranu i resetem",
+        "Panel nawigacyjny": "przejście do głównych ekranów z każdego miejsca aplikacji",
+        "Tagi i Domeny": "metadane myśli w jednym miejscu — osoby, projekty i domeny",
+        "Preferencje": "konfiguracja aplikacji, dane, przełączniki funkcji oraz dostosowanie aplikacji do preferencji użytkownika",
+        "Łapanie myśli": "zapisywanie nowej myśli — formy i metadane",
+        "Strumień myśli": "przeglądanie zapisanych myśli po jednej — z wyszukiwaniem, sortowaniem i filtrem",
+        "Szczegóły myśli": "podgląd i edycja pojedynczej myśli",
+        "Warsztat": "cele z archiwum oraz codzienne ścieżki doświadczeń",
+        "Szczegóły celu": "kroki jednego celu — postęp, powiązane myśli, przypomnienia",
+        "Zapamiętywanie": "fiszki luźne i zestawy oraz dzisiejsza sesja powtórek",
+        "Zestaw fiszek": "fiszki jednego zestawu — treść, postęp i sesja z tego zestawu",
+        "Ikona aplikacji": "skróty dostępne z ekranu głównego telefonu",
+        "Kalendarz": "wpisy kroków w kalendarzu konta",
+        "Powiadomienie": "systemowe przypomnienie o powtórkach",
+    };
+
+    const STATUS_LABEL = {verify: "🟡 Robocze", done: "🟢 Gotowe", tbd: "🔴 TBD"};
+
+    function agoLabel(date) {
+        const [d, m] = date.split("/").map(Number);
+        const now = new Date();
+        let checked = new Date(now.getFullYear(), m - 1, d);
+        if (checked > now) checked = new Date(now.getFullYear() - 1, m - 1, d);
+        const days = Math.floor((now - checked) / 86400000);
+        if (days <= 0) return "dzisiaj";
+        if (days === 1) return "wczoraj";
+        return days + " dni temu";
+    }
+
+    function statusBlock(fn, rows) {
+        const s = functionStatus(fn, rows);
+        const checkedIn = s.checkedIn.length ? `<span class="check-ago">sprawdzone: ${s.checkedIn.join(", ")}</span>` : "";
+        const change = s.change ? `<span class="check-change">zmiana: ${s.change}</span>` : "";
+        return `<span class="check"><span class="check-main ${s.status}">${STATUS_LABEL[s.status]}</span>${s.date ? `<span class="check-ago">${agoLabel(s.date)}</span>` : ""}${checkedIn}${change}</span>`;
+    }
+
+    // collapsed = names of side bar sections folded per mode
+    const state = {mode: "process", tab: PROCESSES[0], collapsed: {process: new Set(), place: new Set()}};
+    const tabsEl = document.getElementById("tabs");
+    const contentEl = document.getElementById("content");
+    const toggleAllEl = document.getElementById("toggle-all");
+
+    function tabsFor(mode) {
+        return SECTIONS[mode].flatMap(s => s.items);
+    }
+
+    function tabButton(name) {
+        const rules = RULES.filter(r => r[state.mode].includes(name));
+        // Green dot when every rule of the tab is checked, yellow when at least one still waits, red when all are TBD;
+        // TBD rules do not count
+        const toCheck = rules.filter(r => !TBD.has(r.fn));
+        const dotStatus = !toCheck.length ? "tbd" : toCheck.every(r => checkDates(r).length) ? "done" : "verify";
+        const dot = rules.length ? `<span class="dot ${dotStatus}"></span>` : "";
+        return `<button type="button" class="tab" role="tab" data-tab="${name}" aria-selected="${name === state.tab}"><span>${dot}${name}</span><span class="count">${rules.length}</span></button>`;
+    }
+
+    // In process mode there is one table for the tab, in place mode one table per first (main) process
+    function groupKey(rule) {
+        return state.mode === "process" ? state.tab : rule.process[0];
+    }
+
+    function cell(rules, col) {
+        return `<td><ul class="cell">${rules.filter(r => r.col === col).map(r => `<li>${r.text}${linksBlock(r)}</li>`).join("")}</ul></td>`;
+    }
+
+    // Rows = functions in rule order; cells = rules split into the two Requirements columns
+    function table(rules) {
+        const fns = [...new Set(rules.map(r => r.fn))];
+        return `
+            <table class="mech-table">
+                <thead><tr><th>Funkcja</th><th>Wejścia, Dane, Stany</th><th>Procesy, Opcje, Integracje</th></tr></thead>
+                <tbody>
+                ${fns.map(fn => {
+                    const rows = rules.filter(r => r.fn === fn);
+                    return `<tr><td class="mech-name">${fn}${statusBlock(fn, rows)}</td>${cell(rows, "data")}${cell(rows, "proc")}</tr>`;
+                }).join("")}
+                </tbody>
+            </table>`;
+    }
+
+    function linkButton(kind, value) {
+        const current = (kind === state.mode && value === state.tab) ? " current" : "";
+        return `<button type="button" class="link ${kind}${current}" data-kind="${kind}" data-value="${value}">${value}</button>`;
+    }
+
+    function linksBlock(rule) {
+        return `
+            <details class="links">
+                <summary>Powiązania</summary>
+                <div class="links-grid">
+                    <div class="links-col"><span class="links-head">Miejsca</span>${rule.place.map(p => linkButton("place", p)).join("")}</div>
+                    <div class="links-col"><span class="links-head">Procesy</span>${rule.process.map(p => linkButton("process", p)).join("")}</div>
+                </div>
+            </details>`;
+    }
+
+    function render() {
+        document.querySelectorAll(".mode-tab").forEach(b =>
+            b.setAttribute("aria-selected", String(b.dataset.mode === state.mode)));
+
+        const collapsed = state.collapsed[state.mode];
+        tabsEl.innerHTML = SECTIONS[state.mode].map(section => `
+            <div class="tab-row${collapsed.has(section.name) ? " collapsed" : ""}">
+                <button type="button" class="tab-group-name" data-section="${section.name}">${section.name}</button>
+                ${section.items.map(tabButton).join("")}
+            </div>`).join("");
+
+        const anyCollapsed = collapsed.size > 0;
+        toggleAllEl.textContent = anyCollapsed ? "⊞" : "⊟";
+        toggleAllEl.title = anyCollapsed ? "Rozwiń wszystkie" : "Zwiń wszystkie";
+
+        if (!state.tab) {
+            contentEl.innerHTML = `<p class="place-intro">Brak wpisów — wymagania dopisywane ekran po ekranie.</p>`;
+            return;
+        }
+
+        const groups = new Map();
+        RULES.filter(r => r[state.mode].includes(state.tab)).forEach(rule => {
+            const key = groupKey(rule);
+            if (!groups.has(key)) groups.set(key, []);
+            groups.get(key).push(rule);
+        });
+
+        if (state.mode === "place") {
+            const order = key => PROCESSES.indexOf(key);
+            const sorted = [...groups.entries()].sort((a, b) => order(a[0]) - order(b[0]));
+            groups.clear();
+            sorted.forEach(([k, v]) => groups.set(k, v));
+        }
+
+        const body = [...groups.entries()].map(([title, rules]) => `
+            <section class="group">
+                ${state.mode === "place" ? `<h2>${title}</h2>` : ""}
+                ${table(rules)}
+            </section>`).join("");
+
+        contentEl.innerHTML = `<h2 class="view-title">${state.tab}</h2>${state.mode === "process" ? processIntro(state.tab) : placeIntro(state.tab)}${body}`;
+    }
+
+    // Need & goal and terms belong to the process — shown above its table
+    function processIntro(name) {
+        const info = PROCESS_INFO[name];
+        if (!info) return "";
+        const terms = info.terms.length
+            ? `<div class="feature-terms"><b>Pojęcia</b><ul>${info.terms.map(t => `<li>${t}</li>`).join("")}</ul></div>`
+            : "";
+        return `<p class="feature-goal"><b>Potrzeba i Cel</b>${info.goal}</p>${terms}`;
+    }
+
+    // Short "what is this place" intro above the place's tables
+    function placeIntro(name) {
+        const intro = PLACE_INFO[name];
+        return intro ? `<p class="place-intro">${intro}</p>` : "";
+    }
+
+    document.querySelector(".modes").addEventListener("click", e => {
+        const btn = e.target.closest(".mode-tab");
+        if (!btn || btn.dataset.mode === state.mode) return;
+        state.mode = btn.dataset.mode;
+        state.tab = tabsFor(state.mode)[0];
+        render();
+    });
+
+    // Any folded section → unfold all, otherwise fold all
+    toggleAllEl.addEventListener("click", () => {
+        const collapsed = state.collapsed[state.mode];
+        if (collapsed.size) collapsed.clear();
+        else SECTIONS[state.mode].forEach(s => collapsed.add(s.name));
+        render();
+    });
+
+    tabsEl.addEventListener("click", e => {
+        const section = e.target.closest(".tab-group-name");
+        if (section) {
+            const collapsed = state.collapsed[state.mode];
+            const name = section.dataset.section;
+            if (collapsed.has(name)) collapsed.delete(name);
+            else collapsed.add(name);
+            render();
+            return;
+        }
+        const btn = e.target.closest(".tab");
+        if (!btn) return;
+        state.tab = btn.dataset.tab;
+        render();
+    });
+
+    // Clicking a link of a rule jumps to that tag's tab
+    contentEl.addEventListener("click", e => {
+        const btn = e.target.closest(".link");
+        if (!btn || btn.classList.contains("current")) return;
+        state.mode = btn.dataset.kind;
+        state.tab = btn.dataset.value;
+        const target = SECTIONS[state.mode].find(s => s.items.includes(state.tab));
+        if (target) state.collapsed[state.mode].delete(target.name);
+        render();
+    });
+
+    render();
+</script>
+</body>
+</html>
