@@ -4,9 +4,17 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.LinearGradient
 import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import android.graphics.RectF
+import android.graphics.Shader
 import android.util.AttributeSet
+import android.view.Gravity
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
@@ -24,6 +32,7 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import timber.log.Timber
 import kotlin.math.max
+import kotlin.math.roundToInt
 
 /**
  * Universal photo display and capture view
@@ -48,6 +57,8 @@ class HexPhotoView @JvmOverloads constructor(
     companion object {
         private const val TAG = "HexPhotoView"
         private const val THUMBNAIL_SIZE_DP = 200
+        private const val FULL_PHOTO_MAX_SIZE_DP = 400
+        private const val EDGE_FADE_DP = 16f
     }
 
     interface PhotoCallback {
@@ -96,8 +107,23 @@ class HexPhotoView @JvmOverloads constructor(
             }
         }
 
+        setupPhotoSizing()
         setupListeners()
         updateUIForState()
+    }
+
+    // Compact - fixed square frame, center crop (layout default); full - whole photo, own aspect ratio, capped size
+    private fun setupPhotoSizing() {
+        if (compact) return
+
+        ivPhoto.layoutParams = (ivPhoto.layoutParams as FrameLayout.LayoutParams).apply {
+            width = ViewGroup.LayoutParams.WRAP_CONTENT
+            height = ViewGroup.LayoutParams.WRAP_CONTENT
+            gravity = Gravity.CENTER_HORIZONTAL
+        }
+        ivPhoto.adjustViewBounds = true
+        ivPhoto.maxHeight = (FULL_PHOTO_MAX_SIZE_DP * resources.displayMetrics.density).toInt()
+        ivPhoto.scaleType = ImageView.ScaleType.FIT_CENTER
     }
 
     private fun setupUIForMode() {
@@ -269,7 +295,7 @@ class HexPhotoView @JvmOverloads constructor(
         return try {
             // Calculate density-aware thumbnail size
             val density = context.resources.displayMetrics.density
-            val thumbnailSizePx = (THUMBNAIL_SIZE_DP * density).toInt()
+            val thumbnailSizePx = ((if (compact) THUMBNAIL_SIZE_DP else FULL_PHOTO_MAX_SIZE_DP) * density).toInt()
 
             // Decode bounds first
             val options = BitmapFactory.Options().apply {
@@ -308,9 +334,19 @@ class HexPhotoView @JvmOverloads constructor(
 
     /**
      * Creates high-quality thumbnail using Canvas with anti-aliasing
+     * Compact - square, center crop; full - longer side fits the size, aspect ratio kept, no upscaling
      */
     private fun createHighQualityThumbnail(source: Bitmap, size: Int): Bitmap {
-        val output = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        val widthScale = size.toFloat() / source.width
+        val heightScale = size.toFloat() / source.height
+        val scale = if (compact) max(widthScale, heightScale) else minOf(widthScale, heightScale, 1f)
+
+        val scaledWidth = source.width * scale
+        val scaledHeight = source.height * scale
+        val outputWidth = if (compact) size else scaledWidth.roundToInt()
+        val outputHeight = if (compact) size else scaledHeight.roundToInt()
+
+        val output = Bitmap.createBitmap(outputWidth, outputHeight, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(output)
 
         val paint = Paint().apply {
@@ -319,21 +355,39 @@ class HexPhotoView @JvmOverloads constructor(
             isDither = true
         }
 
-        // Calculate scaling to fit and center crop
-        val scale = max(
-            size.toFloat() / source.width,
-            size.toFloat() / source.height
-        )
-
-        val scaledWidth = source.width * scale
-        val scaledHeight = source.height * scale
-        val left = (size - scaledWidth) / 2f
-        val top = (size - scaledHeight) / 2f
+        val left = (outputWidth - scaledWidth) / 2f
+        val top = (outputHeight - scaledHeight) / 2f
 
         val destRect = RectF(left, top, left + scaledWidth, top + scaledHeight)
         canvas.drawBitmap(source, null, destRect, paint)
+        fadeEdges(canvas, outputWidth, outputHeight)
 
         return output
+    }
+
+    /**
+     * Feathers all four edges into transparency - the photo blends into the background behind it
+     */
+    private fun fadeEdges(canvas: Canvas, width: Int, height: Int) {
+        val fade = minOf(EDGE_FADE_DP * resources.displayMetrics.density, width / 4f, height / 4f)
+        val w = width.toFloat()
+        val h = height.toFloat()
+
+        val maskPaint = Paint().apply {
+            isAntiAlias = true
+            xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN)
+        }
+
+        // Each strip: gradient from transparent (outer edge) to opaque (inner side), keeps only the alpha it carries
+        fun fadeStrip(rect: RectF, x0: Float, y0: Float, x1: Float, y1: Float) {
+            maskPaint.shader = LinearGradient(x0, y0, x1, y1, Color.TRANSPARENT, Color.BLACK, Shader.TileMode.CLAMP)
+            canvas.drawRect(rect, maskPaint)
+        }
+
+        fadeStrip(RectF(0f, 0f, fade, h), 0f, 0f, fade, 0f)            // left
+        fadeStrip(RectF(w - fade, 0f, w, h), w, 0f, w - fade, 0f)      // right
+        fadeStrip(RectF(0f, 0f, w, fade), 0f, 0f, 0f, fade)            // top
+        fadeStrip(RectF(0f, h - fade, w, h), 0f, h, 0f, h - fade)      // bottom
     }
 
     // ===========================================

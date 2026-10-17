@@ -759,8 +759,10 @@
             text: "zdjęcie zapisywane w zmniejszonym rozmiarze, z poprawną orientacją"},
         {fn: "Dodawanie zdjęcia", col: "proc", process: ["Zapis w formie Zdjęcia"], place: [...CAP, ...DET],
             text: "Łapanie myśli — zapis razem z myślą; Szczegóły myśli — od razu"},
-        {fn: "Oglądanie zdjęcia", col: "data", process: ["Zapis w formie Zdjęcia"], place: [...CAP, ...STR, ...DET],
-            text: "miniatura zdjęcia"},
+        {fn: "Oglądanie zdjęcia", col: "data", process: ["Zapis w formie Zdjęcia"], place: [...CAP],
+            text: "miniatura zdjęcia — kadr ze środka"},
+        {fn: "Oglądanie zdjęcia", col: "data", process: ["Zapis w formie Zdjęcia"], place: [...STR, ...DET],
+            text: "całe zdjęcie, bez przycinania — w zmniejszonym rozmiarze, z ograniczoną wysokością"},
         {fn: "Oglądanie zdjęcia", col: "proc", process: ["Zapis w formie Zdjęcia"], place: [...CAP, ...DET],
             text: "pełny rozmiar po wybraniu miniatury"},
         {fn: "Usuwanie zdjęcia", col: "proc", process: ["Zapis w formie Zdjęcia"], place: [...CAP, ...DET],
@@ -1249,6 +1251,7 @@
 
     // Differences from Requirements v12 and doubts found in the code — for the verification pass
     const CHANGE_NOTES = {
+        "Oglądanie zdjęcia": "zmiana — Strumień i Szczegóły pokazują całe zdjęcie zamiast kwadratowej miniatury",
         "Dopasowywanie myśli": "inaczej niż v12 — tagi dopasowywane w całości, nie po fragmencie",
         "Definiowanie kryteriów": "inaczej niż v12 — kilka tagów jednego rodzaju w jednym kryterium",
         "Ustawianie sortowania": "do decyzji — myśli bez wartości pola na początku przy malejącym (v12: zawsze na końcu)",

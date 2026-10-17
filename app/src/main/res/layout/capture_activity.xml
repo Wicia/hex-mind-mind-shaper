@@ -113,7 +113,7 @@
                     android:layout_marginBottom="8dp"
                     android:visibility="gone"
                     app:photoMode="captureDisplay"
-                    app:compact="false" />
+                    app:compact="true" />
 
                 <!-- ADD CONTENT TOOLBAR -->
                 <LinearLayout
