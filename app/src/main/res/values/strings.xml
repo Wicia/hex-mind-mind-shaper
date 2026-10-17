@@ -453,7 +453,7 @@ Awers - Rewers…"</string>
     <string name="settings_backup_title_1">Sekcja \"Kopia zapasowa\"</string>
     <string name="settings_backup_tooltip_1">Jeżeli chcesz mieć zarchiwizowane dane swoich myśli w pamięci telefonu, to ta opcja musi być \"włączona\"</string>
     <string name="settings_backup_title_2">Jak to działa?</string>
-    <string name="settings_backup_tooltip_2">Gdy uruchomisz aplikację jej mechanizm zapisze dane twoich myśli.\n\nMoże się to wydarzyć maksymalnie raz na godzinę.</string>
+    <string name="settings_backup_tooltip_2">Gdy uruchomisz aplikację jej mechanizm zapisze dane twoich myśli.\n\nPowstaje jedna kopia dziennie - każde kolejne uruchomienie tego dnia ją odświeża.</string>
 
     <!-- Header -->
     <string name="settings_title">Preferencje</string>
