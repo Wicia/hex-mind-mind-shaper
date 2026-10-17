@@ -865,6 +865,16 @@ class SettingsActivity : CoreActivity() {
      * Exceptions: voice/photo feature toggles are saved immediately (permission flow side effects).
      */
     private fun saveSettings() {
+        // Dormant thresholds are validated first - with a wrong one nothing is stored
+        if (binding.switchDormantMode.isChecked && !validateDormantDaysInput()) {
+            showShortToast(R.string.settings_dormant_mode_days_error_toast)
+            return
+        }
+        if (binding.switchDormantMode.isChecked && !validateDormantValueInput()) {
+            showShortToast(R.string.settings_dormant_mode_value_error_toast)
+            return
+        }
+
         val yourName = binding.etYourName.text?.toString()?.trim()
             ?.takeIf { it.isNotEmpty() }
             ?: getString(R.string.settings_your_name_default)
@@ -884,14 +894,6 @@ class SettingsActivity : CoreActivity() {
         flashcardsReminders.scheduleNext()
 
         // Dormant mode
-        if (binding.switchDormantMode.isChecked && !validateDormantDaysInput()) {
-            showShortToast(R.string.settings_dormant_mode_days_error_toast)
-            return
-        }
-        if (binding.switchDormantMode.isChecked && !validateDormantValueInput()) {
-            showShortToast(R.string.settings_dormant_mode_value_error_toast)
-            return
-        }
         appSettingsStorage.setDormantModeEnabled(binding.switchDormantMode.isChecked)
         appSettingsStorage.setDormantDaysThreshold(readDormantDays() ?: AppSettingsStorage.DORMANT_DAYS_DEFAULT)
         appSettingsStorage.setDormantValueThreshold(readDormantValue() ?: AppSettingsStorage.DORMANT_VALUE_DEFAULT)
