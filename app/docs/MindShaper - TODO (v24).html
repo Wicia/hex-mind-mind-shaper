@@ -484,6 +484,41 @@
     </div>
   </details>
 
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span>
+      <strong>Skala wartości myśli — przeliczanie przy zmianie skali + skala 1–3</strong> — zmiana skali w Preferencjach nie przelicza zapisanych wartości myśli.
+    </summary>
+    <div class="body">
+      <ul>
+        <li>dziś zapisuje się tylko nazwa skali — myśl z wartością 8 po przejściu na 1–6 zostaje z 8, poza zakresem</li>
+        <li>przeliczanie w obie strony: 1–6 ↔ 1–10 (np. proporcjonalnie z zaokrągleniem; do ustalenia, czy skrajne wartości zawsze przechodzą na skrajne)</li>
+        <li>razem z wartościami myśli przeliczyć próg wartości trybu uśpienia</li>
+        <li>nowa skala 1–3 — przeliczanie między wszystkimi trzema skalami</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>common/ui/views/values/ThoughtValueSystem.kt</code> — nowa skala</li><li><code>activities/settings/widgets/ThoughtValueSystemTiles.kt</code> — kafelek 1–3</li><li><code>activities/settings/SettingsActivity.kt</code> — <code>saveSettings()</code> (przeliczenie przy zmianie skali)</li><li><code>services/AppSettingsStorage.kt</code> — próg wartości uśpienia</li></ul></div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span>
+      <strong>Warsztat — włączanie / wyłączanie modułu</strong> — przełącznik w <i>Preferencjach</i>, wzorowany na module fiszek (<i>Zapamiętywanie</i>).
+    </summary>
+    <div class="body">
+      <ul>
+        <li>wzór: „Włącz powtórki z użyciem fiszek” — przełącznik zapisywany od razu, domyślnie wyłączony</li>
+        <li>wyłączenie, jak przy fiszkach:
+          <ul>
+            <li>Warsztat znika z panelu nawigacji</li>
+            <li>ekran startowy Warsztat niedostępny; jeśli był wybrany, wybór wraca na Dom</li>
+          </ul>
+        </li>
+        <li>do ustalenia: domyślny stan (włączony czy wyłączony) i los przypomnień kroków oraz wpisów w kalendarzu po wyłączeniu</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>activities/settings/SettingsActivity.kt</code>, <code>services/AppSettingsStorage.kt</code> — wzór: przełącznik fiszek</li><li><code>activities/home/HomeActivity.kt</code> — miejsca zależne od włączenia modułu</li></ul></div>
+    </div>
+  </details>
+
   <h2>Sprzątanie / Refactoring</h2>
   <details class="item">
     <summary>
