@@ -1140,24 +1140,6 @@
   </details>
   <details class="item">
     <summary>
-      <span class="prio imp">Istotny</span>
-      <strong>Fiszki — testy jednostkowe planowania sesji</strong> — <code>FlashcardsReview.plan</code> nie ma żadnego testu.
-      <span class="mods"><span class="mod">Fiszki</span></span>
-    </summary>
-    <div class="body">
-      <ul>
-        <li>dzienny limit nowych (z uwzględnieniem wprowadzonych dziś)</li>
-        <li>kolejność: planowe (najniższy poziom najpierw, w obrębie poziomu losowo) → nowe (starsze zestawy, kolejność w zestawie)</li>
-        <li>sesja zestawu: kolejka zawężona, limit liczony globalnie</li>
-        <li>granice: termin = dziś, utrwalone i puste zestawy pomijane</li>
-        <li><code>FlashcardsScheduler</code> ma już <code>FlashcardsSchedulerTest</code> (14 testów)</li>
-      </ul>
-      <div class="gain"><b>Po co:</b> najbardziej złożona logika fiszek — błąd w niej po cichu psuje każdą sesję.</div>
-      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>services/FlashcardsReview.kt</code></li><li><code>src/test/.../FlashcardsReviewTest.kt</code> (nowy)</li></ul></div>
-    </div>
-  </details>
-  <details class="item">
-    <summary>
       <span class="prio crit">Krytyczny</span> 
       <strong>Wynik 
         <code>createSnapshot()</code> ignorowany na starcie
