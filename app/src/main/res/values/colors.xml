@@ -149,6 +149,9 @@
     <!-- Leafs -->
     <color name="separator_leaf">@color/_gray_lvl_2</color>
 
+    <!-- Tree branches (HexTreeConnector): between _gray_lvl_1 and _gray_lvl_2 -->
+    <color name="tree_connector">#D2D2D2</color>
+
     <!-- Lab bubbles over the onboarding flask on Home: ring in _orange_lvl_2, fill = the same at 20% -->
     <color name="lab_bubble_stroke">@color/_orange_lvl_2</color>
     <color name="lab_bubble_fill">#33FFC59A</color>

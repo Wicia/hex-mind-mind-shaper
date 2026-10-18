@@ -212,19 +212,26 @@ class StreamViewModel @Inject constructor(
     }
 
     private fun sortThoughts(thoughts: List<ThoughtDTO>, config: SortConfig): List<ThoughtDTO> {
+        val direction = config.direction
         val comparator: Comparator<ThoughtDTO> = when (config.property) {
-            SortProperty.CREATED_AT -> compareBy(nullsLast()) { it.createdAt }
-            SortProperty.UPDATED_AT -> compareBy(nullsLast()) { it.updatedAt }
-            SortProperty.SUBJECT -> compareBy(nullsLast()) { it.subject?.lowercase() }
-            SortProperty.PERSON -> compareBy(nullsLast()) { firstTagAlphabetically(it.people) }
-            SortProperty.PROJECT -> compareBy(nullsLast()) { firstTagAlphabetically(it.projects) }
-            SortProperty.VALUE -> compareBy(nullsLast()) { it.value }
+            SortProperty.CREATED_AT -> byField(direction) { it.createdAt }
+            SortProperty.UPDATED_AT -> byField(direction) { it.updatedAt }
+            SortProperty.SUBJECT -> byField(direction) { it.subject?.lowercase() }
+            SortProperty.PERSON -> byField(direction) { firstTagAlphabetically(it.people) }
+            SortProperty.PROJECT -> byField(direction) { firstTagAlphabetically(it.projects) }
+            SortProperty.VALUE -> byField(direction) { it.value }
         }
 
-        return when (config.direction) {
-            SortDirection.ASCENDING -> thoughts.sortedWith(comparator)
-            SortDirection.DESCENDING -> thoughts.sortedWith(comparator.reversed())
-        }
+        return thoughts.sortedWith(comparator)
+    }
+
+    // Direction applies to the values only - thoughts without the field's value always go last
+    private fun <T : Comparable<T>> byField(
+        direction: SortDirection,
+        selector: (ThoughtDTO) -> T?
+    ): Comparator<ThoughtDTO> {
+        val order = if (direction == SortDirection.ASCENDING) naturalOrder<T>() else reverseOrder<T>()
+        return compareBy(nullsLast(order), selector)
     }
 
     fun deleteThought(thought: ThoughtDTO) {

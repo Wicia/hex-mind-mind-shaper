@@ -16,6 +16,7 @@ import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
 import pl.hexmind.mindshaper.common.ui.views.lists.SortConfig
+import pl.hexmind.mindshaper.common.ui.views.lists.SortDirection
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.regex.HexTags
 import pl.hexmind.mindshaper.common.ui.dialogs.GuideDialog
@@ -321,13 +322,19 @@ class StreamActivity : CoreActivity() {
         }
     }
 
+    // Button shows only the sorted property; the arrow on the left tells the direction
     private fun updateSortButtonLabel(sortConfig : SortConfig){
         val sortProperty = sortConfig.property
-        val labelText = getString(sortProperty.displayNameRes)
+        val propertyName = getString(sortProperty.displayNameRes)
+
+        btnSort.text = propertyName
+        btnSort.setIconResource(
+            if (sortConfig.direction == SortDirection.DESCENDING) R.drawable.ic_sort_desc else R.drawable.ic_sort_asc
+        )
+        // Screen readers still get the direction in words
+        btnSort.contentDescription = propertyName
             .plus(": ")
             .plus(getString(sortConfig.direction.getLabelResByFieldType(sortProperty.type)))
-
-        btnSort.text = labelText
     }
 
     /**

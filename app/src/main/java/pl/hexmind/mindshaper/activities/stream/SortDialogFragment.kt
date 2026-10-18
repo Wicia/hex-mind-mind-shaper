@@ -14,6 +14,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.common.ui.dpToPx
+import pl.hexmind.mindshaper.common.ui.views.HexTreeConnector
 import pl.hexmind.mindshaper.common.ui.views.lists.SortConfig
 import pl.hexmind.mindshaper.common.ui.views.lists.SortDirection
 import pl.hexmind.mindshaper.common.ui.views.lists.SortProperty
@@ -46,6 +48,8 @@ class SortDialogFragment(
         (dialog as? BottomSheetDialog)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
 
         llSortProperties = view.findViewById(R.id.ll_sort_properties)
+        // Tree branches of direction rows reach up into the gap above them
+        llSortProperties.clipChildren = false
 
         rebuildList()
     }
@@ -56,10 +60,10 @@ class SortDialogFragment(
         SortProperty.entries.forEach { property ->
             llSortProperties.addView(createPropertyButton(property))
 
-            // Expand direction buttons below the selected property
+            // Expand direction rows below the selected property
             if (property == selectedProperty) {
-                SortDirection.entries.forEach { direction ->
-                    llSortProperties.addView(createDirectionButton(direction))
+                SortDirection.entries.forEachIndexed { index, direction ->
+                    llSortProperties.addView(createDirectionRow(direction, isFirst = index == 0))
                 }
             }
         }
@@ -100,6 +104,32 @@ class SortDialogFragment(
         }
     }
 
+    // Tree branch from the property above + direction button
+    private fun createDirectionRow(direction: SortDirection, isFirst: Boolean): LinearLayout {
+        return LinearLayout(requireContext()).apply {
+            orientation = LinearLayout.HORIZONTAL
+            clipChildren = false
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(requireContext().dpToPx(DIRECTION_ROW_INDENT_DP), DIRECTION_ROW_MARGIN_PX, 0, DIRECTION_ROW_MARGIN_PX)
+            }
+
+            addView(
+                HexTreeConnector(requireContext()).apply {
+                    // Rows' bottom + top margins make the gap between two direction rows
+                    if (!isFirst) gapAbove = 2 * DIRECTION_ROW_MARGIN_PX
+                },
+                LinearLayout.LayoutParams(
+                    requireContext().dpToPx(HexTreeConnector.WIDTH_DP),
+                    LinearLayout.LayoutParams.MATCH_PARENT
+                )
+            )
+            addView(createDirectionButton(direction))
+        }
+    }
+
     private fun createDirectionButton(direction: SortDirection): MaterialButton {
         val themedContext = ContextThemeWrapper(requireContext(), R.style.SecondaryActionButton)
         return MaterialButton(themedContext).apply {
@@ -111,13 +141,11 @@ class SortDialogFragment(
             // No icon on direction buttons
             icon = null
 
+            // Indent comes from the tree connector in front of it
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                // Indent direction buttons under property
-                setMargins(64, 4, 0, 4)
-            }
+            )
 
             minimumWidth = 400 // px
 
@@ -148,5 +176,8 @@ class SortDialogFragment(
 
     companion object {
         const val TAG = "SortDialogFragment"
+        private const val DIRECTION_ROW_MARGIN_PX = 4
+        // Shifts the branch with its direction button to the right, under the property button
+        private const val DIRECTION_ROW_INDENT_DP = 8
     }
 }
