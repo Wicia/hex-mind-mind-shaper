@@ -857,6 +857,8 @@
         {fn: "Edytowanie domeny", col: "proc", process: ["Konfigurowanie domen"], place: META,
             text: "nazwa wymagana, max 36 znaków"},
         {fn: "Edytowanie domeny", col: "proc", process: ["Konfigurowanie domen"], place: META,
+            text: "bez wybranej ikony — domena dostaje ikonę domyślną"},
+        {fn: "Edytowanie domeny", col: "proc", process: ["Konfigurowanie domen"], place: META,
             text: "zmiana zapisuje się od razu; nowa nazwa i ikona obowiązują wszędzie, gdzie domena jest pokazywana"},
         {fn: "Przygotowanie domen domyślnych", col: "proc", process: ["Konfigurowanie domen"], place: META,
             text: "pierwsze uruchomienie aplikacji — 10 domen ze startowymi nazwami (np. „Rozwój, Praca, Biznes”), do późniejszej zmiany"},
@@ -1272,7 +1274,6 @@
         "Ustawianie sortowania": "do decyzji — myśli bez wartości pola na początku przy malejącym (v12: zawsze na końcu)",
         "Wyznaczanie stanu myśli": "inaczej niż v12 — dni od nowa liczy każda zmiana myśli, nie tylko tytuł, domena i wartość",
         "Edytowanie tytułu": "do sprawdzenia — w Szczegółach myśli brak limitu 36 znaków tytułu",
-        "Edytowanie domeny": "do sprawdzenia — bez wybranej ikony zmiana się nie zapisuje i nie ma komunikatu",
         "Edytowanie kroku": "do sprawdzenia — po zmniejszeniu liczby powtórzeń ekran pokazuje postęp 0, a zapis tylko przycina go do nowej liczby",
         "Dodawanie celu": "do sprawdzenia — opis celu nie jest wymagany (pusty cel się zapisuje)",
         "Usuwanie celu": "do sprawdzenia — usunięcie celu nie usuwa wpisów jego kroków w kalendarzu",
@@ -1280,7 +1281,6 @@
         "Oznaczanie kroku z kalendarza": "inaczej niż v12 — komunikat „Realizowano X z Y powtórzeń kroku” zamiast „Zaliczono: X/Y”",
         "Wyświetlanie wskazówek": "do sprawdzenia — wskazówka sekcji Personalizacja ma tekst-zaślepkę zamiast treści",
         "Usuwanie myśli": "nowe względem v12 — odpinanie myśli od kroku przy usunięciu",
-        "Przygotowanie domen domyślnych": "zmiana — dodany wbudowany zestaw ikon domen",
     };
 
     // Places where the user verified a function; value = dd/mm of the check.
@@ -1318,6 +1318,9 @@
         "Zmienianie nazwy tagu": {"Tagi i Domeny": "18/10"},
         "Usuwanie tagu": {"Tagi i Domeny": "18/10"},
         "Wyszukiwanie myśli z tagiem": {"Tagi i Domeny": "18/10"},
+        "Wyświetlanie domen": {"Tagi i Domeny": "18/10"},
+        "Edytowanie domeny": {"Tagi i Domeny": "18/10"},
+        "Przygotowanie domen domyślnych": {"Tagi i Domeny": "18/10"},
     };
 
     // Functions to be done (TBD) — skipped in the verification pass
