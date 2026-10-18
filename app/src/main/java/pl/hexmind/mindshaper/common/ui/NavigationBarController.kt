@@ -96,6 +96,8 @@ class NavigationBarController(
         // would cover the toggle - kill it and lift Z above the drawer
         btnToggle.stateListAnimator = null
         btnToggle.elevation = navigationBar.resources.displayMetrics.density * 24f
+        // Elevation only orders it above the drawer; the shadow comes from navToggleHalo, even on all sides
+        btnToggle.outlineProvider = null
         btnToggle.setIconResource(R.drawable.ic_nav_menu)
 
         btnToggle.setOnClickListener {

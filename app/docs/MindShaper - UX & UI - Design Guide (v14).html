@@ -257,6 +257,36 @@
       <dd><code>SpeedDial</code> (<code>addOption</code> / <code>toggle</code>), <code>common_speed_dial.xml</code> (include przed FAB-em w <code>CoordinatorLayout</code>), <code>common_speed_dial_option.xml</code> (layout opcji), <code>speed_dial_scrim</code> (kolor)</dd>
     </dl>
   </details>
+  <details class="comp" open>
+    <summary><h3>Przycisk nawigacji</h3></summary>
+    <dl>
+      <dt>Przeznaczenie</dt>
+      <dd>Jedyny stały przycisk nawigacji — w lewym dolnym rogu każdego głównego ekranu; otwiera i zamyka panel nawigacyjny.</dd>
+      <dt>Wygląd</dt>
+      <dd>
+        <figure><svg role="img" aria-label="nav-toggle" xmlns="http://www.w3.org/2000/svg" width="345" height="126.5" viewBox="0 0 300 110">
+  <rect width="300" height="110" fill="#FFF4E6"/>
+  <rect x="61.5" y="16.5" width="57" height="57" rx="12.5" fill="#000" fill-opacity="0.043"/><rect x="63" y="18" width="54" height="54" rx="11" fill="#000" fill-opacity="0.043"/><rect x="64.5" y="19.5" width="51" height="51" rx="9.5" fill="#000" fill-opacity="0.043"/>
+  <rect x="66" y="21" width="48" height="48" rx="8" fill="#FFE1C8"/>
+  <g transform="translate(76,31) scale(0.029167)"><g transform="rotate(180 480 480)"><path d="M154,715Q141.75,715 133.38,706.57Q125,698.15 125,686.07Q125,674 133.38,665.75Q141.75,657.5 154,657.5L609,657.5Q621.25,657.5 629.63,665.93Q638,674.35 638,686.43Q638,698.5 629.63,706.75Q621.25,715 609,715L154,715ZM775,642.5L629.5,499Q621,490.5 621,479Q621,467.5 629.5,458.5L774,315Q782.5,306.5 794.5,306.75Q806.5,307 815,315.5Q823.5,324 823.5,336Q823.5,348 815,356.5L691.5,479L816,602Q824.5,611 824.5,622.25Q824.5,633.5 816,642.5Q807.5,651 795.75,651Q784,651 775,642.5ZM154,506.5Q141.75,506.5 133.38,498.07Q125,489.65 125,477.57Q125,465.5 133.38,457.25Q141.75,449 154,449L490.5,449Q502.25,449 510.63,457.43Q519,465.85 519,477.93Q519,490 510.63,498.25Q502.25,506.5 490.5,506.5L154,506.5ZM154,302.5Q141.75,302.5 133.38,294.07Q125,285.65 125,273.57Q125,261.5 133.38,253.25Q141.75,245 154,245L609,245Q621.25,245 629.63,253.43Q638,261.85 638,273.93Q638,286 629.63,294.25Q621.25,302.5 609,302.5L154,302.5Z" fill="#BEBEBE"/></g></g>
+  <text x="90" y="96" text-anchor="middle" dominant-baseline="central" font-size="13" fill="#625A54" font-family="'Baloo 2', 'Segoe UI', sans-serif">panel zamknięty</text>
+  <rect x="181.5" y="16.5" width="57" height="57" rx="12.5" fill="#000" fill-opacity="0.043"/><rect x="183" y="18" width="54" height="54" rx="11" fill="#000" fill-opacity="0.043"/><rect x="184.5" y="19.5" width="51" height="51" rx="9.5" fill="#000" fill-opacity="0.043"/>
+  <rect x="186" y="21" width="48" height="48" rx="8" fill="#FFA86B"/>
+  <g transform="translate(196,31) scale(0.029167)"><g transform="rotate(0 480 480)"><path d="M154,715Q141.75,715 133.38,706.57Q125,698.15 125,686.07Q125,674 133.38,665.75Q141.75,657.5 154,657.5L609,657.5Q621.25,657.5 629.63,665.93Q638,674.35 638,686.43Q638,698.5 629.63,706.75Q621.25,715 609,715L154,715ZM775,642.5L629.5,499Q621,490.5 621,479Q621,467.5 629.5,458.5L774,315Q782.5,306.5 794.5,306.75Q806.5,307 815,315.5Q823.5,324 823.5,336Q823.5,348 815,356.5L691.5,479L816,602Q824.5,611 824.5,622.25Q824.5,633.5 816,642.5Q807.5,651 795.75,651Q784,651 775,642.5ZM154,506.5Q141.75,506.5 133.38,498.07Q125,489.65 125,477.57Q125,465.5 133.38,457.25Q141.75,449 154,449L490.5,449Q502.25,449 510.63,457.43Q519,465.85 519,477.93Q519,490 510.63,498.25Q502.25,506.5 490.5,506.5L154,506.5ZM154,302.5Q141.75,302.5 133.38,294.07Q125,285.65 125,273.57Q125,261.5 133.38,253.25Q141.75,245 154,245L609,245Q621.25,245 629.63,253.43Q638,261.85 638,273.93Q638,286 629.63,294.25Q621.25,302.5 609,302.5L154,302.5Z" fill="#FFFFFF"/></g></g>
+  <text x="210" y="96" text-anchor="middle" dominant-baseline="central" font-size="13" fill="#625A54" font-family="'Baloo 2', 'Segoe UI', sans-serif">panel otwarty</text>
+</svg></figure>
+        <ul>
+          <li>cień równy dookoła (miękka poświata zanikająca na zewnątrz), nie systemowy cień padający w dół — przy dolnej krawędzi ekranu tamten był ucinany</li>
+          <li>zawsze nad panelem nawigacyjnym i przyciemnieniem — razem ze swoim cieniem</li>
+          <li>otwarty panel: tło <code>app_primary</code>, ikona <code>text_on_primary</code>, ikona obrócona o 180°</li>
+        </ul>
+      </dd>
+      <dt>Działanie</dt>
+      <dd><b>tap</b> otwiera / zamyka panel; <b>tap w przyciemnienie</b> też zamyka</dd>
+      <dt>Kod</dt>
+      <dd><code>NavigationBarController</code> (<code>setupToggleButton</code> / <code>setToggleActive</code>), <code>common_navigation_bar.xml</code> (<code>btnToggle</code>, <code>navToggleHalo</code>), <code>shape_nav_toggle_halo</code> (cień), <code>AuxiliaryActionButton</code> (styl)</dd>
+    </dl>
+  </details>
 </div>
 </div>
 
