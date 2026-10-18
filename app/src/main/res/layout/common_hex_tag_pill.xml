@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Hex tag pill split in two tappable parts: name (edit) | usage count + lens (search in Stream) -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/hex_tag_pill_spacing"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:background="@drawable/shape_hex_chip_selected"
-    >
+    android:background="@drawable/shape_hex_chip_selected">
 
     <!-- Part 1: tag name -->
     <TextView
@@ -24,15 +24,14 @@
         android:maxLines="1"
         android:ellipsize="end"
         android:maxEms="8"
-        android:textColor="@color/text_primary"
-        />
+        android:textSize="14sp"
+        android:textColor="@color/text_primary" />
 
     <!-- Separator between the two parts: cuts the pill through its full height -->
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:background="@color/app_background"
-        />
+        android:background="@color/app_background" />
 
     <!-- Part 2: usage count + search hint -->
     <LinearLayout
@@ -44,8 +43,7 @@
         android:background="@drawable/ripple_hex_tag_pill_end"
         android:paddingStart="8dp"
         android:paddingEnd="12dp"
-        android:contentDescription="@string/metadata_tag_search"
-        >
+        android:contentDescription="@string/metadata_tag_search">
 
         <TextView
             android:id="@+id/tv_pill_count"
@@ -53,17 +51,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:textColor="@color/graphite_soft"
-            />
+            android:textSize="14sp"
+            android:textColor="@color/graphite_soft" />
 
         <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginStart="4dp"
             android:src="@drawable/ic_search"
-            android:tint="@color/graphite_soft"
             android:contentDescription="@null"
-            />
+            app:tint="@color/graphite_soft" />
 
     </LinearLayout>
 
