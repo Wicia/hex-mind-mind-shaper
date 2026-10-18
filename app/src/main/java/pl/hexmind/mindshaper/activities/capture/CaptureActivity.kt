@@ -259,9 +259,13 @@ class CaptureActivity : ThoughtManagerActivity() {
 
         lifecycleScope.launch {
             try {
-                val photoFile = thoughtsService.getFileFromUri(photoUri)
-                if (photoFile != null) {
-                    val photoBytes = photoFile.readBytes()
+                // Raw camera file keeps its rotation only in EXIF - the viewer gets it already applied,
+                // at the size the saved photo will have
+                val photoBytes = withContext(kotlinx.coroutines.Dispatchers.IO) {
+                    thoughtsService.getFileFromUri(photoUri)
+                        ?.let { thoughtsService.loadPhotoForPreview(it, maxSize = 1920) }
+                }
+                if (photoBytes != null) {
                     PhotoFullscreenDialog(this@CaptureActivity, photoBytes).show()
                 }
             }
