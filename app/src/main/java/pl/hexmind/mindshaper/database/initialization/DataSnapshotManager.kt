@@ -1,11 +1,8 @@
 package pl.hexmind.mindshaper.database.initialization
 
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Environment
-import android.provider.Settings
-import androidx.core.net.toUri
 import androidx.room.withTransaction
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializer
@@ -248,19 +245,6 @@ class DataSnapshotManager @Inject constructor(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
             "mindshaper_backup$flavorSuffix"
         )
-    }
-
-    fun checkAndRequestPermissions(context: Context): Boolean {
-        // Android 11+
-        if (!Environment.isExternalStorageManager()) {
-            val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
-                data = "package:${context.packageName}".toUri()
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // important for Context
-            }
-            context.startActivity(intent)
-            return false
-        }
-        return true
     }
 
     fun getSnapshotStats(): SnapshotStats {

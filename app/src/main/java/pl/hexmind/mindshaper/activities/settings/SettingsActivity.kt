@@ -825,19 +825,19 @@ class SettingsActivity : CoreActivity() {
 
     private fun loadBackupFile() {
         selectedBackupUri?.let { uri ->
-            try {
-                lifecycleScope.launch {
-                    val fileName = mediaStorageService.getFileNameFromUri(uri)
-                    dataSnapshotManager.restoreSnapshot(fileName, this@SettingsActivity)
-                    showShortToast(R.string.settings_backup_loaded_success)
-                    // Reset after successful load
-                    clearBackupSelection()
-                    refreshSnapshotStats()
-                }
-            }
-            catch (e: Exception) {
-                showBackupErrorMessage(getString(R.string.settings_backup_error_loading))
-                showShortToast(R.string.settings_backup_error_loading)
+            lifecycleScope.launch {
+                // ! The result decides the message - a failed load used to report success as well
+                dataSnapshotManager.restoreSnapshot(uri, this@SettingsActivity)
+                    .onSuccess {
+                        showShortToast(R.string.settings_backup_loaded_success)
+                        // Reset after successful load
+                        clearBackupSelection()
+                        refreshSnapshotStats()
+                    }
+                    .onFailure { error ->
+                        showBackupErrorMessage(error.message ?: getString(R.string.settings_backup_error_loading))
+                        showShortToast(R.string.settings_backup_error_loading)
+                    }
             }
         }
     }
