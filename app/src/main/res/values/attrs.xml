@@ -4,6 +4,8 @@
     <declare-styleable name="HexNavItemView">
         <attr name="hexNavLabel" format="string" />
         <attr name="hexNavIcon" format="reference" />
+        <!-- Gap between the icon and the label; the layout default when absent -->
+        <attr name="hexNavIconSpacing" format="dimension" />
     </declare-styleable>
 
 </resources>

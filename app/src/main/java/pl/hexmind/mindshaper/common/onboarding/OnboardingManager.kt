@@ -21,8 +21,7 @@ class OnboardingManager @Inject constructor(
 
         // HOME
         OnboardingProgressStep.HOME_TOOLTIP to listOf(
-            TooltipItemConfig(titleRes = R.string.home_capturing_button_title, textRes = R.string.home_capturing_button_tooltip, iconRes = R.drawable.ic_capture_thought),
-            TooltipItemConfig(titleRes = R.string.home_navigation_button_title, textRes = R.string.home_navigation_button_tooltip, tracked = false)
+            TooltipItemConfig(titleRes = R.string.home_capturing_button_title, textRes = R.string.home_capturing_button_tooltip, iconRes = R.drawable.ic_capture_thought)
         ),
 
         // == SETTINGS ==
@@ -76,7 +75,8 @@ class OnboardingManager @Inject constructor(
     )
 
     fun showTooltipForStep(step: OnboardingProgressStep, context: Context){
-        if (wasTooltipShown(step)) {
+        // "Without tooltips" chosen in the welcome - the user gets to know the app alone
+        if (!appSettingsStorage.isOnboardingEnabled() || wasTooltipShown(step)) {
             return
         }
 
@@ -132,6 +132,21 @@ class OnboardingManager @Inject constructor(
 
     fun markTooltipShown(step: OnboardingProgressStep) {
         appSettingsStorage.markOnboardingTooltipShown(step.settingsParamName)
+    }
+
+    // Welcome is not a step - it stays out of the review panel and its section resets
+    // ! Users from before the welcome already saw the Home tooltip - they skip it
+    fun isWelcomePending(): Boolean {
+        return !appSettingsStorage.wasOnboardingTooltipShown(WELCOME_SHOWN_KEY)
+                && !wasTooltipShown(OnboardingProgressStep.HOME_TOOLTIP)
+    }
+
+    fun markWelcomeShown() {
+        appSettingsStorage.markOnboardingTooltipShown(WELCOME_SHOWN_KEY)
+    }
+
+    companion object {
+        private const val WELCOME_SHOWN_KEY = "onb_welcome_shown"
     }
 }
 

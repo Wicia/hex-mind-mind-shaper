@@ -54,6 +54,8 @@ class AppSettingsStorage @Inject constructor(
 
         private const val PARAM_BACKUP_ENABLED = "param_backup_enabled"
 
+        private const val PARAM_ONBOARDING_ENABLED = "param_onboarding_enabled"
+
         // Flashcards - Repetitions System
         private const val PARAM_FLASHCARDS_NEW_PER_DAY = "param_flashcards_new_per_day"
 
@@ -149,6 +151,17 @@ class AppSettingsStorage @Inject constructor(
         sharedPreferences.edit {
             remove(stepKey)
         }
+    }
+
+    // Chosen in the welcome dialog; users from before the welcome never chose - they keep the tooltips
+    fun setOnboardingEnabled(enabled: Boolean) {
+        sharedPreferences.edit {
+            putBoolean(PARAM_ONBOARDING_ENABLED, enabled)
+        }
+    }
+
+    fun isOnboardingEnabled(): Boolean {
+        return sharedPreferences.getBoolean(PARAM_ONBOARDING_ENABLED, true)
     }
 
     fun isPhotoFeatureEnabled(): Boolean {

@@ -3,9 +3,11 @@ package pl.hexmind.mindshaper.activities.home
 import android.content.Intent
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
@@ -17,6 +19,8 @@ import pl.hexmind.mindshaper.activities.stream.StreamActivity
 import pl.hexmind.mindshaper.activities.workshop.WorkshopActivity
 import pl.hexmind.mindshaper.common.formatting.setColoredText
 import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
+import pl.hexmind.mindshaper.common.onboarding.OnboardingSection
+import pl.hexmind.mindshaper.common.ui.dialogs.WelcomeDialog
 import pl.hexmind.mindshaper.services.GreetingsService
 import pl.hexmind.mindshaper.services.dto.StartScreen
 
@@ -48,6 +52,34 @@ class HomeActivity : CoreActivity() {
         initViews()
         setupClickListeners()
 
+        // Home tooltip waits for the welcome
+        if (onboardingManager.isWelcomePending()) {
+            showWelcomeDialog()
+        }
+        else {
+            showHomeTooltip()
+        }
+    }
+
+    private fun showWelcomeDialog() {
+        WelcomeDialog(
+            context = this,
+            onYourNameSaved = { yourName ->
+                appSettingsStorage.setYourName(yourName)
+                setupHeaderWithGreetings()
+            },
+            onOnboardingChosen = { enabled ->
+                appSettingsStorage.setOnboardingEnabled(enabled)
+                syncOnboardingEntry()
+            },
+            onClosed = {
+                onboardingManager.markWelcomeShown()
+                showHomeTooltip()
+            }
+        ).show()
+    }
+
+    private fun showHomeTooltip() {
         onboardingManager.showTooltipForStep(
             OnboardingProgressStep.HOME_TOOLTIP, this
         )
@@ -56,7 +88,7 @@ class HomeActivity : CoreActivity() {
     // ! Guarded: a rerouted cold launch finishes in onCreate before the views exist
     override fun onResume() {
         super.onResume()
-        if (::labBubbles.isInitialized) labBubbles.start()
+        if (::labBubbles.isInitialized) syncOnboardingEntry()
     }
 
     override fun onPause() {
@@ -74,6 +106,19 @@ class HomeActivity : CoreActivity() {
         )
         setupHeaderWithGreetings()
         setupBuildVersion()
+    }
+
+    // Without tooltips there is nothing to review - the flask and its bubbles are gone
+    private fun syncOnboardingEntry() {
+        val isOnboardingEnabled = appSettingsStorage.isOnboardingEnabled()
+        findViewById<View>(R.id.fl_onboarding_entry).isVisible = isOnboardingEnabled
+
+        if (isOnboardingEnabled) {
+            labBubbles.start()
+        }
+        else {
+            labBubbles.stop()
+        }
     }
 
     private fun setupHeaderWithGreetings(){

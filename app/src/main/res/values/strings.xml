@@ -212,8 +212,17 @@ Awers - Rewers…"</string>
 
     <string name="home_capturing_button_title">Witaj w \"Domu\" :)</string>
     <string name="home_capturing_button_tooltip">Jak ci wpadnie coś do głowy co chcesz zapisać to tapnij w przycisk na środku</string>
-    <string name="home_navigation_button_title">A tymczasem…</string>
-    <string name="home_navigation_button_tooltip">Tapnij na ikonkę z kompasem (rym!), a potem na ikonkę koła zymbatego</string>
+
+    <!-- Welcome dialog (first app launch) -->
+    <string name="home_welcome_name_title">Witaj w MindShaperze!</string>
+    <string name="home_welcome_name_text">Jak mam się do ciebie zwracać?</string>
+    <string name="home_welcome_name_btn_skip">Pomiń</string>dziala,
+    <string name="home_welcome_name_btn_save">Zapisz</string>
+    <string name="home_welcome_features_title">Pobaw się funkcjami</string>
+    <string name="home_welcome_features_text">Nagrywanie głosu, zdjęcia, fiszki do powtórek, przypominajki i inne kosmiczne funkcje włączysz w Preferencjach</string>
+    <string name="home_welcome_onboarding_question">Chcesz poznawać aplikację krok po kroku, ze wskazówkami?</string>
+    <string name="home_welcome_onboarding_btn_no">Bez wskazówek</string>
+    <string name="home_welcome_onboarding_btn_yes">Poznajmy się</string>
 
     <string name="home_build_version">ver %1$s</string>
 
