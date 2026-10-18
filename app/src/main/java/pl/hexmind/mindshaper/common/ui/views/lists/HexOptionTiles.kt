@@ -42,7 +42,7 @@ open class HexOptionTiles @JvmOverloads constructor(
         const val MIN_TILE_WIDTH_DP = 80
         const val GRID_COLUMNS      = 2
         const val GRID_MIN_TILES    = 4
-        const val COMPACT_PADDING_VERTICAL_DP = 6
+        const val COMPACT_PADDING_VERTICAL_DP = 10
     }
 
     data class Option(
