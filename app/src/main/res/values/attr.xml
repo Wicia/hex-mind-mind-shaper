@@ -56,6 +56,10 @@
         <attr name="stepMinutes" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="HexSwitchRow">
+        <attr name="android:text" />
+    </declare-styleable>
+
     <declare-styleable name="IconsGridView">
         <attr name="rowPattern" format="string" />
     </declare-styleable>

@@ -490,6 +490,47 @@
       <dd><code>HexTabSwitch</code> (widget), <code>HexTabSwitch.Tab</code> (etykieta + <code>iconRes</code> / <code>emoji</code>); poprzedni wygląd (zrośnięte segmenty z ząbkiem): <code>docs/legacy/HexTabSwitchLegacy.kt</code> (poza kodem aplikacji)</dd>
     </dl>
   </details>
+
+  <details class="comp" open>
+    <summary><h3>Przełącznik z etykietą</h3></summary>
+    <dl>
+      <dt>Przeznaczenie</dt>
+      <dd>Włączanie i wyłączanie opcji — w <i>Preferencjach</i>: nagrywanie głosu, zdjęcia, tryb uśpienia, fiszki i przypomnienia, przypomnienia w kalendarzu, kopia zapasowa.</dd>
+      <dt>Wygląd</dt>
+      <dd>
+        <figure><svg role="img" aria-label="hex-switch-row" xmlns="http://www.w3.org/2000/svg" width="345" height="165.6" viewBox="0 0 300 144">
+  <rect width="300" height="144" fill="#FFFFFF"/>
+  <g font-size="16" font-family="'Baloo 2', 'Segoe UI', sans-serif">
+    <rect x="16" y="17" width="40" height="14" rx="7" fill="#FFE1C8"/>
+    <circle cx="46" cy="24" r="10" fill="#FFA86B"/>
+    <text x="70" y="24" dominant-baseline="central" fill="#48433F">Zdjęcia</text>
+    <rect x="16" y="65" width="40" height="14" rx="7" fill="#FFE1C8"/>
+    <circle cx="26" cy="72" r="10" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <text x="70" y="72" dominant-baseline="central" fill="#48433F">Kopia zapasowa</text>
+    <g opacity="0.4">
+      <rect x="16" y="113" width="40" height="14" rx="7" fill="#FFE1C8"/>
+      <circle cx="26" cy="120" r="10" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+      <text x="70" y="120" dominant-baseline="central" fill="#48433F">Przypomnienia o fiszkach</text>
+    </g>
+  </g>
+</svg></figure>
+        <ul>
+          <li>przełącznik po lewej, etykieta po prawej, wyrównana do lewej</li>
+          <li>oś przełącznika <code>_orange_lvl_1</code> w obu stanach, 4dp dłuższa niż domyślna</li>
+          <li>wyłączony — przygaszony razem ze swoją etykietą</li>
+        </ul>
+      </dd>
+      <dt>Działanie</dt>
+      <dd>
+        <ul>
+          <li><b>tap</b> w przełącznik albo w etykietę zmienia stan</li>
+          <li>wyłączony nie reaguje</li>
+        </ul>
+      </dd>
+      <dt>Kod</dt>
+      <dd><code>HexSwitchRow</code> (<code>android:text</code>), <code>common_hex_switch_row.xml</code> (layout)</dd>
+    </dl>
+  </details>
 </div>
 </div>
 
