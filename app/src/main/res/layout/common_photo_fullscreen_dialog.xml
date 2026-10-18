@@ -10,14 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Close button -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <!-- Close button: bottom center, in thumb reach in both hands and orientations -->
+    <ImageButton
         android:id="@+id/btn_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|end"
-        android:layout_margin="16dp"
-        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="40dp"
+        android:padding="16dp"
+        android:background="@drawable/bg_photo_viewer_close"
+        android:src="@drawable/ic_close"
+        android:tint="@color/photo_viewer_close_icon"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
 
     <!-- Loading indicator -->

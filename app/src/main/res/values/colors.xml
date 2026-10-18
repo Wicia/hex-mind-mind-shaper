@@ -133,6 +133,10 @@
     <!-- Speed dial scrim: graphite_dark at 80% -->
     <color name="speed_dial_scrim">#CC2F2C2A</color>
 
+    <!-- Fullscreen photo close button: graphite_dark at 60%, white X -->
+    <color name="photo_viewer_close_background">#992F2C2A</color>
+    <color name="photo_viewer_close_icon">@color/_white</color>
+
 <!-- ====================================== -->
 <!--    LIST ITEMS -->
 <!-- ====================================== -->

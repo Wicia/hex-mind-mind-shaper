@@ -599,6 +599,40 @@
       <dd><code>ActionsDialog</code> (<code>setPrimaryAction</code> / <code>setSecondaryAction</code> / <code>setOnCancel</code>), <code>common_actions_dialog.xml</code> (layout), <code>action_caution</code> (kolor)</dd>
     </dl>
   </details>
+
+  <details class="comp" open>
+    <summary><h3>Podgląd zdjęcia</h3></summary>
+    <dl>
+      <dt>Przeznaczenie</dt>
+      <dd>Oglądanie zdjęcia myśli na całym ekranie — z <i>Łapania myśli</i> i <i>Szczegółów myśli</i>.</dd>
+      <dt>Wygląd</dt>
+      <dd>
+        <figure><svg role="img" aria-label="photo-fullscreen-dialog" xmlns="http://www.w3.org/2000/svg" width="207" height="345" viewBox="0 0 180 300">
+  <rect width="180" height="300" fill="#000000"/>
+  <rect x="0" y="96" width="180" height="108" fill="#8C8079"/>
+  <path d="M0,204L52,146L86,176L122,128L180,186V204Z" fill="#625A54"/>
+  <circle cx="138" cy="122" r="10" fill="#FFE1C8"/>
+  <circle cx="90" cy="218" r="24" fill="#2F2C2A" fill-opacity="0.6"/>
+  <path d="M84,212L96,224M96,212L84,224" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/>
+  <rect x="70" y="290" width="40" height="3" rx="1.5" fill="#FFFFFF" fill-opacity="0.5"/>
+</svg></figure>
+        <ul>
+          <li>zamykanie na dole, na środku — w zasięgu kciuka obu rąk, w pionie i w poziomie; nad paskiem systemu (przyciski i gesty)</li>
+          <li>kółko 48dp, obszar dotyku 56dp</li>
+        </ul>
+      </dd>
+      <dt>Działanie</dt>
+      <dd>
+        <ul>
+          <li><b>X</b> i <b>back</b> zamykają podgląd</li>
+          <li>powiększanie i przesuwanie palcami</li>
+          <li>jedyne miejsce, które obraca się z telefonem (przy włączonym autoobrocie) — po zamknięciu ekran wraca do pionu</li>
+        </ul>
+      </dd>
+      <dt>Kod</dt>
+      <dd><code>PhotoFullscreenDialog</code>, <code>common_photo_fullscreen_dialog.xml</code> (layout), <code>bg_photo_viewer_close</code> / <code>photo_viewer_close_*</code> (kolory)</dd>
+    </dl>
+  </details>
 </div>
 </div>
 

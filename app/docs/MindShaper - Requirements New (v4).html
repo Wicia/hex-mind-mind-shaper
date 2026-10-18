@@ -582,6 +582,10 @@
             text: "tryby nawigacji Androida — 3 przyciski i gesty"},
         {fn: "Zgodność z systemem", col: "proc", process: ["Nawigowanie po aplikacji"], place: NAV,
             text: "treść i panel nie chowają się pod paskami systemu"},
+        {fn: "Utrzymywanie pionowej orientacji", col: "data", process: ["Nawigowanie po aplikacji"], place: GEN,
+            text: "wszystkie ekrany aplikacji tylko w pionie — obrót telefonu ich nie zmienia"},
+        {fn: "Utrzymywanie pionowej orientacji", col: "proc", process: ["Nawigowanie po aplikacji", "Zapis w formie Zdjęcia"], place: GEN,
+            text: "wyjątek — zdjęcie na pełnym ekranie obraca się razem z telefonem (przy włączonym autoobrocie systemu); po jego zamknięciu ekran wraca do pionu"},
 
         // Personalizowanie
         {fn: "Wyświetlanie powitania", col: "data", process: ["Personalizowanie"], place: HOME,
@@ -1282,6 +1286,7 @@
         "Oznaczanie kroku z kalendarza": "inaczej niż v12 — komunikat „Realizowano X z Y powtórzeń kroku” zamiast „Zaliczono: X/Y”",
         "Wyświetlanie wskazówek": "do sprawdzenia — wskazówka sekcji Personalizacja ma tekst-zaślepkę zamiast treści",
         "Usuwanie myśli": "nowe względem v12 — odpinanie myśli od kroku przy usunięciu",
+        "Utrzymywanie pionowej orientacji": "nowe — ekrany zablokowane w pionie, obraca się tylko zdjęcie na pełnym ekranie",
     };
 
     // Places where the user verified a function; value = dd/mm of the check.
