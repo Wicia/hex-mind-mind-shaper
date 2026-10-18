@@ -25,7 +25,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
-            android:fontFamily="@font/alegreya_regular"
+            android:fontFamily="@font/literata_regular"
             android:lineSpacingMultiplier="@dimen/line_spacing_tight"
             tools:text="Stolica Mongolii?"
             />
@@ -38,7 +38,7 @@
             android:textSize="16sp"
             android:lineSpacingMultiplier="0.85"
             android:textColor="@color/text_primary"
-            android:fontFamily="@font/alegreya_regular"
+            android:fontFamily="@font/literata_regular"
             tools:text="Ułan Bator" />
 
     </LinearLayout>

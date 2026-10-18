@@ -35,8 +35,8 @@
             android:maxLines="12"
             android:textColor="@color/text_primary"
             android:textColorHint="@color/text_secondary"
-            android:fontFamily="@font/alegreya_regular"
-            android:textSize="18sp"
+            android:fontFamily="@font/literata_regular"
+            android:textSize="@dimen/note_text_size"
             app:hintEnabled="false"
             />
 

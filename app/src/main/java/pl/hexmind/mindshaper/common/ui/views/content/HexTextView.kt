@@ -69,8 +69,8 @@ class HexTextView @JvmOverloads constructor(
             }
 
             override fun beforeSetText(textView: TextView, markdown: Spanned) {
-                // Apply Alegreya font after Markwon sets the text
-                textView.typeface = ResourcesCompat.getFont(textView.context, R.font.alegreya_regular)
+                // Apply Literata font after Markwon sets the text
+                textView.typeface = ResourcesCompat.getFont(textView.context, R.font.literata_regular)
             }
 
             override fun afterSetText(textView: TextView) {
@@ -199,7 +199,7 @@ class HexTextView @JvmOverloads constructor(
     /**
      * Turns plain web addresses (http(s)://..., www....) into links - blue & underlined via textColorLink.
      * Markdown links [label](url) are already URLSpans from Markwon, so their ranges are skipped.
-     * Every link (plain or Markdown) gets its own font, so it stands out from the Alegreya prose.
+     * Every link (plain or Markdown) gets its own font, so it stands out from the Literata prose.
      */
     private fun linkifyWebUrls(textView: TextView) {
         val builder = SpannableStringBuilder(textView.text)
@@ -318,10 +318,10 @@ class HexTextView @JvmOverloads constructor(
     companion object {
         private const val BLOCK_SEPARATOR = "\n\n"
 
-        // 1.0 = a full empty line, which reads too airy at 18sp
+        // 1.0 = a full empty line, which reads too airy between note paragraphs
         private const val PARAGRAPH_GAP_RATIO = 0.6f
 
-        // Montserrat runs wider than Alegreya - at the same size a link looks oversized next to the prose
+        // Montserrat runs wider than Literata - at the same size a link looks oversized next to the prose
         private const val LINK_SIZE_RATIO = 0.85f
 
         // Trailing punctuation ("zobacz https://x.pl.") belongs to the sentence, not to the address

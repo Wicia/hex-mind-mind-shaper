@@ -16,12 +16,12 @@
         android:minHeight="90dp"
         android:padding="12dp"
         android:textAlignment="textStart"
-        android:textSize="18sp"
+        android:textSize="@dimen/note_text_size"
         android:letterSpacing="0.0"
         android:textStyle="normal"
         android:textColor="@color/text_primary"
         android:textColorLink="@color/rich_text_link"
-        android:fontFamily="@font/alegreya_regular"
+        android:fontFamily="@font/literata_regular"
         android:textAllCaps="false"
         android:visibility="visible" />
 

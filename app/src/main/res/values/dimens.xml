@@ -31,4 +31,7 @@
 
     <!-- Tight line spacing (lineSpacingMultiplier) of multi-line labels - action buttons, flashcard front -->
     <item name="line_spacing_tight" format="float" type="dimen">0.80</item>
+
+    <!-- Note text - the same size when shown (HexTextView) and when edited (TextEditDialog) -->
+    <dimen name="note_text_size">16sp</dimen>
 </resources>

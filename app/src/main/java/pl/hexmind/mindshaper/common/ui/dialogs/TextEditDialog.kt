@@ -3,6 +3,7 @@ package pl.hexmind.mindshaper.common.ui.dialogs
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -43,8 +44,8 @@ class TextEditDialog(
         etInput.setSelection(textInput.length)  // Cursor at end
 
         if (notesStyle) {
-            etInput.typeface = ResourcesCompat.getFont(context, R.font.alegreya_regular)
-            etInput.textSize = 18f
+            etInput.typeface = ResourcesCompat.getFont(context, R.font.literata_regular)
+            etInput.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.resources.getDimension(R.dimen.note_text_size))
             toolbarMarkdown.visibility = View.VISIBLE
             btnInsertBullet.setOnClickListener { insertBulletAtCursor() }
             setupBulletContinuation()

@@ -48,7 +48,7 @@
                 android:textSize="16sp"
                 android:lineSpacingMultiplier="0.85"
                 android:textColor="@color/text_primary"
-                android:fontFamily="@font/alegreya_regular"
+                android:fontFamily="@font/literata_regular"
                 tools:text="Stolica Mongolii?" />
 
             <!-- End card: headline + the session's result - not a flashcard of the set -->
@@ -72,7 +72,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary"
-                    android:fontFamily="@font/alegreya_regular"
+                    android:fontFamily="@font/literata_regular"
                     tools:text="3 fiszki" />
 
                 <!-- Same look as the headline, just not bold -->
@@ -84,7 +84,7 @@
                     android:textAlignment="center"
                     android:textSize="16sp"
                     android:textColor="@color/text_primary"
-                    android:fontFamily="@font/alegreya_regular"
+                    android:fontFamily="@font/literata_regular"
                     tools:text="Mam to: 5 · Coś świta: 2 · Pustka: 1" />
 
             </LinearLayout>
