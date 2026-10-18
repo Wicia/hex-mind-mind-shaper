@@ -238,38 +238,20 @@
       </ul>
     </div>
   </details>
-<details class="item">
+  <details class="item">
     <summary>
       <span class="prio imp">Istotny</span> 
-      <strong>Przeglądanie tagów</strong> — lista Ludzi/Ekip i Projektów z licznikami, z możliwością edycji.
+      <strong>Dane kontaktowe przy tagu osoby (do rozważenia)</strong> — oprócz nazwy: telefon, e-mail albo nazwa w komunikatorze.
       <span class="mods"><span class="mod">Tagi i Domeny</span></span>
     </summary>
     <div class="body">
       <ul>
-        <li><strong>Filtr u góry</strong> — dwa chipy: <code>Ludzie/Ekipy</code> oraz <code>Projekty</code>; wybór przełącza listę</li>
-        <li><strong>Sortowanie (MVP)</strong> — od najczęściej używanych do najrzadszych
-          <ul>
-            <li>liczba = ile myśli ma dany tag (w obrębie jego typu)</li>
-          </ul>
-        </li>
-        <li><strong>Element listy</strong> — nazwa tagu + ikona kategorii + liczba, wg której sortujemy + ikona tej liczby</li>
-        <li><strong>Edycja tagu</strong> — zmiana nazwy działa wszędzie tam, gdzie tag jest użyty
-          <ul>
-            <li>to jedyny sposób, by naprawić literówkę bez grzebania w bazie</li>
-            <li>docelowo też scalanie dwóch tagów w jeden</li>
-          </ul>
-        </li>
-        <li><strong>Opcja (do rozważenia): dane kontaktowe przy tagu osoby</strong>
-          <ul>
-            <li>oprócz nazwy: numer telefonu, e-mail albo nazwa w komunikatorze (Messenger / WhatsApp / Discord / SMS)</li>
-            <li>tap w telefon/SMS otwiera domyślną aplikację albo kontakt</li>
-            <li>tap w komunikator próbuje go otworzyć</li>
-            <li><strong>Zanim to zaprojektujesz:</strong> od Androida 11 sprawdzenie „czy komunikator jest zainstalowany" wymaga wpisu <code>&lt;queries&gt;</code> w manifeście — bez niego wykrycie zawsze zwróci fałsz i przycisk wygląda na zepsuty. Telefon i SMS przez intencję są bez uprawnień; bezpośrednie dzwonienie (<code>CALL_PHONE</code>) już je wymaga</li>
-          </ul>
-        </li>
+        <li>numer telefonu, e-mail albo nazwa w komunikatorze (Messenger / WhatsApp / Discord / SMS)</li>
+        <li>tap w telefon/SMS otwiera domyślną aplikację albo kontakt</li>
+        <li>tap w komunikator próbuje go otworzyć</li>
+        <li><strong>Zanim to zaprojektujesz:</strong> od Androida 11 sprawdzenie „czy komunikator jest zainstalowany" wymaga wpisu <code>&lt;queries&gt;</code> w manifeście — bez niego wykrycie zawsze zwróci fałsz i przycisk wygląda na zepsuty. Telefon i SMS przez intencję są bez uprawnień; bezpośrednie dzwonienie (<code>CALL_PHONE</code>) już je wymaga</li>
       </ul>
-      <div class="gain"><b>Po co:</b> dziś duplikatów i literówek w tagach nie da się naprawić z poziomu aplikacji — trzeba grzebać w bazie. Lista tagów to też miejsce na scalanie i zmianę nazwy (do dorobienia po MVP).</div>
-      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>HEX_TAGS</code> + <code>THOUGHT_HEX_TAGS</code> — liczniki gotowe zapytaniem <code>GROUP BY</code></li><li><code>services/HexTagsService.kt</code> — dołożyć listowanie z licznikami</li><li>nowy ekran + ewentualne pole kontaktowe w <code>HexTagEntity</code></li></ul></div>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li>pole kontaktowe w <code>HexTagEntity</code> (nowa migracja)</li><li><code>activities/metadata/HexTagEditBottomSheet.kt</code> — edycja tagu</li></ul></div>
     </div>
   </details>
 
@@ -344,27 +326,6 @@
     </div>
   </details>
 
-  <details class="item">
-    <summary>
-      <span class="prio imp">Istotny</span>
-      <strong>Fiszki — krok 2: luźne fiszki (bez zestawu)</strong> — dodawanie fiszek bez konieczności wrzucania ich do określonego zestawu.
-      <span class="mods"><span class="mod">Fiszki</span></span>
-    </summary>
-    <div class="body">
-      <ul>
-        <li><strong>Luźne fiszki</strong> — fiszka może istnieć bez zestawu</li>
-        <li><strong>Skrót „Twórz fiszki”</strong> — otwiera od razu ekran dodawania fiszek, bez wyboru zestawu</li>
-        <li><strong>Zakładki w <i>Zapamiętywaniu</i></strong> — zamiast etykiety „Zestawy” przełącznik zakładek jak w <i>Metadanych</i> (Osoby / Projekty)
-          <ul>
-            <li>zakładki: „Luźne fiszki” / „Zestawy”</li>
-            <li>domyślnie zaznaczone „Luźne fiszki”</li>
-          </ul>
-        </li>
-        <li><strong>[Przenieś] w edycji fiszki</strong> — przycisk po lewej, ikona <code>ic_move_item</code> (już jest)</li>
-      </ul>
-      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>activities/flashcards/FlashcardsActivity.kt</code> — etykieta <code>flashcards_sets_label</code> → <code>HexTabSwitch</code> (wzór: <code>metadata_activity.xml</code>)</li><li><code>services/AppShortcuts.kt</code> — skrót „Twórz fiszki”</li></ul></div>
-    </div>
-  </details>
   <details class="item">
     <summary>
       <span class="prio imp">Istotny</span>
@@ -588,48 +549,19 @@
   <details class="item">
     <summary>
       <span class="prio minor">Drobny</span>
-      <strong>Standaryzacja przycisków „Zapisz" / „Anuluj"</strong> — w bottom sheetach i dialogach oba przyciski mają stać w jednej linii.
+      <strong>Arkusze — FAB zatwierdzania czy para „Zapisz" / „Anuluj"</strong> — dialogi mają już jeden układ akcji; arkusze nadal zatwierdza FAB.
       <span class="mods"><span class="mod">Cała aplikacja</span></span>
     </summary>
     <div class="body">
       <ul>
-        <li>jeden układ dla wszystkich okien z parą „Zapisz" + „Anuluj": przyciski obok siebie w jednym wierszu, bez zawijania jeden pod drugi</li>
-        <li>stała kolejność i wyrównanie w całej apce (np. „Anuluj" z lewej, „Zapisz" z prawej)</li>
-        <li>przy okazji ustalić, czy bottom sheety zostają przy FAB-ie zatwierdzania, czy przechodzą na tę samą parę przycisków co dialogi</li>
+        <li>dialogi edycji: wszystkie akcje w jednym rzędzie, akcja pozytywna skrajnie po prawej (<code>ScrimDialogs</code>, UI Design Guide → Dialogi)</li>
+        <li>do ustalenia: czy arkusze zostają przy FAB-ie zatwierdzania, czy przechodzą na tę samą parę przycisków co dialogi</li>
       </ul>
       <div class="gain"><b>Po co:</b> ten sam układ akcji wszędzie = użytkownik nie szuka „Zapisz" w każdym oknie od nowa.</div>
       <div class="where">
         <span class="lbl">Gdzie</span>
         <ul>
-          <li>dialogi z parą „Zapisz" / „Anuluj": <code>TextEditDialog</code>, <code>FlashcardsEditDialog</code>, <code>common_icons_list_dialog</code></li>
-          <li>bottom sheety z FAB-em zatwierdzania: <code>common_hex_tags_bottomsheet</code>, <code>domain_edit_bottomsheet</code>, <code>hex_tag_edit_bottomsheet</code>, <code>step_edit_bottom_sheet</code>, <code>stream_filter_bottomsheet</code>, <code>stream_search_bottomsheet</code></li>
-        </ul>
-      </div>
-    </div>
-  </details>
-  <details class="item">
-    <summary>
-      <span class="prio minor">Drobny</span> 
-      <strong>Pasek nawigacji</strong> — prosi o dostęp do ustawień, z którego wcale nie korzysta.
-      <span class="mods"><span class="mod">Nawigacja</span></span>
-    </summary>
-    <div class="body">
-      <ul>
-        <li>ślad po planowanym „zapamiętywaniu stanu", którego nie dokończono</li>
-        <li>dostęp jest wstrzykiwany z zewnątrz → poprawka w 2 miejscach: sam pasek i miejsce, które go tworzy</li>
-        <li>to nie jedna linia do skasowania</li>
-      </ul>
-      <div class="where">
-        <span class="lbl">Gdzie</span>
-        <ul>
-          <li>
-            <code>common/ui/NavigationBarController.kt</code> — parametr konstruktora 
-            <code>appSettings: AppSettingsStorage</code> (linia 17) i jego import (13)
-          </li>
-          <li>
-            <code>activities/CoreActivity.kt</code> — miejsce tworzenia: 
-            <code>NavigationBarController(navBar, appSettingsStorage)</code> (linia 191)
-          </li>
+          <li>arkusze z FAB-em zatwierdzania: <code>common_hex_tags_bottomsheet</code>, <code>domain_edit_bottomsheet</code>, <code>hex_tag_edit_bottomsheet</code>, <code>step_edit_bottom_sheet</code>, <code>stream_filter_bottomsheet</code>, <code>stream_search_bottomsheet</code></li>
         </ul>
       </div>
     </div>
@@ -793,7 +725,7 @@
   <details class="item">
     <summary>
       <span class="prio imp">Istotny</span> 
-      <strong>Kanał zdarzeń dla dialogów z ViewModelu</strong> — dziś dialog odpalany jest lambdą przekazaną w dół, co nie przeżywa obrotu ekranu.
+      <strong>Kanał zdarzeń dla dialogów z ViewModelu</strong> — dziś dialog odpalany jest lambdą przekazaną w dół, a prezentacja miesza się z decyzją.
       <span class="mods"><span class="mod">Technika</span></span>
     </summary>
     <div class="body">
@@ -808,7 +740,8 @@
           <code>Channel</code> albo jednorazowa 
           <code>LiveData</code>), Activity nasłuchuje i pokazuje dialog
         </li>
-        <li>zysk: dialog nie wraca po obrocie ekranu, logika „czy pusto" siedzi w jednym miejscu</li>
+        <li>zysk: logika „czy pusto" siedzi w jednym miejscu, a dialog przeżywa odtworzenie ekranu</li>
+        <li>obrót ekranu przestał być powodem — ekrany są zablokowane w pionie (Szczegóły obracają się tylko z otwartym podglądem zdjęcia, bez odtwarzania ekranu)</li>
         <li>świadomie odłożone — nowy wzorzec w projekcie, a przy apce offline dla jednej osoby korzyść jest niewielka</li>
       </ul>
       <div class="where">
@@ -1206,56 +1139,6 @@
       </ul>
       <div class="gain"><b>Po co:</b> najbardziej złożona logika fiszek — błąd w niej po cichu psuje każdą sesję.</div>
       <div class="where"><span class="lbl">Gdzie</span><ul><li><code>services/FlashcardsReview.kt</code></li><li><code>src/test/.../FlashcardsReviewTest.kt</code> (nowy)</li></ul></div>
-    </div>
-  </details>
-  <details class="item">
-    <summary>
-      <span class="prio imp">Istotny</span> 
-      <strong>Domyślne ikony domen</strong> — spec mówi „domyślne nazwy i ikony", seed nie ustawia ikony.
-      <span class="mods"><span class="mod">Tagi i Domeny</span></span>
-    </summary>
-    <div class="body">
-      <ul>
-        <li>seed daje 
-          <code>DomainEntity(assetsIconId = null)</code> — 10 domyślnych domen startuje bez ikony
-        </li>
-        <li>mapper mapuje 
-          <code>assetsIconId: Int?</code> → 
-          <code>iconId: Int</code> (non-null), więc 
-          <code>null</code> jest unboxowany do prymitywu
-        </li>
-        <li>skutek na UI: albo domeny pokazują pustą ikonę 
-          <code>ic_domain_none</code> (fallback dla id 0), albo — mniej prawdopodobne — crash przy pierwszym starcie (NPE z unboxingu)
-        </li>
-        <li>do sprawdzenia na urządzeniu: wyczyść dane, wejdź w Preferencje → jaka ikona przy domenach; pusta „none" = wariant 0, crash = wariant NPE</li>
-        <li>fix: seed powinien nadać domyślną ikonę zamiast 
-          <code>null</code> — spełnia spec i usuwa ryzyko 
-          <code>null → Int</code>
-        </li>
-      </ul>
-      <div class="where">
-        <span class="lbl">Gdzie</span>
-        <ul>
-          <li>
-            <code>database/initialization/DatabaseInitializer.kt</code> — 
-            <code>seedDomains()</code>, 
-            <code>DomainEntity(name = ..., assetsIconId = null)</code>
-          </li>
-          <li>
-            <code>services/mappers/DomainMapper.kt</code> — 
-            <code>assetsIconId → iconId</code>
-          </li>
-          <li>
-            <code>services/dto/DomainDTO.kt</code> — 
-            <code>iconId: Int</code> (non-null)
-          </li>
-          <li>
-            <code>services/DomainIconsService.kt</code> — 
-            <code>getIconResourceId</code>, fallback 
-            <code>ic_domain_none</code>
-          </li>
-        </ul>
-      </div>
     </div>
   </details>
   <details class="item">
