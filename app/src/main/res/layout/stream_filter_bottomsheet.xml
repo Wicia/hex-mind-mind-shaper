@@ -77,32 +77,26 @@
         <!-- States: ACTIVE THOUGHTS (Checkbox) -->
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/cb_show_active"
+            style="@style/HexCheckBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="4dp"
             android:checked="true"
-            android:text="@string/stream_filter_show_active"
-            android:fontFamily="@font/baloo2"
-            android:textSize="15sp"
-            android:textColor="@color/text_primary"
-            app:buttonIconTint="@color/_orange_lvl_3" />
+            android:text="@string/stream_filter_show_active" />
 
         <!-- States: DORMANT THOUGHTS (Checkbox) -->
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/cb_show_dormant"
+            style="@style/HexCheckBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="20dp"
             android:checked="false"
-            android:text="@string/stream_filter_show_dormant"
-            android:fontFamily="@font/baloo2"
-            android:textSize="15sp"
-            android:textColor="@color/text_primary"
-            app:buttonIconTint="@color/_orange_lvl_3" />
+            android:text="@string/stream_filter_show_dormant" />
 
         <!-- Domains: SECTION HEADER -->
         <TextView

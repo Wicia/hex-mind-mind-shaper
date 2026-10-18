@@ -381,6 +381,21 @@
     </style>
 
     <!-- ====================================== -->
+    <!--    CHECKBOX                            -->
+    <!-- ====================================== -->
+
+    <!-- ! The Material 3 box fills with the theme color - with an orange tick on top the tick vanished;
+         here the box stays an outline and only the tick shows the checked state -->
+    <style name="HexCheckBox" parent="Widget.Material3.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/hex_checkbox_button</item>
+        <item name="buttonIcon">@null</item>
+        <item name="buttonTint">@color/hex_checkbox_tint</item>
+        <item name="android:fontFamily">@font/baloo2</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <!-- ====================================== -->
     <!--    PROGRESS BARS / INDICATORS          -->
     <!-- ====================================== -->
 
