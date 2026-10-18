@@ -347,11 +347,12 @@
         .feature-terms b{
             display:block;
             font-family:'Baloo 2',system-ui,sans-serif;
-            font-size:12px;
+            font-size:15px;
             font-weight:600;
             text-transform:uppercase;
             letter-spacing:.03em;
             color:var(--muted);
+            margin-bottom:2px;
         }
         /* Content indented under its label */
         .feature-goal,
@@ -831,6 +832,8 @@
             text: "pusta nazwa — nie zapisuje się, prośba o nazwę; nazwa zajęta przez inny tag tego rodzaju — nie zapisuje się, ostrzeżenie"},
         {fn: "Zmienianie nazwy tagu", col: "proc", process: ["Porządkowanie hex tagów"], place: META,
             text: "ten sam tekst może być osobno osobą i projektem; łączenie dwóch tagów w jeden — poza zakresem"},
+        {fn: "Usuwanie tagu", col: "data", process: ["Porządkowanie hex tagów"], place: META,
+            text: "z całego tagu — z nazwy i z licznika użyć"},
         {fn: "Usuwanie tagu", col: "proc", process: ["Porządkowanie hex tagów"], place: META,
             text: "pytanie o potwierdzenie — mówi wprost, że tag zniknie ze wszystkich myśli, które go używają"},
         {fn: "Usuwanie tagu", col: "proc", process: ["Porządkowanie hex tagów"], place: META,
@@ -1307,6 +1310,11 @@
         "Włączanie kopii": {"Preferencje": "17/10"},
         "Wczytywanie kopii": {"Preferencje": "17/10"},
         "Robienie kopii": {"Preferencje": "17/10"},
+        "Wyświetlanie listy tagów": {"Tagi i Domeny": "18/10"},
+        "Przełączanie zakładek metadanych": {"Tagi i Domeny": "18/10"},
+        "Zmienianie nazwy tagu": {"Tagi i Domeny": "18/10"},
+        "Usuwanie tagu": {"Tagi i Domeny": "18/10"},
+        "Wyszukiwanie myśli z tagiem": {"Tagi i Domeny": "18/10"},
     };
 
     // Functions to be done (TBD) — skipped in the verification pass
