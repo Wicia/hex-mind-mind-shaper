@@ -216,9 +216,12 @@ class StreamActivity : CoreActivity() {
             val showActive  = result.getBoolean(StreamFilterBottomSheet.RESULT_SHOW_ACTIVE, true)
             val showDormant = result.getBoolean(StreamFilterBottomSheet.RESULT_SHOW_DORMANT, false)
             val domainId    = result.getInt(StreamFilterBottomSheet.RESULT_DOMAIN_ID, -1).takeIf { it != -1 }
+            val createdPeriod = result.getString(StreamFilterBottomSheet.RESULT_CREATED_PERIOD)
+                ?.let { name -> CreatedPeriod.valueOf(name) }
             viewModel.updateShowActive(showActive)
             viewModel.updateShowDormant(showDormant)
             viewModel.updateSelectedDomain(domainId)
+            viewModel.updateCreatedPeriod(createdPeriod)
 
             // Show count of filtered thoughts after applying filters
             val count = viewModel.filteredThoughts.value?.size ?: 0
@@ -229,6 +232,7 @@ class StreamActivity : CoreActivity() {
         viewModel.selectedDomainId.observe(this) { updateFilterButtonText(it) }
         viewModel.showActive.observe(this)        { updateFilterButtonText(viewModel.selectedDomainId.value) }
         viewModel.showDormant.observe(this)       { updateFilterButtonText(viewModel.selectedDomainId.value) }
+        viewModel.createdPeriod.observe(this)     { updateFilterButtonText(viewModel.selectedDomainId.value) }
     }
 
     private fun setupFabMenu() {
@@ -253,7 +257,8 @@ class StreamActivity : CoreActivity() {
             domainItems          = domainGridItems,
             isDormantModeEnabled = appSettingsStorage.isDormantModeEnabled(),
             activeCount          = viewModel.countActiveThoughts(),
-            dormantCount         = viewModel.countDormantThoughts()
+            dormantCount         = viewModel.countDormantThoughts(),
+            createdPeriod        = viewModel.createdPeriod.value
         )
     }
 
@@ -262,7 +267,8 @@ class StreamActivity : CoreActivity() {
         val count = listOfNotNull(
             if (dormantModeOn && viewModel.showActive.value == true) true else null,
             if (dormantModeOn && viewModel.showDormant.value == true) true else null,
-            domainId
+            domainId,
+            viewModel.createdPeriod.value
         ).size
         btnFilter.text = if (count == 0) getString(R.string.stream_filter_button_none) else "($count)"
     }

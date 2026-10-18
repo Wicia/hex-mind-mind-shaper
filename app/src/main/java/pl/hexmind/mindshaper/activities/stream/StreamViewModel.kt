@@ -20,6 +20,8 @@ import pl.hexmind.mindshaper.services.ThoughtStatusService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import timber.log.Timber
 import java.io.File
+import java.time.LocalDate
+import java.time.ZoneId
 import javax.inject.Inject
 
 /**
@@ -54,6 +56,9 @@ class StreamViewModel @Inject constructor(
     private val _showDormant = savedStateHandle.getLiveData("show_dormant", false)
     val showDormant: LiveData<Boolean> = _showDormant
 
+    private val _createdPeriod = savedStateHandle.getLiveData<CreatedPeriod?>("created_period", null)
+    val createdPeriod: LiveData<CreatedPeriod?> = _createdPeriod
+
     private val _domainsWithIcons = MutableLiveData<List<CommonIconsListItem>>(emptyList())
     val domainsWithIcons: LiveData<List<CommonIconsListItem>> = _domainsWithIcons
 
@@ -73,6 +78,7 @@ class StreamViewModel @Inject constructor(
         var currentDomainId: Int? = null
         var currentShowActive: Boolean  = true
         var currentShowDormant: Boolean = false
+        var currentCreatedPeriod: CreatedPeriod? = null
 
         fun update() {
             val thoughts = currentThoughts
@@ -88,7 +94,7 @@ class StreamViewModel @Inject constructor(
             )
             val domainId = currentDomainId
 
-            val filtered = filterThoughts(thoughts, query, domainId, currentShowActive, currentShowDormant)
+            val filtered = filterThoughts(thoughts, query, domainId, currentShowActive, currentShowDormant, currentCreatedPeriod)
             val sorted = sortThoughts(filtered, sort)
 
             value = sorted
@@ -121,6 +127,11 @@ class StreamViewModel @Inject constructor(
 
         addSource(_showDormant) { show ->
             currentShowDormant = show
+            update()
+        }
+
+        addSource(_createdPeriod) { period ->
+            currentCreatedPeriod = period
             update()
         }
     }
@@ -162,7 +173,19 @@ class StreamViewModel @Inject constructor(
         _showDormant.value = show
     }
 
-    private fun filterThoughts(thoughts: List<ThoughtDTO>, query: HexTags, domainId: Int?, showActive: Boolean, showDormant: Boolean): List<ThoughtDTO> {
+    fun updateCreatedPeriod(period: CreatedPeriod?) {
+        savedStateHandle["created_period"] = period
+        _createdPeriod.value = period
+    }
+
+    private fun filterThoughts(
+        thoughts: List<ThoughtDTO>,
+        query: HexTags,
+        domainId: Int?,
+        showActive: Boolean,
+        showDormant: Boolean,
+        createdPeriod: CreatedPeriod?
+    ): List<ThoughtDTO> {
         var filtered = thoughts
 
         // Filter by state — keep thought if its state category is checked
@@ -175,6 +198,14 @@ class StreamViewModel @Inject constructor(
 
         if (domainId != null) {
             filtered = filtered.filter { it.domainId == domainId }
+        }
+
+        if (createdPeriod != null) {
+            val zone = ZoneId.systemDefault()
+            val today = LocalDate.now(zone)
+            filtered = filtered.filter { thought ->
+                createdPeriod.contains(thought.createdAt.atZone(zone).toLocalDate(), today)
+            }
         }
 
         if (!query.areCriteriaEmpty()) {

@@ -991,10 +991,16 @@
             text: "domeny — jedna do wyboru"},
         {fn: "Filtrowanie po domenie", col: "proc", process: ["Filtrowanie myśli"], place: STR,
             text: "ponowny wybór zaznaczonej domeny ją odznacza"},
+        {fn: "Filtrowanie po czasie utworzenia", col: "data", process: ["Filtrowanie myśli"], place: STR,
+            text: "sekcja Czas utworzenia — jeden do wyboru<ul><li>Dzisiaj</li><li>Od wczoraj — wczoraj i dzisiaj</li><li>Ostatni tydzień — dzisiaj i 6 dni wstecz</li><li>Ostatni miesiąc — od dnia po tym samym dniu miesiąc temu do dzisiaj</li></ul>"},
+        {fn: "Filtrowanie po czasie utworzenia", col: "proc", process: ["Filtrowanie myśli"], place: STR,
+            text: "nic nie wybrane — myśli z dowolnego czasu; ponowny wybór zaznaczonego okresu go odznacza"},
+        {fn: "Filtrowanie po czasie utworzenia", col: "proc", process: ["Filtrowanie myśli"], place: STR,
+            text: "liczą się dni kalendarzowe wg strefy czasowej telefonu, nie 24-godzinne okna"},
         {fn: "Zatwierdzanie filtra", col: "proc", process: ["Filtrowanie myśli"], place: STR,
             text: "po zastosowaniu — komunikat z liczbą wybranych myśli"},
         {fn: "Zatwierdzanie filtra", col: "proc", process: ["Filtrowanie myśli", "Wyszukiwanie myśli"], place: STR,
-            text: "kryteria działają łącznie — stan i domena naraz, razem z wyszukiwaniem; przeżywają obrót ekranu"},
+            text: "kryteria działają łącznie — stan, domena i czas utworzenia naraz, razem z wyszukiwaniem; przeżywają obrót ekranu"},
 
         // Edytowanie myśli
         {fn: "Wchodzenie do Szczegółów myśli", col: "data", process: ["Edytowanie myśli"], place: DET,
@@ -1328,6 +1334,8 @@
         "Wyświetlanie wskazówek": "do sprawdzenia — wskazówka sekcji Personalizacja ma tekst-zaślepkę zamiast treści",
         "Usuwanie myśli": "nowe względem v12 — odpinanie myśli od kroku przy usunięciu",
         "Utrzymywanie pionowej orientacji": "nowe — ekrany zablokowane w pionie, obraca się tylko zdjęcie na pełnym ekranie",
+        "Filtrowanie po czasie utworzenia": "nowe — filtr Strumienia po dniu utworzenia myśli",
+        "Zatwierdzanie filtra": "zmiana — dochodzi czas utworzenia",
         "Wczytywanie kopii": "zmiana — plik z dowolnego miejsca, powód błędu widoczny, działa zaraz po ponownej instalacji",
         "Witanie przy pierwszym uruchomieniu": "nowe — powitanie z podaniem imienia, wskazaniem Preferencji i pytaniem o poznawanie aplikacji (nie = wskazówki wyłączone)",
     };

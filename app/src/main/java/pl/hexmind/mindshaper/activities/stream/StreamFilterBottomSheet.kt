@@ -40,6 +40,7 @@ class StreamFilterBottomSheet : BottomSheetDialogFragment() {
         val isDormantEnabled = arguments?.getBoolean(ARG_DORMANT_ENABLED, false) ?: false
         val activeCount      = arguments?.getInt(ARG_ACTIVE_COUNT, 0) ?: 0
         val dormantCount     = arguments?.getInt(ARG_DORMANT_COUNT, 0) ?: 0
+        val createdPeriod    = arguments?.getString(ARG_CREATED_PERIOD)?.let { name -> CreatedPeriod.valueOf(name) }
 
         @Suppress("DEPRECATION")
         val iconItems: List<IconsGridItem> = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -76,6 +77,25 @@ class StreamFilterBottomSheet : BottomSheetDialogFragment() {
             }
         }
 
+        // Created period chips - one at most; tapping the selected one again clears it (= any time)
+        val createdChips = listOf(
+            binding.chipCreatedToday          to CreatedPeriod.TODAY,
+            binding.chipCreatedSinceYesterday to CreatedPeriod.SINCE_YESTERDAY,
+            binding.chipCreatedLastWeek       to CreatedPeriod.LAST_WEEK,
+            binding.chipCreatedLastMonth      to CreatedPeriod.LAST_MONTH
+        )
+        var currentCreatedPeriod: CreatedPeriod? = createdPeriod
+        fun syncCreatedChips() {
+            createdChips.forEach { (chip, period) -> chip.isSelected = period == currentCreatedPeriod }
+        }
+        createdChips.forEach { (chip, period) ->
+            chip.setOnClickListener {
+                currentCreatedPeriod = if (period == currentCreatedPeriod) null else period
+                syncCreatedChips()
+            }
+        }
+        syncCreatedChips()
+
         // FAB: apply filters and return result to StreamActivity
         binding.fabApply.setOnClickListener {
             parentFragmentManager.setFragmentResult(
@@ -84,6 +104,7 @@ class StreamFilterBottomSheet : BottomSheetDialogFragment() {
                     putBoolean(RESULT_SHOW_ACTIVE,  if (isDormantEnabled) binding.cbShowActive.isChecked else true)
                     putBoolean(RESULT_SHOW_DORMANT, if (isDormantEnabled) binding.cbShowDormant.isChecked else true)
                     putInt(RESULT_DOMAIN_ID, currentSelectedId ?: -1)
+                    putString(RESULT_CREATED_PERIOD, currentCreatedPeriod?.name)
                 }
             )
             dismiss()
@@ -108,11 +129,13 @@ class StreamFilterBottomSheet : BottomSheetDialogFragment() {
         private const val ARG_DORMANT_ENABLED    = "arg_dormant_enabled"
         private const val ARG_ACTIVE_COUNT       = "arg_active_count"
         private const val ARG_DORMANT_COUNT      = "arg_dormant_count"
+        private const val ARG_CREATED_PERIOD     = "arg_created_period"
 
-        const val REQUEST_KEY         = "stream_filter_request"
-        const val RESULT_SHOW_ACTIVE  = "result_show_active"
-        const val RESULT_SHOW_DORMANT = "result_show_dormant"
-        const val RESULT_DOMAIN_ID    = "result_domain_id"
+        const val REQUEST_KEY           = "stream_filter_request"
+        const val RESULT_SHOW_ACTIVE    = "result_show_active"
+        const val RESULT_SHOW_DORMANT   = "result_show_dormant"
+        const val RESULT_DOMAIN_ID      = "result_domain_id"
+        const val RESULT_CREATED_PERIOD = "result_created_period"
 
         fun show(
             fragmentManager      : FragmentManager,
@@ -122,7 +145,8 @@ class StreamFilterBottomSheet : BottomSheetDialogFragment() {
             domainItems          : List<IconsGridItem>,
             isDormantModeEnabled : Boolean,
             activeCount          : Int,
-            dormantCount         : Int
+            dormantCount         : Int,
+            createdPeriod        : CreatedPeriod?
         ) {
             StreamFilterBottomSheet().apply {
                 arguments = Bundle().apply {
@@ -133,6 +157,7 @@ class StreamFilterBottomSheet : BottomSheetDialogFragment() {
                     putBoolean(ARG_DORMANT_ENABLED, isDormantModeEnabled)
                     putInt(ARG_ACTIVE_COUNT,  activeCount)
                     putInt(ARG_DORMANT_COUNT, dormantCount)
+                    putString(ARG_CREATED_PERIOD, createdPeriod?.name)
                 }
             }.show(fragmentManager, TAG)
         }
