@@ -1,6 +1,5 @@
 package pl.hexmind.mindshaper.activities.workshop
 
-import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,7 +17,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
-import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.common.ui.dpToPx
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
@@ -37,9 +35,8 @@ class WorkshopActivity : CoreActivity() {
 
     // GOALS
     private lateinit var rvGoals: RecyclerView
-    private lateinit var btnAddGoal: MaterialButton
     private lateinit var btnGoalsToggle: MaterialButton
-    private lateinit var fabCapture: FloatingActionButton
+    private lateinit var fabAddGoal: FloatingActionButton
     private lateinit var goalsAdapter: GoalsAdapter
     private lateinit var llGoalsArchive: View
     private lateinit var llGoalsArchiveHeader: View
@@ -85,7 +82,6 @@ class WorkshopActivity : CoreActivity() {
         setupHeader(R.drawable.ic_activity_workshop, R.string.workshop_title)
 
         rvGoals        = findViewById(R.id.rv_goals)
-        btnAddGoal     = findViewById(R.id.btn_add_goal)
         btnGoalsToggle = findViewById(R.id.btn_goals_toggle)
         llGoalsArchive        = findViewById(R.id.ll_goals_archive)
         llGoalsArchiveHeader  = findViewById(R.id.ll_goals_archive_header)
@@ -94,10 +90,8 @@ class WorkshopActivity : CoreActivity() {
         ivGoalsArchiveChevron = findViewById(R.id.iv_goals_archive_chevron)
         rvGoalsArchive        = findViewById(R.id.rv_goals_archive)
         btnGoalsArchiveMore   = findViewById(R.id.btn_goals_archive_more)
-        fabCapture     = findViewById(R.id.fab_capture)
+        fabAddGoal     = findViewById(R.id.fab_add_goal)
 
-        btnAddGoal.visibility = View.VISIBLE
-        btnAddGoal.setOnClickListener { showAddGoalDialog() }
         btnGoalsToggle.setOnClickListener { toggleGoalsSection() }
         btnGoalsArchiveMore.setOnClickListener { showMoreArchivedGoals() }
         llGoalsArchiveHeader.setOnClickListener { toggleArchive() }
@@ -142,6 +136,8 @@ class WorkshopActivity : CoreActivity() {
         val goalsVisible = position == TAB_GOALS
         cardGoals.visibility = if (goalsVisible) View.VISIBLE else View.GONE
         cardPaths.visibility = if (goalsVisible) View.GONE else View.VISIBLE
+        // FAB adds a goal, so it belongs to the Goals tab only
+        if (goalsVisible) fabAddGoal.show() else fabAddGoal.hide()
     }
 
     private fun setupGoalsList() {
@@ -180,11 +176,7 @@ class WorkshopActivity : CoreActivity() {
     }
 
     private fun setupFab() {
-        fabCapture.setOnClickListener {
-            val intent = Intent(this, CaptureActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-            startActivity(intent)
-        }
+        fabAddGoal.setOnClickListener { showAddGoalDialog() }
     }
 
     private fun observeGoals() {

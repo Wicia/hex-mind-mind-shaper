@@ -680,9 +680,9 @@
             text: "tylko kalendarze kont — kalendarze lokalne telefonu pomijane"},
 
         // Łapanie myśli
-        {fn: "Rozpoczynanie łapania myśli", col: "data", process: ["Łapanie myśli"], place: [...HOME, ...STR, ...WS],
-            text: "główne działanie Domu; dostępne też w Strumieniu myśli i Warsztacie"},
-        {fn: "Rozpoczynanie łapania myśli", col: "proc", process: ["Łapanie myśli"], place: [...HOME, ...STR, ...WS],
+        {fn: "Rozpoczynanie łapania myśli", col: "data", process: ["Łapanie myśli"], place: [...HOME, ...STR],
+            text: "główne działanie Domu; dostępne też w Strumieniu myśli"},
+        {fn: "Rozpoczynanie łapania myśli", col: "proc", process: ["Łapanie myśli"], place: [...HOME, ...STR],
             text: "otwiera Łapanie myśli; po zapisie albo cofnięciu — powrót na ekran, z którego zaczęto"},
         {fn: "Otwieranie formularza", col: "data", process: ["Łapanie myśli"], place: CAP,
             text: "formularz: tytuł i tagi (jedno pole), notatka, głosówka, zdjęcie"},
@@ -1266,6 +1266,8 @@
 
     // Differences from Requirements v12 and doubts found in the code — for the verification pass
     const CHANGE_NOTES = {
+        "Rozpoczynanie łapania myśli": "zmiana — niedostępne w Warsztacie",
+        "Dodawanie celu": "zmiana — dostępne tylko w zakładce Cele; do sprawdzenia — opis celu nie jest wymagany (pusty cel się zapisuje)",
         "Wychodzenie bez zapisu": "nowe — pytanie o zapis przy wyjściu z Łapania myśli",
         "Zapisywanie myśli": "zmiana — wyjście bez zapisu przeniesione do „Wychodzenie bez zapisu”",
         "Oglądanie zdjęcia": "zmiana — Strumień i Szczegóły pokazują całe zdjęcie zamiast kwadratowej miniatury",
@@ -1275,7 +1277,6 @@
         "Wyznaczanie stanu myśli": "inaczej niż v12 — dni od nowa liczy każda zmiana myśli, nie tylko tytuł, domena i wartość",
         "Edytowanie tytułu": "do sprawdzenia — w Szczegółach myśli brak limitu 36 znaków tytułu",
         "Edytowanie kroku": "do sprawdzenia — po zmniejszeniu liczby powtórzeń ekran pokazuje postęp 0, a zapis tylko przycina go do nowej liczby",
-        "Dodawanie celu": "do sprawdzenia — opis celu nie jest wymagany (pusty cel się zapisuje)",
         "Usuwanie celu": "do sprawdzenia — usunięcie celu nie usuwa wpisów jego kroków w kalendarzu",
         "Zmienianie ścieżki": "do sprawdzenia — odłożona ścieżka może od razu zostać wylosowana ponownie",
         "Oznaczanie kroku z kalendarza": "inaczej niż v12 — komunikat „Realizowano X z Y powtórzeń kroku” zamiast „Zaliczono: X/Y”",

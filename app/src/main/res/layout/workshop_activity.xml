@@ -72,15 +72,6 @@
                             android:layout_marginTop="8dp"
                             android:layout_marginBottom="4dp"
                             android:text="@string/workshop_section_goals" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_add_goal"
-                            style="@style/SecondaryActionButton"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            app:icon="@drawable/ic_action_add"
-                            app:iconGravity="textStart"
-                            app:iconSize="16dp" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -259,14 +250,14 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- fab - Capture thought -->
+    <!-- fab - Add goal (Goals tab only) -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_capture"
+        android:id="@+id/fab_add_goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_capture_thought"
+        android:src="@drawable/ic_action_add"
         app:backgroundTint="@color/button_primary_enabled_background"
         app:fabSize="normal"
         app:elevation="6dp"

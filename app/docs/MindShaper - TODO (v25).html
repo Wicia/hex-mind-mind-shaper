@@ -108,15 +108,44 @@
   }
   .where ul{margin:0; padding-left:18px}
   .where li{margin-bottom:4px}
+  .mods{display:flex; flex-wrap:wrap; gap:4px; margin-top:6px}
+  .mod{
+    font-size:12px; line-height:1.5; color:var(--muted);
+    border:1px solid var(--orange-1); border-radius:20px; padding:0 8px;
+  }
+  /* toolbar: module filter + sort */
+  .toolbar{margin:0 0 8px; display:flex; flex-direction:column; gap:8px}
+  .toolbar .row{display:flex; flex-wrap:wrap; align-items:center; gap:6px}
+  .toolbar .lbl{
+    font-family:"Alegreya",Georgia,serif; font-size:13px; letter-spacing:.03em;
+    text-transform:uppercase; color:var(--muted); margin-right:4px;
+  }
+  .chip{
+    font:inherit; font-size:14px; line-height:1.4; cursor:pointer;
+    background:var(--surface); color:var(--graphite);
+    border:1px solid var(--orange-2); border-radius:20px; padding:3px 12px;
+  }
+  .chip .n{color:var(--muted); margin-left:4px}
+  .chip[aria-pressed="true"]{background:var(--orange-2); border-color:var(--orange-3)}
+  .chip:focus-visible{outline:2px solid var(--orange-3); outline-offset:2px}
+  .hidden{display:none!important}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}</style>
 <div class="wrap">
   <h1>Mind Shaper — TODO</h1>
   <p class="lede">Rzeczy do sprzątnięcia i rozstrzygnięcia, wychwycone przy audycie spec ↔ kod.</p>
+  <div class="toolbar">
+    <div class="row" id="mod-filter"><span class="lbl">Moduł</span></div>
+    <div class="row" id="sort"><span class="lbl">Sortowanie</span>
+      <button class="chip" data-sort="prio" aria-pressed="true">Priorytet</button>
+      <button class="chip" data-sort="file" aria-pressed="false">Kolejność w pliku</button>
+    </div>
+  </div>
   <h2>Kolejne funkcje i kroki</h2>
     <details class="item">
     <summary>
       <span class="prio imp">Istotny</span> 
       <strong>Deep link „Ukończ" na Androidzie 12+</strong> — sprawdzić, czy tap w wydarzeniu kalendarza faktycznie otwiera aplikację.
+      <span class="mods"><span class="mod">Kalendarz</span><span class="mod">Warsztat</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -133,6 +162,7 @@
     <summary>
       <span class="prio minor">Drobny</span> 
       <strong>Kolor „Mango" wydarzeń — czy zostaje</strong> — rozstrzygnąć, czy w ogóle robić ten feature.
+      <span class="mods"><span class="mod">Kalendarz</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -147,6 +177,7 @@
     <summary>
       <span class="prio minor">Drobny</span> 
       <strong>Zamykanie panelu nawigacji przyciskiem „wstecz"</strong> — systemowy back wychodzi z ekranu zamiast schować wysunięty panel.
+      <span class="mods"><span class="mod">Nawigacja</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -180,6 +211,7 @@
     <summary>
       <span class="prio crit">Krytyczny</span> 
       <b>Rozszerzenie filtrowania myśli</b> — dołożyć kryteria obok stanu i domeny.
+      <span class="mods"><span class="mod">Myśli</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -210,6 +242,7 @@
     <summary>
       <span class="prio imp">Istotny</span> 
       <strong>Przeglądanie tagów</strong> — lista Ludzi/Ekip i Projektów z licznikami, z możliwością edycji.
+      <span class="mods"><span class="mod">Tagi i Domeny</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -244,6 +277,7 @@
     <summary>
       <span class="prio minor">Drobny</span> 
       <strong>Kryteria szukania jako pigułki w arkuszu</strong> — pokazywać wybrane kryteria jako pigułki oznaczone typem (osoba / projekt), a nie surowy tekst.
+      <span class="mods"><span class="mod">Myśli</span><span class="mod">Tagi i Domeny</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -261,6 +295,7 @@
     <summary>
       <span class="prio imp">Istotny</span> 
       <strong>Scalanie tagów przez drag &amp; drop</strong> — przeciągnięcie jednej piguły na drugą łączy oba tagi w jeden.
+      <span class="mods"><span class="mod">Tagi i Domeny</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -279,6 +314,7 @@
     <summary>
       <span class="prio minor">Drobny</span>
       <strong>Dialog „aktywuj formę zapisu" — tylko nieaktywna forma</strong> — komunikat wymienia dziś wszystkie formy naraz, niezależnie od tego, którą user próbował dodać.
+      <span class="mods"><span class="mod">Myśli</span><span class="mod">Preferencje</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -294,6 +330,7 @@
     <summary>
       <span class="prio minor">Drobny</span> 
       <strong>Seed startowych tagów (Osoba + Projekt)</strong> — zestaw tagów istnieje od pierwszego uruchomienia, nie dopiero gdy user je stworzy.
+      <span class="mods"><span class="mod">Tagi i Domeny</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -311,6 +348,7 @@
     <summary>
       <span class="prio imp">Istotny</span>
       <strong>Fiszki — krok 2: luźne fiszki (bez zestawu)</strong> — dodawanie fiszek bez konieczności wrzucania ich do określonego zestawu.
+      <span class="mods"><span class="mod">Fiszki</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -331,6 +369,7 @@
     <summary>
       <span class="prio imp">Istotny</span>
       <strong>Fiszki — rozbicie stanu „nic nie czeka” (stan C) widżetu „Dzisiejsza sesja”</strong> — „Na dziś wszystko powtórzone :)” skleja 3 różne sytuacje i czasem mówi nieprawdę.
+      <span class="mods"><span class="mod">Fiszki</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -346,6 +385,7 @@
     <summary>
       <span class="prio imp">Istotny</span>
       <strong>Fiszki — trzy różne liczby „do powtórki”</strong> — każde miejsce liczy fiszki do powtórki inaczej, więc użytkownik widzi różne liczby bez wyjaśnienia.
+      <span class="mods"><span class="mod">Fiszki</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -362,6 +402,7 @@
     <summary>
       <span class="prio minor">Drobny</span>
       <strong>Fiszki — odświeżanie w czasie</strong> — liczniki i rakiety nie reagują same na upływ czasu, gdy ekran jest otwarty.
+      <span class="mods"><span class="mod">Fiszki</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -375,6 +416,7 @@
     <summary>
       <span class="prio imp">Istotny</span>
       <strong>Fiszki — przywracanie utrwalonych kart do nauki</strong> — utrwalone już nie wracają w powtórkach; brak drogi powrotu.
+      <span class="mods"><span class="mod">Fiszki</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -389,6 +431,7 @@
     <summary>
       <span class="prio imp">Istotny</span>
       <strong>Fiszki — kontrolna powtórka utrwalonych co 90 dni</strong> — w MVP utrwalona fiszka znika z powtórek na zawsze, więc z czasem wyleci z pamięci; trzeba zdecydować, czy i jak ma wracać.
+      <span class="mods"><span class="mod">Fiszki</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -434,6 +477,7 @@
     <summary>
       <span class="prio minor">Drobny</span>
       <strong>Fiszki — wstrzymywanie nowych przy nadmiarze powtórek (usunięte)</strong> — mechanizm i parametr usunięte (2026-10-13), zaczynamy od prostszej wersji; wrócić, jeśli w codziennym użyciu powtórki zaczną się piętrzyć.
+      <span class="mods"><span class="mod">Fiszki</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -449,6 +493,7 @@
     <summary>
       <span class="prio minor">Drobny</span>
       <strong>Fiszki — przeglądanie wszystkich fiszek</strong> — jedna lista ze wszystkich zestawów z wyszukiwaniem i filtrami.
+      <span class="mods"><span class="mod">Fiszki</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -462,6 +507,7 @@
     <summary>
       <span class="prio minor">Drobny</span>
       <strong>Fiszki — krok D: karty ścieżek w Warsztacie na wspólnym widżecie fiszki</strong> — tylko wygląd, zachowanie ścieżek bez zmian.
+      <span class="mods"><span class="mod">Fiszki</span><span class="mod">Warsztat</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -474,6 +520,7 @@
     <summary>
       <span class="prio minor">Drobny</span>
       <strong>Fiszki — później / do ustalenia</strong> — rzeczy odłożone, bez decyzji.
+      <span class="mods"><span class="mod">Fiszki</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -488,6 +535,7 @@
     <summary>
       <span class="prio imp">Istotny</span>
       <strong>Skala wartości myśli — przeliczanie przy zmianie skali + skala 1–3</strong> — zmiana skali w Preferencjach nie przelicza zapisanych wartości myśli.
+      <span class="mods"><span class="mod">Myśli</span><span class="mod">Preferencje</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -503,6 +551,7 @@
     <summary>
       <span class="prio imp">Istotny</span>
       <strong>Warsztat — włączanie / wyłączanie modułu</strong> — przełącznik w <i>Preferencjach</i>, wzorowany na module fiszek (<i>Zapamiętywanie</i>).
+      <span class="mods"><span class="mod">Warsztat</span><span class="mod">Preferencje</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -524,6 +573,7 @@
     <summary>
       <span class="prio imp">Istotny</span>
       <strong>Dokumentacja — reguły pisania wymagań: jedno źródło prawdy</strong> — reguły są dziś w dwóch miejscach (Google Doc z zasadami i pamięć Claude'a) i częściowo się rozjeżdżają.
+      <span class="mods"><span class="mod">Dokumentacja</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -539,6 +589,7 @@
     <summary>
       <span class="prio minor">Drobny</span>
       <strong>Standaryzacja przycisków „Zapisz" / „Anuluj"</strong> — w bottom sheetach i dialogach oba przyciski mają stać w jednej linii.
+      <span class="mods"><span class="mod">Cała aplikacja</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -560,6 +611,7 @@
     <summary>
       <span class="prio minor">Drobny</span> 
       <strong>Pasek nawigacji</strong> — prosi o dostęp do ustawień, z którego wcale nie korzysta.
+      <span class="mods"><span class="mod">Nawigacja</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -586,6 +638,7 @@
     <summary>
       <span class="prio minor">Drobny</span> 
       <strong>Compose</strong> — cała biblioteka podpięta, a w kodzie ani jednego użycia.
+      <span class="mods"><span class="mod">Technika</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -643,6 +696,7 @@
     <summary>
       <span class="prio minor">Drobny</span> 
       <strong>Pięć zależności</strong> zadeklarowanych, ale nieużywanych.
+      <span class="mods"><span class="mod">Technika</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -686,6 +740,7 @@
       <strong>
         <code>mapstruct_processor</code>
       </strong> — osierocona wersja w katalogu.
+      <span class="mods"><span class="mod">Technika</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -709,6 +764,7 @@
     <summary>
       <span class="prio minor">Drobny</span> 
       <strong>Katalog wersji</strong> — trzy zależności wpisane obok konwencji.
+      <span class="mods"><span class="mod">Technika</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -738,6 +794,7 @@
     <summary>
       <span class="prio imp">Istotny</span> 
       <strong>Kanał zdarzeń dla dialogów z ViewModelu</strong> — dziś dialog odpalany jest lambdą przekazaną w dół, co nie przeżywa obrotu ekranu.
+      <span class="mods"><span class="mod">Technika</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -776,6 +833,7 @@
     <summary>
       <span class="prio imp">Istotny</span> 
       <strong>Dwa dialogi pod rząd przy ostatniej formie</strong> — potwierdzenie usunięcia formy i pytanie o pustą myśl pojawiają się jedno po drugim.
+      <span class="mods"><span class="mod">Myśli</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -837,6 +895,7 @@
     <summary>
       <span class="prio minor">Drobny</span> 
       <strong>Dorzucić spec tech/impl: kalendarz</strong> — dokumentacja z poprzedniej sesji nie jest jeszcze w repo.
+      <span class="mods"><span class="mod">Dokumentacja</span><span class="mod">Kalendarz</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -853,6 +912,7 @@
     <summary>
       <span class="prio imp">Istotny</span> 
       <strong>Zastąpić domyślny TextInputLayout komponentem HexInputField</strong> — pola input oparte o goły Material TIL przełożyć na własny HexInputField: jeden komponent, jedno miejsce prawdy.
+      <span class="mods"><span class="mod">Cała aplikacja</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -874,6 +934,7 @@
     <summary>
       <span class="prio imp">Istotny</span> 
       <strong>HexInputField — rozbudowa (warunek migracji pozostałych pól)</strong> — komponent nie odwzorowuje kilku rzeczy, przez co część pól nie da się zmigrować 1:1.
+      <span class="mods"><span class="mod">Cała aplikacja</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -890,6 +951,7 @@
     <summary>
       <span class="prio imp">Istotny</span> 
       <strong>Migracja pozostałych pól input na HexInputField</strong> — po rozbudowie komponentu przełożyć cztery pozostałe pola z gołego TIL.
+      <span class="mods"><span class="mod">Cała aplikacja</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -906,6 +968,7 @@
     <summary>
       <span class="prio minor">Drobny</span> 
       <strong>Standaryzacja kolorów hintów (odłożone)</strong> — dziś rozjazd: cztery różne kolory hinta w apce + hardcode'y (#FF8C42, #FFAF7A).
+      <span class="mods"><span class="mod">Cała aplikacja</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -919,6 +982,7 @@
     <summary>
       <span class="prio minor">Drobny</span> 
       <strong>Sprzątanie leftovers po migracji pól</strong> — martwe zasoby zostawione świadomie.
+      <span class="mods"><span class="mod">Cała aplikacja</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -932,6 +996,7 @@
     <summary>
       <span class="prio crit">Krytyczny</span> 
       <strong>Strumień myśli jako ciągły feed</strong> — pozbyć się karty myśli i uprościć ekran.
+      <span class="mods"><span class="mod">Myśli</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -963,6 +1028,7 @@
     <summary>
       <span class="prio imp">Istotny</span> 
       <strong>Zapętlone „dalej"</strong> w pop-upie wskazówek — nie ma sygnału, że to koniec.
+      <span class="mods"><span class="mod">Wskazówki</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -988,6 +1054,7 @@
     <summary>
       <span class="prio minor">Drobny</span> 
       <strong>Sekcja z samymi ukrytymi wskazówkami</strong> — zostałby pusty nagłówek.
+      <span class="mods"><span class="mod">Wskazówki</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -1017,6 +1084,7 @@
     <summary>
       <span class="prio minor">Drobny</span> 
       <strong>Wpisywanie Hex Tagów zamiast arkusza</strong> — opcja w Preferencjach dla tych, którym szybciej się pisze.
+      <span class="mods"><span class="mod">Tagi i Domeny</span><span class="mod">Preferencje</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -1049,6 +1117,7 @@
     <summary>
       <span class="prio minor">Drobny</span> 
       <strong>Przełącznik Osoby/Projekty w Metadanych — docelowa forma</strong> — rozstrzygnąć, czy zostają dwa przyciski, czy przejść na TabLayout jak w Workshopie.
+      <span class="mods"><span class="mod">Tagi i Domeny</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -1080,6 +1149,7 @@
     <summary>
       <span class="prio imp">Istotny</span>
       <strong>Wiązanie myśl ↔ krok — które akcje zostają</strong> — zdecydować, które akcje są potrzebne, a które olać.
+      <span class="mods"><span class="mod">Myśli</span><span class="mod">Warsztat</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -1100,6 +1170,7 @@
     <summary>
       <span class="prio imp">Istotny</span>
       <strong>Przycisk kroku w szczegółach myśli</strong> — naprawić: trochę skomplikowany i mało przejrzysty.
+      <span class="mods"><span class="mod">Myśli</span><span class="mod">Warsztat</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -1114,11 +1185,33 @@
       </div>
     </div>
   </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span>
+      <strong>Toasty jako standard przy dodawaniu i usuwaniu</strong> — sprawdzić w całej aplikacji, kiedy dziś pokazują się toasty.
+      <span class="mods"><span class="mod">Cała aplikacja</span></span>
+    </summary>
+    <div class="body">
+      <ul>
+        <li>najpierw spis: które akcje pokazują toast, z jakim tekstem, a które kończą się bez żadnego potwierdzenia</li>
+        <li>docelowo toast jako standard po dodaniu i po usunięciu elementu (myśl, cel, krok, fiszka, tag, domena…)</li>
+        <li>po decyzji: dopisać regułę do UI Design Guide</li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li><code>activities/CoreActivity.kt</code> — <code>showShortToast()</code></li>
+          <li>dziś toasty w: <code>CaptureActivity</code>, <code>DetailsActivity</code>, <code>CompleteStepActivity</code>, <code>StepEditBottomSheet</code>, <code>FlashcardEditDialog</code>, <code>FlashcardsEditDialog</code>, <code>HexTagsBottomSheet</code></li>
+        </ul>
+      </div>
+    </div>
+  </details>
   <h2>Sprawdzenie i ew. naprawa</h2>
   <details class="item">
     <summary>
       <span class="prio minor">Drobny</span>
       <strong>Myśli — ostrzeżenie „wymaga uwagi” od razu po zapisie</strong> — przy minimalnym progu uśpienia (3 dni) każda nowa myśl o niskiej wartości dostaje ostrzeżenie zaraz po zapisaniu.
+      <span class="mods"><span class="mod">Myśli</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -1133,6 +1226,7 @@
     <summary>
       <span class="prio imp">Istotny</span>
       <strong>Fiszki — testy jednostkowe planowania sesji</strong> — <code>FlashcardsReview.plan</code> nie ma żadnego testu.
+      <span class="mods"><span class="mod">Fiszki</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -1150,6 +1244,7 @@
     <summary>
       <span class="prio imp">Istotny</span> 
       <strong>Domyślne ikony domen</strong> — spec mówi „domyślne nazwy i ikony", seed nie ustawia ikony.
+      <span class="mods"><span class="mod">Tagi i Domeny</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -1201,6 +1296,7 @@
       <strong>Wynik 
         <code>createSnapshot()</code> ignorowany na starcie
       </strong> — cichy błąd zapisu backupu.
+      <span class="mods"><span class="mod">Backup</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -1233,6 +1329,7 @@
         <code>checkAndRequestPermissions</code> w środku 
         <code>restoreSnapshot</code>
       </strong> — może przerwać wczytywanie.
+      <span class="mods"><span class="mod">Backup</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -1265,6 +1362,7 @@
         <code>guidelines</code> w JSON zamiast 
         <code>steps</code>
       </strong> — rozjazd nazwy pola z tabelą.
+      <span class="mods"><span class="mod">Backup</span><span class="mod">Warsztat</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -1293,6 +1391,7 @@
     <summary>
       <span class="prio imp">Istotny</span> 
       <strong>Backup tagów a wersje DB / stare snapshoty</strong> — zweryfikować restore tagów między wersjami bazy i dla starych backupów bez tagów.
+      <span class="mods"><span class="mod">Backup</span><span class="mod">Tagi i Domeny</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -1334,6 +1433,7 @@
       <strong>Tag w formatowaniu Markdown (
         <code>**@vdv**</code>)
       </strong> — wyświetlany jako tag, ale nie zapisywany jako tag.
+      <span class="mods"><span class="mod">Myśli</span><span class="mod">Tagi i Domeny</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -1375,6 +1475,7 @@
     <summary>
       <span class="prio minor">Drobny</span>
       <strong>Tagi w tekście notatki — przypadki brzegowe do sprawdzenia</strong> — lista do przeklikania na urządzeniu.
+      <span class="mods"><span class="mod">Myśli</span><span class="mod">Tagi i Domeny</span></span>
     </summary>
     <div class="body">
       <ul>
@@ -1425,3 +1526,68 @@
     </div>
   </details>
 </div>
+<script>
+// Module tags (.mod in each item) are the only source: filter chips and counts are built from them
+(() => {
+  const PRIO = {crit: 0, imp: 1, minor: 2};
+  const ALL = "Wszystkie";
+  const items = [...document.querySelectorAll("details.item")];
+  const modsOf = d => [...d.querySelectorAll(".mod")].map(m => m.textContent.trim());
+  const prioOf = d => PRIO[[...d.querySelector(".prio").classList].find(c => c in PRIO)];
+
+  // Sections = h2 + the items that follow it in the file
+  const sections = [...document.querySelectorAll(".wrap > h2")].map(h2 => {
+    const list = [];
+    for (let el = h2.nextElementSibling; el && el.tagName !== "H2"; el = el.nextElementSibling) {
+      if (el.matches("details.item")) list.push(el);
+    }
+    const count = document.createElement("span");
+    count.className = "count";
+    h2.appendChild(count);
+    return {h2, list, count};
+  });
+  items.forEach((d, i) => d.dataset.order = i);
+
+  let mod = ALL, sort = "prio";
+  try { mod = localStorage.getItem("todo-mod") || ALL; sort = localStorage.getItem("todo-sort") || "prio"; } catch (e) {}
+
+  const mods = [...new Set(items.flatMap(modsOf))].sort((a, b) => a.localeCompare(b, "pl"));
+  if (mod !== ALL && !mods.includes(mod)) mod = ALL;
+  const filterRow = document.getElementById("mod-filter");
+  [ALL, ...mods].forEach(name => {
+    const b = document.createElement("button");
+    b.className = "chip";
+    b.dataset.mod = name;
+    const n = name === ALL ? items.length : items.filter(d => modsOf(d).includes(name)).length;
+    b.innerHTML = `${name}<span class="n">${n}</span>`;
+    b.onclick = () => { mod = name; save(); render(); };
+    filterRow.appendChild(b);
+  });
+  document.querySelectorAll("#sort .chip").forEach(b => b.onclick = () => { sort = b.dataset.sort; save(); render(); });
+
+  function save() {
+    try { localStorage.setItem("todo-mod", mod); localStorage.setItem("todo-sort", sort); } catch (e) {}
+  }
+
+  function render() {
+    filterRow.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", b.dataset.mod === mod));
+    document.querySelectorAll("#sort .chip").forEach(b => b.setAttribute("aria-pressed", b.dataset.sort === sort));
+    sections.forEach(({h2, list, count}) => {
+      // Priority from the highest; file order breaks ties
+      const ordered = [...list].sort((a, b) =>
+        (sort === "prio" ? prioOf(a) - prioOf(b) : 0) || a.dataset.order - b.dataset.order);
+      let anchor = h2, visible = 0;
+      ordered.forEach(d => {
+        anchor.after(d);
+        anchor = d;
+        const show = mod === ALL || modsOf(d).includes(mod);
+        d.classList.toggle("hidden", !show);
+        if (show) visible++;
+      });
+      count.textContent = visible;
+      h2.classList.toggle("hidden", visible === 0);
+    });
+  }
+  render();
+})();
+</script>
