@@ -23,19 +23,12 @@
 
             <include layout="@layout/common_header_activity" />
 
-            <!-- Tabs -->
-            <com.google.android.material.tabs.TabLayout
+            <!-- Tab switch (Cele / Ścieżki) -->
+            <pl.hexmind.mindshaper.common.ui.views.HexTabSwitch
                 android:id="@+id/tabs_workshop"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@android:color/transparent"
-                app:tabBackground="@drawable/tab_background_selector"
-                app:tabIndicatorHeight="0dp"
-                app:tabMode="fixed"
-                app:tabGravity="fill"
-                app:tabPaddingStart="8dp"
-                app:tabPaddingEnd="8dp"
-                app:tabRippleColor="@null"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 />
 
             <!-- === GOALS section === -->
@@ -44,15 +37,16 @@
                 android:id="@+id/card_goals"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:layout_marginBottom="16dp"
                 android:orientation="vertical">
 
-                <!-- shape_card_tab_joined draws surface, corners and outline in one drawable -->
+                <!-- shape_card_standalone draws surface, corners and outline in one drawable -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@drawable/shape_card_tab_joined">
+                    android:background="@drawable/shape_card_standalone">
 
                     <LinearLayout
                         android:id="@+id/ll_goals_section_header"
@@ -185,6 +179,7 @@
                 android:id="@+id/card_paths"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:layout_marginBottom="16dp"
                 android:orientation="vertical">
 
@@ -192,7 +187,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@drawable/shape_card_tab_joined">
+                    android:background="@drawable/shape_card_standalone">
 
                     <LinearLayout
                         android:layout_width="match_parent"

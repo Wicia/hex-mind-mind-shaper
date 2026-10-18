@@ -94,7 +94,8 @@
         <attr name="tabHeight" format="dimension" />
         <attr name="tabActiveColor" format="reference|color" />
         <attr name="tabInactiveColor" format="reference|color" />
-        <attr name="tabTextColor" format="reference|color" />
+        <attr name="tabActiveTextColor" format="reference|color" />
+        <attr name="tabInactiveTextColor" format="reference|color" />
         <attr name="tabTextSize" format="dimension" />
         <attr name="tabLineThickness" format="dimension" />
         <attr name="tabGap" format="dimension" />

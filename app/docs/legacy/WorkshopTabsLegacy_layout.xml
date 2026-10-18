@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- To restore: paste into workshop_activity.xml in place of HexTabSwitch (tabs_workshop);
+     card_goals / card_paths then use @drawable/shape_card_tab_joined as the body background, no top margin -->
+<com.google.android.material.tabs.TabLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tabs_workshop"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="@android:color/transparent"
+    app:tabBackground="@drawable/tab_background_selector"
+    app:tabIndicatorHeight="0dp"
+    app:tabMode="fixed"
+    app:tabGravity="fill"
+    app:tabPaddingStart="8dp"
+    app:tabPaddingEnd="8dp"
+    app:tabRippleColor="@null"
+    />

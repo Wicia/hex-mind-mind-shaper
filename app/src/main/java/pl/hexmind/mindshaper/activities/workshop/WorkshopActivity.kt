@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
@@ -20,6 +19,7 @@ import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.common.ui.dpToPx
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
+import pl.hexmind.mindshaper.common.ui.views.HexTabSwitch
 import pl.hexmind.mindshaper.common.ui.views.lists.InsetDividerDecoration
 import pl.hexmind.mindshaper.database.models.PathEntity
 
@@ -29,7 +29,7 @@ class WorkshopActivity : CoreActivity() {
     private val viewModel: WorkshopViewModel by viewModels()
 
     // TABS
-    private lateinit var tabsWorkshop: TabLayout
+    private lateinit var tabsWorkshop: HexTabSwitch
     private lateinit var cardGoals: View
     private lateinit var cardPaths: View
 
@@ -114,22 +114,16 @@ class WorkshopActivity : CoreActivity() {
         cardGoals    = findViewById(R.id.card_goals)
         cardPaths    = findViewById(R.id.card_paths)
 
-        tabsWorkshop.addTab(newSectionTab(R.string.workshop_tab_goals))
-        tabsWorkshop.addTab(newSectionTab(R.string.workshop_tab_paths))
-
-        tabsWorkshop.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) = showTab(tab.position)
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
+        tabsWorkshop.setTabs(
+            listOf(
+                HexTabSwitch.Tab(getString(R.string.workshop_tab_goals), iconRes = R.drawable.ic_tab_goals),
+                HexTabSwitch.Tab(getString(R.string.workshop_tab_paths), iconRes = R.drawable.ic_tab_paths)
+            ),
+            initialIndex = TAB_GOALS
+        )
+        tabsWorkshop.onTabSelected = { position -> showTab(position) }
 
         showTab(TAB_GOALS)
-    }
-
-    private fun newSectionTab(titleRes: Int): TabLayout.Tab {
-        val title = layoutInflater.inflate(R.layout.tab_section_header, tabsWorkshop, false) as TextView
-        title.setText(titleRes)
-        return tabsWorkshop.newTab().apply { customView = title }
     }
 
     private fun showTab(position: Int) {

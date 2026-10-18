@@ -584,8 +584,8 @@ Awers - Rewers…"</string>
 
     <!-- Goals -->
     <string name="workshop_section_goals">Kierunki, w których zmierzasz</string>
-    <string name="workshop_tab_goals">🎯 Cele</string>
-    <string name="workshop_tab_paths">♟️ Ścieżki</string>
+    <string name="workshop_tab_goals">Cele</string>
+    <string name="workshop_tab_paths">Ścieżki</string>
     <string name="workshop_goals_show_all">Pokaż jeszcze %d…</string>
     <string name="workshop_goals_show_less">Pokaż mniej</string>
     <string name="workshop_section_goals_archive">Archiwum</string>

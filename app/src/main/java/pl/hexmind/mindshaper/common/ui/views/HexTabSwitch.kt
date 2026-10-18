@@ -5,18 +5,21 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.RectF
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.DecelerateInterpolator
+import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import pl.hexmind.mindshaper.R
 
 /**
  * Tab switch for N tabs - a label over its own underline with the ends curled up; the active one
- * also has a tip pointing down, so it reads as a horizontal curly brace.
+ * also has a triangular tip pointing down (isosceles, straight walls), so it reads as a brace.
  *
  * XML usage:
  *   <pl.hexmind.mindshaper.common.ui.views.HexTabSwitch
@@ -26,6 +29,7 @@ import pl.hexmind.mindshaper.R
  *
  * Programmatic:
  *   tabSwitch.setTabs(listOf("Osoby", "Projekty"))
+ *   tabSwitch.setTabs(listOf(HexTabSwitch.Tab("Cele", emoji = "⌖"), HexTabSwitch.Tab("Ścieżki", iconRes = R.drawable.ic_…)))
  *   tabSwitch.onTabSelected = { index -> … }
  */
 class HexTabSwitch @JvmOverloads constructor(
@@ -38,10 +42,12 @@ class HexTabSwitch @JvmOverloads constructor(
         private const val DEFAULT_TAB_HEIGHT_DP = 36f
         private const val DEFAULT_LINE_THICKNESS_DP = 4f
         private const val DEFAULT_GAP_DP = 12f
-        private const val DEFAULT_NOTCH_WIDTH_DP = 28f
+        private const val DEFAULT_NOTCH_WIDTH_DP = 22f
         private const val DEFAULT_NOTCH_DEPTH_DP = 11f
-        private const val DEFAULT_BRACE_CURL_DP = 6f
+        private const val DEFAULT_BRACE_CURL_DP = 9f
         private const val DEFAULT_TEXT_SIZE_SP = 16f
+        private const val DEFAULT_ICON_SIZE_DP = 18f
+        private const val DEFAULT_ICON_GAP_DP = 6f
         private const val BRACE_ANIMATION_DURATION_MS = 200L
     }
 
@@ -51,10 +57,13 @@ class HexTabSwitch @JvmOverloads constructor(
     private var notchWidth = dp(DEFAULT_NOTCH_WIDTH_DP)
     private var notchDepth = dp(DEFAULT_NOTCH_DEPTH_DP)
     private var braceCurl = dp(DEFAULT_BRACE_CURL_DP)
+    private val iconSize = dp(DEFAULT_ICON_SIZE_DP)
+    private val iconGap = dp(DEFAULT_ICON_GAP_DP)
 
     private var activeColor = ContextCompat.getColor(context, R.color._orange_lvl_2)
     private var inactiveColor = ContextCompat.getColor(context, R.color._orange_lvl_1)
-    private var textColor = ContextCompat.getColor(context, R.color.text_primary)
+    private var activeTextColor = ContextCompat.getColor(context, R.color.text_primary)
+    private var inactiveTextColor = ContextCompat.getColor(context, R.color.text_secondary)
 
     // Round cap and join keep the line ends and the brace tip soft
     private val linePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -64,13 +73,27 @@ class HexTabSwitch @JvmOverloads constructor(
     }
 
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        textAlign = Paint.Align.CENTER
+        // Label and its leading icon / emoji are laid out together, from the left edge of the group
+        textAlign = Paint.Align.LEFT
         textSize = sp(DEFAULT_TEXT_SIZE_SP)
     }
 
     private val underlinePath = Path()
+    private val cornerRect = RectF()
 
-    private var tabs: List<String> = emptyList()
+    /** One tab: label with an optional leading icon (vector drawable, tinted like the text) or emoji - one of them, not both. */
+    data class Tab(
+        val label: String,
+        @DrawableRes val iconRes: Int? = null,
+        val emoji: String? = null
+    ) {
+        init {
+            require(iconRes == null || emoji == null) { "Tab takes an icon or an emoji, not both" }
+        }
+    }
+
+    private var tabs: List<Tab> = emptyList()
+    private var icons: List<Drawable?> = emptyList()
 
     var selectedIndex = 0
         private set
@@ -109,8 +132,11 @@ class HexTabSwitch @JvmOverloads constructor(
                 inactiveColor = ta.getColor(
                     R.styleable.HexTabSwitch_tabInactiveColor, inactiveColor
                 )
-                textColor = ta.getColor(
-                    R.styleable.HexTabSwitch_tabTextColor, textColor
+                activeTextColor = ta.getColor(
+                    R.styleable.HexTabSwitch_tabActiveTextColor, activeTextColor
+                )
+                inactiveTextColor = ta.getColor(
+                    R.styleable.HexTabSwitch_tabInactiveTextColor, inactiveTextColor
                 )
                 textPaint.textSize = ta.getDimension(
                     R.styleable.HexTabSwitch_tabTextSize, textPaint.textSize
@@ -124,8 +150,16 @@ class HexTabSwitch @JvmOverloads constructor(
     }
 
     fun setTabs(labels: List<String>, initialIndex: Int = 0) {
-        tabs = labels
-        selectedIndex = initialIndex.coerceIn(0, (labels.size - 1).coerceAtLeast(0))
+        setTabs(labels.map { Tab(it) }, initialIndex)
+    }
+
+    @JvmName("setTabItems")
+    fun setTabs(items: List<Tab>, initialIndex: Int = 0) {
+        tabs = items
+        icons = items.map { tab ->
+            tab.iconRes?.let { ContextCompat.getDrawable(context, it)?.mutate() }
+        }
+        selectedIndex = initialIndex.coerceIn(0, (items.size - 1).coerceAtLeast(0))
         bracePosition = selectedIndex.toFloat()
         updateContentDescription()
         requestLayout()
@@ -169,8 +203,8 @@ class HexTabSwitch @JvmOverloads constructor(
         val segmentWidth = width.toFloat() / tabs.size
         val lineY = tabHeight + lineThickness / 2f
 
-        tabs.forEachIndexed { index, label ->
-            drawTab(canvas, index, label, segmentWidth, lineY, isActive = index == selectedIndex)
+        tabs.forEachIndexed { index, tab ->
+            drawTab(canvas, index, tab, segmentWidth, lineY, isActive = index == selectedIndex)
         }
 
         drawBrace(canvas, segmentWidth, lineY)
@@ -179,7 +213,7 @@ class HexTabSwitch @JvmOverloads constructor(
     private fun drawTab(
         canvas: Canvas,
         index: Int,
-        label: String,
+        tab: Tab,
         segmentWidth: Float,
         lineY: Float,
         isActive: Boolean
@@ -187,10 +221,33 @@ class HexTabSwitch @JvmOverloads constructor(
         val left = index * segmentWidth
         val centerX = left + segmentWidth / 2f
 
-        textPaint.color = textColor
+        textPaint.color = if (isActive) activeTextColor else inactiveTextColor
         textPaint.typeface = if (isActive) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
         val textY = tabHeight / 2f - (textPaint.descent() + textPaint.ascent()) / 2f
-        canvas.drawText(label, centerX, textY, textPaint)
+
+        // The whole group (icon / emoji + gap + label) is centered in the segment
+        val icon = icons.getOrNull(index)
+        val leadWidth = when {
+            icon != null -> iconSize
+            tab.emoji != null -> textPaint.measureText(tab.emoji)
+            else -> 0f
+        }
+        val leadGap = if (leadWidth > 0f) iconGap else 0f
+        var x = centerX - (leadWidth + leadGap + textPaint.measureText(tab.label)) / 2f
+
+        if (icon != null) {
+            // Tinted on every draw, so the icon always follows the label's current color
+            icon.setTint(textPaint.color)
+            val top = (tabHeight - iconSize) / 2f
+            icon.setBounds(x.toInt(), top.toInt(), (x + iconSize).toInt(), (top + iconSize).toInt())
+            icon.draw(canvas)
+        }
+        else if (tab.emoji != null) {
+            canvas.drawText(tab.emoji, x, textY, textPaint)
+        }
+        x += leadWidth + leadGap
+
+        canvas.drawText(tab.label, x, textY, textPaint)
 
         // The active underline is the brace, drawn on its own so it can slide between tabs
         if (isActive) {
@@ -216,24 +273,26 @@ class HexTabSwitch @JvmOverloads constructor(
     }
 
     /**
-     * Underline with its ends curled up - every tab has it.
-     * withTip: the middle bends down into a tip under the label, so the whole reads as a horizontal curly brace.
+     * Underline with its ends curled up (quarter circles of radius braceCurl) - every tab has it.
+     * withTip: the middle drops into an isosceles triangle tip under the label.
      */
     private fun buildUnderline(left: Float, right: Float, lineY: Float, withTip: Boolean) {
         underlinePath.reset()
         underlinePath.moveTo(left, lineY - braceCurl)
-        underlinePath.quadTo(left, lineY, left + braceCurl, lineY)
+        cornerRect.set(left, lineY - 2 * braceCurl, left + 2 * braceCurl, lineY)
+        underlinePath.arcTo(cornerRect, 180f, -90f)
 
         if (withTip) {
             val centerX = (left + right) / 2f
             val halfNotch = notchWidth / 2f
             underlinePath.lineTo(centerX - halfNotch, lineY)
-            underlinePath.quadTo(centerX, lineY, centerX, lineY + notchDepth)
-            underlinePath.quadTo(centerX, lineY, centerX + halfNotch, lineY)
+            underlinePath.lineTo(centerX, lineY + notchDepth)
+            underlinePath.lineTo(centerX + halfNotch, lineY)
         }
 
         underlinePath.lineTo(right - braceCurl, lineY)
-        underlinePath.quadTo(right, lineY, right, lineY - braceCurl)
+        cornerRect.set(right - 2 * braceCurl, lineY - 2 * braceCurl, right, lineY)
+        underlinePath.arcTo(cornerRect, 90f, -90f)
     }
 
     private fun animateBraceTo(target: Float) {
@@ -275,7 +334,7 @@ class HexTabSwitch @JvmOverloads constructor(
     }
 
     private fun updateContentDescription() {
-        contentDescription = tabs.getOrNull(selectedIndex)
+        contentDescription = tabs.getOrNull(selectedIndex)?.label
     }
 
     private fun dp(value: Float): Float = TypedValue.applyDimension(

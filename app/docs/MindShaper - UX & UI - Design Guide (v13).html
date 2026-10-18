@@ -424,28 +424,40 @@
     <summary><h3>Przełącznik zakładek</h3></summary>
     <dl>
       <dt>Przeznaczenie</dt>
-      <dd>Przełączanie widoku listy między kilkoma rodzajami — np. Osoby / Projekty w <i>Metadanych</i>.</dd>
+      <dd>Przełączanie widoku listy między kilkoma rodzajami — np. Osoby / Projekty w <i>Metadanych</i>, Cele / Ścieżki w <i>Warsztacie</i>.</dd>
       <dt>Wygląd</dt>
       <dd>
         <figure><svg role="img" aria-label="hex-tab-switch" xmlns="http://www.w3.org/2000/svg" width="345" height="67.9" viewBox="0 0 300 59">
   <rect width="300" height="59" fill="#FFF4E6"/>
   <g transform="translate(0,4)" font-size="16" font-family="'Baloo 2', 'Segoe UI', sans-serif" text-anchor="middle" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
     <text x="75" y="18" dominant-baseline="central" font-weight="700" fill="#48433F" stroke="none">Osoby</text>
-    <text x="225" y="18" dominant-baseline="central" fill="#48433F" stroke="none">Projekty</text>
-    <path d="M8,32Q8,38 14,38L61,38Q75,38 75,49Q75,38 89,38L136,38Q142,38 142,32" stroke="#FFC59A"/>
-    <path d="M158,32Q158,38 164,38L286,38Q292,38 292,32" stroke="#FFE1C8"/>
+    <text x="225" y="18" dominant-baseline="central" fill="#625A54" stroke="none">Projekty</text>
+    <path d="M8,29A9,9 0 0 0 17,38L64,38L75,49L86,38L133,38A9,9 0 0 0 142,29" stroke="#FFC59A"/>
+    <path d="M158,29A9,9 0 0 0 167,38L283,38A9,9 0 0 0 292,29" stroke="#FFE1C8"/>
+  </g>
+</svg></figure>
+        <figure><svg role="img" aria-label="hex-tab-switch z ikonami" xmlns="http://www.w3.org/2000/svg" width="345" height="67.9" viewBox="0 0 300 59">
+  <rect width="300" height="59" fill="#FFF4E6"/>
+  <g transform="translate(0,4)" font-size="16" font-family="'Baloo 2', 'Segoe UI', sans-serif" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path transform="translate(48,9) scale(0.01875)" d="M324.54,847.2Q251.83,815.89 198.04,762.01Q144.25,708.14 112.88,635.3Q81.5,562.47 81.5,479.98Q81.5,397.5 112.9,324.67Q144.29,251.85 198.12,197.97Q251.94,144.1 324.73,112.55Q397.53,81 480.02,81Q562.5,81 635.33,112.49Q708.15,143.98 762.03,197.96Q815.9,251.94 847.45,324.73Q879,397.53 879,480.02Q879,562.5 847.51,635.33Q816.02,708.15 762.04,762.03Q708.06,815.9 635.34,847.2Q562.62,878.5 479.94,878.5Q397.26,878.5 324.54,847.2ZM722,721.75Q821.5,622.5 821.5,480Q821.5,337.5 722,238Q622.5,138.5 480,138.5Q337.5,138.5 238.25,238Q139,337.5 139,480Q139,622.5 238.25,721.75Q337.5,821 480,821Q622.5,821 722,721.75ZM311,648.91Q241.5,579.32 241.5,479.91Q241.5,380.5 311.09,310.75Q380.68,241 480.09,241Q579.5,241 649.25,310.69Q719,380.38 719,479.94Q719,579.5 649.31,649Q579.62,718.5 480.06,718.5Q380.5,718.5 311,648.91ZM608.75,608.42Q661.5,555.83 661.5,479.92Q661.5,404 608.81,351.25Q556.12,298.5 480.06,298.5Q404,298.5 351.5,351.19Q299,403.88 299,479.94Q299,556 351.58,608.5Q404.17,661 480.08,661Q556,661 608.75,608.42ZM424.5,535.42Q401.5,512.33 401.5,479.92Q401.5,447.5 424.58,424.25Q447.67,401 480.08,401Q512.5,401 535.75,424.19Q559,447.38 559,479.94Q559,512.5 535.81,535.5Q512.62,558.5 480.06,558.5Q447.5,558.5 424.5,535.42Z" fill="#48433F" stroke="none"/>
+    <text x="72" y="18" dominant-baseline="central" font-weight="700" fill="#48433F" stroke="none">Cele</text>
+    <path transform="translate(187,9) scale(0.01875)" d="M306,654L571.67,572.67L653,307L387.33,388.33L306,654ZM479.71,514.5Q465.5,514.5 455.5,504.21Q445.5,493.91 445.5,479.71Q445.5,465.5 455.79,455.5Q466.09,445.5 480.29,445.5Q494.5,445.5 504.5,455.79Q514.5,466.09 514.5,480.29Q514.5,494.5 504.21,504.5Q493.91,514.5 479.71,514.5ZM480.33,875Q398.63,875 326.7,843.74Q254.78,812.47 201.14,758.74Q147.5,705 116.25,633.14Q85,561.27 85,479.56Q85,397.77 116.26,325.78Q147.53,253.78 201.26,200.39Q255,147 326.86,116Q398.73,85 480.44,85Q562.23,85 634.23,116.13Q706.24,147.26 759.62,200.63Q813,254 844,326.02Q875,398.05 875,479.67Q875,561.37 843.99,633.3Q812.97,705.22 759.49,758.68Q706,812.13 633.98,843.57Q561.95,875 480.33,875ZM480.51,817.5Q621,817.5 719.25,718.74Q817.5,619.97 817.5,479.49Q817.5,339 719.22,240.75Q620.94,142.5 480.46,142.5Q339.97,142.5 241.24,240.78Q142.5,339.06 142.5,479.54Q142.5,620.03 241.26,718.76Q340.03,817.5 480.51,817.5ZM480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Z" fill="#625A54" stroke="none"/>
+    <text x="211" y="18" dominant-baseline="central" fill="#625A54" stroke="none">Ścieżki</text>
+    <path d="M8,29A9,9 0 0 0 17,38L64,38L75,49L86,38L133,38A9,9 0 0 0 142,29" stroke="#FFC59A"/>
+    <path d="M158,29A9,9 0 0 0 167,38L283,38A9,9 0 0 0 292,29" stroke="#FFE1C8"/>
   </g>
 </svg></figure>
         <ul>
-          <li>etykiety <code>text_primary</code>; aktywna pogrubiona</li>
-          <li>aktywna zakładka: poziomy nawias klamrowy <code>_orange_lvl_2</code> (końce podwinięte w górę, szpic w dół)</li>
-          <li>nieaktywna: linia <code>_orange_lvl_1</code> z tak samo podwiniętymi końcami, bez szpica</li>
+          <li>aktywna etykieta <code>text_primary</code>, pogrubiona; nieaktywna <code>text_secondary</code></li>
+          <li>po lewej od etykiety opcjonalnie ikona albo emoji (jedno z nich) — ikona w kolorze etykiety; etykieta razem z ikoną wyśrodkowana w zakładce</li>
+          <li>aktywna zakładka: poziomy nawias klamrowy <code>_orange_lvl_2</code> (końce podwinięte w górę, w środku trójkątny dziubek w dół — równoramienny, proste ścianki)</li>
+          <li>nieaktywna: linia <code>_orange_lvl_1</code> z tak samo podwiniętymi końcami, bez dziubka</li>
         </ul>
       </dd>
       <dt>Działanie</dt>
       <dd><b>tap</b> wybiera zakładkę — pogrubienie zmienia się od razu, nawias przesuwa się pod nią</dd>
       <dt>Kod</dt>
-      <dd><code>HexTabSwitch</code> (widget); poprzedni wygląd (zrośnięte segmenty z ząbkiem): <code>docs/legacy/HexTabSwitchLegacy.kt</code> (poza kodem aplikacji)</dd>
+      <dd><code>HexTabSwitch</code> (widget), <code>HexTabSwitch.Tab</code> (etykieta + <code>iconRes</code> / <code>emoji</code>); poprzedni wygląd (zrośnięte segmenty z ząbkiem): <code>docs/legacy/HexTabSwitchLegacy.kt</code> (poza kodem aplikacji)</dd>
     </dl>
   </details>
 </div>

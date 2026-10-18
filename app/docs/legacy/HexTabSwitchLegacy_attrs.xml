@@ -10,8 +10,8 @@
         <attr name="tabActiveLift" format="dimension" />
         <attr name="tabActiveStrokeWidth" format="dimension" />
         <attr name="tabActiveStrokeColor" format="reference|color" />
-        <attr name="tabActiveTextColor" format="reference|color" />
-        <attr name="tabInactiveTextColor" format="reference|color" />
+        <attr name="tabActiveTextColor" />
+        <attr name="tabInactiveTextColor" />
         <attr name="tabTextSize" />
         <attr name="notchWidth" />
         <attr name="notchDepth" />

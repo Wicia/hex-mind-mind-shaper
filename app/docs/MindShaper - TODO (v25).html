@@ -4,7 +4,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&family=Alegreya:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>:root{
     --cream:#FFF4E6;
-    --surface:#FFFFFF;
+    --surface:#FFFFFF
     --orange-1:#FFE1C8;
     --orange-2:#FFC59A;
     --orange-3:#FFA86B;
@@ -1113,38 +1113,6 @@
     </div>
   </details>
 
-  <details class="item">
-    <summary>
-      <span class="prio minor">Drobny</span> 
-      <strong>Przełącznik Osoby/Projekty w Metadanych — docelowa forma</strong> — rozstrzygnąć, czy zostają dwa przyciski, czy przejść na TabLayout jak w Workshopie.
-      <span class="mods"><span class="mod">Tagi i Domeny</span></span>
-    </summary>
-    <div class="body">
-      <ul>
-        <li>obecnie: dwa 
-          <code>MaterialButton</code> (Osoby/Projekty), jedna lista przebudowywana przy każdym przełączeniu
-        </li>
-        <li>scroll wraca na górę po przełączeniu — akceptowalne przy krótkich listach; przy długich rozważyć dwie listy + swap widoczności (retencja scrolla per typ)</li>
-        <li>opcja spójności z resztą apki: prawdziwy 
-          <code>TabLayout</code> z drawable'ami taba z Workshopa (
-          <code>tab_background_selector</code> itd.)
-        </li>
-        <li>decyzja: zostawić przyciski / TabLayout / dwie listy</li>
-      </ul>
-      <div class="where">
-        <span class="lbl">Gdzie</span>
-        <ul>
-          <li>
-            <code>activities/metadata/MetadataActivity.kt</code> — 
-            <code>selectTagType()</code>
-          </li>
-          <li>
-            <code>res/layout/metadata_activity.xml</code> — wiersz przełącznika
-          </li>
-        </ul>
-      </div>
-    </div>
-  </details>
   <details class="item">
     <summary>
       <span class="prio imp">Istotny</span>

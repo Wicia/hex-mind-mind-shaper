@@ -8,5 +8,5 @@
     android:orientation="vertical"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
-    android:background="@drawable/shape_card_onboarding"
+    android:background="@drawable/shape_card_standalone"
     />
