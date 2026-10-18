@@ -38,7 +38,7 @@ class NavigationBarController(
     private val navButtons = listOf(
         NavButton(R.id.navHome, "Home", R.drawable.ic_activity_home, R.drawable.ic_activity_home_filled),
         NavButton(R.id.navStream, "Stream", R.drawable.ic_activity_stream, R.drawable.ic_activity_stream_filled),
-        NavButton(R.id.navFlashcards, "Flashcards", R.drawable.ic_activity_flashcards, R.drawable.ic_activity_flashcards),
+        NavButton(R.id.navFlashcards, "Flashcards", R.drawable.ic_activity_flashcards, R.drawable.ic_activity_flashcards_filled),
         NavButton(R.id.navWorkshop, "Workshop", R.drawable.ic_activity_workshop, R.drawable.ic_activity_workshop_filled),
         NavButton(R.id.navMetadata, "Metadata", R.drawable.ic_activity_metadata, R.drawable.ic_activity_metadata_filled),
         NavButton(R.id.navSettings, "Settings", R.drawable.ic_activity_settings, R.drawable.ic_activity_settings_filled)
