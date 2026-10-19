@@ -2,7 +2,9 @@ package pl.hexmind.mindshaper.activities.onboarding
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +21,7 @@ import pl.hexmind.mindshaper.activities.settings.SettingsActivity
 import pl.hexmind.mindshaper.activities.stream.StreamActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingSection
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
+import pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
 import pl.hexmind.mindshaper.services.ThoughtsService
 import javax.inject.Inject
 
@@ -35,6 +38,9 @@ class OnboardingActivity : CoreActivity() {
     private lateinit var onboardingAdapter: OnboardingSectionsAdapter
     private lateinit var lpiOnboardingProgress: LinearProgressIndicator
     private lateinit var tvOnboardingProgressPercent: TextView
+    private lateinit var switchOnboardingTips: HexSwitchRow
+    private lateinit var tvOnboardingTipsHint: View
+    private lateinit var llOnboardingOptions: View
 
     // One card per functionality: Stream and Details are the same one
     private val onboardingCards = listOf(
@@ -52,7 +58,30 @@ class OnboardingActivity : CoreActivity() {
         setupHeader(R.drawable.ic_activity_onboarding, R.string.workshop_section_onboarding)
         lpiOnboardingProgress = findViewById(R.id.lpi_onboarding_progress)
         tvOnboardingProgressPercent = findViewById(R.id.tv_onboarding_progress_percent)
+        setupTipsToggle()
         setupOnboardingList()
+    }
+
+    // The same setting as the welcome choice - the screen stays reachable, so tips can be turned back on
+    private fun setupTipsToggle() {
+        switchOnboardingTips = findViewById(R.id.switch_onboarding_tips)
+        tvOnboardingTipsHint = findViewById(R.id.tv_onboarding_tips_hint)
+        llOnboardingOptions = findViewById(R.id.ll_onboarding_options)
+
+        switchOnboardingTips.isChecked = appSettingsStorage.isOnboardingEnabled()
+        switchOnboardingTips.setOnCheckedChangeListener { _, isChecked ->
+            appSettingsStorage.setOnboardingEnabled(isChecked)
+            syncTipsOptionsVisibility()
+        }
+
+        syncTipsOptionsVisibility()
+    }
+
+    // Off = progress and sections hidden, a hint about the tips in their place
+    private fun syncTipsOptionsVisibility() {
+        val enabled = switchOnboardingTips.isChecked
+        llOnboardingOptions.isVisible = enabled
+        tvOnboardingTipsHint.isVisible = !enabled
     }
 
     override fun onResume() {
