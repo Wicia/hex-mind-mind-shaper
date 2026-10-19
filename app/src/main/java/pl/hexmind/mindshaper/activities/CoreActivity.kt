@@ -88,6 +88,7 @@ open class CoreActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        navigationController?.syncFeatureButtons()
         highlightCurrentScreen()
     }
 

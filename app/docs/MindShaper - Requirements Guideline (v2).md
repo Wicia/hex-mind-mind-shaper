@@ -116,4 +116,4 @@ Proces kompletuje się stopniowo — po przejściu wszystkich ekranów widok Pro
 **Ustalenia:**
 
 - **Nazwy funkcji bez miejsca** — miejsce wynika z tagów (np. „Wyświetlanie stanu myśli” zamiast „Wyświetlanie w Strumieniu” + „Wyświetlanie w Szczegółach myśli”). Status funkcji obejmuje wszystkie jej miejsca — 🟡, dopóki nie sprawdzono każdego.
-- **Migracja razem z synchronizacją z kodem** — nowy plik `MindShaper - Requirements New (v1).html` w formacie tagowanym, wypełniany ekran po ekranie (start: Preferencje). v12 zostaje źródłem do końca przejścia, potem → `app/docs/legacy`. Bez przepisywania treści dwa razy.
+- **Jeden dokument wymagań** — `MindShaper - Requirements (vN).html` w formacie tagowanym.

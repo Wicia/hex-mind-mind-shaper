@@ -60,7 +60,7 @@ class NavigationBarController(
         navDrawerScrim.visibility = View.GONE
 
         setupNavButtons()
-        setupFeatureButtons()
+        syncFeatureButtons()
         setupToggleButton()
         setupScrim()
     }
@@ -85,8 +85,8 @@ class NavigationBarController(
         }
     }
 
-    // Screens of features that are off in Settings - the drawer is built per screen, so a toggle applies on the next one
-    private fun setupFeatureButtons() {
+    // Screens of features that are off in Settings - synced on each resume, a screen reused from the back stack keeps its drawer
+    fun syncFeatureButtons() {
         navigationBar.findViewById<View>(R.id.navFlashcards).visibility =
             if (appSettings.isFlashcardsFeatureEnabled()) View.VISIBLE else View.GONE
         navigationBar.findViewById<View>(R.id.navWorkshop).visibility =
