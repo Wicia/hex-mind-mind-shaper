@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="4dp"
+            android:minHeight="36dp"
             android:checked="true"
             android:text="@string/stream_filter_show_active" />
 
@@ -94,6 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:minHeight="36dp"
             android:layout_marginBottom="20dp"
             android:checked="false"
             android:text="@string/stream_filter_show_dormant" />
@@ -116,7 +117,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="6dp"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
