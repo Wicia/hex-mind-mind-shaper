@@ -171,9 +171,9 @@ class HomeActivity : CoreActivity() {
 
         val targetScreen = when (appSettingsStorage.getStartScreen()) {
             StartScreen.STREAM     -> StreamActivity::class.java
-            // Flashcards feature off = its screen is hidden, Home stays
+            // Feature off = its screen is hidden, Home stays
             StartScreen.FLASHCARDS -> if (appSettingsStorage.isFlashcardsFeatureEnabled()) FlashcardsActivity::class.java else return false
-            StartScreen.WORKSHOP   -> WorkshopActivity::class.java
+            StartScreen.WORKSHOP   -> if (appSettingsStorage.isWorkshopFeatureEnabled())   WorkshopActivity::class.java   else return false
             StartScreen.HOME       -> return false
         }
 

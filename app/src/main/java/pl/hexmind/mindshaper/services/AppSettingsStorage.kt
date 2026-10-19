@@ -46,6 +46,8 @@ class AppSettingsStorage @Inject constructor(
 
         private const val PARAM_FLASHCARDS_FEATURE_ENABLED = "param_flashcards_feature_enabled"
 
+        private const val PARAM_WORKSHOP_FEATURE_ENABLED = "param_workshop_feature_enabled"
+
         private const val PARAM_CALENDAR_REMINDERS_ENABLED = "calendar_reminders_enabled"
 
         private const val PARAM_CALENDAR_TARGET_ID = "calendar_target_id"
@@ -182,6 +184,17 @@ class AppSettingsStorage @Inject constructor(
     fun setFlashcardsFeatureEnabled(enabled: Boolean) {
         sharedPreferences.edit {
             putBoolean(PARAM_FLASHCARDS_FEATURE_ENABLED, enabled)
+        }
+    }
+
+    // No system permission behind it - a plain on/off preference
+    fun isWorkshopFeatureEnabled(): Boolean {
+        return sharedPreferences.getBoolean(PARAM_WORKSHOP_FEATURE_ENABLED, false)
+    }
+
+    fun setWorkshopFeatureEnabled(enabled: Boolean) {
+        sharedPreferences.edit {
+            putBoolean(PARAM_WORKSHOP_FEATURE_ENABLED, enabled)
         }
     }
 

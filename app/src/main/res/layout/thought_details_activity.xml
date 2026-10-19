@@ -227,75 +227,87 @@
             <!-- ============================== -->
             <!--    Linked steps                -->
             <!-- ============================== -->
-            <TextView
-                android:id="@+id/tv_usage_header"
-                style="@style/TextView_Section_Info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/details_usage_not_linked" />
-
-            <!-- Empty state (no link) -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_usage_link"
-                style="@style/ThoughtLinkButton"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginBottom="90dp"
-                android:text="@string/details_usage_link_button"
-                app:icon="@drawable/ic_action_thought_link" />
-
-            <!-- Linked state -->
+            <!-- Hidden while the workshop is off -->
             <LinearLayout
-                android:id="@+id/ll_usage_linked"
-                android:focusable="true"
-                android:clickable="true"
-                android:foreground="?attr/selectableItemBackground"
+                android:id="@+id/ll_usage_section"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginBottom="90dp"
-                android:weightSum="10"
-                android:background="@drawable/shape_hex_content"
-                android:backgroundTint="@color/button_content_filled_background"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="12dp"
-                android:visibility="visible">
-
-                <!-- Unlink button -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_usage_unlink"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1.25"
-                    app:backgroundTint="@color/_orange_lvl_1"
-                    app:icon="@drawable/ic_replace_or_renew"
-                    app:iconGravity="textStart"
-                    app:iconPadding="0dp"
-                    app:iconSize="28dp"
-                    app:iconTint="@color/_orange_lvl_3" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_usage_goal_context"
-                    android:layout_width="0dp"
+                    android:id="@+id/tv_usage_header"
+                    style="@style/TextView_Section_Info"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="8"
-                    android:fontFamily="@font/baloo2"
-                    android:textColor="@color/text_secondary"
-                    android:lineSpacingExtra="-1dp"
-                    android:minLines="1"
-                    android:ellipsize="end"
-                    android:textSize="14sp" />
+                    android:text="@string/details_usage_not_linked" />
 
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="36dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0.75"
-                    android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                    app:srcCompat="@drawable/ic_action_chevron_right"
-                    app:tint="@color/_gray_lvl_2" />
+                <!-- Empty state (no link) -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_usage_link"
+                    style="@style/ThoughtLinkButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:text="@string/details_usage_link_button"
+                    app:icon="@drawable/ic_action_thought_link" />
+
+                <!-- Linked state -->
+                <LinearLayout
+                    android:id="@+id/ll_usage_linked"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:weightSum="10"
+                    android:background="@drawable/shape_hex_content"
+                    android:backgroundTint="@color/button_content_filled_background"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="12dp"
+                    android:visibility="visible">
+
+                    <!-- Unlink button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_usage_unlink"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1.25"
+                        app:backgroundTint="@color/_orange_lvl_1"
+                        app:icon="@drawable/ic_replace_or_renew"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp"
+                        app:iconSize="28dp"
+                        app:iconTint="@color/_orange_lvl_3" />
+
+                    <TextView
+                        android:id="@+id/tv_usage_goal_context"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:fontFamily="@font/baloo2"
+                        android:textColor="@color/text_secondary"
+                        android:lineSpacingExtra="-1dp"
+                        android:minLines="1"
+                        android:ellipsize="end"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="0.75"
+                        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                        app:srcCompat="@drawable/ic_action_chevron_right"
+                        app:tint="@color/_gray_lvl_2" />
+
+                </LinearLayout>
 
             </LinearLayout>
+
+            <!-- Room below the content for the bottom navigation button -->
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="90dp" />
 
         </LinearLayout>
 

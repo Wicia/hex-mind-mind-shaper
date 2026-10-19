@@ -478,7 +478,7 @@
         {fn: "Zapisywanie zmian", col: "data", process: ["Zapisywanie preferencji"], place: P,
             text: "wspólny Zapisz obejmuje: imię, domyślną formę zapisu, skalę wartości, ekran startowy, limit nowych fiszek, godzinę przypomnienia, tryb uśpienia z progami"},
         {fn: "Zapisywanie zmian", col: "proc", process: ["Zapisywanie preferencji"], place: P,
-            text: "włączniki form zapisu, kopii, fiszek, przypomnień i kalendarza oraz wybór kalendarza — zapisywane od razu, bez Zapisz"},
+            text: "włączniki form zapisu, kopii, fiszek, Warsztatu, przypomnień i kalendarza oraz wybór kalendarza — zapisywane od razu, bez Zapisz"},
         {fn: "Zapisywanie zmian", col: "proc", process: ["Zapisywanie preferencji"], place: P,
             text: "po zapisie — komunikat „Zmiany zostały zapisane” i przejście do Domu"},
         {fn: "Zapisywanie zmian", col: "proc", process: ["Zapisywanie preferencji"], place: P,
@@ -499,6 +499,8 @@
             text: "sekcja „Ekran startowy”<ul><li>Dom — domyślnie</li><li>Strumień</li><li>Zapamiętywanie</li><li>Warsztat</li></ul>"},
         {fn: "Wybieranie ekranu", col: "proc", process: ["Wybór ekranu startowego", "Powtarzanie z fiszkami"], place: P,
             text: "fiszki wyłączone — Zapamiętywanie niedostępne; jeśli było wybrane, wybór wraca na Dom"},
+        {fn: "Wybieranie ekranu", col: "proc", process: ["Wybór ekranu startowego", "Wyznaczanie celów"], place: P,
+            text: "Warsztat wyłączony — Warsztat niedostępny; jeśli był wybrany, wybór wraca na Dom"},
 
         // Łapanie myśli
         {fn: "Włączanie form zapisu", col: "data", process: ["Łapanie myśli"], place: P,
@@ -530,11 +532,11 @@
 
         // Tryb „Uśpienia”
         {fn: "Włączanie trybu", col: "data", process: ["Tryb „Uśpienia”"], place: P,
-            text: "sekcja „Tryb uśpienia” z opisem; „Aktywuj tryb Uśpienia” — domyślnie wyłączone"},
+            text: "sekcja „Tryb uśpienia”; „Aktywuj tryb Uśpienia” — domyślnie wyłączone"},
         {fn: "Włączanie trybu", col: "data", process: ["Tryb „Uśpienia”", "Wartościowanie myśli"], place: P,
             text: "dwa progi<ul><li>„Ukryj myśli niezmieniane od” — od 3 do 90 dni, domyślnie 7</li><li>„oraz których wartość jest ≤” — od 1 do maksimum skali, domyślnie 1</li></ul>"},
         {fn: "Włączanie trybu", col: "data", process: ["Tryb „Uśpienia”"], place: P,
-            text: "progi niedostępne przy wyłączonym trybie"},
+            text: "wyłączony tryb — progi ukryte, w ich miejscu krótki opis trybu"},
         {fn: "Włączanie trybu", col: "proc", process: ["Tryb „Uśpienia”"], place: P,
             text: "sprawdzanie progów na bieżąco — błąd podaje dozwolony zakres"},
 
@@ -542,7 +544,7 @@
         {fn: "Włączanie modułu fiszek", col: "data", process: ["Powtarzanie z fiszkami"], place: P,
             text: "sekcja „Zapamiętywanie”; „Włącz powtórki z użyciem fiszek” — domyślnie wyłączone"},
         {fn: "Włączanie modułu fiszek", col: "proc", process: ["Powtarzanie z fiszkami"], place: P,
-            text: "wyłączenie<ul><li>limit i przypomnienia niedostępne</li><li>ekran startowy Zapamiętywanie niedostępny</li><li>przypomnienia o powtórkach odwołane</li><li>skrót nowej fiszki znika z ikony aplikacji</li></ul>"},
+            text: "wyłączenie<ul><li>limit i przypomnienia ukryte — w ich miejscu krótka informacja, co daje włączenie fiszek</li><li>ekran startowy Zapamiętywanie niedostępny</li><li>przypomnienia o powtórkach odwołane</li><li>skrót nowej fiszki znika z ikony aplikacji</li></ul>"},
         {fn: "Ustawianie limitu nowych fiszek", col: "data", process: ["Powtarzanie z fiszkami"], place: P,
             text: "„Max. liczba nowych fiszek dziennie w powtórkach” — od 1 do 30, domyślnie 10"},
         {fn: "Przypomnienia o sesjach powtórek", col: "data", process: ["Powtarzanie z fiszkami"], place: P,
@@ -554,11 +556,19 @@
         {fn: "Przypomnienia o sesjach powtórek", col: "proc", process: ["Powtarzanie z fiszkami", "Żądanie Uprawnień"], place: P,
             text: "wymaga powiadomień (Android 13+)"},
         {fn: "Przypomnienia o sesjach powtórek", col: "proc", process: ["Powtarzanie z fiszkami"], place: P,
-            text: "przypomnienia dostępne tylko przy włączonych fiszkach; godzina — tylko przy włączonych przypomnieniach"},
+            text: "przypomnienia widoczne tylko przy włączonych fiszkach; godzina — dostępna tylko przy włączonych przypomnieniach"},
+
+        // Wyznaczanie celów
+        {fn: "Włączanie modułu Warsztatu", col: "data", process: ["Wyznaczanie celów"], place: P,
+            text: "sekcja „Warsztat”; „Włącz Warsztat celów i kroków” — domyślnie wyłączone"},
+        {fn: "Włączanie modułu Warsztatu", col: "proc", process: ["Wyznaczanie celów"], place: P,
+            text: "wyłączenie<ul><li>wpisy do kalendarza ukryte — w ich miejscu krótka informacja, co daje włączenie Warsztatu</li><li>Warsztat znika z panelu nawigacji</li><li>ekran startowy Warsztat niedostępny</li><li>w Szczegółach myśli brak powiązania z krokiem</li></ul>"},
+        {fn: "Włączanie modułu Warsztatu", col: "proc", process: ["Wyznaczanie celów", "Przypomnienia kroków w kalendarzu"], place: P,
+            text: "wyłączenie nie usuwa danych — cele, kroki, powiązania z myślami i wpisy w kalendarzu zostają; Ukończ z wpisu w kalendarzu działa dalej"},
 
         // Przypomnienia kroków w kalendarzu
         {fn: "Włączanie wpisów do kalendarza", col: "data", process: ["Przypomnienia kroków w kalendarzu"], place: P,
-            text: "sekcja „Przypomnienia w kalendarzu”; „Włącz wpisy do kalendarza” — domyślnie wyłączone"},
+            text: "w sekcji „Warsztat”, widoczne tylko przy włączonym Warsztacie; „Włącz wpisy do kalendarza” — domyślnie wyłączone"},
         {fn: "Włączanie wpisów do kalendarza", col: "data", process: ["Przypomnienia kroków w kalendarzu"], place: P,
             text: "informacja: kroki celu z przypomnieniem trafiają do wybranego kalendarza jako cykliczne wydarzenia; do Kalendarza Google — po synchronizacji przez sieć"},
         {fn: "Włączanie wpisów do kalendarza", col: "proc", process: ["Przypomnienia kroków w kalendarzu", "Żądanie Uprawnień"], place: P,
@@ -599,6 +609,8 @@
             text: "pozycje panelu<ul><li>Dom</li><li>Strumień myśli</li><li>Zapamiętywanie</li><li>Warsztat</li><li>Tagi i Domeny</li><li>Preferencje</li></ul>"},
         {fn: "Przechodzenie do ekranu", col: "proc", process: ["Nawigowanie po aplikacji", "Powtarzanie z fiszkami"], place: NAV,
             text: "Zapamiętywanie tylko przy włączonych fiszkach — przełączenie w Preferencjach zmienia panel od następnego otwartego ekranu"},
+        {fn: "Przechodzenie do ekranu", col: "proc", process: ["Nawigowanie po aplikacji", "Wyznaczanie celów"], place: NAV,
+            text: "Warsztat tylko przy włączonym Warsztacie — przełączenie w Preferencjach zmienia panel od następnego otwartego ekranu"},
         {fn: "Przechodzenie do ekranu", col: "proc", process: ["Nawigowanie po aplikacji"], place: NAV,
             text: "wybór bieżącego ekranu nic nie zmienia; przejście na ekran otwarty wcześniej wraca do niego, a ekrany otwarte po nim się zamykają"},
         {fn: "Zaznaczanie bieżącego ekranu", col: "data", process: ["Nawigowanie po aplikacji"], place: NAV,
@@ -629,6 +641,8 @@
             text: "Dom zostaje pod spodem — cofnięcie z ekranu startowego wraca na Dom"},
         {fn: "Przekierowanie na ekran startowy", col: "proc", process: ["Wybór ekranu startowego", "Powtarzanie z fiszkami"], place: HOME,
             text: "wybrane Zapamiętywanie przy wyłączonych fiszkach — zostaje Dom"},
+        {fn: "Przekierowanie na ekran startowy", col: "proc", process: ["Wybór ekranu startowego", "Wyznaczanie celów"], place: HOME,
+            text: "wybrany Warsztat przy wyłączonym Warsztacie — zostaje Dom"},
 
         // Sprawdzanie wersji aplikacji
         {fn: "Wyświetlanie wersji", col: "data", process: ["Sprawdzanie wersji aplikacji"], place: HOME,
@@ -1143,6 +1157,8 @@
             text: "wybranie powiązanego celu otwiera Szczegóły celu"},
         {fn: "Wykorzystanie myśli w celu", col: "proc", process: ["Łączenie myśli z krokami"], place: DET,
             text: "zmiana powiązania: Odepnij od kroku albo Podmień krok — odpięcie nie usuwa ani myśli, ani kroku"},
+        {fn: "Wykorzystanie myśli w celu", col: "proc", process: ["Łączenie myśli z krokami", "Wyznaczanie celów"], place: DET,
+            text: "tylko przy włączonym Warsztacie; przy wyłączonym powiązanie zostaje zachowane"},
 
         // Przypomnienia kroków w kalendarzu
         {fn: "Ustawianie przypomnienia", col: "data", process: ["Przypomnienia kroków w kalendarzu", "Realizowanie kroków"], place: GOAL,
@@ -1357,28 +1373,20 @@
     // A rule counts as checked when one of its places is checked for its function
     const CHECKED = {
         "Wyświetlanie powitania": {"Dom": "17/10"},
-        "Przekierowanie na ekran startowy": {"Dom": "17/10"},
         "Wyświetlanie wersji": {"Dom": "17/10"},
         "Wchodzenie do przeglądu wskazówek": {"Dom": "17/10"},
         "Rozpoczynanie łapania myśli": {"Dom": "17/10"},
         "Wyświetlanie wskazówek": {"Dom": "17/10"},
         "Otwieranie panelu nawigacji": {"Panel nawigacyjny": "17/10"},
-        "Przechodzenie do ekranu": {"Panel nawigacyjny": "17/10"},
         "Zaznaczanie bieżącego ekranu": {"Panel nawigacyjny": "17/10"},
         "Zgodność z systemem": {"Panel nawigacyjny": "17/10"},
-        "Zapisywanie zmian": {"Preferencje": "17/10"},
         "Podawanie imienia": {"Preferencje": "17/10"},
-        "Wybieranie ekranu": {"Preferencje": "17/10"},
         "Włączanie form zapisu": {"Preferencje": "17/10"},
         "Wybieranie domyślnej formy zapisu myśli": {"Preferencje": "17/10"},
         "Prośba o uprawnienie": {"Preferencje": "17/10"},
         "Wybieranie skali": {"Preferencje": "17/10"},
         "Działanie skali": {"Preferencje": "17/10"},
-        "Włączanie trybu": {"Preferencje": "17/10"},
-        "Włączanie modułu fiszek": {"Preferencje": "17/10"},
         "Ustawianie limitu nowych fiszek": {"Preferencje": "17/10"},
-        "Przypomnienia o sesjach powtórek": {"Preferencje": "17/10"},
-        "Włączanie wpisów do kalendarza": {"Preferencje": "17/10"},
         "Wybieranie kalendarza": {"Preferencje": "17/10"},
         "Włączanie kopii": {"Preferencje": "17/10"},
         "Robienie kopii": {"Preferencje": "17/10"},

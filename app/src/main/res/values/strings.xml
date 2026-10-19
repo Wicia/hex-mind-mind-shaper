@@ -520,6 +520,7 @@ Awers - Rewers…"</string>
     <!-- Memorizing -->
     <string name="settings_memorizing_section">🧠 Zapamiętywanie</string>
     <string name="settings_permissions_flashcards">Włącz powtórki z użyciem fiszek</string>
+    <string name="settings_flashcards_feature_hint">Twórz fiszki i powtarzaj wiedzę z systemem powtórek, aktywuj przypominajki na telefonie…</string>
     <string name="settings_flashcards_new_per_day_label">Max. liczba nowych fiszek\ndziennie w powtórkach</string>
     <string name="settings_flashcards_reminders_switch_label">Włącz przypomnienia o powtórkach</string>
     <string name="settings_flashcards_reminder_hour_label">O tej godzinie przypomnimy Ci o sesji powtórek - o ile jakieś fiszki czekają na powtórki</string>
@@ -543,7 +544,10 @@ Awers - Rewers…"</string>
     <string name="workshop_calendar_entry_created">Wrzucono w Twój kalendarz</string>
     <string name="workshop_dialog_delete_step_calendar_warning">Usuniemy też jego przypomnienie w kalendarzu.</string>
 
-    <string name="settings_calendar_section">🐣 Przypomnienia w kalendarzu</string>
+    <!-- Workshop -->
+    <string name="settings_workshop_section">🛠️ Warsztat</string>
+    <string name="settings_permissions_workshop">Włącz Warsztat celów i kroków</string>
+    <string name="settings_workshop_feature_hint">Rozpisz cele na kroki, powiąż z nimi swoje myśli i dodawaj przypomnienia do kalendarza</string>
     <string name="settings_calendar_reminders_switch_label">Włącz wpisy do kalendarza</string>
     <string name="settings_calendar_reminders_hint">Kroki celu z ustawionym przypomnieniem trafią do Twojego kalendarza (wybranego poniżej) jako cykliczne wydarzenia</string>
     <string name="settings_calendar_reminders_sync_hint">ⓘ Aby wpisy pojawiły się w aplikacji Kalendarz Google, potrzebne jest połączenie z siecią — synchronizacja wyśle je do chmury.</string>

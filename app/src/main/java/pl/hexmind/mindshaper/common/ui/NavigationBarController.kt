@@ -89,6 +89,8 @@ class NavigationBarController(
     private fun setupFeatureButtons() {
         navigationBar.findViewById<View>(R.id.navFlashcards).visibility =
             if (appSettings.isFlashcardsFeatureEnabled()) View.VISIBLE else View.GONE
+        navigationBar.findViewById<View>(R.id.navWorkshop).visibility =
+            if (appSettings.isWorkshopFeatureEnabled()) View.VISIBLE else View.GONE
     }
 
     private fun setupToggleButton() {

@@ -111,6 +111,9 @@ class DetailsActivity : ThoughtManagerActivity() {
 
     private fun updateUsageSection(linked: StepWithGoalDTO?) {
         binding.apply {
+            // Workshop feature off = no goals to link to; a stored link stays in the database
+            llUsageSection.visibility = if (appSettingsStorage.isWorkshopFeatureEnabled()) View.VISIBLE else View.GONE
+
             if (linked != null) {
                 btnUsageLink.visibility = View.GONE
                 llUsageLinked.visibility = View.VISIBLE

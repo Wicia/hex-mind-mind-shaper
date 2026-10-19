@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.RadioButton
 import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -147,6 +148,7 @@ class SettingsActivity : CoreActivity() {
         setupPhotoFeatureToggle()
         setupFlashcardsFeatureToggle()
         setupFlashcardsRemindersToggle()
+        setupWorkshopFeatureToggle()
         setupCalendarRemindersToggle()
         setupBackupFeatureToggle()
         setupDormantModeListeners()
@@ -251,8 +253,7 @@ class SettingsActivity : CoreActivity() {
         binding.switchFlashcardsFeature.isChecked = appSettingsStorage.isFlashcardsFeatureEnabled()
         binding.switchFlashcardsFeature.setOnCheckedChangeListener { _, isChecked ->
             appSettingsStorage.setFlashcardsFeatureEnabled(isChecked)
-            syncFlashcardsParamsPickerState()
-            syncFlashcardsRemindersState()
+            syncFlashcardsOptionsVisibility()
             binding.tilesStartScreen.setFlashcardsEnabled(isChecked)
             // Flashcards off = no reminders either
             flashcardsReminders.scheduleNext()
@@ -272,15 +273,20 @@ class SettingsActivity : CoreActivity() {
         }
 
         syncFlashcardsParamsPickerState()
+        syncFlashcardsOptionsVisibility()
+    }
+
+    // Off = options hidden, a hint about the feature in their place
+    private fun syncFlashcardsOptionsVisibility() {
+        val enabled = binding.switchFlashcardsFeature.isChecked
+        binding.llFlashcardsOptions.isVisible = enabled
+        binding.tvFlashcardsFeatureHint.isVisible = !enabled
     }
 
     private fun syncFlashcardsParamsPickerState() {
-        val enabled = binding.switchFlashcardsFeature.isChecked
-        binding.llFlashcardsParamsPicker.alpha = if (enabled) 1f else 0.4f
-
         binding.tvFlashcardsNewPerDay.text = flashcardsNewPerDay.toString()
-        binding.btnFlashcardsNewPerDayDecrease.isEnabled = enabled && flashcardsNewPerDay > AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MIN
-        binding.btnFlashcardsNewPerDayIncrease.isEnabled = enabled && flashcardsNewPerDay < AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MAX
+        binding.btnFlashcardsNewPerDayDecrease.isEnabled = flashcardsNewPerDay > AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MIN
+        binding.btnFlashcardsNewPerDayIncrease.isEnabled = flashcardsNewPerDay < AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MAX
     }
 
     // ========== FLASHCARDS REMINDERS ==========
@@ -319,12 +325,9 @@ class SettingsActivity : CoreActivity() {
         syncFlashcardsRemindersState()
     }
 
-    // Reminders belong to flashcards - dimmed while they are off, the hour also while the reminders are off
+    // Reminder hour dimmed while the reminders are off
     private fun syncFlashcardsRemindersState() {
-        val flashcardsOn = binding.switchFlashcardsFeature.isChecked
-        binding.switchFlashcardsReminders.isEnabled = flashcardsOn
-
-        val enabled = flashcardsOn && binding.switchFlashcardsReminders.isChecked
+        val enabled = binding.switchFlashcardsReminders.isChecked
         binding.tvFlashcardsReminderHourLabel.alpha = if (enabled) 1f else 0.4f
         binding.hourPickerFlashcardsReminder.isEnabled = enabled
     }
@@ -446,6 +449,30 @@ class SettingsActivity : CoreActivity() {
             .setOnCancel { binding.switchPhotoFeature.isChecked = false }
             .show()
     }
+
+    // ========== WORKSHOP FEATURE ==========
+
+    // No permission to ask for - the switch writes straight to the preferences
+    // Off keeps the calendar entries already created - and their "complete" link still works
+    private fun setupWorkshopFeatureToggle() {
+        binding.switchWorkshopFeature.isChecked = appSettingsStorage.isWorkshopFeatureEnabled()
+        binding.switchWorkshopFeature.setOnCheckedChangeListener { _, isChecked ->
+            appSettingsStorage.setWorkshopFeatureEnabled(isChecked)
+            syncWorkshopOptionsVisibility()
+            binding.tilesStartScreen.setWorkshopEnabled(isChecked)
+        }
+
+        syncWorkshopOptionsVisibility()
+    }
+
+    // Off = options hidden, a hint about the feature in their place
+    private fun syncWorkshopOptionsVisibility() {
+        val enabled = binding.switchWorkshopFeature.isChecked
+        binding.llWorkshopOptions.isVisible = enabled
+        binding.tvWorkshopFeatureHint.isVisible = !enabled
+    }
+
+    // ========== CALENDAR REMINDERS ==========
 
     private fun setupCalendarRemindersToggle() {
         binding.switchCalendarReminders.setOnCheckedChangeListener { _, isChecked ->
@@ -679,6 +706,7 @@ class SettingsActivity : CoreActivity() {
     private fun initStartScreenConfig() {
         binding.tilesStartScreen.setSelected(appSettingsStorage.getStartScreen())
         binding.tilesStartScreen.setFlashcardsEnabled(appSettingsStorage.isFlashcardsFeatureEnabled())
+        binding.tilesStartScreen.setWorkshopEnabled(appSettingsStorage.isWorkshopFeatureEnabled())
     }
 
     // ========== DORMANT MODE ==========
@@ -687,13 +715,13 @@ class SettingsActivity : CoreActivity() {
         binding.switchDormantMode.isChecked = appSettingsStorage.isDormantModeEnabled()
         binding.etDormantDays.setText(appSettingsStorage.getDormantDaysThreshold().toString())
         binding.etDormantValue.setText(appSettingsStorage.getDormantValueThreshold().toString())
-        syncDormantPickerState()
+        syncDormantOptionsVisibility()
         validateDormantDaysInput()
         validateDormantValueInput()
     }
 
     private fun setupDormantModeListeners() {
-        binding.switchDormantMode.setOnCheckedChangeListener { _, _ -> syncDormantPickerState() }
+        binding.switchDormantMode.setOnCheckedChangeListener { _, _ -> syncDormantOptionsVisibility() }
 
         // TextWatcher for live validation of value threshold
         binding.etDormantValue.addTextChangedListener(object : android.text.TextWatcher {
@@ -714,11 +742,11 @@ class SettingsActivity : CoreActivity() {
         })
     }
 
-    private fun syncDormantPickerState() {
+    // Off = thresholds hidden, a hint about the mode in their place
+    private fun syncDormantOptionsVisibility() {
         val enabled = binding.switchDormantMode.isChecked
-        binding.llDormantThresholdsPicker.alpha = if (enabled) 1f else 0.4f
-        binding.etDormantDays.isEnabled  = enabled
-        binding.etDormantValue.isEnabled = enabled
+        binding.llDormantThresholdsPicker.isVisible = enabled
+        binding.tvDormantModeHint.isVisible = !enabled
     }
 
     private fun validateDormantDaysInput() : Boolean {

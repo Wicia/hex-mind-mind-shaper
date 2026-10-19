@@ -554,7 +554,7 @@
   <details class="item">
     <summary>
       <span class="prio imp">Istotny</span>
-      <strong>Warsztat — włączanie / wyłączanie modułu</strong> — przełącznik w <i>Preferencjach</i>, wzorowany na module fiszek (<i>Zapamiętywanie</i>).
+      ✅ <strong>Warsztat — włączanie / wyłączanie modułu</strong> — przełącznik w <i>Preferencjach</i>, wzorowany na module fiszek (<i>Zapamiętywanie</i>).
       <span class="mods"><span class="mod">Warsztat</span><span class="mod">Preferencje</span></span>
     </summary>
     <div class="body">
@@ -566,7 +566,9 @@
             <li>ekran startowy Warsztat niedostępny; jeśli był wybrany, wybór wraca na Dom</li>
           </ul>
         </li>
-        <li>do ustalenia: domyślny stan (włączony czy wyłączony) i los przypomnień kroków oraz wpisów w kalendarzu po wyłączeniu</li>
+        <li>✅ zrobione 2026-10-19: domyślnie wyłączony; karta „Warsztat” w Preferencjach z wpisami do kalendarza; wyłączony ukrywa też powiązanie z krokiem w Szczegółach myśli</li>
+        <li>po wyłączeniu wpisy w kalendarzu zostają, a Ukończ z wpisu działa dalej</li>
+        <li>przy okazji: wyłączony moduł (fiszki i Warsztat) ukrywa swoje opcje, w ich miejscu krótka informacja o korzyściach</li>
       </ul>
       <div class="where"><span class="lbl">Gdzie</span><ul><li><code>activities/settings/SettingsActivity.kt</code>, <code>services/AppSettingsStorage.kt</code> — wzór: przełącznik fiszek</li><li><code>activities/home/HomeActivity.kt</code> — miejsca zależne od włączenia modułu</li></ul></div>
     </div>
