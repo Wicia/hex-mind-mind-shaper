@@ -29,6 +29,7 @@
     <string name="common_guide_btn_dismiss">Dzięki</string>
 
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
+    <string name="common_emoji_warning" translatable="false">⚠️</string>
 
     <!-- Dialogs -->
     <string name="common_deletion_dialog_confirmation">%s usunięto</string>
@@ -92,6 +93,7 @@
     <string name="files_audio_error_unknown_file">Nieznany plik audio</string>
     <string name="files_error_unknown_file">Nieznany plik</string>
     <string name="files_state_no_file_selected">Nie wybrano pliku</string>
+    <string name="files_text_error_reading">Nie udało się wczytać pliku</string>
 
     <!-- Photos -->
     <string name="photos_removing_header">Usunąć zdjęcie?</string>
@@ -166,17 +168,22 @@ Dodaj pierwszą przyciskiem +</string>
     <string name="flashcards_btn_move">Przenieś</string>
     <string name="flashcards_speed_dial_add">Dodaj fiszki</string>
     <string name="flashcards_speed_dial_import">Importuj fiszki</string>
-    <string name="flashcards_import_header">Import fiszek</string>
+    <string name="flashcards_import_header">Import fiszek ze źródła</string>
     <string name="flashcards_import_separator_label">Separator:</string>
     <string name="flashcards_import_separator_new_line">Enter</string>
     <string name="flashcards_import_separator_dash">Myślnik</string>
     <string name="flashcards_import_hint_new_line">"Awers
 Rewers
 Awers
-Rewers…"</string>
+Rewers…"</string>nasze
     <string name="flashcards_import_hint_dash">"Awers - Rewers
 Awers - Rewers…"</string>
     <string name="flashcards_import_btn">Importuj</string>
+    <string name="flashcards_import_from_file">Z pliku</string>
+    <string name="flashcards_import_from_bank">Z banku</string>
+    <string name="flashcards_import_source_input">Ręcznie</string>
+    <string name="flashcards_import_pick_file">Wybierz plik</string>
+    <string name="flashcards_import_bank_label">Gotowe banki fiszek w aplikacji:</string>
     <plurals name="flashcards_import_count">
         <item quantity="one">Powstanie %d fiszka</item>
         <item quantity="few">Powstaną %d fiszki</item>
@@ -184,6 +191,12 @@ Awers - Rewers…"</string>
         <item quantity="other">Powstanie %d fiszki</item>
     </plurals>
     <string name="flashcards_import_skipped">(pominięte linie: %1$d)</string>
+    <plurals name="flashcards_import_done">
+        <item quantity="one">Zaimportowano %d fiszkę</item>
+        <item quantity="few">Zaimportowano %d fiszki</item>
+        <item quantity="many">Zaimportowano %d fiszek</item>
+        <item quantity="other">Zaimportowano %d fiszki</item>
+    </plurals>
 
     <!-- ============================================================ -->
     <!--    WORKSHOP - Onboarding review                              -->

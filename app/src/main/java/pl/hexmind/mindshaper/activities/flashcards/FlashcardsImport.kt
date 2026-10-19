@@ -20,7 +20,9 @@ object FlashcardsImport {
     )
 
     // Dash with spaces - words like "biało-czerwony" stay whole
-    private const val DASH = " - "
+    // ! Editors swap "-" for typographic dashes (en dash, em dash, minus) and spaces for non-breaking ones -
+    // a file from Word / Notes did not split at all
+    private val DASH = Regex("[\\s\\u00A0][-\\u2010\\u2011\\u2012\\u2013\\u2014\\u2015\\u2212][\\s\\u00A0]")
 
     fun parse(text: String, separator: Separator): Result {
         val lines = text.lines().map { line -> line.trim() }.filter { line -> line.isNotEmpty() }
@@ -41,11 +43,10 @@ object FlashcardsImport {
 
     private fun parseByDash(lines: List<String>): Result {
         val flashcards = lines.mapNotNull { line ->
-            val dashIndex = line.indexOf(DASH)
-            if (dashIndex < 0) return@mapNotNull null
+            val dash = DASH.find(line) ?: return@mapNotNull null
 
-            val front = line.substring(0, dashIndex).trim()
-            val back = line.substring(dashIndex + DASH.length).trim()
+            val front = line.substring(0, dash.range.first).trim()
+            val back = line.substring(dash.range.last + 1).trim()
             if (front.isEmpty() || back.isEmpty()) null else FlashcardDTO(front = front, back = back)
         }
         return Result(flashcards, skippedLines = lines.size - flashcards.size)

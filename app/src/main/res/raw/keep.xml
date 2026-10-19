@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Flashcards bank files are found by name only (FlashcardsBank) - without it the release build strips them -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@raw/flashcards_bank_*" />

@@ -477,8 +477,18 @@
     <path d="M158,29A9,9 0 0 0 167,38L283,38A9,9 0 0 0 292,29" stroke="#FFE1C8"/>
   </g>
 </svg></figure>
+        <figure><svg role="img" aria-label="hex-tab-switch na ciemnym tle" xmlns="http://www.w3.org/2000/svg" width="345" height="67.9" viewBox="0 0 300 59">
+  <rect width="300" height="59" fill="#1A1817"/>
+  <g transform="translate(0,4)" font-size="16" font-family="'Baloo 2', 'Segoe UI', sans-serif" text-anchor="middle" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <text x="75" y="18" dominant-baseline="central" font-weight="700" fill="#FFF4E6" stroke="none">Z banku</text>
+    <text x="225" y="18" dominant-baseline="central" fill="#BEBEBE" stroke="none">Z pliku</text>
+    <path d="M8,29A9,9 0 0 0 17,38L64,38L75,49L86,38L133,38A9,9 0 0 0 142,29" stroke="#FFC59A"/>
+    <path d="M158,29A9,9 0 0 0 167,38L283,38A9,9 0 0 0 292,29" stroke="#FFE1C8"/>
+  </g>
+</svg></figure>
         <ul>
           <li>aktywna etykieta <code>text_primary</code>, pogrubiona; nieaktywna <code>text_secondary</code></li>
+          <li>na ciemnym tle (scrim dialogu) jasne etykiety: aktywna <code>app_background</code>, nieaktywna <code>_gray_lvl_2</code>; nawiasy bez zmian</li>
           <li>po lewej od etykiety opcjonalnie ikona albo emoji (jedno z nich) — ikona w kolorze etykiety; etykieta razem z ikoną wyśrodkowana w zakładce</li>
           <li>aktywna zakładka: poziomy nawias klamrowy <code>_orange_lvl_2</code> (końce podwinięte w górę, w środku trójkątny dziubek w dół — równoramienny, proste ścianki)</li>
           <li>nieaktywna: linia <code>_orange_lvl_1</code> z tak samo podwiniętymi końcami, bez dziubka</li>
@@ -487,7 +497,7 @@
       <dt>Działanie</dt>
       <dd><b>tap</b> wybiera zakładkę — pogrubienie zmienia się od razu, nawias przesuwa się pod nią</dd>
       <dt>Kod</dt>
-      <dd><code>HexTabSwitch</code> (widget), <code>HexTabSwitch.Tab</code> (etykieta + <code>iconRes</code> / <code>emoji</code>); poprzedni wygląd (zrośnięte segmenty z ząbkiem): <code>docs/legacy/HexTabSwitchLegacy.kt</code> (poza kodem aplikacji)</dd>
+      <dd><code>HexTabSwitch</code> (widget), <code>HexTabSwitch.Tab</code> (etykieta + <code>iconRes</code> / <code>emoji</code>), <code>app:tabActiveTextColor</code> / <code>app:tabInactiveTextColor</code> (kolory etykiet); poprzedni wygląd (zrośnięte segmenty z ząbkiem): <code>docs/legacy/HexTabSwitchLegacy.kt</code> (poza kodem aplikacji)</dd>
     </dl>
   </details>
 

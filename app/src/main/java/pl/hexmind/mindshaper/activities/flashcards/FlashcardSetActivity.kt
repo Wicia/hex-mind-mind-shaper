@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.common.formatting.withoutOrphans
+import pl.hexmind.mindshaper.common.ui.TextFilePicker
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardEditDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardsEditDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardsImportDialog
@@ -41,6 +42,8 @@ class FlashcardSetActivity : CoreActivity() {
     }
 
     private val viewModel: FlashcardSetViewModel by viewModels()
+
+    private val textFilePicker = TextFilePicker(this)
 
     private lateinit var llFlashcards: LinearLayout
     private lateinit var tvEmpty: TextView
@@ -94,7 +97,7 @@ class FlashcardSetActivity : CoreActivity() {
     private fun setupSpeedDial() {
         val speedDial = SpeedDial(this, fabAdd)
         speedDial.addOption(R.string.flashcards_speed_dial_import, R.drawable.ic_action_import) {
-            FlashcardsImportDialog(this, onImport = viewModel::importFlashcards).show()
+            FlashcardsImportDialog(this, textFilePicker, onImport = viewModel::importFlashcards).show()
         }
         speedDial.addOption(R.string.flashcards_speed_dial_add, R.drawable.ic_action_add_flashcards) {
             viewModel.set.value?.let { set -> openAddSeries(set) }

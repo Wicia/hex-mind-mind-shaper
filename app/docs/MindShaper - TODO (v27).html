@@ -143,6 +143,30 @@
   <h2>Kolejne funkcje i kroki</h2>
   <details class="item">
     <summary>
+      <span class="prio imp">Istotny</span>
+      <strong>Ikony domen w wersji release — reguły keep</strong> — ikony szukane po prefiksie nazwy mogą zniknąć po minifikacji.
+      <span class="mods"><span class="mod">Tagi i Domeny</span></span>
+    </summary>
+    <div class="body">
+      <ul>
+        <li>ikony <code>z_ic_domain_*</code> są szukane przez refleksję po polach <code>R.drawable</code> — przy <code>isMinifyEnabled</code> + <code>isShrinkResources</code> R8 może usunąć nieużywane pola, a shrinker same pliki</li>
+        <li>najpierw sprawdzić na wersji release, czy galeria ikon domen nie jest pusta</li>
+        <li>poprawka jak dla banku fiszek: reguła <code>-keepclassmembers class pl.hexmind.mindshaper.R$drawable { public static &lt;fields&gt;; }</code> i <code>@drawable/z_ic_domain_*</code> w <code>tools:keep</code></li>
+        <li>potem opisać w dokumentacji Tech: zasoby szukane po prefiksie nazwy (ikony domen, bank fiszek) i dlaczego potrzebują reguł keep</li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li><code>proguard-rules.pro</code> — obok reguły dla <code>R$raw</code></li>
+          <li><code>res/raw/keep.xml</code> — dopisać drugi wzorzec do <code>tools:keep</code></li>
+          <li><code>database/initialization/DatabaseInitializer.kt</code> — <code>createIconsList()</code>, <code>DOMAIN_ICON_PREFIX</code></li>
+          <li><code>app/docs/tech</code> — nowy albo istniejący dokument Tech</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
       <span class="prio crit">Krytyczny</span>
       <strong>Koncepcja i flow onboardingu</strong> — zaplanować, co, gdzie i jak pokazać oraz do czego zachęcić.
       <span class="mods"><span class="mod">Onboarding</span></span>
@@ -153,6 +177,19 @@
         <li>do czego zachęcić — konkretna akcja do wypróbowania od razu po wskazówce</li>
         <li>kolejność i przejścia między miejscami — jeden spójny przebieg „za rączkę” zamiast osobnych wskazówek</li>
         <li>punkt startu już jest: powitanie przy pierwszym uruchomieniu z wyborem „Poznajmy się” / „Bez wskazówek”</li>
+      </ul>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span>
+      <strong>Włączanie i wyłączanie wskazówek z kolby na Home</strong> — zmiana decyzji z powitania bez szukania w Preferencjach.
+      <span class="mods"><span class="mod">Onboarding</span><span class="mod">Wskazówki</span></span>
+    </summary>
+    <div class="body">
+      <ul>
+        <li>przełącznik wł./wył. w kolbie „Poznawanie aplikacji” na Home, nie w Preferencjach</li>
+        <li>dziś „Bez wskazówek” ukrywa kolbę — musi zostać widoczna (np. wyszarzona), inaczej nie ma skąd włączyć wskazówek z powrotem</li>
       </ul>
     </div>
   </details>
@@ -536,6 +573,21 @@
   </details>
 
   <h2>Sprzątanie / Refactoring</h2>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span>
+      <strong>Przypinanie dialogów u góry jako opcja <code>ScrimDialogs</code></strong> — jedno miejsce zamiast powtarzanego kodu w każdym dialogu.
+      <span class="mods"><span class="mod">Cała aplikacja</span></span>
+    </summary>
+    <div class="body">
+      <ul>
+        <li>dziś <code>WelcomeDialog</code> i <code>FlashcardsImportDialog</code> osobno ustawiają <code>gravity = TOP</code>, <code>y = 48dp</code> i zerują insety M3 (80dp) — przenieść do opcji w <code>ScrimDialogs.create(...)</code></li>
+        <li>odstęp od góry nieco większy niż 48dp — potestować wartość na urządzeniu</li>
+        <li>sprawdzić wysokie dialogi: czy przy klawiaturze nie ucina dołu i czy treść się przewija</li>
+        <li>potem rozważyć włączenie w innych dialogach z polem tekstowym (notatka, fiszki zestawu)</li>
+      </ul>
+    </div>
+  </details>
   <details class="item">
     <summary>
       <span class="prio imp">Istotny</span>
@@ -1114,6 +1166,22 @@
     </div>
   </details>
   <h2>Sprawdzenie i ew. naprawa</h2>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span>
+      <strong>Gson w wersji release — klucze JSON backupu</strong> — R8 skraca nazwy pól, a Gson czyta je refleksją.
+      <span class="mods"><span class="mod">Backup</span><span class="mod">Technika</span></span>
+    </summary>
+    <div class="body">
+      <ul>
+        <li><code>DataSnapshotManager</code> zapisuje encje Room bez <code>@SerializedName</code> i bez reguł keep — w release JSON może mieć klucze <code>a</code>, <code>b</code>… zamiast nazw pól</li>
+        <li>skutek: backup z release nieczytelny dla debug i dla innej wersji release (skrócone nazwy mogą się zmieniać między buildami)</li>
+        <li>seed ścieżek (<code>paths_seed.json</code>): nazwy chronione <code>@SerializedName</code>, ale <code>TypeToken</code> może stracić typ generyczny w pełnym trybie R8 — błąd łapany, skutek: brak ścieżek startowych</li>
+        <li>sprawdzić na buildzie release: backup → podgląd pliku → restore; czysta instalacja → ścieżki startowe</li>
+        <li>poprawka: reguły keep dla klas zapisywanych przez Gson (+ <code>-keepattributes Signature</code>) albo Gson ≥ 2.11 z wbudowanymi regułami; opis w Tech „R8 and shrinking”</li>
+      </ul>
+    </div>
+  </details>
   <details class="item">
     <summary>
       <span class="prio minor">Drobny</span>

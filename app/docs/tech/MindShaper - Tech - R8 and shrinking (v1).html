@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mind Shaper — Tech: R8 i shrinking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>:root{
+    --cream:#FFF4E6;
+    --surface:#FFFFFF;
+    --orange-1:#FFE1C8;
+    --orange-2:#FFC59A;
+    --orange-3:#FFA86B;
+    --graphite:#48433F;
+    --muted:#88807A;
+    --rule:#E6E6E6;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:40px 20px 80px;
+    background:var(--cream);
+    color:var(--graphite);
+    font-family:"Alegreya",Georgia,serif;
+    font-size:17px; line-height:1.65;
+  }
+  .wrap{max-width:760px; margin:0 auto}
+  h1{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:600; font-size:30px; line-height:1.25;
+    margin:0 0 6px;
+  }
+  .lede{margin:0 0 34px; color:var(--muted); font-style:italic}
+  h2{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:500; font-size:20px;
+    margin:38px 0 8px;
+  }
+  h2::before{
+    content:"\2726";
+    color:var(--orange-3);
+    font-size:1.3em; line-height:1;
+    margin-right:8px;
+  }
+  section{
+    background:var(--surface);
+    border:1px solid var(--orange-1);
+    border-radius:12px;
+    padding:6px 22px 14px;
+  }
+  section > p{margin:12px 0}
+  ul{margin:10px 0; padding-left:20px}
+  li{margin:4px 0}
+  li ul{margin:4px 0}
+  code{
+    font-family:ui-monospace,Consolas,monospace; font-size:14px;
+    background:#FBF4EC; border:1px solid #F0E4D6;
+    padding:1px 5px; border-radius:5px;
+  }
+  figure{margin:10px 0 16px}
+  figure svg{display:block; max-width:100%; height:auto; border-radius:8px}
+  .note{color:var(--muted); font-style:italic; font-size:15px}
+  table{width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:16px}
+  th,td{text-align:left; padding:6px 10px; border-bottom:1px solid var(--rule)}
+  th{font-family:"Baloo 2",system-ui,sans-serif; font-weight:500; color:var(--muted)}
+</style>
+<body>
+<div class="wrap">
+
+<h1>Tech: R8, ProGuard rules i keep.xml</h1>
+<p class="lede">Co build release wycina z aplikacji i jak chronimy rzeczy szukane po nazwie. Dokument opisuje stan zaimplementowany; ryzyka oznaczone jako „do sprawdzenia”.</p>
+
+<h2>Kontekst</h2>
+<section>
+  <p>Build release przechodzi przez optymalizację: APK jest mniejszy, a kod trudniejszy do odczytania po dekompilacji. Narzędzie analizuje, co jest używane, startując od punktów wejścia (activity, serwisy z manifestu), i usuwa resztę.</p>
+  <ul>
+    <li><b>Analiza jest statyczna</b> — widzi wywołania w kodzie, nie widzi odwołań budowanych w czasie działania: refleksji, nazw zasobów składanych z tekstu, kluczy JSON czytanych z nazw pól.</li>
+    <li><b>Reguły keep</b> to sposób, by powiedzieć narzędziu „to jest używane, choć tego nie widzisz”.</li>
+    <li><b>ProGuard a R8</b> — R8 zastąpił ProGuarda w Android Gradle Plugin, ale czyta te same reguły; stąd nazwa pliku <code>proguard-rules.pro</code>.</li>
+    <li><b>Objaw</b> — debug działa, release nie: pusta lista, brak pliku, crash z nazwami <code>a.b.c</code> w stack trace.</li>
+  </ul>
+  <p>Do poczytania:</p>
+  <ul>
+    <li><a href="https://developer.android.com/build/shrink-code">Android — Shrink, obfuscate, and optimize your app</a> — R8, shrinker zasobów, <code>tools:keep</code>, tryb safe/strict</li>
+    <li><a href="https://www.guardsquare.com/manual/configuration/usage">ProGuard manual — Usage</a> — składnia reguł (<code>-keep</code>, <code>-keepclassmembers</code>, <code>-keepattributes</code>)</li>
+    <li><a href="https://r8.googlesource.com/r8/+/refs/heads/main/compatibility-faq.md">R8 — Compatibility FAQ</a> — tryb pełny i czym różni się od ProGuarda (m.in. refleksja, sygnatury generyków)</li>
+    <li><a href="https://github.com/google/gson/blob/main/Troubleshooting.md">Gson — Troubleshooting</a> — Gson z R8: skrócone nazwy pól, <code>TypeToken</code></li>
+    <li><a href="https://developer.android.com/studio/command-line/retrace">Android — retrace</a> — odczyt stack trace z release przez <code>mapping.txt</code></li>
+  </ul>
+</section>
+
+<h2>Dwa niezależne mechanizmy</h2>
+<section>
+  <figure>
+    <svg viewBox="0 0 700 170" width="700" height="170" xmlns="http://www.w3.org/2000/svg" font-family="Alegreya, Georgia, serif" font-size="14" fill="#48433F">
+      <rect width="700" height="170" fill="#FFFFFF"/>
+
+      <rect x="10" y="20" width="320" height="130" rx="10" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="170" y="44" text-anchor="middle" font-family="'Baloo 2', sans-serif" font-size="16">R8 — kod</text>
+      <text x="170" y="70" text-anchor="middle" font-size="13" fill="#88807A">isMinifyEnabled = true</text>
+      <text x="170" y="96" text-anchor="middle">usuwa nieużywane klasy i pola,</text>
+      <text x="170" y="114" text-anchor="middle">skraca nazwy (a, b, c…)</text>
+      <text x="170" y="138" text-anchor="middle" font-family="Consolas, monospace" font-size="13">proguard-rules.pro</text>
+
+      <rect x="370" y="20" width="320" height="130" rx="10" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="530" y="44" text-anchor="middle" font-family="'Baloo 2', sans-serif" font-size="16">Shrinker — zasoby</text>
+      <text x="530" y="70" text-anchor="middle" font-size="13" fill="#88807A">isShrinkResources = true</text>
+      <text x="530" y="96" text-anchor="middle">usuwa pliki z res/,</text>
+      <text x="530" y="114" text-anchor="middle">do których nikt nie sięga wprost</text>
+      <text x="530" y="138" text-anchor="middle" font-family="Consolas, monospace" font-size="13">res/raw/keep.xml</text>
+    </svg>
+  </figure>
+  <ul>
+    <li><b>Tylko release.</b> W <code>buildTypes.release</code> oba przełączniki są włączone; debug niczego nie wycina — dlatego problemy wychodzą dopiero na buildzie release.</li>
+    <li><b>Reguły bazowe</b> — <code>proguard-android-optimize.txt</code> z AGP plus nasze <code>proguard-rules.pro</code>; biblioteki (Room, Hilt) dokładają własne reguły automatycznie.</li>
+    <li><b>Osobne światy.</b> Reguła w <code>proguard-rules.pro</code> chroni pole klasy, ale nie plik zasobu — i odwrotnie. Rzecz szukana po nazwie zwykle potrzebuje obu.</li>
+  </ul>
+</section>
+
+<h2>Wzorzec „szukane po prefiksie”</h2>
+<section>
+  <p>Zasób, do którego kod nie odwołuje się przez <code>R.raw.x</code> / <code>R.drawable.x</code>, tylko przegląda pola klasy <code>R</code> refleksją i filtruje po prefiksie nazwy.</p>
+  <ul>
+    <li><b>Zaleta</b> — nowy plik z prefiksem pojawia się w aplikacji bez zmiany kodu.</li>
+    <li><b>Koszt</b> — dla R8 pola <code>R</code> są nieużywane, więc je usuwa; refleksja w release zwraca pustą listę.</li>
+    <li><b>Koszt</b> — shrinker nie widzi odwołania do pliku, więc może go usunąć z APK.</li>
+  </ul>
+</section>
+
+<h2>Bank fiszek — chroniony</h2>
+<section>
+  <ul>
+    <li><b>Pliki</b> <code>res/raw/flashcards_bank_*.txt</code>; <code>FlashcardsBank</code> przegląda <code>R.raw::class.java.fields</code> po prefiksie <code>flashcards_bank_</code>.</li>
+    <li><b>Pola</b> — <code>-keepclassmembers class pl.hexmind.mindshaper.R$raw { public static &lt;fields&gt;; }</code> w <code>proguard-rules.pro</code>.
+      <ul>
+        <li>zachowuje wszystkie pola <code>R.raw</code> (także <code>paths_seed</code>) — koszt pomijalny</li>
+      </ul>
+    </li>
+    <li><b>Pliki</b> — <code>tools:keep="@raw/flashcards_bank_*"</code> w <code>res/raw/keep.xml</code>; gwiazdka działa jak prefiks, więc nowe pliki banku są chronione bez edycji.</li>
+    <li><b><code>keep.xml</code> sam nie trafia do APK</b> — shrinker czyta go przy buildzie i usuwa.</li>
+  </ul>
+</section>
+
+<h2>Ikony domen — do sprawdzenia</h2>
+<section>
+  <ul>
+    <li><b>Ten sam wzorzec</b> — <code>DatabaseInitializer.createIconsList()</code> przegląda <code>R.drawable::class.java.fields</code> po prefiksie <code>z_ic_domain</code>; galeria ikon dostaje to, co znajdzie.</li>
+    <li><b>Brak reguły dla <code>R$drawable</code></b> — w release lista ikon może wyjść pusta.</li>
+    <li><b>Pliki prawdopodobnie przeżywają</b> — <code>DomainIconsService</code> woła <code>getIdentifier()</code>, a wtedy shrinker (tryb safe) zachowuje zasoby pasujące do stałych tekstowych w kodzie, także prefiksów. Pewniej: dopisać <code>@drawable/z_ic_domain_*</code> do <code>keep.xml</code>.</li>
+    <li>Zadanie jest w TODO.</li>
+  </ul>
+</section>
+
+<h2>Gson — do sprawdzenia</h2>
+<section>
+  <ul>
+    <li><b>Gson czyta nazwy pól refleksją.</b> R8 skraca nazwy, więc bez reguł JSON w release ma klucze <code>a</code>, <code>b</code>… zamiast <code>title</code>.</li>
+    <li><b>Backup</b> — <code>DataSnapshotManager</code> zapisuje encje Room (<code>ThoughtEntity</code> itd.) bez <code>@SerializedName</code>.
+      <ul>
+        <li>ryzyko: backup z release nieczytelny dla debug i dla innej wersji release (nazwy mogą się zmienić między buildami)</li>
+      </ul>
+    </li>
+    <li><b>Seed ścieżek</b> — <code>PathSeedEntry</code> ma <code>@SerializedName</code>, więc nazwy są bezpieczne; zostaje <code>TypeToken</code> — R8 w trybie pełnym (domyślny od AGP 8) może usunąć informację o typie generycznym. Błąd jest łapany, więc skutkiem byłby brak ścieżek startowych, nie crash.</li>
+    <li><b>Gson 2.10.1</b> nie ma wbudowanych reguł R8 (pojawiły się w 2.11).</li>
+    <li>Zadanie jest w TODO.</li>
+  </ul>
+</section>
+
+<h2>Jak sprawdzić</h2>
+<section>
+  <ul>
+    <li><b>Build release na urządzeniu</b> — import fiszek: zakładka „Z banku” z pigułkami; galeria ikon domen; backup → restore; ścieżki startowe na czystej instalacji.</li>
+    <li><b>Raporty R8</b> — <code>app/build/outputs/mapping/&lt;wariant&gt;/</code>: <code>usage.txt</code> (co usunięto), <code>mapping.txt</code> (stare → nowe nazwy), <code>resources.txt</code> (decyzje shrinkera).</li>
+  </ul>
+</section>
+
+<h2>Pułapki — nie ruszać</h2>
+<section>
+  <ul>
+    <li><b>Zmiana prefiksu</b> (<code>flashcards_bank_</code>) — trzeba poprawić stałą w <code>FlashcardsBank</code> i wzorzec w <code>keep.xml</code> razem.</li>
+    <li><b>Nazwy w <code>res/</code></b> — tylko małe litery, cyfry i <code>_</code>; „Apteka.txt” wywala build.</li>
+    <li><b><code>R$raw</code> z dolarem</b> — klasa zagnieżdżona; zapis <code>R.raw</code> w regule nic nie chroni.</li>
+  </ul>
+</section>
+
+<h2>Implementacja</h2>
+<section>
+  <ul>
+    <li><code>app/build.gradle.kts</code> — <code>buildTypes.release</code></li>
+    <li><code>app/proguard-rules.pro</code> — reguła <code>R$raw</code></li>
+    <li><code>res/raw/keep.xml</code> — <code>tools:keep</code></li>
+    <li><code>activities/flashcards/FlashcardsBank.kt</code>, <code>database/initialization/DatabaseInitializer.kt</code>, <code>services/DomainIconsService.kt</code>, <code>database/initialization/DataSnapshotManager.kt</code></li>
+  </ul>
+</section>
+
+</div>
+</body>
+</html>
