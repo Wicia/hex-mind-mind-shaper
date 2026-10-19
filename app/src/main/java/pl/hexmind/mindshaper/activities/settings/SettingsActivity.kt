@@ -721,6 +721,9 @@ class SettingsActivity : CoreActivity() {
     private fun setupDormantModeListeners() {
         binding.switchDormantMode.setOnCheckedChangeListener { _, _ -> syncDormantOptionsVisibility() }
 
+        // Value threshold follows the scale picked on the tiles, not the stored one
+        binding.tilesValueSystem.onSelectionChanged = { clampDormantValueToScale() }
+
         // TextWatcher for live validation of value threshold
         binding.etDormantValue.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
@@ -760,8 +763,23 @@ class SettingsActivity : CoreActivity() {
         return isValid
     }
 
+    // A threshold above the new scale drops to its max - the text watcher validates it again
+    private fun clampDormantValueToScale() {
+        val max = selectedDormantValueMax()
+        val raw = binding.etDormantValue.text?.toString()?.toIntOrNull()
+        if (raw != null && raw > max) {
+            binding.etDormantValue.setText(max.toString())
+        }
+        else {
+            validateDormantValueInput()
+        }
+    }
+
+    // Scale chosen on the tiles - it is stored only on save
+    private fun selectedDormantValueMax(): Int = binding.tilesValueSystem.getSelected().maxValue
+
     private fun validateDormantValueInput() : Boolean {
-        val max = appSettingsStorage.getDormantValueMax()
+        val max = selectedDormantValueMax()
         val raw = binding.etDormantValue.text?.toString()?.toIntOrNull()
         val isValid = raw != null && raw in AppSettingsStorage.DORMANT_VALUE_MIN..max
         binding.tvDormantModeError.visibility = if (isValid) View.INVISIBLE else View.VISIBLE
@@ -781,7 +799,7 @@ class SettingsActivity : CoreActivity() {
 
     private fun readDormantValue(): Int? {
         val raw = binding.etDormantValue.text?.toString()?.toIntOrNull() ?: return null
-        return raw.coerceIn(AppSettingsStorage.DORMANT_VALUE_MIN, appSettingsStorage.getDormantValueMax())
+        return raw.coerceIn(AppSettingsStorage.DORMANT_VALUE_MIN, selectedDormantValueMax())
     }
 
     /**
