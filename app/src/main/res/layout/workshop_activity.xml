@@ -56,8 +56,9 @@
                         android:gravity="center_vertical"
                         android:padding="12dp">
 
+                        <!-- Aktywne cele / Archiwalne cele - follows the list shown below -->
                         <TextView
-                            android:id="@+id/tv_your_name_section_header"
+                            android:id="@+id/tv_goals_section_header"
                             style="@style/HexCard_Header"
                             android:layout_weight="1"
                             android:layout_width="0dp"
@@ -65,112 +66,40 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginBottom="4dp"
-                            android:text="@string/workshop_section_goals" />
+                            android:text="@string/workshop_section_goals_active" />
+
+                        <!-- Which goals to show: active / archived (WorkshopGoalsViewBottomSheet) - same button as the paths' reset -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_goals_view"
+                            style="@style/SecondaryActionButton"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:contentDescription="@string/workshop_goals_view_title"
+                            app:icon="@drawable/ic_goals_view_filter"
+                            app:iconGravity="textStart"
+                            app:iconSize="24dp" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_goals"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingBottom="12dp"
                         android:nestedScrollingEnabled="false"
                         android:overScrollMode="never"
                         tools:listitem="@layout/goal_item" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_goals_toggle"
-                        style="@style/SecondaryActionButton.Ghost"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="4dp"
-                        android:visibility="gone"
-                        />
-
-                    <!-- === ARCHIVE === -->
-                    <!-- Whole block hides when nothing is archived -->
-                    <!-- 1dp insets keep the panel on the white surface instead of covering the card border -->
-                    <LinearLayout
-                        android:id="@+id/ll_goals_archive"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="1dp"
-                        android:layout_marginEnd="1dp"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginTop="8dp"
-                        android:orientation="vertical"
-                        android:background="@drawable/shape_card_archive"
-                        android:visibility="gone">
-
-                        <!-- Collapsible header: whole row toggles the archive (bench of past goals) -->
-                        <LinearLayout
-                            android:id="@+id/ll_goals_archive_header"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:background="?attr/selectableItemBackground"
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp">
-
-                            <TextView
-                                android:id="@+id/tv_goals_archive_header"
-                                style="@style/HexCard_Header"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginStart="20dp"
-                                android:layout_marginTop="0dp"
-                                android:layout_marginBottom="0dp"
-                                android:textColor="@color/text_secondary"
-                                android:text="@string/workshop_section_goals_archive"
-                                />
-
-                            <ImageView
-                                android:id="@+id/iv_goals_archive_chevron"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_marginEnd="16dp"
-                                android:src="@drawable/ic_action_chevron_right"
-                                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                                app:tint="@color/_gray_lvl_3"
-                                />
-
-                        </LinearLayout>
-
-                        <!-- Collapsable content -->
-                        <LinearLayout
-                            android:id="@+id/ll_goals_archive_content"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="gone">
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rv_goals_archive"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:nestedScrollingEnabled="false"
-                                android:overScrollMode="never"
-                                tools:listitem="@layout/goal_item"
-                                />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btn_goals_archive_more"
-                                style="@style/SecondaryActionButton.Ghost"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="4dp"
-                                android:layout_marginBottom="4dp"
-                                android:visibility="gone"
-                                />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
                 </LinearLayout>
+
+                <!-- Pokaż jeszcze N / Pokaż mniej - hangs from the card's bottom edge, -1dp overlaps it (no seam) -->
+                <pl.hexmind.mindshaper.common.ui.views.HexPullTab
+                    android:id="@+id/pt_goals_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="-1dp"
+                    android:visibility="gone"
+                    app:tabColor="@android:color/white" />
 
             </LinearLayout>
 

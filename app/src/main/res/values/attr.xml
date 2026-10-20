@@ -108,4 +108,14 @@
         <attr name="notchDepth" />
     </declare-styleable>
 
+    <declare-styleable name="HexPullTab">
+        <!-- Fill = the color of the card it hangs from -->
+        <attr name="tabColor" format="reference|color" />
+        <!-- Optional outline continuing the card's border; none when absent -->
+        <attr name="tabStrokeColor" format="reference|color" />
+        <attr name="tabStrokeWidth" format="dimension" />
+        <!-- Horizontal run of each wave from the card's edge down to the flat bottom -->
+        <attr name="tabShoulderWidth" format="dimension" />
+    </declare-styleable>
+
 </resources>

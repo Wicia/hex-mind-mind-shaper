@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -19,6 +18,7 @@ import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.common.ui.dpToPx
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
+import pl.hexmind.mindshaper.common.ui.views.HexPullTab
 import pl.hexmind.mindshaper.common.ui.views.HexTabSwitch
 import pl.hexmind.mindshaper.common.ui.views.lists.InsetDividerDecoration
 import pl.hexmind.mindshaper.database.models.PathEntity
@@ -35,22 +35,16 @@ class WorkshopActivity : CoreActivity() {
 
     // GOALS
     private lateinit var rvGoals: RecyclerView
-    private lateinit var btnGoalsToggle: MaterialButton
+    private lateinit var ptGoalsToggle: HexPullTab
     private lateinit var fabAddGoal: FloatingActionButton
     private lateinit var goalsAdapter: GoalsAdapter
-    private lateinit var llGoalsArchive: View
-    private lateinit var llGoalsArchiveHeader: View
-    private lateinit var llGoalsArchiveContent: View
-    private lateinit var tvGoalsArchiveHeader: TextView
-    private lateinit var ivGoalsArchiveChevron: ImageView
-    private lateinit var rvGoalsArchive: RecyclerView
-    private lateinit var btnGoalsArchiveMore: MaterialButton
-    private lateinit var archiveAdapter: GoalsAdapter
+    private lateinit var tvGoalsHeader: TextView
+    private lateinit var btnGoalsView: MaterialButton
 
     private var allGoals: List<Goal> = emptyList()
     private var allArchivedGoals: List<Goal> = emptyList()
-    private var archiveVisibleCount: Int = ARCHIVE_PAGE_SIZE
-    private var isArchiveExpanded: Boolean = false
+    // One list for both: active goals or the archive (chosen in WorkshopGoalsViewBottomSheet); active on every entry
+    private var isArchiveShown: Boolean = false
     private var isGoalsExpanded: Boolean = false
 
     // PATHS
@@ -82,19 +76,13 @@ class WorkshopActivity : CoreActivity() {
         setupHeader(R.drawable.ic_activity_workshop, R.string.workshop_title)
 
         rvGoals        = findViewById(R.id.rv_goals)
-        btnGoalsToggle = findViewById(R.id.btn_goals_toggle)
-        llGoalsArchive        = findViewById(R.id.ll_goals_archive)
-        llGoalsArchiveHeader  = findViewById(R.id.ll_goals_archive_header)
-        llGoalsArchiveContent = findViewById(R.id.ll_goals_archive_content)
-        tvGoalsArchiveHeader  = findViewById(R.id.tv_goals_archive_header)
-        ivGoalsArchiveChevron = findViewById(R.id.iv_goals_archive_chevron)
-        rvGoalsArchive        = findViewById(R.id.rv_goals_archive)
-        btnGoalsArchiveMore   = findViewById(R.id.btn_goals_archive_more)
+        ptGoalsToggle  = findViewById(R.id.pt_goals_toggle)
+        tvGoalsHeader  = findViewById(R.id.tv_goals_section_header)
+        btnGoalsView   = findViewById(R.id.btn_goals_view)
         fabAddGoal     = findViewById(R.id.fab_add_goal)
 
-        btnGoalsToggle.setOnClickListener { toggleGoalsSection() }
-        btnGoalsArchiveMore.setOnClickListener { showMoreArchivedGoals() }
-        llGoalsArchiveHeader.setOnClickListener { toggleArchive() }
+        ptGoalsToggle.setOnClickListener { toggleGoalsSection() }
+        btnGoalsView.setOnClickListener { showGoalsViewSheet() }
 
         llPathsList   = findViewById(R.id.ll_paths_list)
         tvPoolEmpty   = findViewById(R.id.tv_paths_pool_empty)
@@ -130,15 +118,23 @@ class WorkshopActivity : CoreActivity() {
         val goalsVisible = position == TAB_GOALS
         cardGoals.visibility = if (goalsVisible) View.VISIBLE else View.GONE
         cardPaths.visibility = if (goalsVisible) View.GONE else View.VISIBLE
-        // FAB adds a goal, so it belongs to the Goals tab only
-        if (goalsVisible) fabAddGoal.show() else fabAddGoal.hide()
+        updateFab()
+    }
+
+    // FAB adds an active goal - Goals tab with the active goals only (a goal added over the archive would not show up)
+    private fun updateFab() {
+        val isGoalsTab = cardGoals.visibility == View.VISIBLE
+        if (isGoalsTab && !isArchiveShown) fabAddGoal.show() else fabAddGoal.hide()
     }
 
     private fun setupGoalsList() {
         goalsAdapter = GoalsAdapter(
             onGoalTap      = { goalId -> openGoalDetail(goalId) },
             onCycleImportance = { goalId -> viewModel.cycleGoalImportance(goalId) },
-            onGoalLongPress = { goalId -> showDeleteGoalConfirmation(goalId) }
+            // Active: delete / archive; archived: delete / restore
+            onGoalLongPress = { goalId ->
+                if (isArchiveShown) showArchivedGoalActions(goalId) else showDeleteGoalConfirmation(goalId)
+            }
         )
         rvGoals.apply {
             layoutManager = LinearLayoutManager(this@WorkshopActivity)
@@ -146,26 +142,6 @@ class WorkshopActivity : CoreActivity() {
             isNestedScrollingEnabled = false
             // Inset to separate list elements
             addItemDecoration(InsetDividerDecoration(this@WorkshopActivity, GOAL_DIVIDER_INSET_DP))
-        }
-
-        //  same adapter class as the main list
-        archiveAdapter = GoalsAdapter(
-            onGoalTap         = { goalId -> openGoalDetail(goalId) },
-            onCycleImportance = { goalId -> viewModel.cycleGoalImportance(goalId) },
-            onGoalLongPress   = { goalId -> showArchivedGoalActions(goalId) }
-        )
-        rvGoalsArchive.apply {
-            layoutManager = LinearLayoutManager(this@WorkshopActivity)
-            adapter = archiveAdapter
-            isNestedScrollingEnabled = false
-            // Darker divider fur ARCHIVED state
-            addItemDecoration(
-                InsetDividerDecoration(
-                    this@WorkshopActivity,
-                    GOAL_DIVIDER_INSET_DP,
-                    dividerColorRes = R.color._gray_lvl_2
-                )
-            )
         }
     }
 
@@ -180,28 +156,37 @@ class WorkshopActivity : CoreActivity() {
         }
         viewModel.archivedGoals.observe(this) { goals ->
             allArchivedGoals = goals
-            renderArchiveList()
+            // Last one restored / deleted - nothing left to show, back to the active goals
+            if (isArchiveShown && goals.isEmpty()) showArchive(false)
+            else renderGoalsList()
         }
     }
 
-    // Shows up to MAX_COLLAPSED_GOALS by default; toggle button reveals/hides the rest
+    // Shows up to MAX_COLLAPSED_GOALS by default; toggle button reveals/hides the rest - the same for the archive
     private fun renderGoalsList() {
-        // Collapse again when the list shrinks below the threshold, so the state stays predictable
-        if (allGoals.size <= MAX_COLLAPSED_GOALS) isGoalsExpanded = false
+        val shownGoals = if (isArchiveShown) allArchivedGoals else allGoals
 
-        val visibleGoals = if (isGoalsExpanded || allGoals.size <= MAX_COLLAPSED_GOALS)
-            allGoals
+        tvGoalsHeader.setText(
+            if (isArchiveShown) R.string.workshop_section_goals_archived else R.string.workshop_section_goals_active
+        )
+
+        // Collapse again when the list shrinks below the threshold, so the state stays predictable
+        if (shownGoals.size <= MAX_COLLAPSED_GOALS) isGoalsExpanded = false
+
+        val visibleGoals = if (isGoalsExpanded || shownGoals.size <= MAX_COLLAPSED_GOALS)
+            shownGoals
         else
-            allGoals.take(MAX_COLLAPSED_GOALS)
+            shownGoals.take(MAX_COLLAPSED_GOALS)
 
         goalsAdapter.submitList(visibleGoals)
 
-        btnGoalsToggle.visibility = if (allGoals.size > MAX_COLLAPSED_GOALS) View.VISIBLE else View.GONE
+        ptGoalsToggle.visibility = if (shownGoals.size > MAX_COLLAPSED_GOALS) View.VISIBLE else View.GONE
+        ptGoalsToggle.setExpanded(isGoalsExpanded)
         if (isGoalsExpanded) {
-            btnGoalsToggle.text = getString(R.string.workshop_goals_show_less)
+            ptGoalsToggle.setText(getString(R.string.workshop_goals_show_less))
         }
         else {
-            btnGoalsToggle.text = getString(R.string.workshop_goals_show_all, allGoals.size - MAX_COLLAPSED_GOALS)
+            ptGoalsToggle.setText(getString(R.string.workshop_goals_show_all, shownGoals.size - MAX_COLLAPSED_GOALS))
         }
     }
 
@@ -210,43 +195,20 @@ class WorkshopActivity : CoreActivity() {
         renderGoalsList()
     }
 
-    // Feed: starts at ARCHIVE_PAGE_SIZE and grows by the same step
-    private fun renderArchiveList() {
-        llGoalsArchive.visibility = if (allArchivedGoals.isEmpty()) View.GONE else View.VISIBLE
-
-        // Count shows the whole archive, not just the loaded page
-        tvGoalsArchiveHeader.text = getString(
-            R.string.workshop_section_goals_archive_count, allArchivedGoals.size
-        )
-
-        // ! Shrink back when the archive gets smaller, so the feed can't stay stuck open
-        archiveVisibleCount = archiveVisibleCount.coerceAtMost(
-            maxOf(ARCHIVE_PAGE_SIZE, allArchivedGoals.size)
-        )
-
-        archiveAdapter.submitList(allArchivedGoals.take(archiveVisibleCount))
-
-        val remaining = allArchivedGoals.size - archiveVisibleCount
-        btnGoalsArchiveMore.visibility = if (remaining > 0) View.VISIBLE else View.GONE
-        btnGoalsArchiveMore.text = getString(R.string.workshop_goals_archive_more)
-
-        applyArchiveExpansion()
+    private fun showGoalsViewSheet() {
+        WorkshopGoalsViewBottomSheet(
+            isArchiveShown = isArchiveShown,
+            isArchiveEmpty = allArchivedGoals.isEmpty(),
+            onViewSelected = { archive -> showArchive(archive) }
+        ).show(supportFragmentManager, WorkshopGoalsViewBottomSheet.TAG)
     }
 
-    private fun toggleArchive() {
-        isArchiveExpanded = !isArchiveExpanded
-        applyArchiveExpansion()
-    }
-
-    // Chevron: collapsed / expanded
-    private fun applyArchiveExpansion() {
-        llGoalsArchiveContent.visibility = if (isArchiveExpanded) View.VISIBLE else View.GONE
-        ivGoalsArchiveChevron.rotation = if (isArchiveExpanded) 270f else 90f
-    }
-
-    private fun showMoreArchivedGoals() {
-        archiveVisibleCount += ARCHIVE_PAGE_SIZE
-        renderArchiveList()
+    // Switching lists starts collapsed - the expanded state belonged to the other list
+    private fun showArchive(show: Boolean) {
+        if (isArchiveShown != show) isGoalsExpanded = false
+        isArchiveShown = show
+        renderGoalsList()
+        updateFab()
     }
 
     // ── Navigation ─────────────────────────────────────────────────────────────
@@ -384,7 +346,6 @@ class WorkshopActivity : CoreActivity() {
     companion object {
         private const val MAX_COLLAPSED_GOALS = 6
         private const val GOAL_DIVIDER_INSET_DP = 28
-        private const val ARCHIVE_PAGE_SIZE = 5
 
         private const val TAB_GOALS = 0
     }

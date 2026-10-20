@@ -798,6 +798,35 @@
   <p class="note">Rendery poglądowe w skali ok. 1,15× (inline SVG, 1 jednostka = 1dp) — wymiary i kolory z <code>res/</code>.</p>
 
   <details class="comp" open>
+    <summary><h3>Języczek rozwijania</h3></summary>
+    <dl>
+      <dt>Przeznaczenie</dt>
+      <dd>Rozwijanie i zwijanie długiej listy na karcie — „jest jeszcze coś niżej”; np. cele w <i>Warsztacie</i>.</dd>
+      <dt>Wygląd</dt>
+      <dd>
+        <figure><svg role="img" aria-label="hex-pull-tab" xmlns="http://www.w3.org/2000/svg" width="345" height="115" viewBox="0 0 300 100">
+  <rect width="300" height="100" fill="#FFF4E6"/>
+  <path d="M10,0H290V38A12,12 0 0 1 278,50H22A12,12 0 0 1 10,38Z" fill="#FFFFFF"/>
+  <text x="34" y="22" dominant-baseline="central" font-size="14" fill="#48433F" font-family="'Baloo 2', 'Segoe UI', sans-serif">Cel 6</text>
+  <path d="M28,49C57,49 47,90 76,90H224C253,90 243,49 272,49Z" fill="#FFFFFF"/>
+  <text x="138" y="70" text-anchor="middle" dominant-baseline="central" font-size="14" fill="#625A54" font-family="'Baloo 2', 'Segoe UI', sans-serif">Pokaż jeszcze 3</text>
+  <path d="M196,67L201,72L206,67" fill="none" stroke="#625A54" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></figure>
+        <ul>
+          <li>część karty, nie osobny przycisk — wypełniony kolorem karty, nachodzi na jej dolną krawędź; krawędź schodzi falą w płaskie dno i wraca falą, bez kantów</li>
+          <li>strzałka w dół = jest więcej, w górę = pokazane wszystko</li>
+          <li>karta z widoczną ramką — języczek dostaje obrys w jej kolorze (<code>tabStrokeColor</code>), otwarty od strony karty</li>
+          <li>widoczny tylko, gdy lista się nie mieści; wystaje w odstęp pod kartą</li>
+        </ul>
+      </dd>
+      <dt>Działanie</dt>
+      <dd><b>tap</b> rozwija / zwija listę</dd>
+      <dt>Kod</dt>
+      <dd><code>HexPullTab</code> (widget, <code>setText</code> / <code>setExpanded</code>; <code>tabColor</code>, <code>tabShoulderWidth</code>, <code>tabStrokeColor</code> / <code>tabStrokeWidth</code>), użycie: <code>workshop_activity.xml</code> (<code>pt_goals_toggle</code>)</dd>
+    </dl>
+  </details>
+
+  <details class="comp" open>
     <summary><h3>Gałąź drzewa</h3></summary>
     <dl>
       <dt>Przeznaczenie</dt>

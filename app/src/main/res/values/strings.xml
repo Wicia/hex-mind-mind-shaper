@@ -635,14 +635,16 @@ Awers - Rewers…"</string>
     <string name="workshop_title">Warsztat</string>
 
     <!-- Goals -->
-    <string name="workshop_section_goals">Kierunki, w których zmierzasz</string>
+    <string name="workshop_section_goals_active">Aktywne cele</string>
+    <string name="workshop_section_goals_archived">Archiwalne cele</string>
     <string name="workshop_tab_goals">Cele</string>
     <string name="workshop_tab_paths">Ścieżki</string>
-    <string name="workshop_goals_show_all">Pokaż jeszcze %d…</string>
+    <string name="workshop_goals_show_all">Pokaż jeszcze %d</string>
     <string name="workshop_goals_show_less">Pokaż mniej</string>
-    <string name="workshop_section_goals_archive">Archiwum</string>
-    <string name="workshop_section_goals_archive_count">Archiwum (%1$d)</string>
-    <string name="workshop_goals_archive_more">Pokaż starsze…</string>
+    <string name="workshop_goals_view_title">Które cele pokazać?</string>
+    <string name="workshop_goals_view_active">Pokaż aktywne</string>
+    <string name="workshop_goals_view_archived">Pokaż archiwalne</string>
+    <string name="workshop_goals_view_archive_empty">Archiwum świeci pustkami…</string>
     <string name="workshop_dialog_add_goal">Nowy cel / kierunek</string>
     <string name="workshop_dialog_edit_goal">Edytuj cel / kierunek</string>
     <string name="workshop_dialog_delete_goal_title">Usunąć cel?</string>
