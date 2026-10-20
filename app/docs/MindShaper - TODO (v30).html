@@ -1188,6 +1188,26 @@
   <details class="item">
     <summary>
       <span class="prio imp">Istotny</span>
+      <strong>Strumień — licznik na przycisku filtra liczy domyślne stany</strong> — bez żadnej zmiany filtra przycisk pokazuje „(2)” zamiast „-”.
+      <span class="mods"><span class="mod">Myśli</span></span>
+    </summary>
+    <div class="body">
+      <ul>
+        <li>przy włączonym trybie uśpienia każdy zaznaczony stan liczy się jako osobny filtr — domyślnie zaznaczone Aktywne myśli i Bliskie uśpienia dają „(2)”</li>
+        <li>propozycja: sekcja Stany to jeden filtr, liczony tylko wtedy, gdy różni się od domyślnej (Aktywne + Bliskie uśpienia, bez Uśpionych)
+          <ul>
+            <li>domyślne stany → „-”</li>
+            <li>z dashboardu Domu (tylko Bliskie uśpienia) → „(1)”</li>
+            <li>domyślne stany + domena → „(1)”</li>
+          </ul>
+        </li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>activities/stream/StreamActivity.kt</code> — <code>updateFilterButtonText()</code></li></ul></div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio imp">Istotny</span>
       <strong>Gson w wersji release — klucze JSON backupu</strong> — R8 skraca nazwy pól, a Gson czyta je refleksją.
       <span class="mods"><span class="mod">Backup</span><span class="mod">Technika</span></span>
     </summary>
@@ -1204,7 +1224,7 @@
   <details class="item">
     <summary>
       <span class="prio minor">Drobny</span>
-      <strong>Myśli — ostrzeżenie „wymaga uwagi” od razu po zapisie</strong> — przy minimalnym progu uśpienia (3 dni) każda nowa myśl o niskiej wartości dostaje ostrzeżenie zaraz po zapisaniu.
+      ✅ <strong>Myśli — ostrzeżenie „wymaga uwagi” od razu po zapisie</strong> — przy minimalnym progu uśpienia (3 dni) każda nowa myśl o niskiej wartości dostaje ostrzeżenie zaraz po zapisaniu.
       <span class="mods"><span class="mod">Myśli</span></span>
     </summary>
     <div class="body">
@@ -1212,6 +1232,7 @@
         <li>ostrzeżenie zaczyna się na <i>próg dni − 3</i> dni przed uśpieniem; przy progu 3 dni to dzień 0</li>
         <li>wcześniej mógł to ukrywać tryb powolny (blokada przez pierwsze godziny) — usunięty 2026-10-13</li>
         <li>propozycja: ostrzeżenie najwcześniej po 1 dniu od ostatniej zmiany</li>
+        <li>✅ zrobione 2026-10-19: próg dni od 7 do 99 (wcześniej 3–90) — ostrzeżenie najwcześniej od 4. dnia; okno ostrzeżenia (3 dni) to osobna stała, niezależna od minimum; okno dialogowe podaje, ile dni zostało</li>
       </ul>
       <div class="where"><span class="lbl">Gdzie</span><ul><li><code>services/ThoughtStatusService.kt</code> — <code>computeState()</code>, <code>warningThreshold</code></li></ul></div>
     </div>
