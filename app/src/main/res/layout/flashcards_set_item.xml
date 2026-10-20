@@ -13,8 +13,8 @@
     android:paddingVertical="12dp"
     android:paddingStart="20dp"
     android:paddingEnd="12dp"
-    android:background="@drawable/shape_hex_content"
-    android:backgroundTint="@color/flashcard_background"
+    android:background="@drawable/shape_flashcard_set_card"
+    android:elevation="4dp"
     android:foreground="?attr/selectableItemBackground">
 
     <LinearLayout
@@ -38,6 +38,7 @@
             android:id="@+id/tv_set_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:textSize="14sp"
             android:textColor="@color/text_secondary"
             tools:text="12 fiszek | do powtórki: 3 · utrwalone: 2" />

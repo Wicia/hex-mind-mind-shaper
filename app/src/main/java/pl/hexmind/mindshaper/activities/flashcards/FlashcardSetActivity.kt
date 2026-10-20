@@ -17,7 +17,6 @@ import pl.hexmind.mindshaper.common.ui.TextFilePicker
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardEditDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardsEditDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardsImportDialog
-import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardsSessionDialog
 import pl.hexmind.mindshaper.common.ui.views.SpeedDial
 import pl.hexmind.mindshaper.services.dto.FlashcardDTO
 import pl.hexmind.mindshaper.services.dto.FlashcardSetDTO
@@ -76,7 +75,7 @@ class FlashcardSetActivity : CoreActivity() {
         }
 
         btnReview.setOnClickListener {
-            FlashcardsSessionDialog.open(this, viewModel.planReview(library), onRated = viewModel::rate)
+            FlashcardsSessionActivity.open(this, viewModel.planReview(library), viewModel.setId)
         }
 
         viewModel.library.observe(this) { newLibrary ->

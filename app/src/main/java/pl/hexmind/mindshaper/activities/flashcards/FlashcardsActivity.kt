@@ -15,7 +15,6 @@ import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.common.ui.TextFilePicker
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardEditDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardsImportDialog
-import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardsSessionDialog
 import pl.hexmind.mindshaper.common.ui.views.HexTabSwitch
 import pl.hexmind.mindshaper.common.ui.views.HexWavyFrameView
 import pl.hexmind.mindshaper.common.ui.views.SpeedDial
@@ -67,7 +66,7 @@ class FlashcardsActivity : CoreActivity() {
             }
         },
         onReviewTap = { set ->
-            FlashcardsSessionDialog.open(this, viewModel.planReview(library, set.id), onRated = viewModel::rate)
+            FlashcardsSessionActivity.open(this, viewModel.planReview(library, set.id), set.id)
         }
     )
 
@@ -111,7 +110,7 @@ class FlashcardsActivity : CoreActivity() {
         }
 
         btnReviewToday.setOnClickListener {
-            FlashcardsSessionDialog.open(this, viewModel.planReview(library), onRated = viewModel::rate)
+            FlashcardsSessionActivity.open(this, viewModel.planReview(library))
         }
 
         setupFab()
@@ -192,7 +191,7 @@ class FlashcardsActivity : CoreActivity() {
         if (!pendingSession) return
         pendingSession = false
 
-        FlashcardsSessionDialog.open(this, viewModel.planReview(library), onRated = viewModel::rate)
+        FlashcardsSessionActivity.open(this, viewModel.planReview(library))
     }
 
     private fun startPendingNewLoose() {

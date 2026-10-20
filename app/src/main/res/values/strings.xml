@@ -120,11 +120,30 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="flashcards_btn_add_next">Dodaj kolejną</string>
     <string name="flashcards_btn_finish">Zakończ</string>
     <string name="flashcards_btn_create_set">Utwórz</string>
-    <string name="flashcards_end_title">Wszystkie fiszki zostały ogarnięte ;)</string>
-    <string name="flashcards_end_ratings">"Mam to: %1$d  ·  Coś świta: %2$d  ·  Pustka: %3$d"</string>
     <string name="flashcards_rating_good">Mam to</string>
     <string name="flashcards_rating_ok">Coś świta</string>
     <string name="flashcards_rating_bad">Pustka</string>
+    <string name="flashcards_session_front">Awers</string>
+    <string name="flashcards_session_back">Rewers</string>
+    <string name="flashcards_session_card_description">Fiszka - stuknij awers, by odwrócić; rewers przeciągnij na stos, by ocenić</string>
+    <string name="flashcards_session_tap_to_flip">Stuknij, by odwrócić</string>
+    <string name="flashcards_session_later">Później</string>
+    <string name="flashcards_session_pause">Przerwij</string>
+    <string name="flashcards_session_undo">Cofnij</string>
+    <string name="flashcards_session_done">Gotowe</string>
+    <string name="flashcards_session_hint_throw">Rzuć kartę w stronę stosu - albo stuknij stos</string>
+    <string name="flashcards_session_hint_release">Puść - karta poleci na stos „%1$s”</string>
+    <string name="flashcards_session_count_next">%1$d → %2$d</string>
+    <string name="flashcards_session_total">/ %1$d</string>
+    <string name="flashcards_session_end_title">To tyle na dzisiaj!</string>
+    <string name="flashcards_session_end_title_set">To tyle z zestawu na dzisiaj!</string>
+    <plurals name="flashcards_session_end_tomorrow">
+        <item quantity="one">Jutro czeka Cię %d fiszka do powtórki</item>
+        <item quantity="few">Jutro czeka Cię %d fiszki do powtórki</item>
+        <item quantity="many">Jutro czeka Cię %d fiszek do powtórki</item>
+        <item quantity="other">Jutro czeka Cię %d fiszki do powtórki</item>
+    </plurals>
+    <string name="flashcards_session_end_tomorrow_none">Jutro nie czeka Cię żadna powtórka</string>
     <plurals name="flashcards_set_count">
         <item quantity="one">%d fiszka</item>
         <item quantity="few">%d fiszki</item>
@@ -616,14 +635,16 @@ Awers - Rewers…"</string>
     <string name="workshop_title">Warsztat</string>
 
     <!-- Goals -->
-    <string name="workshop_section_goals">Kierunki, w których zmierzasz</string>
+    <string name="workshop_section_goals_active">Aktywne cele</string>
+    <string name="workshop_section_goals_archived">Archiwalne cele</string>
     <string name="workshop_tab_goals">Cele</string>
     <string name="workshop_tab_paths">Ścieżki</string>
-    <string name="workshop_goals_show_all">Pokaż jeszcze %d…</string>
+    <string name="workshop_goals_show_all">Pokaż jeszcze %d</string>
     <string name="workshop_goals_show_less">Pokaż mniej</string>
-    <string name="workshop_section_goals_archive">Archiwum</string>
-    <string name="workshop_section_goals_archive_count">Archiwum (%1$d)</string>
-    <string name="workshop_goals_archive_more">Pokaż starsze…</string>
+    <string name="workshop_goals_view_title">Które cele pokazać?</string>
+    <string name="workshop_goals_view_active">Pokaż aktywne</string>
+    <string name="workshop_goals_view_archived">Pokaż archiwalne</string>
+    <string name="workshop_goals_view_archive_empty">Archiwum świeci pustkami…</string>
     <string name="workshop_dialog_add_goal">Nowy cel / kierunek</string>
     <string name="workshop_dialog_edit_goal">Edytuj cel / kierunek</string>
     <string name="workshop_dialog_delete_goal_title">Usunąć cel?</string>

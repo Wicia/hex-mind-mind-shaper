@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Level bar of a flashcard on the lists: the track - fully rounded ends (radius = half of flashcard_level_bar_width) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="2dp" />
+    <solid android:color="@color/flashcard_progress_track" />
+</shape>

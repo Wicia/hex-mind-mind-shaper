@@ -313,21 +313,66 @@
     <!--    DIALOGS -->
     <!-- ====================================== -->
 
-    <!-- Flashcards review on the scrim (FlashcardsSessionDialog) -->
-    <style name="FlashcardsSessionAnimation">
-        <item name="android:windowEnterAnimation">@anim/flashcards_session_enter</item>
-        <item name="android:windowExitAnimation">@anim/flashcards_session_exit</item>
-    </style>
-
-    <!-- Caption under a rating icon of the flashcard (HexFlashcardView) -->
-    <!-- ! Negative top margin - pulls the caption into the button's padding, closer to the face -->
-    <style name="Flashcard_RatingCaption">
+    <!-- Landscape review session (HexFlashcardsSessionView) -->
+    <style name="FlashcardSession_ZoneLabel">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">-4dp</item>
-        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/flashcard_session_text</item>
+    </style>
+
+    <style name="FlashcardSession_ZoneCount">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/flashcard_session_text</item>
+    </style>
+
+    <!-- AWERS / REWERS on the card -->
+    <style name="FlashcardSession_SideLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.16</item>
         <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <!-- Pause / undo / later: icon in a circle + caption -->
+    <style name="FlashcardSession_Pill">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">6dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:background">@drawable/shape_flashcard_session_pill</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="FlashcardSession_PillIcon">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:padding">7dp</item>
+        <item name="android:background">@drawable/shape_circle</item>
+        <item name="android:backgroundTint">@color/flashcard_session_pill_frame</item>
+        <item name="android:tint">@color/flashcard_session_text</item>
+        <item name="android:importantForAccessibility">no</item>
+    </style>
+
+    <style name="FlashcardSession_PillText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/flashcard_session_text_soft</item>
     </style>
 
     <!-- TODO: make separate styles for standard focus dialog and for bottom sheet dialog -->

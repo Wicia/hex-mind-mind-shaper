@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Which goals the Workshop shows: active / archived - one of them (WorkshopGoalsViewBottomSheet); header as in stream_sort_bottomsheet -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_hex_content"
+    android:backgroundTint="@color/app_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="24dp">
+
+        <!-- === DRAG HANDLE === -->
+        <View
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/_gray_lvl_2" />
+
+        <!-- === HEADER === -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="16dp">
+
+            <!-- * Decorator * -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:scaleX="-1"
+                android:scaleY="-1"
+                android:layout_gravity="center_vertical"
+                android:importantForAccessibility="no"
+                app:srcCompat="@drawable/ic_decorator_olive"
+                app:tint="@color/separator_leaf" />
+
+            <TextView
+                style="@style/DialogTile"
+                android:textColor="@color/text_secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/workshop_goals_view_title"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="0dp" />
+
+            <!-- * Decorator * -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_gravity="center_vertical"
+                android:scaleY="-1"
+                android:importantForAccessibility="no"
+                app:srcCompat="@drawable/ic_decorator_olive"
+                app:tint="@color/separator_leaf" />
+
+        </LinearLayout>
+
+        <!-- === OPTIONS === -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="8dp">
+
+            <!-- Pokaż aktywne / Pokaż archiwalne - options set in code -->
+            <pl.hexmind.mindshaper.common.ui.views.lists.HexOptionTiles
+                android:id="@+id/tiles_goals_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:compact="true" />
+
+            <!-- Empty archive: its tile is disabled, this says why -->
+            <TextView
+                android:id="@+id/tv_goals_view_archive_empty"
+                style="@style/TextView_Metadata"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="@string/workshop_goals_view_archive_empty"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

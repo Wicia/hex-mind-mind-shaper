@@ -10,9 +10,9 @@
     android:layout_marginBottom="5dp"
     android:padding="8dp"
     android:orientation="vertical"
-    android:gravity="center|top"
-    android:background="@drawable/shape_hex_content"
-    android:backgroundTint="@color/_orange_lvl_1"
+    android:gravity="center"
+    android:background="@drawable/shape_domain_tile"
+    android:elevation="4dp"
     android:clickable="true"
     android:focusable="true">
 
@@ -20,10 +20,11 @@
         android:id="@+id/iv_domain_icon"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:layout_margin="8dp"
+        android:layout_marginBottom="6dp"
         app:tint="@color/_black"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
 
+    <!-- ! includeFontPadding off: Baloo 2's own padding would make the gap under the name look bigger than above the icon -->
     <TextView
         android:id="@+id/tv_domain_name"
         android:layout_width="match_parent"
@@ -34,6 +35,7 @@
         android:textColor="@color/text_primary"
         android:textAlignment="center"
         android:lineSpacingMultiplier="0.85"
+        android:includeFontPadding="false"
         android:maxLines="2"
         />
 

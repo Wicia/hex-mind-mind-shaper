@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- "Gotowe" pill on the end card - solid graphite, the dark session pills would vanish on the light card -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/flashcard_session_pill_ripple">
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="22dp" />
+            <solid android:color="@color/flashcard_session_done_fill" />
+        </shape>
+    </item>
+</ripple>
