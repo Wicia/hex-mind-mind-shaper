@@ -120,8 +120,6 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="flashcards_btn_add_next">Dodaj kolejną</string>
     <string name="flashcards_btn_finish">Zakończ</string>
     <string name="flashcards_btn_create_set">Utwórz</string>
-    <string name="flashcards_end_title">Wszystkie fiszki zostały ogarnięte ;)</string>
-    <string name="flashcards_end_ratings">"Mam to: %1$d  ·  Coś świta: %2$d  ·  Pustka: %3$d"</string>
     <string name="flashcards_rating_good">Mam to</string>
     <string name="flashcards_rating_ok">Coś świta</string>
     <string name="flashcards_rating_bad">Pustka</string>

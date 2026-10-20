@@ -273,8 +273,7 @@
                     android:orientation="vertical"
                     android:gravity="center">
 
-                    <!-- ! Auto size: long fronts / backs shrink instead of being cut by the fixed card height.
-                           Max size per side set in code (front / back) -->
+                    <!-- ! Auto size: long fronts / backs shrink instead of being cut by the fixed card height -->
                     <TextView
                         android:id="@+id/tv_card_text"
                         android:layout_width="match_parent"
@@ -283,10 +282,10 @@
                         android:gravity="center"
                         android:textColor="@color/text_primary"
                         android:fontFamily="@font/literata_regular"
-                        android:lineSpacingMultiplier="0.9"
+                        android:lineSpacingMultiplier="0.8"
                         android:autoSizeTextType="uniform"
                         android:autoSizeMinTextSize="@dimen/flashcard_session_text_min"
-                        android:autoSizeMaxTextSize="@dimen/flashcard_session_front_text_max"
+                        android:autoSizeMaxTextSize="@dimen/flashcard_session_text_max"
                         android:autoSizeStepGranularity="1sp"
                         tools:text="Are you allergic to anything?" />
 

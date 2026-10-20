@@ -313,23 +313,6 @@
     <!--    DIALOGS -->
     <!-- ====================================== -->
 
-    <!-- Flashcards review on the scrim (FlashcardsSessionDialog) -->
-    <style name="FlashcardsSessionAnimation">
-        <item name="android:windowEnterAnimation">@anim/flashcards_session_enter</item>
-        <item name="android:windowExitAnimation">@anim/flashcards_session_exit</item>
-    </style>
-
-    <!-- Caption under a rating icon of the flashcard (HexFlashcardView) -->
-    <!-- ! Negative top margin - pulls the caption into the button's padding, closer to the face -->
-    <style name="Flashcard_RatingCaption">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">-4dp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/text_secondary</item>
-    </style>
-
     <!-- Landscape review session (HexFlashcardsSessionView) -->
     <style name="FlashcardSession_ZoneLabel">
         <item name="android:layout_width">wrap_content</item>

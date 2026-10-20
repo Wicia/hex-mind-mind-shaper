@@ -15,7 +15,6 @@ import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
 import android.view.View
@@ -29,7 +28,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.ColorRes
-import androidx.annotation.DimenRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import pl.hexmind.mindshaper.R
@@ -47,7 +45,7 @@ import kotlin.math.hypot
  * - back:      the card thrown towards a pile (the direction counts, the pile needs no hitting) or a tap on the pile
  * - end card:  how many flashcards wait tomorrow, all the piles lit with the session's first ratings, "Gotowe" = close
  *
- * Queue rules as in HexFlashcardView: BAD sends the flashcard to the end of the queue, it comes back until rated GOOD / OK.
+ * Queue rules: BAD sends the flashcard to the end of the queue, it comes back until rated GOOD / OK.
  * Only the first rating of a flashcard goes out through the callback (right away, to be stored).
  * Undo: the last rating can be taken back for a moment - the flashcard comes back revealed, a first rating is undone in the callback.
  */
@@ -419,7 +417,6 @@ class HexFlashcardsSessionView @JvmOverloads constructor(
         tvSide.setText(if (isRevealed) R.string.flashcards_session_back else R.string.flashcards_session_front)
         tvQuestion.visibility = if (isRevealed) VISIBLE else GONE
         tvQuestion.text = current.front
-        setTextMaxSize(if (isRevealed) R.dimen.flashcard_session_back_text_max else R.dimen.flashcard_session_front_text_max)
         tvText.text = if (isRevealed) current.back else current.front
         tvFooter.visibility = if (isRevealed) GONE else VISIBLE
         tvFooter.setText(R.string.flashcards_session_tap_to_flip)
@@ -442,16 +439,6 @@ class HexFlashcardsSessionView @JvmOverloads constructor(
             0    -> context.getString(R.string.flashcards_session_end_tomorrow_none)
             else -> resources.getQuantityString(R.plurals.flashcards_session_end_tomorrow, count, count)
         }
-    }
-
-    /** Auto size keeps shrinking long texts - only its upper bound differs per side */
-    private fun setTextMaxSize(@DimenRes maxSizeRes: Int) {
-        tvText.setAutoSizeTextTypeUniformWithConfiguration(
-            resources.getDimensionPixelSize(R.dimen.flashcard_session_text_min),
-            resources.getDimensionPixelSize(maxSizeRes),
-            1,
-            TypedValue.COMPLEX_UNIT_PX
-        )
     }
 
     /**
