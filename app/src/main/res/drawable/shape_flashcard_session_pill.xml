@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pause / undo / later pill of the review session - the ripple stays inside the rounded shape -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/flashcard_session_pill_ripple">
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="22dp" />
+            <solid android:color="@color/flashcard_session_pill_fill" />
+            <stroke
+                android:width="2dp"
+                android:color="@color/flashcard_session_pill_frame" />
+        </shape>
+    </item>
+</ripple>

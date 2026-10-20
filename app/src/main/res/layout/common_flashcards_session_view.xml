@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Landscape review session (HexFlashcardsSessionView): the deck in the middle, the rating piles as pieces of the screen edges -->
+<!-- ! Piles stick out of the screen by flashcard_zone_overhang (negative margin + the same padding inside):
+       the frame and the corners on the edge side are cut off, so a pile does not read as a button -->
+<!-- ! Piles and the card are shifted together (piles: marginBottom 50dp, card + slot: marginTop 62dp): the side piles
+       end on the line of the card's bottom edge (screen middle + 115dp) on any screen height -->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.FrameLayout">
+
+    <!-- PILE: BAD - left edge -->
+    <LinearLayout
+        android:id="@+id/ll_zone_bad"
+        android:layout_width="@dimen/flashcard_zone_depth_total"
+        android:layout_height="@dimen/flashcard_zone_length"
+        android:layout_gravity="start|center_vertical"
+        android:layout_marginStart="@dimen/flashcard_zone_overhang_negative"
+        android:layout_marginBottom="50dp"
+        android:paddingStart="@dimen/flashcard_zone_overhang"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:contentDescription="@string/flashcards_rating_bad">
+
+        <ImageView
+            android:id="@+id/iv_zone_bad_face"
+            android:layout_width="@dimen/flashcard_zone_face_size"
+            android:layout_height="@dimen/flashcard_zone_face_size"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_memory_empty" />
+
+        <TextView
+            android:id="@+id/tv_zone_bad_label"
+            style="@style/FlashcardSession_ZoneLabel"
+            android:text="@string/flashcards_rating_bad" />
+
+        <TextView
+            android:id="@+id/tv_zone_bad_count"
+            style="@style/FlashcardSession_ZoneCount"
+            tools:text="1" />
+
+    </LinearLayout>
+
+    <!-- PILE: OK - top edge (the side pile turned by 90 degrees) -->
+    <LinearLayout
+        android:id="@+id/ll_zone_ok"
+        android:layout_width="@dimen/flashcard_zone_length"
+        android:layout_height="@dimen/flashcard_zone_depth_total"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="@dimen/flashcard_zone_overhang_negative"
+        android:paddingTop="@dimen/flashcard_zone_overhang"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:contentDescription="@string/flashcards_rating_ok">
+
+        <ImageView
+            android:id="@+id/iv_zone_ok_face"
+            android:layout_width="@dimen/flashcard_zone_face_size"
+            android:layout_height="@dimen/flashcard_zone_face_size"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_memory_thinking" />
+
+        <TextView
+            android:id="@+id/tv_zone_ok_label"
+            style="@style/FlashcardSession_ZoneLabel"
+            android:layout_marginTop="0dp"
+            android:layout_marginStart="12dp"
+            android:text="@string/flashcards_rating_ok" />
+
+        <TextView
+            android:id="@+id/tv_zone_ok_count"
+            style="@style/FlashcardSession_ZoneCount"
+            android:layout_marginStart="12dp"
+            tools:text="2" />
+
+    </LinearLayout>
+
+    <!-- PILE: GOOD - right edge -->
+    <LinearLayout
+        android:id="@+id/ll_zone_good"
+        android:layout_width="@dimen/flashcard_zone_depth_total"
+        android:layout_height="@dimen/flashcard_zone_length"
+        android:layout_gravity="end|center_vertical"
+        android:layout_marginEnd="@dimen/flashcard_zone_overhang_negative"
+        android:layout_marginBottom="50dp"
+        android:paddingEnd="@dimen/flashcard_zone_overhang"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:contentDescription="@string/flashcards_rating_good">
+
+        <ImageView
+            android:id="@+id/iv_zone_good_face"
+            android:layout_width="@dimen/flashcard_zone_face_size"
+            android:layout_height="@dimen/flashcard_zone_face_size"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_memory_have" />
+
+        <TextView
+            android:id="@+id/tv_zone_good_label"
+            style="@style/FlashcardSession_ZoneLabel"
+            android:text="@string/flashcards_rating_good" />
+
+        <TextView
+            android:id="@+id/tv_zone_good_count"
+            style="@style/FlashcardSession_ZoneCount"
+            tools:text="4" />
+
+    </LinearLayout>
+
+    <!-- UNDO - top left, between the piles; shown for a moment after a rating -->
+    <LinearLayout
+        android:id="@+id/ll_session_undo"
+        style="@style/FlashcardSession_Pill"
+        android:layout_gravity="top|start"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/flashcards_session_undo"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            style="@style/FlashcardSession_PillIcon"
+            android:src="@drawable/ic_session_undo" />
+
+        <TextView
+            style="@style/FlashcardSession_PillText"
+            android:text="@string/flashcards_session_undo" />
+
+    </LinearLayout>
+
+    <!-- CARD + the slot under it -->
+    <!-- ! clipChildren false: the card flies out of its frame onto the piles -->
+    <LinearLayout
+        android:id="@+id/ll_session_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="62dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <FrameLayout
+            android:id="@+id/fl_session_deck"
+            android:layout_width="@dimen/flashcard_session_card_width"
+            android:layout_height="@dimen/flashcard_session_card_height"
+            android:clipChildren="false"
+            android:clipToPadding="false">
+
+            <!-- Deck under the card - corners sticking out; as many layers as flashcards left (max 4) -->
+            <View
+                android:id="@+id/v_deck_layer_4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_flashcard_session_card"
+                android:backgroundTint="@color/flashcard_deck_layer_4"
+                android:elevation="3dp"
+                android:rotation="-7"
+                android:translationX="-10dp"
+                android:translationY="12dp" />
+
+            <View
+                android:id="@+id/v_deck_layer_3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_flashcard_session_card"
+                android:backgroundTint="@color/flashcard_deck_layer_3"
+                android:elevation="3dp"
+                android:rotation="5"
+                android:translationX="12dp"
+                android:translationY="9dp" />
+
+            <View
+                android:id="@+id/v_deck_layer_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_flashcard_session_card"
+                android:backgroundTint="@color/flashcard_deck_layer_2"
+                android:elevation="3dp"
+                android:rotation="-3.5"
+                android:translationX="-6dp"
+                android:translationY="6dp" />
+
+            <View
+                android:id="@+id/v_deck_layer_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_flashcard_session_card"
+                android:backgroundTint="@color/flashcard_deck_layer_1"
+                android:elevation="3dp"
+                android:rotation="2"
+                android:translationX="4dp"
+                android:translationY="3dp" />
+
+            <!-- Next flashcard of the queue - seen while the current one is held / mid-flip -->
+            <FrameLayout
+                android:id="@+id/fl_deck_next"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_flashcard_session_card"
+                android:elevation="4dp"
+                android:paddingHorizontal="22dp"
+                android:paddingVertical="16dp">
+
+                <TextView
+                    style="@style/FlashcardSession_SideLabel"
+                    android:alpha="0.6"
+                    android:text="@string/flashcards_session_front" />
+
+            </FrameLayout>
+
+            <!-- THE CARD: front / back / end card -->
+            <LinearLayout
+                android:id="@+id/ll_session_card"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_flashcard_session_card"
+                android:elevation="8dp"
+                android:orientation="vertical"
+                android:paddingHorizontal="22dp"
+                android:paddingVertical="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="@string/flashcards_session_card_description"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
+                <!-- ! clipChildren false (here and on the card): the stamp is turned - its corners stick out of this row -->
+                <FrameLayout
+                    android:id="@+id/fl_card_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:clipChildren="false">
+
+                    <TextView
+                        android:id="@+id/tv_card_side"
+                        style="@style/FlashcardSession_SideLabel"
+                        android:layout_gravity="start|top"
+                        tools:text="@string/flashcards_session_back" />
+
+                    <!-- Stamp of the pile the card is held over -->
+                    <TextView
+                        android:id="@+id/tv_card_stamp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|top"
+                        android:paddingHorizontal="10dp"
+                        android:rotation="-12"
+                        android:textSize="19sp"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"
+                        android:letterSpacing="0.05"
+                        android:includeFontPadding="false"
+                        android:visibility="gone"
+                        tools:text="@string/flashcards_rating_good"
+                        tools:visibility="visible" />
+
+                </FrameLayout>
+
+                <!-- Front / back of the flashcard -->
+                <LinearLayout
+                    android:id="@+id/ll_card_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <!-- ! Auto size: long fronts / backs shrink instead of being cut by the fixed card height.
+                           Max size per side set in code (front / back) -->
+                    <TextView
+                        android:id="@+id/tv_card_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/text_primary"
+                        android:fontFamily="@font/literata_regular"
+                        android:lineSpacingMultiplier="0.9"
+                        android:autoSizeTextType="uniform"
+                        android:autoSizeMinTextSize="@dimen/flashcard_session_text_min"
+                        android:autoSizeMaxTextSize="@dimen/flashcard_session_front_text_max"
+                        android:autoSizeStepGranularity="1sp"
+                        tools:text="Are you allergic to anything?" />
+
+                    <!-- Back: the question, small, below the answer -->
+                    <TextView
+                        android:id="@+id/tv_card_question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_secondary"
+                        android:fontFamily="@font/literata_regular"
+                        android:visibility="gone"
+                        tools:text="Czy jest pan / pani na coś uczulony?"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+                <!-- End card: whole card, no header / footer -->
+                <LinearLayout
+                    android:id="@+id/ll_card_end"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_card_end_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="24sp"
+                        android:textColor="@color/text_primary"
+                        android:fontFamily="@font/literata_regular"
+                        tools:text="@string/flashcards_session_end_title" />
+
+                    <!-- ! Invisible until the count comes (after the last rating is stored) - the button does not jump -->
+                    <TextView
+                        android:id="@+id/tv_card_end_tomorrow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:textSize="15sp"
+                        android:textColor="@color/text_secondary"
+                        android:visibility="invisible"
+                        tools:text="Jutro czeka Cię 12 fiszek do powtórki"
+                        tools:visibility="visible" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_session_done"
+                        style="@style/FlashcardSession_Pill"
+                        android:layout_marginTop="18dp"
+                        android:background="@drawable/shape_flashcard_session_done"
+                        android:contentDescription="@string/flashcards_session_done">
+
+                        <ImageView
+                            style="@style/FlashcardSession_PillIcon"
+                            android:backgroundTint="@color/flashcard_zone_good"
+                            android:src="@drawable/ic_action_approve"
+                            app:tint="@color/graphite_dark" />
+
+                        <TextView
+                            style="@style/FlashcardSession_PillText"
+                            android:textColor="@color/flashcard_session_text"
+                            android:text="@string/flashcards_session_done" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/fl_card_footer"
+                    android:layout_width="match_parent"
+                    android:layout_height="18dp">
+
+                    <!-- Front: tap hint -->
+                    <TextView
+                        android:id="@+id/tv_card_footer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_secondary"
+                        tools:text="@string/flashcards_session_tap_to_flip" />
+
+                    <!-- Back: a grip - the card is to be taken -->
+                    <View
+                        android:id="@+id/v_card_grip"
+                        android:layout_width="36dp"
+                        android:layout_height="5dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/shape_flashcard_session_card"
+                        android:backgroundTint="@color/flashcard_ripple"
+                        android:visibility="gone" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <!-- Slot under the card: later (front) / hint (back) / empty (end card) -->
+        <FrameLayout
+            android:layout_width="@dimen/flashcard_session_card_width"
+            android:layout_height="44dp"
+            android:layout_marginTop="2dp">
+
+            <LinearLayout
+                android:id="@+id/ll_session_later"
+                style="@style/FlashcardSession_Pill"
+                android:layout_gravity="center"
+                android:contentDescription="@string/flashcards_session_later"
+                android:visibility="gone">
+
+                <ImageView
+                    style="@style/FlashcardSession_PillIcon"
+                    android:src="@drawable/ic_replace_or_renew" />
+
+                <TextView
+                    style="@style/FlashcardSession_PillText"
+                    android:text="@string/flashcards_session_later" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_session_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="@color/flashcard_session_text_secondary"
+                android:visibility="gone"
+                tools:text="@string/flashcards_session_hint_throw" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <!-- PAUSE - bottom left; every rating is already stored, the next session picks up the rest -->
+    <LinearLayout
+        android:id="@+id/ll_session_pause"
+        style="@style/FlashcardSession_Pill"
+        android:layout_gravity="bottom|start"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="18dp"
+        android:contentDescription="@string/flashcards_session_pause">
+
+        <ImageView
+            style="@style/FlashcardSession_PillIcon"
+            android:src="@drawable/ic_session_pause" />
+
+        <TextView
+            style="@style/FlashcardSession_PillText"
+            android:text="@string/flashcards_session_pause" />
+
+    </LinearLayout>
+
+    <!-- COUNTER - bottom right: flashcards off the queue / all the session's flashcards -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="18dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_session_done_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:includeFontPadding="false"
+            android:textColor="@color/flashcard_session_text"
+            tools:text="7" />
+
+        <TextView
+            android:id="@+id/tv_session_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:textSize="18sp"
+            android:includeFontPadding="false"
+            android:textColor="@color/flashcard_session_text_secondary"
+            tools:text="/ 18" />
+
+    </LinearLayout>
+
+    <!-- PROGRESS - along the very bottom edge (weights set in code) -->
+    <LinearLayout
+        android:id="@+id/ll_session_progress"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/flashcard_progress_height"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <View
+            android:id="@+id/v_session_progress_done"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@color/flashcard_accent"
+            tools:layout_weight="0.39" />
+
+        <View
+            android:id="@+id/v_session_progress_left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@color/flashcard_session_progress_track"
+            tools:layout_weight="0.61" />
+
+    </LinearLayout>
+
+</merge>

@@ -112,6 +112,17 @@
             android:theme="@style/Theme.MindShaper.NoActionBar"
             android:parentActivityName="pl.hexmind.mindshaper.activities.flashcards.FlashcardsActivity" />
 
+        <!--
+            Review session - landscape only, full screen
+            configChanges - a turn between the two landscape sides must not restart the session
+        -->
+        <activity
+            android:name="pl.hexmind.mindshaper.activities.flashcards.FlashcardsSessionActivity"
+            android:screenOrientation="sensorLandscape"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:theme="@style/Theme.MindShaper.FlashcardsSession" />
+
         <activity
             android:name="pl.hexmind.mindshaper.activities.workshop.WorkshopActivity"
             android:screenOrientation="portrait"

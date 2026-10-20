@@ -419,6 +419,22 @@
   </details>
   <details class="item">
     <summary>
+      <span class="prio minor">Drobny</span>
+      <strong>Fiszki — statystyki tempa w sesji powtórek</strong> — do przemyślenia: ile czasu użytkownikowi schodzi od odkrycia rewersu do oceny (przypomnienie sobie).
+      <span class="mods"><span class="mod">Fiszki</span></span>
+    </summary>
+    <div class="body">
+      <ul>
+        <li>pomiar: czas od odkrycia rewersu do oceny, dla każdej fiszki</li>
+        <li>pokazanie: np. tempo sesji na karcie końcowej — <i>„1,5 fiszki / s”</i> albo odwrotnie, średnio sekund na fiszkę</li>
+        <li>do ustalenia: tylko bieżąca sesja czy też historia (trend między sesjami — wymaga zapisu)</li>
+        <li>do ustalenia: co z przerwami (telefon odłożony w trakcie, aplikacja w tle) i z cofniętymi ocenami — czy odcinać zbyt długie czasy</li>
+      </ul>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>common/ui/views/content/HexFlashcardsSessionView.kt</code> — <code>reveal()</code> / <code>rate()</code>, karta końcowa</li></ul></div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
       <span class="prio imp">Istotny</span>
       <strong>Fiszki — przywracanie utrwalonych kart do nauki</strong> — utrwalone już nie wracają w powtórkach; brak drogi powrotu.
       <span class="mods"><span class="mod">Fiszki</span></span>
