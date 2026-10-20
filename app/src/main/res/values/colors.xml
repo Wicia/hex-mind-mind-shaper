@@ -127,6 +127,39 @@
     <!-- Rocket of the today's session widget - same orange as its frame -->
     <color name="flashcard_review_rocket">@color/_orange_lvl_2</color>
 
+    <!-- Landscape review session (HexFlashcardsSessionView): dark focus mode, the card stays in its own orange -->
+    <color name="flashcard_session_background">@color/graphite_dark</color>
+    <color name="flashcard_session_text">@color/graphite_beige</color>
+    <color name="flashcard_session_text_soft">#FFE3D7CC</color>
+    <color name="flashcard_session_text_secondary">#FFC9BEB4</color>
+    <!-- Hint while the card is held over a pile -->
+    <color name="flashcard_session_hint_active">@color/_orange_lvl_2</color>
+    <!-- Pause / undo / later pills: graphite frame on a faint graphite fill -->
+    <color name="flashcard_session_pill_frame">@color/graphite_medium</color>
+    <color name="flashcard_session_pill_fill">#5948433F</color>
+    <color name="flashcard_session_pill_ripple">@color/graphite_light</color>
+    <color name="flashcard_session_progress_track">@color/graphite_medium</color>
+    <!-- Rating piles: dashed frame + faint fill of the pile's color; filled with it while the card is held over -->
+    <!-- ! Colors differ in lightness, not only in hue: GOOD = mid orange, OK = light beige, BAD = graphite -->
+    <color name="flashcard_zone_good">@color/_orange_lvl_3</color>
+    <color name="flashcard_zone_good_fill">#1AFFA86B</color>
+    <color name="flashcard_zone_ok_frame">#FFBFA48E</color>
+    <color name="flashcard_zone_ok_face">@color/_orange_lvl_1</color>
+    <color name="flashcard_zone_ok_fill">#14FFE1C8</color>
+    <color name="flashcard_zone_bad_frame">@color/graphite_soft</color>
+    <!-- ! graphite_soft alone was too dark for the face on graphite_dark -->
+    <color name="flashcard_zone_bad_face">#FFA0958C</color>
+    <color name="flashcard_zone_bad_fill">#1F857C75</color>
+    <!-- Stamp on the card held over a pile -->
+    <color name="flashcard_stamp_good">#FFB4581C</color>
+    <color name="flashcard_stamp_ok">#FF8A6A50</color>
+    <color name="flashcard_stamp_bad">@color/graphite_medium</color>
+    <!-- Deck under the card: 1 = right under it, 4 = the bottom one (darker = deeper) -->
+    <color name="flashcard_deck_layer_1">#FFF2D3B8</color>
+    <color name="flashcard_deck_layer_2">#FFE6C4A7</color>
+    <color name="flashcard_deck_layer_3">#FFD8B496</color>
+    <color name="flashcard_deck_layer_4">#FFC9A588</color>
+
     <!-- Web links in rich text -->
     <color name="rich_text_link">#5B86B5</color>
 

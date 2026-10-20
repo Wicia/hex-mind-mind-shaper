@@ -166,6 +166,11 @@ class FlashcardsService @Inject constructor(
         updateProgress(FlashcardsScheduler.rate(flashcard, rating, LocalDate.now()))
     }
 
+    /** Rating taken back in the session - [flashcard] holds the progress from before it */
+    suspend fun restoreProgress(flashcard: FlashcardDTO) {
+        updateProgress(flashcard)
+    }
+
     /**
      * Repetition progress only - content and place of the flashcard stay.
      * ! Reviewing is not editing - updated_at stays, so the set does not jump in the list order
