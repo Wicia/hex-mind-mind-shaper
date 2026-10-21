@@ -53,24 +53,11 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
-
-                    <!-- Start screen -->
-                    <TextView
-                        android:id="@+id/tv_start_screen_section_header"
-                        style="@style/AppCardView_Header"
-                        android:text="@string/settings_start_screen_header" />
-
-                    <pl.hexmind.mindshaper.activities.settings.widgets.StartScreenTiles
-                        android:id="@+id/tiles_start_screen"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
-            <!-- === THOUGHTS FORMS === -->
+            <!-- === THOUGHTS === -->
             <androidx.cardview.widget.CardView
                 style="@style/AppCardView">
 
@@ -106,16 +93,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                    <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
 
-            <!-- === THOUGHTS VALUE / LIFECYCLE === -->
-            <androidx.cardview.widget.CardView
-                style="@style/AppCardView">
-
-                <LinearLayout
-                    style="@style/AppCardView_Content">
-
+                    <!-- Thought value scale -->
                     <TextView
                         android:id="@+id/tv_thought_value_scale_section_header"
                         style="@style/AppCardView_Header"
@@ -430,6 +410,27 @@
                             android:text="@string/settings_calendar_reminders_sync_hint" />
 
                     </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- === START SCREEN === -->
+            <androidx.cardview.widget.CardView
+                style="@style/AppCardView">
+
+                <LinearLayout
+                    style="@style/AppCardView_Content">
+
+                    <TextView
+                        android:id="@+id/tv_start_screen_section_header"
+                        style="@style/AppCardView_Header"
+                        android:text="@string/settings_start_screen_header" />
+
+                    <pl.hexmind.mindshaper.activities.settings.widgets.StartScreenTiles
+                        android:id="@+id/tiles_start_screen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
