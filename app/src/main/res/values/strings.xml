@@ -250,7 +250,7 @@ Awers - Rewers…"</string>
     <!-- Welcome dialog (first app launch) -->
     <string name="home_welcome_name_title">Witaj w MindShaperze!</string>
     <string name="home_welcome_name_text">Jak mam się do ciebie zwracać?</string>
-    <string name="home_welcome_name_btn_skip">Pomiń</string>dziala,
+    <string name="home_welcome_name_btn_skip">Pomiń</string>
     <string name="home_welcome_name_btn_save">Zapisz</string>
     <string name="home_welcome_features_title">Pobaw się funkcjami</string>
     <string name="home_welcome_features_text">Nagrywanie głosu, zdjęcia, fiszki do powtórek, przypominajki i inne kosmiczne funkcje włączysz w Preferencjach</string>

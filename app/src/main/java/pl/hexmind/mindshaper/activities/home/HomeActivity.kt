@@ -106,7 +106,7 @@ class HomeActivity : CoreActivity() {
         setupBuildVersion()
     }
 
-    // The flask is always there - tips can be turned back on inside; bubbles only while the tips are on
+    // The flask is always there - tips can be turned on inside; bubbles only while the tips are on
     private fun syncOnboardingEntry() {
         val isOnboardingEnabled = appSettingsStorage.isOnboardingEnabled()
 

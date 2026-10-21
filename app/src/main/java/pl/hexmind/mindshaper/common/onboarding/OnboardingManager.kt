@@ -75,7 +75,7 @@ class OnboardingManager @Inject constructor(
     )
 
     fun showTooltipForStep(step: OnboardingProgressStep, context: Context){
-        // "Without tooltips" chosen in the welcome - the user gets to know the app alone
+        // Tips are off unless turned on - in the welcome or behind the flask
         if (!appSettingsStorage.isOnboardingEnabled() || wasTooltipShown(step)) {
             return
         }

@@ -666,7 +666,7 @@
         {fn: "Witanie przy pierwszym uruchomieniu", col: "proc", process: ["Onboarding", "Personalizowanie"], place: HOME,
             text: "imię zapisywane tylko przy zapisie; pominięcie albo puste pole — zostaje „Bezimienn(y/a)”; powitanie na Domu od razu z nowym imieniem"},
         {fn: "Witanie przy pierwszym uruchomieniu", col: "proc", process: ["Onboarding"], place: HOME,
-            text: "odpowiedź o poznawaniu aplikacji<ul><li>tak — wskazówki pokazywane jak dotąd</li><li>nie — żadnych wskazówek w całej aplikacji; użytkownik sam poznaje aplikację; włączenie później — w Poznawaniu aplikacji</li><li>zamknięcie bez odpowiedzi — wskazówki zostają włączone</li></ul>"},
+            text: "odpowiedź o poznawaniu aplikacji<ul><li>tak — wskazówki pokazywane jak dotąd</li><li>nie — żadnych wskazówek w całej aplikacji; użytkownik sam poznaje aplikację; włączenie później — w Poznawaniu aplikacji</li><li>zamknięcie bez odpowiedzi — wskazówki wyłączone; włączają się tylko na życzenie — w powitaniu albo w Poznawaniu aplikacji</li></ul>"},
         {fn: "Witanie przy pierwszym uruchomieniu", col: "proc", process: ["Onboarding"], place: HOME,
             text: "wskazówka Domu dopiero po zamknięciu powitania — przy wyłączonych wskazówkach nie pojawia się"},
         {fn: "Wyświetlanie wskazówek", col: "proc", process: ["Onboarding"], place: GEN,
@@ -1388,7 +1388,7 @@
         "Otwieranie filtra": "zmiana — stany liczone jako jedno kryterium, tylko po zmianie domyślnych",
         "Filtrowanie po stanie": "zmiana — trzeci stan „Bliskie uśpienia” (domyślnie zaznaczony) zamiast liczenia ich jako aktywne",
         "Wczytywanie kopii": "zmiana — plik z dowolnego miejsca, powód błędu widoczny, działa zaraz po ponownej instalacji",
-        "Witanie przy pierwszym uruchomieniu": "nowe — powitanie z podaniem imienia, wskazaniem Preferencji i pytaniem o poznawanie aplikacji (nie = wskazówki wyłączone)",
+        "Witanie przy pierwszym uruchomieniu": "nowe — powitanie z podaniem imienia, wskazaniem Preferencji i pytaniem o poznawanie aplikacji (nie = wskazówki wyłączone); zmiana — zamknięcie bez odpowiedzi = wskazówki wyłączone",
     };
 
     // Places where the user verified a function; value = dd/mm of the check.
