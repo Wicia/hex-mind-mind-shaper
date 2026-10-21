@@ -213,12 +213,14 @@ class StreamActivity : CoreActivity() {
         supportFragmentManager.setFragmentResultListener(
             StreamFilterBottomSheet.REQUEST_KEY, this
         ) { _, result ->
-            val showActive  = result.getBoolean(StreamFilterBottomSheet.RESULT_SHOW_ACTIVE, true)
-            val showDormant = result.getBoolean(StreamFilterBottomSheet.RESULT_SHOW_DORMANT, false)
-            val domainId    = result.getInt(StreamFilterBottomSheet.RESULT_DOMAIN_ID, -1).takeIf { it != -1 }
+            val showActive      = result.getBoolean(StreamFilterBottomSheet.RESULT_SHOW_ACTIVE, true)
+            val showNearDormant = result.getBoolean(StreamFilterBottomSheet.RESULT_SHOW_NEAR_DORMANT, true)
+            val showDormant     = result.getBoolean(StreamFilterBottomSheet.RESULT_SHOW_DORMANT, false)
+            val domainId        = result.getInt(StreamFilterBottomSheet.RESULT_DOMAIN_ID, -1).takeIf { it != -1 }
             val createdPeriod = result.getString(StreamFilterBottomSheet.RESULT_CREATED_PERIOD)
                 ?.let { name -> CreatedPeriod.valueOf(name) }
             viewModel.updateShowActive(showActive)
+            viewModel.updateShowNearDormant(showNearDormant)
             viewModel.updateShowDormant(showDormant)
             viewModel.updateSelectedDomain(domainId)
             viewModel.updateCreatedPeriod(createdPeriod)
@@ -231,6 +233,7 @@ class StreamActivity : CoreActivity() {
         // Update filter button text when any filter changes
         viewModel.selectedDomainId.observe(this) { updateFilterButtonText(it) }
         viewModel.showActive.observe(this)        { updateFilterButtonText(viewModel.selectedDomainId.value) }
+        viewModel.showNearDormant.observe(this)   { updateFilterButtonText(viewModel.selectedDomainId.value) }
         viewModel.showDormant.observe(this)       { updateFilterButtonText(viewModel.selectedDomainId.value) }
         viewModel.createdPeriod.observe(this)     { updateFilterButtonText(viewModel.selectedDomainId.value) }
     }
@@ -252,21 +255,27 @@ class StreamActivity : CoreActivity() {
         StreamFilterBottomSheet.show(
             fragmentManager      = supportFragmentManager,
             showActive           = viewModel.showActive.value ?: true,
+            showNearDormant      = viewModel.showNearDormant.value ?: true,
             showDormant          = viewModel.showDormant.value ?: false,
             selectedDomainId     = viewModel.selectedDomainId.value,
             domainItems          = domainGridItems,
             isDormantModeEnabled = appSettingsStorage.isDormantModeEnabled(),
             activeCount          = viewModel.countActiveThoughts(),
+            nearDormantCount     = viewModel.countNearDormantThoughts(),
             dormantCount         = viewModel.countDormantThoughts(),
             createdPeriod        = viewModel.createdPeriod.value
         )
     }
 
     private fun updateFilterButtonText(domainId: Int?) {
-        val dormantModeOn = appSettingsStorage.isDormantModeEnabled()
+        // States count as one criterion, and only when they differ from the default (active + near dormant)
+        val statesChanged = appSettingsStorage.isDormantModeEnabled() && (
+            viewModel.showActive.value != true ||
+            viewModel.showNearDormant.value != true ||
+            viewModel.showDormant.value == true
+        )
         val count = listOfNotNull(
-            if (dormantModeOn && viewModel.showActive.value == true) true else null,
-            if (dormantModeOn && viewModel.showDormant.value == true) true else null,
+            if (statesChanged) true else null,
             domainId,
             viewModel.createdPeriod.value
         ).size

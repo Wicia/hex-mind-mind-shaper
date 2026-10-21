@@ -998,15 +998,15 @@
 
         // Filtrowanie myśli
         {fn: "Otwieranie filtra", col: "data", process: ["Filtrowanie myśli"], place: STR,
-            text: "Filtruj — przycisk z liczbą aktywnych kryteriów"},
+            text: "Filtruj — przycisk z liczbą aktywnych kryteriów; stany liczą się jako jedno kryterium, tylko gdy różnią się od domyślnych"},
         {fn: "Otwieranie filtra", col: "proc", process: ["Filtrowanie myśli"], place: STR,
             text: "okno startuje z bieżącymi ustawieniami filtra"},
         {fn: "Filtrowanie po stanie", col: "data", process: ["Filtrowanie myśli", "Tryb „Uśpienia”"], place: STR,
-            text: "sekcja Stany — dwa niezależne zaznaczenia, z liczbą myśli<ul><li>Aktywne myśli — domyślnie tak</li><li>Uśpione myśli — domyślnie nie</li></ul>"},
+            text: "sekcja Stany — trzy niezależne zaznaczenia, z liczbą myśli<ul><li>Aktywne myśli — domyślnie tak</li><li>Bliskie uśpienia — domyślnie tak</li><li>Uśpione myśli — domyślnie nie</li></ul>"},
         {fn: "Filtrowanie po stanie", col: "proc", process: ["Filtrowanie myśli", "Tryb „Uśpienia”"], place: STR,
             text: "sekcja ukryta przy wyłączonym trybie uśpienia — wtedy wszystkie myśli"},
         {fn: "Filtrowanie po stanie", col: "proc", process: ["Filtrowanie myśli", "Tryb „Uśpienia”"], place: STR,
-            text: "liczby ze wszystkich myśli, nie tylko przefiltrowanych — ustalane w chwili otwarcia okna; bliskie uśpienia liczą się jako aktywne"},
+            text: "liczby ze wszystkich myśli, nie tylko przefiltrowanych — ustalane w chwili otwarcia okna"},
         {fn: "Filtrowanie po domenie", col: "data", process: ["Filtrowanie myśli", "Konfigurowanie domen"], place: STR,
             text: "domeny — jedna do wyboru"},
         {fn: "Filtrowanie po domenie", col: "proc", process: ["Filtrowanie myśli"], place: STR,
@@ -1385,6 +1385,8 @@
         "Importowanie fiszek": "zmiana — tekst także z pliku .txt i z banku fiszek; myślnik rozpoznaje też półpauzę, pauzę i minus",
         "Filtrowanie po czasie utworzenia": "nowe — filtr Strumienia po dniu utworzenia myśli",
         "Zatwierdzanie filtra": "zmiana — dochodzi czas utworzenia",
+        "Otwieranie filtra": "zmiana — stany liczone jako jedno kryterium, tylko po zmianie domyślnych",
+        "Filtrowanie po stanie": "zmiana — trzeci stan „Bliskie uśpienia” (domyślnie zaznaczony) zamiast liczenia ich jako aktywne",
         "Wczytywanie kopii": "zmiana — plik z dowolnego miejsca, powód błędu widoczny, działa zaraz po ponownej instalacji",
         "Witanie przy pierwszym uruchomieniu": "nowe — powitanie z podaniem imienia, wskazaniem Preferencji i pytaniem o poznawanie aplikacji (nie = wskazówki wyłączone)",
     };
