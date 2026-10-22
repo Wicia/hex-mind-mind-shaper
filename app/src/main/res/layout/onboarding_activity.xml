@@ -19,85 +19,112 @@
         <!-- Activity header (icon + title) -->
         <include layout="@layout/common_header_activity" />
 
-        <!-- Tips on / off - the same setting as the welcome choice -->
-        <pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
-            android:id="@+id/switch_onboarding_tips"
+        <!-- Tips on / off with the overall progress - one card to stand out from the background -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="@string/workshop_onboarding_tips_switch" />
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:background="@drawable/shape_card_standalone">
 
-        <!-- Feature benefit - shown only while the tips are off -->
-        <TextView
-            android:id="@+id/tv_onboarding_tips_hint"
-            style="@style/TextView_Section_Info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="@string/workshop_onboarding_tips_hint" />
+            <!-- The same setting as the welcome choice -->
+            <pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
+                android:id="@+id/switch_onboarding_tips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="18dp"
+                android:paddingEnd="16dp"
+                android:text="@string/workshop_onboarding_tips_switch" />
 
-        <!-- Progress and sections - hidden while the tips are off -->
+            <!-- Feature benefit - shown only while the tips are off -->
+            <TextView
+                android:id="@+id/tv_onboarding_tips_hint"
+                style="@style/TextView_Section_Info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingStart="18dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="6dp"
+                android:text="@string/workshop_onboarding_tips_hint" />
+
+            <!-- Overall progress: done tasks and seen tips out of all - hidden while the tips are off -->
+            <LinearLayout
+                android:id="@+id/ll_onboarding_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@color/_gray_lvl_1"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="18dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="6dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <!-- Progress label -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:text="@string/workshop_onboarding_progress"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        />
+
+                    <!-- Progress bar -->
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/lpi_onboarding_progress"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:indeterminate="false"
+                        app:trackThickness="8dp"
+                        app:trackCornerRadius="4dp"
+                        app:indicatorTrackGapSize="0dp"
+                        app:indicatorColor="@color/_orange_lvl_3"
+                        app:trackColor="@color/_orange_lvl_1"
+                        />
+
+                    <!-- Progress percent -->
+                    <TextView
+                        android:id="@+id/tv_onboarding_progress_percent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:minWidth="40dp"
+                        android:gravity="end"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        tools:text="40%"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Tasks and sections - hidden while the tips are off -->
         <LinearLayout
             android:id="@+id/ll_onboarding_options"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator
-                style="@style/AppCardView_Divider"
-                android:layout_marginTop="8dp" />
-
-            <!-- Overall progress: done tasks and seen tips out of all -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <!-- Progress label -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:text="@string/workshop_onboarding_progress"
-                    android:textColor="@color/text_primary"
-                    android:textSize="14sp"
-                    />
-
-                <!-- Progress bar -->
-                <com.google.android.material.progressindicator.LinearProgressIndicator
-                    android:id="@+id/lpi_onboarding_progress"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:indeterminate="false"
-                    app:trackThickness="8dp"
-                    app:trackCornerRadius="4dp"
-                    app:indicatorTrackGapSize="0dp"
-                    app:indicatorColor="@color/_orange_lvl_3"
-                    app:trackColor="@color/_orange_lvl_1"
-                    />
-
-                <!-- Progress percent -->
-                <TextView
-                    android:id="@+id/tv_onboarding_progress_percent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:minWidth="40dp"
-                    android:gravity="end"
-                    android:textColor="@color/text_primary"
-                    android:textSize="14sp"
-                    tools:text="40%"
-                    />
-
-            </LinearLayout>
 
             <!-- Tasks of the Thoughts area - all done in Stream -->
             <LinearLayout

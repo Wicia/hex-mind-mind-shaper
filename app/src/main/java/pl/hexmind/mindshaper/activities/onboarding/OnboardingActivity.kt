@@ -47,6 +47,7 @@ class OnboardingActivity : CoreActivity() {
     private lateinit var switchOnboardingTips: HexSwitchRow
     private lateinit var tvOnboardingTipsHint: View
     private lateinit var llOnboardingOptions: View
+    private lateinit var llOnboardingProgress: View
     private lateinit var llOnboardingTasks: LinearLayout
 
     // One card per functionality: Stream and Details are the same one
@@ -78,6 +79,7 @@ class OnboardingActivity : CoreActivity() {
         switchOnboardingTips = findViewById(R.id.switch_onboarding_tips)
         tvOnboardingTipsHint = findViewById(R.id.tv_onboarding_tips_hint)
         llOnboardingOptions = findViewById(R.id.ll_onboarding_options)
+        llOnboardingProgress = findViewById(R.id.ll_onboarding_progress)
 
         switchOnboardingTips.isChecked = appSettingsStorage.isOnboardingEnabled()
         switchOnboardingTips.setOnCheckedChangeListener { _, isChecked ->
@@ -92,6 +94,7 @@ class OnboardingActivity : CoreActivity() {
     private fun syncTipsOptionsVisibility() {
         val enabled = switchOnboardingTips.isChecked
         llOnboardingOptions.isVisible = enabled
+        llOnboardingProgress.isVisible = enabled
         tvOnboardingTipsHint.isVisible = !enabled
     }
 
@@ -120,6 +123,12 @@ class OnboardingActivity : CoreActivity() {
                 tasks.sumOf { task -> onboardingManager.getTaskScore(task) }
         lpiOnboardingProgress.max = total
         lpiOnboardingProgress.setProgressCompat(doneCount, animate)
+
+        // All done = the same green as the rings of done tasks
+        val isAllDone = doneCount >= total
+        lpiOnboardingProgress.setIndicatorColor(
+            ContextCompat.getColor(this, if (isAllDone) R.color.progress_ring_done else R.color._orange_lvl_3)
+        )
 
         val percent = doneCount * 100 / total
         tvOnboardingProgressPercent.text = getString(R.string.workshop_onboarding_progress_percent, percent)
