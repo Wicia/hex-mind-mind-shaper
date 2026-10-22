@@ -41,9 +41,9 @@
 
     </LinearLayout>
 
-    <!-- Page 2: where to play with the app features -->
+    <!-- Page 2: tips or not -->
     <LinearLayout
-        android:id="@+id/ll_page_features"
+        android:id="@+id/ll_page_onboarding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -53,75 +53,6 @@
             style="@style/Dialog_Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/home_welcome_features_text" />
-
-        <!-- Path to Preferences: navigation button -> Preferences item, as they look in the app -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:importantForAccessibility="noHideDescendants"
-            android:clipChildren="false"
-            android:clipToPadding="false">
-
-            <!-- Navigation button with its shadow -->
-            <FrameLayout
-                android:layout_width="57dp"
-                android:layout_height="57dp"
-                android:clipChildren="false">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/shape_nav_toggle_halo" />
-
-                <com.google.android.material.button.MaterialButton
-                    style="@style/AuxiliaryActionButton"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center"
-                    android:clickable="false"
-                    android:focusable="false"
-                    app:icon="@drawable/ic_nav_expand" />
-
-            </FrameLayout>
-
-            <!-- Arrow -->
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                android:src="@drawable/ic_action_chevron_right"
-                android:contentDescription="@null"
-                app:tint="@color/text_secondary" />
-
-            <!-- Preferences item as it looks in the navigation drawer -->
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/nav_drawer_gradient"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp">
-
-                <pl.hexmind.mindshaper.common.ui.HexNavItemView
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    app:hexNavLabel="@string/settings_title"
-                    app:hexNavIcon="@drawable/ic_activity_settings"
-                    app:hexNavIconSpacing="8dp" />
-
-            </FrameLayout>
-
-        </LinearLayout>
-
-        <TextView
-            style="@style/Dialog_Text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginBottom="0dp"
             android:text="@string/home_welcome_onboarding_question" />
 

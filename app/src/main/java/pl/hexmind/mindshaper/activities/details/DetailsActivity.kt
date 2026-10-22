@@ -17,7 +17,6 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtManagerActivity
 import pl.hexmind.mindshaper.activities.workshop.GoalDetailActivity
 import pl.hexmind.mindshaper.common.dormant.ThoughtState
-import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.GuideDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.HexTags
@@ -87,10 +86,6 @@ class DetailsActivity : ThoughtManagerActivity() {
 
         viewModel.loadThought(thoughtId)
         viewModel.loadDomains()
-
-        onboardingManager.showTooltipForStep(
-            OnboardingProgressStep.DETAILS_TOOLTIP, this
-        )
     }
 
     private fun setupObservers() {

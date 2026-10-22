@@ -19,7 +19,7 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.views.HexInputField
 
 /**
- * Welcome shown on the first app launch: your name, then where to play with the app features
+ * Welcome shown on the first app launch: your name, then a greeting in Home
  * and whether to get to know the app with tooltips.
  */
 class WelcomeDialog(
@@ -31,6 +31,7 @@ class WelcomeDialog(
 ) {
 
     private var currentPage = PAGE_YOUR_NAME
+    private var yourName = ""
     private lateinit var dialog: AlertDialog
     private lateinit var dialogView: View
 
@@ -51,7 +52,7 @@ class WelcomeDialog(
 
         dialogView.findViewById<MaterialButton>(R.id.btn_welcome_negative).setOnClickListener {
             if (currentPage == PAGE_YOUR_NAME) {
-                goToFeaturesPage()
+                goToOnboardingPage()
             }
             else {
                 onOnboardingChosen(false)
@@ -62,9 +63,9 @@ class WelcomeDialog(
         dialogView.findViewById<MaterialButton>(R.id.btn_welcome_positive).setOnClickListener {
             if (currentPage == PAGE_YOUR_NAME) {
                 // Blank = nothing to save, the default name stays
-                val yourName = dialogView.findViewById<HexInputField>(R.id.hif_your_name).getText()
+                yourName = dialogView.findViewById<HexInputField>(R.id.hif_your_name).getText()
                 if (yourName.isNotBlank()) onYourNameSaved(yourName)
-                goToFeaturesPage()
+                goToOnboardingPage()
             }
             else {
                 onOnboardingChosen(true)
@@ -97,9 +98,9 @@ class WelcomeDialog(
         }
     }
 
-    private fun goToFeaturesPage() {
+    private fun goToOnboardingPage() {
         hideKeyboard()
-        currentPage = PAGE_FEATURES
+        currentPage = PAGE_ONBOARDING
         updatePage()
     }
 
@@ -111,11 +112,13 @@ class WelcomeDialog(
     private fun updatePage() {
         val isYourNamePage = currentPage == PAGE_YOUR_NAME
 
-        dialogView.findViewById<TextView>(R.id.tv_welcome_header).setText(
-            if (isYourNamePage) R.string.home_welcome_name_title else R.string.home_welcome_features_title
-        )
+        dialogView.findViewById<TextView>(R.id.tv_welcome_header).text = when {
+            isYourNamePage     -> context.getString(R.string.home_welcome_name_title)
+            yourName.isBlank() -> context.getString(R.string.home_welcome_home_title)
+            else               -> context.getString(R.string.home_welcome_home_title_named, yourName)
+        }
         dialogView.findViewById<View>(R.id.ll_page_your_name).isVisible = isYourNamePage
-        dialogView.findViewById<View>(R.id.ll_page_features).isVisible = !isYourNamePage
+        dialogView.findViewById<View>(R.id.ll_page_onboarding).isVisible = !isYourNamePage
 
         dialogView.findViewById<MaterialButton>(R.id.btn_welcome_negative).setText(
             if (isYourNamePage) R.string.home_welcome_name_btn_skip else R.string.home_welcome_onboarding_btn_no
@@ -160,7 +163,7 @@ class WelcomeDialog(
 
     companion object {
         private const val PAGE_YOUR_NAME = 0
-        private const val PAGE_FEATURES = 1
+        private const val PAGE_ONBOARDING = 1
         private const val PAGES_COUNT = 2
         private const val TOP_OFFSET_DP = 48
     }

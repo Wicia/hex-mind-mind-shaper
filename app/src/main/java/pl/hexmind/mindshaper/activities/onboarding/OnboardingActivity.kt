@@ -2,12 +2,17 @@ package pl.hexmind.mindshaper.activities.onboarding
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -20,6 +25,7 @@ import pl.hexmind.mindshaper.activities.metadata.MetadataActivity
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
 import pl.hexmind.mindshaper.activities.stream.StreamActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingSection
+import pl.hexmind.mindshaper.common.onboarding.OnboardingTask
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
 import pl.hexmind.mindshaper.services.ThoughtsService
@@ -41,6 +47,7 @@ class OnboardingActivity : CoreActivity() {
     private lateinit var switchOnboardingTips: HexSwitchRow
     private lateinit var tvOnboardingTipsHint: View
     private lateinit var llOnboardingOptions: View
+    private lateinit var llOnboardingTasks: LinearLayout
 
     // One card per functionality: Stream and Details are the same one
     private val onboardingCards = listOf(
@@ -59,6 +66,10 @@ class OnboardingActivity : CoreActivity() {
         lpiOnboardingProgress = findViewById(R.id.lpi_onboarding_progress)
         tvOnboardingProgressPercent = findViewById(R.id.tv_onboarding_progress_percent)
         setupTipsToggle()
+        llOnboardingTasks = findViewById(R.id.ll_onboarding_tasks)
+        findViewById<MaterialButton>(R.id.btn_onboarding_tasks_open).setOnClickListener {
+            startActivity(Intent(this, StreamActivity::class.java))
+        }
         setupOnboardingList()
     }
 
@@ -86,22 +97,83 @@ class OnboardingActivity : CoreActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Tooltips may have been seen on another screen in the meantime
+        // Tooltips may have been seen and tasks done on another screen in the meantime
+        bindTasks()
         onboardingAdapter.notifyDataSetChanged()
         refreshProgress(animate = false)
     }
 
-    // Counts the same tips the list shows, so the bar and the rows below always agree
+    // Counts the same tasks and tips the lists show, so the bar and the rows below always agree
+    // ! A task weighs as much as its required points - a 3 point task counts like 3 tips
     private fun refreshProgress(animate: Boolean) {
-        val tips = OnboardingSection.entries.flatMap { section -> onboardingManager.getSectionTips(section) }
-        if (tips.isEmpty()) return
+        val tips = if (TIP_SECTIONS_SHOWN) {
+            OnboardingSection.entries.flatMap { section -> onboardingManager.getSectionTips(section) }
+        } else {
+            emptyList()
+        }
+        val tasks = OnboardingTask.entries
 
-        val seenCount = tips.count { tip -> tip.wasSeen }
-        lpiOnboardingProgress.max = tips.size
-        lpiOnboardingProgress.setProgressCompat(seenCount, animate)
+        val total = tips.size + tasks.sumOf { task -> task.requiredCount }
+        if (total == 0) return
 
-        val percent = seenCount * 100 / tips.size
+        val doneCount = tips.count { tip -> tip.wasSeen } +
+                tasks.sumOf { task -> onboardingManager.getTaskScore(task) }
+        lpiOnboardingProgress.max = total
+        lpiOnboardingProgress.setProgressCompat(doneCount, animate)
+
+        val percent = doneCount * 100 / total
         tvOnboardingProgressPercent.text = getString(R.string.workshop_onboarding_progress_percent, percent)
+    }
+
+    // Task rows are rebuilt on every refresh: there are only a few of them
+    private fun bindTasks() {
+        llOnboardingTasks.removeAllViews()
+        val inflater = LayoutInflater.from(this)
+
+        OnboardingTask.entries.forEach { task ->
+            val row = inflater.inflate(R.layout.onboarding_task_item, llOnboardingTasks, false)
+            bindTaskRow(row, task)
+            llOnboardingTasks.addView(row)
+        }
+    }
+
+    private fun bindTaskRow(row: View, task: OnboardingTask) {
+        val cpiRing: CircularProgressIndicator = row.findViewById(R.id.cpi_task_ring)
+        val tvRingLabel: TextView              = row.findViewById(R.id.tv_task_ring_label)
+
+        val score = onboardingManager.getTaskScore(task)
+        val done = score >= task.requiredCount
+
+        cpiRing.setProgressCompat((score * 100 / task.requiredCount).coerceIn(0, 100), false)
+        cpiRing.setIndicatorColor(
+            ContextCompat.getColor(this, if (done) R.color.progress_ring_done else R.color._orange_lvl_3)
+        )
+        cpiRing.trackColor = ContextCompat.getColor(this, if (done) R.color.progress_ring_done else R.color._orange_lvl_1)
+
+        tvRingLabel.setTextColor(
+            ContextCompat.getColor(this, if (done) R.color.progress_ring_done else R.color._orange_lvl_3)
+        )
+        tvRingLabel.text = when {
+            done                 -> "✓"
+            task.requiredCount > 1 -> score.toString()
+            else                 -> ""
+        }
+
+        row.findViewById<TextView>(R.id.tv_task_title).setText(task.titleRes)
+        row.findViewById<TextView>(R.id.tv_task_description).setText(task.descriptionRes)
+        row.findViewById<MaterialButton>(R.id.btn_task_reset).setOnClickListener { showResetTaskDialog(task) }
+    }
+
+    private fun showResetTaskDialog(task: OnboardingTask) {
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.workshop_dialog_reset_onboarding_task_title))
+            .setDescription(getString(R.string.workshop_dialog_reset_onboarding_task))
+            .setPrimaryAction(getString(R.string.workshop_dialog_reset_onboarding_task_yes)) {
+                onboardingManager.resetTask(task)
+                bindTasks()
+                refreshProgress(animate = true)
+            }
+            .show()
     }
 
     private fun setupOnboardingList() {
@@ -118,6 +190,7 @@ class OnboardingActivity : CoreActivity() {
             layoutManager = LinearLayoutManager(this@OnboardingActivity)
             adapter = onboardingAdapter
             isNestedScrollingEnabled = false
+            isVisible = TIP_SECTIONS_SHOWN
         }
     }
 
@@ -159,5 +232,11 @@ class OnboardingActivity : CoreActivity() {
                 startActivity(intent)
             }
         }
+    }
+
+    companion object {
+        // ! No tip is shown on the screens yet (onboarding concept) - their sections stay hidden
+        // and out of the progress until the first reworked tip is back
+        private const val TIP_SECTIONS_SHOWN = false
     }
 }

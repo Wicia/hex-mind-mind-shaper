@@ -15,9 +15,11 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
+import pl.hexmind.mindshaper.common.onboarding.OnboardingTask
+import pl.hexmind.mindshaper.common.onboarding.OnboardingTaskPoint
 import pl.hexmind.mindshaper.common.ui.views.lists.SortConfig
 import pl.hexmind.mindshaper.common.ui.views.lists.SortDirection
-import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
+import pl.hexmind.mindshaper.common.ui.views.lists.SortProperty
 import pl.hexmind.mindshaper.common.regex.HexTags
 import pl.hexmind.mindshaper.common.ui.dialogs.GuideDialog
 import pl.hexmind.mindshaper.common.ui.dpToPx
@@ -79,10 +81,6 @@ class StreamActivity : CoreActivity() {
         if (savedInstanceState == null) {
             applyLaunchSearchCriteria()
         }
-
-        onboardingManager.showTooltipForStep(
-            OnboardingProgressStep.STREAM_TOOLTIP, this
-        )
     }
 
     private fun initializeViews() {
@@ -161,6 +159,7 @@ class StreamActivity : CoreActivity() {
                 currentTags     = searcher.getTags()
             ) { hexTags ->
                 searcher.setTags(hexTags)
+                onboardingManager.recordTaskPoints(OnboardingTask.SEARCH_STREAM, searchTaskPoints(hexTags))
             }
         }
 
@@ -182,6 +181,11 @@ class StreamActivity : CoreActivity() {
                 viewModel.updateSearchQuery(hexTags)
             }
         }
+    }
+
+    private fun searchTaskPoints(hexTags: HexTags): Set<OnboardingTaskPoint> = buildSet {
+        if (!hexTags.subject.isNullOrBlank()) add(OnboardingTaskPoint.SEARCH_SUBJECT)
+        if (!hexTags.person.isNullOrBlank() || !hexTags.project.isNullOrBlank()) add(OnboardingTaskPoint.SEARCH_HEX_TAG)
     }
 
     // Criteria passed by the caller (e.g. a Metadata tag pill) replace the current search
@@ -224,6 +228,11 @@ class StreamActivity : CoreActivity() {
             viewModel.updateShowDormant(showDormant)
             viewModel.updateSelectedDomain(domainId)
             viewModel.updateCreatedPeriod(createdPeriod)
+
+            onboardingManager.recordTaskPoints(OnboardingTask.FILTER_STREAM, buildSet {
+                if (domainId != null) add(OnboardingTaskPoint.FILTER_DOMAIN)
+                if (createdPeriod != null) add(OnboardingTaskPoint.FILTER_CREATED_PERIOD)
+            })
 
             // Show count of filtered thoughts after applying filters
             val count = viewModel.filteredThoughts.value?.size ?: 0
@@ -289,9 +298,20 @@ class StreamActivity : CoreActivity() {
             // ! raise BEFORE the value changes - the VM's mediator rebuilds the list before this Activity's sortConfig observer runs
             isListResetPending = true
             viewModel.updateSortConfig(newConfig)
+
+            onboardingManager.recordTaskPoints(OnboardingTask.SORT_STREAM, setOf(sortTaskPoint(newConfig.property)))
         }
 
         dialog.show(supportFragmentManager, SortDialogFragment.TAG)
+    }
+
+    private fun sortTaskPoint(property: SortProperty): OnboardingTaskPoint = when (property) {
+        SortProperty.VALUE      -> OnboardingTaskPoint.SORT_VALUE
+        SortProperty.CREATED_AT -> OnboardingTaskPoint.SORT_CREATED_AT
+        SortProperty.UPDATED_AT -> OnboardingTaskPoint.SORT_UPDATED_AT
+        SortProperty.SUBJECT    -> OnboardingTaskPoint.SORT_SUBJECT
+        SortProperty.PERSON     -> OnboardingTaskPoint.SORT_PERSON
+        SortProperty.PROJECT    -> OnboardingTaskPoint.SORT_PROJECT
     }
 
     private fun showDeleteConfirmationDialog(thought: ThoughtDTO) {

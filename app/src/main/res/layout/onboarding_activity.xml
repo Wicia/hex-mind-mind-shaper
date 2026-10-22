@@ -51,7 +51,7 @@
                 style="@style/AppCardView_Divider"
                 android:layout_marginTop="8dp" />
 
-            <!-- Overall progress: seen tips out of all -->
+            <!-- Overall progress: done tasks and seen tips out of all -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -99,7 +99,87 @@
 
             </LinearLayout>
 
-            <!-- Onboarding cards list -->
+            <!-- Tasks of the Thoughts area - all done in Stream -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:background="@drawable/shape_card_standalone">
+
+                <!-- Header: icon + label + open Stream -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:baselineAligned="false"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="6dp"
+                        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                        android:src="@drawable/ic_activity_stream"
+                        app:tint="@color/text_secondary"
+                        />
+
+                    <TextView
+                        style="@style/TextView_Header_Section"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginBottom="0dp"
+                        android:textSize="15sp"
+                        android:text="@string/workshop_onboarding_tasks_thoughts_header"
+                        />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_onboarding_tasks_open"
+                        style="@style/SecondaryActionButton"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center_vertical"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        app:iconSize="20dp"
+                        app:icon="@drawable/ic_open_screen"
+                        app:iconGravity="textStart"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@color/_gray_lvl_1"
+                    />
+
+                <!-- Task rows are added here at bind time -->
+                <LinearLayout
+                    android:id="@+id/ll_onboarding_tasks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="6dp"
+                    />
+
+            </LinearLayout>
+
+            <!-- Onboarding cards list: tips per screen -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_onboarding_sections"
                 android:layout_width="match_parent"

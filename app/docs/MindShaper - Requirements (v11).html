@@ -660,15 +660,13 @@
         {fn: "Wyświetlanie wskazówek", col: "proc", process: ["Onboarding"], place: GEN,
             text: "każdy krok pokazywany tylko raz — zamknięcie kroku oznacza go jako zobaczony"},
         {fn: "Witanie przy pierwszym uruchomieniu", col: "data", process: ["Onboarding", "Personalizowanie"], place: HOME,
-            text: "powitanie w dwóch krokach<ul><li>podanie imienia — podpowiedź „Bezimienn(y/a)”; można pominąć</li><li>gdzie pobawić się funkcjami aplikacji — Preferencje, z obrazkiem drogi do nich (przycisk nawigacji → Preferencje w panelu nawigacji) — i pytanie, czy poznawać aplikację ze wskazówkami</li></ul>"},
+            text: "powitanie w dwóch krokach<ul><li>podanie imienia — podpowiedź „Bezimienn(y/a)”; można pominąć</li><li>powitanie w Domu z podanym imieniem (bez imienia — samo powitanie) i pytanie, czy poznawać aplikację ze wskazówkami</li></ul>"},
         {fn: "Witanie przy pierwszym uruchomieniu", col: "proc", process: ["Onboarding"], place: HOME,
             text: "pokazywane raz, tylko nowym użytkownikom — kto widział już wskazówki Domu, go nie dostaje; nie ma go w Poznawaniu aplikacji"},
         {fn: "Witanie przy pierwszym uruchomieniu", col: "proc", process: ["Onboarding", "Personalizowanie"], place: HOME,
             text: "imię zapisywane tylko przy zapisie; pominięcie albo puste pole — zostaje „Bezimienn(y/a)”; powitanie na Domu od razu z nowym imieniem"},
         {fn: "Witanie przy pierwszym uruchomieniu", col: "proc", process: ["Onboarding"], place: HOME,
-            text: "odpowiedź o poznawaniu aplikacji<ul><li>tak — wskazówki pokazywane jak dotąd</li><li>nie — żadnych wskazówek w całej aplikacji; użytkownik sam poznaje aplikację; włączenie później — w Poznawaniu aplikacji</li><li>zamknięcie bez odpowiedzi — wskazówki wyłączone; włączają się tylko na życzenie — w powitaniu albo w Poznawaniu aplikacji</li></ul>"},
-        {fn: "Witanie przy pierwszym uruchomieniu", col: "proc", process: ["Onboarding"], place: HOME,
-            text: "wskazówka Domu dopiero po zamknięciu powitania — przy wyłączonych wskazówkach nie pojawia się"},
+            text: "odpowiedź o poznawaniu aplikacji<ul><li>tak — wskazówki włączone</li><li>nie — żadnych wskazówek w całej aplikacji; użytkownik sam poznaje aplikację; włączenie później — w Poznawaniu aplikacji</li><li>zamknięcie bez odpowiedzi — wskazówki wyłączone; włączają się tylko na życzenie — w powitaniu albo w Poznawaniu aplikacji</li></ul>"},
         {fn: "Wyświetlanie wskazówek", col: "proc", process: ["Onboarding"], place: GEN,
             text: "wyłączone wskazówki (wybór w powitaniu albo w Poznawaniu aplikacji) — żadna się nie pokazuje"},
         {fn: "Wyświetlanie wskazówek", col: "data", process: ["Onboarding"], place: HOME,
@@ -688,15 +686,35 @@
         {fn: "Wchodzenie do przeglądu wskazówek", col: "proc", process: ["Onboarding"], place: HOME,
             text: "wejście zawsze dostępne, także przy wyłączonych wskazówkach — wtedy bez wyróżnienia"},
         {fn: "Włączanie wskazówek", col: "data", process: ["Onboarding"], place: ONB,
-            text: "„Aktywuj poznawanie” — to samo ustawienie co wybór w powitaniu"},
+            text: "„Aktywuj tryb Poznawania” — to samo ustawienie co wybór w powitaniu"},
         {fn: "Włączanie wskazówek", col: "proc", process: ["Onboarding"], place: ONB,
             text: "wyłączone — postęp i sekcje ukryte, w ich miejscu krótka informacja, co dają wskazówki"},
         {fn: "Wyświetlanie postępu", col: "data", process: ["Onboarding"], place: ONB,
-            text: "ogólny postęp — jaka część wszystkich wskazówek (bez dodatkowych) została zobaczona, w procentach"},
+            text: "ogólny postęp — jaka część wszystkich punktów zadanek i wskazówek (bez dodatkowych) została zdobyta / zobaczona, w procentach; zadanko waży tyle, ile ma punktów"},
         {fn: "Wyświetlanie postępu", col: "proc", process: ["Onboarding"], place: ONB,
-            text: "liczony z tych samych wskazówek co sekcje — postęp i liczniki sekcji zawsze zgodne"},
+            text: "liczony z tych samych zadanek i wskazówek co listy — postęp, zadanka i liczniki sekcji zawsze zgodne"},
         {fn: "Wyświetlanie postępu", col: "proc", process: ["Onboarding"], place: ONB,
-            text: "przeliczany po powrocie na ekran — wskazówki mogły zostać zobaczone gdzie indziej"},
+            text: "przeliczany po powrocie na ekran — wskazówki mogły zostać zobaczone, a zadanka zrobione gdzie indziej"},
+        {fn: "Wyświetlanie zadanek", col: "data", process: ["Onboarding"], place: ONB,
+            text: "zadanka — pogrupowane w karty według obszaru, przed sekcjami wskazówek; karta: nazwa obszaru, przejście do ekranu, na którym robi się jej zadanka<ul><li>Myśli → Strumień myśli</li></ul>"},
+        {fn: "Wyświetlanie zadanek", col: "data", process: ["Onboarding"], place: ONB,
+            text: "zadanko: tytuł, krótki opis, co zrobić, postęp — ile punktów z ilu; ukończone wyróżnione"},
+        {fn: "Zaliczanie zadanek", col: "proc", process: ["Onboarding"], place: GEN,
+            text: "punkt za użycie funkcji — każdy zdobywany raz, przyznawany przez aplikację po wykonaniu akcji; użytkownik niczego nie odhacza"},
+        {fn: "Zaliczanie zadanek", col: "proc", process: ["Onboarding"], place: GEN,
+            text: "punkty tylko przy włączonych wskazówkach — wcześniejsze akcje się nie liczą; wymagane punkty zdobyte (wszystkie albo podana liczba z nich) — zadanko ukończone"},
+        {fn: "Zaliczanie zadanek", col: "proc", process: ["Onboarding", "Łączenie myśli z hex tagami"], place: CAP,
+            text: "„Złap myśl” (3 punkty) — za zapis nowej myśli z tytułem, z tagiem (osoba albo projekt), z notatką; punkty mogą przyjść z różnych myśli; edycja istniejącej myśli się nie liczy"},
+        {fn: "Zaliczanie zadanek", col: "proc", process: ["Onboarding", "Sortowanie myśli"], place: STR,
+            text: "„Posortuj myśli” (3 punkty) — za każde inne kryterium sortowania, także domyślne, jeśli wybrane świadomie; wystarczą 3 dowolne; sama zmiana kierunku się nie liczy"},
+        {fn: "Zaliczanie zadanek", col: "proc", process: ["Onboarding", "Wyszukiwanie myśli"], place: STR,
+            text: "„Znajdź myśl” (2 punkty) — za wyszukanie po temacie, za wyszukanie po tagu (osoba albo projekt); liczy się zatwierdzone wyszukiwanie, także bez wyników; usunięcie kryterium ani przejście z tagu w Tagach i Domenach się nie liczy"},
+        {fn: "Zaliczanie zadanek", col: "proc", process: ["Onboarding", "Filtrowanie myśli"], place: STR,
+            text: "„Przefiltruj myśli” (2 punkty) — za filtr po domenie, za filtr po czasie utworzenia; liczy się zatwierdzony filtr, także bez wyników; same stany myśli się nie liczą"},
+        {fn: "Resetowanie zadanka", col: "data", process: ["Onboarding"], place: ONB,
+            text: "reset przy każdym zadanku"},
+        {fn: "Resetowanie zadanka", col: "proc", process: ["Onboarding"], place: ONB,
+            text: "z potwierdzeniem; działa tylko na swoje zadanko — postęp wraca do zera, ogólny postęp przeliczany od razu"},
         {fn: "Wyświetlanie sekcji wskazówek", col: "data", process: ["Onboarding"], place: ONB,
             text: "sekcje = ekrany, w stałej kolejności<ul><li>Dom</li><li>Preferencje</li><li>Tagi i Domeny</li><li>Łapanie myśli</li><li>Strumień + Szczegóły myśli — razem, ta sama funkcjonalność</li></ul>"},
         {fn: "Wyświetlanie sekcji wskazówek", col: "data", process: ["Onboarding"], place: ONB,
@@ -1388,7 +1406,12 @@
         "Otwieranie filtra": "zmiana — stany liczone jako jedno kryterium, tylko po zmianie domyślnych",
         "Filtrowanie po stanie": "zmiana — trzeci stan „Bliskie uśpienia” (domyślnie zaznaczony) zamiast liczenia ich jako aktywne",
         "Wczytywanie kopii": "zmiana — plik z dowolnego miejsca, powód błędu widoczny, działa zaraz po ponownej instalacji",
-        "Witanie przy pierwszym uruchomieniu": "nowe — powitanie z podaniem imienia, wskazaniem Preferencji i pytaniem o poznawanie aplikacji (nie = wskazówki wyłączone); zmiana — zamknięcie bez odpowiedzi = wskazówki wyłączone",
+        "Witanie przy pierwszym uruchomieniu": "nowe — powitanie z podaniem imienia, wskazaniem Preferencji i pytaniem o poznawanie aplikacji (nie = wskazówki wyłączone); zmiana — zamknięcie bez odpowiedzi = wskazówki wyłączone; zmiana — druga karta wita w Domu z imieniem zamiast wskazywać Preferencje, bez wskazówki Domu po powitaniu",
+        "Wyświetlanie zadanek": "nowe — zadanka z postępem przed sekcjami wskazówek, pogrupowane w karty według obszaru z przejściem do ekranu (Myśli → Strumień)",
+        "Zaliczanie zadanek": "nowe — aplikacja sama przyznaje punkty za użyte funkcje; pierwsze: „Złap myśl” (tytuł, tag, notatka), „Posortuj myśli” (3 dowolne kryteria), „Znajdź myśl” (temat, tag), „Przefiltruj myśli” (domena, czas utworzenia)",
+        "Resetowanie zadanka": "nowe — reset postępu pojedynczego zadanka",
+        "Włączanie wskazówek": "zmiana — nazwa „Aktywuj tryb Poznawania”",
+        "Wyświetlanie postępu": "zmiana — liczy też zadanka (wagą ich punktów)",
     };
 
     // Places where the user verified a function; value = dd/mm of the check.
@@ -1458,6 +1481,7 @@
             "krok — zestaw wskazówek pokazywanych razem; wszystkie dzielą stan „zobaczona / nie”",
             "sekcja — wskazówki jednego ekranu aplikacji",
             "wskazówka dodatkowa — rozszerza inną wskazówkę; poza przeglądem i liczeniem postępu",
+            "zadanko — krótkie flow do przeklikania w aplikacji; punkty za użycie jego funkcji; niezależne od innych zadanek",
         ]},
         "Skróty aplikacji": {goal: "złapanie myśli w wybranej formie bez wchodzenia w aplikację — prosto z ekranu głównego telefonu; tak samo szybkie dopisanie nowych fiszek", terms: []},
         "Sprawdzanie wersji aplikacji": {goal: "wiadomo, która wersja aplikacji jest na telefonie — np. przy zgłaszaniu uwag", terms: []},
@@ -1681,7 +1705,7 @@
     const FLOW_SCRIM = `<rect width="64" height="100" rx="8" fill="#000" fill-opacity="0.25"/>`;
     const FLOWS = [
         {title: "Pierwsze uruchomienie", process: ["Onboarding", "Personalizowanie"], place: HOME,
-            svg: `<svg role="img" aria-label="pierwsze uruchomienie" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450">
+            svg: `<svg role="img" aria-label="pierwsze uruchomienie" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320">
   <defs><marker id="req-flow-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 Z" fill="#625A54"/></marker></defs>
   <g font-family="'Baloo 2', 'Segoe UI', sans-serif" font-size="12" fill="#625A54">
     <!-- Start + branch 1: who gets the welcome -->
@@ -1699,8 +1723,8 @@
     <text x="86" y="110">tak</text>
 
     <text x="90" y="124" font-weight="700">1. Imię</text>
-    <text x="300" y="124" text-anchor="middle" font-weight="700">2. Preferencje + pytanie</text>
-    <text x="520" y="124" text-anchor="middle" font-weight="700">3a. Wskazówka Domu</text>
+    <text x="300" y="124" text-anchor="middle" font-weight="700">2. Powitanie w Domu + pytanie</text>
+    <text x="520" y="124" text-anchor="middle" font-weight="700">3. Dom</text>
 
     <g transform="translate(42,132) scale(1.2)">${FLOW_SCREEN}${FLOW_SCRIM}
       <rect x="6" y="14" width="52" height="54" rx="4" fill="#FFF"/><rect x="16" y="20" width="32" height="3" rx="1.5" fill="#625A54"/>
@@ -1709,15 +1733,10 @@
     </g>
     <g transform="translate(262,132) scale(1.2)">${FLOW_SCREEN}${FLOW_SCRIM}
       <rect x="6" y="14" width="52" height="54" rx="4" fill="#FFF"/><rect x="16" y="20" width="32" height="3" rx="1.5" fill="#625A54"/>
-      <rect x="11" y="30" width="7" height="7" rx="1.5" fill="#FFE1C8"/><rect x="22" y="30" width="31" height="7" fill="#000"/>
-      <rect x="11" y="43" width="42" height="2" rx="1" fill="#BEBEBE"/>
+      <rect x="11" y="32" width="42" height="2" rx="1" fill="#BEBEBE"/><rect x="11" y="38" width="26" height="2" rx="1" fill="#BEBEBE"/>
       <rect x="11" y="56" width="19" height="7" rx="3.5" fill="none" stroke="#BEBEBE"/><rect x="34" y="56" width="19" height="7" rx="3.5" fill="#FFC59A"/>
     </g>
-    <g transform="translate(482,132) scale(1.2)">${FLOW_SCREEN}${FLOW_SCRIM}
-      <rect x="6" y="20" width="52" height="40" rx="4" fill="#FFF"/><rect x="16" y="26" width="32" height="3" rx="1.5" fill="#625A54"/>
-      <circle cx="32" cy="37" r="3.5" fill="none" stroke="#625A54"/><rect x="11" y="45" width="42" height="2" rx="1" fill="#BEBEBE"/>
-      <rect x="38" y="51" width="15" height="6" rx="3" fill="#FFC59A"/>
-    </g>
+    <g transform="translate(482,132) scale(1.2)">${FLOW_SCREEN}<rect x="10" y="10" width="44" height="4" rx="2" fill="#FFA86B"/></g>
 
     <line x1="124" y1="192" x2="254" y2="192" stroke="#625A54" stroke-width="1.5" marker-end="url(#req-flow-arrow)"/>
     <text x="189" y="168" text-anchor="middle">Zapisz — imię zapisane</text>
@@ -1727,23 +1746,22 @@
     <line x1="344" y1="172" x2="474" y2="172" stroke="#625A54" stroke-width="1.5" marker-end="url(#req-flow-arrow)"/>
     <text x="409" y="148" text-anchor="middle">Poznajmy się —</text>
     <text x="409" y="163" text-anchor="middle">wskazówki włączone</text>
-    <path d="M344,232 H420 V360 H474" fill="none" stroke="#625A54" stroke-width="1.5" marker-end="url(#req-flow-arrow)"/>
-    <text x="412" y="330" text-anchor="end">Bez wskazówek —</text>
-    <text x="412" y="345" text-anchor="end">wskazówki wyłączone</text>
-
-    <g transform="translate(482,300) scale(1.2)">${FLOW_SCREEN}<rect x="10" y="10" width="44" height="4" rx="2" fill="#FFA86B"/></g>
-    <text x="520" y="438" text-anchor="middle" font-weight="700">3b. Sam Dom</text>
+    <line x1="344" y1="212" x2="474" y2="212" stroke="#625A54" stroke-width="1.5" marker-end="url(#req-flow-arrow)"/>
+    <text x="409" y="228" text-anchor="middle">Bez wskazówek —</text>
+    <text x="409" y="243" text-anchor="middle">wskazówki wyłączone</text>
 
     <!-- Back on any card -->
     <path d="M80,256 V274 H520 V258" fill="none" stroke="#828282" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#req-flow-arrow)"/>
     <path d="M300,256 V274" fill="none" stroke="#828282" stroke-width="1.5" stroke-dasharray="4 3"/>
     <text x="42" y="292" fill="#828282">cofnięcie — bez zapisu bieżącej karty</text>
-    <text x="42" y="307" fill="#828282">(wskazówki zostają włączone)</text>
+    <text x="42" y="307" fill="#828282">(wskazówki zostają wyłączone)</text>
   </g>
 </svg>`,
             notes: [
                 "pokazywane raz — nowemu użytkownikowi, przy pierwszym wejściu na Dom",
                 "tap poza powitaniem go nie zamyka",
+                "druga karta — powitanie w Domu z podanym imieniem (bez imienia — samo „Witaj w Domu!”)",
+                "na razie żadna wskazówka się nie pokazuje (porządkowanie onboardingu) — Poznajmy się zapisuje sam wybór",
                 "Bez wskazówek — w całej aplikacji żadnych wskazówek, nie tylko na Domu; wejście do Poznawania aplikacji zostaje — tam można je włączyć",
                 "ekran startowy inny niż Dom — powitanie przy pierwszym wejściu na Dom",
             ]},

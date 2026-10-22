@@ -108,6 +108,26 @@
   }
   .where ul{margin:0; padding-left:18px}
   .where li{margin-bottom:4px}
+  /* wide item: steps out of the 760px column on big screens */
+  @media (min-width:900px){details.item.wide{margin-left:-55px; margin-right:-55px}}
+  .tips{width:100%; margin-top:12px; border-collapse:collapse; font-size:14.5px; line-height:1.5}
+  .tips th:nth-child(2), .tips td:nth-child(2){width:150px}
+  .tips th{
+    font-family:"Alegreya",Georgia,serif; font-weight:500; font-size:13px;
+    letter-spacing:.03em; text-transform:uppercase; color:var(--muted);
+    text-align:left; padding:4px 8px; border-bottom:1px solid var(--orange-2);
+  }
+  .tips td{padding:7px 8px; vertical-align:top; border-bottom:1px solid #F0EAE4}
+  .tips td:first-child{font-weight:500; white-space:nowrap}
+  .tips .t{display:block; margin-bottom:6px}
+  .tips .t:last-child{margin-bottom:0}
+  .tips .t b{font-weight:500}
+  /* ordinal number of every tip text, across the whole table */
+  .tips{counter-reset:tip}
+  .tips .t::before{
+    counter-increment:tip; content:counter(tip) ".";
+    display:inline-block; min-width:24px; color:var(--orange-3); font-weight:600;
+  }
   .mods{display:flex; flex-wrap:wrap; gap:4px; margin-top:6px}
   .mod{
     font-size:12px; line-height:1.5; color:var(--muted);
@@ -168,16 +188,119 @@
   <details class="item">
     <summary>
       <span class="prio crit">Krytyczny</span>
-      <strong>Koncepcja i flow onboardingu</strong> — zaplanować, co, gdzie i jak pokazać oraz do czego zachęcić.
+      <strong>Koncepcja onboardingu — okruszki i zadanka</strong> — poznawanie przez doświadczanie, bez prowadzenia za rączkę.
       <span class="mods"><span class="mod">Onboarding</span></span>
     </summary>
     <div class="body">
       <ul>
-        <li>per miejsce (ekran): co pokazać, w jakiej formie i w którym momencie</li>
-        <li>do czego zachęcić — konkretna akcja do wypróbowania od razu po wskazówce</li>
-        <li>kolejność i przejścia między miejscami — jeden spójny przebieg „za rączkę” zamiast osobnych wskazówek</li>
+        <li>okruszek — krótka podpowiedź w konkretnym miejscu i momencie (np. pierwsze puste pole tagów); pokazywana raz, niczego nie wymaga</li>
+        <li>zadanko — rzecz do wypróbowania w aplikacji (np. złapać myśl i dodać do niej hex tagi)</li>
+        <li>per miejsce (ekran): jakie okruszki i zadanka, w jakiej formie i w którym momencie</li>
+        <li>lista w Poznawaniu aplikacji: najpierw zadanka pogrupowane w karty według obszaru (np. „Myśli”), każda z przyciskiem do swojego ekranu (Myśli → Strumień), potem okruszki per ekran (jak dzisiejsze sekcje)</li>
+        <li>każda pozycja z pierścieniem postępu jak w krokach celu (<code>goal_detail_step_item.xml</code>) — okruszek 1 punkt, zadanko kilka — punkt za użycie każdej jego funkcji</li>
+        <li>zaliczanie automatyczne — aplikacja liczy wykonane akcje; pierścień nie jest do tapania przez użytkownika</li>
+        <li>zadanka niezależne od siebie — każde to krótkie flow do przeklikania w aplikacji</li>
+        <li>pierwsze zadanka
+          <ul>
+            <li>✅ 2026-10-21 „Złap myśl” (3 pkt) — Dom → Łapanie myśli → zapis; punkt za tytuł, za tag (osoba / projekt), za notatkę — każdy raz, mogą przyjść z różnych myśli; tylko nowa myśl (edycja istniejącej nie); resetowalne, wliczane do ogólnego postępu wagą punktów</li>
+            <li>✅ 2026-10-22 „Posortuj myśli” (3 pkt) — Strumień → sortowanie; punkt za każde inne kryterium zatwierdzone w dialogu (domyślne też), wystarczą 3 dowolne z 6; sam kierunek nie daje punktu; bez blokady przy małej liczbie myśli</li>
+            <li>✅ 2026-10-22 „Znajdź myśl” (2 pkt) — Strumień → wyszukiwanie; punkt za temat, za tag (osoba / projekt) — każdy raz, mogą przyjść z różnych wyszukiwań; liczy się zatwierdzenie w arkuszu wyszukiwania (także bez wyników), nie usunięcie kryterium ani wejście z pigułki tagu w Metadanych</li>
+            <li>✅ 2026-10-22 „Przefiltruj myśli” (2 pkt) — Strumień → filtr; punkt za domenę, za okres utworzenia — każdy raz, mogą przyjść z różnych filtrowań; liczy się zastosowanie filtra w arkuszu (także bez wyników); same stany myśli nie dają punktu</li>
+          </ul>
+        </li>
+        <li>postęp zadanek liczony od włączenia wskazówek — wcześniejsze akcje się nie liczą</li>
+        <li>do ustalenia: jak odróżniać okruszki od zadanek w miejscach, gdzie występują; forma okruszka (dialog / coś lżejszego)</li>
         <li>punkt startu już jest: powitanie przy pierwszym uruchomieniu z wyborem „Poznajmy się” / „Bez wskazówek”</li>
       </ul>
+    </div>
+  </details>
+  <details class="item wide">
+    <summary>
+      <span class="prio crit">Krytyczny</span>
+      <strong>Wskazówki — spis obecnych, tymczasowo wyłączone</strong> — materiał wyjściowy do koncepcji onboardingu.
+      <span class="mods"><span class="mod">Onboarding</span><span class="mod">Wskazówki</span></span>
+    </summary>
+    <div class="body">
+      <ul>
+        <li>każda wskazówka pokazuje się raz, tylko przy włączonych wskazówkach; kolejne teksty w komórce = kolejne ekrany tej samej wskazówki</li>
+        <li>wyłączone 2026-10-21 — wywołania usunięte z ekranów (kod w stashu „Onboarding - tips outside Home (code before removal)”); mechanizm, teksty i Poznawanie aplikacji bez zmian</li>
+      </ul>
+      <table class="tips">
+        <tr><th>Wejście</th><th>Trigger</th><th>Tekst wskazówki</th></tr>
+        <tr>
+          <td>Dom</td>
+          <td>wejście na ekran (po powitaniu)</td>
+          <td><span class="t"><b>Witaj w "Domu" :)</b> — Jak ci wpadnie coś do głowy co chcesz zapisać to tapnij w przycisk na środku</span></td>
+        </tr>
+        <tr>
+          <td>Preferencje</td>
+          <td>wejście na ekran</td>
+          <td>
+            <span class="t"><b>Preferencje</b> — W tym kreatywnym miejscu skroisz aplikację pod siebie! Tapnij na nagłówki, które Cię zainteresują…</span>
+            <span class="t"><b>Zmieniaj ;)</b> — Zapraszam Cię do radosnej zmiany ustawień i testów :)</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Preferencje</td>
+          <td>tap w nagłówek „Personalizacja”</td>
+          <td><span class="t"><b>Sekcja personalizacji</b> — [Jakiś mądry tekst, który nie istnieje a miał w tym miejscu być] <i>(zaślepka)</i></span></td>
+        </tr>
+        <tr>
+          <td>Preferencje</td>
+          <td>tap w nagłówek „Skala wartości myśli”</td>
+          <td><span class="t"><b>Sekcja „Skala wartości myśli”</b> — Każdej myśli możesz nadać wartość/wagę/priorytet liczbowy. Od ciebie zależą jego wartości…</span></td>
+        </tr>
+        <tr>
+          <td>Preferencje</td>
+          <td>tap w nagłówek „Kopia zapasowa”</td>
+          <td>
+            <span class="t"><b>Sekcja „Kopia zapasowa”</b> — Jeżeli chcesz mieć zarchiwizowane dane swoich myśli w pamięci telefonu, to ta opcja musi być „włączona”</span>
+            <span class="t"><b>Jak to działa?</b> — Gdy uruchomisz aplikację jej mechanizm zapisze dane twoich myśli. Powstaje jedna kopia dziennie - każde kolejne uruchomienie tego dnia ją odświeża.</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Tagi i Domeny</td>
+          <td>przejście na zakładkę Domeny</td>
+          <td><span class="t"><b>Zakładka „Domeny”</b> — Zdefiniujesz tutaj „Domeny” - swoje kategorie lub szufladki dla myśli</span></td>
+        </tr>
+        <tr>
+          <td>Łapanie myśli</td>
+          <td>wejście na ekran</td>
+          <td>
+            <span class="t"><b>Łapanie myśli</b> — Czas na złapanie swojej pierwszej myśli! :) Guziorami u dołu z [+] możesz wybrać postać/formę zapisu myśli: tekst -&gt; dźwięk -&gt; zdjęcie</span>
+            <span class="t"><b>Skojarzenia lub Tagi dla myśli</b> — Tapnij na puste pole u góry…</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Łapanie myśli</td>
+          <td>pierwsze wejście w pole hex tagów</td>
+          <td>
+            <span class="t"><b>Skojarzenia lub Tagi dla myśli</b> — W tym polu możesz szybko dodać skojarzenia / tagi do myśli: ✓ osoba (znak @) ✓ projekt (znak #) ✓ temat (brak znaku)</span>
+            <span class="t"><b>Może mały przykład?</b> — Wpisz w polu tekstowym… tekst: <code>sukces #aplikacja @ja</code> następnie Zapisz i zobacz szczegóły nowo złapanej myśli</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Strumień myśli</td>
+          <td>wejście na ekran</td>
+          <td>
+            <span class="t"><b>Twoje myśli</b> — W tym ruchliwym miejscu przeglądniesz swoje myśli.</span>
+            <span class="t"><b>Wyszukiwanie myśli</b> — Widzisz pole do wyszukiwania u góry? To z pomarańczowym znakiem „?” To wskazówka jak szybko szukać myśli - możesz ją aktywować po każdym tapnięciu na nią.</span>
+            <span class="t"><b>Usuwanie myśli</b> — Przytrzymując pomarańczowy obszar z myślą możesz go usunąć</span>
+            <span class="t"><b>Szczegóły myśli</b> — No i tapując palcem na niego wejdziesz w szczegóły… (kto by pomyślał?)</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Szczegóły myśli</td>
+          <td>wejście na ekran</td>
+          <td>
+            <span class="t"><b>Szczegóły myśli</b> — To miejsce to warsztat, w którym rzeźbisz i rozwijasz swoją myśl</span>
+            <span class="t"><b>Edycja myśli</b> — Tapując na pomarańczowe pola zdefiniujesz lub zmienisz zapisaną w nich treść</span>
+            <span class="t"><b>Zmiana wartości myśli</b> — Dodatkowo podbijesz wartość myśli tapując na nią. Możesz także podbijać i obniżać wartość innym sposobem który przypomina coś… „naturalnego”</span>
+            <span class="t"><b>Dodatkowe formy złapanej myśli</b> — No i guziorami u dołu z [+] możesz dodać dodatkowe formy zapisu myśli</span>
+          </td>
+        </tr>
+      </table>
+      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>common/onboarding/OnboardingManager.kt</code> — <code>tooltipsConfig</code>, tymczasowy warunek w <code>showTooltipForStep()</code></li><li>wywołania: <code>SettingsActivity</code>, <code>MetadataActivity</code>, <code>CaptureActivity</code>, <code>StreamActivity</code>, <code>DetailsActivity</code></li></ul></div>
     </div>
   </details>
     <details class="item">
