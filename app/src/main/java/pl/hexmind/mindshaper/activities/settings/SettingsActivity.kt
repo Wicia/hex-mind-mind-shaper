@@ -21,7 +21,6 @@ import kotlinx.coroutines.withContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
-import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.database.initialization.DataSnapshotManager
 import pl.hexmind.mindshaper.databinding.SettingsActivityBinding
 import pl.hexmind.mindshaper.services.CalendarService
@@ -78,10 +77,6 @@ class SettingsActivity : CoreActivity() {
 
         setupUI()
         loadSavedSettings()
-
-        onboardingManager.showTooltipForStep(
-            OnboardingProgressStep.SETTINGS_ENTRY_TOOLTIP, this
-        )
     }
 
     override fun onResume() {
@@ -112,23 +107,6 @@ class SettingsActivity : CoreActivity() {
     }
 
     private fun setupListeners() {
-        // Onboarding :)
-        binding.tvYourNameSectionHeader.setOnClickListener { // dla beki :P
-            onboardingManager.showTooltipForStep(
-                OnboardingProgressStep.SETTINGS_YOUR_NAME_TOOLTIP, this
-            )
-        }
-        binding.tvThoughtValueScaleSectionHeader.setOnClickListener {
-            onboardingManager.showTooltipForStep(
-                OnboardingProgressStep.SETTINGS_THOUGHT_VALUE_TOOLTIP, this
-            )
-        }
-        binding.tvBackupSectionHeader.setOnClickListener {
-            onboardingManager.showTooltipForStep(
-                OnboardingProgressStep.SETTINGS_BACKUP_TOOLTIP, this
-            )
-        }
-
         // Save settings button
         binding.btnSaveSettings.setOnClickListener {
             saveSettings()

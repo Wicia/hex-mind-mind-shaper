@@ -155,7 +155,24 @@ class AppSettingsStorage @Inject constructor(
         }
     }
 
-    // Chosen in the welcome dialog; users from before the welcome never chose - they keep the tooltips
+    // ! A copy - the set returned by SharedPreferences must not be modified
+    fun getOnboardingTaskPoints(taskKey: String): Set<String> {
+        return sharedPreferences.getStringSet(taskKey, emptySet()).orEmpty().toSet()
+    }
+
+    fun setOnboardingTaskPoints(taskKey: String, pointKeys: Set<String>) {
+        sharedPreferences.edit {
+            putStringSet(taskKey, pointKeys)
+        }
+    }
+
+    fun clearOnboardingTaskPoints(taskKey: String) {
+        sharedPreferences.edit {
+            remove(taskKey)
+        }
+    }
+
+    // Turned on only on purpose - in the welcome dialog or with the switch behind the flask on Home
     fun setOnboardingEnabled(enabled: Boolean) {
         sharedPreferences.edit {
             putBoolean(PARAM_ONBOARDING_ENABLED, enabled)
@@ -163,7 +180,7 @@ class AppSettingsStorage @Inject constructor(
     }
 
     fun isOnboardingEnabled(): Boolean {
-        return sharedPreferences.getBoolean(PARAM_ONBOARDING_ENABLED, true)
+        return sharedPreferences.getBoolean(PARAM_ONBOARDING_ENABLED, false)
     }
 
     fun isPhotoFeatureEnabled(): Boolean {

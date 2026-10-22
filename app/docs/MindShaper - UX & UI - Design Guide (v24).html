@@ -687,7 +687,7 @@
     <summary><h3>Dialog powitalny</h3></summary>
     <dl>
       <dt>Przeznaczenie</dt>
-      <dd>Powitanie przy pierwszym uruchomieniu aplikacji — podanie imienia i wskazanie, gdzie włączać funkcje (<i>Preferencje</i>).</dd>
+      <dd>Powitanie przy pierwszym uruchomieniu aplikacji — podanie imienia i wybór, czy poznawać aplikację ze wskazówkami.</dd>
       <dt>Wygląd</dt>
       <dd>
         <figure><svg role="img" aria-label="welcome-dialog-name" xmlns="http://www.w3.org/2000/svg" width="345" height="230" viewBox="0 0 300 200">
@@ -705,32 +705,23 @@
     <text x="219" y="179" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="700" fill="#48433F">Zapisz</text>
   </g>
 </svg></figure>
-        <figure><svg role="img" aria-label="welcome-dialog-features" xmlns="http://www.w3.org/2000/svg" width="345" height="253" viewBox="0 0 300 220">
-  <defs><linearGradient id="welcome-nav-gradient"><stop offset="0" stop-color="#000000"/><stop offset="1" stop-color="#000000" stop-opacity="0.3"/></linearGradient></defs>
-  <rect width="300" height="220" rx="16" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+        <figure><svg role="img" aria-label="welcome-dialog-onboarding" xmlns="http://www.w3.org/2000/svg" width="345" height="196" viewBox="0 0 300 170">
+  <rect width="300" height="170" rx="16" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
   <g font-family="'Baloo 2', 'Segoe UI', sans-serif">
-    <text x="150" y="34" text-anchor="middle" dominant-baseline="central" font-size="18" font-weight="700" fill="#625A54">Pobaw się funkcjami</text>
-    <text x="30" y="62" dominant-baseline="central" font-size="12" fill="#625A54">Nagrywanie głosu, zdjęcia, fiszki, przypominajki</text>
-    <text x="30" y="78" dominant-baseline="central" font-size="12" fill="#625A54">i inne kosmiczne funkcje włączysz w Preferencjach</text>
-    <rect x="18" y="92" width="57" height="57" rx="12.5" fill="#000" fill-opacity="0.043"/><rect x="19.5" y="93.5" width="54" height="54" rx="11" fill="#000" fill-opacity="0.043"/><rect x="21" y="95" width="51" height="51" rx="9.5" fill="#000" fill-opacity="0.043"/>
-    <rect x="22.5" y="96.5" width="48" height="48" rx="8" fill="#FFE1C8"/>
-    <circle cx="46.5" cy="120.5" r="11" fill="none" stroke="#48433F" stroke-width="2.5"/>
-    <path d="M82,113 L89,120.5 L82,128" fill="none" stroke="#625A54" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-    <rect x="99" y="98.5" width="183" height="44" fill="url(#welcome-nav-gradient)"/>
-    <circle cx="125" cy="120.5" r="10" fill="none" stroke="#FFA86B" stroke-width="3"/>
-    <text x="147" y="120.5" dominant-baseline="central" font-size="16" fill="#FFFFFF">Preferencje</text>
-    <text x="30" y="158" dominant-baseline="central" font-size="12" fill="#625A54">Chcesz poznawać aplikację krok po kroku?</text>
-    <circle cx="143" cy="178" r="4" fill="#BEBEBE"/>
-    <circle cx="157" cy="178" r="4" fill="#FFC59A"/>
-    <rect x="18.5" y="188.5" width="125" height="25" rx="12.5" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
-    <text x="81" y="201" text-anchor="middle" dominant-baseline="central" font-size="13" fill="#625A54">Bez wskazówek</text>
-    <rect x="156" y="188" width="126" height="26" rx="13" fill="#FFC59A"/>
-    <text x="219" y="201" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="700" fill="#48433F">Poznajmy się</text>
+    <text x="150" y="34" text-anchor="middle" dominant-baseline="central" font-size="18" font-weight="700" fill="#625A54">Witaj w "Domu", Michał!</text>
+    <text x="30" y="68" dominant-baseline="central" font-size="14" fill="#625A54">Chcesz poznawać aplikację krok po kroku,</text>
+    <text x="30" y="86" dominant-baseline="central" font-size="14" fill="#625A54">ze wskazówkami?</text>
+    <circle cx="143" cy="120" r="4" fill="#BEBEBE"/>
+    <circle cx="157" cy="120" r="4" fill="#FFC59A"/>
+    <rect x="18.5" y="136.5" width="125" height="25" rx="12.5" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
+    <text x="81" y="149" text-anchor="middle" dominant-baseline="central" font-size="13" fill="#625A54">Bez wskazówek</text>
+    <rect x="156" y="136" width="126" height="26" rx="13" fill="#FFC59A"/>
+    <text x="219" y="149" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="700" fill="#48433F">Poznajmy się</text>
   </g>
 </svg></figure>
         <ul>
           <li>dwie karty z kropkami; każda kończy się odpowiedzią — dwa przyciski, potwierdzający po prawej</li>
-          <li>druga karta — droga do <i>Preferencji</i> odtworzona z widgetów aplikacji: przycisk nawigacji → strzałka → pozycja z panelu nawigacji (mniejszy odstęp ikona–napis, <code>hexNavIconSpacing</code>), pod spodem pytanie o poznawanie aplikacji</li>
+          <li>druga karta — powitanie w <i>Domu</i> z podanym imieniem (bez imienia: „Witaj w "Domu"!”) i pytanie o wskazówki</li>
         </ul>
       </dd>
       <dt>Działanie</dt>

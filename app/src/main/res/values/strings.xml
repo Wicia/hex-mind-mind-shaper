@@ -235,7 +235,19 @@ Awers - Rewers…"</string>
     <string name="workshop_onboarding_no_thoughts">Najpierw złap jakąś myśl</string>
     <string name="workshop_onboarding_progress">Postęp</string>
     <string name="workshop_onboarding_progress_percent">%1$d%%</string>
-    <string name="workshop_onboarding_tips_switch">Aktywuj poznawanie</string>
+    <string name="workshop_onboarding_tasks_thoughts_header">Myśli</string>
+    <string name="workshop_onboarding_task_capture_title">Złap myśl</string>
+    <string name="workshop_onboarding_task_capture_desc">Nadaj jej tytuł, dodaj tag i napisz notatkę</string>
+    <string name="workshop_onboarding_task_sort_title">Posortuj myśli</string>
+    <string name="workshop_onboarding_task_sort_desc">Posortuj strumień myśli według co najmniej 3 różnych kryteriów</string>
+    <string name="workshop_onboarding_task_search_title">Znajdź myśl</string>
+    <string name="workshop_onboarding_task_search_desc">Wyszukaj myśli w strumieniu po temacie i po tagu</string>
+    <string name="workshop_onboarding_task_filter_title">Przefiltruj myśli</string>
+    <string name="workshop_onboarding_task_filter_desc">Przefiltruj strumień myśli po domenie i po czasie utworzenia</string>
+    <string name="workshop_dialog_reset_onboarding_task_title">Zacząć zadanko od nowa?</string>
+    <string name="workshop_dialog_reset_onboarding_task">Postęp tego zadanka wróci do zera.</string>
+    <string name="workshop_dialog_reset_onboarding_task_yes">Zacznij od nowa</string>
+    <string name="workshop_onboarding_tips_switch">Aktywuj tryb Poznawania</string>
     <string name="workshop_onboarding_tips_hint">Przy pierwszym wejściu na ekran pojawią się mini wskazówki. Wprowadzą Cię w tajniki aplikacji, pokazując \"co gdzie jest, jak tego użyć, no i do czego\" :)</string>
 
     <!-- ============================================================ -->
@@ -250,10 +262,10 @@ Awers - Rewers…"</string>
     <!-- Welcome dialog (first app launch) -->
     <string name="home_welcome_name_title">Witaj w MindShaperze!</string>
     <string name="home_welcome_name_text">Jak mam się do ciebie zwracać?</string>
-    <string name="home_welcome_name_btn_skip">Pomiń</string>dziala,
+    <string name="home_welcome_name_btn_skip">Pomiń</string>
     <string name="home_welcome_name_btn_save">Zapisz</string>
-    <string name="home_welcome_features_title">Pobaw się funkcjami</string>
-    <string name="home_welcome_features_text">Nagrywanie głosu, zdjęcia, fiszki do powtórek, przypominajki i inne kosmiczne funkcje włączysz w Preferencjach</string>
+    <string name="home_welcome_home_title">Witaj w \"Domu\"!</string>
+    <string name="home_welcome_home_title_named">Witaj w \"Domu\", %1$s!</string>
     <string name="home_welcome_onboarding_question">Chcesz poznawać aplikację krok po kroku, ze wskazówkami?</string>
     <string name="home_welcome_onboarding_btn_no">Bez wskazówek</string>
     <string name="home_welcome_onboarding_btn_yes">Poznajmy się</string>
@@ -383,6 +395,7 @@ Awers - Rewers…"</string>
     <string name="stream_filter_button_none">-</string>
     <string name="stream_filter_label_states">| Stany</string>
     <string name="stream_filter_show_active">Aktywne myśli</string>
+    <string name="stream_filter_show_near_dormant">Bliskie uśpienia</string>
     <string name="stream_filter_show_dormant">Uśpione myśli</string>
     <string name="stream_filter_label_with_count">%1$s (%2$d)</string>
     <string name="stream_filter_label_created">| Czas utworzenia</string>

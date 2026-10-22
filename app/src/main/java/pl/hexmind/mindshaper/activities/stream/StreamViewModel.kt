@@ -53,6 +53,9 @@ class StreamViewModel @Inject constructor(
     private val _showActive  = savedStateHandle.getLiveData("show_active", true)
     val showActive: LiveData<Boolean> = _showActive
 
+    private val _showNearDormant = savedStateHandle.getLiveData("show_near_dormant", true)
+    val showNearDormant: LiveData<Boolean> = _showNearDormant
+
     private val _showDormant = savedStateHandle.getLiveData("show_dormant", false)
     val showDormant: LiveData<Boolean> = _showDormant
 
@@ -64,11 +67,14 @@ class StreamViewModel @Inject constructor(
 
     // counted over ALL thoughts, not the filtered list (shows how much is there to reveal)
     // ! plain functions - a mapped LiveData stays cold until observed, so .value would always be 0
-    fun countActiveThoughts(): Int =
-        allThoughts.value.orEmpty().count { thought -> thoughtStatusService.computeState(thought) != ThoughtState.DORMANT }
+    fun countActiveThoughts(): Int = countThoughtsInState(ThoughtState.ACTIVE)
 
-    fun countDormantThoughts(): Int =
-        allThoughts.value.orEmpty().count { thought -> thoughtStatusService.computeState(thought) == ThoughtState.DORMANT }
+    fun countNearDormantThoughts(): Int = countThoughtsInState(ThoughtState.WARNING)
+
+    fun countDormantThoughts(): Int = countThoughtsInState(ThoughtState.DORMANT)
+
+    private fun countThoughtsInState(state: ThoughtState): Int =
+        allThoughts.value.orEmpty().count { thought -> thoughtStatusService.computeState(thought) == state }
 
     // Combine filter and sort using MediatorLiveData
     val filteredThoughts: MediatorLiveData<List<ThoughtDTO>> = MediatorLiveData<List<ThoughtDTO>>().apply {
@@ -76,8 +82,9 @@ class StreamViewModel @Inject constructor(
         var currentQuery: HexTags? = null
         var currentSort: SortConfig? = null
         var currentDomainId: Int? = null
-        var currentShowActive: Boolean  = true
-        var currentShowDormant: Boolean = false
+        var currentShowActive: Boolean      = true
+        var currentShowNearDormant: Boolean = true
+        var currentShowDormant: Boolean     = false
         var currentCreatedPeriod: CreatedPeriod? = null
 
         fun update() {
@@ -94,7 +101,7 @@ class StreamViewModel @Inject constructor(
             )
             val domainId = currentDomainId
 
-            val filtered = filterThoughts(thoughts, query, domainId, currentShowActive, currentShowDormant, currentCreatedPeriod)
+            val filtered = filterThoughts(thoughts, query, domainId, currentShowActive, currentShowNearDormant, currentShowDormant, currentCreatedPeriod)
             val sorted = sortThoughts(filtered, sort)
 
             value = sorted
@@ -122,6 +129,11 @@ class StreamViewModel @Inject constructor(
 
         addSource(_showActive) { show ->
             currentShowActive = show
+            update()
+        }
+
+        addSource(_showNearDormant) { show ->
+            currentShowNearDormant = show
             update()
         }
 
@@ -168,6 +180,11 @@ class StreamViewModel @Inject constructor(
         _showActive.value = show
     }
 
+    fun updateShowNearDormant(show: Boolean) {
+        savedStateHandle["show_near_dormant"] = show
+        _showNearDormant.value = show
+    }
+
     fun updateShowDormant(show: Boolean) {
         savedStateHandle["show_dormant"] = show
         _showDormant.value = show
@@ -183,6 +200,7 @@ class StreamViewModel @Inject constructor(
         query: HexTags,
         domainId: Int?,
         showActive: Boolean,
+        showNearDormant: Boolean,
         showDormant: Boolean,
         createdPeriod: CreatedPeriod?
     ): List<ThoughtDTO> {
@@ -191,8 +209,9 @@ class StreamViewModel @Inject constructor(
         // Filter by state — keep thought if its state category is checked
         filtered = filtered.filter { thought ->
             when (thoughtStatusService.computeState(thought)) {
-                ThoughtState.DORMANT  -> showDormant
-                else                  -> showActive // ACTIVE, WARNING
+                ThoughtState.ACTIVE  -> showActive
+                ThoughtState.WARNING -> showNearDormant
+                ThoughtState.DORMANT -> showDormant
             }
         }
 

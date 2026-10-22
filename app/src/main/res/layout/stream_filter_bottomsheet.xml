@@ -86,6 +86,18 @@
             android:checked="true"
             android:text="@string/stream_filter_show_active" />
 
+        <!-- States: NEAR DORMANT THOUGHTS (Checkbox) -->
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cb_show_near_dormant"
+            style="@style/HexCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:minHeight="36dp"
+            android:checked="true"
+            android:text="@string/stream_filter_show_near_dormant" />
+
         <!-- States: DORMANT THOUGHTS (Checkbox) -->
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/cb_show_dormant"

@@ -198,6 +198,13 @@
     <color name="lab_bubble_fill">#33FFC59A</color>
 
 <!-- ====================================== -->
+<!--    PROGRESS RINGS -->
+<!-- ====================================== -->
+
+    <!-- Done / seen state of every progress ring: goal steps, onboarding tasks and tips -->
+    <color name="progress_ring_done">#8FEDB5</color>
+
+<!-- ====================================== -->
 <!--    PRIORITIES -->
 <!-- ====================================== -->
 

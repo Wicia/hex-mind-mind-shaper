@@ -16,7 +16,6 @@ import pl.hexmind.mindshaper.activities.onboarding.OnboardingActivity
 import pl.hexmind.mindshaper.activities.stream.StreamActivity
 import pl.hexmind.mindshaper.activities.workshop.WorkshopActivity
 import pl.hexmind.mindshaper.common.formatting.setColoredText
-import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.onboarding.OnboardingSection
 import pl.hexmind.mindshaper.common.ui.dialogs.WelcomeDialog
 import pl.hexmind.mindshaper.services.GreetingsService
@@ -50,12 +49,8 @@ class HomeActivity : CoreActivity() {
         initViews()
         setupClickListeners()
 
-        // Home tooltip waits for the welcome
         if (onboardingManager.isWelcomePending()) {
             showWelcomeDialog()
-        }
-        else {
-            showHomeTooltip()
         }
     }
 
@@ -72,15 +67,8 @@ class HomeActivity : CoreActivity() {
             },
             onClosed = {
                 onboardingManager.markWelcomeShown()
-                showHomeTooltip()
             }
         ).show()
-    }
-
-    private fun showHomeTooltip() {
-        onboardingManager.showTooltipForStep(
-            OnboardingProgressStep.HOME_TOOLTIP, this
-        )
     }
 
     // ! Guarded: a rerouted cold launch finishes in onCreate before the views exist
@@ -106,7 +94,7 @@ class HomeActivity : CoreActivity() {
         setupBuildVersion()
     }
 
-    // The flask is always there - tips can be turned back on inside; bubbles only while the tips are on
+    // The flask is always there - tips can be turned on inside; bubbles only while the tips are on
     private fun syncOnboardingEntry() {
         val isOnboardingEnabled = appSettingsStorage.isOnboardingEnabled()
 

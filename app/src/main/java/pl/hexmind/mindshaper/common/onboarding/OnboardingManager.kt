@@ -75,7 +75,7 @@ class OnboardingManager @Inject constructor(
     )
 
     fun showTooltipForStep(step: OnboardingProgressStep, context: Context){
-        // "Without tooltips" chosen in the welcome - the user gets to know the app alone
+        // Tips are off unless turned on - in the welcome or behind the flask
         if (!appSettingsStorage.isOnboardingEnabled() || wasTooltipShown(step)) {
             return
         }
@@ -132,6 +132,26 @@ class OnboardingManager @Inject constructor(
 
     fun markTooltipShown(step: OnboardingProgressStep) {
         appSettingsStorage.markOnboardingTooltipShown(step.settingsParamName)
+    }
+
+    fun getTaskScore(task: OnboardingTask): Int {
+        val earnedKeys = appSettingsStorage.getOnboardingTaskPoints(task.settingsParamName)
+        return task.points.count { point -> point.key in earnedKeys }.coerceAtMost(task.requiredCount)
+    }
+
+    // Scored only while the tips are on - actions from before are never counted back
+    fun recordTaskPoints(task: OnboardingTask, points: Set<OnboardingTaskPoint>) {
+        if (!appSettingsStorage.isOnboardingEnabled()) return
+
+        val newKeys = points.filter { point -> point in task.points }.map { point -> point.key }
+        if (newKeys.isEmpty()) return
+
+        val earnedKeys = appSettingsStorage.getOnboardingTaskPoints(task.settingsParamName)
+        appSettingsStorage.setOnboardingTaskPoints(task.settingsParamName, earnedKeys + newKeys)
+    }
+
+    fun resetTask(task: OnboardingTask) {
+        appSettingsStorage.clearOnboardingTaskPoints(task.settingsParamName)
     }
 
     // Welcome is not a step - it stays out of the review panel and its section resets

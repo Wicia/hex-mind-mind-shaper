@@ -94,7 +94,7 @@ class OnboardingSectionsAdapter(
         cpiRing.setProgressCompat(100, false)
 
         val ringColor = ContextCompat.getColor(
-            context, if (tip.wasSeen) R.color.importance_low else R.color._orange_lvl_2
+            context, if (tip.wasSeen) R.color.progress_ring_done else R.color._orange_lvl_2
         )
         cpiRing.setIndicatorColor(ringColor)
         cpiRing.trackColor = ringColor
