@@ -236,6 +236,7 @@ Awers - Rewers…"</string>
     <string name="workshop_onboarding_progress">Postęp</string>
     <string name="workshop_onboarding_progress_percent">%1$d%%</string>
     <string name="workshop_onboarding_tasks_thoughts_header">Myśli</string>
+    <string name="workshop_onboarding_tasks_thoughts_breadcrumb">Nauka przez doświadczenie — krok 1: Łapanie myśli i zarządzanie nimi. W tej karcie czekają na ciebie zadanka, a tędy przejdziesz do Strumienia, gdzie możesz je zrealizować</string>
     <string name="workshop_onboarding_task_capture_title">Złap myśl</string>
     <string name="workshop_onboarding_task_capture_desc">Nadaj jej tytuł, dodaj tag i napisz notatkę</string>
     <string name="workshop_onboarding_task_sort_title">Posortuj myśli</string>
@@ -268,7 +269,8 @@ Awers - Rewers…"</string>
     <string name="home_welcome_home_title_named">Witaj w \"Domu\", %1$s!</string>
     <string name="home_welcome_onboarding_question">Chcesz poznawać aplikację krok po kroku, ze wskazówkami?</string>
     <string name="home_welcome_onboarding_btn_no">Bez wskazówek</string>
-    <string name="home_welcome_onboarding_btn_yes">Poznajmy się</string>
+    <string name="home_welcome_onboarding_btn_yes">Ze wskazówkami</string>
+    <string name="home_onboarding_spotlight">Tutaj zacznij swoją przygodę z MindShaperem</string>
 
     <string name="home_build_version">ver %1$s</string>
 

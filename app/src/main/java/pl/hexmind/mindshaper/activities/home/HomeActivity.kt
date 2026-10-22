@@ -18,6 +18,7 @@ import pl.hexmind.mindshaper.activities.workshop.WorkshopActivity
 import pl.hexmind.mindshaper.common.formatting.setColoredText
 import pl.hexmind.mindshaper.common.onboarding.OnboardingSection
 import pl.hexmind.mindshaper.common.ui.dialogs.WelcomeDialog
+import pl.hexmind.mindshaper.common.ui.views.HexSpotlight
 import pl.hexmind.mindshaper.services.GreetingsService
 import pl.hexmind.mindshaper.services.dto.StartScreen
 
@@ -64,11 +65,23 @@ class HomeActivity : CoreActivity() {
             onOnboardingChosen = { enabled ->
                 appSettingsStorage.setOnboardingEnabled(enabled)
                 syncOnboardingEntry()
+                if (enabled) showOnboardingSpotlight()
             },
             onClosed = {
                 onboardingManager.markWelcomeShown()
             }
         ).show()
+    }
+
+    // Points at the flask once, right after the tips were chosen in the welcome
+    private fun showOnboardingSpotlight() {
+        HexSpotlight.show(
+            activity = this,
+            target   = findViewById(R.id.iv_onboarding),
+            text     = getString(R.string.home_onboarding_spotlight)
+        ) {
+            startActivity(Intent(this, OnboardingActivity::class.java))
+        }
     }
 
     // ! Guarded: a rerouted cold launch finishes in onCreate before the views exist

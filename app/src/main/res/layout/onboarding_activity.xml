@@ -148,11 +148,15 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp">
 
+                    <!-- Stream icon, or a sparkle while the card's breadcrumb waits to be opened -->
+                    <!-- (its ring is drawn on the window overlay, so no parent clips it) -->
                     <ImageView
+                        android:id="@+id/iv_onboarding_tasks_icon"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="6dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:contentDescription="@string/common_placeholder_accessibility_content_desc"
                         android:src="@drawable/ic_activity_stream"
                         app:tint="@color/text_secondary"

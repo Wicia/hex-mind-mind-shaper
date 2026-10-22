@@ -165,8 +165,18 @@ class OnboardingManager @Inject constructor(
         appSettingsStorage.markOnboardingTooltipShown(WELCOME_SHOWN_KEY)
     }
 
+    // Breadcrumb of the Thoughts tasks card - opened once, never comes back
+    fun isThoughtsBreadcrumbPending(): Boolean {
+        return !appSettingsStorage.wasOnboardingTooltipShown(THOUGHTS_BREADCRUMB_SHOWN_KEY)
+    }
+
+    fun markThoughtsBreadcrumbShown() {
+        appSettingsStorage.markOnboardingTooltipShown(THOUGHTS_BREADCRUMB_SHOWN_KEY)
+    }
+
     companion object {
         private const val WELCOME_SHOWN_KEY = "onb_welcome_shown"
+        private const val THOUGHTS_BREADCRUMB_SHOWN_KEY = "onb_breadcrumb_thoughts_shown"
     }
 }
 
