@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.common.formatting.withoutOrphans
 import pl.hexmind.mindshaper.common.ui.dpToPx
 import pl.hexmind.mindshaper.common.ui.views.GoalImportanceBadge
 
@@ -61,7 +62,7 @@ class GoalsAdapter(
         }
 
         // Description:
-        holder.tvDescription.text = goal.description
+        holder.tvDescription.text = goal.description.withoutOrphans()
 
         // Goal:
         holder.llHeader.setOnClickListener { onGoalTap(goal.id) }
