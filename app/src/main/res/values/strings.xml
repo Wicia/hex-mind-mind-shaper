@@ -272,8 +272,6 @@ Awers - Rewers…"</string>
     <string name="home_welcome_onboarding_btn_yes">Ze wskazówkami</string>
     <string name="home_onboarding_spotlight">Tutaj zacznij swoją przygodę z MindShaperem</string>
 
-    <string name="home_build_version">ver %1$s</string>
-
     <array name="home_greetings_values_list">
         <item>Dużo dobrego %s!</item>
         <item>Witaj %s ;)</item>
@@ -530,6 +528,17 @@ Awers - Rewers…"</string>
     <!-- Name -->
     <string name="settings_your_name_header">✒️ Moje Prawdziwe Imię?</string>
     <string name="settings_your_name_default">Bezimienn(y/a)</string>
+
+    <!-- Share app -->
+    <string name="settings_share_app_teaser">Podziel się MindShaperem</string>
+    <string name="settings_share_app_btn_open">Poleć apkę</string>
+    <string name="settings_share_app_info">Zeskanuj kod albo wyślij link - plik APK czeka na dysku Google</string>
+    <string name="settings_share_app_link" translatable="false">https://drive.google.com/drive/folders/1_uJcc-aC19KcGAOGWESI_-pyfmmuU1_U</string>
+    <string name="settings_share_app_message">MindShaper - aplikacja do rzeźbienia umysłu, myślenia i pamięci. Pobierz APK: %1$s</string>
+    <string name="settings_share_app_btn_copy">Kopiuj link</string>
+    <string name="settings_share_app_btn_send">Udostępnij</string>
+    <string name="settings_share_app_copied">Link skopiowany</string>
+    <string name="settings_share_app_version">ver %1$s</string>
 
     <!-- Value system -->
     <string name="settings_thoughts_value_header">⚖️ Skala wartości myśli</string>

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -14,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.ShareAppDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -103,7 +105,25 @@ class SettingsActivity : CoreActivity() {
         initThoughtsValuesSystemConfig()
         initStartScreenConfig()
         initDormantModeConfig()
+        setupShareApp()
         setupListeners()
+    }
+
+    // ========== SHARE APP ==========
+
+    private fun setupShareApp() {
+        val versionText = installedVersionText()
+        binding.tvAppVersion.text = versionText
+        binding.btnShareApp.setOnClickListener {
+            ShareAppDialog(this, versionText).show()
+        }
+    }
+
+    private fun installedVersionText(): String {
+        // ! not compile time (a real build date needs a buildConfigField that changes every build and invalidates the Gradle cache)
+        val installedAt = packageManager.getPackageInfo(packageName, 0).lastUpdateTime
+        val formattedDate = DateFormat.format("yyyy_MM_dd", installedAt).toString()
+        return getString(R.string.settings_share_app_version, formattedDate)
     }
 
     private fun setupListeners() {

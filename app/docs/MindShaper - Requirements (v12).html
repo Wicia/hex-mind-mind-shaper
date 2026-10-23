@@ -450,7 +450,7 @@
     // Side bar sections per mode (names as the groups in Requirements); order defines list order
     const SECTIONS = {
         process: [
-            {name: "Aplikacja", items: ["Nawigowanie po aplikacji", "Zapisywanie preferencji", "Personalizowanie", "Wybór ekranu startowego", "Żądanie Uprawnień", "Onboarding", "Skróty aplikacji", "Sprawdzanie wersji aplikacji", "Robienie kopii zapasowej danych"]},
+            {name: "Aplikacja", items: ["Nawigowanie po aplikacji", "Zapisywanie preferencji", "Personalizowanie", "Wybór ekranu startowego", "Żądanie Uprawnień", "Onboarding", "Skróty aplikacji", "Sprawdzanie wersji aplikacji", "Udostępnianie aplikacji", "Robienie kopii zapasowej danych"]},
             {name: "Myśli", items: ["Łapanie myśli", "Zapis w formie Notatki", "Zapis w formie Głosówki", "Zapis w formie Zdjęcia", "Łączenie myśli z hex tagami", "Porządkowanie hex tagów", "Konfigurowanie domen", "Przeglądanie myśli", "Wyszukiwanie myśli", "Sortowanie myśli", "Filtrowanie myśli", "Edytowanie myśli", "Usuwanie myśli", "Wartościowanie myśli"]},
             {name: "Rozwój", items: ["Tryb „Uśpienia”", "Wyznaczanie celów", "Realizowanie kroków", "Łączenie myśli z krokami", "Przypomnienia kroków w kalendarzu", "Ścieżki doświadczeń"]},
             {name: "Zapamiętywanie", items: ["Zapisywanie luźnych fiszek", "Prowadzenie zestawów fiszek", "Importowanie fiszek z tekstu", "Powtarzanie z fiszkami"]},
@@ -493,6 +493,24 @@
             text: "sekcja „Moje Prawdziwe Imię?” — jedno pole"},
         {fn: "Podawanie imienia", col: "proc", process: ["Personalizowanie"], place: P,
             text: "puste imię — zastępowane „Bezimienn(y/a)”; spacje z brzegów usuwane"},
+
+        // Udostępnianie aplikacji
+        {fn: "Przekazywanie linku do pobrania", col: "data", process: ["Udostępnianie aplikacji"], place: P,
+            text: "kod QR i link do folderu z plikami APK na dysku Google"},
+        {fn: "Przekazywanie linku do pobrania", col: "data", process: ["Udostępnianie aplikacji"], place: P,
+            text: "wiadomość do wysłania: „MindShaper - aplikacja do rzeźbienia umysłu, myślenia i pamięci. Pobierz APK:” i link"},
+        {fn: "Przekazywanie linku do pobrania", col: "proc", process: ["Udostępnianie aplikacji"], place: P,
+            text: "osoba obok — skanuje kod QR swoim telefonem i trafia do folderu z APK"},
+        {fn: "Przekazywanie linku do pobrania", col: "proc", process: ["Udostępnianie aplikacji"], place: P,
+            text: "osoba zdalnie — wiadomość wysyłana przez dowolną aplikację telefonu (komunikator, mail) albo link kopiowany do schowka"},
+        {fn: "Przekazywanie linku do pobrania", col: "proc", process: ["Udostępnianie aplikacji"], place: P,
+            text: "link stały — nowe wersje APK trafiają do tego samego folderu, więc link z każdej wersji aplikacji prowadzi do najnowszej"},
+
+        // Sprawdzanie wersji aplikacji
+        {fn: "Wyświetlanie wersji", col: "data", process: ["Sprawdzanie wersji aplikacji", "Udostępnianie aplikacji"], place: P,
+            text: "data instalacji / ostatniej aktualizacji aplikacji — przy udostępnianiu aplikacji"},
+        {fn: "Wyświetlanie wersji", col: "proc", process: ["Sprawdzanie wersji aplikacji"], place: P,
+            text: "pozwala sprawdzić, która wersja jest na telefonie"},
 
         // Wybór ekranu startowego
         {fn: "Wybieranie ekranu", col: "data", process: ["Wybór ekranu startowego"], place: P,
@@ -645,12 +663,6 @@
             text: "wybrane Zapamiętywanie przy wyłączonych fiszkach — zostaje Dom"},
         {fn: "Przekierowanie na ekran startowy", col: "proc", process: ["Wybór ekranu startowego", "Wyznaczanie celów"], place: HOME,
             text: "wybrany Warsztat przy wyłączonym Warsztacie — zostaje Dom"},
-
-        // Sprawdzanie wersji aplikacji
-        {fn: "Wyświetlanie wersji", col: "data", process: ["Sprawdzanie wersji aplikacji"], place: HOME,
-            text: "data instalacji / ostatniej aktualizacji aplikacji"},
-        {fn: "Wyświetlanie wersji", col: "proc", process: ["Sprawdzanie wersji aplikacji"], place: HOME,
-            text: "pozwala sprawdzić, która wersja jest na telefonie"},
 
         // Onboarding
         {fn: "Wyświetlanie wskazówek", col: "data", process: ["Onboarding"], place: GEN,
@@ -1415,6 +1427,8 @@
         "Zaliczanie zadanek": "nowe — aplikacja sama przyznaje punkty za użyte funkcje; pierwsze: „Złap myśl” (tytuł, tag, notatka), „Posortuj myśli” (3 dowolne kryteria), „Znajdź myśl” (temat, tag), „Przefiltruj myśli” (domena, czas utworzenia)",
         "Resetowanie zadanka": "nowe — reset postępu pojedynczego zadanka",
         "Włączanie wskazówek": "zmiana — nazwa „Aktywuj tryb Poznawania”",
+        "Wyświetlanie wersji": "zmiana — przeniesione z Domu do Preferencji, przy udostępnianiu aplikacji",
+        "Przekazywanie linku do pobrania": "nowe — kod QR, wysłanie i skopiowanie linku do folderu z APK",
         "Wyświetlanie postępu": "zmiana — liczy też zadanka (wagą ich punktów); zmiana — ukończony wyróżniony jak ukończone zadanka",
     };
 
@@ -1422,7 +1436,6 @@
     // A rule counts as checked when one of its places is checked for its function
     const CHECKED = {
         "Wyświetlanie powitania": {"Dom": "17/10"},
-        "Wyświetlanie wersji": {"Dom": "17/10"},
         "Rozpoczynanie łapania myśli": {"Dom": "17/10"},
         "Wyświetlanie wskazówek": {"Dom": "17/10"},
         "Otwieranie panelu nawigacji": {"Panel nawigacyjny": "17/10"},
@@ -1489,6 +1502,7 @@
         ]},
         "Skróty aplikacji": {goal: "złapanie myśli w wybranej formie bez wchodzenia w aplikację — prosto z ekranu głównego telefonu; tak samo szybkie dopisanie nowych fiszek", terms: []},
         "Sprawdzanie wersji aplikacji": {goal: "wiadomo, która wersja aplikacji jest na telefonie — np. przy zgłaszaniu uwag", terms: []},
+        "Udostępnianie aplikacji": {goal: "łatwe polecenie aplikacji innym — osoba obok skanuje kod, osoba zdalnie dostaje link do pobrania", terms: []},
         "Robienie kopii zapasowej danych": {goal: "zachowanie kluczowych danych między wydaniami / wersjami aplikacji do ponownego wgrania", terms: []},
 
         // Myśli

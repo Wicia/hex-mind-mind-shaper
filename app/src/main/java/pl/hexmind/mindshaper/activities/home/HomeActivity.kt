@@ -2,7 +2,6 @@ package pl.hexmind.mindshaper.activities.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.format.DateFormat
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -31,8 +30,6 @@ class HomeActivity : CoreActivity() {
     private lateinit var fabNewThought: FloatingActionButton
 
     private lateinit var tvHeaderGreetings : TextView
-
-    private lateinit var tvBuildVersion : TextView
 
     private lateinit var labBubbles: LabBubblesAnimator
 
@@ -98,13 +95,11 @@ class HomeActivity : CoreActivity() {
     private fun initViews() {
         setupHeader(R.drawable.ic_activity_home, R.string.common_foobar)
         fabNewThought = findViewById(R.id.fab_new_thought)
-        tvBuildVersion = findViewById(R.id.tv_build_version)
         labBubbles = LabBubblesAnimator(
             container = findViewById(R.id.fl_onboarding_entry),
             flaskIcon = findViewById(R.id.iv_onboarding)
         )
         setupHeaderWithGreetings()
-        setupBuildVersion()
     }
 
     // The flask is always there - tips can be turned on inside; bubbles only while the tips are on
@@ -129,13 +124,6 @@ class HomeActivity : CoreActivity() {
 
         tvHeaderGreetings.setColoredText(newGreetingsText, appSettingsStorage.getYourName(),
             ContextCompat.getColor(this, R.color._orange_lvl_3))
-    }
-
-    private fun setupBuildVersion() {
-        // ! not compile time (a real build date needs a buildConfigField that changes every build and invalidates the Gradle cache)
-        val installedAt = packageManager.getPackageInfo(packageName, 0).lastUpdateTime
-        val formattedDate = DateFormat.format("yyyy_MM_dd", installedAt).toString()
-        tvBuildVersion.text = getString(R.string.home_build_version, formattedDate)
     }
 
     private fun setupClickListeners() {
