@@ -9,14 +9,19 @@ import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.doOnLayout
+import androidx.core.view.isVisible
+import com.google.android.material.button.MaterialButton
 import pl.hexmind.mindshaper.R
 import kotlin.math.PI
 import kotlin.math.atan2
@@ -27,21 +32,26 @@ import kotlin.math.sin
 
 /**
  * Breadcrumb over the whole screen: everything dimmed except a round hole around one view,
- * a short text and a hand-drawn arrow from the text to the hole.
+ * a short text with a button under it and a hand-drawn arrow from them to the hole.
  *
  * Text goes above the target when it sits in the lower half of the screen, below it otherwise.
- * Tap in the hole = onTargetClick, tap anywhere else or back = just closes; onClosed runs either way.
+ * Tap in the hole = onTargetClick, the button or back = just closes; onClosed runs in all three.
+ * Tap anywhere else does nothing - the spotlight is not closed by accident before it is read.
+ * One of several steps (stepCount > 1) shows a counter next to the button.
  *
- * Usage: HexSpotlight.show(activity, targetView, text) { ... }
+ * Usage: HexSpotlight.show(activity, targetView, text, buttonText) { ... }
  */
 @SuppressLint("ViewConstructor")
 class HexSpotlight private constructor(
     private val activity: ComponentActivity,
     private val target: View,
     private val text: String,
+    buttonText: String,
+    step: Int,
+    stepCount: Int,
     private val onClosed: () -> Unit,
     private val onTargetClick: () -> Unit
-) : View(activity) {
+) : FrameLayout(activity) {
 
     companion object {
         private const val HOLE_PADDING_DP = 8f
@@ -49,6 +59,7 @@ class HexSpotlight private constructor(
         private const val TEXT_TO_HOLE_GAP_DP = 96f
         private const val TEXT_SIZE_SP = 19f
         private const val TEXT_LINE_SPACING = 0.85f    // Baloo 2 has tall lines - pulled closer
+        private const val TEXT_TO_FOOTER_GAP_DP = 16f
         private const val ARROW_THICKNESS_DP = 3f
         private const val ARROW_START_GAP_DP = 12f
         private const val ARROW_END_GAP_DP = 8f
@@ -56,17 +67,24 @@ class HexSpotlight private constructor(
         private const val ARROW_HEAD_ANGLE_DEG = 28.0
         private const val ARROW_HEAD_LONG_DP = 16f   // uneven sides of the head look drawn by hand
         private const val ARROW_HEAD_SHORT_DP = 12f
-        private const val FADE_DURATION_MS = 200L
+        const val FADE_DURATION_MS = 200L
 
+        /**
+         * @param buttonText Next when another step follows, Got it on the last one
+         * @param step 1-based number of this spotlight among stepCount shown one after another
+         */
         fun show(
             activity: ComponentActivity,
             target: View,
             text: String,
+            buttonText: String,
+            step: Int = 1,
+            stepCount: Int = 1,
             onClosed: () -> Unit = {},
             onTargetClick: () -> Unit
         ) {
             val decorView = activity.window.decorView as ViewGroup
-            val spotlight = HexSpotlight(activity, target, text, onClosed, onTargetClick)
+            val spotlight = HexSpotlight(activity, target, text, buttonText, step, stepCount, onClosed, onTargetClick)
             decorView.addView(spotlight, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
         }
     }
@@ -101,6 +119,9 @@ class HexSpotlight private constructor(
     private var textLayout: StaticLayout? = null
     private val textOrigin = PointF()
 
+    // Counter + button - real views, placed under the text once the text is laid out
+    private val footer: View = LayoutInflater.from(activity).inflate(R.layout.common_spotlight_footer, this, false)
+
     // Back closes the spotlight first, not the screen under it
     private val backCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
@@ -110,13 +131,29 @@ class HexSpotlight private constructor(
     }
 
     init {
+        setWillNotDraw(false)
         isClickable = true
         alpha = 0f
         contentDescription = text
 
+        footer.findViewById<TextView>(R.id.tv_spotlight_step_counter).apply {
+            isVisible = stepCount > 1
+            this.text = context.getString(R.string.common_spotlight_step_counter, step, stepCount)
+        }
+        footer.findViewById<MaterialButton>(R.id.btn_spotlight_action).apply {
+            this.text = buttonText
+            setOnClickListener {
+                if (isDismissing) return@setOnClickListener
+                dismiss()
+                onClosed()
+            }
+        }
+        footer.visibility = INVISIBLE    // until placed under the text
+        addView(footer)
+
         activity.onBackPressedDispatcher.addCallback(activity, backCallback)
 
-        // Target and overlay must both be laid out to know where the hole goes
+        // Target and overlay (with the footer inside) must both be laid out to know where the hole goes
         target.doOnLayout {
             doOnLayout {
                 placeHoleAndText()
@@ -151,19 +188,26 @@ class HexSpotlight private constructor(
             .build()
         textLayout = layout
 
-        val textTop = if (isTargetLow) holeCenter.y - holeRadius - gap - layout.height else holeCenter.y + holeRadius + gap
-        textOrigin.set(sideMargin, textTop)
+        // Text and footer move as one block - the arrow starts at the block edge facing the hole
+        val footerTopInBlock = layout.height + dp(TEXT_TO_FOOTER_GAP_DP)
+        val blockHeight = footerTopInBlock + footer.height
+        val blockTop = if (isTargetLow) holeCenter.y - holeRadius - gap - blockHeight else holeCenter.y + holeRadius + gap
+        textOrigin.set(sideMargin, blockTop)
 
-        buildArrow(isTargetLow, textTop, textTop + layout.height)
+        footer.x = (width - footer.width) / 2f
+        footer.y = blockTop + footerTopInBlock
+        footer.visibility = VISIBLE
+
+        buildArrow(isTargetLow, blockTop, blockTop + blockHeight)
         invalidate()
     }
 
-    // A bowed line from the text edge to the hole edge, with an uneven head
-    private fun buildArrow(isTargetLow: Boolean, textTop: Float, textBottom: Float) {
+    // A bowed line from the block edge to the hole edge, with an uneven head
+    private fun buildArrow(isTargetLow: Boolean, blockTop: Float, blockBottom: Float) {
         val textCenterX = width / 2f
         val start = PointF(
             textCenterX + (holeCenter.x - textCenterX) * 0.3f,
-            if (isTargetLow) textBottom + dp(ARROW_START_GAP_DP) else textTop - dp(ARROW_START_GAP_DP)
+            if (isTargetLow) blockBottom + dp(ARROW_START_GAP_DP) else blockTop - dp(ARROW_START_GAP_DP)
         )
 
         // End on the hole edge, on the side facing the start
@@ -200,6 +244,7 @@ class HexSpotlight private constructor(
         arrowPath.lineTo(tip.x + (cos(angle) * length).toFloat(), tip.y + (sin(angle) * length).toFloat())
     }
 
+    // Children (the footer) are drawn after this - on top of the dim
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         canvas.drawPath(dimPath, dimPaint)
@@ -213,13 +258,16 @@ class HexSpotlight private constructor(
         }
     }
 
+    // Reaches here only outside the button - consumed either way, so nothing under the spotlight reacts
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (event.action == MotionEvent.ACTION_UP && !isDismissing) {
             val isInHole = hypot(event.x - holeCenter.x, event.y - holeCenter.y) <= holeRadius
-            dismiss()
-            onClosed()
-            if (isInHole) onTargetClick()
+            if (isInHole) {
+                dismiss()
+                onClosed()
+                onTargetClick()
+            }
         }
         return true
     }

@@ -1,14 +1,10 @@
 package pl.hexmind.mindshaper.activities.onboarding
 
-import android.animation.ValueAnimator
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.animation.DecelerateInterpolator
-import android.widget.ImageView
+import android.widget.CompoundButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -29,9 +25,11 @@ import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.activities.metadata.MetadataActivity
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
 import pl.hexmind.mindshaper.activities.stream.StreamActivity
+import pl.hexmind.mindshaper.common.onboarding.OnboardingBreadcrumb
 import pl.hexmind.mindshaper.common.onboarding.OnboardingSection
 import pl.hexmind.mindshaper.common.onboarding.OnboardingTask
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
+import pl.hexmind.mindshaper.common.ui.views.HexBreadcrumbMarker
 import pl.hexmind.mindshaper.common.ui.views.HexSpotlight
 import pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
 import pl.hexmind.mindshaper.services.ThoughtsService
@@ -55,21 +53,7 @@ class OnboardingActivity : CoreActivity() {
     private lateinit var llOnboardingOptions: View
     private lateinit var llOnboardingProgress: View
     private lateinit var llOnboardingTasks: LinearLayout
-    private lateinit var ivOnboardingTasksIcon: ImageView
-
-    // Ring sent out by the sparkle every few seconds, like the mastered star of flashcards
-    // ! Drawn on the window overlay - above all views, so no card or list clips it
-    private val sparkleRing: Drawable by lazy {
-        ContextCompat.getDrawable(this, R.drawable.shape_sparkle_signal)!!.mutate().apply { alpha = 0 }
-    }
-    private var sparkleRingAnimator: ValueAnimator? = null
-
-    private val sparkleSignal = object : Runnable {
-        override fun run() {
-            if (ValueAnimator.areAnimatorsEnabled()) sendSparkleRing()
-            ivOnboardingTasksIcon.postDelayed(this, SPARKLE_SIGNAL_PAUSE_MS)
-        }
-    }
+    private var thoughtsBreadcrumbMarker: HexBreadcrumbMarker? = null
 
     // One card per functionality: Stream and Details are the same one
     private val onboardingCards = listOf(
@@ -96,77 +80,52 @@ class OnboardingActivity : CoreActivity() {
         setupOnboardingList()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        stopSparkleSignal()
-    }
-
-    // Until opened once, a sparkle stands in for the Stream icon - tapping it shows the breadcrumb
+    // Until opened once, a sparkle waits right after the card label - tapping it shows the breadcrumb
+    // ! Called again when the tips are turned back on - after a reset the breadcrumb waits again
     private fun setupThoughtsBreadcrumb() {
-        ivOnboardingTasksIcon = findViewById(R.id.iv_onboarding_tasks_icon)
+        if (!onboardingManager.isBreadcrumbPending(OnboardingBreadcrumb.THOUGHTS) || thoughtsBreadcrumbMarker != null) return
 
-        if (!onboardingManager.isThoughtsBreadcrumbPending()) return
-
-        ivOnboardingTasksIcon.setImageResource(R.drawable.ic_sparkle)
-        ivOnboardingTasksIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color._orange_lvl_3))
-        window.decorView.overlay.add(sparkleRing)
-        ivOnboardingTasksIcon.postDelayed(sparkleSignal, SPARKLE_SIGNAL_FIRST_MS)
-
-        ivOnboardingTasksIcon.setOnClickListener { showThoughtsBreadcrumb() }
+        thoughtsBreadcrumbMarker = HexBreadcrumbMarker.attach(
+            activity           = this,
+            anchor             = findViewById(R.id.tv_onboarding_tasks_header),
+            side               = HexBreadcrumbMarker.Side.END,
+            contentDescription = getString(R.string.workshop_onboarding_tasks_thoughts_breadcrumb_tasks)
+        ) {
+            showThoughtsBreadcrumb()
+        }
     }
 
+    // Two steps: the card with its tasks, then the way to the Stream
     // Counted as seen once opened - the sparkle never comes back
     private fun showThoughtsBreadcrumb() {
-        onboardingManager.markThoughtsBreadcrumbShown()
-        ivOnboardingTasksIcon.setOnClickListener(null)
-        ivOnboardingTasksIcon.isClickable = false
-        stopSparkleSignal()
+        thoughtsBreadcrumbMarker = null
+        onboardingManager.markBreadcrumbShown(OnboardingBreadcrumb.THOUGHTS)
 
         HexSpotlight.show(
-            activity = this,
-            target   = findViewById(R.id.btn_onboarding_tasks_open),
-            text     = getString(R.string.workshop_onboarding_tasks_thoughts_breadcrumb),
-            onClosed = { restoreThoughtsIcon() }
+            activity   = this,
+            target     = findViewById(R.id.ll_onboarding_tasks_label),
+            text       = getString(R.string.workshop_onboarding_tasks_thoughts_breadcrumb_tasks),
+            buttonText = getString(R.string.common_spotlight_btn_next),
+            step       = 1,
+            stepCount  = THOUGHTS_BREADCRUMB_STEPS,
+            // ! After the first one faded out - two dims at once would flash darker
+            onClosed   = { window.decorView.postDelayed({ showThoughtsBreadcrumbOpen() }, HexSpotlight.FADE_DURATION_MS) }
+        ) {}
+    }
+
+    private fun showThoughtsBreadcrumbOpen() {
+        if (isFinishing || isDestroyed) return
+
+        HexSpotlight.show(
+            activity   = this,
+            target     = findViewById(R.id.btn_onboarding_tasks_open),
+            text       = getString(R.string.workshop_onboarding_tasks_thoughts_breadcrumb_open),
+            buttonText = getString(R.string.common_spotlight_btn_got_it),
+            step       = 2,
+            stepCount  = THOUGHTS_BREADCRUMB_STEPS
         ) {
             startActivity(Intent(this, StreamActivity::class.java))
         }
-    }
-
-    // Ring follows the icon on every frame - the list may scroll while it grows
-    private fun sendSparkleRing() {
-        val iconLocation = IntArray(2)
-        val startRadius = ivOnboardingTasksIcon.width / 2f
-
-        sparkleRingAnimator?.cancel()
-        sparkleRingAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
-            duration = SPARKLE_SIGNAL_MS
-            interpolator = DecelerateInterpolator()
-            addUpdateListener { animator ->
-                val progress = animator.animatedValue as Float
-                ivOnboardingTasksIcon.getLocationInWindow(iconLocation)
-                val centerX = iconLocation[0] + ivOnboardingTasksIcon.width / 2f
-                val centerY = iconLocation[1] + ivOnboardingTasksIcon.height / 2f
-                val radius = startRadius * (1f + (SPARKLE_SIGNAL_SCALE - 1f) * progress)
-
-                sparkleRing.setBounds(
-                    (centerX - radius).toInt(), (centerY - radius).toInt(),
-                    (centerX + radius).toInt(), (centerY + radius).toInt()
-                )
-                sparkleRing.alpha = ((1f - progress) * SPARKLE_SIGNAL_ALPHA * 255).toInt()
-            }
-            start()
-        }
-    }
-
-    private fun stopSparkleSignal() {
-        ivOnboardingTasksIcon.removeCallbacks(sparkleSignal)
-        sparkleRingAnimator?.cancel()
-        window.decorView.overlay.remove(sparkleRing)
-    }
-
-    private fun restoreThoughtsIcon() {
-        ivOnboardingTasksIcon.setImageResource(R.drawable.ic_activity_stream)
-        ivOnboardingTasksIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.text_secondary))
     }
 
     // The same setting as the welcome choice - the screen stays reachable, so tips can be turned back on
@@ -177,12 +136,46 @@ class OnboardingActivity : CoreActivity() {
         llOnboardingProgress = findViewById(R.id.ll_onboarding_progress)
 
         switchOnboardingTips.isChecked = appSettingsStorage.isOnboardingEnabled()
-        switchOnboardingTips.setOnCheckedChangeListener { _, isChecked ->
-            appSettingsStorage.setOnboardingEnabled(isChecked)
-            syncTipsOptionsVisibility()
-        }
+        switchOnboardingTips.setOnCheckedChangeListener(tipsToggleListener)
 
         syncTipsOptionsVisibility()
+    }
+
+    // Off with nothing collected = just off; otherwise asked first, since everything starts over
+    private val tipsToggleListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
+        when {
+            isChecked                           -> setTipsEnabled(true)
+            !onboardingManager.hasAnyProgress() -> setTipsEnabled(false)
+            else                                -> showDisableOnboardingDialog()
+        }
+    }
+
+    private fun setTipsEnabled(enabled: Boolean) {
+        appSettingsStorage.setOnboardingEnabled(enabled)
+        syncTipsOptionsVisibility()
+        if (enabled) setupThoughtsBreadcrumb()
+    }
+
+    private fun showDisableOnboardingDialog() {
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.workshop_dialog_disable_onboarding_title))
+            .setDescription(getString(R.string.workshop_dialog_disable_onboarding))
+            .setPrimaryAction(getString(R.string.workshop_dialog_disable_onboarding_yes), caution = true) {
+                onboardingManager.resetAll()
+                setTipsEnabled(false)
+                bindTasks()
+                onboardingAdapter.notifyDataSetChanged()
+                refreshProgress(animate = false)
+            }
+            .setOnCancel { restoreTipsSwitchOn() }
+            .show()
+    }
+
+    // Back on without going through the listener - nothing changed
+    private fun restoreTipsSwitchOn() {
+        switchOnboardingTips.setOnCheckedChangeListener(null)
+        switchOnboardingTips.isChecked = true
+        switchOnboardingTips.setOnCheckedChangeListener(tipsToggleListener)
     }
 
     // Off = progress and sections hidden, a hint about the tips in their place
@@ -343,10 +336,6 @@ class OnboardingActivity : CoreActivity() {
         // and out of the progress until the first reworked tip is back
         private const val TIP_SECTIONS_SHOWN = false
 
-        private const val SPARKLE_SIGNAL_SCALE = 2.0f
-        private const val SPARKLE_SIGNAL_ALPHA = 0.9f
-        private const val SPARKLE_SIGNAL_MS = 900L
-        private const val SPARKLE_SIGNAL_FIRST_MS = 600L
-        private const val SPARKLE_SIGNAL_PAUSE_MS = 2200L
+        private const val THOUGHTS_BREADCRUMB_STEPS = 2
     }
 }

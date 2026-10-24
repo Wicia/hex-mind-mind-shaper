@@ -75,7 +75,8 @@ class HomeActivity : CoreActivity() {
         HexSpotlight.show(
             activity = this,
             target   = findViewById(R.id.iv_onboarding),
-            text     = getString(R.string.home_onboarding_spotlight)
+            text       = getString(R.string.home_onboarding_spotlight),
+            buttonText = getString(R.string.common_spotlight_btn_got_it)
         ) {
             startActivity(Intent(this, OnboardingActivity::class.java))
         }

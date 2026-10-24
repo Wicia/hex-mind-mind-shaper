@@ -31,6 +31,11 @@
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
     <string name="common_emoji_warning" translatable="false">⚠️</string>
 
+    <!-- Spotlight (HexSpotlight) -->
+    <string name="common_spotlight_btn_next">Dalej</string>
+    <string name="common_spotlight_btn_got_it">Rozumiem</string>
+    <string name="common_spotlight_step_counter">%1$d/%2$d</string>
+
     <!-- Dialogs -->
     <string name="common_deletion_dialog_confirmation">%s usunięto</string>
     <string name="common_deletion_dialog_warning">Tego nie da się cofnąć.</string>
@@ -236,7 +241,8 @@ Awers - Rewers…"</string>
     <string name="workshop_onboarding_progress">Postęp</string>
     <string name="workshop_onboarding_progress_percent">%1$d%%</string>
     <string name="workshop_onboarding_tasks_thoughts_header">Myśli</string>
-    <string name="workshop_onboarding_tasks_thoughts_breadcrumb">Nauka przez doświadczenie — krok 1: Łapanie myśli i zarządzanie nimi. W tej karcie czekają na ciebie zadanka, a tędy przejdziesz do Strumienia, gdzie możesz je zrealizować</string>
+    <string name="workshop_onboarding_tasks_thoughts_breadcrumb_tasks">Na takich listach czekają na ciebie zadanka, dzięki którym nauczysz się korzystać z funkcji aplikacji</string>
+    <string name="workshop_onboarding_tasks_thoughts_breadcrumb_open">Takie przyciski poprowadzą Cię do miejsc, gdzie możesz zrealizować zadanka</string>
     <string name="workshop_onboarding_task_capture_title">Złap myśl</string>
     <string name="workshop_onboarding_task_capture_desc">Nadaj jej tytuł, dodaj tag i napisz notatkę</string>
     <string name="workshop_onboarding_task_sort_title">Posortuj myśli</string>
@@ -249,6 +255,9 @@ Awers - Rewers…"</string>
     <string name="workshop_dialog_reset_onboarding_task">Postęp tego zadanka wróci do zera.</string>
     <string name="workshop_dialog_reset_onboarding_task_yes">Zacznij od nowa</string>
     <string name="workshop_onboarding_tips_switch">Aktywuj tryb Poznawania</string>
+    <string name="workshop_dialog_disable_onboarding_title">Wyłączyć poznawanie?</string>
+    <string name="workshop_dialog_disable_onboarding">Postęp realizacji zadań zostanie zresetowany, a okruszki pojawią się ponownie.</string>
+    <string name="workshop_dialog_disable_onboarding_yes">Wyłącz i resetuj</string>
     <string name="workshop_onboarding_tips_hint">Przy pierwszym wejściu na ekran pojawią się mini wskazówki. Wprowadzą Cię w tajniki aplikacji, pokazując \"co gdzie jest, jak tego użyć, no i do czego\" :)</string>
 
     <!-- ============================================================ -->
