@@ -44,6 +44,8 @@
     <string name="common_deletion_dialog_thought_yes">Usuń myśl</string>
     <string name="common_new_note_header">Nowa notatka</string>
     <string name="common_edit_note_header">Edytuj notatkę</string>
+    <string name="common_note_show_all">Pokaż wszystko</string>
+    <string name="common_note_show_less">Zwiń</string>
     <string name="common_list_dialog_title">Wybierz coś sobie…</string>
     <string name="common_thoughts_forms_inactive_header">Włączyć nową formę zapisu?</string>
     <string name="common_thoughts_forms_permissions_needed">Nagrania i zdjęcia włączysz w Preferencjach.</string>

@@ -149,7 +149,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:visibility="gone"
-                    app:richTextMode="editDisplay" />
+                    app:richTextMode="editDisplay"
+                    app:collapsedMaxLines="@integer/note_max_lines" />
 
                 <!-- SOUND RECORDING : Media player for audio -->
                 <pl.hexmind.mindshaper.common.ui.views.content.HexAudioView

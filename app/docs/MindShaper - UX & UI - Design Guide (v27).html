@@ -903,6 +903,53 @@
   </details>
 
   <details class="comp" open>
+    <summary><h3>Notatka</h3></summary>
+    <dl>
+      <dt>Przeznaczenie</dt>
+      <dd>Notatka myśli z Markdowna — w <i>Łapaniu</i> i <i>Szczegółach myśli</i> do edycji, w <i>Strumieniu</i> tylko do czytania; długa zwija się, żeby nie spychać innych form zapisu w dół.</dd>
+      <dt>Wygląd</dt>
+      <dd>
+        <figure><svg role="img" aria-label="hex-text-view-collapsed" xmlns="http://www.w3.org/2000/svg" width="345" height="207" viewBox="0 0 300 180">
+  <defs>
+    <linearGradient id="noteFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFE1C8" stop-opacity="0"/>
+      <stop offset="1" stop-color="#FFE1C8" stop-opacity="1"/>
+    </linearGradient>
+  </defs>
+  <rect width="300" height="180" fill="#FFF4E6"/>
+  <rect x="10" y="8" width="280" height="164" rx="12" fill="#FFE1C8"/>
+  <g font-size="13" fill="#2F2C2A" font-family="Literata, Georgia, serif">
+    <text x="28" y="32">Pierwsza linia notatki o czymś</text>
+    <text x="28" y="52">ważnym, co warto zapamiętać</text>
+    <text x="28" y="72">— i kolejne zdania, i kolejne</text>
+    <text x="28" y="92">linie aż do limitu edytora,</text>
+    <text x="28" y="112">potem tekst zanika…</text>
+  </g>
+  <rect x="10" y="78" width="280" height="44" fill="url(#noteFade)"/>
+  <text x="34" y="148" dominant-baseline="central" font-size="13" fill="#625A54" font-family="'Baloo 2', 'Segoe UI', sans-serif">Pokaż wszystko</text>
+  <g transform="translate(256,138)" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3,5 H17 M7,5 V3 H13 V5 M5,5 L6,19 H14 L15,5"/>
+  </g>
+</svg></figure>
+        <ul>
+          <li>dłuższa niż edytor notatki (<code>note_max_lines</code>, 12 linii) — zwinięta do tej liczby, ostatnie linie zanikają w tło notatki</li>
+          <li>„Pokaż wszystko” / „Zwiń” — przycisk tekstowy po lewej w pasku akcji notatki; krótka notatka go nie ma</li>
+        </ul>
+      </dd>
+      <dt>Działanie</dt>
+      <dd>
+        <ul>
+          <li><b>tap w przycisk</b> rozwija całą / zwija z powrotem</li>
+          <li><b>tap w tekst</b> otwiera edycję — także przez zanikanie</li>
+          <li>nowa albo zmieniona notatka zaczyna zwinięta; ta sama treść ustawiona ponownie zostawia stan</li>
+        </ul>
+      </dd>
+      <dt>Kod</dt>
+      <dd><code>HexTextView</code> (widget; <code>richTextMode</code>, <code>collapsedMaxLines</code> — bez niego zawsze cała), <code>common_markdown_text_view</code>, <code>note_max_lines</code> (<code>integers.xml</code>, też <code>maxLines</code> edytora w <code>common_text_edit_dialog</code>), <code>common_note_show_*</code> (<code>strings.xml</code>)</dd>
+    </dl>
+  </details>
+
+  <details class="comp" open>
     <summary><h3>Gałąź drzewa</h3></summary>
     <dl>
       <dt>Przeznaczenie</dt>

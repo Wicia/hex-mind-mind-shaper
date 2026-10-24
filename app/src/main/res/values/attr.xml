@@ -49,6 +49,8 @@
             <enum name="editDisplay" value="0" />
             <enum name="displayOnly" value="1" />
         </attr>
+        <!-- Longer note = collapsed to this many lines, with Show all / Collapse; 0 or unset = always whole -->
+        <attr name="collapsedMaxLines" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="HexHourPickerView">

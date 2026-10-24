@@ -829,6 +829,8 @@
         // Zapis w formie Notatki
         {fn: "Pisanie notatki", col: "data", process: ["Zapis w formie Notatki"], place: [...CAP, ...DET],
             text: "edytor notatki z dodawaniem punktorów"},
+        {fn: "Pisanie notatki", col: "data", process: ["Zapis w formie Notatki"], place: [...CAP, ...DET],
+            text: "nagłówek edytora — „Nowa notatka”, gdy myśl nie ma jeszcze notatki; „Edytuj notatkę” przy istniejącej"},
         {fn: "Pisanie notatki", col: "proc", process: ["Zapis w formie Notatki"], place: [...CAP, ...DET],
             text: "lista punktorów kontynuowana w kolejnej linii; pusty punktor kończy listę"},
         {fn: "Pisanie notatki", col: "proc", process: ["Zapis w formie Notatki"], place: [...CAP, ...DET],
@@ -841,6 +843,8 @@
             text: "adresy WWW i linki Markdowna jako linki"},
         {fn: "Wyświetlanie notatki", col: "proc", process: ["Zapis w formie Notatki"], place: [...CAP, ...STR, ...DET],
             text: "wybranie linku otwiera go w przeglądarce; reszta notatki działa jak zwykle (edycja / wejście w myśl)"},
+        {fn: "Wyświetlanie notatki", col: "proc", process: ["Zapis w formie Notatki"], place: [...CAP, ...DET],
+            text: "długa notatka (więcej linii niż mieści edytor notatki) — zwinięta do tej liczby linii, ostatnie zanikają; „Pokaż wszystko” rozwija całą, „Zwiń” zwija z powrotem<ul><li>nowa albo zmieniona notatka — zwinięta</li><li>wybranie tekstu otwiera edycję w obu stanach</li></ul>"},
         {fn: "Usuwanie notatki", col: "proc", process: ["Zapis w formie Notatki"], place: [...CAP, ...DET],
             text: "z potwierdzeniem; nie da się cofnąć"},
 
@@ -1405,6 +1409,8 @@
     // Differences from Requirements v12 and doubts found in the code — for the verification pass
     const CHANGE_NOTES = {
         "Rozpoczynanie łapania myśli": "zmiana — niedostępne w Warsztacie",
+        "Wyświetlanie notatki": "nowe — długa notatka zwinięta do wysokości edytora, z „Pokaż wszystko” / „Zwiń” (Łapanie, Szczegóły)",
+        "Pisanie notatki": "zmiana — nagłówek edytora: „Nowa notatka” przy pustej, „Edytuj notatkę” przy istniejącej",
         "Dodawanie celu": "zmiana — dostępne tylko w zakładce Cele, przy aktywnych celach; do sprawdzenia — opis celu nie jest wymagany (pusty cel się zapisuje)",
         "Wyświetlanie listy celów": "zmiana — wybór listy: aktywne / archiwalne cele; nowe — informacja przy braku aktywnych celów",
         "Przewijanie strumienia": "nowe — informacja przy pustym strumieniu: brak myśli albo nic nie pasuje do kryteriów",
