@@ -5,6 +5,8 @@ import android.annotation.SuppressLint
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
+import android.os.Handler
+import android.os.Looper
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
@@ -88,9 +90,14 @@ class HexBreadcrumbMarker private constructor(
         true
     }
 
+    // ! The anchor detaches while its window walks its children (e.g. the activity is destroyed) -
+    // removing a child right then crashes that walk, so the view itself goes on the next loop
     private val anchorAttachState = object : OnAttachStateChangeListener {
         override fun onViewAttachedToWindow(view: View) = Unit
-        override fun onViewDetachedFromWindow(view: View) = remove()
+        override fun onViewDetachedFromWindow(view: View) {
+            if (!stop()) return
+            Handler(Looper.getMainLooper()).post { (parent as? ViewGroup)?.removeView(this@HexBreadcrumbMarker) }
+        }
     }
 
     init {
@@ -116,12 +123,18 @@ class HexBreadcrumbMarker private constructor(
     }
 
     fun remove() {
-        if (isRemoved) return
+        if (!stop()) return
+        (parent as? ViewGroup)?.removeView(this)
+    }
+
+    // Signal and anchor listener off; false when already stopped
+    private fun stop(): Boolean {
+        if (isRemoved) return false
         isRemoved = true
         removeCallbacks(signal)
         ringAnimator?.cancel()
         anchor.removeOnAttachStateChangeListener(anchorAttachState)
-        (parent as? ViewGroup)?.removeView(this)
+        return true
     }
 
     // ! Hidden while the anchor is cut off (e.g. scrolled under the header) - otherwise it would float over it
