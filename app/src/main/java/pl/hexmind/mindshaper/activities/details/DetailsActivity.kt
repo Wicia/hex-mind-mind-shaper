@@ -358,9 +358,17 @@ class DetailsActivity : ThoughtManagerActivity() {
             title = getString(R.string.common_hex_tag_hint_subject),
             notesStyle = false,
             onSave = { newText ->
-                viewModel.updateSubject(newText)
+                if (newText != currentText) {
+                    viewModel.updateSubject(newText)
+                    showSavedToast(currentText.isBlank(), R.string.details_toast_subject_added, R.string.details_toast_subject_updated)
+                }
             }
         ).show()
+    }
+
+    // Confirms a save from a dialog / sheet - "added" when there was nothing before, "updated" otherwise
+    private fun showSavedToast(wasEmpty: Boolean, addedRes: Int, updatedRes: Int) {
+        showShortToast(if (wasEmpty) addedRes else updatedRes)
     }
 
     private fun showEditRichTextDialog(textInput: String? = null) {
@@ -390,7 +398,7 @@ class DetailsActivity : ThoughtManagerActivity() {
             val similarTag = hexTagsService.findFirstSimilarTag(embeddedTags.person, embeddedTags.project)
 
             if (similarTag == null) {
-                viewModel.updateRichText(richText)
+                saveRichText(richText)
                 return@launch
             }
 
@@ -398,18 +406,27 @@ class DetailsActivity : ThoughtManagerActivity() {
                 .setTitle(getString(R.string.common_hex_tags_similar_title))
                 .setDescription(getString(R.string.common_hex_tags_similar_description, similarTag.suggestion))
                 .setSecondaryAction(getString(R.string.common_hex_tags_similar_keep_mine)) {
-                    viewModel.updateRichText(richText)
+                    saveRichText(richText)
                 }
                 .setPrimaryAction(getString(R.string.common_hex_tags_similar_use, similarTag.suggestion)) {
                     val correctedRichText = HexTagsUtils.replaceEmbeddedTag(
                         richText, similarTag.tagType, similarTag.typedTag, similarTag.suggestion
                     )
-                    viewModel.updateRichText(correctedRichText ?: richText)
+                    saveRichText(correctedRichText ?: richText)
                 }
                 // ! The note is not saved yet - back to the editor, so the typed text is not lost
                 .setOnCancel { showEditRichTextDialog(richText) }
                 .show()
         }
+    }
+
+    // Compared with the saved note, not the editor's input - the editor may reopen with unsaved text
+    private fun saveRichText(richText: String) {
+        val savedText = viewModel.thoughtDetails.value?.richText.orEmpty()
+        if (richText == savedText) return
+
+        viewModel.updateRichText(richText)
+        showSavedToast(savedText.isBlank(), R.string.details_toast_note_added, R.string.details_toast_note_updated)
     }
 
     private fun takePhoto() {
@@ -658,7 +675,14 @@ class DetailsActivity : ThoughtManagerActivity() {
             onValidate = { tags -> viewModel.validateTags(tags) },
             currentTags = tags
         ) { result ->
+            // ! Empty person / project come back as "" or null - both mean "no tag"
+            val isChanged = result.domainId != tags.domainId ||
+                result.person.orEmpty() != tags.person.orEmpty() ||
+                result.project.orEmpty() != tags.project.orEmpty()
+            if (!isChanged) return@show
+
             viewModel.updateHexTags(result)
+            showShortToast(R.string.details_toast_tags_updated)
         }
     }
 }

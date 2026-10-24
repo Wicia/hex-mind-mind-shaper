@@ -3,6 +3,7 @@ package pl.hexmind.mindshaper.activities.stream
 import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.IntentCompat
 import androidx.core.view.doOnPreDraw
@@ -65,6 +66,11 @@ class StreamActivity : CoreActivity() {
     private lateinit var vScrollProgress: android.view.View
 
     private lateinit var tvStreamEmpty: TextView
+
+    // Capture returns RESULT_OK only after a thought was saved - leaving it without saving shows nothing
+    private val captureLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) showShortToast(R.string.stream_toast_thought_created)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -254,8 +260,7 @@ class StreamActivity : CoreActivity() {
 
     private fun setupFabMenu() {
         fabNewThought.setOnClickListener {
-            val intent = Intent(this, CaptureActivity::class.java)
-            startActivity(intent)
+            captureLauncher.launch(Intent(this, CaptureActivity::class.java))
         }
     }
 

@@ -245,7 +245,7 @@ Awers - Rewers…"</string>
     <string name="workshop_onboarding_tasks_thoughts_breadcrumb_tasks">Na takich listach czekają na ciebie zadanka, dzięki którym nauczysz się korzystać z funkcji aplikacji</string>
     <string name="workshop_onboarding_tasks_thoughts_breadcrumb_open">Takie przyciski poprowadzą Cię do miejsc, gdzie możesz zrealizować zadanka</string>
     <string name="workshop_onboarding_task_capture_title">Złap myśl</string>
-    <string name="workshop_onboarding_task_capture_desc">Nadaj jej tytuł, dodaj tag i napisz notatkę</string>
+    <string name="workshop_onboarding_task_capture_desc">Nadaj jej temat, dodaj tag i napisz notatkę</string>
     <string name="workshop_onboarding_task_sort_title">Posortuj myśli</string>
     <string name="workshop_onboarding_task_sort_desc">Posortuj strumień myśli według co najmniej 3 różnych kryteriów</string>
     <string name="workshop_onboarding_task_search_title">Znajdź myśl</string>
@@ -417,6 +417,7 @@ Awers - Rewers…"</string>
     <string name="stream_filter_created_last_week">Ostatni tydzień</string>
     <string name="stream_filter_created_last_month">Ostatni miesiąc</string>
     <string name="stream_filter_toast_count">Wybrano %1s myśli</string>
+    <string name="stream_toast_thought_created">Utworzono nową myśl</string>
 
     <!-- Sort -->
     <string name="stream_sort_dialog_header">Sortowanie</string>
@@ -479,6 +480,13 @@ Awers - Rewers…"</string>
     <!-- Rich text -->
     <string name="details_rich_text_removing_header">Usunąć tekst?</string>
     <string name="details_rich_text_removing_yes">Usuń tekst</string>
+
+    <!-- Save confirmations (toasts) -->
+    <string name="details_toast_subject_added">Dodano temat</string>
+    <string name="details_toast_subject_updated">Temat zaktualizowany</string>
+    <string name="details_toast_note_added">Dodano notatkę</string>
+    <string name="details_toast_note_updated">Notatka zaktualizowana</string>
+    <string name="details_toast_tags_updated">Tagi zaktualizowane</string>
 
     <!-- ============================================================ -->
     <!--    METADATA Activity                                         -->
