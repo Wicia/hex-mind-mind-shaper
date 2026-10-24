@@ -83,11 +83,10 @@
             <!-- Empty archive: its tile is disabled, this says why -->
             <TextView
                 android:id="@+id/tv_goals_view_archive_empty"
-                style="@style/TextView_Metadata"
+                style="@style/TextView_EmptyState"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:gravity="center"
                 android:text="@string/workshop_goals_view_archive_empty"
                 android:visibility="gone" />
 

@@ -2,9 +2,11 @@ package pl.hexmind.mindshaper.activities.stream
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.content.IntentCompat
 import androidx.core.view.doOnPreDraw
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.button.MaterialButton
@@ -62,6 +64,8 @@ class StreamActivity : CoreActivity() {
     private lateinit var flScrollIndicator: android.widget.FrameLayout
     private lateinit var vScrollProgress: android.view.View
 
+    private lateinit var tvStreamEmpty: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.stream_activity)
@@ -91,6 +95,7 @@ class StreamActivity : CoreActivity() {
         fabNewThought = findViewById(R.id.fab_new_thought)
         flScrollIndicator = findViewById(R.id.fl_scroll_indicator)
         vScrollProgress   = findViewById(R.id.v_scroll_progress)
+        tvStreamEmpty     = findViewById(R.id.tv_stream_empty)
         setupHeader(R.drawable.ic_activity_stream, R.string.stream_title)
     }
 
@@ -332,11 +337,23 @@ class StreamActivity : CoreActivity() {
         )
     }
 
+    // No thoughts at all = invite to capture the first one; thoughts hidden by the criteria = say so
+    private fun bindEmptyState(isListEmpty: Boolean) {
+        tvStreamEmpty.isVisible = isListEmpty
+        if (!isListEmpty) return
+
+        tvStreamEmpty.setText(
+            if (viewModel.hasAnyThoughts()) R.string.stream_empty_no_matches else R.string.stream_empty_no_thoughts
+        )
+    }
+
     /**
      * Setup reactive data observer that automatically updates UI when database changes
      */
     private fun setupReactiveDataObserver() {
         viewModel.filteredThoughts.observe(this) { thoughtsDTO ->
+            bindEmptyState(thoughtsDTO.isEmpty())
+
             // Submit to adapter - will automatically animate changes with DiffUtil
             adapter.submitList(thoughtsDTO) {
                 // ! commit callback, not a timer - resetting before the diff lands moves the OLD position 0

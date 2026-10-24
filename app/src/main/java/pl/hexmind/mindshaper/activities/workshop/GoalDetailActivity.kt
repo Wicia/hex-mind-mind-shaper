@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.widget.PopupMenu
@@ -45,6 +46,7 @@ class GoalDetailActivity : CoreActivity() {
     private lateinit var rvStepsCompleted: RecyclerView
     private lateinit var llStepsCompleted: View
     private lateinit var vStepsSeparator: View
+    private lateinit var tvStepsEmpty: TextView
     private lateinit var fabAdd: FloatingActionButton
     private lateinit var btnQuickComplete: MaterialButton
     private lateinit var stepsAdapter: GoalDetailStepsAdapter
@@ -87,6 +89,7 @@ class GoalDetailActivity : CoreActivity() {
         rvStepsCompleted = findViewById(R.id.rv_steps_completed)
         llStepsCompleted = findViewById(R.id.ll_steps_completed)
         vStepsSeparator  = findViewById(R.id.v_steps_separator)
+        tvStepsEmpty     = findViewById(R.id.tv_steps_empty)
         fabAdd           = findViewById(R.id.fab_add_step)
         btnQuickComplete = findViewById(R.id.btn_quick_complete)
     }
@@ -160,6 +163,7 @@ class GoalDetailActivity : CoreActivity() {
         llStepsCompleted.visibility = if (completedSteps.isEmpty()) View.GONE else View.VISIBLE
         // Nothing above it to separate when every step is done
         vStepsSeparator.visibility = if (activeSteps.isEmpty()) View.GONE else View.VISIBLE
+        tvStepsEmpty.visibility = if (steps.isEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun updateQuickCompleteButtonVisibility(steps: List<GoalStep>) {

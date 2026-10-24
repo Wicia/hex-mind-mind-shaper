@@ -94,11 +94,10 @@
             <!-- Empty set -->
             <TextView
                 android:id="@+id/tv_set_empty"
-                style="@style/TextView_Metadata"
+                style="@style/TextView_EmptyState"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
-                android:gravity="center"
                 android:text="@string/flashcards_set_no_flashcards"
                 android:visibility="gone" />
 

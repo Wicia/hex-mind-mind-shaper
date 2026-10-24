@@ -326,9 +326,12 @@ class CaptureActivity : ThoughtManagerActivity() {
         val draft = viewModel.draftThought.value ?: return
         val currentText = draft.richText ?: ""
 
+        // Edit header only when there is a note to edit
+        val titleRes = if (currentText.isBlank()) R.string.common_new_note_header else R.string.common_edit_note_header
+
         TextEditDialog(
             context = this,
-            title = getString(R.string.common_edit_note_header),
+            title = getString(titleRes),
             textInput = currentText,
             notesStyle = true,
             onSave = { newText ->

@@ -89,6 +89,16 @@
                         android:overScrollMode="never"
                         tools:listitem="@layout/goal_item" />
 
+                    <!-- Empty state: no active goals -->
+                    <TextView
+                        android:id="@+id/tv_goals_empty"
+                        style="@style/TextView_EmptyState"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/workshop_goals_empty"
+                        android:padding="20dp"
+                        android:visibility="gone" />
+
                 </LinearLayout>
 
                 <!-- Pokaż jeszcze N / Pokaż mniej - hangs from the card's bottom edge, -1dp overlaps it (no seam) -->
@@ -157,12 +167,10 @@
                     <!-- Special info -->
                     <TextView
                         android:id="@+id/tv_paths_pool_empty"
+                        style="@style/TextView_EmptyState"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/workshop_path_pool_empty"
-                        android:textSize="13sp"
-                        android:textColor="@color/_gray_lvl_3"
-                        android:textAlignment="center"
                         android:padding="20dp"
                         android:visibility="gone" />
 

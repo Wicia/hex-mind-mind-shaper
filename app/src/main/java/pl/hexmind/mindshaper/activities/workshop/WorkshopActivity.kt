@@ -40,6 +40,7 @@ class WorkshopActivity : CoreActivity() {
     private lateinit var goalsAdapter: GoalsAdapter
     private lateinit var tvGoalsHeader: TextView
     private lateinit var btnGoalsView: MaterialButton
+    private lateinit var tvGoalsEmpty: TextView
 
     private var allGoals: List<Goal> = emptyList()
     private var allArchivedGoals: List<Goal> = emptyList()
@@ -80,6 +81,7 @@ class WorkshopActivity : CoreActivity() {
         tvGoalsHeader  = findViewById(R.id.tv_goals_section_header)
         btnGoalsView   = findViewById(R.id.btn_goals_view)
         fabAddGoal     = findViewById(R.id.fab_add_goal)
+        tvGoalsEmpty   = findViewById(R.id.tv_goals_empty)
 
         ptGoalsToggle.setOnClickListener { toggleGoalsSection() }
         btnGoalsView.setOnClickListener { showGoalsViewSheet() }
@@ -179,6 +181,8 @@ class WorkshopActivity : CoreActivity() {
             shownGoals.take(MAX_COLLAPSED_GOALS)
 
         goalsAdapter.submitList(visibleGoals)
+        // Archive never stays empty on screen - it switches back to the active goals
+        tvGoalsEmpty.visibility = if (shownGoals.isEmpty()) View.VISIBLE else View.GONE
 
         ptGoalsToggle.visibility = if (shownGoals.size > MAX_COLLAPSED_GOALS) View.VISIBLE else View.GONE
         ptGoalsToggle.setExpanded(isGoalsExpanded)

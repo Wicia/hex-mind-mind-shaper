@@ -43,11 +43,10 @@
         <!-- Empty state -->
         <TextView
             android:id="@+id/tv_tags_empty"
-            style="@style/TextView_Metadata"
+            style="@style/TextView_EmptyState"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
-            android:gravity="center"
             android:text="@string/metadata_persons_empty"
             android:visibility="gone"
             />

@@ -50,6 +50,12 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
+    <!-- Info on an empty list - one look everywhere; spacing stays in the layout (48dp under a screen list, 20dp in a card) -->
+    <style name="TextView_EmptyState" parent="TextView_Metadata">
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
     <style name="TextView_Info_Success">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/validation_success</item>

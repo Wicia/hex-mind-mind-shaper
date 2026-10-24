@@ -42,6 +42,7 @@
     <string name="common_deletion_dialog_thought_title">Usunąć myśl?</string>
     <string name="common_deletion_dialog_thought_message">Zniknie razem ze wszystkimi formami zapisu. Tego nie da się cofnąć.</string>
     <string name="common_deletion_dialog_thought_yes">Usuń myśl</string>
+    <string name="common_new_note_header">Nowa notatka</string>
     <string name="common_edit_note_header">Edytuj notatkę</string>
     <string name="common_list_dialog_title">Wybierz coś sobie…</string>
     <string name="common_thoughts_forms_inactive_header">Włączyć nową formę zapisu?</string>
@@ -108,9 +109,8 @@
 
     <!-- Flashcards -->
     <string name="flashcards_title">Zapamiętywanie</string>
-    <string name="flashcards_sets_empty">Nie masz jeszcze żadnego zestawu fiszek…
-Dodaj pierwszy przyciskiem +</string>
-    <string name="flashcards_set_no_flashcards">Ten zestaw nie ma jeszcze fiszek</string>
+    <string name="flashcards_sets_empty">Nie masz jeszcze żadnego zestawu fiszek…\nDodaj pierwszy przyciskiem +</string>
+    <string name="flashcards_set_no_flashcards">Ten zestaw nie ma jeszcze fiszek…\nDodaj pierwszą przyciskiem +</string>
     <string name="flashcards_create_header">Nowy zestaw fiszek</string>
     <string name="flashcards_edit_header">Edycja zestawu fiszek</string>
     <string name="flashcards_set_name_hint">Nazwa zestawu</string>
@@ -159,8 +159,7 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="flashcards_review_today">Dzisiejsza sesja</string>
     <string name="flashcards_tab_loose">Luźne fiszki</string>
     <string name="flashcards_tab_sets">Zestawy</string>
-    <string name="flashcards_loose_empty">Nie masz jeszcze luźnych fiszek…
-Dodaj pierwszą przyciskiem +</string>
+    <string name="flashcards_loose_empty">Nie masz jeszcze luźnych fiszek…\nDodaj pierwszą przyciskiem +</string>
     <plurals name="flashcards_review_today_counts">
         <item quantity="one">Masz do powtórki %d fiszkę</item>
         <item quantity="few">Masz do powtórki %d fiszki</item>
@@ -199,7 +198,7 @@ Dodaj pierwszą przyciskiem +</string>
     <string name="flashcards_import_hint_new_line">"Awers
 Rewers
 Awers
-Rewers…"</string>nasze
+Rewers…"</string>
     <string name="flashcards_import_hint_dash">"Awers - Rewers
 Awers - Rewers…"</string>
     <string name="flashcards_import_btn">Importuj</string>
@@ -391,6 +390,8 @@ Awers - Rewers…"</string>
     <!-- Main -->
     <string name="stream_title">Strumień myśli</string>
     <string name="stream_thought_metadata_empty">\?\?\?</string>
+    <string name="stream_empty_no_thoughts">W strumieniu nie ma jeszcze żadnych myśli…\nZłap pierwszą myśl przyciskiem w rogu</string>
+    <string name="stream_empty_no_matches">Nic tu nie znalazłem…\nSpróbuj innego wyszukiwania albo filtra</string>
     <string name="stream_item_empty_thought">- ? -\n\nTa myśl jest pusta…</string>
 
     <!-- Szukajka (Hex Tagi) -->
@@ -482,8 +483,8 @@ Awers - Rewers…"</string>
 
     <!-- Header -->
     <string name="metadata_title">Tagi i Domeny</string>
-    <string name="metadata_persons_empty">Brak osób w tagach</string>
-    <string name="metadata_projects_empty">Brak projektów w tagach</string>
+    <string name="metadata_persons_empty">Brak tagów z osobami</string>
+    <string name="metadata_projects_empty">Brak tagów z projektami</string>
 
     <!-- Osoby / Projekty / Domeny switch -->
     <string name="metadata_tab_persons">Osoby</string>
@@ -678,6 +679,8 @@ Awers - Rewers…"</string>
     <string name="workshop_goals_view_active">Pokaż aktywne</string>
     <string name="workshop_goals_view_archived">Pokaż archiwalne</string>
     <string name="workshop_goals_view_archive_empty">Archiwum świeci pustkami…</string>
+    <string name="workshop_goals_empty">Nie masz aktywnych celów…\nDodaj pierwszy przyciskiem +</string>
+    <string name="workshop_goal_steps_empty">Ten cel nie ma jeszcze kroków…\nDodaj pierwszy przyciskiem +</string>
     <string name="workshop_dialog_add_goal">Nowy cel / kierunek</string>
     <string name="workshop_dialog_edit_goal">Edytuj cel / kierunek</string>
     <string name="workshop_dialog_delete_goal_title">Usunąć cel?</string>

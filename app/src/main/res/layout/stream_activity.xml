@@ -95,6 +95,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_sort" />
 
+        <!-- Empty state: no thoughts at all / none matching the criteria -->
+        <TextView
+            android:id="@+id/tv_stream_empty"
+            style="@style/TextView_EmptyState"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_sort" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- MAIN FAB -->

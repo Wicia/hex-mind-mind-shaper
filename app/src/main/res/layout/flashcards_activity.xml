@@ -60,11 +60,10 @@
             <!-- Loose flashcards - empty state -->
             <TextView
                 android:id="@+id/tv_loose_empty"
-                style="@style/TextView_Metadata"
+                style="@style/TextView_EmptyState"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
-                android:gravity="center"
                 android:text="@string/flashcards_loose_empty"
                 android:visibility="gone"
                 />
@@ -82,11 +81,10 @@
             <!-- Sets - empty state -->
             <TextView
                 android:id="@+id/tv_sets_empty"
-                style="@style/TextView_Metadata"
+                style="@style/TextView_EmptyState"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
-                android:gravity="center"
                 android:text="@string/flashcards_sets_empty"
                 android:visibility="gone" />
 

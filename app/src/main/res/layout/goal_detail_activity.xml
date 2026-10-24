@@ -83,6 +83,16 @@
                         android:overScrollMode="never"
                         tools:listitem="@layout/goal_detail_step_item" />
 
+                    <!-- Empty state: goal without any step -->
+                    <TextView
+                        android:id="@+id/tv_steps_empty"
+                        style="@style/TextView_EmptyState"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/workshop_goal_steps_empty"
+                        android:padding="20dp"
+                        android:visibility="gone" />
+
                     <!-- Completed steps block: notched separator + list -->
                     <LinearLayout
                         android:id="@+id/ll_steps_completed"

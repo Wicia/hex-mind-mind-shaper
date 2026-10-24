@@ -866,6 +866,7 @@
     <li><b>Karty na listach unoszą się nad tłem</b> — cień jak w <i>Strumieniu</i> (elewacja 4dp), np. fiszki, zestawy, kafelki domen; chipy, pigułki i zakładki zostają płaskie. Cień wymaga tła z wypełnieniem (sam tint na kształcie bez <code>solid</code> nie rzuca cienia), a kolumna listy nie może przycinać marginesu, w który cień wpada.</li>
     <li><b>Zestaw odróżniony od fiszki</b> — pomarańczowy akcent lewej krawędzi, najgrubszy w połowie boku, zwężający się po zaokrąglonych rogach (<code>shape_flashcard_set_card</code>).</li>
     <li><b>Etykieta sekcji nad listą</b> — mała, w kolorze tekstu drugorzędnego (np. <i>„Zestawy”</i>, 15sp).</li>
+    <li><b>Pusta lista zawsze mówi, dlaczego jest pusta i co zrobić</b> — nigdy samo puste miejsce; dwie linie: stan z wielokropkiem i podpowiedź (np. <i>„Nie masz aktywnych celów… / Dodaj pierwszy przyciskiem +”</i>). Różne przyczyny = różne teksty (<i>Strumień</i>: brak myśli / nic nie pasuje do kryteriów). Wszędzie jeden wygląd — <code>TextView_EmptyState</code> (16sp, Baloo 2, <code>text_secondary</code>, wyśrodkowany); różni się tylko odstęp: lista na cały ekran — 48dp pod górną krawędzią listy, lista w karcie — 20dp dookoła, w miejscu listy. Dwie linie przez <code>\n</code> w stringu — złamana linia w XML-u staje się spacją.</li>
   </ul>
 </section>
 

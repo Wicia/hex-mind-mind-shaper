@@ -73,6 +73,9 @@ class StreamViewModel @Inject constructor(
 
     fun countDormantThoughts(): Int = countThoughtsInState(ThoughtState.DORMANT)
 
+    // Tells an empty stream apart from an empty filter result
+    fun hasAnyThoughts(): Boolean = allThoughts.value.orEmpty().isNotEmpty()
+
     private fun countThoughtsInState(state: ThoughtState): Int =
         allThoughts.value.orEmpty().count { thought -> thoughtStatusService.computeState(thought) == state }
 
