@@ -31,6 +31,11 @@
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
     <string name="common_emoji_warning" translatable="false">⚠️</string>
 
+    <!-- Spotlight (HexSpotlight) -->
+    <string name="common_spotlight_btn_next">Dalej</string>
+    <string name="common_spotlight_btn_got_it">Rozumiem</string>
+    <string name="common_spotlight_step_counter">%1$d/%2$d</string>
+
     <!-- Dialogs -->
     <string name="common_deletion_dialog_confirmation">%s usunięto</string>
     <string name="common_deletion_dialog_warning">Tego nie da się cofnąć.</string>
@@ -236,6 +241,8 @@ Awers - Rewers…"</string>
     <string name="workshop_onboarding_progress">Postęp</string>
     <string name="workshop_onboarding_progress_percent">%1$d%%</string>
     <string name="workshop_onboarding_tasks_thoughts_header">Myśli</string>
+    <string name="workshop_onboarding_tasks_thoughts_breadcrumb_tasks">Na takich listach czekają na ciebie zadanka, dzięki którym nauczysz się korzystać z funkcji aplikacji</string>
+    <string name="workshop_onboarding_tasks_thoughts_breadcrumb_open">Takie przyciski poprowadzą Cię do miejsc, gdzie możesz zrealizować zadanka</string>
     <string name="workshop_onboarding_task_capture_title">Złap myśl</string>
     <string name="workshop_onboarding_task_capture_desc">Nadaj jej tytuł, dodaj tag i napisz notatkę</string>
     <string name="workshop_onboarding_task_sort_title">Posortuj myśli</string>
@@ -248,6 +255,9 @@ Awers - Rewers…"</string>
     <string name="workshop_dialog_reset_onboarding_task">Postęp tego zadanka wróci do zera.</string>
     <string name="workshop_dialog_reset_onboarding_task_yes">Zacznij od nowa</string>
     <string name="workshop_onboarding_tips_switch">Aktywuj tryb Poznawania</string>
+    <string name="workshop_dialog_disable_onboarding_title">Wyłączyć poznawanie?</string>
+    <string name="workshop_dialog_disable_onboarding">Postęp realizacji zadań zostanie zresetowany, a okruszki pojawią się ponownie.</string>
+    <string name="workshop_dialog_disable_onboarding_yes">Wyłącz i resetuj</string>
     <string name="workshop_onboarding_tips_hint">Przy pierwszym wejściu na ekran pojawią się mini wskazówki. Wprowadzą Cię w tajniki aplikacji, pokazując \"co gdzie jest, jak tego użyć, no i do czego\" :)</string>
 
     <!-- ============================================================ -->
@@ -268,9 +278,8 @@ Awers - Rewers…"</string>
     <string name="home_welcome_home_title_named">Witaj w \"Domu\", %1$s!</string>
     <string name="home_welcome_onboarding_question">Chcesz poznawać aplikację krok po kroku, ze wskazówkami?</string>
     <string name="home_welcome_onboarding_btn_no">Bez wskazówek</string>
-    <string name="home_welcome_onboarding_btn_yes">Poznajmy się</string>
-
-    <string name="home_build_version">ver %1$s</string>
+    <string name="home_welcome_onboarding_btn_yes">Ze wskazówkami</string>
+    <string name="home_onboarding_spotlight">Tutaj zacznij swoją przygodę z MindShaperem</string>
 
     <array name="home_greetings_values_list">
         <item>Dużo dobrego %s!</item>
@@ -529,6 +538,17 @@ Awers - Rewers…"</string>
     <string name="settings_your_name_header">✒️ Moje Prawdziwe Imię?</string>
     <string name="settings_your_name_default">Bezimienn(y/a)</string>
 
+    <!-- Share app -->
+    <string name="settings_share_app_teaser">Podziel się MindShaperem</string>
+    <string name="settings_share_app_btn_open">Poleć apkę</string>
+    <string name="settings_share_app_info">Zeskanuj kod albo wyślij link - plik APK czeka na dysku Google</string>
+    <string name="settings_share_app_link" translatable="false">https://drive.google.com/drive/folders/1_uJcc-aC19KcGAOGWESI_-pyfmmuU1_U</string>
+    <string name="settings_share_app_message">MindShaper - aplikacja do rzeźbienia umysłu małymi krokami.\nPobierz APK i zainstaluj eksperymentalną wersję: %1$s</string>
+    <string name="settings_share_app_btn_copy">Kopiuj link</string>
+    <string name="settings_share_app_btn_send">Udostępnij</string>
+    <string name="settings_share_app_copied">Link skopiowany</string>
+    <string name="settings_share_app_version">ver %1$s</string>
+
     <!-- Value system -->
     <string name="settings_thoughts_value_header">⚖️ Skala wartości myśli</string>
     <string name="settings_thoughts_value_action_info">Zmiana skali może wymagać przeskalowania wartości wszystkich myśli</string>
@@ -675,7 +695,7 @@ Awers - Rewers…"</string>
     <string name="workshop_dialog_delete_step_title">Usunąć krok?</string>
     <string name="workshop_dialog_delete_step_yes">Usuń krok</string>
     <string name="workshop_dialog_delete_step_calendar_yes">Usuń krok i przypomnienie</string>
-    <string name="workshop_step_repetitions_header">Ile razy trzeba to wykonać?</string>
+    <string name="workshop_step_repetitions_header">Ile razy trzeba zrobić ten krok?</string>
     <string name="workshop_step_repetitions_label">Liczba</string>
     <string name="workshop_step_repetitions_single">Jeden raz</string>
     <string name="workshop_goal_repetitions_7">7 ⟳</string>

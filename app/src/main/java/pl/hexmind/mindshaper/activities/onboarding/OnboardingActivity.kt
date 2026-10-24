@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.CompoundButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -24,9 +25,12 @@ import pl.hexmind.mindshaper.activities.home.HomeActivity
 import pl.hexmind.mindshaper.activities.metadata.MetadataActivity
 import pl.hexmind.mindshaper.activities.settings.SettingsActivity
 import pl.hexmind.mindshaper.activities.stream.StreamActivity
+import pl.hexmind.mindshaper.common.onboarding.OnboardingBreadcrumb
 import pl.hexmind.mindshaper.common.onboarding.OnboardingSection
 import pl.hexmind.mindshaper.common.onboarding.OnboardingTask
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
+import pl.hexmind.mindshaper.common.ui.views.HexBreadcrumbMarker
+import pl.hexmind.mindshaper.common.ui.views.HexSpotlight
 import pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
 import pl.hexmind.mindshaper.services.ThoughtsService
 import javax.inject.Inject
@@ -49,6 +53,7 @@ class OnboardingActivity : CoreActivity() {
     private lateinit var llOnboardingOptions: View
     private lateinit var llOnboardingProgress: View
     private lateinit var llOnboardingTasks: LinearLayout
+    private var thoughtsBreadcrumbMarker: HexBreadcrumbMarker? = null
 
     // One card per functionality: Stream and Details are the same one
     private val onboardingCards = listOf(
@@ -71,7 +76,56 @@ class OnboardingActivity : CoreActivity() {
         findViewById<MaterialButton>(R.id.btn_onboarding_tasks_open).setOnClickListener {
             startActivity(Intent(this, StreamActivity::class.java))
         }
+        setupThoughtsBreadcrumb()
         setupOnboardingList()
+    }
+
+    // Until opened once, a sparkle waits right after the card label - tapping it shows the breadcrumb
+    // ! Called again when the tips are turned back on - after a reset the breadcrumb waits again
+    private fun setupThoughtsBreadcrumb() {
+        if (!onboardingManager.isBreadcrumbPending(OnboardingBreadcrumb.THOUGHTS) || thoughtsBreadcrumbMarker != null) return
+
+        thoughtsBreadcrumbMarker = HexBreadcrumbMarker.attach(
+            activity           = this,
+            anchor             = findViewById(R.id.tv_onboarding_tasks_header),
+            side               = HexBreadcrumbMarker.Side.END,
+            contentDescription = getString(R.string.workshop_onboarding_tasks_thoughts_breadcrumb_tasks)
+        ) {
+            showThoughtsBreadcrumb()
+        }
+    }
+
+    // Two steps: the card with its tasks, then the way to the Stream
+    // Counted as seen once opened - the sparkle never comes back
+    private fun showThoughtsBreadcrumb() {
+        thoughtsBreadcrumbMarker = null
+        onboardingManager.markBreadcrumbShown(OnboardingBreadcrumb.THOUGHTS)
+
+        HexSpotlight.show(
+            activity   = this,
+            target     = findViewById(R.id.ll_onboarding_tasks_label),
+            text       = getString(R.string.workshop_onboarding_tasks_thoughts_breadcrumb_tasks),
+            buttonText = getString(R.string.common_spotlight_btn_next),
+            step       = 1,
+            stepCount  = THOUGHTS_BREADCRUMB_STEPS,
+            // ! After the first one faded out - two dims at once would flash darker
+            onClosed   = { window.decorView.postDelayed({ showThoughtsBreadcrumbOpen() }, HexSpotlight.FADE_DURATION_MS) }
+        ) {}
+    }
+
+    private fun showThoughtsBreadcrumbOpen() {
+        if (isFinishing || isDestroyed) return
+
+        HexSpotlight.show(
+            activity   = this,
+            target     = findViewById(R.id.btn_onboarding_tasks_open),
+            text       = getString(R.string.workshop_onboarding_tasks_thoughts_breadcrumb_open),
+            buttonText = getString(R.string.common_spotlight_btn_got_it),
+            step       = 2,
+            stepCount  = THOUGHTS_BREADCRUMB_STEPS
+        ) {
+            startActivity(Intent(this, StreamActivity::class.java))
+        }
     }
 
     // The same setting as the welcome choice - the screen stays reachable, so tips can be turned back on
@@ -82,12 +136,46 @@ class OnboardingActivity : CoreActivity() {
         llOnboardingProgress = findViewById(R.id.ll_onboarding_progress)
 
         switchOnboardingTips.isChecked = appSettingsStorage.isOnboardingEnabled()
-        switchOnboardingTips.setOnCheckedChangeListener { _, isChecked ->
-            appSettingsStorage.setOnboardingEnabled(isChecked)
-            syncTipsOptionsVisibility()
-        }
+        switchOnboardingTips.setOnCheckedChangeListener(tipsToggleListener)
 
         syncTipsOptionsVisibility()
+    }
+
+    // Off with nothing collected = just off; otherwise asked first, since everything starts over
+    private val tipsToggleListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
+        when {
+            isChecked                           -> setTipsEnabled(true)
+            !onboardingManager.hasAnyProgress() -> setTipsEnabled(false)
+            else                                -> showDisableOnboardingDialog()
+        }
+    }
+
+    private fun setTipsEnabled(enabled: Boolean) {
+        appSettingsStorage.setOnboardingEnabled(enabled)
+        syncTipsOptionsVisibility()
+        if (enabled) setupThoughtsBreadcrumb()
+    }
+
+    private fun showDisableOnboardingDialog() {
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.workshop_dialog_disable_onboarding_title))
+            .setDescription(getString(R.string.workshop_dialog_disable_onboarding))
+            .setPrimaryAction(getString(R.string.workshop_dialog_disable_onboarding_yes), caution = true) {
+                onboardingManager.resetAll()
+                setTipsEnabled(false)
+                bindTasks()
+                onboardingAdapter.notifyDataSetChanged()
+                refreshProgress(animate = false)
+            }
+            .setOnCancel { restoreTipsSwitchOn() }
+            .show()
+    }
+
+    // Back on without going through the listener - nothing changed
+    private fun restoreTipsSwitchOn() {
+        switchOnboardingTips.setOnCheckedChangeListener(null)
+        switchOnboardingTips.isChecked = true
+        switchOnboardingTips.setOnCheckedChangeListener(tipsToggleListener)
     }
 
     // Off = progress and sections hidden, a hint about the tips in their place
@@ -247,5 +335,7 @@ class OnboardingActivity : CoreActivity() {
         // ! No tip is shown on the screens yet (onboarding concept) - their sections stay hidden
         // and out of the progress until the first reworked tip is back
         private const val TIP_SECTIONS_SHOWN = false
+
+        private const val THOUGHTS_BREADCRUMB_STEPS = 2
     }
 }

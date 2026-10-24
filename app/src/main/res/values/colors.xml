@@ -205,6 +205,22 @@
     <color name="progress_ring_done">#8FEDB5</color>
 
 <!-- ====================================== -->
+<!--    SPOTLIGHT -->
+<!-- ====================================== -->
+
+    <!-- Breadcrumb over the whole screen: dim around the hole, text and hand-drawn arrow on top -->
+    <color name="spotlight_dim">#CC000000</color>
+    <color name="spotlight_text">@color/_white</color>
+    <color name="spotlight_arrow">@color/breadcrumb_marker</color>
+    <!-- Footer under the text: gold button with dark text, step counter dimmer than the text -->
+    <color name="spotlight_button_background">@color/breadcrumb_marker</color>
+    <color name="spotlight_button_text">@color/graphite_dark</color>
+    <color name="spotlight_step_counter">#B3FFFFFF</color>
+
+    <!-- Breadcrumb waiting to be opened (HexBreadcrumbMarker): sparkle and its ring in gold - stands out from the orange theme -->
+    <color name="breadcrumb_marker">#D4AF37</color>
+
+<!-- ====================================== -->
 <!--    PRIORITIES -->
 <!-- ====================================== -->
 

@@ -148,27 +148,45 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp">
 
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="6dp"
-                        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                        android:src="@drawable/ic_activity_stream"
-                        app:tint="@color/text_secondary"
-                        />
-
-                    <TextView
-                        style="@style/TextView_Header_Section"
-                        android:layout_width="0dp"
+                    <!-- Icon + label - one target for the first step of the breadcrumb spotlight -->
+                    <LinearLayout
+                        android:id="@+id/ll_onboarding_tasks_label"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <!-- Stream icon -->
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="6dp"
+                            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                            android:src="@drawable/ic_activity_stream"
+                            app:tint="@color/text_secondary"
+                            />
+
+                        <!-- ! wrap_content: the breadcrumb sparkle stands right after the text, not after the stretched view -->
+                        <TextView
+                            android:id="@+id/tv_onboarding_tasks_header"
+                            style="@style/TextView_Header_Section"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="0dp"
+                            android:textSize="15sp"
+                            android:text="@string/workshop_onboarding_tasks_thoughts_header"
+                            />
+
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginBottom="0dp"
-                        android:textSize="15sp"
-                        android:text="@string/workshop_onboarding_tasks_thoughts_header"
                         />
 
                     <com.google.android.material.button.MaterialButton

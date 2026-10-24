@@ -16,6 +16,7 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
+import pl.hexmind.mindshaper.common.formatting.withoutOrphans
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
 import pl.hexmind.mindshaper.common.ui.views.GoalImportanceBadge
@@ -179,7 +180,7 @@ class GoalDetailActivity : CoreActivity() {
             tvBadge.setOnClickListener { viewModel.cycleGoalImportance() }
         }
 
-        cbGoalDesc.text = goal.description
+        cbGoalDesc.text = goal.description.withoutOrphans()
         cbGoalDesc.setOnClickListener { showEditGoalDescriptionDialog(goal) }
     }
 

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.common.formatting.withoutOrphans
 
 /**
  * Adapter for the steps list in GoalDetailActivity.
@@ -106,7 +107,7 @@ class GoalDetailStepsAdapter(
     }
 
     private fun bindDescription(holder: ViewHolder, step: GoalStep) {
-        holder.tvDesc.text = step.description
+        holder.tvDesc.text = step.description.withoutOrphans()
         holder.tvDesc.setOnClickListener { onTapText(step) }
         holder.tvDesc.setOnLongClickListener {
             onLongPressText(step.id)

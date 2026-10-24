@@ -165,6 +165,32 @@ class OnboardingManager @Inject constructor(
         appSettingsStorage.markOnboardingTooltipShown(WELCOME_SHOWN_KEY)
     }
 
+    fun isBreadcrumbPending(breadcrumb: OnboardingBreadcrumb): Boolean {
+        return !appSettingsStorage.wasOnboardingTooltipShown(breadcrumb.settingsParamName)
+    }
+
+    fun markBreadcrumbShown(breadcrumb: OnboardingBreadcrumb) {
+        appSettingsStorage.markOnboardingTooltipShown(breadcrumb.settingsParamName)
+    }
+
+    // Anything to lose by turning the tips off - seen tips, task points or opened breadcrumbs
+    fun hasAnyProgress(): Boolean {
+        return OnboardingProgressStep.entries.any { step -> wasTooltipShown(step) } ||
+                OnboardingTask.entries.any { task -> getTaskScore(task) > 0 } ||
+                OnboardingBreadcrumb.entries.any { breadcrumb -> !isBreadcrumbPending(breadcrumb) }
+    }
+
+    // Turning the tips off starts them over - the welcome stays seen, it is the choice made at the start
+    fun resetAll() {
+        OnboardingProgressStep.entries.forEach { step ->
+            appSettingsStorage.clearOnboardingTooltipShown(step.settingsParamName)
+        }
+        OnboardingTask.entries.forEach { task -> resetTask(task) }
+        OnboardingBreadcrumb.entries.forEach { breadcrumb ->
+            appSettingsStorage.clearOnboardingTooltipShown(breadcrumb.settingsParamName)
+        }
+    }
+
     companion object {
         private const val WELCOME_SHOWN_KEY = "onb_welcome_shown"
     }

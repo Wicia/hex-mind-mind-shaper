@@ -450,7 +450,7 @@
     // Side bar sections per mode (names as the groups in Requirements); order defines list order
     const SECTIONS = {
         process: [
-            {name: "Aplikacja", items: ["Nawigowanie po aplikacji", "Zapisywanie preferencji", "Personalizowanie", "Wybór ekranu startowego", "Żądanie Uprawnień", "Onboarding", "Skróty aplikacji", "Sprawdzanie wersji aplikacji", "Robienie kopii zapasowej danych"]},
+            {name: "Aplikacja", items: ["Nawigowanie po aplikacji", "Zapisywanie preferencji", "Personalizowanie", "Wybór ekranu startowego", "Żądanie Uprawnień", "Onboarding", "Skróty aplikacji", "Sprawdzanie wersji aplikacji", "Udostępnianie aplikacji", "Robienie kopii zapasowej danych"]},
             {name: "Myśli", items: ["Łapanie myśli", "Zapis w formie Notatki", "Zapis w formie Głosówki", "Zapis w formie Zdjęcia", "Łączenie myśli z hex tagami", "Porządkowanie hex tagów", "Konfigurowanie domen", "Przeglądanie myśli", "Wyszukiwanie myśli", "Sortowanie myśli", "Filtrowanie myśli", "Edytowanie myśli", "Usuwanie myśli", "Wartościowanie myśli"]},
             {name: "Rozwój", items: ["Tryb „Uśpienia”", "Wyznaczanie celów", "Realizowanie kroków", "Łączenie myśli z krokami", "Przypomnienia kroków w kalendarzu", "Ścieżki doświadczeń"]},
             {name: "Zapamiętywanie", items: ["Zapisywanie luźnych fiszek", "Prowadzenie zestawów fiszek", "Importowanie fiszek z tekstu", "Powtarzanie z fiszkami"]},
@@ -493,6 +493,24 @@
             text: "sekcja „Moje Prawdziwe Imię?” — jedno pole"},
         {fn: "Podawanie imienia", col: "proc", process: ["Personalizowanie"], place: P,
             text: "puste imię — zastępowane „Bezimienn(y/a)”; spacje z brzegów usuwane"},
+
+        // Udostępnianie aplikacji
+        {fn: "Przekazywanie linku do pobrania", col: "data", process: ["Udostępnianie aplikacji"], place: P,
+            text: "kod QR i link do folderu z plikami APK na dysku Google"},
+        {fn: "Przekazywanie linku do pobrania", col: "data", process: ["Udostępnianie aplikacji"], place: P,
+            text: "wiadomość do wysłania: „MindShaper - aplikacja do rzeźbienia umysłu, myślenia i pamięci. Pobierz APK:” i link"},
+        {fn: "Przekazywanie linku do pobrania", col: "proc", process: ["Udostępnianie aplikacji"], place: P,
+            text: "osoba obok — skanuje kod QR swoim telefonem i trafia do folderu z APK"},
+        {fn: "Przekazywanie linku do pobrania", col: "proc", process: ["Udostępnianie aplikacji"], place: P,
+            text: "osoba zdalnie — wiadomość wysyłana przez dowolną aplikację telefonu (komunikator, mail) albo link kopiowany do schowka"},
+        {fn: "Przekazywanie linku do pobrania", col: "proc", process: ["Udostępnianie aplikacji"], place: P,
+            text: "link stały — nowe wersje APK trafiają do tego samego folderu, więc link z każdej wersji aplikacji prowadzi do najnowszej"},
+
+        // Sprawdzanie wersji aplikacji
+        {fn: "Wyświetlanie wersji", col: "data", process: ["Sprawdzanie wersji aplikacji", "Udostępnianie aplikacji"], place: P,
+            text: "data instalacji / ostatniej aktualizacji aplikacji — przy udostępnianiu aplikacji"},
+        {fn: "Wyświetlanie wersji", col: "proc", process: ["Sprawdzanie wersji aplikacji"], place: P,
+            text: "pozwala sprawdzić, która wersja jest na telefonie"},
 
         // Wybór ekranu startowego
         {fn: "Wybieranie ekranu", col: "data", process: ["Wybór ekranu startowego"], place: P,
@@ -646,12 +664,6 @@
         {fn: "Przekierowanie na ekran startowy", col: "proc", process: ["Wybór ekranu startowego", "Wyznaczanie celów"], place: HOME,
             text: "wybrany Warsztat przy wyłączonym Warsztacie — zostaje Dom"},
 
-        // Sprawdzanie wersji aplikacji
-        {fn: "Wyświetlanie wersji", col: "data", process: ["Sprawdzanie wersji aplikacji"], place: HOME,
-            text: "data instalacji / ostatniej aktualizacji aplikacji"},
-        {fn: "Wyświetlanie wersji", col: "proc", process: ["Sprawdzanie wersji aplikacji"], place: HOME,
-            text: "pozwala sprawdzić, która wersja jest na telefonie"},
-
         // Onboarding
         {fn: "Wyświetlanie wskazówek", col: "data", process: ["Onboarding"], place: GEN,
             text: "wskazówka: tytuł, treść, czasem ilustracja; wskazówki jednego kroku pokazywane po kolei"},
@@ -659,6 +671,8 @@
             text: "kiedy<ul><li>pierwsze wejście na ekran</li><li>pierwsze użycie funkcji ekranu</li></ul>"},
         {fn: "Wyświetlanie wskazówek", col: "proc", process: ["Onboarding"], place: GEN,
             text: "każdy krok pokazywany tylko raz — zamknięcie kroku oznacza go jako zobaczony"},
+        {fn: "Wyświetlanie wskazówek", col: "proc", process: ["Onboarding"], place: GEN,
+            text: "wskazanie — jeden element wyróżniony na tle reszty ekranu, z zachętą; zamykane tylko świadomie, żeby nie zniknęło przed przeczytaniem<ul><li>przycisk pod zachętą — „Dalej”, gdy czeka następne wskazanie, „Rozumiem” przy ostatnim; zamyka wskazanie</li><li>cofnięcie — zamyka wskazanie</li><li>wybranie wskazanego elementu — zamyka wskazanie i wykonuje działanie elementu</li><li>wybranie czegokolwiek innego — nic się nie dzieje</li></ul>kilka wskazań po kolei — przy przycisku numer bieżącego z liczby wszystkich"},
         {fn: "Witanie przy pierwszym uruchomieniu", col: "data", process: ["Onboarding", "Personalizowanie"], place: HOME,
             text: "powitanie w dwóch krokach<ul><li>podanie imienia — podpowiedź „Bezimienn(y/a)”; można pominąć</li><li>powitanie w Domu z podanym imieniem (bez imienia — samo powitanie) i pytanie, czy poznawać aplikację ze wskazówkami</li></ul>"},
         {fn: "Witanie przy pierwszym uruchomieniu", col: "proc", process: ["Onboarding"], place: HOME,
@@ -667,6 +681,8 @@
             text: "imię zapisywane tylko przy zapisie; pominięcie albo puste pole — zostaje „Bezimienn(y/a)”; powitanie na Domu od razu z nowym imieniem"},
         {fn: "Witanie przy pierwszym uruchomieniu", col: "proc", process: ["Onboarding"], place: HOME,
             text: "odpowiedź o poznawaniu aplikacji<ul><li>tak — wskazówki włączone</li><li>nie — żadnych wskazówek w całej aplikacji; użytkownik sam poznaje aplikację; włączenie później — w Poznawaniu aplikacji</li><li>zamknięcie bez odpowiedzi — wskazówki wyłączone; włączają się tylko na życzenie — w powitaniu albo w Poznawaniu aplikacji</li></ul>"},
+        {fn: "Witanie przy pierwszym uruchomieniu", col: "proc", process: ["Onboarding"], place: HOME,
+            text: "po wyborze wskazówek — jednorazowe wskazanie wejścia do Poznawania aplikacji, wyróżnionego na tle reszty ekranu, z zachętą „Tutaj zacznij swoją przygodę z MindShaperem”; wybranie wejścia otwiera Poznawanie aplikacji, „Rozumiem” albo cofnięcie tylko zamyka wskazanie"},
         {fn: "Wyświetlanie wskazówek", col: "proc", process: ["Onboarding"], place: GEN,
             text: "wyłączone wskazówki (wybór w powitaniu albo w Poznawaniu aplikacji) — żadna się nie pokazuje"},
         {fn: "Wyświetlanie wskazówek", col: "data", process: ["Onboarding"], place: HOME,
@@ -689,8 +705,10 @@
             text: "„Aktywuj tryb Poznawania” — to samo ustawienie co wybór w powitaniu"},
         {fn: "Włączanie wskazówek", col: "proc", process: ["Onboarding"], place: ONB,
             text: "wyłączone — postęp i sekcje ukryte, w ich miejscu krótka informacja, co dają wskazówki"},
+        {fn: "Włączanie wskazówek", col: "proc", process: ["Onboarding"], place: ONB,
+            text: "wyłączenie zaczyna poznawanie od nowa — zobaczone wskazówki, punkty zadanek i otwarte okruszki wracają do zera; powitanie się nie powtarza<ul><li>coś już zebrane — najpierw potwierdzenie „Wyłącz i resetuj”; rezygnacja zostawia tryb włączony i wszystko bez zmian</li><li>nic nie zebrane — wyłączenie od razu</li></ul>"},
         {fn: "Wyświetlanie postępu", col: "data", process: ["Onboarding"], place: ONB,
-            text: "ogólny postęp — jaka część wszystkich punktów zadanek i wskazówek (bez dodatkowych) została zdobyta / zobaczona, w procentach; zadanko waży tyle, ile ma punktów"},
+            text: "ogólny postęp — jaka część wszystkich punktów zadanek i wskazówek (bez dodatkowych) została zdobyta / zobaczona, w procentach; zadanko waży tyle, ile ma punktów; wszystko zdobyte — postęp wyróżniony jako ukończony, tak jak ukończone zadanka"},
         {fn: "Wyświetlanie postępu", col: "proc", process: ["Onboarding"], place: ONB,
             text: "liczony z tych samych zadanek i wskazówek co listy — postęp, zadanka i liczniki sekcji zawsze zgodne"},
         {fn: "Wyświetlanie postępu", col: "proc", process: ["Onboarding"], place: ONB,
@@ -711,6 +729,8 @@
             text: "„Znajdź myśl” (2 punkty) — za wyszukanie po temacie, za wyszukanie po tagu (osoba albo projekt); liczy się zatwierdzone wyszukiwanie, także bez wyników; usunięcie kryterium ani przejście z tagu w Tagach i Domenach się nie liczy"},
         {fn: "Zaliczanie zadanek", col: "proc", process: ["Onboarding", "Filtrowanie myśli"], place: STR,
             text: "„Przefiltruj myśli” (2 punkty) — za filtr po domenie, za filtr po czasie utworzenia; liczy się zatwierdzony filtr, także bez wyników; same stany myśli się nie liczą"},
+        {fn: "Wyświetlanie zadanek", col: "proc", process: ["Onboarding"], place: ONB,
+            text: "okruszek karty Myśli — do pierwszego otwarcia przy nazwie karty znak, który przyciąga uwagę; jego wybranie pokazuje dwa wskazania po kolei<ul><li>karta — z zachętą „Nauka przez doświadczenie — krok 1: Łapanie myśli i zarządzanie nimi. Na takich listach czekają na ciebie zadanka”; „Dalej” (albo cofnięcie) przechodzi do drugiego</li><li>przejście do Strumienia myśli — z zachętą „Tędy przejdziesz do Strumienia, gdzie możesz je zrealizować”; wybranie przejścia otwiera Strumień myśli, „Rozumiem” albo cofnięcie tylko zamyka wskazanie</li></ul>raz otwarty nie wraca (także po resecie zadanek) — dopiero po wyłączeniu trybu, które zaczyna poznawanie od nowa"},
         {fn: "Resetowanie zadanka", col: "data", process: ["Onboarding"], place: ONB,
             text: "reset przy każdym zadanku"},
         {fn: "Resetowanie zadanka", col: "proc", process: ["Onboarding"], place: ONB,
@@ -1394,7 +1414,7 @@
         "Usuwanie celu": "do sprawdzenia — usunięcie celu nie usuwa wpisów jego kroków w kalendarzu",
         "Zmienianie ścieżki": "do sprawdzenia — odłożona ścieżka może od razu zostać wylosowana ponownie",
         "Oznaczanie kroku z kalendarza": "inaczej niż v12 — komunikat „Realizowano X z Y powtórzeń kroku” zamiast „Zaliczono: X/Y”",
-        "Wyświetlanie wskazówek": "do sprawdzenia — wskazówka sekcji Personalizacja ma tekst-zaślepkę zamiast treści",
+        "Wyświetlanie wskazówek": "do sprawdzenia — wskazówka sekcji Personalizacja ma tekst-zaślepkę zamiast treści; zmiana — wskazania zamykane przyciskiem pod zachętą („Dalej” / „Rozumiem”) albo cofnięciem, tapnięcie obok nic nie robi; numer wskazania przy kilku po kolei",
         "Usuwanie myśli": "nowe względem v12 — odpinanie myśli od kroku przy usunięciu",
         "Utrzymywanie pionowej orientacji": "nowe — ekrany zablokowane w pionie, obraca się tylko zdjęcie na pełnym ekranie; zmiana — sesja powtórek w poziomie",
         "Przebieg sesji": "zmiana — sesja na całym ekranie w poziomie; postęp i liczniki ocen widoczne w trakcie",
@@ -1406,19 +1426,20 @@
         "Otwieranie filtra": "zmiana — stany liczone jako jedno kryterium, tylko po zmianie domyślnych",
         "Filtrowanie po stanie": "zmiana — trzeci stan „Bliskie uśpienia” (domyślnie zaznaczony) zamiast liczenia ich jako aktywne",
         "Wczytywanie kopii": "zmiana — plik z dowolnego miejsca, powód błędu widoczny, działa zaraz po ponownej instalacji",
-        "Witanie przy pierwszym uruchomieniu": "nowe — powitanie z podaniem imienia, wskazaniem Preferencji i pytaniem o poznawanie aplikacji (nie = wskazówki wyłączone); zmiana — zamknięcie bez odpowiedzi = wskazówki wyłączone; zmiana — druga karta wita w Domu z imieniem zamiast wskazywać Preferencje, bez wskazówki Domu po powitaniu",
-        "Wyświetlanie zadanek": "nowe — zadanka z postępem przed sekcjami wskazówek, pogrupowane w karty według obszaru z przejściem do ekranu (Myśli → Strumień)",
+        "Witanie przy pierwszym uruchomieniu": "nowe — powitanie z podaniem imienia, wskazaniem Preferencji i pytaniem o poznawanie aplikacji (nie = wskazówki wyłączone); zmiana — zamknięcie bez odpowiedzi = wskazówki wyłączone; zmiana — druga karta wita w Domu z imieniem zamiast wskazywać Preferencje, bez wskazówki Domu po powitaniu; zmiana — „Ze wskazówkami” zamiast „Poznajmy się”, po nim jednorazowe wskazanie wejścia do Poznawania aplikacji",
+        "Wyświetlanie zadanek": "nowe — zadanka z postępem przed sekcjami wskazówek, pogrupowane w karty według obszaru z przejściem do ekranu (Myśli → Strumień); okruszek karty Myśli otwierany na życzenie; zmiana — okruszek w dwóch wskazaniach: karta z zadankami, potem przejście do Strumienia",
         "Zaliczanie zadanek": "nowe — aplikacja sama przyznaje punkty za użyte funkcje; pierwsze: „Złap myśl” (tytuł, tag, notatka), „Posortuj myśli” (3 dowolne kryteria), „Znajdź myśl” (temat, tag), „Przefiltruj myśli” (domena, czas utworzenia)",
         "Resetowanie zadanka": "nowe — reset postępu pojedynczego zadanka",
-        "Włączanie wskazówek": "zmiana — nazwa „Aktywuj tryb Poznawania”",
-        "Wyświetlanie postępu": "zmiana — liczy też zadanka (wagą ich punktów)",
+        "Włączanie wskazówek": "zmiana — nazwa „Aktywuj tryb Poznawania”; nowe — wyłączenie zaczyna poznawanie od nowa (wskazówki, zadanka, okruszki; bez powitania), z potwierdzeniem, gdy coś już zebrane",
+        "Wyświetlanie wersji": "zmiana — przeniesione z Domu do Preferencji, przy udostępnianiu aplikacji",
+        "Przekazywanie linku do pobrania": "nowe — kod QR, wysłanie i skopiowanie linku do folderu z APK",
+        "Wyświetlanie postępu": "zmiana — liczy też zadanka (wagą ich punktów); zmiana — ukończony wyróżniony jak ukończone zadanka",
     };
 
     // Places where the user verified a function; value = dd/mm of the check.
     // A rule counts as checked when one of its places is checked for its function
     const CHECKED = {
         "Wyświetlanie powitania": {"Dom": "17/10"},
-        "Wyświetlanie wersji": {"Dom": "17/10"},
         "Rozpoczynanie łapania myśli": {"Dom": "17/10"},
         "Wyświetlanie wskazówek": {"Dom": "17/10"},
         "Otwieranie panelu nawigacji": {"Panel nawigacyjny": "17/10"},
@@ -1485,6 +1506,7 @@
         ]},
         "Skróty aplikacji": {goal: "złapanie myśli w wybranej formie bez wchodzenia w aplikację — prosto z ekranu głównego telefonu; tak samo szybkie dopisanie nowych fiszek", terms: []},
         "Sprawdzanie wersji aplikacji": {goal: "wiadomo, która wersja aplikacji jest na telefonie — np. przy zgłaszaniu uwag", terms: []},
+        "Udostępnianie aplikacji": {goal: "łatwe polecenie aplikacji innym — osoba obok skanuje kod, osoba zdalnie dostaje link do pobrania", terms: []},
         "Robienie kopii zapasowej danych": {goal: "zachowanie kluczowych danych między wydaniami / wersjami aplikacji do ponownego wgrania", terms: []},
 
         // Myśli
@@ -1744,7 +1766,7 @@
 
     <!-- Branch 2: the answer on card 2 -->
     <line x1="344" y1="172" x2="474" y2="172" stroke="#625A54" stroke-width="1.5" marker-end="url(#req-flow-arrow)"/>
-    <text x="409" y="148" text-anchor="middle">Poznajmy się —</text>
+    <text x="409" y="148" text-anchor="middle">Ze wskazówkami —</text>
     <text x="409" y="163" text-anchor="middle">wskazówki włączone</text>
     <line x1="344" y1="212" x2="474" y2="212" stroke="#625A54" stroke-width="1.5" marker-end="url(#req-flow-arrow)"/>
     <text x="409" y="228" text-anchor="middle">Bez wskazówek —</text>
@@ -1761,7 +1783,7 @@
                 "pokazywane raz — nowemu użytkownikowi, przy pierwszym wejściu na Dom",
                 "tap poza powitaniem go nie zamyka",
                 "druga karta — powitanie w Domu z podanym imieniem (bez imienia — samo „Witaj w Domu!”)",
-                "na razie żadna wskazówka się nie pokazuje (porządkowanie onboardingu) — Poznajmy się zapisuje sam wybór",
+                "na razie żadna wskazówka się nie pokazuje (porządkowanie onboardingu) — Ze wskazówkami zapisuje wybór i raz wskazuje wejście do Poznawania aplikacji (wybranie go otwiera Poznawanie, „Rozumiem” albo cofnięcie zamyka wskazanie)",
                 "Bez wskazówek — w całej aplikacji żadnych wskazówek, nie tylko na Domu; wejście do Poznawania aplikacji zostaje — tam można je włączyć",
                 "ekran startowy inny niż Dom — powitanie przy pierwszym wejściu na Dom",
             ]},

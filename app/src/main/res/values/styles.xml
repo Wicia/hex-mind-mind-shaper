@@ -309,6 +309,18 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <!--=== SPOTLIGHT ===-->
+
+    <!-- Next / Got it under the spotlight text - gold like the breadcrumb sparkle and arrow -->
+    <style name="SpotlightActionButton" parent="BaseActionButton">
+        <item name="backgroundTint">@color/spotlight_button_background</item>
+        <item name="android:textColor">@color/spotlight_button_text</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
     <!-- ====================================== -->
     <!--    DIALOGS -->
     <!-- ====================================== -->

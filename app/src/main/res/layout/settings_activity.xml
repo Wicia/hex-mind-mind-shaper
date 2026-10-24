@@ -53,6 +53,37 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
+
+                    <!-- Share the app (opens the QR code and link dialog) | installed version -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_share_app"
+                            style="@style/AuxiliaryActionButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_share_app_btn_open"
+                            app:cornerRadius="12dp"
+                            app:icon="@drawable/ic_share"
+                            app:iconPadding="8dp" />
+
+                        <TextView
+                            android:id="@+id/tv_app_version"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:textSize="12sp"
+                            android:textColor="@color/_gray_lvl_2"
+                            tools:text="ver 2026_10_22" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>

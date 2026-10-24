@@ -69,6 +69,7 @@
         android:orientation="horizontal" />
 
     <!-- Buttons: page answer - Skip / Save, then No / Yes -->
+    <!-- ! Both match_parent in a wrap_content row = the taller one sets the height of both -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -81,9 +82,11 @@
             android:id="@+id/btn_welcome_negative"
             style="@style/AuxiliaryActionButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginEnd="6dp"
             android:layout_weight="1"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             tools:text="@string/home_welcome_name_btn_skip" />
 
         <com.google.android.material.button.MaterialButton
@@ -93,6 +96,8 @@
             android:layout_height="match_parent"
             android:layout_marginStart="6dp"
             android:layout_weight="1"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:textStyle="bold"
             tools:text="@string/home_welcome_name_btn_save" />
 

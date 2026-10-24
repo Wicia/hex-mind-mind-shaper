@@ -192,6 +192,7 @@
     <li><b>X usuwania zawsze po lewej</b> — mały X (<code>ic_close</code>), nie kosz; usuwanie to akcja pomocnicza.</li>
     <li><b>„Ptaszek” / X = zapisz / usuń</b> — nie używamy ich do innych znaczeń (np. ocen); do ocen służą buźki (<code>ic_memory_have</code> / <code>ic_memory_thinking</code> / <code>ic_memory_empty</code>).</li>
     <li><b>Rakieta = start sesji</b> — ta sama ukośna rakieta co <i>Dom</i> (<code>ic_activity_home</code>).</li>
+    <li><b>✦ = okruszek do otwarcia</b> (<code>ic_sparkle</code>) — stoi obok wskazywanego elementu, nad ekranem (sam element bez zmian); strona zawsze podana jawnie. Wysyła pierścienie jak opanowana fiszka; tap otwiera spotlight i ✦ znika na stałe.</li>
     <li><b>Ikony domen</b> (<code>z_ic_domain_*</code>) — wczytywane po prefiksie do galerii ikon domen; nie usuwać ani nie zmieniać nazw, nawet gdy wyszukiwanie nie znajduje odwołań; do innych miejsc UI brać osobną ikonę.</li>
   </ul>
 </section>
@@ -716,7 +717,7 @@
     <rect x="18.5" y="136.5" width="125" height="25" rx="12.5" fill="#FFFFFF" stroke="#BEBEBE" stroke-width="1"/>
     <text x="81" y="149" text-anchor="middle" dominant-baseline="central" font-size="13" fill="#625A54">Bez wskazówek</text>
     <rect x="156" y="136" width="126" height="26" rx="13" fill="#FFC59A"/>
-    <text x="219" y="149" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="700" fill="#48433F">Poznajmy się</text>
+    <text x="219" y="149" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="700" fill="#48433F">Ze wskazówkami</text>
   </g>
 </svg></figure>
         <ul>
@@ -729,11 +730,94 @@
         <ul>
           <li>pokazywany raz; <b>tap poza dialogiem</b> go nie zamyka, <b>back</b> tak (bez zapisu)</li>
           <li><b>Zapisz</b> zapisuje imię i przechodzi dalej; <b>Pomiń</b> przechodzi dalej bez zapisu</li>
-          <li><b>Poznajmy się</b> / <b>Bez wskazówek</b> zapamiętuje odpowiedź i zamyka dialog</li>
+          <li><b>Ze wskazówkami</b> / <b>Bez wskazówek</b> zapamiętuje odpowiedź i zamyka dialog; po <b>Ze wskazówkami</b> spotlight na kolbę w <i>Domu</i></li>
         </ul>
       </dd>
       <dt>Kod</dt>
       <dd><code>WelcomeDialog</code>, <code>common_welcome_dialog.xml</code> (layout)</dd>
+    </dl>
+  </details>
+
+  <details class="comp" open>
+    <summary><h3>Spotlight</h3></summary>
+    <dl>
+      <dt>Przeznaczenie</dt>
+      <dd>Okruszek — jednorazowe wskazanie jednego elementu ekranu z krótką zachętą; np. kolba w <i>Domu</i> po wyborze „Ze wskazówkami” w powitaniu, po tapie w ✦ w karcie „Myśli” <i>Poznawania aplikacji</i> dwa po kolei — ikona z nazwą karty (zadanka), potem przycisk Strumienia.</dd>
+      <dt>Wygląd</dt>
+      <dd>
+        <figure><svg role="img" aria-label="spotlight-home-flask" xmlns="http://www.w3.org/2000/svg" width="345" height="230" viewBox="0 0 300 200">
+  <rect width="300" height="200" fill="#FFF4E6"/>
+  <rect x="16" y="16" width="150" height="10" rx="5" fill="#FFA86B"/>
+  <rect x="16" y="40" width="268" height="44" rx="12" fill="#FFFFFF"/>
+  <rect x="16" y="94" width="268" height="44" rx="12" fill="#FFFFFF"/>
+  <g transform="translate(262,160)" fill="none" stroke="#FFC59A" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M6,2 H14 M8,2 V10 L2,20 Q1,23 4,23 H16 Q19,23 18,20 L12,10 V2"/>
+    <path d="M5,17 H15" stroke-width="1.5"/>
+  </g>
+  <path fill="#000000" fill-opacity="0.8" fill-rule="evenodd" d="M0,0 H300 V200 H0 Z M272,172 m-22,0 a22,22 0 1,0 44,0 a22,22 0 1,0 -44,0 Z"/>
+  <text x="150" y="58" text-anchor="middle" dominant-baseline="central" font-size="17" font-weight="600" fill="#FFFFFF" font-family="'Baloo 2', 'Segoe UI', sans-serif">Tutaj zacznij swoją przygodę</text>
+  <text x="150" y="80" text-anchor="middle" dominant-baseline="central" font-size="17" font-weight="600" fill="#FFFFFF" font-family="'Baloo 2', 'Segoe UI', sans-serif">z MindShaperem</text>
+  <rect x="112" y="96" width="76" height="24" rx="7" fill="#D4AF37"/>
+  <text x="150" y="108" text-anchor="middle" dominant-baseline="central" font-size="13" fill="#2F2C2A" font-family="'Baloo 2', 'Segoe UI', sans-serif">Rozumiem</text>
+  <g fill="none" stroke="#D4AF37" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M192,130 Q204,156 250,160"/>
+    <path d="M250,160 L235,165 M250,160 L240,150"/>
+  </g>
+</svg></figure>
+        <ul>
+          <li>tekst nad elementem, gdy ten jest w dolnej połowie ekranu — pod nim, gdy w górnej</li>
+          <li>pod tekstem złoty przycisk — tekst z przyciskiem przesuwają się razem; przy kilku krokach obok przycisku licznik (np. 1/2)</li>
+          <li>strzałka odręczna — łuk z nierównym grotem, od krawędzi tekstu z przyciskiem do krawędzi otworu</li>
+        </ul>
+      </dd>
+      <dt>Działanie</dt>
+      <dd>
+        <ul>
+          <li><b>tap w podświetlony element</b> = zamknięcie i jego akcja (np. otwarcie <i>Poznawania aplikacji</i>)</li>
+          <li><b>przycisk</b> i <b>back</b> = samo zamknięcie; napis zawsze podany jawnie — „Dalej”, gdy czeka następny krok, „Rozumiem” przy ostatnim</li>
+          <li><b>tap gdziekolwiek indziej</b> = nic — spotlight nie znika przypadkiem przed przeczytaniem</li>
+          <li>start: sam, po akcji użytkownika (np. wybór w powitaniu), albo na życzenie — tap w ✦</li>
+          <li><b>kilka po kolei</b> — następny po zamknięciu poprzedniego, gdy ten już zgasł (bez chwilowego mocniejszego przyciemnienia)</li>
+        </ul>
+      </dd>
+      <dt>Kod</dt>
+      <dd><code>HexSpotlight</code> (<code>show</code>: <code>buttonText</code>, <code>step</code>/<code>stepCount</code>, <code>onClosed</code>), <code>common_spotlight_footer</code>, <code>SpotlightActionButton</code>, <code>spotlight_*</code> (<code>colors.xml</code>), <code>common_spotlight_*</code> (<code>strings.xml</code>)</dd>
+    </dl>
+  </details>
+
+  <details class="comp" open>
+    <summary><h3>Znacznik okruszka</h3></summary>
+    <dl>
+      <dt>Przeznaczenie</dt>
+      <dd>Okruszek czekający na otwarcie — ✦ obok elementu, którego dotyczy; np. za etykietą karty „Myśli” <i>Poznawania aplikacji</i>.</dd>
+      <dt>Wygląd</dt>
+      <dd>
+        <figure><svg role="img" aria-label="breadcrumb-marker-thoughts" xmlns="http://www.w3.org/2000/svg" width="345" height="92" viewBox="0 0 300 80">
+  <rect width="300" height="80" fill="#FFF4E6"/>
+  <rect x="16" y="18" width="268" height="44" rx="12" fill="#FFFFFF"/>
+  <rect x="30" y="34" width="12" height="12" rx="3" fill="none" stroke="#9E9E9E" stroke-width="2"/>
+  <text x="52" y="40" dominant-baseline="central" font-size="15" font-weight="600" fill="#5A5A5A" font-family="'Baloo 2', 'Segoe UI', sans-serif">Myśli</text>
+  <circle cx="102" cy="40" r="17" fill="none" stroke="#D4AF37" stroke-width="2" stroke-opacity="0.45"/>
+  <path transform="translate(93,31) scale(0.75)" fill="#D4AF37" d="M12,1.5 Q13.2,10.8 22.5,12 Q13.2,13.2 12,22.5 Q10.8,13.2 1.5,12 Q10.8,10.8 12,1.5 Z"/>
+  <rect x="240" y="25" width="30" height="30" rx="8" fill="#FFE2CC"/>
+  <path d="M250,35 H260 V45 M260,35 L250,45" fill="none" stroke="#FFA86B" stroke-width="2" stroke-linecap="round"/>
+</svg></figure>
+        <ul>
+          <li>✦ leży nad ekranem, nie w elemencie — element zostaje bez zmian</li>
+          <li>znika, gdy element nie jest w całości widoczny (np. wjechał pod nagłówek)</li>
+        </ul>
+      </dd>
+      <dt>Działanie</dt>
+      <dd>
+        <ul>
+          <li><b>strona</b> (przed / za elementem) zawsze podana przy użyciu — brak domyślnej, żeby każde miejsce przemyśleć</li>
+          <li>jedzie razem z elementem przy przewijaniu</li>
+          <li><b>tap w ✦</b> = ✦ znika i rusza akcja okruszka (np. spotlight)</li>
+          <li>na razie tylko na ekranach aktywności — nie w dialogach</li>
+        </ul>
+      </dd>
+      <dt>Kod</dt>
+      <dd><code>HexBreadcrumbMarker</code> (<code>attach</code>, <code>Side</code>, <code>remove</code>), <code>ic_sparkle</code>, <code>shape_sparkle_signal</code>, <code>breadcrumb_marker</code> (<code>colors.xml</code>)</dd>
     </dl>
   </details>
 

@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -40,7 +41,8 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
         reminderDays: String?
     ) -> Unit)? = null
 
-    private lateinit var etDescription: EditText
+    private lateinit var tvTitle: TextView
+    private lateinit var hifDescription: HexInputField
     private lateinit var fabConfirm: FloatingActionButton
     private lateinit var rootView: ViewGroup
 
@@ -70,11 +72,21 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
         setupRepetitionsField()
         setupReminderToggle()
         setupConfirm()
+        focusDescriptionForNewStep()
+    }
+
+    // A new step opens straight into typing the description; editing opens without the keyboard
+    private fun focusDescriptionForNewStep() {
+        // Edited steps always have a description (it is required on confirm)
+        if (!arguments?.getString(ARG_DESCRIPTION).isNullOrEmpty()) return
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        hifDescription.requestFocusOnField()
     }
 
     private fun bindViews(view: View) {
         rootView        = view as ViewGroup
-        etDescription   = view.findViewById(R.id.et_step_description)
+        tvTitle         = view.findViewById(R.id.tv_step_sheet_title)
+        hifDescription  = view.findViewById(R.id.hif_step_description)
         hifRepetitions  = view.findViewById(R.id.hif_repetitions)
         fabConfirm      = view.findViewById(R.id.fab_step_confirm)
 
@@ -101,9 +113,9 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun setupInitialValues() {
-        val description = arguments?.getString(ARG_DESCRIPTION) ?: ""
-        etDescription.setText(description)
-        etDescription.setSelection(description.length)
+        arguments?.getString(ARG_TITLE)?.let { tvTitle.text = it }
+
+        hifDescription.setText(arguments?.getString(ARG_DESCRIPTION) ?: "")
 
         val maxRepetitions = arguments?.getInt(ARG_MAX_REPETITIONS, 1) ?: 1
         hifRepetitions.setText(maxRepetitions.toString())
@@ -167,9 +179,9 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
 
     private fun setupConfirm() {
         fabConfirm.setOnClickListener {
-            val description = etDescription.text.toString().trim()
+            val description = hifDescription.getText()
             if (description.isEmpty()) {
-                etDescription.error = getString(R.string.workshop_step_description_error_no_input)
+                hifDescription.showError(getString(R.string.workshop_step_description_error_no_input))
                 return@setOnClickListener
             }
             val maxRepsText = hifRepetitions.getText()
