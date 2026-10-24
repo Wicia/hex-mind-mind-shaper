@@ -235,6 +235,13 @@ class DetailsActivity : ThoughtManagerActivity() {
                 override fun onError(error: String) {
                     Toast.makeText(this@DetailsActivity, error, Toast.LENGTH_SHORT).show()
                 }
+
+                override fun onPhotoDownloadRequested() {
+                    lifecycleScope.launch {
+                        val isSaved = viewModel.downloadPhoto()
+                        showShortToast(if (isSaved) R.string.photos_download_done else R.string.photos_download_error)
+                    }
+                }
             })
 
             audioRecordingPlayback.setCallback(object : HexAudioView.RecordingCallback {

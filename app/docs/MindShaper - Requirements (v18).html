@@ -885,6 +885,8 @@
             text: "pełny rozmiar po wybraniu miniatury"},
         {fn: "Usuwanie zdjęcia", col: "proc", process: ["Zapis w formie Zdjęcia"], place: [...CAP, ...DET],
             text: "z potwierdzeniem; nie da się cofnąć"},
+        {fn: "Pobieranie zdjęcia", col: "proc", process: ["Zapis w formie Zdjęcia"], place: DET,
+            text: "kopia zdjęcia myśli trafia do galerii telefonu, do albumu MindShaper; zdjęcie w myśli zostaje bez zmian; potwierdzenie albo informacja, że zapis się nie udał"},
 
         // Łączenie myśli z hex tagami
         {fn: "Nadawanie tagów myśli", col: "data", process: ["Łączenie myśli z hex tagami"], place: [...CAP, ...DET],
@@ -1411,6 +1413,7 @@
     // Differences from Requirements v12 and doubts found in the code — for the verification pass
     const CHANGE_NOTES = {
         "Rozpoczynanie łapania myśli": "zmiana — niedostępne w Warsztacie",
+        "Pobieranie zdjęcia": "nowe — zapis kopii zdjęcia myśli w galerii telefonu (Szczegóły myśli)",
         "Zmienianie nagrania": "zmiana — nagranie od nowa z pytaniem „Nagraj ponownie”; usuwanie wydzielone osobno",
         "Usuwanie nagrania": "nowe — osobne usuwanie nagrania, z potwierdzeniem (wcześniej wybór w pytaniu przy nagraniu od nowa)",
         "Wyświetlanie notatki": "nowe — długa notatka zwinięta do wysokości edytora, z „Pokaż wszystko” / „Zwiń” (Łapanie, Szczegóły)",

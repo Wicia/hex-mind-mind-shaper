@@ -67,6 +67,8 @@ class HexPhotoView @JvmOverloads constructor(
         fun onPhotoDeleted()
         fun onPhotoClicked()
         fun onError(error: String)
+        // Only with photoDownload on
+        fun onPhotoDownloadRequested() {}
     }
 
     // UI Components
@@ -76,12 +78,14 @@ class HexPhotoView @JvmOverloads constructor(
     val btnCamera: MaterialButton
     val btnGallery: MaterialButton
     val btnDelete: MaterialButton
+    private val btnDownload: MaterialButton
 
     // State
     private var mode: Mode = Mode.CAPTURE_DISPLAY
     private var state: State = State.EMPTY
     private var currentBitmap: Bitmap? = null
     private var compact: Boolean = false
+    private var isDownloadEnabled: Boolean = false
     private var callback: PhotoCallback? = null
     private var viewScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
@@ -96,6 +100,7 @@ class HexPhotoView @JvmOverloads constructor(
         btnCamera = findViewById(R.id.btn_camera)
         btnGallery = findViewById(R.id.btn_gallery)
         btnDelete = findViewById(R.id.btn_delete)
+        btnDownload = findViewById(R.id.btn_download)
 
         // Read XML attributes
         attrs?.let {
@@ -103,6 +108,7 @@ class HexPhotoView @JvmOverloads constructor(
                 val modeValue = getInt(R.styleable.HexPhotoView_photoMode, 0)
                 mode = if (modeValue == 1) Mode.DISPLAY_ONLY else Mode.CAPTURE_DISPLAY
                 compact = getBoolean(R.styleable.HexPhotoView_compact, false)
+                isDownloadEnabled = getBoolean(R.styleable.HexPhotoView_photoDownload, false)
                 setupUIForMode()
             }
         }
@@ -153,6 +159,10 @@ class HexPhotoView @JvmOverloads constructor(
             showDeleteConfirmation()
         }
 
+        btnDownload.setOnClickListener {
+            callback?.onPhotoDownloadRequested()
+        }
+
         // // Display-only mode - no full-screen preview, let the tap reach the card (open thought details)
         if (mode == Mode.CAPTURE_DISPLAY) {
             ivPhoto.setOnClickListener {
@@ -193,6 +203,8 @@ class HexPhotoView @JvmOverloads constructor(
                 btnDelete.visibility = GONE
             }
         }
+
+        btnDownload.visibility = if (hasPhoto && isDownloadEnabled) VISIBLE else GONE
     }
 
     private fun showDeleteConfirmation() {

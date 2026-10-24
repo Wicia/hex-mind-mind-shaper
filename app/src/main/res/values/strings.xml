@@ -108,6 +108,8 @@
     <string name="photos_removing_yes">Usuń zdjęcie</string>
     <string name="photos_no_file">Brakuje tutaj zdjęcia…</string>
     <string name="photos_loading_error">Coś się wyburaczyło przy ładowaniu zdjęcia…</string>
+    <string name="photos_download_done">Zdjęcie zapisane w galerii (MindShaper)</string>
+    <string name="photos_download_error">Nie udało się zapisać zdjęcia w galerii</string>
 
     <!-- Flashcards -->
     <string name="flashcards_title">Zapamiętywanie</string>

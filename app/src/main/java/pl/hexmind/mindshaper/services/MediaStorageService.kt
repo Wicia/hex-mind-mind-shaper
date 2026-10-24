@@ -1,12 +1,15 @@
 package pl.hexmind.mindshaper.services
 
+import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
+import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -148,6 +151,34 @@ class MediaStorageService @Inject constructor(
     }
 
     /**
+     * Saves a JPEG to the phone's gallery (Pictures/MindShaper) - no storage permission needed (scoped storage).
+     * Pending until fully written, so the gallery never shows a half-saved file.
+     * @return true when saved
+     */
+    fun savePhotoToGallery(photoData: ByteArray, displayName: String): Boolean {
+        val resolver = context.contentResolver
+        val values = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, displayName)
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+            put(MediaStore.Images.Media.RELATIVE_PATH, "${Environment.DIRECTORY_PICTURES}/$GALLERY_FOLDER")
+            put(MediaStore.Images.Media.IS_PENDING, 1)
+        }
+
+        val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) ?: return false
+        return try {
+            resolver.openOutputStream(uri)?.use { output -> output.write(photoData) } ?: error("No output stream")
+            values.clear()
+            values.put(MediaStore.Images.Media.IS_PENDING, 0)
+            resolver.update(uri, values, null, null)
+            true
+        } catch (e: Exception) {
+            Timber.e(e, "Saving photo to gallery failed")
+            resolver.delete(uri, null, null)
+            false
+        }
+    }
+
+    /**
      * Get file name from URI
      */
     fun getFileNameFromUri(uri: Uri): String {
@@ -161,5 +192,10 @@ class MediaStorageService @Inject constructor(
             }
         }
         return fileName
+    }
+
+    companion object {
+        // Pictures/<this> - the app's own album in the phone's gallery
+        private const val GALLERY_FOLDER = "MindShaper"
     }
 }

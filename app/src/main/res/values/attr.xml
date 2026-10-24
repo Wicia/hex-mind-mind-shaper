@@ -42,6 +42,8 @@
             <enum name="displayOnly" value="1" />
         </attr>
         <attr name="compact" />
+        <!-- Download button next to a loaded photo (saves it to the phone's gallery); off by default -->
+        <attr name="photoDownload" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="HexTextView">
