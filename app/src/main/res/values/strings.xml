@@ -459,9 +459,9 @@ Awers - Rewers…"</string>
 
     <!-- Dormant / warning dialogs -->
     <string name="details_warning_dialog_title">⚠️ Myśl niedługo zaśnie</string>
-    <string name="details_warning_dialog_message">Tej myśli zostały 3 dni do uśpienia. Edytuj ją lub zwiększ wartość, by ją zachować.</string>
+    <string name="details_warning_dialog_message">Tej myśli zostały 3 dni do uśpienia i ukrycia. Edytuj ją lub zwiększ wartość, aby ją zachować.</string>
     <string name="details_dormant_dialog_title">🌙 Obudzić uśpioną myśl?</string>
-    <string name="details_dormant_dialog_message">Ma niską wartość i nie była zmieniana od dłuższego czasu.</string>
+    <string name="details_dormant_dialog_message">Obecnie ta myśl jest uśpiona i ukryta. Miała niską wartość i od dłuższego czasu nie była zmieniana.</string>
     <string name="details_dormant_dialog_wake">Obudź myśl</string>
 
     <!-- Linked thought -->

@@ -3,6 +3,7 @@ package pl.hexmind.mindshaper.activities.details
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -601,6 +602,7 @@ class DetailsActivity : ThoughtManagerActivity() {
 
                 binding.ivStatus.setImageResource(R.drawable.ic_status_attention)
                 binding.ivStatus.imageTintList = statusColor
+                setStatusIconTappable(true)
                 binding.ivStatus.setOnClickListener { showWarningDialog() }
             }
 
@@ -614,6 +616,7 @@ class DetailsActivity : ThoughtManagerActivity() {
 
                 binding.ivStatus.setImageResource(R.drawable.ic_status_dormant)
                 binding.ivStatus.imageTintList = statusColor
+                setStatusIconTappable(true)
                 binding.ivStatus.setOnClickListener { showDormantDialog() }
             }
 
@@ -625,10 +628,26 @@ class DetailsActivity : ThoughtManagerActivity() {
                 binding.btnValueIncrease.imageTintList = null
                 binding.btnValueDecrease.imageTintList = null
 
-                binding.ivStatus.setImageResource(R.drawable.ic_status_wip)
-                binding.ivStatus.imageTintList = statusColor
+                // Active = nothing to explain: just a sign, no dialog behind it
+                binding.ivStatus.setImageResource(R.drawable.ic_status_active)
+                binding.ivStatus.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color._orange_lvl_1))
                 binding.ivStatus.setOnClickListener(null)
+                setStatusIconTappable(false)
             }
+        }
+    }
+
+    // Warning / dormant open a dialog (ripple on tap); the active sign does not react at all
+    private fun setStatusIconTappable(isTappable: Boolean) {
+        binding.ivStatus.isClickable = isTappable
+        binding.ivStatus.isFocusable = isTappable
+        if (isTappable) {
+            val ripple = TypedValue()
+            theme.resolveAttribute(android.R.attr.selectableItemBackgroundBorderless, ripple, true)
+            binding.ivStatus.setBackgroundResource(ripple.resourceId)
+        }
+        else {
+            binding.ivStatus.background = null
         }
     }
 
