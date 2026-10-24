@@ -534,7 +534,7 @@ Awers - Rewers…"</string>
     <string name="settings_share_app_btn_open">Poleć apkę</string>
     <string name="settings_share_app_info">Zeskanuj kod albo wyślij link - plik APK czeka na dysku Google</string>
     <string name="settings_share_app_link" translatable="false">https://drive.google.com/drive/folders/1_uJcc-aC19KcGAOGWESI_-pyfmmuU1_U</string>
-    <string name="settings_share_app_message">MindShaper - aplikacja do rzeźbienia umysłu, myślenia i pamięci. Pobierz APK: %1$s</string>
+    <string name="settings_share_app_message">MindShaper - aplikacja do rzeźbienia umysłu małymi krokami.\nPobierz APK i zainstaluj eksperymentalną wersję: %1$s</string>
     <string name="settings_share_app_btn_copy">Kopiuj link</string>
     <string name="settings_share_app_btn_send">Udostępnij</string>
     <string name="settings_share_app_copied">Link skopiowany</string>
@@ -686,7 +686,7 @@ Awers - Rewers…"</string>
     <string name="workshop_dialog_delete_step_title">Usunąć krok?</string>
     <string name="workshop_dialog_delete_step_yes">Usuń krok</string>
     <string name="workshop_dialog_delete_step_calendar_yes">Usuń krok i przypomnienie</string>
-    <string name="workshop_step_repetitions_header">Ile razy trzeba to wykonać?</string>
+    <string name="workshop_step_repetitions_header">Ile razy trzeba zrobić ten krok?</string>
     <string name="workshop_step_repetitions_label">Liczba</string>
     <string name="workshop_step_repetitions_single">Jeden raz</string>
     <string name="workshop_goal_repetitions_7">7 ⟳</string>

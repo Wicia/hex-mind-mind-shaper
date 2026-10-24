@@ -13,6 +13,7 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
+        <!-- ! clipChildren / clipToPadding false: the shadows fall into the 16dp padding - clipped here, their sides would look cut off -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,7 +21,9 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:paddingTop="28dp"
-            android:paddingBottom="80dp">
+            android:paddingBottom="80dp"
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
             <!-- Goal header: priority badge + goal name -->
             <LinearLayout
@@ -28,7 +31,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:clipChildren="false">
 
                 <!-- Importance badge -->
                 <pl.hexmind.mindshaper.common.ui.views.GoalImportanceBadge
@@ -37,17 +41,27 @@
                     android:layout_height="46dp"
                     android:textSize="18sp" />
 
-                <!-- Goal name -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/cb_goal_description"
-                    style="@style/MetadataContentButton.Used"
+                <!-- Goal name - the card gives the shadow; the button's own elevation shows none here -->
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:icon="@drawable/ic_goal"
-                    app:iconSize="32dp"
-                    android:maxLines="2"
                     android:layout_marginStart="8dp"
-                    />
+                    app:cardBackgroundColor="@color/button_content_filled_background"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/cb_goal_description"
+                        style="@style/MetadataContentButton.Used"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/ic_goal"
+                        app:iconSize="32dp"
+                        android:maxLines="2"
+                        android:stateListAnimator="@null"
+                        />
+
+                </androidx.cardview.widget.CardView>
 
             </LinearLayout>
 
