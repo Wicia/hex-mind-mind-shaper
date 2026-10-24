@@ -41,45 +41,52 @@
 
     </FrameLayout>
 
-    <!-- Action buttons -->
-    <LinearLayout
+    <!-- Action buttons: camera + gallery centered, delete at the right edge (it does not shift them) -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:layout_height="wrap_content">
 
-        <!-- Camera button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_camera"
-            style="@style/SecondaryActionButton"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:layout_marginEnd="8dp"
-            app:icon="@drawable/ic_thought_type_photo"
-            app:iconGravity="textStart" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-        <!-- Gallery button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_gallery"
-            style="@style/SecondaryActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            app:iconSize="32dp"
-            app:icon="@drawable/ic_photo_load"
-            app:iconGravity="textStart"/>
+            <!-- Camera button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_camera"
+                style="@style/SecondaryActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_marginEnd="8dp"
+                app:icon="@drawable/ic_thought_type_photo"
+                app:iconGravity="textStart" />
 
-        <!-- Delete button -->
+            <!-- Gallery button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_gallery"
+                style="@style/SecondaryActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                app:iconSize="32dp"
+                app:icon="@drawable/ic_photo_load"
+                app:iconGravity="textStart"/>
+
+        </LinearLayout>
+
+        <!-- Delete: X, always on the right; ghost - an auxiliary action -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_delete"
-            style="@style/SecondaryActionButton"
+            style="@style/SecondaryActionButton.Ghost"
             android:layout_width="wrap_content"
             android:layout_height="42dp"
-            android:layout_marginStart="16dp"
-            app:icon="@drawable/ic_action_delete"
+            android:layout_gravity="end|center_vertical"
+            app:icon="@drawable/ic_delete"
             android:textColor="@color/validation_error"
             android:visibility="gone"
             app:iconGravity="textStart"/>
 
-    </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

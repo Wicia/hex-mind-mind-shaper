@@ -60,7 +60,7 @@
             android:layout_height="1dp"
             android:layout_weight="1" />
 
-        <!-- Delete button -->
+        <!-- Delete: X, always on the right -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_delete"
             style="@style/SecondaryActionButton.Ghost"
@@ -68,7 +68,7 @@
             android:layout_height="48dp"
             android:visibility="visible"
             app:iconGravity="start"
-            app:icon="@drawable/ic_action_delete"
+            app:icon="@drawable/ic_delete"
             app:iconTint="@color/_white" />
 
     </LinearLayout>

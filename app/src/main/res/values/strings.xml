@@ -355,10 +355,11 @@ Awers - Rewers…"</string>
     <string name="capture_voice_error_empty">Eeee… To nagranie ma 0 sekund :/</string>
     <string name="capture_voice_error_recording">Błąd podczas nagrywania</string>
     <string name="capture_voice_error_save_failed">Błąd podczas zapisywania do bazy</string>
-    <string name="capture_voice_dialog_title">Nagranie już istnieje — co z nim zrobić?</string>
-    <string name="capture_voice_dialog_description">Obecne nagranie zniknie w obu przypadkach.</string>
+    <string name="capture_voice_dialog_overwrite_title">Nagrać od nowa?</string>
+    <string name="capture_voice_dialog_overwrite_description">Nowe nagranie zastąpi obecne.</string>
+    <string name="capture_voice_dialog_overwrite">Nagraj ponownie</string>
+    <string name="capture_voice_dialog_delete_title">Usunąć nagranie?</string>
     <string name="capture_voice_dialog_delete">Usuń nagranie</string>
-    <string name="capture_voice_dialog_overwrite">Nagraj od nowa</string>
 
     <!-- ============================================================ -->
     <!--    STREAM Activity                                           -->

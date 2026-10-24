@@ -11,6 +11,7 @@
         android:layout_height="match_parent" />
 
     <!-- Close button: bottom center, in thumb reach in both hands and orientations -->
+    <!-- Closed eye, not X - X means delete, and the same photo has a delete X on its card -->
     <ImageButton
         android:id="@+id/btn_close"
         android:layout_width="56dp"
@@ -19,7 +20,7 @@
         android:layout_marginBottom="40dp"
         android:padding="16dp"
         android:background="@drawable/bg_photo_viewer_close"
-        android:src="@drawable/ic_close"
+        android:src="@drawable/ic_action_view_off"
         android:tint="@color/photo_viewer_close_icon"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
 

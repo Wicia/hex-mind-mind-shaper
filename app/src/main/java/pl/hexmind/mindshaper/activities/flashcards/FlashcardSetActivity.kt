@@ -24,7 +24,7 @@ import pl.hexmind.mindshaper.services.dto.FlashcardsLibraryDTO
 
 /**
  * Preview of one set: its flashcards (front + back) in the order they were entered.
- * Delete (X, left) / edit / review (rocket), FAB = speed dial: add flashcards in a series / import them from a text.
+ * Edit / review (rocket), FAB = speed dial: add flashcards in a series / import them from a text.
  * Tap on a flashcard = edit just that one (+ move it), long press = delete it.
  * Each flashcard shows where it is in the Repetitions System (new / level / mastered).
  */

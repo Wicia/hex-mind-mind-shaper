@@ -862,9 +862,11 @@
         {fn: "Odtwarzanie głosówki", col: "proc", process: ["Zapis w formie Głosówki"], place: STR,
             text: "Strumień myśli — tylko odtwarzanie, bez zmiany nagrania"},
         {fn: "Zmienianie nagrania", col: "data", process: ["Zapis w formie Głosówki"], place: [...CAP, ...DET],
-            text: "dla istniejącego nagrania — Nagraj od nowa albo Usuń nagranie"},
+            text: "dla istniejącego nagrania — nagranie od nowa; usuwanie osobno (Usuwanie nagrania)"},
         {fn: "Zmienianie nagrania", col: "proc", process: ["Zapis w formie Głosówki"], place: [...CAP, ...DET],
-            text: "w obu przypadkach obecne nagranie znika"},
+            text: "nagranie od nowa — najpierw pytanie, bo nowe nagranie zastąpi obecne: „Nagraj ponownie” albo rezygnacja (nagranie zostaje)"},
+        {fn: "Usuwanie nagrania", col: "proc", process: ["Zapis w formie Głosówki"], place: [...CAP, ...DET],
+            text: "z potwierdzeniem; nie da się cofnąć; dostępne tylko, gdy nic się nie nagrywa ani nie odtwarza"},
         {fn: "Pokazywanie wyłączonej formy", col: "proc", process: ["Zapis w formie Głosówki", "Zapis w formie Zdjęcia"], place: [...STR, ...DET],
             text: "głosówki albo zdjęcia wyłączone w Preferencjach — zapisane nagranie / zdjęcie nie jest pokazywane, ale zostaje w myśli"},
 
@@ -1409,6 +1411,8 @@
     // Differences from Requirements v12 and doubts found in the code — for the verification pass
     const CHANGE_NOTES = {
         "Rozpoczynanie łapania myśli": "zmiana — niedostępne w Warsztacie",
+        "Zmienianie nagrania": "zmiana — nagranie od nowa z pytaniem „Nagraj ponownie”; usuwanie wydzielone osobno",
+        "Usuwanie nagrania": "nowe — osobne usuwanie nagrania, z potwierdzeniem (wcześniej wybór w pytaniu przy nagraniu od nowa)",
         "Wyświetlanie notatki": "nowe — długa notatka zwinięta do wysokości edytora, z „Pokaż wszystko” / „Zwiń” (Łapanie, Szczegóły)",
         "Pisanie notatki": "zmiana — nagłówek edytora: „Nowa notatka” przy pustej, „Edytuj notatkę” przy istniejącej",
         "Dodawanie celu": "zmiana — dostępne tylko w zakładce Cele, przy aktywnych celach; do sprawdzenia — opis celu nie jest wymagany (pusty cel się zapisuje)",
