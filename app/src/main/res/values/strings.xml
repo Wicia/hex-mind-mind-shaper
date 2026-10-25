@@ -284,6 +284,19 @@ Awers - Rewers…"</string>
     <string name="home_welcome_onboarding_btn_yes">Ze wskazówkami</string>
     <string name="home_onboarding_spotlight">Tutaj zacznij swoją przygodę z MindShaperem</string>
 
+    <!-- App news (badge under the rocket + bottom sheet) -->
+    <string name="home_news_title">Wieści z apki</string>
+    <string name="home_news_badge_overflow" translatable="false">9+</string>
+    <string name="home_news_empty">Tutaj pojawią się wieści z apki…</string>
+    <string name="home_news_mark_read">Oznacz jako przeczytane</string>
+    <string name="home_news_mark_unread">Oznacz jako nieprzeczytane</string>
+    <plurals name="home_news_near_dormant">
+        <item quantity="one">%d myśl niebawem uśnie i zostanie ukryta</item>
+        <item quantity="few">%d myśli niebawem usną i zostaną ukryte</item>
+        <item quantity="many">%d myśli niebawem uśnie i zostanie ukrytych</item>
+        <item quantity="other">%d myśli niebawem uśnie i zostanie ukrytych</item>
+    </plurals>
+
     <array name="home_greetings_values_list">
         <item>Dużo dobrego %s!</item>
         <item>Witaj %s ;)</item>

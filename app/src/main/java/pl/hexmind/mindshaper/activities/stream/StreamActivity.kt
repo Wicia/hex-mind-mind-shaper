@@ -90,6 +90,7 @@ class StreamActivity : CoreActivity() {
         // Only on the first creation - after a recreation the ViewModel already holds this (or a newer) search
         if (savedInstanceState == null) {
             applyLaunchSearchCriteria()
+            applyLaunchStateFilter()
         }
     }
 
@@ -203,6 +204,14 @@ class StreamActivity : CoreActivity() {
     private fun applyLaunchSearchCriteria() {
         val criteria = IntentCompat.getParcelableExtra(intent, P_SEARCH_CRITERIA, HexTags::class.java) ?: return
         searcher.setTags(criteria)
+    }
+
+    // Opened for the near-dormant thoughts only - the state filter shows just them, still editable
+    private fun applyLaunchStateFilter() {
+        if (!intent.getBooleanExtra(P_NEAR_DORMANT_ONLY, false)) return
+        viewModel.updateShowActive(false)
+        viewModel.updateShowNearDormant(true)
+        viewModel.updateShowDormant(false)
     }
 
     // TODO: to be used when "traditional" searching will be brought back as alternative (like setting config)
@@ -417,7 +426,8 @@ class StreamActivity : CoreActivity() {
     }
 
     companion object {
-        const val P_SEARCH_CRITERIA = "search_criteria"
+        const val P_SEARCH_CRITERIA   = "search_criteria"
+        const val P_NEAR_DORMANT_ONLY = "near_dormant_only"
 
         private const val FADING_EDGE_DP = 16
     }

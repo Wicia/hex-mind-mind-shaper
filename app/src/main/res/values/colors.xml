@@ -197,6 +197,10 @@
     <color name="lab_bubble_stroke">@color/_orange_lvl_2</color>
     <color name="lab_bubble_fill">#33FFC59A</color>
 
+    <!-- Unread news badge under the rocket on Home and its wave ring -->
+    <color name="home_news_badge">@color/_orange_lvl_2</color>
+    <color name="home_news_badge_text">@color/text_primary</color>
+
 <!-- ====================================== -->
 <!--    PROGRESS RINGS -->
 <!-- ====================================== -->

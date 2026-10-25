@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- App news entry: read-state ring + text + chevron (unread only); tap = open the entry, ring = toggle read -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="4dp"
+    android:minHeight="48dp"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- Read-state ring: empty = unread, full with a tick = read; tap toggles it -->
+    <FrameLayout
+        android:id="@+id/fl_news_ring"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackgroundBorderless">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/cpi_news_ring"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            app:indicatorSize="32dp"
+            app:trackThickness="6dp"
+            app:trackCornerRadius="4dp"
+            app:indicatorColor="@color/_orange_lvl_3"
+            app:trackColor="@color/_orange_lvl_1"
+            app:indicatorTrackGapSize="0dp"
+            android:indeterminate="false" />
+
+        <TextView
+            android:id="@+id/tv_news_ring_label"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:textColor="@color/progress_ring_done" />
+
+    </FrameLayout>
+
+    <!-- Entry text -->
+    <TextView
+        android:id="@+id/tv_news_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="4dp"
+        android:textSize="14sp"
+        android:textColor="@color/text_primary"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp" />
+
+    <!-- Chevron: only on unread entries, in the text color -->
+    <ImageView
+        android:id="@+id/iv_news_chevron"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="4dp"
+        android:src="@drawable/ic_action_chevron_right"
+        app:tint="@color/text_primary"
+        android:importantForAccessibility="no"
+        android:visibility="gone" />
+
+</LinearLayout>

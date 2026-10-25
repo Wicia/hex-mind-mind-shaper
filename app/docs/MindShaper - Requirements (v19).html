@@ -450,7 +450,7 @@
     // Side bar sections per mode (names as the groups in Requirements); order defines list order
     const SECTIONS = {
         process: [
-            {name: "Aplikacja", items: ["Nawigowanie po aplikacji", "Zapisywanie preferencji", "Personalizowanie", "Wybór ekranu startowego", "Żądanie Uprawnień", "Onboarding", "Skróty aplikacji", "Sprawdzanie wersji aplikacji", "Udostępnianie aplikacji", "Robienie kopii zapasowej danych"]},
+            {name: "Aplikacja", items: ["Nawigowanie po aplikacji", "Zapisywanie preferencji", "Personalizowanie", "Wybór ekranu startowego", "Żądanie Uprawnień", "Onboarding", "Wieści z apki", "Skróty aplikacji", "Sprawdzanie wersji aplikacji", "Udostępnianie aplikacji", "Robienie kopii zapasowej danych"]},
             {name: "Myśli", items: ["Łapanie myśli", "Zapis w formie Notatki", "Zapis w formie Głosówki", "Zapis w formie Zdjęcia", "Łączenie myśli z hex tagami", "Porządkowanie hex tagów", "Konfigurowanie domen", "Przeglądanie myśli", "Wyszukiwanie myśli", "Sortowanie myśli", "Filtrowanie myśli", "Edytowanie myśli", "Usuwanie myśli", "Wartościowanie myśli"]},
             {name: "Rozwój", items: ["Tryb „Uśpienia”", "Wyznaczanie celów", "Realizowanie kroków", "Łączenie myśli z krokami", "Przypomnienia kroków w kalendarzu", "Ścieżki doświadczeń"]},
             {name: "Zapamiętywanie", items: ["Zapisywanie luźnych fiszek", "Prowadzenie zestawów fiszek", "Importowanie fiszek z tekstu", "Powtarzanie z fiszkami"]},
@@ -663,6 +663,30 @@
             text: "wybrane Zapamiętywanie przy wyłączonych fiszkach — zostaje Dom"},
         {fn: "Przekierowanie na ekran startowy", col: "proc", process: ["Wybór ekranu startowego", "Wyznaczanie celów"], place: HOME,
             text: "wybrany Warsztat przy wyłączonym Warsztacie — zostaje Dom"},
+
+        // Wieści z apki
+        {fn: "Wyświetlanie liczby nieprzeczytanych wieści", col: "data", process: ["Wieści z apki"], place: HOME,
+            text: "liczba nieprzeczytanych wieści z apki przy wejściu do wieści — wyróżniona, by przyciągała uwagę<ul><li>powyżej 9 — „9+”</li></ul>"},
+        {fn: "Wyświetlanie liczby nieprzeczytanych wieści", col: "proc", process: ["Wieści z apki"], place: HOME,
+            text: "brak nieprzeczytanych wieści — liczba zostaje (0), bez wyróżnienia"},
+        {fn: "Wyświetlanie liczby nieprzeczytanych wieści", col: "proc", process: ["Wieści z apki"], place: HOME,
+            text: "wieść nieprzeczytana, dopóki użytkownik jej nie wybierze w „Wieściach z apki” albo nie oznaczy jako przeczytanej — samo przejrzenie listy jej nie odznacza"},
+        {fn: "Wyświetlanie liczby nieprzeczytanych wieści", col: "proc", process: ["Wieści z apki", "Tryb „Uśpienia”"], place: HOME,
+            text: "wieść o myślach bliskich uśpienia znowu nieprzeczytana, gdy dojdzie do niej myśl, której w niej nie było przy ostatnim wybraniu"},
+        {fn: "Przeglądanie wieści", col: "data", process: ["Wieści z apki"], place: HOME,
+            text: "„Wieści z apki” otwierane z Domu<ul><li>przy każdej wieści — czy jest przeczytana; nieprzeczytane z zachętą do wybrania</li><li>najpierw nieprzeczytane, pod nimi — oddzielone — przeczytane</li><li>brak wieści — informacja, że tu się pojawią</li></ul>"},
+        {fn: "Przeglądanie wieści", col: "proc", process: ["Wieści z apki"], place: HOME,
+            text: "wejście zawsze dostępne, także bez nieprzeczytanych wieści"},
+        {fn: "Przeglądanie wieści", col: "proc", process: ["Wieści z apki"], place: HOME,
+            text: "wybrana wieść nie znika — przechodzi do przeczytanych i dalej można ją wybrać"},
+        {fn: "Przeglądanie wieści", col: "proc", process: ["Wieści z apki"], place: HOME,
+            text: "oznaczanie wieści jako przeczytanej / nieprzeczytanej bez jej wybierania — w obie strony, np. by wrócić do niej później; wieść od razu przechodzi do drugiej grupy, a liczba nieprzeczytanych się zmienia"},
+        {fn: "Przeglądanie wieści", col: "data", process: ["Wieści z apki", "Tryb „Uśpienia”"], place: HOME,
+            text: "wieść o myślach bliskich uśpienia — ile myśli niebawem uśnie i zostanie ukrytych"},
+        {fn: "Przeglądanie wieści", col: "proc", process: ["Wieści z apki", "Tryb „Uśpienia”"], place: HOME,
+            text: "pokazywana tylko przy włączonym trybie uśpienia i co najmniej jednej myśli bliskiej uśpienia; liczba aktualna w chwili oglądania"},
+        {fn: "Przeglądanie wieści", col: "proc", process: ["Wieści z apki", "Tryb „Uśpienia”", "Filtrowanie myśli"], place: HOME,
+            text: "wybranie wieści o myślach bliskich uśpienia — Strumień myśli tylko z nimi (jak w „Filtrowanie po stanie”)"},
 
         // Onboarding
         {fn: "Wyświetlanie wskazówek", col: "data", process: ["Onboarding"], place: GEN,
@@ -1055,6 +1079,8 @@
             text: "sekcja ukryta przy wyłączonym trybie uśpienia — wtedy wszystkie myśli"},
         {fn: "Filtrowanie po stanie", col: "proc", process: ["Filtrowanie myśli", "Tryb „Uśpienia”"], place: STR,
             text: "liczby ze wszystkich myśli, nie tylko przefiltrowanych — ustalane w chwili otwarcia okna"},
+        {fn: "Filtrowanie po stanie", col: "proc", process: ["Filtrowanie myśli", "Tryb „Uśpienia”", "Wieści z apki"], place: STR,
+            text: "wejście z wieści o myślach bliskich uśpienia — zaznaczone tylko Bliskie uśpienia; filtr dalej można zmienić"},
         {fn: "Filtrowanie po domenie", col: "data", process: ["Filtrowanie myśli", "Konfigurowanie domen"], place: STR,
             text: "domeny — jedna do wyboru"},
         {fn: "Filtrowanie po domenie", col: "proc", process: ["Filtrowanie myśli"], place: STR,
@@ -1448,7 +1474,7 @@
         "Filtrowanie po czasie utworzenia": "nowe — filtr Strumienia po dniu utworzenia myśli",
         "Zatwierdzanie filtra": "zmiana — dochodzi czas utworzenia",
         "Otwieranie filtra": "zmiana — stany liczone jako jedno kryterium, tylko po zmianie domyślnych",
-        "Filtrowanie po stanie": "zmiana — trzeci stan „Bliskie uśpienia” (domyślnie zaznaczony) zamiast liczenia ich jako aktywne",
+        "Filtrowanie po stanie": "zmiana — trzeci stan „Bliskie uśpienia” (domyślnie zaznaczony) zamiast liczenia ich jako aktywne; nowe — wejście z wieści o myślach bliskich uśpienia zaznacza tylko je",
         "Wczytywanie kopii": "zmiana — plik z dowolnego miejsca, powód błędu widoczny, działa zaraz po ponownej instalacji",
         "Witanie przy pierwszym uruchomieniu": "nowe — powitanie z podaniem imienia, wskazaniem Preferencji i pytaniem o poznawanie aplikacji (nie = wskazówki wyłączone); zmiana — zamknięcie bez odpowiedzi = wskazówki wyłączone; zmiana — druga karta wita w Domu z imieniem zamiast wskazywać Preferencje, bez wskazówki Domu po powitaniu; zmiana — „Ze wskazówkami” zamiast „Poznajmy się”, po nim jednorazowe wskazanie wejścia do Poznawania aplikacji",
         "Wyświetlanie zadanek": "nowe — zadanka z postępem przed sekcjami wskazówek, pogrupowane w karty według obszaru z przejściem do ekranu (Myśli → Strumień); okruszek karty Myśli otwierany na życzenie; zmiana — okruszek w dwóch wskazaniach: karta z zadankami, potem przejście do Strumienia",
@@ -1458,6 +1484,8 @@
         "Wyświetlanie wersji": "zmiana — przeniesione z Domu do Preferencji, przy udostępnianiu aplikacji",
         "Przekazywanie linku do pobrania": "nowe — kod QR, wysłanie i skopiowanie linku do folderu z APK",
         "Wyświetlanie postępu": "zmiana — liczy też zadanka (wagą ich punktów); zmiana — ukończony wyróżniony jak ukończone zadanka",
+        "Wyświetlanie liczby nieprzeczytanych wieści": "nowe — liczba wieści jeszcze niewybranych w „Wieściach z apki”",
+        "Przeglądanie wieści": "nowe — pierwsza wieść: myśli bliskie uśpienia, z przejściem do Strumienia; nieprzeczytane nad przeczytanymi, z oznaczeniem przeczytania i zachętą do wybrania nieprzeczytanych; wybrana wieść zostaje wśród przeczytanych; oznaczanie jako przeczytane / nieprzeczytane",
     };
 
     // Places where the user verified a function; value = dd/mm of the check.
@@ -1530,6 +1558,10 @@
         ]},
         "Skróty aplikacji": {goal: "złapanie myśli w wybranej formie bez wchodzenia w aplikację — prosto z ekranu głównego telefonu; tak samo szybkie dopisanie nowych fiszek", terms: []},
         "Sprawdzanie wersji aplikacji": {goal: "wiadomo, która wersja aplikacji jest na telefonie — np. przy zgłaszaniu uwag", terms: []},
+        "Wieści z apki": {goal: "użytkownik od razu widzi, że aplikacja ma dla niego coś nowego, i czyta to w jednym miejscu", terms: [
+            "wieść — informacja od aplikacji dla użytkownika",
+            "nieprzeczytana wieść — taka, której użytkownik jeszcze nie wybrał w „Wieściach z apki” albo którą sam oznaczył jako nieprzeczytaną",
+        ]},
         "Udostępnianie aplikacji": {goal: "łatwe polecenie aplikacji innym — osoba obok skanuje kod, osoba zdalnie dostaje link do pobrania", terms: []},
         "Robienie kopii zapasowej danych": {goal: "zachowanie kluczowych danych między wydaniami / wersjami aplikacji do ponownego wgrania", terms: []},
 
@@ -1606,7 +1638,7 @@
 
     const PLACE_INFO = {
         "Cała aplikacja": "mechanizmy działające w tle, niezwiązane z jednym ekranem — opisane raz, a ekrany zawierają tylko swój udział",
-        "Dom": "ekran główny aplikacji — punkt wyjścia do łapania myśli i poznawania aplikacji",
+        "Dom": "ekran główny aplikacji — punkt wyjścia do łapania myśli, poznawania aplikacji i wieści z apki",
         "Poznawanie aplikacji": "przegląd wskazówek wszystkich ekranów — co już widziane, z powrotem do ekranu i resetem",
         "Panel nawigacyjny": "przejście do głównych ekranów z każdego miejsca aplikacji",
         "Tagi i Domeny": "metadane myśli w jednym miejscu — osoby, projekty i domeny",

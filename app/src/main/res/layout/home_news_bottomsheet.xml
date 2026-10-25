@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_hex_content"
+    android:backgroundTint="@color/app_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="24dp">
+
+        <!-- === DRAG HANDLE === -->
+        <View
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/_gray_lvl_2" />
+
+        <!-- === HEADER === -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="16dp">
+
+            <!-- * Decorator * -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:scaleX="-1"
+                android:scaleY="-1"
+                android:layout_gravity="center_vertical"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                app:srcCompat="@drawable/ic_decorator_olive"
+                app:tint="@color/separator_leaf" />
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tv_dialog_title"
+                style="@style/DialogTile"
+                android:textColor="@color/text_secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/home_news_title"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="0dp" />
+
+            <!-- * Decorator * -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_gravity="center_vertical"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleY="-1"
+                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                app:srcCompat="@drawable/ic_decorator_olive"
+                app:tint="@color/separator_leaf" />
+
+        </LinearLayout>
+
+        <!-- === CONTENT === -->
+        <!-- ! Entries (home_news_item) added programmatically: unread on top, read below the notch -->
+        <LinearLayout
+            android:id="@+id/ll_home_news_unread"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="vertical" />
+
+        <pl.hexmind.mindshaper.common.ui.views.HexNotchSeparator
+            android:id="@+id/v_home_news_separator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/ll_home_news_read"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/tv_home_news_empty"
+            style="@style/TextView_EmptyState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp"
+            android:text="@string/home_news_empty" />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

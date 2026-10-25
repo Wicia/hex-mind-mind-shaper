@@ -82,6 +82,9 @@ class AppSettingsStorage @Inject constructor(
         const val DORMANT_DAYS_DEFAULT  = 7
         const val DORMANT_DAYS_MIN      = 3
         const val DORMANT_DAYS_MAX      = 90
+
+        // App news - near-dormant thoughts in the entry when the user last read it (opened or marked)
+        private const val PARAM_NEWS_NEAR_DORMANT_READ_IDS = "param_news_near_dormant_read_ids"
     }
 
     fun getApplicationContext() : Context {
@@ -332,4 +335,14 @@ class AppSettingsStorage @Inject constructor(
      * Max dormant value threshold - mirrors current ThoughtValueSystem.maxValue
      */
     fun getDormantValueMax(): Int = getThoughtValueSystem().maxValue
+
+    // === APP NEWS ===
+
+    // ! A copy - the set returned by SharedPreferences must not be modified
+    fun getNewsNearDormantReadIds(): Set<String> =
+        sharedPreferences.getStringSet(PARAM_NEWS_NEAR_DORMANT_READ_IDS, emptySet()).orEmpty().toSet()
+
+    fun setNewsNearDormantReadIds(ids: Set<String>) {
+        sharedPreferences.edit { putStringSet(PARAM_NEWS_NEAR_DORMANT_READ_IDS, ids) }
+    }
 }

@@ -19,7 +19,9 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:padding="18dp">
+            android:padding="18dp"
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
             <ImageView
                 android:layout_width="45dp"
@@ -34,13 +36,62 @@
                 app:tint="@color/separator_leaf"
                 />
 
-            <ImageView
-                android:id="@+id/iv_header_icon"
-                style="@style/ImageView_Header_Activity"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_margin="8dp"
-                android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+            <!-- App news entry: rocket + unread badge over its bottom - one tap target -->
+            <LinearLayout
+                android:id="@+id/ll_home_news_entry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:clipChildren="false"
+                android:contentDescription="@string/home_news_title">
+
+                <ImageView
+                    android:id="@+id/iv_header_icon"
+                    style="@style/ImageView_Header_Activity"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_margin="8dp"
+                    android:importantForAccessibility="no" />
+
+                <!-- Badge with the wave ring behind it - the ring grows past the frame -->
+                <!-- ! Negative top margin = the badge covers the bottom of the rocket -->
+                <FrameLayout
+                    android:id="@+id/fl_home_news_badge"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="-6dp"
+                    android:clipChildren="false">
+
+                    <ImageView
+                        android:id="@+id/iv_home_news_signal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/shape_sparkle_signal"
+                        app:tint="@color/home_news_badge"
+                        android:alpha="0"
+                        android:importantForAccessibility="no" />
+
+                    <TextView
+                        android:id="@+id/tv_home_news_badge"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_circle"
+                        android:backgroundTint="@color/home_news_badge"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/home_news_badge_text"
+                        android:importantForAccessibility="no" />
+
+                </FrameLayout>
+
+            </LinearLayout>
 
             <ImageView
                 android:layout_width="45dp"
