@@ -55,22 +55,40 @@
 
                     <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
 
-                    <!-- Start screen -->
-                    <TextView
-                        android:id="@+id/tv_start_screen_section_header"
-                        style="@style/AppCardView_Header"
-                        android:text="@string/settings_start_screen_header" />
-
-                    <pl.hexmind.mindshaper.activities.settings.widgets.StartScreenTiles
-                        android:id="@+id/tiles_start_screen"
+                    <!-- Share the app (opens the QR code and link dialog) | installed version -->
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_share_app"
+                            style="@style/AuxiliaryActionButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_share_app_btn_open"
+                            app:cornerRadius="12dp"
+                            app:icon="@drawable/ic_share"
+                            app:iconPadding="8dp" />
+
+                        <TextView
+                            android:id="@+id/tv_app_version"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:textSize="12sp"
+                            android:textColor="@color/_gray_lvl_2"
+                            tools:text="ver 2026_10_22" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
-            <!-- === THOUGHTS FORMS === -->
+            <!-- === THOUGHTS === -->
             <androidx.cardview.widget.CardView
                 style="@style/AppCardView">
 
@@ -81,14 +99,16 @@
                         style="@style/AppCardView_Header"
                         android:text="@string/settings_permissions_section" />
 
-                    <com.google.android.material.switchmaterial.SwitchMaterial
+                    <pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
                         android:id="@+id/switch_voice_recording_feature"
-                        style="@style/Settings_Switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="@string/settings_permissions_voice_recording" />
 
-                    <com.google.android.material.switchmaterial.SwitchMaterial
+                    <pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
                         android:id="@+id/switch_photo_feature"
-                        style="@style/Settings_Switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="@string/settings_permissions_photo" />
 
                     <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
@@ -104,16 +124,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                    <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
 
-            <!-- === THOUGHTS VALUE / LIFECYCLE === -->
-            <androidx.cardview.widget.CardView
-                style="@style/AppCardView">
-
-                <LinearLayout
-                    style="@style/AppCardView_Content">
-
+                    <!-- Thought value scale -->
                     <TextView
                         android:id="@+id/tv_thought_value_scale_section_header"
                         style="@style/AppCardView_Header"
@@ -139,18 +152,22 @@
                         style="@style/AppCardView_Header"
                         android:text="@string/settings_dormant_mode_header" />
 
+                    <pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
+                        android:id="@+id/switch_dormant_mode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_dormant_mode_switch_label" />
+
+                    <!-- Feature benefit - shown only while the mode is off -->
                     <TextView
+                        android:id="@+id/tv_dormant_mode_hint"
                         style="@style/TextView_Section_Info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="0dp"
+                        android:layout_marginTop="4dp"
                         android:text="@string/settings_dormant_mode_info" />
 
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/switch_dormant_mode"
-                        style="@style/Settings_Switch"
-                        android:text="@string/settings_dormant_mode_switch_label" />
-
+                    <!-- Thresholds - hidden while the mode is off -->
                     <LinearLayout
                         android:id="@+id/ll_dormant_thresholds_picker"
                         android:layout_width="wrap_content"
@@ -254,93 +271,113 @@
                         style="@style/AppCardView_Header"
                         android:text="@string/settings_memorizing_section" />
 
-                    <com.google.android.material.switchmaterial.SwitchMaterial
+                    <pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
                         android:id="@+id/switch_flashcards_feature"
-                        style="@style/Settings_Switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="@string/settings_permissions_flashcards" />
 
-                    <!-- Repetitions System params - dimmed while flashcards are off -->
-                    <LinearLayout
-                        android:id="@+id/ll_flashcards_params_picker"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginStart="16dp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="0dp"
-                            android:baselineAligned="false"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="180dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:gravity="end"
-                                android:text="@string/settings_flashcards_new_per_day_label"
-                                android:textSize="14sp" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btn_flashcards_new_per_day_decrease"
-                                style="@style/SecondaryActionButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:minWidth="35dp"
-                                android:text="@string/common_btn_decrease" />
-
-                            <TextView
-                                android:id="@+id/tv_flashcards_new_per_day"
-                                android:layout_width="40dp"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                tools:text="10"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btn_flashcards_new_per_day_increase"
-                                style="@style/SecondaryActionButton"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:minWidth="35dp"
-                                android:text="@string/common_btn_increase" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/switch_flashcards_reminders"
-                        style="@style/Settings_Switch"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/settings_flashcards_reminders_switch_label" />
-
-                    <!-- Reminder hour - dimmed while flashcards or their reminder are off -->
+                    <!-- Feature benefit - shown only while flashcards are off -->
                     <TextView
-                        android:id="@+id/tv_flashcards_reminder_hour_label"
+                        android:id="@+id/tv_flashcards_feature_hint"
                         style="@style/TextView_Section_Info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginStart="16dp"
-                        android:text="@string/settings_flashcards_reminder_hour_label" />
+                        android:layout_marginTop="4dp"
+                        android:text="@string/settings_flashcards_feature_hint" />
 
-                    <pl.hexmind.mindshaper.common.ui.views.HexHourPickerView
-                        android:id="@+id/hour_picker_flashcards_reminder"
+                    <!-- Flashcards options - hidden while flashcards are off -->
+                    <LinearLayout
+                        android:id="@+id/ll_flashcards_options"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        app:stepMinutes="60" />
+                        android:orientation="vertical">
+
+                        <!-- Repetitions System params -->
+                        <LinearLayout
+                            android:id="@+id/ll_flashcards_params_picker"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginStart="16dp"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="0dp"
+                                android:baselineAligned="false"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="180dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="8dp"
+                                    android:gravity="end"
+                                    android:text="@string/settings_flashcards_new_per_day_label"
+                                    android:textSize="14sp" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btn_flashcards_new_per_day_decrease"
+                                    style="@style/SecondaryActionButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:minWidth="35dp"
+                                    android:text="@string/common_btn_decrease" />
+
+                                <TextView
+                                    android:id="@+id/tv_flashcards_new_per_day"
+                                    android:layout_width="40dp"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    tools:text="10"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btn_flashcards_new_per_day_increase"
+                                    style="@style/SecondaryActionButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:minWidth="35dp"
+                                    android:text="@string/common_btn_increase" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
+                            android:id="@+id/switch_flashcards_reminders"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/settings_flashcards_reminders_switch_label" />
+
+                        <!-- Reminder hour - dimmed while the reminders are off -->
+                        <TextView
+                            android:id="@+id/tv_flashcards_reminder_hour_label"
+                            style="@style/TextView_Section_Info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginStart="16dp"
+                            android:text="@string/settings_flashcards_reminder_hour_label" />
+
+                        <pl.hexmind.mindshaper.common.ui.views.HexHourPickerView
+                            android:id="@+id/hour_picker_flashcards_reminder"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            app:stepMinutes="60" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
-            <!-- === CALENDAR REMINDERS === -->
+            <!-- === WORKSHOP === -->
             <androidx.cardview.widget.CardView
                 style="@style/AppCardView">
 
@@ -348,35 +385,83 @@
                     style="@style/AppCardView_Content">
 
                     <TextView
-                        android:id="@+id/tv_calendar_section_header"
+                        android:id="@+id/tv_workshop_section_header"
                         style="@style/AppCardView_Header"
-                        android:text="@string/settings_calendar_section" />
+                        android:text="@string/settings_workshop_section" />
 
-                    <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/switch_calendar_reminders"
-                        style="@style/Settings_Switch"
-                        android:text="@string/settings_calendar_reminders_switch_label" />
+                    <pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
+                        android:id="@+id/switch_workshop_feature"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_permissions_workshop" />
 
+                    <!-- Feature benefit - shown only while the workshop is off -->
                     <TextView
+                        android:id="@+id/tv_workshop_feature_hint"
                         style="@style/TextView_Section_Info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="@string/settings_calendar_reminders_hint" />
+                        android:text="@string/settings_workshop_feature_hint" />
 
-                    <!-- Calendars list (radio buttons) -->
-                    <RadioGroup
-                        android:id="@+id/rg_calendar_choice"
+                    <!-- Workshop options - hidden while the workshop is off -->
+                    <LinearLayout
+                        android:id="@+id/ll_workshop_options"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:visibility="gone" />
+                        android:orientation="vertical">
+
+                        <!-- Calendar reminders of goal steps -->
+                        <pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
+                            android:id="@+id/switch_calendar_reminders"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/settings_calendar_reminders_switch_label" />
+
+                        <TextView
+                            style="@style/TextView_Section_Info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/settings_calendar_reminders_hint" />
+
+                        <!-- Calendars list (radio buttons) -->
+                        <RadioGroup
+                            android:id="@+id/rg_calendar_choice"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:visibility="gone" />
+
+                        <TextView
+                            style="@style/TextView_Section_Info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings_calendar_reminders_sync_hint" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- === START SCREEN === -->
+            <androidx.cardview.widget.CardView
+                style="@style/AppCardView">
+
+                <LinearLayout
+                    style="@style/AppCardView_Content">
 
                     <TextView
-                        style="@style/TextView_Section_Info"
+                        android:id="@+id/tv_start_screen_section_header"
+                        style="@style/AppCardView_Header"
+                        android:text="@string/settings_start_screen_header" />
+
+                    <pl.hexmind.mindshaper.activities.settings.widgets.StartScreenTiles
+                        android:id="@+id/tiles_start_screen"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/settings_calendar_reminders_sync_hint" />
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
@@ -394,9 +479,10 @@
                         style="@style/AppCardView_Header"
                         android:text="@string/settings_backup_header" />
 
-                    <com.google.android.material.switchmaterial.SwitchMaterial
+                    <pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
                         android:id="@+id/switch_backup_feature"
-                        style="@style/Settings_Switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="@string/settings_permissions_backup" />
 
                     <TextView

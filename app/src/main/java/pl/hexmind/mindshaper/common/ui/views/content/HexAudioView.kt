@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
+import androidx.core.view.isVisible
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -74,6 +75,7 @@ class HexAudioView @JvmOverloads constructor(
     // UI Components
     val btnRecordNew: MaterialButton
     val btnRecordStopPlay: MaterialButton
+    private val btnRecordingDelete: MaterialButton
     val btnSkipBackward: MaterialButton
     val btnSkipForward: MaterialButton
     private val tvInfo: TextView
@@ -109,6 +111,7 @@ class HexAudioView @JvmOverloads constructor(
         // Initialize UI components
         btnRecordNew = findViewById(R.id.btn_record_new)
         btnRecordStopPlay = findViewById(R.id.btn_record_stop_play)
+        btnRecordingDelete = findViewById(R.id.btn_recording_delete)
         btnSkipBackward = findViewById(R.id.btn_skip_backward)
         btnSkipForward = findViewById(R.id.btn_skip_forward)
         tvInfo = findViewById(R.id.tv_info)
@@ -183,6 +186,9 @@ class HexAudioView @JvmOverloads constructor(
                 btnRecordStopPlay.icon = AppCompatResources.getDrawable(context, R.drawable.ic_recording_play)
             }
         }
+
+        // Delete only a recording at rest, and only where it can be recorded at all
+        btnRecordingDelete.isVisible = mode == Mode.RECORD_PLAYBACK && hasRecording && !isRecording && !isPlaying
     }
 
     // Runnables
@@ -255,16 +261,26 @@ class HexAudioView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Stops an ongoing recording - the recording is kept, as after tapping stop
+     */
+    fun stopRecordingIfActive() {
+        if (state == State.RECORDING) {
+            stopRecording()
+        }
+    }
+
     private fun setMode(newMode: Mode) {
         mode = newMode
         setupUIForMode()
+        updateUIForState()
     }
 
     private fun setupListeners() {
         btnRecordNew.setOnClickListener {
             if (mode == Mode.RECORD_PLAYBACK) {
                 if (audioFile?.exists() == true) {
-                    showRecordingOptionsDialog()
+                    showOverwriteRecordingDialog()
                 }
                 else { // there is no recording
                     startRecording()
@@ -280,18 +296,28 @@ class HexAudioView @JvmOverloads constructor(
             }
         }
 
+        btnRecordingDelete.setOnClickListener { showDeleteRecordingDialog() }
+
         btnSkipBackward.setOnClickListener { skipBackward() }
         btnSkipForward.setOnClickListener { skipForward() }
     }
 
-    private fun showRecordingOptionsDialog() {
+    // Re-recording replaces the current recording - asked first
+    private fun showOverwriteRecordingDialog() {
         ActionsDialog.Builder(context)
-            .setTitle(context.getString(R.string.capture_voice_dialog_title))
-            .setDescription(context.getString(R.string.capture_voice_dialog_description))
-            .setSecondaryAction(context.getString(R.string.capture_voice_dialog_overwrite)) {
+            .setTitle(context.getString(R.string.capture_voice_dialog_overwrite_title))
+            .setDescription(context.getString(R.string.capture_voice_dialog_overwrite_description))
+            .setPrimaryAction(context.getString(R.string.capture_voice_dialog_overwrite), caution = true) {
                 deleteCurrentRecording(deleteFromDatabase = true)  // Delete from DB
                 startRecording()
             }
+            .show()
+    }
+
+    private fun showDeleteRecordingDialog() {
+        ActionsDialog.Builder(context)
+            .setTitle(context.getString(R.string.capture_voice_dialog_delete_title))
+            .setDescription(context.getString(R.string.common_deletion_dialog_warning))
             .setPrimaryAction(context.getString(R.string.capture_voice_dialog_delete), caution = true) {
                 deleteCurrentRecording(deleteFromDatabase = true)  // Delete from DB
                 showStatus(

@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -13,7 +14,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtManagerActivity
-import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
+import pl.hexmind.mindshaper.common.onboarding.OnboardingTask
+import pl.hexmind.mindshaper.common.onboarding.OnboardingTaskPoint
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.common.ui.dialogs.PhotoFullscreenDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
@@ -72,10 +74,7 @@ class CaptureActivity : ThoughtManagerActivity() {
         setupUI()
         setupListeners()
         setupObservers()
-
-        onboardingManager.showTooltipForStep(
-            OnboardingProgressStep.CAPTURE_ENTRY_TOOLTIP, this
-        )
+        setupBackHandling()
     }
 
     private var defaultFormAutoOpened = false
@@ -95,16 +94,8 @@ class CaptureActivity : ThoughtManagerActivity() {
     private fun setupListeners() {
         binding.apply {
 
-            // Onboarding :)
-            // ! tapping first time
             etHexTags.setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) {
-                    onboardingManager.showTooltipForStep(
-                        OnboardingProgressStep.CAPTURE_HEXTAGS_TOOLTIP,
-                        this@CaptureActivity
-                    )
-                }
-                else {
+                if (!hasFocus) {
                     hsvTagSuggestions.isVisible = false
                 }
             }
@@ -224,14 +215,46 @@ class CaptureActivity : ThoughtManagerActivity() {
         }
     }
 
+    /**
+     * System back - a draft with any form asks before it's dropped, an empty one just closes
+     */
+    private fun setupBackHandling() {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // An ongoing recording is kept - it counts as a form like a finished one
+                binding.audioRecordingPlayback.stopRecordingIfActive()
+
+                if (!viewModel.hasContent()) {
+                    finish()
+                    return
+                }
+
+                ActionsDialog.Builder(this@CaptureActivity)
+                    .setTitle(getString(R.string.capture_exit_dialog_title))
+                    .setDescription(getString(R.string.capture_exit_dialog_description))
+                    .setSecondaryAction(getString(R.string.capture_exit_dialog_discard)) {
+                        finish()
+                    }
+                    .setPrimaryAction(getString(R.string.capture_exit_dialog_save)) {
+                        lifecycleScope.launch { saveDraft() }
+                    }
+                    .show()
+            }
+        })
+    }
+
     private fun showFullscreenPhoto() {
         val photoUri = viewModel.getTempPhotoUri() ?: return
 
         lifecycleScope.launch {
             try {
-                val photoFile = thoughtsService.getFileFromUri(photoUri)
-                if (photoFile != null) {
-                    val photoBytes = photoFile.readBytes()
+                // Raw camera file keeps its rotation only in EXIF - the viewer gets it already applied,
+                // at the size the saved photo will have
+                val photoBytes = withContext(kotlinx.coroutines.Dispatchers.IO) {
+                    thoughtsService.getFileFromUri(photoUri)
+                        ?.let { thoughtsService.loadPhotoForPreview(it, maxSize = 1920) }
+                }
+                if (photoBytes != null) {
                     PhotoFullscreenDialog(this@CaptureActivity, photoBytes).show()
                 }
             }
@@ -303,9 +326,12 @@ class CaptureActivity : ThoughtManagerActivity() {
         val draft = viewModel.draftThought.value ?: return
         val currentText = draft.richText ?: ""
 
+        // Edit header only when there is a note to edit
+        val titleRes = if (currentText.isBlank()) R.string.common_new_note_header else R.string.common_edit_note_header
+
         TextEditDialog(
             context = this,
-            title = getString(R.string.common_edit_note_header),
+            title = getString(titleRes),
             textInput = currentText,
             notesStyle = true,
             onSave = { newText ->
@@ -450,6 +476,10 @@ class CaptureActivity : ThoughtManagerActivity() {
         val result = viewModel.saveNewThought()
 
         if (result.isSuccess) {
+            onboardingManager.recordTaskPoints(
+                OnboardingTask.CAPTURE_THOUGHT, usedTaskPoints(viewModel.draftThought.value)
+            )
+
             // Success — return new thoughtId
             val thoughtId = result.getOrNull()
             if (thoughtId != null) {
@@ -462,6 +492,16 @@ class CaptureActivity : ThoughtManagerActivity() {
             // Error - show message
             binding.tvHexTagsValidationInfo.text = result.exceptionOrNull()?.message
                 ?: getString(R.string.capture_voice_error_save_failed)
+        }
+    }
+
+    private fun usedTaskPoints(draft: ThoughtDTO?): Set<OnboardingTaskPoint> {
+        if (draft == null) return emptySet()
+
+        return buildSet {
+            if (!draft.subject.isNullOrBlank()) add(OnboardingTaskPoint.SUBJECT)
+            if (!draft.person.isNullOrBlank() || !draft.project.isNullOrBlank()) add(OnboardingTaskPoint.HEX_TAG)
+            if (!draft.richText.isNullOrBlank()) add(OnboardingTaskPoint.NOTE)
         }
     }
 

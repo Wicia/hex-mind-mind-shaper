@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Closed eye: hide / minimize (an open eye = show / reveal; X = delete only) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Lowered eyelid -->
+    <path
+        android:pathData="M3,10 Q12,18 21,10"
+        android:strokeColor="@android:color/white"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Lashes -->
+    <path
+        android:pathData="M12,14 L12,17.5 M7,12.8 L5.5,15.5 M17,12.8 L18.5,15.5"
+        android:strokeColor="@android:color/white"
+        android:strokeWidth="2"
+        android:strokeLineCap="round" />
+
+</vector>

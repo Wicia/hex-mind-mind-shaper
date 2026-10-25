@@ -8,8 +8,8 @@
     android:orientation="horizontal"
     android:padding="16dp"
     android:clipChildren="false"
-    android:background="@drawable/shape_hex_content"
-    android:backgroundTint="@color/flashcard_background"
+    android:background="@drawable/shape_flashcard_card"
+    android:elevation="4dp"
     android:foreground="?attr/selectableItemBackground">
 
     <LinearLayout
@@ -25,20 +25,23 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
-            android:fontFamily="@font/alegreya_regular"
+            android:fontFamily="@font/literata_regular"
             android:lineSpacingMultiplier="@dimen/line_spacing_tight"
+            android:includeFontPadding="false"
             tools:text="Stolica Mongolii?"
             />
 
+        <!-- ! includeFontPadding off on both: Literata's own padding would make the front-back gap much bigger than the margin -->
         <TextView
             android:id="@+id/tv_preview_back"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="2dp"
+            android:includeFontPadding="false"
             android:textSize="16sp"
             android:lineSpacingMultiplier="0.85"
             android:textColor="@color/text_primary"
-            android:fontFamily="@font/alegreya_regular"
+            android:fontFamily="@font/literata_regular"
             tools:text="Ułan Bator" />
 
     </LinearLayout>
@@ -85,20 +88,21 @@
             android:layout_weight="1"
             android:layout_marginTop="2dp"
             android:orientation="vertical"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:background="@drawable/shape_flashcard_level_track">
 
+            <!-- Empty part - the track shows through -->
             <View
                 android:id="@+id/v_preview_level_left"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:background="@color/flashcard_progress_track"
                 tools:layout_weight="0.6" />
 
             <View
                 android:id="@+id/v_preview_level_done"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:background="@color/flashcard_accent"
+                android:background="@drawable/shape_flashcard_level_fill"
                 tools:layout_weight="0.4" />
 
         </LinearLayout>

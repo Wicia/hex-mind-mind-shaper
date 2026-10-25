@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- One set on the flashcards screen list - same card look as the flashcard itself (color + Alegreya) -->
+<!-- One set on the flashcards screen list - same card look as the flashcard itself (color + Literata) -->
 <!-- Tap = preview of the set's flashcards, rocket = review of just this set -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -13,8 +13,8 @@
     android:paddingVertical="12dp"
     android:paddingStart="20dp"
     android:paddingEnd="12dp"
-    android:background="@drawable/shape_hex_content"
-    android:backgroundTint="@color/flashcard_background"
+    android:background="@drawable/shape_flashcard_set_card"
+    android:elevation="4dp"
     android:foreground="?attr/selectableItemBackground">
 
     <LinearLayout
@@ -30,7 +30,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary"
-            android:fontFamily="@font/alegreya_regular"
+            android:fontFamily="@font/literata_regular"
             tools:text="Stolice Azji" />
 
         <!-- Flashcards count + Repetitions System stats of the set - the count alone for an empty set -->
@@ -38,6 +38,7 @@
             android:id="@+id/tv_set_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:textSize="14sp"
             android:textColor="@color/text_secondary"
             tools:text="12 fiszek | do powtórki: 3 · utrwalone: 2" />

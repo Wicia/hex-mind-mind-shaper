@@ -13,7 +13,7 @@ import java.time.LocalDate
  * - GOOD = level +1 (at the top level = mastered), OK = level stays, BAD = level -1 (not below 1) and review tomorrow
  * - new flashcard: any rating = level 1, review tomorrow
  * Every rating means the same at every level. Being late lowers nothing.
- * ! Returns in a session after BAD are not rated here - only the first rating of the day counts (HexFlashcardView)
+ * ! Returns in a session after BAD are not rated here - only the first rating of the day counts (HexFlashcardsSessionView)
  */
 object FlashcardsScheduler {
 

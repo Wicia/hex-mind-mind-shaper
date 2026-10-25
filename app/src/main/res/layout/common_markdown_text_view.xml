@@ -8,22 +8,36 @@
     android:backgroundTint="@color/button_content_filled_background"
     android:padding="8dp">
 
-    <!-- Markdown Text Display Area -->
-    <TextView
-        android:id="@+id/markdown_text_view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="90dp"
-        android:padding="12dp"
-        android:textAlignment="textStart"
-        android:textSize="18sp"
-        android:letterSpacing="0.0"
-        android:textStyle="normal"
-        android:textColor="@color/text_primary"
-        android:textColorLink="@color/rich_text_link"
-        android:fontFamily="@font/alegreya_regular"
-        android:textAllCaps="false"
-        android:visibility="visible" />
+        android:layout_height="wrap_content">
+
+        <!-- Markdown Text Display Area -->
+        <TextView
+            android:id="@+id/markdown_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="90dp"
+            android:padding="12dp"
+            android:textAlignment="textStart"
+            android:textSize="@dimen/note_text_size"
+            android:letterSpacing="0.0"
+            android:textStyle="normal"
+            android:textColor="@color/text_primary"
+            android:textColorLink="@color/rich_text_link"
+            android:fontFamily="@font/literata_regular"
+            android:textAllCaps="false"
+            android:visibility="visible" />
+
+        <!-- Collapsed note: last lines fade into the background (gradient set in HexTextView) -->
+        <View
+            android:id="@+id/v_collapsed_fade"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_gravity="bottom"
+            android:visibility="gone" />
+
+    </FrameLayout>
 
     <!-- Action bar -->
     <LinearLayout
@@ -32,12 +46,21 @@
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
+        <!-- Show all / Collapse - only for a note longer than collapsedMaxLines -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_collapse_toggle"
+            style="@style/SecondaryActionButton.Ghost"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:textColor="@color/text_secondary"
+            android:visibility="gone" />
+
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_weight="1" />
 
-        <!-- Delete button -->
+        <!-- Delete: X, always on the right -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_delete"
             style="@style/SecondaryActionButton.Ghost"
@@ -45,7 +68,7 @@
             android:layout_height="48dp"
             android:visibility="visible"
             app:iconGravity="start"
-            app:icon="@drawable/ic_action_delete"
+            app:icon="@drawable/ic_delete"
             app:iconTint="@color/_white" />
 
     </LinearLayout>

@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.DrawableRes
+import androidx.core.view.updateLayoutParams
 import pl.hexmind.mindshaper.R
 
 /**
@@ -41,6 +42,11 @@ class HexNavItemView @JvmOverloads constructor(
             val iconRes = getResourceId(R.styleable.HexNavItemView_hexNavIcon, 0)
             if (iconRes != 0) {
                 iconView.setImageResource(iconRes)
+            }
+            if (hasValue(R.styleable.HexNavItemView_hexNavIconSpacing)) {
+                iconView.updateLayoutParams<MarginLayoutParams> {
+                    marginEnd = getDimensionPixelSize(R.styleable.HexNavItemView_hexNavIconSpacing, 0)
+                }
             }
             recycle()
         }

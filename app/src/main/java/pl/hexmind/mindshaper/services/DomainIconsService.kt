@@ -66,7 +66,9 @@ class DomainIconsService @Inject constructor(
         }
     }
 
-    suspend fun getIconResourceId(id: Int): Int {
+    suspend fun getIconResourceId(id: Int?): Int {
+        if (id == null) return R.drawable.ic_domain_none
+
         // Check cache first
         iconCache[id]?.let { return it }
 

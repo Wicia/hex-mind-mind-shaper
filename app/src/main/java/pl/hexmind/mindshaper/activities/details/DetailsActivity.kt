@@ -3,6 +3,7 @@ package pl.hexmind.mindshaper.activities.details
 import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -17,7 +18,6 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtManagerActivity
 import pl.hexmind.mindshaper.activities.workshop.GoalDetailActivity
 import pl.hexmind.mindshaper.common.dormant.ThoughtState
-import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.GuideDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.HexTags
@@ -87,10 +87,6 @@ class DetailsActivity : ThoughtManagerActivity() {
 
         viewModel.loadThought(thoughtId)
         viewModel.loadDomains()
-
-        onboardingManager.showTooltipForStep(
-            OnboardingProgressStep.DETAILS_TOOLTIP, this
-        )
     }
 
     private fun setupObservers() {
@@ -111,6 +107,9 @@ class DetailsActivity : ThoughtManagerActivity() {
 
     private fun updateUsageSection(linked: StepWithGoalDTO?) {
         binding.apply {
+            // Workshop feature off = no goals to link to; a stored link stays in the database
+            llUsageSection.visibility = if (appSettingsStorage.isWorkshopFeatureEnabled()) View.VISIBLE else View.GONE
+
             if (linked != null) {
                 btnUsageLink.visibility = View.GONE
                 llUsageLinked.visibility = View.VISIBLE
@@ -237,6 +236,13 @@ class DetailsActivity : ThoughtManagerActivity() {
                 override fun onError(error: String) {
                     Toast.makeText(this@DetailsActivity, error, Toast.LENGTH_SHORT).show()
                 }
+
+                override fun onPhotoDownloadRequested() {
+                    lifecycleScope.launch {
+                        val isSaved = viewModel.downloadPhoto()
+                        showShortToast(if (isSaved) R.string.photos_download_done else R.string.photos_download_error)
+                    }
+                }
             })
 
             audioRecordingPlayback.setCallback(object : HexAudioView.RecordingCallback {
@@ -360,19 +366,29 @@ class DetailsActivity : ThoughtManagerActivity() {
             title = getString(R.string.common_hex_tag_hint_subject),
             notesStyle = false,
             onSave = { newText ->
-                viewModel.updateSubject(newText)
+                if (newText != currentText) {
+                    viewModel.updateSubject(newText)
+                    showSavedToast(currentText.isBlank(), R.string.details_toast_subject_added, R.string.details_toast_subject_updated)
+                }
             }
         ).show()
+    }
+
+    // Confirms a save from a dialog / sheet - "added" when there was nothing before, "updated" otherwise
+    private fun showSavedToast(wasEmpty: Boolean, addedRes: Int, updatedRes: Int) {
+        showShortToast(if (wasEmpty) addedRes else updatedRes)
     }
 
     private fun showEditRichTextDialog(textInput: String? = null) {
         val thought = viewModel.thoughtDetails.value ?: return
         val currentText = textInput ?: thought.richText ?: ""
+        // Edit header only when there is a note to edit
+        val titleRes = if (currentText.isBlank()) R.string.common_new_note_header else R.string.common_edit_note_header
 
         TextEditDialog(
             context = this,
             textInput = currentText,
-            title = getString(R.string.common_edit_note_header),
+            title = getString(titleRes),
             notesStyle = true,
             onSave = { newText ->
                 saveRichTextUnlessSimilarTagExists(newText)
@@ -390,7 +406,7 @@ class DetailsActivity : ThoughtManagerActivity() {
             val similarTag = hexTagsService.findFirstSimilarTag(embeddedTags.person, embeddedTags.project)
 
             if (similarTag == null) {
-                viewModel.updateRichText(richText)
+                saveRichText(richText)
                 return@launch
             }
 
@@ -398,18 +414,27 @@ class DetailsActivity : ThoughtManagerActivity() {
                 .setTitle(getString(R.string.common_hex_tags_similar_title))
                 .setDescription(getString(R.string.common_hex_tags_similar_description, similarTag.suggestion))
                 .setSecondaryAction(getString(R.string.common_hex_tags_similar_keep_mine)) {
-                    viewModel.updateRichText(richText)
+                    saveRichText(richText)
                 }
                 .setPrimaryAction(getString(R.string.common_hex_tags_similar_use, similarTag.suggestion)) {
                     val correctedRichText = HexTagsUtils.replaceEmbeddedTag(
                         richText, similarTag.tagType, similarTag.typedTag, similarTag.suggestion
                     )
-                    viewModel.updateRichText(correctedRichText ?: richText)
+                    saveRichText(correctedRichText ?: richText)
                 }
                 // ! The note is not saved yet - back to the editor, so the typed text is not lost
                 .setOnCancel { showEditRichTextDialog(richText) }
                 .show()
         }
+    }
+
+    // Compared with the saved note, not the editor's input - the editor may reopen with unsaved text
+    private fun saveRichText(richText: String) {
+        val savedText = viewModel.thoughtDetails.value?.richText.orEmpty()
+        if (richText == savedText) return
+
+        viewModel.updateRichText(richText)
+        showSavedToast(savedText.isBlank(), R.string.details_toast_note_added, R.string.details_toast_note_updated)
     }
 
     private fun takePhoto() {
@@ -577,6 +602,7 @@ class DetailsActivity : ThoughtManagerActivity() {
 
                 binding.ivStatus.setImageResource(R.drawable.ic_status_attention)
                 binding.ivStatus.imageTintList = statusColor
+                setStatusIconTappable(true)
                 binding.ivStatus.setOnClickListener { showWarningDialog() }
             }
 
@@ -590,6 +616,7 @@ class DetailsActivity : ThoughtManagerActivity() {
 
                 binding.ivStatus.setImageResource(R.drawable.ic_status_dormant)
                 binding.ivStatus.imageTintList = statusColor
+                setStatusIconTappable(true)
                 binding.ivStatus.setOnClickListener { showDormantDialog() }
             }
 
@@ -601,10 +628,26 @@ class DetailsActivity : ThoughtManagerActivity() {
                 binding.btnValueIncrease.imageTintList = null
                 binding.btnValueDecrease.imageTintList = null
 
-                binding.ivStatus.setImageResource(R.drawable.ic_status_wip)
-                binding.ivStatus.imageTintList = statusColor
+                // Active = nothing to explain: just a sign, no dialog behind it
+                binding.ivStatus.setImageResource(R.drawable.ic_status_active)
+                binding.ivStatus.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color._orange_lvl_1))
                 binding.ivStatus.setOnClickListener(null)
+                setStatusIconTappable(false)
             }
+        }
+    }
+
+    // Warning / dormant open a dialog (ripple on tap); the active sign does not react at all
+    private fun setStatusIconTappable(isTappable: Boolean) {
+        binding.ivStatus.isClickable = isTappable
+        binding.ivStatus.isFocusable = isTappable
+        if (isTappable) {
+            val ripple = TypedValue()
+            theme.resolveAttribute(android.R.attr.selectableItemBackgroundBorderless, ripple, true)
+            binding.ivStatus.setBackgroundResource(ripple.resourceId)
+        }
+        else {
+            binding.ivStatus.background = null
         }
     }
 
@@ -658,7 +701,14 @@ class DetailsActivity : ThoughtManagerActivity() {
             onValidate = { tags -> viewModel.validateTags(tags) },
             currentTags = tags
         ) { result ->
+            // ! Empty person / project come back as "" or null - both mean "no tag"
+            val isChanged = result.domainId != tags.domainId ||
+                result.person.orEmpty() != tags.person.orEmpty() ||
+                result.project.orEmpty() != tags.project.orEmpty()
+            if (!isChanged) return@show
+
             viewModel.updateHexTags(result)
+            showShortToast(R.string.details_toast_tags_updated)
         }
     }
 }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Level bar of a flashcard on the lists: the filled part - rounded on both ends, also where it meets the track -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="2dp" />
+    <solid android:color="@color/flashcard_accent" />
+</shape>

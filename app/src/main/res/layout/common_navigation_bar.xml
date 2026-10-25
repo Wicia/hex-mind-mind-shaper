@@ -90,6 +90,18 @@
         </LinearLayout>
     </LinearLayout>
 
+    <!-- Shadow around the navigation button: centered under it, Z between the drawer (12dp) and the button (24dp) -->
+    <View
+        android:id="@+id/navToggleHalo"
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:layout_gravity="bottom|start"
+        android:layout_marginStart="3.5dp"
+        android:layout_marginBottom="3.5dp"
+        android:background="@drawable/shape_nav_toggle_halo"
+        android:elevation="20dp"
+        android:outlineProvider="none" />
+
     <!-- Single navigation button: opens/closes the drawer. -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnToggle"

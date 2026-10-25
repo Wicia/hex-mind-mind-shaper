@@ -13,10 +13,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.common.formatting.withoutOrphans
+import pl.hexmind.mindshaper.common.ui.TextFilePicker
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardEditDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardsEditDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardsImportDialog
-import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardsSessionDialog
 import pl.hexmind.mindshaper.common.ui.views.SpeedDial
 import pl.hexmind.mindshaper.services.dto.FlashcardDTO
 import pl.hexmind.mindshaper.services.dto.FlashcardSetDTO
@@ -24,7 +24,7 @@ import pl.hexmind.mindshaper.services.dto.FlashcardsLibraryDTO
 
 /**
  * Preview of one set: its flashcards (front + back) in the order they were entered.
- * Delete (X, left) / edit / review (rocket), FAB = speed dial: add flashcards in a series / import them from a text.
+ * Edit / review (rocket), FAB = speed dial: add flashcards in a series / import them from a text.
  * Tap on a flashcard = edit just that one (+ move it), long press = delete it.
  * Each flashcard shows where it is in the Repetitions System (new / level / mastered).
  */
@@ -41,6 +41,8 @@ class FlashcardSetActivity : CoreActivity() {
     }
 
     private val viewModel: FlashcardSetViewModel by viewModels()
+
+    private val textFilePicker = TextFilePicker(this)
 
     private lateinit var llFlashcards: LinearLayout
     private lateinit var tvEmpty: TextView
@@ -73,7 +75,7 @@ class FlashcardSetActivity : CoreActivity() {
         }
 
         btnReview.setOnClickListener {
-            FlashcardsSessionDialog.open(this, viewModel.planReview(library), onRated = viewModel::rate)
+            FlashcardsSessionActivity.open(this, viewModel.planReview(library), viewModel.setId)
         }
 
         viewModel.library.observe(this) { newLibrary ->
@@ -94,7 +96,7 @@ class FlashcardSetActivity : CoreActivity() {
     private fun setupSpeedDial() {
         val speedDial = SpeedDial(this, fabAdd)
         speedDial.addOption(R.string.flashcards_speed_dial_import, R.drawable.ic_action_import) {
-            FlashcardsImportDialog(this, onImport = viewModel::importFlashcards).show()
+            FlashcardsImportDialog(this, textFilePicker, onImport = viewModel::importFlashcards).show()
         }
         speedDial.addOption(R.string.flashcards_speed_dial_add, R.drawable.ic_action_add_flashcards) {
             viewModel.set.value?.let { set -> openAddSeries(set) }

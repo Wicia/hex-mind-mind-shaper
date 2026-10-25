@@ -6,9 +6,36 @@
     <!-- Review progress bar along the bottom edge of the flashcard -->
     <dimen name="flashcard_progress_height">4dp</dimen>
 
-    <!-- Session actions of the flashcard: reveal / skip / close vs the bigger rating faces -->
-    <dimen name="flashcard_action_icon_size">32dp</dimen>
-    <dimen name="flashcard_rating_icon_size">36dp</dimen>
+    <!-- Landscape review session (HexFlashcardsSessionView) -->
+    <!-- Rating pile: visible depth x length - the top pile is the side one turned by 90 degrees -->
+    <dimen name="flashcard_zone_depth">80dp</dimen>
+    <dimen name="flashcard_zone_length">280dp</dimen>
+    <!-- Part of the pile off the screen - cuts off its frame and corners on the edge side, so it reads as a piece of the screen -->
+    <dimen name="flashcard_zone_overhang">30dp</dimen>
+    <dimen name="flashcard_zone_overhang_negative">-30dp</dimen>
+    <!-- depth + overhang -->
+    <dimen name="flashcard_zone_depth_total">110dp</dimen>
+    <dimen name="flashcard_zone_radius">24dp</dimen>
+    <dimen name="flashcard_zone_frame_width">2dp</dimen>
+    <dimen name="flashcard_zone_dash">6dp</dimen>
+    <dimen name="flashcard_zone_dash_gap">4dp</dimen>
+    <dimen name="flashcard_zone_face_size">40dp</dimen>
+    <dimen name="flashcard_session_card_width">370dp</dimen>
+    <dimen name="flashcard_session_card_height">214dp</dimen>
+    <dimen name="flashcard_session_card_radius">22dp</dimen>
+    <!-- Auto size range of the card text (front and back alike): long texts shrink down to min -->
+    <dimen name="flashcard_session_text_min">14sp</dimen>
+    <dimen name="flashcard_session_text_max">24sp</dimen>
+    <!-- How far the card has to go towards a pile - the direction counts, the pile itself needs no hitting -->
+    <dimen name="flashcard_session_throw_side">110dp</dimen>
+    <dimen name="flashcard_session_throw_up">60dp</dimen>
+    <dimen name="flashcard_session_stamp_radius">10dp</dimen>
+    <dimen name="flashcard_session_stamp_frame_width">3dp</dimen>
+    <!-- Same width as the pill's frame - the countdown covers it -->
+    <dimen name="flashcard_session_undo_countdown_width">2dp</dimen>
+
+    <!-- Accent edge on the left of a set card (shape_flashcard_set_card) - its width mid-side -->
+    <dimen name="flashcard_set_edge_width">3dp</dimen>
 
     <!-- Level bar in the set preview (vertical twin of the session progress) -->
     <dimen name="flashcard_level_bar_width">4dp</dimen>
@@ -31,4 +58,7 @@
 
     <!-- Tight line spacing (lineSpacingMultiplier) of multi-line labels - action buttons, flashcard front -->
     <item name="line_spacing_tight" format="float" type="dimen">0.80</item>
+
+    <!-- Note text - the same size when shown (HexTextView) and when edited (TextEditDialog) -->
+    <dimen name="note_text_size">16sp</dimen>
 </resources>

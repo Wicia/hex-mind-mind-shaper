@@ -53,9 +53,15 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <!-- Controls centered, delete at the right edge (it does not shift them) -->
+    <FrameLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="horizontal"
         android:gravity="center"
         >
@@ -107,4 +113,17 @@
             />
 
     </LinearLayout>
+
+        <!-- Delete: X, always on the right; ghost. Only with a recording at rest - never next to the skip buttons -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_recording_delete"
+            style="@style/SecondaryActionButton.Ghost"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_gravity="end|center_vertical"
+            android:visibility="gone"
+            app:icon="@drawable/ic_delete"
+            app:iconGravity="textStart" />
+
+    </FrameLayout>
 </LinearLayout>

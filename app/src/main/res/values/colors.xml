@@ -127,11 +127,52 @@
     <!-- Rocket of the today's session widget - same orange as its frame -->
     <color name="flashcard_review_rocket">@color/_orange_lvl_2</color>
 
+    <!-- Landscape review session (HexFlashcardsSessionView): dark focus mode, the card stays in its own orange -->
+    <color name="flashcard_session_background">@color/graphite_dark</color>
+    <color name="flashcard_session_text">@color/graphite_beige</color>
+    <color name="flashcard_session_text_soft">#FFE3D7CC</color>
+    <color name="flashcard_session_text_secondary">#FFC9BEB4</color>
+    <!-- Hint while the card is held over a pile -->
+    <color name="flashcard_session_hint_active">@color/_orange_lvl_2</color>
+    <!-- Pause / undo / later pills: graphite frame on a faint graphite fill -->
+    <color name="flashcard_session_pill_frame">@color/graphite_medium</color>
+    <color name="flashcard_session_pill_fill">#5948433F</color>
+    <color name="flashcard_session_pill_ripple">@color/graphite_light</color>
+    <!-- Undo pill: frame running out with the undo window, over the pill's own frame -->
+    <color name="flashcard_session_undo_countdown">@color/_orange_lvl_2</color>
+    <!-- "Gotowe" pill on the light end card -->
+    <color name="flashcard_session_done_fill">@color/graphite_medium</color>
+    <color name="flashcard_session_progress_track">@color/graphite_medium</color>
+    <!-- Rating piles: dashed frame + faint fill of the pile's color; filled with it while the card is held over -->
+    <!-- ! Colors differ in lightness, not only in hue: GOOD = mid orange, OK = light beige, BAD = graphite -->
+    <color name="flashcard_zone_good">@color/_orange_lvl_3</color>
+    <color name="flashcard_zone_good_fill">#1AFFA86B</color>
+    <color name="flashcard_zone_ok_frame">#FFBFA48E</color>
+    <color name="flashcard_zone_ok_face">@color/_orange_lvl_1</color>
+    <color name="flashcard_zone_ok_fill">#14FFE1C8</color>
+    <color name="flashcard_zone_bad_frame">@color/graphite_soft</color>
+    <!-- ! graphite_soft alone was too dark for the face on graphite_dark -->
+    <color name="flashcard_zone_bad_face">#FFA0958C</color>
+    <color name="flashcard_zone_bad_fill">#1F857C75</color>
+    <!-- Stamp on the card held over a pile -->
+    <color name="flashcard_stamp_good">#FFB4581C</color>
+    <color name="flashcard_stamp_ok">#FF8A6A50</color>
+    <color name="flashcard_stamp_bad">@color/graphite_medium</color>
+    <!-- Deck under the card: 1 = right under it, 4 = the bottom one (darker = deeper) -->
+    <color name="flashcard_deck_layer_1">#FFF2D3B8</color>
+    <color name="flashcard_deck_layer_2">#FFE6C4A7</color>
+    <color name="flashcard_deck_layer_3">#FFD8B496</color>
+    <color name="flashcard_deck_layer_4">#FFC9A588</color>
+
     <!-- Web links in rich text -->
     <color name="rich_text_link">#5B86B5</color>
 
     <!-- Speed dial scrim: graphite_dark at 80% -->
     <color name="speed_dial_scrim">#CC2F2C2A</color>
+
+    <!-- Fullscreen photo close button: graphite_dark at 60%, white X -->
+    <color name="photo_viewer_close_background">#992F2C2A</color>
+    <color name="photo_viewer_close_icon">@color/_white</color>
 
 <!-- ====================================== -->
 <!--    LIST ITEMS -->
@@ -149,9 +190,35 @@
     <!-- Leafs -->
     <color name="separator_leaf">@color/_gray_lvl_2</color>
 
+    <!-- Tree branches (HexTreeConnector): between _gray_lvl_1 and _gray_lvl_2 -->
+    <color name="tree_connector">#D2D2D2</color>
+
     <!-- Lab bubbles over the onboarding flask on Home: ring in _orange_lvl_2, fill = the same at 20% -->
     <color name="lab_bubble_stroke">@color/_orange_lvl_2</color>
     <color name="lab_bubble_fill">#33FFC59A</color>
+
+<!-- ====================================== -->
+<!--    PROGRESS RINGS -->
+<!-- ====================================== -->
+
+    <!-- Done / seen state of every progress ring: goal steps, onboarding tasks and tips -->
+    <color name="progress_ring_done">#8FEDB5</color>
+
+<!-- ====================================== -->
+<!--    SPOTLIGHT -->
+<!-- ====================================== -->
+
+    <!-- Breadcrumb over the whole screen: dim around the hole, text and hand-drawn arrow on top -->
+    <color name="spotlight_dim">#CC000000</color>
+    <color name="spotlight_text">@color/_white</color>
+    <color name="spotlight_arrow">@color/breadcrumb_marker</color>
+    <!-- Footer under the text: gold button with dark text, step counter dimmer than the text -->
+    <color name="spotlight_button_background">@color/breadcrumb_marker</color>
+    <color name="spotlight_button_text">@color/graphite_dark</color>
+    <color name="spotlight_step_counter">#B3FFFFFF</color>
+
+    <!-- Breadcrumb waiting to be opened (HexBreadcrumbMarker): sparkle and its ring in gold - stands out from the orange theme -->
+    <color name="breadcrumb_marker">#D4AF37</color>
 
 <!-- ====================================== -->
 <!--    PRIORITIES -->

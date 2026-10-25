@@ -53,6 +53,13 @@
         <item name="android:windowFullscreen">false</item>
     </style>
 
+    <!-- Landscape review session - dark from the first frame, light bar icons on it -->
+    <style name="Theme.MindShaper.FlashcardsSession" parent="Theme.MindShaper.NoActionBar">
+        <item name="android:windowBackground">@color/flashcard_session_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+
     <!-- Deep-link handler theme (intentionally invisible — no UI) -->
     <style name="Theme.MindShaper.Transparent" parent="Theme.MindShaper.NoActionBar">
         <item name="android:windowBackground">@android:color/transparent</item>

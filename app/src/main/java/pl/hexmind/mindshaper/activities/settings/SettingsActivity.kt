@@ -5,14 +5,17 @@ import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.RadioButton
 import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
+import pl.hexmind.mindshaper.common.ui.dialogs.ShareAppDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,7 +23,6 @@ import kotlinx.coroutines.withContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.home.HomeActivity
-import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.database.initialization.DataSnapshotManager
 import pl.hexmind.mindshaper.databinding.SettingsActivityBinding
 import pl.hexmind.mindshaper.services.CalendarService
@@ -77,10 +79,6 @@ class SettingsActivity : CoreActivity() {
 
         setupUI()
         loadSavedSettings()
-
-        onboardingManager.showTooltipForStep(
-            OnboardingProgressStep.SETTINGS_ENTRY_TOOLTIP, this
-        )
     }
 
     override fun onResume() {
@@ -107,27 +105,28 @@ class SettingsActivity : CoreActivity() {
         initThoughtsValuesSystemConfig()
         initStartScreenConfig()
         initDormantModeConfig()
+        setupShareApp()
         setupListeners()
     }
 
-    private fun setupListeners() {
-        // Onboarding :)
-        binding.tvYourNameSectionHeader.setOnClickListener { // dla beki :P
-            onboardingManager.showTooltipForStep(
-                OnboardingProgressStep.SETTINGS_YOUR_NAME_TOOLTIP, this
-            )
-        }
-        binding.tvThoughtValueScaleSectionHeader.setOnClickListener {
-            onboardingManager.showTooltipForStep(
-                OnboardingProgressStep.SETTINGS_THOUGHT_VALUE_TOOLTIP, this
-            )
-        }
-        binding.tvBackupSectionHeader.setOnClickListener {
-            onboardingManager.showTooltipForStep(
-                OnboardingProgressStep.SETTINGS_BACKUP_TOOLTIP, this
-            )
-        }
+    // ========== SHARE APP ==========
 
+    private fun setupShareApp() {
+        val versionText = installedVersionText()
+        binding.tvAppVersion.text = versionText
+        binding.btnShareApp.setOnClickListener {
+            ShareAppDialog(this, versionText).show()
+        }
+    }
+
+    private fun installedVersionText(): String {
+        // ! not compile time (a real build date needs a buildConfigField that changes every build and invalidates the Gradle cache)
+        val installedAt = packageManager.getPackageInfo(packageName, 0).lastUpdateTime
+        val formattedDate = DateFormat.format("yyyy_MM_dd", installedAt).toString()
+        return getString(R.string.settings_share_app_version, formattedDate)
+    }
+
+    private fun setupListeners() {
         // Save settings button
         binding.btnSaveSettings.setOnClickListener {
             saveSettings()
@@ -147,6 +146,7 @@ class SettingsActivity : CoreActivity() {
         setupPhotoFeatureToggle()
         setupFlashcardsFeatureToggle()
         setupFlashcardsRemindersToggle()
+        setupWorkshopFeatureToggle()
         setupCalendarRemindersToggle()
         setupBackupFeatureToggle()
         setupDormantModeListeners()
@@ -251,8 +251,7 @@ class SettingsActivity : CoreActivity() {
         binding.switchFlashcardsFeature.isChecked = appSettingsStorage.isFlashcardsFeatureEnabled()
         binding.switchFlashcardsFeature.setOnCheckedChangeListener { _, isChecked ->
             appSettingsStorage.setFlashcardsFeatureEnabled(isChecked)
-            syncFlashcardsParamsPickerState()
-            syncFlashcardsRemindersState()
+            syncFlashcardsOptionsVisibility()
             binding.tilesStartScreen.setFlashcardsEnabled(isChecked)
             // Flashcards off = no reminders either
             flashcardsReminders.scheduleNext()
@@ -272,15 +271,20 @@ class SettingsActivity : CoreActivity() {
         }
 
         syncFlashcardsParamsPickerState()
+        syncFlashcardsOptionsVisibility()
+    }
+
+    // Off = options hidden, a hint about the feature in their place
+    private fun syncFlashcardsOptionsVisibility() {
+        val enabled = binding.switchFlashcardsFeature.isChecked
+        binding.llFlashcardsOptions.isVisible = enabled
+        binding.tvFlashcardsFeatureHint.isVisible = !enabled
     }
 
     private fun syncFlashcardsParamsPickerState() {
-        val enabled = binding.switchFlashcardsFeature.isChecked
-        binding.llFlashcardsParamsPicker.alpha = if (enabled) 1f else 0.4f
-
         binding.tvFlashcardsNewPerDay.text = flashcardsNewPerDay.toString()
-        binding.btnFlashcardsNewPerDayDecrease.isEnabled = enabled && flashcardsNewPerDay > AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MIN
-        binding.btnFlashcardsNewPerDayIncrease.isEnabled = enabled && flashcardsNewPerDay < AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MAX
+        binding.btnFlashcardsNewPerDayDecrease.isEnabled = flashcardsNewPerDay > AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MIN
+        binding.btnFlashcardsNewPerDayIncrease.isEnabled = flashcardsNewPerDay < AppSettingsStorage.FLASHCARDS_NEW_PER_DAY_MAX
     }
 
     // ========== FLASHCARDS REMINDERS ==========
@@ -319,12 +323,9 @@ class SettingsActivity : CoreActivity() {
         syncFlashcardsRemindersState()
     }
 
-    // Reminders belong to flashcards - dimmed while they are off, the hour also while the reminders are off
+    // Reminder hour dimmed while the reminders are off
     private fun syncFlashcardsRemindersState() {
-        val flashcardsOn = binding.switchFlashcardsFeature.isChecked
-        binding.switchFlashcardsReminders.isEnabled = flashcardsOn
-
-        val enabled = flashcardsOn && binding.switchFlashcardsReminders.isChecked
+        val enabled = binding.switchFlashcardsReminders.isChecked
         binding.tvFlashcardsReminderHourLabel.alpha = if (enabled) 1f else 0.4f
         binding.hourPickerFlashcardsReminder.isEnabled = enabled
     }
@@ -446,6 +447,30 @@ class SettingsActivity : CoreActivity() {
             .setOnCancel { binding.switchPhotoFeature.isChecked = false }
             .show()
     }
+
+    // ========== WORKSHOP FEATURE ==========
+
+    // No permission to ask for - the switch writes straight to the preferences
+    // Off keeps the calendar entries already created - and their "complete" link still works
+    private fun setupWorkshopFeatureToggle() {
+        binding.switchWorkshopFeature.isChecked = appSettingsStorage.isWorkshopFeatureEnabled()
+        binding.switchWorkshopFeature.setOnCheckedChangeListener { _, isChecked ->
+            appSettingsStorage.setWorkshopFeatureEnabled(isChecked)
+            syncWorkshopOptionsVisibility()
+            binding.tilesStartScreen.setWorkshopEnabled(isChecked)
+        }
+
+        syncWorkshopOptionsVisibility()
+    }
+
+    // Off = options hidden, a hint about the feature in their place
+    private fun syncWorkshopOptionsVisibility() {
+        val enabled = binding.switchWorkshopFeature.isChecked
+        binding.llWorkshopOptions.isVisible = enabled
+        binding.tvWorkshopFeatureHint.isVisible = !enabled
+    }
+
+    // ========== CALENDAR REMINDERS ==========
 
     private fun setupCalendarRemindersToggle() {
         binding.switchCalendarReminders.setOnCheckedChangeListener { _, isChecked ->
@@ -679,6 +704,7 @@ class SettingsActivity : CoreActivity() {
     private fun initStartScreenConfig() {
         binding.tilesStartScreen.setSelected(appSettingsStorage.getStartScreen())
         binding.tilesStartScreen.setFlashcardsEnabled(appSettingsStorage.isFlashcardsFeatureEnabled())
+        binding.tilesStartScreen.setWorkshopEnabled(appSettingsStorage.isWorkshopFeatureEnabled())
     }
 
     // ========== DORMANT MODE ==========
@@ -687,13 +713,16 @@ class SettingsActivity : CoreActivity() {
         binding.switchDormantMode.isChecked = appSettingsStorage.isDormantModeEnabled()
         binding.etDormantDays.setText(appSettingsStorage.getDormantDaysThreshold().toString())
         binding.etDormantValue.setText(appSettingsStorage.getDormantValueThreshold().toString())
-        syncDormantPickerState()
+        syncDormantOptionsVisibility()
         validateDormantDaysInput()
         validateDormantValueInput()
     }
 
     private fun setupDormantModeListeners() {
-        binding.switchDormantMode.setOnCheckedChangeListener { _, _ -> syncDormantPickerState() }
+        binding.switchDormantMode.setOnCheckedChangeListener { _, _ -> syncDormantOptionsVisibility() }
+
+        // Value threshold follows the scale picked on the tiles, not the stored one
+        binding.tilesValueSystem.onSelectionChanged = { clampDormantValueToScale() }
 
         // TextWatcher for live validation of value threshold
         binding.etDormantValue.addTextChangedListener(object : android.text.TextWatcher {
@@ -714,11 +743,11 @@ class SettingsActivity : CoreActivity() {
         })
     }
 
-    private fun syncDormantPickerState() {
+    // Off = thresholds hidden, a hint about the mode in their place
+    private fun syncDormantOptionsVisibility() {
         val enabled = binding.switchDormantMode.isChecked
-        binding.llDormantThresholdsPicker.alpha = if (enabled) 1f else 0.4f
-        binding.etDormantDays.isEnabled  = enabled
-        binding.etDormantValue.isEnabled = enabled
+        binding.llDormantThresholdsPicker.isVisible = enabled
+        binding.tvDormantModeHint.isVisible = !enabled
     }
 
     private fun validateDormantDaysInput() : Boolean {
@@ -734,8 +763,23 @@ class SettingsActivity : CoreActivity() {
         return isValid
     }
 
+    // A threshold above the new scale drops to its max - the text watcher validates it again
+    private fun clampDormantValueToScale() {
+        val max = selectedDormantValueMax()
+        val raw = binding.etDormantValue.text?.toString()?.toIntOrNull()
+        if (raw != null && raw > max) {
+            binding.etDormantValue.setText(max.toString())
+        }
+        else {
+            validateDormantValueInput()
+        }
+    }
+
+    // Scale chosen on the tiles - it is stored only on save
+    private fun selectedDormantValueMax(): Int = binding.tilesValueSystem.getSelected().maxValue
+
     private fun validateDormantValueInput() : Boolean {
-        val max = appSettingsStorage.getDormantValueMax()
+        val max = selectedDormantValueMax()
         val raw = binding.etDormantValue.text?.toString()?.toIntOrNull()
         val isValid = raw != null && raw in AppSettingsStorage.DORMANT_VALUE_MIN..max
         binding.tvDormantModeError.visibility = if (isValid) View.INVISIBLE else View.VISIBLE
@@ -755,7 +799,7 @@ class SettingsActivity : CoreActivity() {
 
     private fun readDormantValue(): Int? {
         val raw = binding.etDormantValue.text?.toString()?.toIntOrNull() ?: return null
-        return raw.coerceIn(AppSettingsStorage.DORMANT_VALUE_MIN, appSettingsStorage.getDormantValueMax())
+        return raw.coerceIn(AppSettingsStorage.DORMANT_VALUE_MIN, selectedDormantValueMax())
     }
 
     /**
@@ -825,19 +869,19 @@ class SettingsActivity : CoreActivity() {
 
     private fun loadBackupFile() {
         selectedBackupUri?.let { uri ->
-            try {
-                lifecycleScope.launch {
-                    val fileName = mediaStorageService.getFileNameFromUri(uri)
-                    dataSnapshotManager.restoreSnapshot(fileName, this@SettingsActivity)
-                    showShortToast(R.string.settings_backup_loaded_success)
-                    // Reset after successful load
-                    clearBackupSelection()
-                    refreshSnapshotStats()
-                }
-            }
-            catch (e: Exception) {
-                showBackupErrorMessage(getString(R.string.settings_backup_error_loading))
-                showShortToast(R.string.settings_backup_error_loading)
+            lifecycleScope.launch {
+                // ! The result decides the message - a failed load used to report success as well
+                dataSnapshotManager.restoreSnapshot(uri, this@SettingsActivity)
+                    .onSuccess {
+                        showShortToast(R.string.settings_backup_loaded_success)
+                        // Reset after successful load
+                        clearBackupSelection()
+                        refreshSnapshotStats()
+                    }
+                    .onFailure { error ->
+                        showBackupErrorMessage(error.message ?: getString(R.string.settings_backup_error_loading))
+                        showShortToast(R.string.settings_backup_error_loading)
+                    }
             }
         }
     }
@@ -865,6 +909,16 @@ class SettingsActivity : CoreActivity() {
      * Exceptions: voice/photo feature toggles are saved immediately (permission flow side effects).
      */
     private fun saveSettings() {
+        // Dormant thresholds are validated first - with a wrong one nothing is stored
+        if (binding.switchDormantMode.isChecked && !validateDormantDaysInput()) {
+            showShortToast(R.string.settings_dormant_mode_days_error_toast)
+            return
+        }
+        if (binding.switchDormantMode.isChecked && !validateDormantValueInput()) {
+            showShortToast(R.string.settings_dormant_mode_value_error_toast)
+            return
+        }
+
         val yourName = binding.etYourName.text?.toString()?.trim()
             ?.takeIf { it.isNotEmpty() }
             ?: getString(R.string.settings_your_name_default)
@@ -884,14 +938,6 @@ class SettingsActivity : CoreActivity() {
         flashcardsReminders.scheduleNext()
 
         // Dormant mode
-        if (binding.switchDormantMode.isChecked && !validateDormantDaysInput()) {
-            showShortToast(R.string.settings_dormant_mode_days_error_toast)
-            return
-        }
-        if (binding.switchDormantMode.isChecked && !validateDormantValueInput()) {
-            showShortToast(R.string.settings_dormant_mode_value_error_toast)
-            return
-        }
         appSettingsStorage.setDormantModeEnabled(binding.switchDormantMode.isChecked)
         appSettingsStorage.setDormantDaysThreshold(readDormantDays() ?: AppSettingsStorage.DORMANT_DAYS_DEFAULT)
         appSettingsStorage.setDormantValueThreshold(readDormantValue() ?: AppSettingsStorage.DORMANT_VALUE_DEFAULT)

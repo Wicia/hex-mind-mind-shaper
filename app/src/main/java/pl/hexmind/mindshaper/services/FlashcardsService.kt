@@ -58,14 +58,15 @@ class FlashcardsService @Inject constructor(
      * What is up for review right now - with the user's limits (Settings).
      * @param library all the flashcards - the daily limit of new flashcards counts over all of them
      * @param setId null = one session over all the flashcards
+     * @param day tomorrow = what waits after today's session (the end card)
      */
-    fun planReview(library: FlashcardsLibraryDTO, setId: Int? = null): FlashcardsReview.Plan =
+    fun planReview(library: FlashcardsLibraryDTO, setId: Int? = null, day: LocalDate = LocalDate.now()): FlashcardsReview.Plan =
         FlashcardsReview.plan(
             library = library,
             params  = FlashcardsReview.Params(
                 newPerDay = appSettingsStorage.getFlashcardsNewPerDay()
             ),
-            today   = LocalDate.now(),
+            today   = day,
             setId   = setId
         )
 
@@ -164,6 +165,11 @@ class FlashcardsService @Inject constructor(
     /** First rating of the flashcard in a review session -> its next level / review date (FlashcardsScheduler) */
     suspend fun rate(flashcard: FlashcardDTO, rating: FlashcardRating) {
         updateProgress(FlashcardsScheduler.rate(flashcard, rating, LocalDate.now()))
+    }
+
+    /** Rating taken back in the session - [flashcard] holds the progress from before it */
+    suspend fun restoreProgress(flashcard: FlashcardDTO) {
+        updateProgress(flashcard)
     }
 
     /**

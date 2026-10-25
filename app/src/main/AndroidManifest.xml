@@ -35,6 +35,7 @@
         </intent>
     </queries>
 
+    <!-- All screens portrait-only; PhotoFullscreenDialog unlocks rotation while it is shown -->
     <application
         android:name="pl.hexmind.mindshaper.ApplicationMain"
         android:allowBackup="true"
@@ -48,6 +49,7 @@
 
         <activity
             android:name="pl.hexmind.mindshaper.activities.home.HomeActivity"
+            android:screenOrientation="portrait"
             android:exported="true"
             android:theme="@style/Theme.MindShaper.NoActionBar">
             <intent-filter>
@@ -61,6 +63,7 @@
         -->
         <activity
             android:name="pl.hexmind.mindshaper.activities.details.DetailsActivity"
+            android:screenOrientation="portrait"
             android:exported="false"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity"
@@ -71,6 +74,7 @@
         -->
         <activity
             android:name="pl.hexmind.mindshaper.activities.capture.CaptureActivity"
+            android:screenOrientation="portrait"
             android:exported="false"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity"
@@ -81,6 +85,7 @@
         -->
         <activity
             android:name="pl.hexmind.mindshaper.activities.stream.StreamActivity"
+            android:screenOrientation="portrait"
             android:exported="false"
             android:windowSoftInputMode="adjustNothing"
             android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity"
@@ -88,42 +93,60 @@
 
         <activity
             android:name="pl.hexmind.mindshaper.activities.settings.SettingsActivity"
+            android:screenOrientation="portrait"
             android:exported="true"
             android:theme="@style/Theme.MindShaper.NoActionBar"
             android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity"/>
 
         <activity
             android:name="pl.hexmind.mindshaper.activities.flashcards.FlashcardsActivity"
+            android:screenOrientation="portrait"
             android:exported="false"
             android:theme="@style/Theme.MindShaper.NoActionBar"
             android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity" />
 
         <activity
             android:name="pl.hexmind.mindshaper.activities.flashcards.FlashcardSetActivity"
+            android:screenOrientation="portrait"
             android:exported="false"
             android:theme="@style/Theme.MindShaper.NoActionBar"
             android:parentActivityName="pl.hexmind.mindshaper.activities.flashcards.FlashcardsActivity" />
 
+        <!--
+            Review session - landscape only, full screen
+            configChanges - a turn between the two landscape sides must not restart the session
+        -->
+        <activity
+            android:name="pl.hexmind.mindshaper.activities.flashcards.FlashcardsSessionActivity"
+            android:screenOrientation="sensorLandscape"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:theme="@style/Theme.MindShaper.FlashcardsSession" />
+
         <activity
             android:name="pl.hexmind.mindshaper.activities.workshop.WorkshopActivity"
+            android:screenOrientation="portrait"
             android:exported="false"
             android:theme="@style/Theme.MindShaper.NoActionBar"
             android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity" />
 
         <activity
             android:name="pl.hexmind.mindshaper.activities.onboarding.OnboardingActivity"
+            android:screenOrientation="portrait"
             android:exported="false"
             android:theme="@style/Theme.MindShaper.NoActionBar"
             android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity" />
 
         <activity
             android:name="pl.hexmind.mindshaper.activities.metadata.MetadataActivity"
+            android:screenOrientation="portrait"
             android:exported="false"
             android:theme="@style/Theme.MindShaper.NoActionBar"
             android:parentActivityName="pl.hexmind.mindshaper.activities.home.HomeActivity" />
 
         <activity
             android:name="pl.hexmind.mindshaper.activities.workshop.GoalDetailActivity"
+            android:screenOrientation="portrait"
             android:exported="false"
             android:theme="@style/Theme.MindShaper.NoActionBar"
             android:parentActivityName="pl.hexmind.mindshaper.activities.workshop.WorkshopActivity" />

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Card of the review session and the deck under it (colored by backgroundTint) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="@dimen/flashcard_session_card_radius" />
+    <solid android:color="@color/flashcard_background" />
+</shape>

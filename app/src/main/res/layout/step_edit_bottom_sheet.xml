@@ -46,6 +46,7 @@
                     app:tint="@color/separator_leaf" />
 
                 <TextView
+                    android:id="@+id/tv_step_sheet_title"
                     style="@style/DialogTile"
                     android:textColor="@color/text_secondary"
                     android:layout_width="wrap_content"
@@ -67,29 +68,15 @@
             </LinearLayout>
 
             <!-- Description field -->
-            <com.google.android.material.textfield.TextInputLayout
+            <pl.hexmind.mindshaper.common.ui.views.HexInputField
+                android:id="@+id/hif_step_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
-                app:boxStrokeColor="@color/input_stroke_focused"
-                app:hintTextColor="@color/text_secondary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_step_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/shape_edit_text"
-                    android:inputType="textMultiLine|textCapSentences"
-                    android:minLines="1"
-                    android:maxLines="2"
-                    android:textColor="@color/text_primary"
-                    android:textColorHint="@color/text_secondary"
-                    android:fontFamily="@font/baloo2"
-                    android:textSize="16sp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                app:hexInputType="text"
+                app:maxLines="2" />
 
             <!-- Repetitions section label -->
             <TextView
@@ -196,6 +183,7 @@
             <!-- Calendar reminder toggle -->
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/cb_reminder_enabled"
+                style="@style/HexCheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -203,10 +191,6 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/workshop_reminder_checkbox_label"
-                android:fontFamily="@font/baloo2"
-                android:textSize="15sp"
-                android:textColor="@color/text_primary"
-                app:buttonIconTint="@color/_orange_lvl_3"
                 />
 
             <!-- Reminder config : time picker + weekday toggles -->

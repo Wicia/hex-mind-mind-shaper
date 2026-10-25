@@ -19,65 +19,223 @@
         <!-- Activity header (icon + title) -->
         <include layout="@layout/common_header_activity" />
 
-        <!-- Overall progress: seen tips out of all -->
+        <!-- Tips on / off with the overall progress - one card to stand out from the background -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:background="@drawable/shape_card_standalone">
 
-            <!-- Progress label -->
+            <!-- The same setting as the welcome choice -->
+            <pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
+                android:id="@+id/switch_onboarding_tips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="18dp"
+                android:paddingEnd="16dp"
+                android:text="@string/workshop_onboarding_tips_switch" />
+
+            <!-- Feature benefit - shown only while the tips are off -->
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_onboarding_tips_hint"
+                style="@style/TextView_Section_Info"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:text="@string/workshop_onboarding_progress"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                />
+                android:layout_marginTop="4dp"
+                android:paddingStart="18dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="6dp"
+                android:text="@string/workshop_onboarding_tips_hint" />
 
-            <!-- Progress bar -->
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/lpi_onboarding_progress"
-                android:layout_width="0dp"
+            <!-- Overall progress: done tasks and seen tips out of all - hidden while the tips are off -->
+            <LinearLayout
+                android:id="@+id/ll_onboarding_progress"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:indeterminate="false"
-                app:trackThickness="8dp"
-                app:trackCornerRadius="4dp"
-                app:indicatorTrackGapSize="0dp"
-                app:indicatorColor="@color/_orange_lvl_3"
-                app:trackColor="@color/_orange_lvl_1"
-                />
+                android:orientation="vertical">
 
-            <!-- Progress percent -->
-            <TextView
-                android:id="@+id/tv_onboarding_progress_percent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:minWidth="40dp"
-                android:gravity="end"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                tools:text="40%"
-                />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@color/_gray_lvl_1"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="18dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="6dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <!-- Progress label -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:text="@string/workshop_onboarding_progress"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        />
+
+                    <!-- Progress bar -->
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/lpi_onboarding_progress"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:indeterminate="false"
+                        app:trackThickness="8dp"
+                        app:trackCornerRadius="4dp"
+                        app:indicatorTrackGapSize="0dp"
+                        app:indicatorColor="@color/_orange_lvl_3"
+                        app:trackColor="@color/_orange_lvl_1"
+                        />
+
+                    <!-- Progress percent -->
+                    <TextView
+                        android:id="@+id/tv_onboarding_progress_percent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:minWidth="40dp"
+                        android:gravity="end"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp"
+                        tools:text="40%"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <!-- Onboarding cards list -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_onboarding_sections"
+        <!-- Tasks and sections - hidden while the tips are off -->
+        <LinearLayout
+            android:id="@+id/ll_onboarding_options"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:nestedScrollingEnabled="false"
-            android:overScrollMode="never"
-            tools:listitem="@layout/onboarding_card_item"
-            />
+            android:orientation="vertical">
+
+            <!-- Tasks of the Thoughts area - all done in Stream -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:background="@drawable/shape_card_standalone">
+
+                <!-- Header: icon + label + open Stream -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:baselineAligned="false"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp">
+
+                    <!-- Icon + label - one target for the first step of the breadcrumb spotlight -->
+                    <LinearLayout
+                        android:id="@+id/ll_onboarding_tasks_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <!-- Stream icon -->
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="6dp"
+                            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+                            android:src="@drawable/ic_activity_stream"
+                            app:tint="@color/text_secondary"
+                            />
+
+                        <!-- ! wrap_content: the breadcrumb sparkle stands right after the text, not after the stretched view -->
+                        <TextView
+                            android:id="@+id/tv_onboarding_tasks_header"
+                            style="@style/TextView_Header_Section"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="0dp"
+                            android:textSize="15sp"
+                            android:text="@string/workshop_onboarding_tasks_thoughts_header"
+                            />
+
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_onboarding_tasks_open"
+                        style="@style/SecondaryActionButton"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center_vertical"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        app:iconSize="20dp"
+                        app:icon="@drawable/ic_open_screen"
+                        app:iconGravity="textStart"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@color/_gray_lvl_1"
+                    />
+
+                <!-- Task rows are added here at bind time -->
+                <LinearLayout
+                    android:id="@+id/ll_onboarding_tasks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="6dp"
+                    />
+
+            </LinearLayout>
+
+            <!-- Onboarding cards list: tips per screen -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_onboarding_sections"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                tools:listitem="@layout/onboarding_card_item"
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
 

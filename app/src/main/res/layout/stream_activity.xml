@@ -59,6 +59,7 @@
             android:layout_marginEnd="8dp"
             android:text="@string/stream_filter_button_none"
             app:icon="@drawable/ic_action_filter"
+            app:iconSize="24dp"
             app:layout_constraintEnd_toStartOf="@+id/btn_sort"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginTop="8dp"
-            app:icon="@drawable/ic_sorting"
+            app:icon="@drawable/ic_sort_desc"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/btn_filter"
             app:layout_constraintTop_toBottomOf="@+id/cv_search_bar"
@@ -90,6 +91,18 @@
             android:clipChildren="false"
             android:clipToPadding="false"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_sort" />
+
+        <!-- Empty state: no thoughts at all / none matching the criteria -->
+        <TextView
+            android:id="@+id/tv_stream_empty"
+            style="@style/TextView_EmptyState"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_sort" />

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="18dp"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <!-- Header -->
+    <TextView
+        android:id="@+id/tv_welcome_header"
+        style="@style/Dialog_Header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        tools:text="@string/home_welcome_name_title" />
+
+    <!-- Page 1: your name -->
+    <LinearLayout
+        android:id="@+id/ll_page_your_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/Dialog_Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/home_welcome_name_text" />
+
+        <pl.hexmind.mindshaper.common.ui.views.HexInputField
+            android:id="@+id/hif_your_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="@string/settings_your_name_default"
+            app:inlineHint="true"
+            app:maxLines="1" />
+
+    </LinearLayout>
+
+    <!-- Page 2: tips or not -->
+    <LinearLayout
+        android:id="@+id/ll_page_onboarding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            style="@style/Dialog_Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:text="@string/home_welcome_onboarding_question" />
+
+    </LinearLayout>
+
+    <!-- Dots indicator -->
+    <LinearLayout
+        android:id="@+id/ll_dots_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:orientation="horizontal" />
+
+    <!-- Buttons: page answer - Skip / Save, then No / Yes -->
+    <!-- ! Both match_parent in a wrap_content row = the taller one sets the height of both -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="12dp"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_welcome_negative"
+            style="@style/AuxiliaryActionButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            tools:text="@string/home_welcome_name_btn_skip" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_welcome_positive"
+            style="@style/SecondaryActionButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textStyle="bold"
+            tools:text="@string/home_welcome_name_btn_save" />
+
+    </LinearLayout>
+
+</LinearLayout>

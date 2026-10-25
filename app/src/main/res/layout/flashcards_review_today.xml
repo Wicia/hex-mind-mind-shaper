@@ -36,7 +36,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
-                android:fontFamily="@font/alegreya_regular" />
+                android:fontFamily="@font/literata_regular" />
 
             <!-- Counts / "all done" + the held back new ones in a second line -->
             <TextView

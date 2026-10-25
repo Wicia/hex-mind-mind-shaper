@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.stream.StreamActivity
-import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.common.regex.HexTags
 import pl.hexmind.mindshaper.common.ui.views.HexTabSwitch
@@ -184,10 +183,6 @@ class MetadataActivity : CoreActivity() {
         glDomains.visibility = View.VISIBLE
 
         loadDomainButtons()
-
-        onboardingManager.showTooltipForStep(
-            OnboardingProgressStep.METADATA_DOMAINS_TOOLTIP, this
-        )
     }
 
     private fun loadDomainButtons() {

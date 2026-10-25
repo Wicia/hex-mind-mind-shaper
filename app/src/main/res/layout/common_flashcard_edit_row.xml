@@ -6,7 +6,7 @@
     tools:orientation="vertical"
     tools:parentTag="android.widget.LinearLayout">
 
-    <!-- Remove left (app standard: the X always sits on the left), flashcard number right.
+    <!-- Flashcard number left, remove right (app standard: the X always sits on the right).
          Hidden until FlashcardEditRow.setOnRemoveClickListener -->
     <LinearLayout
         android:id="@+id/ll_flashcard_header"
@@ -16,22 +16,6 @@
         android:gravity="center_vertical"
         android:visibility="gone">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_flashcard_remove"
-            style="@style/SecondaryActionButton.Ghost"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-            app:icon="@drawable/ic_close"
-            app:iconGravity="textStart"
-            app:iconSize="20dp"
-            app:iconTint="@color/app_background" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
-
         <TextView
             android:id="@+id/tv_flashcard_number"
             android:layout_width="wrap_content"
@@ -39,6 +23,22 @@
             android:textColor="@color/app_background"
             android:textStyle="bold"
             tools:text="Fiszka #1" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_flashcard_remove"
+            style="@style/SecondaryActionButton.Ghost"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+            app:icon="@drawable/ic_delete"
+            app:iconGravity="textStart"
+            app:iconSize="20dp"
+            app:iconTint="@color/app_background" />
 
     </LinearLayout>
 

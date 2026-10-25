@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Flashcards bank: files listed by the R.raw field names (FlashcardsBank) - R8 would drop the unused fields
+-keepclassmembers class pl.hexmind.mindshaper.R$raw {
+    public static <fields>;
+}

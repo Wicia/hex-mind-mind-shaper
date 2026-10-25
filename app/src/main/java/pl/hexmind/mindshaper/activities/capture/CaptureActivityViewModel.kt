@@ -159,16 +159,22 @@ class CaptureActivityViewModel @Inject constructor(
             }
         }
 
-        // Check if at least ONE content exists
-        val hasContent = !draft.richText.isNullOrBlank()
-                || tempAudioFile != null
-                || tempPhotoUri != null
-
-        if (!hasContent) {
+        if (!hasContent()) {
             return ValidationResult.Error(R.string.capture_error_no_content)
         }
 
         return ValidationResult.Valid()
+    }
+
+    /**
+     * At least ONE form exists - note, recording or photo (title and tags alone don't count)
+     */
+    fun hasContent(): Boolean {
+        val draft = _draftThought.value ?: return false
+
+        return !draft.richText.isNullOrBlank()
+                || tempAudioFile != null
+                || tempPhotoUri != null
     }
 
     // ========================================

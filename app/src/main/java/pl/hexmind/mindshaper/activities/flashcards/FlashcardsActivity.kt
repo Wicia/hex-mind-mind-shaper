@@ -12,9 +12,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
+import pl.hexmind.mindshaper.common.ui.TextFilePicker
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardEditDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardsImportDialog
-import pl.hexmind.mindshaper.common.ui.dialogs.FlashcardsSessionDialog
 import pl.hexmind.mindshaper.common.ui.views.HexTabSwitch
 import pl.hexmind.mindshaper.common.ui.views.HexWavyFrameView
 import pl.hexmind.mindshaper.common.ui.views.SpeedDial
@@ -33,6 +33,8 @@ import pl.hexmind.mindshaper.services.dto.FlashcardsLibraryDTO
 class FlashcardsActivity : CoreActivity() {
 
     private val viewModel: FlashcardsViewModel by viewModels()
+
+    private val textFilePicker = TextFilePicker(this)
 
     private lateinit var tabsFlashcards: HexTabSwitch
     private lateinit var llLoose: LinearLayout
@@ -64,7 +66,7 @@ class FlashcardsActivity : CoreActivity() {
             }
         },
         onReviewTap = { set ->
-            FlashcardsSessionDialog.open(this, viewModel.planReview(library, set.id), onRated = viewModel::rate)
+            FlashcardsSessionActivity.open(this, viewModel.planReview(library, set.id), set.id)
         }
     )
 
@@ -108,7 +110,7 @@ class FlashcardsActivity : CoreActivity() {
         }
 
         btnReviewToday.setOnClickListener {
-            FlashcardsSessionDialog.open(this, viewModel.planReview(library), onRated = viewModel::rate)
+            FlashcardsSessionActivity.open(this, viewModel.planReview(library))
         }
 
         setupFab()
@@ -130,7 +132,7 @@ class FlashcardsActivity : CoreActivity() {
         val fab = findViewById<FloatingActionButton>(R.id.fab_add)
         speedDial = SpeedDial(this, fab)
         speedDial.addOption(R.string.flashcards_speed_dial_import, R.drawable.ic_action_import) {
-            FlashcardsImportDialog(this, onImport = viewModel::importLooseFlashcards).show()
+            FlashcardsImportDialog(this, textFilePicker, onImport = viewModel::importLooseFlashcards).show()
         }
         speedDial.addOption(R.string.flashcards_speed_dial_add, R.drawable.ic_action_add_flashcards) {
             openAddLoose()
@@ -189,7 +191,7 @@ class FlashcardsActivity : CoreActivity() {
         if (!pendingSession) return
         pendingSession = false
 
-        FlashcardsSessionDialog.open(this, viewModel.planReview(library), onRated = viewModel::rate)
+        FlashcardsSessionActivity.open(this, viewModel.planReview(library))
     }
 
     private fun startPendingNewLoose() {

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Domain tile in Tagi i Domeny - solid fill, not a tint: the elevation shadow takes its opacity from the fill -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="16dp" />
+    <solid android:color="@color/_orange_lvl_1" />
+</shape>

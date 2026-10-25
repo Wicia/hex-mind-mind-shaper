@@ -40,7 +40,7 @@ class DomainEditBottomSheet(
     private var _binding: DomainEditBottomsheetBinding? = null
     private val binding get() = _binding!!
 
-    private var onConfirm: ((name: String, iconId: Int) -> Unit)? = null
+    private var onConfirm: ((name: String, iconId: Int?) -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -86,10 +86,10 @@ class DomainEditBottomSheet(
             val name = binding.hifDomainName.getText()
             val iconId = binding.igvDomainIcons.selectedItemId
 
-            // Validate name — icon selection is optional (keeps current if null)
+            // Validate name — icon selection is optional (no icon means the default icon)
             when (val result = validator.validateName(name)) {
                 is ValidationResult.Valid -> {
-                    onConfirm?.invoke(name, iconId ?: return@setOnClickListener)
+                    onConfirm?.invoke(name, iconId)
                     dismiss()
                 }
                 is ValidationResult.Error -> {
@@ -119,15 +119,15 @@ class DomainEditBottomSheet(
             fragmentManager: FragmentManager,
             items: List<IconsGridItem>,
             domainName: String,
-            selectedIconId: Int,
+            selectedIconId: Int?,
             validator: DomainValidator,
-            onConfirm: (name: String, iconId: Int) -> Unit
+            onConfirm: (name: String, iconId: Int?) -> Unit
         ) {
             DomainEditBottomSheet(validator).apply {
                 arguments = Bundle().apply {
                     putParcelableArrayList(ARG_ITEMS, ArrayList(items))
                     putString(ARG_DOMAIN_NAME, domainName)
-                    putInt(ARG_SELECTED_ICON_ID, selectedIconId)
+                    selectedIconId?.let { putInt(ARG_SELECTED_ICON_ID, it) }
                 }
                 this.onConfirm = onConfirm
             }.show(fragmentManager, TAG)

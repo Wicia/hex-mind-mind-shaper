@@ -2,7 +2,6 @@ package pl.hexmind.mindshaper.activities.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.format.DateFormat
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -16,7 +15,9 @@ import pl.hexmind.mindshaper.activities.onboarding.OnboardingActivity
 import pl.hexmind.mindshaper.activities.stream.StreamActivity
 import pl.hexmind.mindshaper.activities.workshop.WorkshopActivity
 import pl.hexmind.mindshaper.common.formatting.setColoredText
-import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
+import pl.hexmind.mindshaper.common.onboarding.OnboardingSection
+import pl.hexmind.mindshaper.common.ui.dialogs.WelcomeDialog
+import pl.hexmind.mindshaper.common.ui.views.HexSpotlight
 import pl.hexmind.mindshaper.services.GreetingsService
 import pl.hexmind.mindshaper.services.dto.StartScreen
 
@@ -29,8 +30,6 @@ class HomeActivity : CoreActivity() {
     private lateinit var fabNewThought: FloatingActionButton
 
     private lateinit var tvHeaderGreetings : TextView
-
-    private lateinit var tvBuildVersion : TextView
 
     private lateinit var labBubbles: LabBubblesAnimator
 
@@ -48,15 +47,45 @@ class HomeActivity : CoreActivity() {
         initViews()
         setupClickListeners()
 
-        onboardingManager.showTooltipForStep(
-            OnboardingProgressStep.HOME_TOOLTIP, this
-        )
+        if (onboardingManager.isWelcomePending()) {
+            showWelcomeDialog()
+        }
+    }
+
+    private fun showWelcomeDialog() {
+        WelcomeDialog(
+            context = this,
+            onYourNameSaved = { yourName ->
+                appSettingsStorage.setYourName(yourName)
+                setupHeaderWithGreetings()
+            },
+            onOnboardingChosen = { enabled ->
+                appSettingsStorage.setOnboardingEnabled(enabled)
+                syncOnboardingEntry()
+                if (enabled) showOnboardingSpotlight()
+            },
+            onClosed = {
+                onboardingManager.markWelcomeShown()
+            }
+        ).show()
+    }
+
+    // Points at the flask once, right after the tips were chosen in the welcome
+    private fun showOnboardingSpotlight() {
+        HexSpotlight.show(
+            activity = this,
+            target   = findViewById(R.id.iv_onboarding),
+            text       = getString(R.string.home_onboarding_spotlight),
+            buttonText = getString(R.string.common_spotlight_btn_got_it)
+        ) {
+            startActivity(Intent(this, OnboardingActivity::class.java))
+        }
     }
 
     // ! Guarded: a rerouted cold launch finishes in onCreate before the views exist
     override fun onResume() {
         super.onResume()
-        if (::labBubbles.isInitialized) labBubbles.start()
+        if (::labBubbles.isInitialized) syncOnboardingEntry()
     }
 
     override fun onPause() {
@@ -67,13 +96,23 @@ class HomeActivity : CoreActivity() {
     private fun initViews() {
         setupHeader(R.drawable.ic_activity_home, R.string.common_foobar)
         fabNewThought = findViewById(R.id.fab_new_thought)
-        tvBuildVersion = findViewById(R.id.tv_build_version)
         labBubbles = LabBubblesAnimator(
             container = findViewById(R.id.fl_onboarding_entry),
             flaskIcon = findViewById(R.id.iv_onboarding)
         )
         setupHeaderWithGreetings()
-        setupBuildVersion()
+    }
+
+    // The flask is always there - tips can be turned on inside; bubbles only while the tips are on
+    private fun syncOnboardingEntry() {
+        val isOnboardingEnabled = appSettingsStorage.isOnboardingEnabled()
+
+        if (isOnboardingEnabled) {
+            labBubbles.start()
+        }
+        else {
+            labBubbles.stop()
+        }
     }
 
     private fun setupHeaderWithGreetings(){
@@ -86,13 +125,6 @@ class HomeActivity : CoreActivity() {
 
         tvHeaderGreetings.setColoredText(newGreetingsText, appSettingsStorage.getYourName(),
             ContextCompat.getColor(this, R.color._orange_lvl_3))
-    }
-
-    private fun setupBuildVersion() {
-        // ! not compile time (a real build date needs a buildConfigField that changes every build and invalidates the Gradle cache)
-        val installedAt = packageManager.getPackageInfo(packageName, 0).lastUpdateTime
-        val formattedDate = DateFormat.format("yyyy_MM_dd", installedAt).toString()
-        tvBuildVersion.text = getString(R.string.home_build_version, formattedDate)
     }
 
     private fun setupClickListeners() {
@@ -126,9 +158,9 @@ class HomeActivity : CoreActivity() {
 
         val targetScreen = when (appSettingsStorage.getStartScreen()) {
             StartScreen.STREAM     -> StreamActivity::class.java
-            // Flashcards feature off = its screen is hidden, Home stays
+            // Feature off = its screen is hidden, Home stays
             StartScreen.FLASHCARDS -> if (appSettingsStorage.isFlashcardsFeatureEnabled()) FlashcardsActivity::class.java else return false
-            StartScreen.WORKSHOP   -> WorkshopActivity::class.java
+            StartScreen.WORKSHOP   -> if (appSettingsStorage.isWorkshopFeatureEnabled())   WorkshopActivity::class.java   else return false
             StartScreen.HOME       -> return false
         }
 

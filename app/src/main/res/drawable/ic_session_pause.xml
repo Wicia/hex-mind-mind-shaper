@@ -1,0 +1,12 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Two rounded bars - filled, the thin strokes looked poor in the small circle -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M6.5,4h2a1.5,1.5 0,0 1,1.5 1.5v13a1.5,1.5 0,0 1,-1.5 1.5h-2a1.5,1.5 0,0 1,-1.5 -1.5v-13a1.5,1.5 0,0 1,1.5 -1.5Z
+            M15.5,4h2a1.5,1.5 0,0 1,1.5 1.5v13a1.5,1.5 0,0 1,-1.5 1.5h-2a1.5,1.5 0,0 1,-1.5 -1.5v-13a1.5,1.5 0,0 1,1.5 -1.5Z" />
+</vector>

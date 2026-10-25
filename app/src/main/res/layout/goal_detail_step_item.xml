@@ -34,7 +34,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 app:indicatorSize="32dp"
-                app:trackThickness="7dp"
+                app:trackThickness="6dp"
                 app:trackCornerRadius="4dp"
                 app:indicatorColor="@color/_orange_lvl_3"
                 app:trackColor="@color/_orange_lvl_1"

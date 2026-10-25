@@ -20,11 +20,68 @@
         android:text="@string/flashcards_import_header"
         />
 
-    <!-- Separator: label + tiles -->
-    <LinearLayout
+    <!-- Source tabs (Input / Z banku / Z pliku) - light labels, the dialog sits on the dark scrim -->
+    <pl.hexmind.mindshaper.common.ui.views.HexTabSwitch
+        android:id="@+id/tabs_flashcards_import_source"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        app:tabActiveTextColor="@color/app_background"
+        app:tabInactiveTextColor="@color/_gray_lvl_2"
+        />
+
+    <!-- Bank source: one chip per bank file (common_flashcard_set_picker_chip) -->
+    <ScrollView
+        android:id="@+id/sv_flashcards_import_bank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Bank label -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/flashcards_import_bank_label"
+                android:textColor="@color/graphite_beige"
+                />
+
+            <!-- Bank chips - side by side, wrapping to the next line -->
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/cg_flashcards_import_bank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:chipSpacingHorizontal="8dp"
+                app:chipSpacingVertical="0dp"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- File source: pick a file -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_flashcards_import_file"
+        style="@style/ChipButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/flashcards_import_pick_file"
+        android:visibility="gone"
+        />
+
+    <!-- Separator: label + tiles - hidden for the bank (its files always use the dash) -->
+    <LinearLayout
+        android:id="@+id/ll_flashcards_import_separator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -48,42 +105,70 @@
 
     </LinearLayout>
 
-    <!-- Text to import -->
-    <com.google.android.material.textfield.TextInputLayout
+    <!-- Text to import + parse result - hidden until the bank / file source has data -->
+    <LinearLayout
+        android:id="@+id/ll_flashcards_import_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        app:boxStrokeColor="#FF8C42"
-        app:hintTextColor="#FFAF7A">
+        android:orientation="vertical">
 
-        <!-- ! Hint (format example) is set by the separator -->
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_flashcards_import"
-            android:background="@drawable/shape_edit_text"
+        <!-- Text to import -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="top|start"
-            android:inputType="textMultiLine"
-            android:minLines="6"
-            android:maxLines="12"
-            android:scrollbars="vertical"
-            android:textColor="@color/text_primary"
-            android:textColorHint="@color/text_secondary"
-            android:fontFamily="@font/baloo2"
-            android:textSize="16sp"
-            app:hintEnabled="false"
-            />
+            android:layout_marginTop="12dp"
+            app:boxStrokeColor="#FF8C42"
+            app:hintTextColor="#FFAF7A">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <!-- ! Hint (format example) is set by the separator -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_flashcards_import"
+                android:background="@drawable/shape_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|start"
+                android:inputType="textMultiLine"
+                android:minLines="6"
+                android:maxLines="12"
+                android:scrollbars="vertical"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary"
+                android:fontFamily="@font/baloo2"
+                android:textSize="16sp"
+                app:hintEnabled="false"
+                />
 
-    <!-- Parse result: how many flashcards + skipped lines -->
-    <TextView
-        android:id="@+id/tv_flashcards_import_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/graphite_beige"
-        tools:text="Powstanie 12 fiszek (pominięte linie: 1)"
-        />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Parse result: warning sign + how many flashcards + skipped lines -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <!-- Warning sign: shown only with skipped lines or zero flashcards -->
+            <TextView
+                android:id="@+id/tv_flashcards_import_warning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:text="@string/common_emoji_warning"
+                android:importantForAccessibility="no"
+                />
+
+            <!-- Parse result -->
+            <TextView
+                android:id="@+id/tv_flashcards_import_info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/graphite_beige"
+                tools:text="Powstanie 12 fiszek (pominięte linie: 1)"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

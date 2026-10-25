@@ -2,9 +2,12 @@ package pl.hexmind.mindshaper.activities.stream
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.IntentCompat
 import androidx.core.view.doOnPreDraw
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.button.MaterialButton
@@ -15,8 +18,11 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
+import pl.hexmind.mindshaper.common.onboarding.OnboardingTask
+import pl.hexmind.mindshaper.common.onboarding.OnboardingTaskPoint
 import pl.hexmind.mindshaper.common.ui.views.lists.SortConfig
-import pl.hexmind.mindshaper.common.onboarding.OnboardingProgressStep
+import pl.hexmind.mindshaper.common.ui.views.lists.SortDirection
+import pl.hexmind.mindshaper.common.ui.views.lists.SortProperty
 import pl.hexmind.mindshaper.common.regex.HexTags
 import pl.hexmind.mindshaper.common.ui.dialogs.GuideDialog
 import pl.hexmind.mindshaper.common.ui.dpToPx
@@ -59,6 +65,13 @@ class StreamActivity : CoreActivity() {
     private lateinit var flScrollIndicator: android.widget.FrameLayout
     private lateinit var vScrollProgress: android.view.View
 
+    private lateinit var tvStreamEmpty: TextView
+
+    // Capture returns RESULT_OK only after a thought was saved - leaving it without saving shows nothing
+    private val captureLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) showShortToast(R.string.stream_toast_thought_created)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.stream_activity)
@@ -78,10 +91,6 @@ class StreamActivity : CoreActivity() {
         if (savedInstanceState == null) {
             applyLaunchSearchCriteria()
         }
-
-        onboardingManager.showTooltipForStep(
-            OnboardingProgressStep.STREAM_TOOLTIP, this
-        )
     }
 
     private fun initializeViews() {
@@ -92,6 +101,7 @@ class StreamActivity : CoreActivity() {
         fabNewThought = findViewById(R.id.fab_new_thought)
         flScrollIndicator = findViewById(R.id.fl_scroll_indicator)
         vScrollProgress   = findViewById(R.id.v_scroll_progress)
+        tvStreamEmpty     = findViewById(R.id.tv_stream_empty)
         setupHeader(R.drawable.ic_activity_stream, R.string.stream_title)
     }
 
@@ -160,6 +170,7 @@ class StreamActivity : CoreActivity() {
                 currentTags     = searcher.getTags()
             ) { hexTags ->
                 searcher.setTags(hexTags)
+                onboardingManager.recordTaskPoints(OnboardingTask.SEARCH_STREAM, searchTaskPoints(hexTags))
             }
         }
 
@@ -181,6 +192,11 @@ class StreamActivity : CoreActivity() {
                 viewModel.updateSearchQuery(hexTags)
             }
         }
+    }
+
+    private fun searchTaskPoints(hexTags: HexTags): Set<OnboardingTaskPoint> = buildSet {
+        if (!hexTags.subject.isNullOrBlank()) add(OnboardingTaskPoint.SEARCH_SUBJECT)
+        if (!hexTags.person.isNullOrBlank() || !hexTags.project.isNullOrBlank()) add(OnboardingTaskPoint.SEARCH_HEX_TAG)
     }
 
     // Criteria passed by the caller (e.g. a Metadata tag pill) replace the current search
@@ -212,12 +228,22 @@ class StreamActivity : CoreActivity() {
         supportFragmentManager.setFragmentResultListener(
             StreamFilterBottomSheet.REQUEST_KEY, this
         ) { _, result ->
-            val showActive  = result.getBoolean(StreamFilterBottomSheet.RESULT_SHOW_ACTIVE, true)
-            val showDormant = result.getBoolean(StreamFilterBottomSheet.RESULT_SHOW_DORMANT, false)
-            val domainId    = result.getInt(StreamFilterBottomSheet.RESULT_DOMAIN_ID, -1).takeIf { it != -1 }
+            val showActive      = result.getBoolean(StreamFilterBottomSheet.RESULT_SHOW_ACTIVE, true)
+            val showNearDormant = result.getBoolean(StreamFilterBottomSheet.RESULT_SHOW_NEAR_DORMANT, true)
+            val showDormant     = result.getBoolean(StreamFilterBottomSheet.RESULT_SHOW_DORMANT, false)
+            val domainId        = result.getInt(StreamFilterBottomSheet.RESULT_DOMAIN_ID, -1).takeIf { it != -1 }
+            val createdPeriod = result.getString(StreamFilterBottomSheet.RESULT_CREATED_PERIOD)
+                ?.let { name -> CreatedPeriod.valueOf(name) }
             viewModel.updateShowActive(showActive)
+            viewModel.updateShowNearDormant(showNearDormant)
             viewModel.updateShowDormant(showDormant)
             viewModel.updateSelectedDomain(domainId)
+            viewModel.updateCreatedPeriod(createdPeriod)
+
+            onboardingManager.recordTaskPoints(OnboardingTask.FILTER_STREAM, buildSet {
+                if (domainId != null) add(OnboardingTaskPoint.FILTER_DOMAIN)
+                if (createdPeriod != null) add(OnboardingTaskPoint.FILTER_CREATED_PERIOD)
+            })
 
             // Show count of filtered thoughts after applying filters
             val count = viewModel.filteredThoughts.value?.size ?: 0
@@ -227,13 +253,14 @@ class StreamActivity : CoreActivity() {
         // Update filter button text when any filter changes
         viewModel.selectedDomainId.observe(this) { updateFilterButtonText(it) }
         viewModel.showActive.observe(this)        { updateFilterButtonText(viewModel.selectedDomainId.value) }
+        viewModel.showNearDormant.observe(this)   { updateFilterButtonText(viewModel.selectedDomainId.value) }
         viewModel.showDormant.observe(this)       { updateFilterButtonText(viewModel.selectedDomainId.value) }
+        viewModel.createdPeriod.observe(this)     { updateFilterButtonText(viewModel.selectedDomainId.value) }
     }
 
     private fun setupFabMenu() {
         fabNewThought.setOnClickListener {
-            val intent = Intent(this, CaptureActivity::class.java)
-            startActivity(intent)
+            captureLauncher.launch(Intent(this, CaptureActivity::class.java))
         }
     }
 
@@ -247,21 +274,29 @@ class StreamActivity : CoreActivity() {
         StreamFilterBottomSheet.show(
             fragmentManager      = supportFragmentManager,
             showActive           = viewModel.showActive.value ?: true,
+            showNearDormant      = viewModel.showNearDormant.value ?: true,
             showDormant          = viewModel.showDormant.value ?: false,
             selectedDomainId     = viewModel.selectedDomainId.value,
             domainItems          = domainGridItems,
             isDormantModeEnabled = appSettingsStorage.isDormantModeEnabled(),
             activeCount          = viewModel.countActiveThoughts(),
-            dormantCount         = viewModel.countDormantThoughts()
+            nearDormantCount     = viewModel.countNearDormantThoughts(),
+            dormantCount         = viewModel.countDormantThoughts(),
+            createdPeriod        = viewModel.createdPeriod.value
         )
     }
 
     private fun updateFilterButtonText(domainId: Int?) {
-        val dormantModeOn = appSettingsStorage.isDormantModeEnabled()
+        // States count as one criterion, and only when they differ from the default (active + near dormant)
+        val statesChanged = appSettingsStorage.isDormantModeEnabled() && (
+            viewModel.showActive.value != true ||
+            viewModel.showNearDormant.value != true ||
+            viewModel.showDormant.value == true
+        )
         val count = listOfNotNull(
-            if (dormantModeOn && viewModel.showActive.value == true) true else null,
-            if (dormantModeOn && viewModel.showDormant.value == true) true else null,
-            domainId
+            if (statesChanged) true else null,
+            domainId,
+            viewModel.createdPeriod.value
         ).size
         btnFilter.text = if (count == 0) getString(R.string.stream_filter_button_none) else "($count)"
     }
@@ -273,9 +308,20 @@ class StreamActivity : CoreActivity() {
             // ! raise BEFORE the value changes - the VM's mediator rebuilds the list before this Activity's sortConfig observer runs
             isListResetPending = true
             viewModel.updateSortConfig(newConfig)
+
+            onboardingManager.recordTaskPoints(OnboardingTask.SORT_STREAM, setOf(sortTaskPoint(newConfig.property)))
         }
 
         dialog.show(supportFragmentManager, SortDialogFragment.TAG)
+    }
+
+    private fun sortTaskPoint(property: SortProperty): OnboardingTaskPoint = when (property) {
+        SortProperty.VALUE      -> OnboardingTaskPoint.SORT_VALUE
+        SortProperty.CREATED_AT -> OnboardingTaskPoint.SORT_CREATED_AT
+        SortProperty.UPDATED_AT -> OnboardingTaskPoint.SORT_UPDATED_AT
+        SortProperty.SUBJECT    -> OnboardingTaskPoint.SORT_SUBJECT
+        SortProperty.PERSON     -> OnboardingTaskPoint.SORT_PERSON
+        SortProperty.PROJECT    -> OnboardingTaskPoint.SORT_PROJECT
     }
 
     private fun showDeleteConfirmationDialog(thought: ThoughtDTO) {
@@ -296,11 +342,23 @@ class StreamActivity : CoreActivity() {
         )
     }
 
+    // No thoughts at all = invite to capture the first one; thoughts hidden by the criteria = say so
+    private fun bindEmptyState(isListEmpty: Boolean) {
+        tvStreamEmpty.isVisible = isListEmpty
+        if (!isListEmpty) return
+
+        tvStreamEmpty.setText(
+            if (viewModel.hasAnyThoughts()) R.string.stream_empty_no_matches else R.string.stream_empty_no_thoughts
+        )
+    }
+
     /**
      * Setup reactive data observer that automatically updates UI when database changes
      */
     private fun setupReactiveDataObserver() {
         viewModel.filteredThoughts.observe(this) { thoughtsDTO ->
+            bindEmptyState(thoughtsDTO.isEmpty())
+
             // Submit to adapter - will automatically animate changes with DiffUtil
             adapter.submitList(thoughtsDTO) {
                 // ! commit callback, not a timer - resetting before the diff lands moves the OLD position 0
@@ -321,13 +379,19 @@ class StreamActivity : CoreActivity() {
         }
     }
 
+    // Button shows only the sorted property; the arrow on the left tells the direction
     private fun updateSortButtonLabel(sortConfig : SortConfig){
         val sortProperty = sortConfig.property
-        val labelText = getString(sortProperty.displayNameRes)
+        val propertyName = getString(sortProperty.displayNameRes)
+
+        btnSort.text = propertyName
+        btnSort.setIconResource(
+            if (sortConfig.direction == SortDirection.DESCENDING) R.drawable.ic_sort_desc else R.drawable.ic_sort_asc
+        )
+        // Screen readers still get the direction in words
+        btnSort.contentDescription = propertyName
             .plus(": ")
             .plus(getString(sortConfig.direction.getLabelResByFieldType(sortProperty.type)))
-
-        btnSort.text = labelText
     }
 
     /**

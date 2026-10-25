@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Footer under the spotlight text (HexSpotlight): step counter + Next / Got it -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+
+    <!-- Shown only when the spotlight is one of several steps -->
+    <TextView
+        android:id="@+id/tv_spotlight_step_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/baloo2"
+        android:textSize="15sp"
+        android:textColor="@color/spotlight_step_counter"
+        android:visibility="gone"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_spotlight_action"
+        style="@style/SpotlightActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+</LinearLayout>

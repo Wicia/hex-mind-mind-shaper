@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Open eye: show / reveal (a closed eye = hide / minimize; X = delete only) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Eye outline: upper and lower lid -->
+    <path
+        android:pathData="M3,12 Q12,3 21,12 Q12,21 3,12 Z"
+        android:strokeColor="@android:color/white"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Pupil -->
+    <path
+        android:pathData="M12,9 A3,3 0 1,1 12,15 A3,3 0 1,1 12,9 Z"
+        android:fillColor="@android:color/white" />
+
+</vector>

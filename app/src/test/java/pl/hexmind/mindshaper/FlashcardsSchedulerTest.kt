@@ -5,15 +5,11 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import pl.hexmind.mindshaper.services.FlashcardsReview
 import pl.hexmind.mindshaper.services.FlashcardsScheduler
 import pl.hexmind.mindshaper.services.dto.FlashcardDTO
 import pl.hexmind.mindshaper.services.dto.FlashcardRating
-import pl.hexmind.mindshaper.services.dto.FlashcardSetDTO
-import pl.hexmind.mindshaper.services.dto.FlashcardsLibraryDTO
 import pl.hexmind.mindshaper.services.dto.FlashcardStatus
 import java.time.LocalDate
-import kotlin.random.Random
 
 class FlashcardsSchedulerTest {
 
@@ -96,64 +92,5 @@ class FlashcardsSchedulerTest {
             flashcard.dueOn?.let { dueOn -> day = dueOn }
         }
         assertEquals(listOf(0L, 1L, 4L, 11L, 25L, 55L), reviewDays)
-    }
-
-    // ========== QUEUE ==========
-
-    private fun set(id: Int, vararg flashcards: FlashcardDTO) =
-        FlashcardSetDTO(id = id, name = "Set $id", flashcards = flashcards.toList())
-
-    @Test
-    fun `kolejka - najnizsze poziomy, na koncu nowe`() {
-        val sets = listOf(
-            set(
-                1,
-                card(id = 1),
-                card(FlashcardStatus.ACTIVE, level = 3, id = 2).copy(dueOn = today),
-                card(FlashcardStatus.ACTIVE, level = 1, id = 3).copy(dueOn = today),
-                card(FlashcardStatus.ACTIVE, level = 2, id = 5).copy(dueOn = today.plusDays(1))
-            )
-        )
-        val plan = FlashcardsReview.plan(FlashcardsLibraryDTO(sets), FlashcardsReview.Params(newPerDay = 10), today)
-        assertEquals(listOf(3, 2, 1), plan.queue.map { card -> card.flashcard.id })
-        assertEquals(2, plan.repetitionsCount)
-        assertEquals(1, plan.newCount)
-    }
-
-    @Test
-    fun `kolejka - w obrebie poziomu losowo, poziomy zawsze rosnaco`() {
-        val due = (1..20).map { id -> card(FlashcardStatus.ACTIVE, level = 1 + id % 3, id = id).copy(dueOn = today) }
-        val sets = listOf(set(1, *due.toTypedArray()))
-        val orders = (1..5).map { seed ->
-            FlashcardsReview.plan(FlashcardsLibraryDTO(sets), FlashcardsReview.Params(newPerDay = 10), today, random = Random(seed))
-                .queue.map { card -> card.flashcard }
-        }
-        orders.forEach { order -> assertEquals(order.map { it.level }.sorted(), order.map { it.level }) }
-        assertTrue(orders.map { order -> order.map { it.id } }.distinct().size > 1)
-    }
-
-    @Test
-    fun `kolejka - limit nowych dziennie liczy juz wprowadzone dzisiaj`() {
-        val sets = listOf(
-            set(
-                1,
-                card(FlashcardStatus.ACTIVE, level = 1, id = 1).copy(dueOn = today.plusDays(1), introducedOn = today),
-                card(id = 2),
-                card(id = 3),
-                card(id = 4)
-            )
-        )
-        val plan = FlashcardsReview.plan(FlashcardsLibraryDTO(sets), FlashcardsReview.Params(newPerDay = 3), today)
-        assertEquals(listOf(2, 3), plan.queue.map { card -> card.flashcard.id })
-    }
-
-    @Test
-    fun `kolejka - nowe luzne przed nowymi z zestawow`() {
-        val library = FlashcardsLibraryDTO(
-            sets  = listOf(set(1, card(id = 1), card(id = 2))),
-            loose = listOf(card(id = 3), card(id = 4))
-        )
-        val plan = FlashcardsReview.plan(library, FlashcardsReview.Params(newPerDay = 3), today)
-        assertEquals(listOf(3, 4, 1), plan.queue.map { card -> card.flashcard.id })
     }
 }

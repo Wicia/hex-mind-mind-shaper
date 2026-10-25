@@ -1,15 +1,15 @@
 package pl.hexmind.mindshaper.database.initialization
 
 import android.content.Context
-import android.content.Intent
+import android.net.Uri
 import android.os.Environment
-import android.provider.Settings
-import androidx.core.net.toUri
 import androidx.room.withTransaction
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializer
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import pl.hexmind.mindshaper.BuildConfig
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.database.AppDatabase
@@ -90,11 +90,16 @@ class DataSnapshotManager @Inject constructor(
         }
     }
 
-    suspend fun restoreSnapshot(fileName: String, context: Context): Result<Int> {
+    /**
+     * Restores the snapshot from the file picked by the user.
+     * ! Read through the picked uri, not by its name in the backup dir - after a reinstall the app has no
+     * all-files access anymore and the file may lie anywhere; the picker itself grants the read access
+     */
+    suspend fun restoreSnapshot(uri: Uri, context: Context): Result<Int> {
         try {
-            checkAndRequestPermissions(context) // ! Needed for granting read permissions
-            val snapshotFile = File(getBackupDirectory(), fileName)
-            val json = snapshotFile.readText()
+            val json = withContext(Dispatchers.IO) {
+                context.contentResolver.openInputStream(uri)?.bufferedReader()?.use { reader -> reader.readText() }
+            } ?: return Result.failure(Exception(context.getString(R.string.settings_backup_error_loading)))
             val snapshot = gson.fromJson(json, DatabaseSnapshot::class.java)
 
             // ! Prevent loading snapshots newer than existing DB version
@@ -145,12 +150,6 @@ class DataSnapshotManager @Inject constructor(
                     restoredCount++
                 }
 
-                snapshot.guidelines?.apply {
-                    database.stepDao().clearAll()
-                    database.stepDao().insertOrReplace(this)
-                    restoredCount++
-                }
-
                 snapshot.pathSteps?.apply {
                     database.pathStepDao().clearAll()
                     database.pathStepDao().insertOrReplace(this)
@@ -160,6 +159,14 @@ class DataSnapshotManager @Inject constructor(
                 snapshot.thoughts?.apply {
                     database.thoughtsDao().clearAll()
                     database.thoughtsDao().insertOrReplace(this)
+                    restoredCount++
+                }
+
+                // ! Steps depend on BOTH goals and thoughts (a step can be pinned to a thought) - before the
+                // thoughts the insert failed on the FK, and clearing the thoughts later unpinned them (SET_NULL)
+                snapshot.guidelines?.apply {
+                    database.stepDao().clearAll()
+                    database.stepDao().insertOrReplace(this)
                     restoredCount++
                 }
 
@@ -238,19 +245,6 @@ class DataSnapshotManager @Inject constructor(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
             "mindshaper_backup$flavorSuffix"
         )
-    }
-
-    fun checkAndRequestPermissions(context: Context): Boolean {
-        // Android 11+
-        if (!Environment.isExternalStorageManager()) {
-            val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
-                data = "package:${context.packageName}".toUri()
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // important for Context
-            }
-            context.startActivity(intent)
-            return false
-        }
-        return true
     }
 
     fun getSnapshotStats(): SnapshotStats {

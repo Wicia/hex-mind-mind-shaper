@@ -9,13 +9,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.common.ui.dialogs.HexTags
 import pl.hexmind.mindshaper.common.ui.views.lists.CommonIconsListItem
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.services.DomainsService
 import pl.hexmind.mindshaper.services.GoalsService
+import pl.hexmind.mindshaper.services.MediaStorageService
 import pl.hexmind.mindshaper.services.ThoughtsService
 import pl.hexmind.mindshaper.services.dto.StepWithGoalDTO
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
@@ -28,7 +31,8 @@ class DetailsViewModel @Inject constructor(
     private val thoughtsService: ThoughtsService,
     private val domainsService: DomainsService,
     private val goalsService: GoalsService,
-    private val validator : ThoughtValidator
+    private val validator : ThoughtValidator,
+    private val mediaStorageService: MediaStorageService
 ) : ViewModel() {
 
     private val thumbnailCache = LruCache<Int, Bitmap>(50)
@@ -183,6 +187,20 @@ class DetailsViewModel @Inject constructor(
             if (photoData != null && photoData.isNotEmpty()) {
                 onPhotoReady(photoData)
             }
+        }
+    }
+
+    /**
+     * Copies the thought's photo to the phone's gallery - the photo in the thought stays untouched.
+     * @return true when saved
+     */
+    suspend fun downloadPhoto(): Boolean {
+        val thoughtId = thoughtDetails.value?.id ?: return false
+        val photoData = thoughtsService.getPhotoData(thoughtId)
+        if (photoData == null || photoData.isEmpty()) return false
+
+        return withContext(Dispatchers.IO) {
+            mediaStorageService.savePhotoToGallery(photoData, "MindShaper_${thoughtId}_${System.currentTimeMillis()}.jpg")
         }
     }
 

@@ -13,13 +13,16 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
+        <!-- ! clipChildren / clipToPadding false: the cards' shadows fall into the 16dp padding - clipped here, their sides would look cut off -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:paddingBottom="80dp">
+            android:paddingBottom="80dp"
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
             <!-- Header: set icon + name left, edit + review right -->
             <LinearLayout
@@ -91,11 +94,10 @@
             <!-- Empty set -->
             <TextView
                 android:id="@+id/tv_set_empty"
-                style="@style/TextView_Metadata"
+                style="@style/TextView_EmptyState"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
-                android:gravity="center"
                 android:text="@string/flashcards_set_no_flashcards"
                 android:visibility="gone" />
 

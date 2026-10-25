@@ -46,6 +46,8 @@ class AppSettingsStorage @Inject constructor(
 
         private const val PARAM_FLASHCARDS_FEATURE_ENABLED = "param_flashcards_feature_enabled"
 
+        private const val PARAM_WORKSHOP_FEATURE_ENABLED = "param_workshop_feature_enabled"
+
         private const val PARAM_CALENDAR_REMINDERS_ENABLED = "calendar_reminders_enabled"
 
         private const val PARAM_CALENDAR_TARGET_ID = "calendar_target_id"
@@ -53,6 +55,8 @@ class AppSettingsStorage @Inject constructor(
         private const val NO_CALENDAR_SELECTED = -1L // "nothing chosen yet"
 
         private const val PARAM_BACKUP_ENABLED = "param_backup_enabled"
+
+        private const val PARAM_ONBOARDING_ENABLED = "param_onboarding_enabled"
 
         // Flashcards - Repetitions System
         private const val PARAM_FLASHCARDS_NEW_PER_DAY = "param_flashcards_new_per_day"
@@ -151,6 +155,34 @@ class AppSettingsStorage @Inject constructor(
         }
     }
 
+    // ! A copy - the set returned by SharedPreferences must not be modified
+    fun getOnboardingTaskPoints(taskKey: String): Set<String> {
+        return sharedPreferences.getStringSet(taskKey, emptySet()).orEmpty().toSet()
+    }
+
+    fun setOnboardingTaskPoints(taskKey: String, pointKeys: Set<String>) {
+        sharedPreferences.edit {
+            putStringSet(taskKey, pointKeys)
+        }
+    }
+
+    fun clearOnboardingTaskPoints(taskKey: String) {
+        sharedPreferences.edit {
+            remove(taskKey)
+        }
+    }
+
+    // Turned on only on purpose - in the welcome dialog or with the switch behind the flask on Home
+    fun setOnboardingEnabled(enabled: Boolean) {
+        sharedPreferences.edit {
+            putBoolean(PARAM_ONBOARDING_ENABLED, enabled)
+        }
+    }
+
+    fun isOnboardingEnabled(): Boolean {
+        return sharedPreferences.getBoolean(PARAM_ONBOARDING_ENABLED, false)
+    }
+
     fun isPhotoFeatureEnabled(): Boolean {
         return sharedPreferences.getBoolean(PARAM_PHOTO_FEATURE_ENABLED, true)
     }
@@ -169,6 +201,17 @@ class AppSettingsStorage @Inject constructor(
     fun setFlashcardsFeatureEnabled(enabled: Boolean) {
         sharedPreferences.edit {
             putBoolean(PARAM_FLASHCARDS_FEATURE_ENABLED, enabled)
+        }
+    }
+
+    // No system permission behind it - a plain on/off preference
+    fun isWorkshopFeatureEnabled(): Boolean {
+        return sharedPreferences.getBoolean(PARAM_WORKSHOP_FEATURE_ENABLED, false)
+    }
+
+    fun setWorkshopFeatureEnabled(enabled: Boolean) {
+        sharedPreferences.edit {
+            putBoolean(PARAM_WORKSHOP_FEATURE_ENABLED, enabled)
         }
     }
 

@@ -42,6 +42,8 @@
             <enum name="displayOnly" value="1" />
         </attr>
         <attr name="compact" />
+        <!-- Download button next to a loaded photo (saves it to the phone's gallery); off by default -->
+        <attr name="photoDownload" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="HexTextView">
@@ -49,11 +51,17 @@
             <enum name="editDisplay" value="0" />
             <enum name="displayOnly" value="1" />
         </attr>
+        <!-- Longer note = collapsed to this many lines, with Show all / Collapse; 0 or unset = always whole -->
+        <attr name="collapsedMaxLines" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="HexHourPickerView">
         <!-- Minutes between slots: 30 = half hours, 60 = full hours -->
         <attr name="stepMinutes" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="HexSwitchRow">
+        <attr name="android:text" />
     </declare-styleable>
 
     <declare-styleable name="IconsGridView">
@@ -94,13 +102,24 @@
         <attr name="tabHeight" format="dimension" />
         <attr name="tabActiveColor" format="reference|color" />
         <attr name="tabInactiveColor" format="reference|color" />
-        <attr name="tabTextColor" format="reference|color" />
+        <attr name="tabActiveTextColor" format="reference|color" />
+        <attr name="tabInactiveTextColor" format="reference|color" />
         <attr name="tabTextSize" format="dimension" />
         <attr name="tabLineThickness" format="dimension" />
         <attr name="tabGap" format="dimension" />
         <attr name="tabBraceCurl" format="dimension" />
         <attr name="notchWidth" />
         <attr name="notchDepth" />
+    </declare-styleable>
+
+    <declare-styleable name="HexPullTab">
+        <!-- Fill = the color of the card it hangs from -->
+        <attr name="tabColor" format="reference|color" />
+        <!-- Optional outline continuing the card's border; none when absent -->
+        <attr name="tabStrokeColor" format="reference|color" />
+        <attr name="tabStrokeWidth" format="dimension" />
+        <!-- Horizontal run of each wave from the card's edge down to the flat bottom -->
+        <attr name="tabShoulderWidth" format="dimension" />
     </declare-styleable>
 
 </resources>

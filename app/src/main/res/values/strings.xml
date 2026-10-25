@@ -29,6 +29,12 @@
     <string name="common_guide_btn_dismiss">Dzięki</string>
 
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
+    <string name="common_emoji_warning" translatable="false">⚠️</string>
+
+    <!-- Spotlight (HexSpotlight) -->
+    <string name="common_spotlight_btn_next">Dalej</string>
+    <string name="common_spotlight_btn_got_it">Rozumiem</string>
+    <string name="common_spotlight_step_counter">%1$d/%2$d</string>
 
     <!-- Dialogs -->
     <string name="common_deletion_dialog_confirmation">%s usunięto</string>
@@ -36,7 +42,10 @@
     <string name="common_deletion_dialog_thought_title">Usunąć myśl?</string>
     <string name="common_deletion_dialog_thought_message">Zniknie razem ze wszystkimi formami zapisu. Tego nie da się cofnąć.</string>
     <string name="common_deletion_dialog_thought_yes">Usuń myśl</string>
+    <string name="common_new_note_header">Nowa notatka</string>
     <string name="common_edit_note_header">Edytuj notatkę</string>
+    <string name="common_note_show_all">Pokaż wszystko</string>
+    <string name="common_note_show_less">Zwiń</string>
     <string name="common_list_dialog_title">Wybierz coś sobie…</string>
     <string name="common_thoughts_forms_inactive_header">Włączyć nową formę zapisu?</string>
     <string name="common_thoughts_forms_permissions_needed">Nagrania i zdjęcia włączysz w Preferencjach.</string>
@@ -92,18 +101,20 @@
     <string name="files_audio_error_unknown_file">Nieznany plik audio</string>
     <string name="files_error_unknown_file">Nieznany plik</string>
     <string name="files_state_no_file_selected">Nie wybrano pliku</string>
+    <string name="files_text_error_reading">Nie udało się wczytać pliku</string>
 
     <!-- Photos -->
     <string name="photos_removing_header">Usunąć zdjęcie?</string>
     <string name="photos_removing_yes">Usuń zdjęcie</string>
     <string name="photos_no_file">Brakuje tutaj zdjęcia…</string>
     <string name="photos_loading_error">Coś się wyburaczyło przy ładowaniu zdjęcia…</string>
+    <string name="photos_download_done">Zdjęcie zapisane w galerii (MindShaper)</string>
+    <string name="photos_download_error">Nie udało się zapisać zdjęcia w galerii</string>
 
     <!-- Flashcards -->
     <string name="flashcards_title">Zapamiętywanie</string>
-    <string name="flashcards_sets_empty">Nie masz jeszcze żadnego zestawu fiszek…
-Dodaj pierwszy przyciskiem +</string>
-    <string name="flashcards_set_no_flashcards">Ten zestaw nie ma jeszcze fiszek</string>
+    <string name="flashcards_sets_empty">Nie masz jeszcze żadnego zestawu fiszek…\nDodaj pierwszy przyciskiem +</string>
+    <string name="flashcards_set_no_flashcards">Ten zestaw nie ma jeszcze fiszek…\nDodaj pierwszą przyciskiem +</string>
     <string name="flashcards_create_header">Nowy zestaw fiszek</string>
     <string name="flashcards_edit_header">Edycja zestawu fiszek</string>
     <string name="flashcards_set_name_hint">Nazwa zestawu</string>
@@ -118,11 +129,30 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="flashcards_btn_add_next">Dodaj kolejną</string>
     <string name="flashcards_btn_finish">Zakończ</string>
     <string name="flashcards_btn_create_set">Utwórz</string>
-    <string name="flashcards_end_title">Wszystkie fiszki zostały ogarnięte ;)</string>
-    <string name="flashcards_end_ratings">"Mam to: %1$d  ·  Coś świta: %2$d  ·  Pustka: %3$d"</string>
     <string name="flashcards_rating_good">Mam to</string>
     <string name="flashcards_rating_ok">Coś świta</string>
     <string name="flashcards_rating_bad">Pustka</string>
+    <string name="flashcards_session_front">Awers</string>
+    <string name="flashcards_session_back">Rewers</string>
+    <string name="flashcards_session_card_description">Fiszka - stuknij awers, by odwrócić; rewers przeciągnij na stos, by ocenić</string>
+    <string name="flashcards_session_tap_to_flip">Stuknij, by odwrócić</string>
+    <string name="flashcards_session_later">Później</string>
+    <string name="flashcards_session_pause">Przerwij</string>
+    <string name="flashcards_session_undo">Cofnij</string>
+    <string name="flashcards_session_done">Gotowe</string>
+    <string name="flashcards_session_hint_throw">Rzuć kartę w stronę stosu - albo stuknij stos</string>
+    <string name="flashcards_session_hint_release">Puść - karta poleci na stos „%1$s”</string>
+    <string name="flashcards_session_count_next">%1$d → %2$d</string>
+    <string name="flashcards_session_total">/ %1$d</string>
+    <string name="flashcards_session_end_title">To tyle na dzisiaj!</string>
+    <string name="flashcards_session_end_title_set">To tyle z zestawu na dzisiaj!</string>
+    <plurals name="flashcards_session_end_tomorrow">
+        <item quantity="one">Jutro czeka Cię %d fiszka do powtórki</item>
+        <item quantity="few">Jutro czeka Cię %d fiszki do powtórki</item>
+        <item quantity="many">Jutro czeka Cię %d fiszek do powtórki</item>
+        <item quantity="other">Jutro czeka Cię %d fiszki do powtórki</item>
+    </plurals>
+    <string name="flashcards_session_end_tomorrow_none">Jutro nie czeka Cię żadna powtórka</string>
     <plurals name="flashcards_set_count">
         <item quantity="one">%d fiszka</item>
         <item quantity="few">%d fiszki</item>
@@ -133,8 +163,7 @@ Dodaj pierwszy przyciskiem +</string>
     <string name="flashcards_review_today">Dzisiejsza sesja</string>
     <string name="flashcards_tab_loose">Luźne fiszki</string>
     <string name="flashcards_tab_sets">Zestawy</string>
-    <string name="flashcards_loose_empty">Nie masz jeszcze luźnych fiszek…
-Dodaj pierwszą przyciskiem +</string>
+    <string name="flashcards_loose_empty">Nie masz jeszcze luźnych fiszek…\nDodaj pierwszą przyciskiem +</string>
     <plurals name="flashcards_review_today_counts">
         <item quantity="one">Masz do powtórki %d fiszkę</item>
         <item quantity="few">Masz do powtórki %d fiszki</item>
@@ -166,7 +195,7 @@ Dodaj pierwszą przyciskiem +</string>
     <string name="flashcards_btn_move">Przenieś</string>
     <string name="flashcards_speed_dial_add">Dodaj fiszki</string>
     <string name="flashcards_speed_dial_import">Importuj fiszki</string>
-    <string name="flashcards_import_header">Import fiszek</string>
+    <string name="flashcards_import_header">Import fiszek ze źródła</string>
     <string name="flashcards_import_separator_label">Separator:</string>
     <string name="flashcards_import_separator_new_line">Enter</string>
     <string name="flashcards_import_separator_dash">Myślnik</string>
@@ -177,6 +206,11 @@ Rewers…"</string>
     <string name="flashcards_import_hint_dash">"Awers - Rewers
 Awers - Rewers…"</string>
     <string name="flashcards_import_btn">Importuj</string>
+    <string name="flashcards_import_from_file">Z pliku</string>
+    <string name="flashcards_import_from_bank">Z banku</string>
+    <string name="flashcards_import_source_input">Ręcznie</string>
+    <string name="flashcards_import_pick_file">Wybierz plik</string>
+    <string name="flashcards_import_bank_label">Gotowe banki fiszek w aplikacji:</string>
     <plurals name="flashcards_import_count">
         <item quantity="one">Powstanie %d fiszka</item>
         <item quantity="few">Powstaną %d fiszki</item>
@@ -184,12 +218,18 @@ Awers - Rewers…"</string>
         <item quantity="other">Powstanie %d fiszki</item>
     </plurals>
     <string name="flashcards_import_skipped">(pominięte linie: %1$d)</string>
+    <plurals name="flashcards_import_done">
+        <item quantity="one">Zaimportowano %d fiszkę</item>
+        <item quantity="few">Zaimportowano %d fiszki</item>
+        <item quantity="many">Zaimportowano %d fiszek</item>
+        <item quantity="other">Zaimportowano %d fiszki</item>
+    </plurals>
 
     <!-- ============================================================ -->
     <!--    WORKSHOP - Onboarding review                              -->
     <!-- ============================================================ -->
 
-    <string name="workshop_section_onboarding">Moje poznawanie aplikacji</string>
+    <string name="workshop_section_onboarding">Poznawanie aplikacji</string>
     <string name="workshop_onboarding_section_home">Dom</string>
     <string name="workshop_onboarding_section_settings">Preferencje</string>
     <string name="workshop_onboarding_section_metadata">Tagi i Domeny</string>
@@ -203,6 +243,25 @@ Awers - Rewers…"</string>
     <string name="workshop_onboarding_no_thoughts">Najpierw złap jakąś myśl</string>
     <string name="workshop_onboarding_progress">Postęp</string>
     <string name="workshop_onboarding_progress_percent">%1$d%%</string>
+    <string name="workshop_onboarding_tasks_thoughts_header">Myśli</string>
+    <string name="workshop_onboarding_tasks_thoughts_breadcrumb_tasks">Na takich listach czekają na ciebie zadanka, dzięki którym nauczysz się korzystać z funkcji aplikacji</string>
+    <string name="workshop_onboarding_tasks_thoughts_breadcrumb_open">Takie przyciski poprowadzą Cię do miejsc, gdzie możesz zrealizować zadanka</string>
+    <string name="workshop_onboarding_task_capture_title">Złap myśl</string>
+    <string name="workshop_onboarding_task_capture_desc">Nadaj jej temat, dodaj tag i napisz notatkę</string>
+    <string name="workshop_onboarding_task_sort_title">Posortuj myśli</string>
+    <string name="workshop_onboarding_task_sort_desc">Posortuj strumień myśli według co najmniej 3 różnych kryteriów</string>
+    <string name="workshop_onboarding_task_search_title">Znajdź myśl</string>
+    <string name="workshop_onboarding_task_search_desc">Wyszukaj myśli w strumieniu po temacie i po tagu</string>
+    <string name="workshop_onboarding_task_filter_title">Przefiltruj myśli</string>
+    <string name="workshop_onboarding_task_filter_desc">Przefiltruj strumień myśli po domenie i po czasie utworzenia</string>
+    <string name="workshop_dialog_reset_onboarding_task_title">Zacząć zadanko od nowa?</string>
+    <string name="workshop_dialog_reset_onboarding_task">Postęp tego zadanka wróci do zera.</string>
+    <string name="workshop_dialog_reset_onboarding_task_yes">Zacznij od nowa</string>
+    <string name="workshop_onboarding_tips_switch">Aktywuj tryb Poznawania</string>
+    <string name="workshop_dialog_disable_onboarding_title">Wyłączyć poznawanie?</string>
+    <string name="workshop_dialog_disable_onboarding">Postęp realizacji zadań zostanie zresetowany, a okruszki pojawią się ponownie.</string>
+    <string name="workshop_dialog_disable_onboarding_yes">Wyłącz i resetuj</string>
+    <string name="workshop_onboarding_tips_hint">Przy pierwszym wejściu na ekran pojawią się mini wskazówki. Wprowadzą Cię w tajniki aplikacji, pokazując \"co gdzie jest, jak tego użyć, no i do czego\" :)</string>
 
     <!-- ============================================================ -->
     <!--    HOME Activity                                             -->
@@ -212,10 +271,18 @@ Awers - Rewers…"</string>
 
     <string name="home_capturing_button_title">Witaj w \"Domu\" :)</string>
     <string name="home_capturing_button_tooltip">Jak ci wpadnie coś do głowy co chcesz zapisać to tapnij w przycisk na środku</string>
-    <string name="home_navigation_button_title">A tymczasem…</string>
-    <string name="home_navigation_button_tooltip">Tapnij na ikonkę z kompasem (rym!), a potem na ikonkę koła zymbatego</string>
 
-    <string name="home_build_version">ver %1$s</string>
+    <!-- Welcome dialog (first app launch) -->
+    <string name="home_welcome_name_title">Witaj w MindShaperze!</string>
+    <string name="home_welcome_name_text">Jak mam się do ciebie zwracać?</string>
+    <string name="home_welcome_name_btn_skip">Pomiń</string>
+    <string name="home_welcome_name_btn_save">Zapisz</string>
+    <string name="home_welcome_home_title">Witaj w \"Domu\"!</string>
+    <string name="home_welcome_home_title_named">Witaj w \"Domu\", %1$s!</string>
+    <string name="home_welcome_onboarding_question">Chcesz poznawać aplikację krok po kroku, ze wskazówkami?</string>
+    <string name="home_welcome_onboarding_btn_no">Bez wskazówek</string>
+    <string name="home_welcome_onboarding_btn_yes">Ze wskazówkami</string>
+    <string name="home_onboarding_spotlight">Tutaj zacznij swoją przygodę z MindShaperem</string>
 
     <array name="home_greetings_values_list">
         <item>Dużo dobrego %s!</item>
@@ -272,6 +339,12 @@ Awers - Rewers…"</string>
     <string name="capture_hex_tags_tooltip">temat @osoba #projekt</string>
     <string name="capture_error_no_content">Potrzebujesz cos zapisać (tekst, nagranie, obraz lub fiszki)</string>
 
+    <!-- Leaving without saving -->
+    <string name="capture_exit_dialog_title">Zapisać myśl?</string>
+    <string name="capture_exit_dialog_description">Bez zapisu złapana myśl przepadnie.</string>
+    <string name="capture_exit_dialog_save">Zapisz myśl</string>
+    <string name="capture_exit_dialog_discard">Porzuć</string>
+
     <!-- Rich text -->
     <string name="capture_rich_text_error_note_empty">To wyżej nie może być puste</string>
 
@@ -284,10 +357,11 @@ Awers - Rewers…"</string>
     <string name="capture_voice_error_empty">Eeee… To nagranie ma 0 sekund :/</string>
     <string name="capture_voice_error_recording">Błąd podczas nagrywania</string>
     <string name="capture_voice_error_save_failed">Błąd podczas zapisywania do bazy</string>
-    <string name="capture_voice_dialog_title">Nagranie już istnieje — co z nim zrobić?</string>
-    <string name="capture_voice_dialog_description">Obecne nagranie zniknie w obu przypadkach.</string>
+    <string name="capture_voice_dialog_overwrite_title">Nagrać od nowa?</string>
+    <string name="capture_voice_dialog_overwrite_description">Nowe nagranie zastąpi obecne.</string>
+    <string name="capture_voice_dialog_overwrite">Nagraj ponownie</string>
+    <string name="capture_voice_dialog_delete_title">Usunąć nagranie?</string>
     <string name="capture_voice_dialog_delete">Usuń nagranie</string>
-    <string name="capture_voice_dialog_overwrite">Nagraj od nowa</string>
 
     <!-- ============================================================ -->
     <!--    STREAM Activity                                           -->
@@ -321,6 +395,8 @@ Awers - Rewers…"</string>
     <!-- Main -->
     <string name="stream_title">Strumień myśli</string>
     <string name="stream_thought_metadata_empty">\?\?\?</string>
+    <string name="stream_empty_no_thoughts">W strumieniu nie ma jeszcze żadnych myśli…\nZłap pierwszą myśl przyciskiem w rogu</string>
+    <string name="stream_empty_no_matches">Nic tu nie znalazłem…\nSpróbuj innego wyszukiwania albo filtra</string>
     <string name="stream_item_empty_thought">- ? -\n\nTa myśl jest pusta…</string>
 
     <!-- Szukajka (Hex Tagi) -->
@@ -334,9 +410,16 @@ Awers - Rewers…"</string>
     <string name="stream_filter_button_none">-</string>
     <string name="stream_filter_label_states">| Stany</string>
     <string name="stream_filter_show_active">Aktywne myśli</string>
+    <string name="stream_filter_show_near_dormant">Bliskie uśpienia</string>
     <string name="stream_filter_show_dormant">Uśpione myśli</string>
     <string name="stream_filter_label_with_count">%1$s (%2$d)</string>
+    <string name="stream_filter_label_created">| Czas utworzenia</string>
+    <string name="stream_filter_created_today">Dzisiaj</string>
+    <string name="stream_filter_created_since_yesterday">Od wczoraj</string>
+    <string name="stream_filter_created_last_week">Ostatni tydzień</string>
+    <string name="stream_filter_created_last_month">Ostatni miesiąc</string>
     <string name="stream_filter_toast_count">Wybrano %1s myśli</string>
+    <string name="stream_toast_thought_created">Utworzono nową myśl</string>
 
     <!-- Sort -->
     <string name="stream_sort_dialog_header">Sortowanie</string>
@@ -348,10 +431,10 @@ Awers - Rewers…"</string>
     <string name="stream_sort_property_updated_at">Data zmiany</string>
     <string name="stream_sort_text_desc_label">Z → A</string>
     <string name="stream_sort_text_asc_label">A → Z</string>
-    <string name="stream_sort_value_desc_label">od Ważnych</string>
-    <string name="stream_sort_value_asc_label">od Drobnych</string>
-    <string name="stream_sort_date_desc_label">od Młodych</string>
-    <string name="stream_sort_date_asc_label">od Starych</string>
+    <string name="stream_sort_value_desc_label">Malejąco</string>
+    <string name="stream_sort_value_asc_label">Rosnąco</string>
+    <string name="stream_sort_date_desc_label">od Najnowszych</string>
+    <string name="stream_sort_date_asc_label">od Najstarszych</string>
 
     <!-- ============================================================ -->
     <!--    DETAILS Activity                                          -->
@@ -376,9 +459,9 @@ Awers - Rewers…"</string>
 
     <!-- Dormant / warning dialogs -->
     <string name="details_warning_dialog_title">⚠️ Myśl niedługo zaśnie</string>
-    <string name="details_warning_dialog_message">Tej myśli zostały 3 dni do uśpienia. Edytuj ją lub zwiększ wartość, by ją zachować.</string>
+    <string name="details_warning_dialog_message">Tej myśli zostały 3 dni do uśpienia i ukrycia. Edytuj ją lub zwiększ wartość, aby ją zachować.</string>
     <string name="details_dormant_dialog_title">🌙 Obudzić uśpioną myśl?</string>
-    <string name="details_dormant_dialog_message">Ma niską wartość i nie była zmieniana od dłuższego czasu.</string>
+    <string name="details_dormant_dialog_message">Obecnie ta myśl jest uśpiona i ukryta. Miała niską wartość i od dłuższego czasu nie była zmieniana.</string>
     <string name="details_dormant_dialog_wake">Obudź myśl</string>
 
     <!-- Linked thought -->
@@ -400,14 +483,21 @@ Awers - Rewers…"</string>
     <string name="details_rich_text_removing_header">Usunąć tekst?</string>
     <string name="details_rich_text_removing_yes">Usuń tekst</string>
 
+    <!-- Save confirmations (toasts) -->
+    <string name="details_toast_subject_added">Dodano temat</string>
+    <string name="details_toast_subject_updated">Temat zaktualizowany</string>
+    <string name="details_toast_note_added">Dodano notatkę</string>
+    <string name="details_toast_note_updated">Notatka zaktualizowana</string>
+    <string name="details_toast_tags_updated">Tagi zaktualizowane</string>
+
     <!-- ============================================================ -->
     <!--    METADATA Activity                                         -->
     <!-- ============================================================ -->
 
     <!-- Header -->
     <string name="metadata_title">Tagi i Domeny</string>
-    <string name="metadata_persons_empty">Brak osób w tagach</string>
-    <string name="metadata_projects_empty">Brak projektów w tagach</string>
+    <string name="metadata_persons_empty">Brak tagów z osobami</string>
+    <string name="metadata_projects_empty">Brak tagów z projektami</string>
 
     <!-- Osoby / Projekty / Domeny switch -->
     <string name="metadata_tab_persons">Osoby</string>
@@ -453,7 +543,7 @@ Awers - Rewers…"</string>
     <string name="settings_backup_title_1">Sekcja \"Kopia zapasowa\"</string>
     <string name="settings_backup_tooltip_1">Jeżeli chcesz mieć zarchiwizowane dane swoich myśli w pamięci telefonu, to ta opcja musi być \"włączona\"</string>
     <string name="settings_backup_title_2">Jak to działa?</string>
-    <string name="settings_backup_tooltip_2">Gdy uruchomisz aplikację jej mechanizm zapisze dane twoich myśli.\n\nMoże się to wydarzyć maksymalnie raz na godzinę.</string>
+    <string name="settings_backup_tooltip_2">Gdy uruchomisz aplikację jej mechanizm zapisze dane twoich myśli.\n\nPowstaje jedna kopia dziennie - każde kolejne uruchomienie tego dnia ją odświeża.</string>
 
     <!-- Header -->
     <string name="settings_title">Preferencje</string>
@@ -461,6 +551,17 @@ Awers - Rewers…"</string>
     <!-- Name -->
     <string name="settings_your_name_header">✒️ Moje Prawdziwe Imię?</string>
     <string name="settings_your_name_default">Bezimienn(y/a)</string>
+
+    <!-- Share app -->
+    <string name="settings_share_app_teaser">Podziel się MindShaperem</string>
+    <string name="settings_share_app_btn_open">Poleć apkę</string>
+    <string name="settings_share_app_info">Zeskanuj kod albo wyślij link - plik APK czeka na dysku Google</string>
+    <string name="settings_share_app_link" translatable="false">https://drive.google.com/drive/folders/1_uJcc-aC19KcGAOGWESI_-pyfmmuU1_U</string>
+    <string name="settings_share_app_message">MindShaper - aplikacja do rzeźbienia umysłu małymi krokami.\nPobierz APK i zainstaluj eksperymentalną wersję: %1$s</string>
+    <string name="settings_share_app_btn_copy">Kopiuj link</string>
+    <string name="settings_share_app_btn_send">Udostępnij</string>
+    <string name="settings_share_app_copied">Link skopiowany</string>
+    <string name="settings_share_app_version">ver %1$s</string>
 
     <!-- Value system -->
     <string name="settings_thoughts_value_header">⚖️ Skala wartości myśli</string>
@@ -487,6 +588,7 @@ Awers - Rewers…"</string>
     <!-- Memorizing -->
     <string name="settings_memorizing_section">🧠 Zapamiętywanie</string>
     <string name="settings_permissions_flashcards">Włącz powtórki z użyciem fiszek</string>
+    <string name="settings_flashcards_feature_hint">Twórz fiszki i powtarzaj wiedzę z systemem powtórek, aktywuj przypominajki na telefonie…</string>
     <string name="settings_flashcards_new_per_day_label">Max. liczba nowych fiszek\ndziennie w powtórkach</string>
     <string name="settings_flashcards_reminders_switch_label">Włącz przypomnienia o powtórkach</string>
     <string name="settings_flashcards_reminder_hour_label">O tej godzinie przypomnimy Ci o sesji powtórek - o ile jakieś fiszki czekają na powtórki</string>
@@ -510,7 +612,10 @@ Awers - Rewers…"</string>
     <string name="workshop_calendar_entry_created">Wrzucono w Twój kalendarz</string>
     <string name="workshop_dialog_delete_step_calendar_warning">Usuniemy też jego przypomnienie w kalendarzu.</string>
 
-    <string name="settings_calendar_section">🐣 Przypomnienia w kalendarzu</string>
+    <!-- Workshop -->
+    <string name="settings_workshop_section">🛠️ Warsztat</string>
+    <string name="settings_permissions_workshop">Włącz Warsztat celów i kroków</string>
+    <string name="settings_workshop_feature_hint">Rozpisz cele na kroki, powiąż z nimi swoje myśli i dodawaj przypomnienia do kalendarza</string>
     <string name="settings_calendar_reminders_switch_label">Włącz wpisy do kalendarza</string>
     <string name="settings_calendar_reminders_hint">Kroki celu z ustawionym przypomnieniem trafią do Twojego kalendarza (wybranego poniżej) jako cykliczne wydarzenia</string>
     <string name="settings_calendar_reminders_sync_hint">ⓘ Aby wpisy pojawiły się w aplikacji Kalendarz Google, potrzebne jest połączenie z siecią — synchronizacja wyśle je do chmury.</string>
@@ -577,14 +682,18 @@ Awers - Rewers…"</string>
     <string name="workshop_title">Warsztat</string>
 
     <!-- Goals -->
-    <string name="workshop_section_goals">Kierunki, w których zmierzasz</string>
-    <string name="workshop_tab_goals">🎯 Cele</string>
-    <string name="workshop_tab_paths">♟️ Ścieżki</string>
-    <string name="workshop_goals_show_all">Pokaż jeszcze %d…</string>
+    <string name="workshop_section_goals_active">Aktywne cele</string>
+    <string name="workshop_section_goals_archived">Archiwalne cele</string>
+    <string name="workshop_tab_goals">Cele</string>
+    <string name="workshop_tab_paths">Ścieżki</string>
+    <string name="workshop_goals_show_all">Pokaż jeszcze %d</string>
     <string name="workshop_goals_show_less">Pokaż mniej</string>
-    <string name="workshop_section_goals_archive">Archiwum</string>
-    <string name="workshop_section_goals_archive_count">Archiwum (%1$d)</string>
-    <string name="workshop_goals_archive_more">Pokaż starsze…</string>
+    <string name="workshop_goals_view_title">Które cele pokazać?</string>
+    <string name="workshop_goals_view_active">Pokaż aktywne</string>
+    <string name="workshop_goals_view_archived">Pokaż archiwalne</string>
+    <string name="workshop_goals_view_archive_empty">Archiwum świeci pustkami…</string>
+    <string name="workshop_goals_empty">Nie masz aktywnych celów…\nDodaj pierwszy przyciskiem +</string>
+    <string name="workshop_goal_steps_empty">Ten cel nie ma jeszcze kroków…\nDodaj pierwszy przyciskiem +</string>
     <string name="workshop_dialog_add_goal">Nowy cel / kierunek</string>
     <string name="workshop_dialog_edit_goal">Edytuj cel / kierunek</string>
     <string name="workshop_dialog_delete_goal_title">Usunąć cel?</string>
@@ -602,7 +711,7 @@ Awers - Rewers…"</string>
     <string name="workshop_dialog_delete_step_title">Usunąć krok?</string>
     <string name="workshop_dialog_delete_step_yes">Usuń krok</string>
     <string name="workshop_dialog_delete_step_calendar_yes">Usuń krok i przypomnienie</string>
-    <string name="workshop_step_repetitions_header">Ile razy trzeba to wykonać?</string>
+    <string name="workshop_step_repetitions_header">Ile razy trzeba zrobić ten krok?</string>
     <string name="workshop_step_repetitions_label">Liczba</string>
     <string name="workshop_step_repetitions_single">Jeden raz</string>
     <string name="workshop_goal_repetitions_7">7 ⟳</string>

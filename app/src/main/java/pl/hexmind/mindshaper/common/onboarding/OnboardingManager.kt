@@ -21,8 +21,7 @@ class OnboardingManager @Inject constructor(
 
         // HOME
         OnboardingProgressStep.HOME_TOOLTIP to listOf(
-            TooltipItemConfig(titleRes = R.string.home_capturing_button_title, textRes = R.string.home_capturing_button_tooltip, iconRes = R.drawable.ic_capture_thought),
-            TooltipItemConfig(titleRes = R.string.home_navigation_button_title, textRes = R.string.home_navigation_button_tooltip, tracked = false)
+            TooltipItemConfig(titleRes = R.string.home_capturing_button_title, textRes = R.string.home_capturing_button_tooltip, iconRes = R.drawable.ic_capture_thought)
         ),
 
         // == SETTINGS ==
@@ -76,7 +75,8 @@ class OnboardingManager @Inject constructor(
     )
 
     fun showTooltipForStep(step: OnboardingProgressStep, context: Context){
-        if (wasTooltipShown(step)) {
+        // Tips are off unless turned on - in the welcome or behind the flask
+        if (!appSettingsStorage.isOnboardingEnabled() || wasTooltipShown(step)) {
             return
         }
 
@@ -132,6 +132,67 @@ class OnboardingManager @Inject constructor(
 
     fun markTooltipShown(step: OnboardingProgressStep) {
         appSettingsStorage.markOnboardingTooltipShown(step.settingsParamName)
+    }
+
+    fun getTaskScore(task: OnboardingTask): Int {
+        val earnedKeys = appSettingsStorage.getOnboardingTaskPoints(task.settingsParamName)
+        return task.points.count { point -> point.key in earnedKeys }.coerceAtMost(task.requiredCount)
+    }
+
+    // Scored only while the tips are on - actions from before are never counted back
+    fun recordTaskPoints(task: OnboardingTask, points: Set<OnboardingTaskPoint>) {
+        if (!appSettingsStorage.isOnboardingEnabled()) return
+
+        val newKeys = points.filter { point -> point in task.points }.map { point -> point.key }
+        if (newKeys.isEmpty()) return
+
+        val earnedKeys = appSettingsStorage.getOnboardingTaskPoints(task.settingsParamName)
+        appSettingsStorage.setOnboardingTaskPoints(task.settingsParamName, earnedKeys + newKeys)
+    }
+
+    fun resetTask(task: OnboardingTask) {
+        appSettingsStorage.clearOnboardingTaskPoints(task.settingsParamName)
+    }
+
+    // Welcome is not a step - it stays out of the review panel and its section resets
+    // ! Users from before the welcome already saw the Home tooltip - they skip it
+    fun isWelcomePending(): Boolean {
+        return !appSettingsStorage.wasOnboardingTooltipShown(WELCOME_SHOWN_KEY)
+                && !wasTooltipShown(OnboardingProgressStep.HOME_TOOLTIP)
+    }
+
+    fun markWelcomeShown() {
+        appSettingsStorage.markOnboardingTooltipShown(WELCOME_SHOWN_KEY)
+    }
+
+    fun isBreadcrumbPending(breadcrumb: OnboardingBreadcrumb): Boolean {
+        return !appSettingsStorage.wasOnboardingTooltipShown(breadcrumb.settingsParamName)
+    }
+
+    fun markBreadcrumbShown(breadcrumb: OnboardingBreadcrumb) {
+        appSettingsStorage.markOnboardingTooltipShown(breadcrumb.settingsParamName)
+    }
+
+    // Anything to lose by turning the tips off - seen tips, task points or opened breadcrumbs
+    fun hasAnyProgress(): Boolean {
+        return OnboardingProgressStep.entries.any { step -> wasTooltipShown(step) } ||
+                OnboardingTask.entries.any { task -> getTaskScore(task) > 0 } ||
+                OnboardingBreadcrumb.entries.any { breadcrumb -> !isBreadcrumbPending(breadcrumb) }
+    }
+
+    // Turning the tips off starts them over - the welcome stays seen, it is the choice made at the start
+    fun resetAll() {
+        OnboardingProgressStep.entries.forEach { step ->
+            appSettingsStorage.clearOnboardingTooltipShown(step.settingsParamName)
+        }
+        OnboardingTask.entries.forEach { task -> resetTask(task) }
+        OnboardingBreadcrumb.entries.forEach { breadcrumb ->
+            appSettingsStorage.clearOnboardingTooltipShown(breadcrumb.settingsParamName)
+        }
+    }
+
+    companion object {
+        private const val WELCOME_SHOWN_KEY = "onb_welcome_shown"
     }
 }
 

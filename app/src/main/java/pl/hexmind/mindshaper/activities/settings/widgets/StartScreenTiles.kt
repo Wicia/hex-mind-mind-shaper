@@ -53,4 +53,7 @@ class StartScreenTiles @JvmOverloads constructor(
 
     // Flashcards feature off = tile grayed out, a selected one falls back to Home
     fun setFlashcardsEnabled(enabled: Boolean) = setOptionEnabled(TILE_FLASHCARDS, enabled)
+
+    // Workshop feature off = tile grayed out, a selected one falls back to Home
+    fun setWorkshopEnabled(enabled: Boolean) = setOptionEnabled(TILE_WORKSHOP, enabled)
 }

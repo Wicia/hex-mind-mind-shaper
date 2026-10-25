@@ -23,19 +23,12 @@
 
             <include layout="@layout/common_header_activity" />
 
-            <!-- Tabs -->
-            <com.google.android.material.tabs.TabLayout
+            <!-- Tab switch (Cele / Ścieżki) -->
+            <pl.hexmind.mindshaper.common.ui.views.HexTabSwitch
                 android:id="@+id/tabs_workshop"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@android:color/transparent"
-                app:tabBackground="@drawable/tab_background_selector"
-                app:tabIndicatorHeight="0dp"
-                app:tabMode="fixed"
-                app:tabGravity="fill"
-                app:tabPaddingStart="8dp"
-                app:tabPaddingEnd="8dp"
-                app:tabRippleColor="@null"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 />
 
             <!-- === GOALS section === -->
@@ -44,15 +37,16 @@
                 android:id="@+id/card_goals"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:layout_marginBottom="16dp"
                 android:orientation="vertical">
 
-                <!-- shape_card_tab_joined draws surface, corners and outline in one drawable -->
+                <!-- shape_card_standalone draws surface, corners and outline in one drawable -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@drawable/shape_card_tab_joined">
+                    android:background="@drawable/shape_card_standalone">
 
                     <LinearLayout
                         android:id="@+id/ll_goals_section_header"
@@ -62,8 +56,9 @@
                         android:gravity="center_vertical"
                         android:padding="12dp">
 
+                        <!-- Aktywne cele / Archiwalne cele - follows the list shown below -->
                         <TextView
-                            android:id="@+id/tv_your_name_section_header"
+                            android:id="@+id/tv_goals_section_header"
                             style="@style/HexCard_Header"
                             android:layout_weight="1"
                             android:layout_width="0dp"
@@ -71,121 +66,50 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginBottom="4dp"
-                            android:text="@string/workshop_section_goals" />
+                            android:text="@string/workshop_section_goals_active" />
 
+                        <!-- Which goals to show: active / archived (WorkshopGoalsViewBottomSheet) - same button as the paths' reset -->
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_add_goal"
+                            android:id="@+id/btn_goals_view"
                             style="@style/SecondaryActionButton"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            app:icon="@drawable/ic_action_add"
+                            android:contentDescription="@string/workshop_goals_view_title"
+                            app:icon="@drawable/ic_goals_view_filter"
                             app:iconGravity="textStart"
-                            app:iconSize="16dp" />
+                            app:iconSize="24dp" />
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_goals"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingBottom="12dp"
                         android:nestedScrollingEnabled="false"
                         android:overScrollMode="never"
                         tools:listitem="@layout/goal_item" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_goals_toggle"
-                        style="@style/SecondaryActionButton.Ghost"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="4dp"
-                        android:visibility="gone"
-                        />
-
-                    <!-- === ARCHIVE === -->
-                    <!-- Whole block hides when nothing is archived -->
-                    <!-- 1dp insets keep the panel on the white surface instead of covering the card border -->
-                    <LinearLayout
-                        android:id="@+id/ll_goals_archive"
+                    <!-- Empty state: no active goals -->
+                    <TextView
+                        android:id="@+id/tv_goals_empty"
+                        style="@style/TextView_EmptyState"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="1dp"
-                        android:layout_marginEnd="1dp"
-                        android:layout_marginBottom="1dp"
-                        android:layout_marginTop="8dp"
-                        android:orientation="vertical"
-                        android:background="@drawable/shape_card_archive"
-                        android:visibility="gone">
-
-                        <!-- Collapsible header: whole row toggles the archive (bench of past goals) -->
-                        <LinearLayout
-                            android:id="@+id/ll_goals_archive_header"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:background="?attr/selectableItemBackground"
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp">
-
-                            <TextView
-                                android:id="@+id/tv_goals_archive_header"
-                                style="@style/HexCard_Header"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:layout_marginStart="20dp"
-                                android:layout_marginTop="0dp"
-                                android:layout_marginBottom="0dp"
-                                android:textColor="@color/text_secondary"
-                                android:text="@string/workshop_section_goals_archive"
-                                />
-
-                            <ImageView
-                                android:id="@+id/iv_goals_archive_chevron"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_marginEnd="16dp"
-                                android:src="@drawable/ic_action_chevron_right"
-                                android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-                                app:tint="@color/_gray_lvl_3"
-                                />
-
-                        </LinearLayout>
-
-                        <!-- Collapsable content -->
-                        <LinearLayout
-                            android:id="@+id/ll_goals_archive_content"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="gone">
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rv_goals_archive"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:nestedScrollingEnabled="false"
-                                android:overScrollMode="never"
-                                tools:listitem="@layout/goal_item"
-                                />
-
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btn_goals_archive_more"
-                                style="@style/SecondaryActionButton.Ghost"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="4dp"
-                                android:layout_marginBottom="4dp"
-                                android:visibility="gone"
-                                />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
+                        android:text="@string/workshop_goals_empty"
+                        android:padding="20dp"
+                        android:visibility="gone" />
 
                 </LinearLayout>
+
+                <!-- Pokaż jeszcze N / Pokaż mniej - hangs from the card's bottom edge, -1dp overlaps it (no seam) -->
+                <pl.hexmind.mindshaper.common.ui.views.HexPullTab
+                    android:id="@+id/pt_goals_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="-1dp"
+                    android:visibility="gone"
+                    app:tabColor="@android:color/white" />
 
             </LinearLayout>
 
@@ -194,6 +118,7 @@
                 android:id="@+id/card_paths"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:layout_marginBottom="16dp"
                 android:orientation="vertical">
 
@@ -201,7 +126,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@drawable/shape_card_tab_joined">
+                    android:background="@drawable/shape_card_standalone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -242,12 +167,10 @@
                     <!-- Special info -->
                     <TextView
                         android:id="@+id/tv_paths_pool_empty"
+                        style="@style/TextView_EmptyState"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/workshop_path_pool_empty"
-                        android:textSize="13sp"
-                        android:textColor="@color/_gray_lvl_3"
-                        android:textAlignment="center"
                         android:padding="20dp"
                         android:visibility="gone" />
 
@@ -259,14 +182,14 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- fab - Capture thought -->
+    <!-- fab - Add goal (Goals tab only) -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_capture"
+        android:id="@+id/fab_add_goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_capture_thought"
+        android:src="@drawable/ic_action_add"
         app:backgroundTint="@color/button_primary_enabled_background"
         app:fabSize="normal"
         app:elevation="6dp"

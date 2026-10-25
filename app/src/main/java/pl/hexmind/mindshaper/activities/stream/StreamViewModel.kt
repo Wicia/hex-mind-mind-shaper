@@ -20,6 +20,8 @@ import pl.hexmind.mindshaper.services.ThoughtStatusService
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import timber.log.Timber
 import java.io.File
+import java.time.LocalDate
+import java.time.ZoneId
 import javax.inject.Inject
 
 /**
@@ -51,19 +53,31 @@ class StreamViewModel @Inject constructor(
     private val _showActive  = savedStateHandle.getLiveData("show_active", true)
     val showActive: LiveData<Boolean> = _showActive
 
+    private val _showNearDormant = savedStateHandle.getLiveData("show_near_dormant", true)
+    val showNearDormant: LiveData<Boolean> = _showNearDormant
+
     private val _showDormant = savedStateHandle.getLiveData("show_dormant", false)
     val showDormant: LiveData<Boolean> = _showDormant
+
+    private val _createdPeriod = savedStateHandle.getLiveData<CreatedPeriod?>("created_period", null)
+    val createdPeriod: LiveData<CreatedPeriod?> = _createdPeriod
 
     private val _domainsWithIcons = MutableLiveData<List<CommonIconsListItem>>(emptyList())
     val domainsWithIcons: LiveData<List<CommonIconsListItem>> = _domainsWithIcons
 
     // counted over ALL thoughts, not the filtered list (shows how much is there to reveal)
     // ! plain functions - a mapped LiveData stays cold until observed, so .value would always be 0
-    fun countActiveThoughts(): Int =
-        allThoughts.value.orEmpty().count { thought -> thoughtStatusService.computeState(thought) != ThoughtState.DORMANT }
+    fun countActiveThoughts(): Int = countThoughtsInState(ThoughtState.ACTIVE)
 
-    fun countDormantThoughts(): Int =
-        allThoughts.value.orEmpty().count { thought -> thoughtStatusService.computeState(thought) == ThoughtState.DORMANT }
+    fun countNearDormantThoughts(): Int = countThoughtsInState(ThoughtState.WARNING)
+
+    fun countDormantThoughts(): Int = countThoughtsInState(ThoughtState.DORMANT)
+
+    // Tells an empty stream apart from an empty filter result
+    fun hasAnyThoughts(): Boolean = allThoughts.value.orEmpty().isNotEmpty()
+
+    private fun countThoughtsInState(state: ThoughtState): Int =
+        allThoughts.value.orEmpty().count { thought -> thoughtStatusService.computeState(thought) == state }
 
     // Combine filter and sort using MediatorLiveData
     val filteredThoughts: MediatorLiveData<List<ThoughtDTO>> = MediatorLiveData<List<ThoughtDTO>>().apply {
@@ -71,8 +85,10 @@ class StreamViewModel @Inject constructor(
         var currentQuery: HexTags? = null
         var currentSort: SortConfig? = null
         var currentDomainId: Int? = null
-        var currentShowActive: Boolean  = true
-        var currentShowDormant: Boolean = false
+        var currentShowActive: Boolean      = true
+        var currentShowNearDormant: Boolean = true
+        var currentShowDormant: Boolean     = false
+        var currentCreatedPeriod: CreatedPeriod? = null
 
         fun update() {
             val thoughts = currentThoughts
@@ -88,7 +104,7 @@ class StreamViewModel @Inject constructor(
             )
             val domainId = currentDomainId
 
-            val filtered = filterThoughts(thoughts, query, domainId, currentShowActive, currentShowDormant)
+            val filtered = filterThoughts(thoughts, query, domainId, currentShowActive, currentShowNearDormant, currentShowDormant, currentCreatedPeriod)
             val sorted = sortThoughts(filtered, sort)
 
             value = sorted
@@ -119,8 +135,18 @@ class StreamViewModel @Inject constructor(
             update()
         }
 
+        addSource(_showNearDormant) { show ->
+            currentShowNearDormant = show
+            update()
+        }
+
         addSource(_showDormant) { show ->
             currentShowDormant = show
+            update()
+        }
+
+        addSource(_createdPeriod) { period ->
+            currentCreatedPeriod = period
             update()
         }
     }
@@ -157,24 +183,51 @@ class StreamViewModel @Inject constructor(
         _showActive.value = show
     }
 
+    fun updateShowNearDormant(show: Boolean) {
+        savedStateHandle["show_near_dormant"] = show
+        _showNearDormant.value = show
+    }
+
     fun updateShowDormant(show: Boolean) {
         savedStateHandle["show_dormant"] = show
         _showDormant.value = show
     }
 
-    private fun filterThoughts(thoughts: List<ThoughtDTO>, query: HexTags, domainId: Int?, showActive: Boolean, showDormant: Boolean): List<ThoughtDTO> {
+    fun updateCreatedPeriod(period: CreatedPeriod?) {
+        savedStateHandle["created_period"] = period
+        _createdPeriod.value = period
+    }
+
+    private fun filterThoughts(
+        thoughts: List<ThoughtDTO>,
+        query: HexTags,
+        domainId: Int?,
+        showActive: Boolean,
+        showNearDormant: Boolean,
+        showDormant: Boolean,
+        createdPeriod: CreatedPeriod?
+    ): List<ThoughtDTO> {
         var filtered = thoughts
 
         // Filter by state — keep thought if its state category is checked
         filtered = filtered.filter { thought ->
             when (thoughtStatusService.computeState(thought)) {
-                ThoughtState.DORMANT  -> showDormant
-                else                  -> showActive // ACTIVE, WARNING
+                ThoughtState.ACTIVE  -> showActive
+                ThoughtState.WARNING -> showNearDormant
+                ThoughtState.DORMANT -> showDormant
             }
         }
 
         if (domainId != null) {
             filtered = filtered.filter { it.domainId == domainId }
+        }
+
+        if (createdPeriod != null) {
+            val zone = ZoneId.systemDefault()
+            val today = LocalDate.now(zone)
+            filtered = filtered.filter { thought ->
+                createdPeriod.contains(thought.createdAt.atZone(zone).toLocalDate(), today)
+            }
         }
 
         if (!query.areCriteriaEmpty()) {
@@ -212,19 +265,26 @@ class StreamViewModel @Inject constructor(
     }
 
     private fun sortThoughts(thoughts: List<ThoughtDTO>, config: SortConfig): List<ThoughtDTO> {
+        val direction = config.direction
         val comparator: Comparator<ThoughtDTO> = when (config.property) {
-            SortProperty.CREATED_AT -> compareBy(nullsLast()) { it.createdAt }
-            SortProperty.UPDATED_AT -> compareBy(nullsLast()) { it.updatedAt }
-            SortProperty.SUBJECT -> compareBy(nullsLast()) { it.subject?.lowercase() }
-            SortProperty.PERSON -> compareBy(nullsLast()) { firstTagAlphabetically(it.people) }
-            SortProperty.PROJECT -> compareBy(nullsLast()) { firstTagAlphabetically(it.projects) }
-            SortProperty.VALUE -> compareBy(nullsLast()) { it.value }
+            SortProperty.CREATED_AT -> byField(direction) { it.createdAt }
+            SortProperty.UPDATED_AT -> byField(direction) { it.updatedAt }
+            SortProperty.SUBJECT -> byField(direction) { it.subject?.lowercase() }
+            SortProperty.PERSON -> byField(direction) { firstTagAlphabetically(it.people) }
+            SortProperty.PROJECT -> byField(direction) { firstTagAlphabetically(it.projects) }
+            SortProperty.VALUE -> byField(direction) { it.value }
         }
 
-        return when (config.direction) {
-            SortDirection.ASCENDING -> thoughts.sortedWith(comparator)
-            SortDirection.DESCENDING -> thoughts.sortedWith(comparator.reversed())
-        }
+        return thoughts.sortedWith(comparator)
+    }
+
+    // Direction applies to the values only - thoughts without the field's value always go last
+    private fun <T : Comparable<T>> byField(
+        direction: SortDirection,
+        selector: (ThoughtDTO) -> T?
+    ): Comparator<ThoughtDTO> {
+        val order = if (direction == SortDirection.ASCENDING) naturalOrder<T>() else reverseOrder<T>()
+        return compareBy(nullsLast(order), selector)
     }
 
     fun deleteThought(thought: ThoughtDTO) {

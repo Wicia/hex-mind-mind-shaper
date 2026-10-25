@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
+import android.graphics.drawable.GradientDrawable
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -17,12 +18,15 @@ import android.text.style.TypefaceSpan
 import android.text.style.URLSpan
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.withStyledAttributes
+import androidx.core.graphics.ColorUtils
 import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import com.google.android.material.button.MaterialButton
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
@@ -69,8 +73,8 @@ class HexTextView @JvmOverloads constructor(
             }
 
             override fun beforeSetText(textView: TextView, markdown: Spanned) {
-                // Apply Alegreya font after Markwon sets the text
-                textView.typeface = ResourcesCompat.getFont(textView.context, R.font.alegreya_regular)
+                // Apply Literata font after Markwon sets the text
+                textView.typeface = ResourcesCompat.getFont(textView.context, R.font.literata_regular)
             }
 
             override fun afterSetText(textView: TextView) {
@@ -83,6 +87,8 @@ class HexTextView @JvmOverloads constructor(
 
     private val textView: TextView
     val btnDelete: MaterialButton
+    private val btnCollapseToggle: MaterialButton
+    private val vCollapsedFade: View
 
     private var mode: Mode = Mode.EDIT_DISPLAY
     private var callback: TextCallback? = null
@@ -90,8 +96,18 @@ class HexTextView @JvmOverloads constructor(
     // Link under the finger since ACTION_DOWN - opened on ACTION_UP only if the finger is still on it
     private var pressedLink: ClickableSpan? = null
 
+    // 0 = never collapsed
+    private var collapsedMaxLines = 0
+    private var isExpanded = false
+
+    // Lines of the whole note - counted once at full height, since a collapsed TextView reports only the visible ones
+    private var fullLineCount = 0
+    private var isMeasuringFullHeight = false
+
+    // ! A new text starts collapsed; the same text set again (e.g. another form of the thought changed) keeps the state
     var originalText: String = ""
         set(value) {
+            if (value != field) isExpanded = false
             field = value
             renderMarkdown()
         }
@@ -113,16 +129,29 @@ class HexTextView @JvmOverloads constructor(
 
         textView = findViewById(R.id.markdown_text_view)
         btnDelete = findViewById(R.id.btn_delete)
+        btnCollapseToggle = findViewById(R.id.btn_collapse_toggle)
+        vCollapsedFade = findViewById(R.id.v_collapsed_fade)
 
         attrs?.let {
             context.withStyledAttributes(it, R.styleable.HexTextView) {
                 val modeValue = getInt(R.styleable.HexTextView_richTextMode, 0)
                 mode = if (modeValue == 1) Mode.DISPLAY_ONLY else Mode.EDIT_DISPLAY
                 setupUIForMode()
+                collapsedMaxLines = getInt(R.styleable.HexTextView_collapsedMaxLines, 0)
             }
         }
 
+        setupCollapsedFade()
         setupListeners()
+    }
+
+    // Transparent -> the note's background, so the last visible lines melt into it
+    private fun setupCollapsedFade() {
+        val background = ContextCompat.getColor(context, R.color.button_content_filled_background)
+        vCollapsedFade.background = GradientDrawable(
+            GradientDrawable.Orientation.TOP_BOTTOM,
+            intArrayOf(ColorUtils.setAlphaComponent(background, 0), background)
+        )
     }
 
     private fun setupUIForMode() {
@@ -149,11 +178,46 @@ class HexTextView @JvmOverloads constructor(
         btnDelete.setOnClickListener {
             showDeleteConfirmation()
         }
+
+        btnCollapseToggle.setOnClickListener {
+            isExpanded = !isExpanded
+            applyCollapsedState()
+        }
+
+        textView.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> onTextLaidOut() }
     }
 
     private fun renderMarkdown() {
         markwon.setMarkdown(textView, originalText)
         applyClickBehavior()
+        refreshCollapsedState()
+    }
+
+    // ! Line count is known only after layout - measured at full height, then cut down if too long
+    private fun refreshCollapsedState() {
+        if (collapsedMaxLines <= 0) return
+
+        isMeasuringFullHeight = true
+        textView.maxLines = Int.MAX_VALUE
+    }
+
+    // ! Applied after the layout pass, not inside it - size and visibility changed mid-layout can get lost
+    private fun onTextLaidOut() {
+        if (!isMeasuringFullHeight) return
+
+        isMeasuringFullHeight = false
+        fullLineCount = textView.lineCount
+        textView.post { applyCollapsedState() }
+    }
+
+    private fun applyCollapsedState() {
+        val isLong = fullLineCount > collapsedMaxLines
+        val isCollapsed = isLong && !isExpanded
+
+        textView.maxLines = if (isCollapsed) collapsedMaxLines else Int.MAX_VALUE
+        vCollapsedFade.isVisible = isCollapsed
+        btnCollapseToggle.isVisible = isLong
+        btnCollapseToggle.setText(if (isExpanded) R.string.common_note_show_less else R.string.common_note_show_all)
     }
 
     // To override CommonMark behavior - turning a single Enter into a space (users expect a line break instead)
@@ -199,7 +263,7 @@ class HexTextView @JvmOverloads constructor(
     /**
      * Turns plain web addresses (http(s)://..., www....) into links - blue & underlined via textColorLink.
      * Markdown links [label](url) are already URLSpans from Markwon, so their ranges are skipped.
-     * Every link (plain or Markdown) gets its own font, so it stands out from the Alegreya prose.
+     * Every link (plain or Markdown) gets its own font, so it stands out from the Literata prose.
      */
     private fun linkifyWebUrls(textView: TextView) {
         val builder = SpannableStringBuilder(textView.text)
@@ -318,10 +382,10 @@ class HexTextView @JvmOverloads constructor(
     companion object {
         private const val BLOCK_SEPARATOR = "\n\n"
 
-        // 1.0 = a full empty line, which reads too airy at 18sp
+        // 1.0 = a full empty line, which reads too airy between note paragraphs
         private const val PARAGRAPH_GAP_RATIO = 0.6f
 
-        // Montserrat runs wider than Alegreya - at the same size a link looks oversized next to the prose
+        // Montserrat runs wider than Literata - at the same size a link looks oversized next to the prose
         private const val LINK_SIZE_RATIO = 0.85f
 
         // Trailing punctuation ("zobacz https://x.pl.") belongs to the sentence, not to the address
