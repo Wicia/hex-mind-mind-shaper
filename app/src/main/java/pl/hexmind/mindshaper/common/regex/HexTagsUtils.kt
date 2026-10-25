@@ -105,10 +105,26 @@ class HexTagsUtils {
             return merged.joinToString(" ").ifEmpty { null }
         }
 
+        /**
+         * Lone tag line = a note line made of tags only (e.g. "@ola #dom"); a tag inside a sentence
+         * never makes its line lone.
+         */
+        fun hasLoneTagLines(text: String?): Boolean =
+            text.orEmpty().lines().any { line -> LONE_TAG_LINE_PATTERN.matches(line) }
+
+        // Null when nothing but lone tag lines was there
+        fun removeLoneTagLines(text: String?): String? =
+            text?.lines()
+                ?.filterNot { line -> LONE_TAG_LINE_PATTERN.matches(line) }
+                ?.joinToString("\n")
+                ?.trim()
+                ?.ifEmpty { null }
+
         // Group 1 = marker, group 2 = tag name - also used by HexTextView to render inline tags
         // ! Marker has to start a word (text start or whitespace before it) - "cos@poczta.pl" is not a tag
         val EMBEDDED_TAG_PATTERN = Regex("(?<!\\S)([@#])([\\p{L}\\p{N}_-]+)")
         private val TAG_SEPARATOR_PATTERN = Regex("[,\\s]+")
+        private val LONE_TAG_LINE_PATTERN = Regex("\\s*(?:[@#][\\p{L}\\p{N}_-]+[,\\s]*)+")
 
         private const val PERSON_MARKER = '@'
         private const val PROJECT_MARKER = '#'

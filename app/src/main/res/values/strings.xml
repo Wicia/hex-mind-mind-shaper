@@ -331,26 +331,34 @@ Awers - Rewers…"</string>
         Guziorami u dołu z [+] możesz wybrać postać/formę zapisu myśli:\n
         tekst -> dźwięk -> zdjęcie
     ]]></string>
-    <string name="capture_hex_tags_link_title">Skojarzenia lub Tagi dla myśli</string>
-    <string name="capture_hex_tags_link_tooltip">Tapnij na puste pole u góry…</string>
-    <string name="capture_hex_tags_title">Skojarzenia lub Tagi dla myśli</string>
+    <string name="capture_hex_tags_link_title">Temat i tagi myśli</string>
+    <string name="capture_hex_tags_link_tooltip">W polu u góry wpisz temat myśli, a tagi dodasz w notatce…</string>
+    <string name="capture_hex_tags_title">Tagi w notatce</string>
     <string name="capture_hex_tags_onb_tooltip"><![CDATA[
-        W tym polu możesz szybko dodać skojarzenia / tagi do myśli:\n
+        W notatce możesz szybko dodać skojarzenia / tagi do myśli:\n
         ✓ osoba (znak @)\n
-        ✓ projekt (znak #)\n
-        ✓ temat (brak znaku)\n
+        ✓ projekt (znak #)\n\n
+        Linię z samymi tagami możesz przy zapisie usunąć z notatki - tagi i tak zostaną przy myśli
     ]]></string>
     <string name="capture_hex_tags_example_title">Może mały przykład?</string>
     <string name="capture_hex_tags_example_tooltip"><![CDATA[
-        Wpisz w polu tekstowym… tekst:\n\n
-            sukces  #aplikacja  @ja\n\n
+        W polu u góry wpisz temat:\n\n
+            sukces\n\n
+        a w notatce:\n\n
+            #aplikacja  @ja\n\n
         następnie Zapisz i zobacz szczegóły nowo złapanej myśli
     ]]></string>
 
     <!-- Core -->
     <string name="capture_main_label">Łapanie myśli</string>
-    <string name="capture_hex_tags_tooltip">temat @osoba #projekt</string>
+    <string name="capture_hex_tags_tooltip">temat myśli</string>
     <string name="capture_error_no_content">Potrzebujesz cos zapisać (tekst, nagranie, obraz lub fiszki)</string>
+
+    <!-- Lone tag lines in the note (asked on save) -->
+    <string name="capture_lone_tags_dialog_title">Usunąć samotne tagi z notatki?</string>
+    <string name="capture_lone_tags_dialog_description">Linie z samymi tagami @ i # można usunąć z treści notatki. Tagi i tak będą powiązane z myślą.</string>
+    <string name="capture_lone_tags_dialog_keep">Zostaw</string>
+    <string name="capture_lone_tags_dialog_remove">Usuń z notatki</string>
 
     <!-- Leaving without saving -->
     <string name="capture_exit_dialog_title">Zapisać myśl?</string>
@@ -570,7 +578,7 @@ Awers - Rewers…"</string>
     <string name="settings_share_app_btn_open">Poleć apkę</string>
     <string name="settings_share_app_info">Zeskanuj kod albo wyślij link - plik APK czeka na dysku Google</string>
     <string name="settings_share_app_link" translatable="false">https://drive.google.com/drive/folders/1_uJcc-aC19KcGAOGWESI_-pyfmmuU1_U</string>
-    <string name="settings_share_app_message">MindShaper - aplikacja do rzeźbienia umysłu małymi krokami.\nPobierz APK i zainstaluj eksperymentalną wersję: %1$s</string>
+    <string name="settings_share_app_message">🥭 MindShaper - aplikacja do rzeźbienia umysłu małymi krokami.\nPobierz APK i zainstaluj eksperymentalną wersję: %1$s</string>
     <string name="settings_share_app_btn_copy">Kopiuj link</string>
     <string name="settings_share_app_btn_send">Udostępnij</string>
     <string name="settings_share_app_copied">Link skopiowany</string>

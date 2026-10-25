@@ -25,9 +25,6 @@ import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.common.validation.resolveMessage
 import pl.hexmind.mindshaper.databinding.CaptureActivityBinding
-import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
-import android.widget.TextView
 import pl.hexmind.mindshaper.database.models.HexTagType
 import pl.hexmind.mindshaper.services.HexTagsService
 import pl.hexmind.mindshaper.services.SimilarTag
@@ -93,14 +90,6 @@ class CaptureActivity : ThoughtManagerActivity() {
 
     private fun setupListeners() {
         binding.apply {
-
-            etHexTags.setOnFocusChangeListener { _, hasFocus ->
-                if (!hasFocus) {
-                    hsvTagSuggestions.isVisible = false
-                }
-            }
-
-            etHexTags.addTextChangedListener { refreshTagSuggestions() }
 
             // SAVE BUTTON
             btnSave.setOnClickListener {
@@ -401,25 +390,52 @@ class CaptureActivity : ThoughtManagerActivity() {
     }
 
     /**
-     * Save draft to database
+     * Save draft to database.
+     * Lone tag lines in the note (tags only, e.g. "@ola #dom") - first a question whether to drop them
+     * from the note; either way their tags stay with the thought.
+     * ! Not asked when the note is nothing but such lines and the only form - nothing would be left to save
      */
     private suspend fun saveDraft() {
         // Reset validation UI
         binding.tvHexTagsValidationInfo.text = ""
 
-        // Parse hex tags from EditText
-        val hexTagsInput = binding.etHexTags.text?.toString().orEmpty()
-        val tags = HexTagsUtils.parseInput(hexTagsInput)
+        val noteText = viewModel.draftThought.value?.richText
+        val noteWithoutLoneTags = HexTagsUtils.removeLoneTagLines(noteText)
+        val wouldLeaveNothing = noteWithoutLoneTags == null && !viewModel.hasFormsBesidesNote()
 
-        // Pick up @/# markers typed inline in the note text and fold them into the same tags
-        val embeddedTags = HexTagsUtils.extractEmbeddedTags(viewModel.draftThought.value?.richText)
+        if (!HexTagsUtils.hasLoneTagLines(noteText) || wouldLeaveNothing) {
+            saveDraftWithTagsFrom(noteText)
+            return
+        }
 
-        val project = HexTagsUtils.mergeTagNames(tags.project, embeddedTags.project)
-        val person = HexTagsUtils.mergeTagNames(tags.person, embeddedTags.person)
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.capture_lone_tags_dialog_title))
+            .setDescription(getString(R.string.capture_lone_tags_dialog_description))
+            .setSecondaryAction(getString(R.string.capture_lone_tags_dialog_keep)) {
+                lifecycleScope.launch { saveDraftWithTagsFrom(noteText) }
+            }
+            .setPrimaryAction(getString(R.string.capture_lone_tags_dialog_remove)) {
+                if (noteWithoutLoneTags == null) viewModel.deleteRichText() else viewModel.updateRichText(noteWithoutLoneTags)
+                lifecycleScope.launch { saveDraftWithTagsFrom(noteText) }
+            }
+            .show()
+    }
+
+    /**
+     * The top field is the subject only - "@" and "#" there are plain text.
+     * Tags come from the note: @/# markers anywhere in it, taken from [noteText] as typed, before any lone line is dropped.
+     */
+    private suspend fun saveDraftWithTagsFrom(noteText: String?) {
+        val subject = binding.etSubject.text?.toString()?.trim()?.ifEmpty { null }
+        val embeddedTags = HexTagsUtils.extractEmbeddedTags(noteText)
+
+        // Same tag typed twice in the note - kept once
+        val project = HexTagsUtils.mergeTagNames(embeddedTags.project, null)
+        val person = HexTagsUtils.mergeTagNames(embeddedTags.person, null)
 
         // Update draft with hex tags
         viewModel.updateHexTags(
-            subject = tags.subject,
+            subject = subject,
             project = project,
             person = person
         )
@@ -446,7 +462,7 @@ class CaptureActivity : ThoughtManagerActivity() {
                 lifecycleScope.launch { saveNewThought() }
             }
             .setPrimaryAction(getString(R.string.common_hex_tags_similar_use, similarTag.suggestion)) {
-                applySimilarTag(tags.subject, person, project, similarTag)
+                applySimilarTag(subject, person, project, similarTag)
                 lifecycleScope.launch { saveNewThought() }
             }
             .show()
@@ -592,84 +608,5 @@ class CaptureActivity : ThoughtManagerActivity() {
     companion object {
         const val EXTRA_THOUGHT_ID = "EXTRA_THOUGHT_ID"
         const val EXTRA_CAPTURE_FORM = "EXTRA_CAPTURE_FORM"
-
-        // Marker plus two characters - enough to narrow the list without flashing it on every "@"
-        private const val SUGGESTION_MIN_CHARS = 2
-
-        private const val PERSON_MARKER = '@'
-        private const val PROJECT_MARKER = '#'
     }
-
-    // ===========================================
-    //      Tag suggestions
-    // ===========================================
-
-    /**
-     * Suggestions follow the tag being typed right now: the marker before the caret says whether it
-     * is a person or a project, so one field can serve both.
-     */
-    private fun refreshTagSuggestions() {
-        val typedTag = typedTagUnderCaret()
-
-        if (typedTag == null || typedTag.fragment.length < SUGGESTION_MIN_CHARS) {
-            binding.hsvTagSuggestions.isVisible = false
-            return
-        }
-
-        lifecycleScope.launch {
-            val names = hexTagsService.getSuggestions(typedTag.tagType, typedTag.fragment)
-
-            binding.llTagSuggestions.removeAllViews()
-            names.forEach { name -> binding.llTagSuggestions.addView(buildSuggestionChip(name, typedTag)) }
-            binding.hsvTagSuggestions.isVisible = names.isNotEmpty()
-        }
-    }
-
-    private fun buildSuggestionChip(name: String, typedTag: TypedTag): TextView {
-        val chip = layoutInflater
-            .inflate(R.layout.common_hex_tags_suggestion, binding.llTagSuggestions, false) as TextView
-
-        chip.text = name
-        chip.setOnClickListener { applySuggestion(name, typedTag) }
-        return chip
-    }
-
-    private fun applySuggestion(chosenName: String, typedTag: TypedTag) {
-        val text = binding.etHexTags.text?.toString().orEmpty()
-        val tagEnd = typedTag.startIndex + typedTag.fragment.length
-
-        val updated = text.substring(0, typedTag.startIndex) + chosenName + " " + text.substring(tagEnd)
-
-        binding.etHexTags.setText(updated)
-        binding.etHexTags.setSelection((typedTag.startIndex + chosenName.length + 1).coerceAtMost(updated.length))
-    }
-
-    /** The unfinished tag before the caret, or null when the caret is not inside one. */
-    private fun typedTagUnderCaret(): TypedTag? {
-        val text = binding.etHexTags.text?.toString().orEmpty()
-        val caret = binding.etHexTags.selectionStart.coerceIn(0, text.length)
-        val before = text.substring(0, caret)
-
-        val markerIndex = maxOf(before.lastIndexOf(PERSON_MARKER), before.lastIndexOf(PROJECT_MARKER))
-        if (markerIndex == -1) return null
-
-        val tagType = if (before[markerIndex] == PERSON_MARKER) HexTagType.PERSON else HexTagType.PROJECT
-
-        // A separator after the marker means the tag is already finished and a new one has begun
-        val afterMarker = before.substring(markerIndex + 1)
-        val separatorIndex = afterMarker.indexOfLast { character -> character.isWhitespace() || character == ',' }
-
-        return TypedTag(
-            tagType    = tagType,
-            fragment   = afterMarker.substring(separatorIndex + 1),
-            startIndex = markerIndex + 1 + separatorIndex + 1
-        )
-    }
-
-    private data class TypedTag(
-        val tagType   : HexTagType,
-        val fragment  : String,
-        val startIndex: Int
-    )
-
 }
