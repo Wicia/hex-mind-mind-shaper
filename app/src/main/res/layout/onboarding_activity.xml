@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_background"
+    android:background="@drawable/bg_app_background"
     android:fillViewport="true"
     tools:context=".activities.onboarding.OnboardingActivity">
 
@@ -96,8 +96,8 @@
                         app:trackThickness="8dp"
                         app:trackCornerRadius="4dp"
                         app:indicatorTrackGapSize="0dp"
-                        app:indicatorColor="@color/_orange_lvl_3"
-                        app:trackColor="@color/_orange_lvl_1"
+                        app:indicatorColor="@color/_palette_lvl_3"
+                        app:trackColor="@color/_palette_lvl_1"
                         />
 
                     <!-- Progress percent -->

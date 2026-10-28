@@ -104,6 +104,7 @@ class SettingsActivity : CoreActivity() {
         initDefaultCaptureFormConfig()
         initThoughtsValuesSystemConfig()
         initStartScreenConfig()
+        initColorPaletteConfig()
         initDormantModeConfig()
         setupShareApp()
         setupListeners()
@@ -707,6 +708,21 @@ class SettingsActivity : CoreActivity() {
         binding.tilesStartScreen.setWorkshopEnabled(appSettingsStorage.isWorkshopFeatureEnabled())
     }
 
+    // ========== COLOR PALETTE ==========
+
+    private fun initColorPaletteConfig() {
+        binding.tilesColorPalette.setSelected(appSettingsStorage.getColorPalette())
+    }
+
+    // Stored with the rest on save - open activities recreate in the new palette on resume (CoreActivity)
+    private fun saveColorPalette() {
+        val palette = binding.tilesColorPalette.getSelected()
+        if (palette == appSettingsStorage.getColorPalette()) return
+
+        appSettingsStorage.setColorPalette(palette)
+        palette.applyTo(application.theme)
+    }
+
     // ========== DORMANT MODE ==========
 
     private fun initDormantModeConfig() {
@@ -929,6 +945,8 @@ class SettingsActivity : CoreActivity() {
         appSettingsStorage.setThoughtValueSystemId(binding.tilesValueSystem.getSelected())
 
         appSettingsStorage.setStartScreen(binding.tilesStartScreen.getSelected())
+
+        saveColorPalette()
 
         // Flashcards - Repetitions System
         appSettingsStorage.setFlashcardsNewPerDay(flashcardsNewPerDay)

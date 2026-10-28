@@ -79,7 +79,7 @@
 
         <pl.hexmind.mindshaper.common.ui.views.HexNotchSeparator
             android:id="@+id/v_home_news_separator"
-            app:separatorColor="@color/_orange_lvl_1"
+            app:separatorColor="@color/_palette_lvl_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"

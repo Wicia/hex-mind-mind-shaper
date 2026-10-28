@@ -13,7 +13,7 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/stream_searcher_open"
         android:src="@drawable/ic_search_add"
-        app:tint="@color/_orange_lvl_2"
+        app:tint="@color/_palette_lvl_2"
         />
 
     <!-- Chosen criteria; horizontal scroll keeps the bar one row high -->

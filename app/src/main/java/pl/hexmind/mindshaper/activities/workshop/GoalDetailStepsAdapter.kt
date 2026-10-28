@@ -78,17 +78,17 @@ class GoalDetailStepsAdapter(
         holder.cpiRing.setProgressCompat(progress, false)
 
         val indicatorColor = ContextCompat.getColor(
-            context, if (done) R.color.progress_ring_done else R.color._orange_lvl_3
+            context, if (done) R.color.progress_ring_done else R.color._palette_lvl_3
         )
         val trackColor = ContextCompat.getColor(
-            context, if (done) R.color.progress_ring_done else R.color._orange_lvl_1
+            context, if (done) R.color.progress_ring_done else R.color._palette_lvl_1
         )
         holder.cpiRing.setIndicatorColor(indicatorColor)
         holder.cpiRing.trackColor = trackColor
 
         holder.tvRingLabel.setTextColor(
             if (done) ContextCompat.getColor(context, R.color.progress_ring_done)
-            else ContextCompat.getColor(context, R.color._orange_lvl_3)
+            else ContextCompat.getColor(context, R.color._palette_lvl_3)
         )
         holder.tvRingLabel.text = when {
             done                         -> "✓"

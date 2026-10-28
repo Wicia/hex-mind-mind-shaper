@@ -171,7 +171,7 @@ class HomeActivity : CoreActivity() {
         } while (currentGreetingsText == newGreetingsText)
 
         tvHeaderGreetings.setColoredText(newGreetingsText, appSettingsStorage.getYourName(),
-            ContextCompat.getColor(this, R.color._orange_lvl_3))
+            ContextCompat.getColor(this, R.color._palette_lvl_3))
     }
 
     private fun setupClickListeners() {

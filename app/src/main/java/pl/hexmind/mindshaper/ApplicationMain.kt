@@ -43,6 +43,9 @@ class ApplicationMain : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
+        // Application theme in the picked palette - colors resolved outside activities (e.g. notifications)
+        appSettingsStorage.getColorPalette().applyTo(theme)
+
         appShortcuts.register()
 
         // Safety net - the alarm is also lost on force stop, aggressive background killing or an update

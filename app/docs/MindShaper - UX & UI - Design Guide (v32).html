@@ -171,14 +171,16 @@
 <h2>Kolory</h2>
 <section>
   <ul>
-    <li><b>Paleta pomarańczowa</b> (<code>colors.xml</code>, <code>_orange_lvl_0..3</code>) — intensywność = waga elementu:
+    <li><b>Paleta</b> (<code>_palette_lvl_0..3</code>) — intensywność = waga elementu; pomarańczowa (domyślna) i kawowa, każdy poziom ma odpowiednik w obu:
       <ul>
-        <li><span class="swatch" style="background:#FFF4E6"></span><code>_orange_lvl_0</code> <code>#FFF4E6</code> — tło aplikacji</li>
-        <li><span class="swatch" style="background:#FFE1C8"></span><code>_orange_lvl_1</code> <code>#FFE1C8</code> — akcje list, karty (np. fiszki, zestawy)</li>
-        <li><span class="swatch" style="background:#FFC59A"></span><code>_orange_lvl_2</code> <code>#FFC59A</code> — akcje drugorzędne ekranu, delikatne akcenty (poświata ramki)</li>
-        <li><span class="swatch" style="background:#FFA86B"></span><code>_orange_lvl_3</code> <code>#FFA86B</code> — akcja główna (FAB, główna akcja ekranu), mocny akcent (pasek postępu, gwiazda utrwalenia)</li>
+        <li><span class="swatch" style="background:#FFF4E6"></span><span class="swatch" style="background:#F7F1EA"></span><code>_palette_lvl_0</code> <code>#FFF4E6</code> / <code>#F7F1EA</code> — tło aplikacji</li>
+        <li><span class="swatch" style="background:#FFE1C8"></span><span class="swatch" style="background:#E8D9C8"></span><code>_palette_lvl_1</code> <code>#FFE1C8</code> / <code>#E8D9C8</code> — akcje list, karty (np. fiszki, zestawy)</li>
+        <li><span class="swatch" style="background:#FFC59A"></span><span class="swatch" style="background:#CDB096"></span><code>_palette_lvl_2</code> <code>#FFC59A</code> / <code>#CDB096</code> — akcje drugorzędne ekranu, delikatne akcenty (poświata ramki)</li>
+        <li><span class="swatch" style="background:#FFA86B"></span><span class="swatch" style="background:#A87C5A"></span><code>_palette_lvl_3</code> <code>#FFA86B</code> / <code>#A87C5A</code> — akcja główna (FAB, główna akcja ekranu), mocny akcent (pasek postępu, gwiazda utrwalenia)</li>
       </ul>
     </li>
+    <li><b>Wybór palety</b> — w Preferencjach (<code>ColorPaletteTiles</code>); poziomy biorą kolor z atrybutów motywu <code>paletteLvl0..3</code>, więc nowy kolor akcentu zawsze przez <code>_palette_lvl_*</code> albo kolor semantyczny, nigdy hex. Jako tło (<code>android:background</code>, <code>windowBackground</code>) kolor palety tylko przez drawable <code>bg_*</code> (kształt z tym kolorem) — wpisany wprost w tło nie rysuje się (czarne tło). Gradient — tylko <code>?attr/paletteLvl0Fade*</code> (z <code>@color</code> palety wychodzi magenta). Wariant z przezroczystością — plik w <code>res/color</code> z <code>?attr/paletteLvlN</code> i <code>android:alpha</code>, nie hex z alfą. Wyjątek: ikony skrótów launchera — stały <code>_palette_orange_lvl_3</code> (launcher nie zna motywu aplikacji).
+      <br>Kod: <code>res/color/_palette_lvl_*.xml</code>, <code>_palette_orange_*</code> / <code>_palette_coffee_*</code> (<code>colors.xml</code>), <code>ThemeOverlay.MindShaper.Palette.*</code> (<code>themes.xml</code>), <code>ColorPalette</code></li>
     <li><b>Szary = nieaktywny</b> — <code>_gray_lvl_*</code> oznacza element wyłączony / nieaktywny, ramki pomocnicze i tekst drugorzędny; aktywnych kart i treści nie robimy na szaro.</li>
     <li><b>Tekst</b> — <code>text_primary</code> (grafit średni), <code>text_secondary</code> (grafit jasny); nie wpisujemy kolorów na sztywno w layoutach, tylko przez kolory semantyczne (<code>text_*</code>, <code>button_*</code>, <code>flashcard_*</code>…).</li>
   </ul>
@@ -278,7 +280,7 @@
     <p class="note">Stan liczony z wartości i czasu od zmiany myśli.</p>
     <table class="icon-table">
       <tr><th>Ikona</th><th>Znaczenie</th><th>Zasady</th><th>Kod</th></tr>
-      <tr><td class="icon-cell"><div class="icon-grid"><svg role="img" aria-label="ic_status_active" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#FFA86B"/><g transform="translate(6,6) scale(0.02083)"><path d="M525,826Q520.5,830.23 515,831.86Q509.5,833.5 504.88,833.5Q499.25,833.5 494.42,831.77Q489.59,830.04 485,825Q444.28,782.91 424.64,737.62Q405,692.33 405,643.12Q405,607.59 415.75,568.04Q426.5,528.5 454.5,459.5Q479.5,401 488.75,368.63Q498,336.25 498,309.36Q498,271.5 481.24,238.83Q464.48,206.16 430.42,173.67Q426,169 424.25,164Q422.5,159 422.5,153Q422.5,148.5 423.75,143.5Q425,138.5 428.55,133.75Q433,129 438.54,126.5Q444.07,124 450.11,124Q454.5,124 459.75,126Q465,128 470,132.5Q512.98,173.25 534.24,216.39Q555.5,259.53 555.5,309.02Q555.5,342.66 545.53,379.75Q535.55,416.83 508.02,481.47Q482.5,542 472.5,577.12Q462.5,612.25 462.5,641.91Q462.5,681.02 478.5,716.52Q494.51,752.01 527,786Q530.5,791 532,795.75Q533.5,800.5 533.5,805.27Q533.5,811.03 531.5,816.52Q529.5,822 525,826ZM725.04,827.5Q720,831 715.25,832.25Q710.5,833.5 705.88,833.5Q700.25,833.5 694.92,831.65Q689.59,829.81 684.87,825.38Q644.5,783 624.75,738.37Q605,693.74 605,644.11Q605,608.47 615.75,568.98Q626.5,529.5 654.5,460.5Q679.5,402 688.5,369.62Q697.5,337.25 697.5,310.36Q697.5,272.5 681.25,240.25Q665,208 630.5,175Q625.5,170.32 624.25,165.4Q623,160.48 623,154.57Q623,149.81 624.5,144.4Q626,139 629.27,134.5Q634,130 639.38,128Q644.75,126 650.63,126Q655,126 660,127.5Q665,129 670,132.5Q713,173 734,216.36Q755,259.71 755,309Q755,342.5 745.25,379.25Q735.5,416 708,482.5Q682.71,541.39 672.6,576.76Q662.5,612.12 662.5,642Q662.5,681 678.25,717.25Q694,753.5 727,787Q730.5,791.5 732,796.33Q733.5,801.17 733.5,806Q733.5,812 731.5,817.13Q729.5,822.26 725.04,827.5ZM324.81,827.5Q320.5,831 315.5,832.5Q310.5,834 305.88,834Q300.25,834 294.92,832.02Q289.59,830.04 284.87,825.38Q244.5,783 224.75,738.37Q205,693.74 205,644.11Q205,608.47 216,568.98Q227,529.5 254.5,460.5Q279.5,402 288.75,369.62Q298,337.25 298,310.36Q298,272.5 281.5,240.25Q265,208 230.5,175Q226,170.5 224,164.98Q222,159.47 222,153.73Q222,149 223.5,143.75Q225,138.5 228.5,133.5Q233.21,129 238.64,126.5Q244.07,124 250,124Q254.5,124 259.75,126Q265,128 270,132.5Q312.98,172.87 334.24,216.27Q355.5,259.68 355.5,309Q355.5,342.09 345,380.05Q334.5,418 308,482.5Q283.5,541 273.5,576.25Q263.5,611.5 263.5,642Q263.5,682 279.25,717.75Q295,753.5 327,787Q330.5,791.5 332,796.38Q333.5,801.26 333.5,806.14Q333.5,812 331.5,817.25Q329.5,822.5 324.81,827.5Z" fill="#FFFFFF"/></g></svg></div></td><td><b>Aktywna</b></td><td>sam znak w <code>_orange_lvl_1</code>, nieklikalny (bez ripple).</td><td class="code-cell"><code>ic_status_active</code></td></tr>
+      <tr><td class="icon-cell"><div class="icon-grid"><svg role="img" aria-label="ic_status_active" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#FFA86B"/><g transform="translate(6,6) scale(0.02083)"><path d="M525,826Q520.5,830.23 515,831.86Q509.5,833.5 504.88,833.5Q499.25,833.5 494.42,831.77Q489.59,830.04 485,825Q444.28,782.91 424.64,737.62Q405,692.33 405,643.12Q405,607.59 415.75,568.04Q426.5,528.5 454.5,459.5Q479.5,401 488.75,368.63Q498,336.25 498,309.36Q498,271.5 481.24,238.83Q464.48,206.16 430.42,173.67Q426,169 424.25,164Q422.5,159 422.5,153Q422.5,148.5 423.75,143.5Q425,138.5 428.55,133.75Q433,129 438.54,126.5Q444.07,124 450.11,124Q454.5,124 459.75,126Q465,128 470,132.5Q512.98,173.25 534.24,216.39Q555.5,259.53 555.5,309.02Q555.5,342.66 545.53,379.75Q535.55,416.83 508.02,481.47Q482.5,542 472.5,577.12Q462.5,612.25 462.5,641.91Q462.5,681.02 478.5,716.52Q494.51,752.01 527,786Q530.5,791 532,795.75Q533.5,800.5 533.5,805.27Q533.5,811.03 531.5,816.52Q529.5,822 525,826ZM725.04,827.5Q720,831 715.25,832.25Q710.5,833.5 705.88,833.5Q700.25,833.5 694.92,831.65Q689.59,829.81 684.87,825.38Q644.5,783 624.75,738.37Q605,693.74 605,644.11Q605,608.47 615.75,568.98Q626.5,529.5 654.5,460.5Q679.5,402 688.5,369.62Q697.5,337.25 697.5,310.36Q697.5,272.5 681.25,240.25Q665,208 630.5,175Q625.5,170.32 624.25,165.4Q623,160.48 623,154.57Q623,149.81 624.5,144.4Q626,139 629.27,134.5Q634,130 639.38,128Q644.75,126 650.63,126Q655,126 660,127.5Q665,129 670,132.5Q713,173 734,216.36Q755,259.71 755,309Q755,342.5 745.25,379.25Q735.5,416 708,482.5Q682.71,541.39 672.6,576.76Q662.5,612.12 662.5,642Q662.5,681 678.25,717.25Q694,753.5 727,787Q730.5,791.5 732,796.33Q733.5,801.17 733.5,806Q733.5,812 731.5,817.13Q729.5,822.26 725.04,827.5ZM324.81,827.5Q320.5,831 315.5,832.5Q310.5,834 305.88,834Q300.25,834 294.92,832.02Q289.59,830.04 284.87,825.38Q244.5,783 224.75,738.37Q205,693.74 205,644.11Q205,608.47 216,568.98Q227,529.5 254.5,460.5Q279.5,402 288.75,369.62Q298,337.25 298,310.36Q298,272.5 281.5,240.25Q265,208 230.5,175Q226,170.5 224,164.98Q222,159.47 222,153.73Q222,149 223.5,143.75Q225,138.5 228.5,133.5Q233.21,129 238.64,126.5Q244.07,124 250,124Q254.5,124 259.75,126Q265,128 270,132.5Q312.98,172.87 334.24,216.27Q355.5,259.68 355.5,309Q355.5,342.09 345,380.05Q334.5,418 308,482.5Q283.5,541 273.5,576.25Q263.5,611.5 263.5,642Q263.5,682 279.25,717.75Q295,753.5 327,787Q330.5,791.5 332,796.38Q333.5,801.26 333.5,806.14Q333.5,812 331.5,817.25Q329.5,822.5 324.81,827.5Z" fill="#FFFFFF"/></g></svg></div></td><td><b>Aktywna</b></td><td>sam znak w <code>_palette_lvl_1</code>, nieklikalny (bez ripple).</td><td class="code-cell"><code>ic_status_active</code></td></tr>
       <tr><td class="icon-cell"><div class="icon-grid"><svg role="img" aria-label="ic_status_attention" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#FFA86B"/><g transform="translate(6,6) scale(0.02083)"><path d="M252.5,795.5Q166.05,795.5 105.53,734.98Q45,674.47 45,588Q45,511.5 94.75,453.25Q144.5,395 220.5,383.5Q239.32,287.61 312.54,226.55Q385.76,165.5 481.99,165.5Q592,165.5 668,246Q744,326.5 744,438.5L744,464L744,464Q815.5,461 865.25,508.95Q915,556.9 915,629.5Q915,697.5 865.88,746.5Q816.75,795.5 749,795.5L252.5,795.5ZM252.52,738L749,738Q793.71,738 825.6,706.25Q857.5,674.5 857.5,629.66Q857.5,584.81 825.57,553.07Q793.64,521.34 748.88,521.34L686.5,521.34L686.5,438.68Q686.5,348 626.09,285.5Q565.67,223 478.09,223Q390.5,223 329.57,285.44Q268.65,347.88 268.65,438.5L268.65,438.5L249.5,438.5Q188,438.5 145.25,481.5Q102.5,524.5 102.5,588.25Q102.5,651 146.05,694.5Q189.6,738 252.52,738ZM480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480L480,480L480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480L480,480L480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480Q480,480 480,480ZM500.75,620.5Q509,612.5 509,600Q509,587.5 500.75,579.25Q492.5,571 480,571Q467.5,571 459.5,579.25Q451.5,587.5 451.5,600Q451.5,612.5 459.5,620.5Q467.5,628.5 480,628.5Q492.5,628.5 500.75,620.5ZM500.75,493Q509,485 509,472.5L509,350Q509,337.5 500.75,329.25Q492.5,321 480,321Q467.5,321 459.5,329.25Q451.5,337.5 451.5,350L451.5,472.5Q451.5,485 459.5,493Q467.5,501 480,501Q492.5,501 500.75,493Z" fill="#FFFFFF"/></g></svg></div></td><td><b>Bliska uśpienia</b></td><td rowspan="2">tap otwiera wyjaśnienie.</td><td class="code-cell"><code>ic_status_attention</code></td></tr>
       <tr><td class="icon-cell"><div class="icon-grid"><svg role="img" aria-label="ic_status_dormant" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#FFA86B"/><g transform="translate(6,6) scale(0.02083)"><path d="M519,479Q519,479 519,479Q519,479 519,479Q519,479 519,479Q519,479 519,479Q519,479 519,479Q519,479 519,479L519,479Q519,479 519,479Q519,479 519,479Q519,479 519,479Q519,479 519,479L519,479L519,479Q519,479 519,479Q519,479 519,479Q519,479 519,479Q519,479 519,479L519,479Q519,479 519,479Q519,479 519,479ZM524,878.5L402.5,878.5Q402.5,878.5 412.5,869.5Q422.5,860.5 435,850Q447.5,839.5 457.75,830.5Q468,821.5 468,821.5L521.5,821.5Q619.5,823 705.25,763.75Q791,704.5 840,617Q749.71,609.05 666.45,575.78Q583.2,542.5 519.5,479Q455.54,416.14 422.77,333.32Q390,250.5 382.5,161.5Q293.5,210 236.25,292.75Q179,375.5 179,476Q179,482 179,489Q179,496 180,502Q180,502 171.16,505.49Q162.32,508.99 151.98,512.51Q141.63,516.04 133.06,519.27Q124.5,522.5 124.5,522.5Q122.5,509.81 122,498.41Q121.5,487 121.5,476Q121.5,340 201,235.75Q280.5,131.5 409,93Q417,91 423.5,92.25Q430,93.5 435,97.75Q440,102 443.25,108.42Q446.5,114.84 446,122.5Q440.5,214 467.5,293.75Q494.5,373.5 560.49,438.99Q628,507 704.75,532.25Q781.5,557.5 875.5,553Q883.62,552.5 890.06,556.25Q896.5,560 901.25,564.75Q906,569.5 906.5,576.75Q907,584 904,591.5Q858,722 763.5,800.25Q669,878.5 524,878.5ZM240,821L420,821Q453.96,821 477.73,797.44Q501.5,773.89 501.5,740.24Q501.5,706.5 478.41,682.5Q455.31,658.5 421.84,658.5L384,658.5L369.5,624.5Q352.5,585 317.44,561.75Q282.38,538.5 240.31,538.5Q182.69,538.5 140.84,580Q99,621.5 99,680Q99,738.75 140.13,779.87Q181.25,821 240,821ZM240,878.5Q158,878.5 99.75,820.27Q41.5,762.05 41.5,679.91Q41.5,597.36 99.66,539.18Q157.82,481 240.35,481Q300,481 349.1,513.5Q398.2,546 422.5,601L422.5,601L422.5,601Q479,603 519,643.21Q559,683.41 559,740Q559,797.5 518.25,838Q477.5,878.5 420,878.5L240,878.5Z" fill="#FFFFFF"/></g></svg></div></td><td><b>Uśpiona</b></td><td class="code-cell"><code>ic_status_dormant</code></td></tr>
     </table>
@@ -513,7 +515,7 @@
     <summary><h3>Kafelki wyboru</h3></summary>
     <dl>
       <dt>Przeznaczenie</dt>
-      <dd>Wybór jednej z kilku opcji z ikoną — w <i>Preferencjach</i>: ekran startowy, domyślna forma zapisu, skala wartości myśli.</dd>
+      <dd>Wybór jednej z kilku opcji — w <i>Preferencjach</i>: ekran startowy, domyślna forma zapisu, skala wartości myśli, paleta kolorów.</dd>
       <dt>Wygląd</dt>
       <dd>
         <figure><svg role="img" aria-label="hex-option-tiles-row" xmlns="http://www.w3.org/2000/svg" width="345" height="101.2" viewBox="0 0 300 88">
@@ -534,6 +536,7 @@
           <li>do 3 kafelków — zawsze jeden rząd</li>
           <li>4 i więcej — jeden rząd, a gdy kafelek byłby węższy niż 80dp (wąski ekran, duża czcionka), siatka 2 kolumn</li>
           <li>wyłączony — szary i przygaszony</li>
+          <li>bez ikony — sama etykieta z emoji, np. paleta kolorów: <i>🥭 Pomarańczowa</i> / <i>☕ Kawowa</i></li>
           <li>wersja <b>compact</b> — niskie kafelki z samą etykietą, bez ikony, np. w dialogu (separator importu fiszek: <i>Enter</i> / <i>Myślnik</i>)</li>
         </ul>
       </dd>
@@ -545,7 +548,7 @@
         </ul>
       </dd>
       <dt>Kod</dt>
-      <dd><code>HexOptionTiles</code> (<code>app:compact</code>), <code>common_option_tile_item_view.xml</code> (layout)</dd>
+      <dd><code>HexOptionTiles</code> (<code>app:compact</code>), <code>common_option_tile_item_view.xml</code> (layout); w Preferencjach typowane podklasy: <code>StartScreenTiles</code>, <code>DefaultCaptureFormTiles</code>, <code>ThoughtValueSystemTiles</code>, <code>ColorPaletteTiles</code></dd>
     </dl>
   </details>
 
@@ -589,8 +592,8 @@
           <li>aktywna etykieta <code>text_primary</code>, pogrubiona; nieaktywna <code>text_secondary</code></li>
           <li>na ciemnym tle (scrim dialogu) jasne etykiety: aktywna <code>app_background</code>, nieaktywna <code>_gray_lvl_2</code>; nawiasy bez zmian</li>
           <li>po lewej od etykiety opcjonalnie ikona albo emoji (jedno z nich) — ikona w kolorze etykiety; etykieta razem z ikoną wyśrodkowana w zakładce</li>
-          <li>aktywna zakładka: poziomy nawias klamrowy <code>_orange_lvl_2</code> (końce podwinięte w górę, w środku trójkątny dziubek w dół — równoramienny, proste ścianki)</li>
-          <li>nieaktywna: linia <code>_orange_lvl_1</code> z tak samo podwiniętymi końcami, bez dziubka</li>
+          <li>aktywna zakładka: poziomy nawias klamrowy <code>_palette_lvl_2</code> (końce podwinięte w górę, w środku trójkątny dziubek w dół — równoramienny, proste ścianki)</li>
+          <li>nieaktywna: linia <code>_palette_lvl_1</code> z tak samo podwiniętymi końcami, bez dziubka</li>
         </ul>
       </dd>
       <dt>Działanie</dt>
@@ -625,7 +628,7 @@
 </svg></figure>
         <ul>
           <li>przełącznik po lewej, etykieta po prawej, wyrównana do lewej</li>
-          <li>oś przełącznika <code>_orange_lvl_1</code> w obu stanach, 4dp dłuższa niż domyślna</li>
+          <li>oś przełącznika <code>_palette_lvl_1</code> w obu stanach, 4dp dłuższa niż domyślna</li>
           <li>wyłączony — przygaszony razem ze swoją etykietą</li>
         </ul>
       </dd>
@@ -663,7 +666,7 @@
 </svg></figure>
         <ul>
           <li>kwadrat zawsze jako obrys — zaznaczenie to ptaszek w środku, bez wypełnienia</li>
-          <li>zaznaczony <code>_orange_lvl_3</code>, niezaznaczony <code>_gray_lvl_3</code>, wyłączony <code>_gray_lvl_2</code></li>
+          <li>zaznaczony <code>_palette_lvl_3</code>, niezaznaczony <code>_gray_lvl_3</code>, wyłączony <code>_gray_lvl_2</code></li>
         </ul>
       </dd>
       <dt>Działanie</dt>
@@ -962,8 +965,8 @@
 <h2>Karty i listy</h2>
 <section>
   <ul>
-    <li><b>Jeden kolor kart danego rodzaju</b> — np. fiszki i zestawy: <code>flashcard_background</code> (<code>_orange_lvl_1</code>) dla obu stron fiszki.</li>
-    <li><b>Stan elementu wizualnie, nie tekstem</b>, gdy się da — np. poziom fiszki: pionowy pasek o zaokrąglonych końcach (szare tło, wypełnienie <code>_orange_lvl_3</code>) z liczbą na czubku; utrwalona = pomarańczowa gwiazda.</li>
+    <li><b>Jeden kolor kart danego rodzaju</b> — np. fiszki i zestawy: <code>flashcard_background</code> (<code>_palette_lvl_1</code>) dla obu stron fiszki.</li>
+    <li><b>Stan elementu wizualnie, nie tekstem</b>, gdy się da — np. poziom fiszki: pionowy pasek o zaokrąglonych końcach (szare tło, wypełnienie <code>_palette_lvl_3</code>) z liczbą na czubku; utrwalona = pomarańczowa gwiazda.</li>
     <li><b>Karty na listach unoszą się nad tłem</b> — cień jak w <i>Strumieniu</i> (elewacja 4dp), np. fiszki, zestawy, kafelki domen; chipy, pigułki i zakładki zostają płaskie. Cień wymaga tła z wypełnieniem (sam tint na kształcie bez <code>solid</code> nie rzuca cienia), a kolumna listy nie może przycinać marginesu, w który cień wpada.</li>
     <li><b>Zestaw odróżniony od fiszki</b> — pomarańczowy akcent lewej krawędzi, najgrubszy w połowie boku, zwężający się po zaokrąglonych rogach (<code>shape_flashcard_set_card</code>).</li>
     <li><b>Etykieta sekcji nad listą</b> — mała, w kolorze tekstu drugorzędnego (np. <i>„Zestawy”</i>, 15sp).</li>

@@ -38,7 +38,7 @@ class ValueCloude @JvmOverloads constructor(
             onLevelChangeListener?.invoke(field)
         }
 
-    var cloudColor: Int = R.color._orange_lvl_2
+    var cloudColor: Int = R.color._palette_lvl_2
         set(value) {
             field = value
             applyCloudColor()
@@ -61,7 +61,7 @@ class ValueCloude @JvmOverloads constructor(
         attrs?.let {
             val styledAttr = context.obtainStyledAttributes(it, R.styleable.ValueCloude, 0, 0)
             try {
-                cloudColor    = styledAttr.getResourceId(R.styleable.ValueCloude_cloudColor, R.color._orange_lvl_2)
+                cloudColor    = styledAttr.getResourceId(R.styleable.ValueCloude_cloudColor, R.color._palette_lvl_2)
                 val defaultTextSizePx = TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_SP, 14f, resources.displayMetrics
                 )

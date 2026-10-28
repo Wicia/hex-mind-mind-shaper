@@ -5,12 +5,34 @@
 <!--    CORE PALETTE -->
 <!-- ====================================== -->
 
-    <!-- ORANGE: Main orange color for the app theme -->
-    <!-- 0..3 -> color intensity -->
-    <color name="_orange_lvl_0">#FFF4E6</color>     <!-- APP BACKGROUND (neutral orange) -->
-    <color name="_orange_lvl_1">#FFE1C8</color>     <!-- TERTIARY: list actions + other -->
-    <color name="_orange_lvl_2">#FFC59A</color>     <!-- SECONDARY: activity secondary actions -->
-    <color name="_orange_lvl_3">#FFA86B</color>     <!-- PRIMARY: fab buttons & activity main action -->
+    <!-- ! _palette_lvl_0..3 live in res/color: they resolve the theme attrs paletteLvl0..3 = the picked color palette (ColorPalette) -->
+    <!-- ! Theme-less contexts (launcher shortcut icons) take the concrete _palette_* colors below; gradients take ?attr/paletteLvl0Fade* (no color state list in gradients) -->
+
+    <!-- PALETTE ORANGE (default): 0..3 -> color intensity -->
+    <color name="_palette_orange_lvl_0">#FFF4E6</color>     <!-- APP BACKGROUND (neutral orange) -->
+    <color name="_palette_orange_lvl_1">#FFE1C8</color>     <!-- TERTIARY: list actions + other -->
+    <color name="_palette_orange_lvl_2">#FFC59A</color>     <!-- SECONDARY: activity secondary actions -->
+    <color name="_palette_orange_lvl_3">#FFA86B</color>     <!-- PRIMARY: fab buttons & activity main action -->
+    <color name="_palette_orange_lvl_0_fade_start">#00FFF4E6</color>   <!-- lvl 0 transparent - start of a fade gradient -->
+    <color name="_palette_orange_lvl_0_fade_end">#F2FFF4E6</color>     <!-- lvl 0 at 95% - end of a fade gradient -->
+    <color name="_palette_orange_deck_layer_1">#FFF2D3B8</color>     <!-- flashcards session deck: 1 = right under the card -->
+    <color name="_palette_orange_deck_layer_2">#FFE6C4A7</color>
+    <color name="_palette_orange_deck_layer_3">#FFD8B496</color>
+    <color name="_palette_orange_deck_layer_4">#FFC9A588</color>     <!-- 4 = the bottom one (darker = deeper) -->
+    <color name="_palette_orange_stamp_good">#FFB4581C</color>       <!-- "Mam to" stamp -->
+
+    <!-- PALETTE COFFEE: same levels as orange -->
+    <color name="_palette_coffee_lvl_0">#F7F1EA</color>     <!-- APP BACKGROUND (cream) -->
+    <color name="_palette_coffee_lvl_1">#E8D9C8</color>     <!-- TERTIARY: list actions + other (latte) -->
+    <color name="_palette_coffee_lvl_2">#CDB096</color>     <!-- SECONDARY: activity secondary actions (cappuccino) -->
+    <color name="_palette_coffee_lvl_3">#A87C5A</color>     <!-- PRIMARY: fab buttons & activity main action (coffee) -->
+    <color name="_palette_coffee_lvl_0_fade_start">#00F7F1EA</color>
+    <color name="_palette_coffee_lvl_0_fade_end">#F2F7F1EA</color>
+    <color name="_palette_coffee_deck_layer_1">#FFEADBCB</color>
+    <color name="_palette_coffee_deck_layer_2">#FFE0CDB9</color>
+    <color name="_palette_coffee_deck_layer_3">#FFD3BCA6</color>
+    <color name="_palette_coffee_deck_layer_4">#FFC5AA92</color>
+    <color name="_palette_coffee_stamp_good">#FF7A4E2E</color>
 
     <!-- NEUTRAL: Grayscale for text and backgrounds -->
     <color name="_white">#FFFFFF</color>
@@ -44,10 +66,10 @@
 <!--    APP THEME MAPPINGS -->
 <!-- ====================================== -->
 
-    <color name="app_primary">@color/_orange_lvl_3</color>
-    <color name="app_secondary">@color/_orange_lvl_3</color>
+    <color name="app_primary">@color/_palette_lvl_3</color>
+    <color name="app_secondary">@color/_palette_lvl_3</color>
 
-    <color name="app_background">@color/_orange_lvl_0</color>
+    <color name="app_background">@color/_palette_lvl_0</color>
     <color name="app_surface">@color/_white</color>
 
 <!-- ====================================== -->
@@ -66,23 +88,23 @@
 
     <!-- Input controls -->
     <color name="input_background">@color/_white</color>
-    <color name="input_stroke">@color/_orange_lvl_2</color>
-    <color name="input_stroke_focused">@color/_orange_lvl_3</color>
+    <color name="input_stroke">@color/_palette_lvl_2</color>
+    <color name="input_stroke_focused">@color/_palette_lvl_3</color>
 
 <!-- ====================================== -->
 <!--    ACTION BUTTONS -->
 <!-- ====================================== -->
 
     <!-- Primary -->
-    <color name="button_primary_enabled_background">@color/_orange_lvl_3</color>
+    <color name="button_primary_enabled_background">@color/_palette_lvl_3</color>
 
     <!-- Secondary -->
-    <color name="button_secondary_enabled_background">@color/_orange_lvl_1</color>
+    <color name="button_secondary_enabled_background">@color/_palette_lvl_1</color>
 
     <color name="button_secondary_disabled_background">@color/_gray_lvl_1</color>
 
     <!--  Auxiliary (no disabled state) -->
-    <color name="button_auxiliary_background">@color/_orange_lvl_1</color>
+    <color name="button_auxiliary_background">@color/_palette_lvl_1</color>
     <color name="button_auxiliary_icon">@color/_gray_lvl_2</color>
 
 <!-- ====================================== -->
@@ -90,20 +112,20 @@
 <!-- ====================================== -->
 
     <color name="button_content_empty_background_disabled">@color/_gray_lvl_1</color>
-    <color name="button_content_empty_background">@color/_orange_lvl_1</color>
+    <color name="button_content_empty_background">@color/_palette_lvl_1</color>
 
     <color name="button_content_empty_icon_disabled">@color/_white</color>
-    <color name="button_content_empty_icon">@color/_orange_lvl_0</color>
+    <color name="button_content_empty_icon">@color/_palette_lvl_0</color>
 
-    <color name="button_content_filled_background">@color/_orange_lvl_1</color>
-    <color name="button_content_filled_icon">@color/_orange_lvl_0</color>
+    <color name="button_content_filled_background">@color/_palette_lvl_1</color>
+    <color name="button_content_filled_icon">@color/_palette_lvl_0</color>
 
 <!-- ====================================== -->
 <!--    CARD VIEWS -->
 <!-- ====================================== -->
 
     <!-- Card views -->
-    <color name="hex_card_background">@color/_orange_lvl_1</color>
+    <color name="hex_card_background">@color/_palette_lvl_1</color>
 
     <color name="card_section_header">@color/_black</color>
 
@@ -111,58 +133,47 @@
     <color name="rich_text_inline_tag">@color/graphite_light</color>
 
     <!-- Flashcards: one color for both sides; not gray - gray means disabled in the app -->
-    <color name="flashcard_background">@color/_orange_lvl_1</color>
-    <!-- ! Ghost buttons ripple in _orange_lvl_1 = the card color, so the ripple was invisible -->
-    <color name="flashcard_ripple">@color/_orange_lvl_2</color>
+    <color name="flashcard_background">@color/_palette_lvl_1</color>
+    <!-- ! Ghost buttons ripple in _palette_lvl_1 = the card color, so the ripple was invisible -->
+    <color name="flashcard_ripple">@color/_palette_lvl_2</color>
     <!-- Done part of the review progress bar -->
-    <color name="flashcard_accent">@color/_orange_lvl_3</color>
+    <color name="flashcard_accent">@color/_palette_lvl_3</color>
     <color name="flashcard_progress_track">@color/_gray_lvl_2</color>
-    <!-- Today's session widget frame (HexWavyFrameView): soft glow of _orange_lvl_2, 1 = sharp line, 5 = faintest - not a button look -->
-    <!-- ! _orange_lvl_3 (flashcard_accent) was too strong for a frame -->
-    <color name="flashcard_review_glow_1">#B3FFC59A</color>
-    <color name="flashcard_review_glow_2">#4DFFC59A</color>
-    <color name="flashcard_review_glow_3">#26FFC59A</color>
-    <color name="flashcard_review_glow_4">#14FFC59A</color>
-    <color name="flashcard_review_glow_5">#0DFFC59A</color>
-    <!-- Rocket of the today's session widget - same orange as its frame -->
-    <color name="flashcard_review_rocket">@color/_orange_lvl_2</color>
+    <!-- Today's session widget frame (HexWavyFrameView): soft glow of _palette_lvl_2, 1 = sharp line, 5 = faintest - not a button look (res/color/flashcard_review_glow_*) -->
+    <!-- ! _palette_lvl_3 (flashcard_accent) was too strong for a frame -->
+    <!-- Rocket of the today's session widget - same palette color as its frame -->
+    <color name="flashcard_review_rocket">@color/_palette_lvl_2</color>
 
-    <!-- Landscape review session (HexFlashcardsSessionView): dark focus mode, the card stays in its own orange -->
+    <!-- Landscape review session (HexFlashcardsSessionView): dark focus mode, the card stays in its own palette color -->
     <color name="flashcard_session_background">@color/graphite_dark</color>
     <color name="flashcard_session_text">@color/graphite_beige</color>
     <color name="flashcard_session_text_soft">#FFE3D7CC</color>
     <color name="flashcard_session_text_secondary">#FFC9BEB4</color>
     <!-- Hint while the card is held over a pile -->
-    <color name="flashcard_session_hint_active">@color/_orange_lvl_2</color>
+    <color name="flashcard_session_hint_active">@color/_palette_lvl_2</color>
     <!-- Pause / undo / later pills: graphite frame on a faint graphite fill -->
     <color name="flashcard_session_pill_frame">@color/graphite_medium</color>
     <color name="flashcard_session_pill_fill">#5948433F</color>
     <color name="flashcard_session_pill_ripple">@color/graphite_light</color>
     <!-- Undo pill: frame running out with the undo window, over the pill's own frame -->
-    <color name="flashcard_session_undo_countdown">@color/_orange_lvl_2</color>
+    <color name="flashcard_session_undo_countdown">@color/_palette_lvl_2</color>
     <!-- "Gotowe" pill on the light end card -->
     <color name="flashcard_session_done_fill">@color/graphite_medium</color>
     <color name="flashcard_session_progress_track">@color/graphite_medium</color>
     <!-- Rating piles: dashed frame + faint fill of the pile's color; filled with it while the card is held over -->
-    <!-- ! Colors differ in lightness, not only in hue: GOOD = mid orange, OK = light beige, BAD = graphite -->
-    <color name="flashcard_zone_good">@color/_orange_lvl_3</color>
-    <color name="flashcard_zone_good_fill">#1AFFA86B</color>
+    <!-- ! Colors differ in lightness, not only in hue: GOOD = mid palette color, OK = light beige, BAD = graphite -->
+    <color name="flashcard_zone_good">@color/_palette_lvl_3</color>
+    <!-- GOOD / OK pile fills: res/color/flashcard_zone_*_fill -->
     <color name="flashcard_zone_ok_frame">#FFBFA48E</color>
-    <color name="flashcard_zone_ok_face">@color/_orange_lvl_1</color>
-    <color name="flashcard_zone_ok_fill">#14FFE1C8</color>
+    <color name="flashcard_zone_ok_face">@color/_palette_lvl_1</color>
     <color name="flashcard_zone_bad_frame">@color/graphite_soft</color>
     <!-- ! graphite_soft alone was too dark for the face on graphite_dark -->
     <color name="flashcard_zone_bad_face">#FFA0958C</color>
     <color name="flashcard_zone_bad_fill">#1F857C75</color>
-    <!-- Stamp on the card held over a pile -->
-    <color name="flashcard_stamp_good">#FFB4581C</color>
+    <!-- Stamp on the card held over a pile (flashcard_stamp_good: res/color, per palette) -->
     <color name="flashcard_stamp_ok">#FF8A6A50</color>
     <color name="flashcard_stamp_bad">@color/graphite_medium</color>
-    <!-- Deck under the card: 1 = right under it, 4 = the bottom one (darker = deeper) -->
-    <color name="flashcard_deck_layer_1">#FFF2D3B8</color>
-    <color name="flashcard_deck_layer_2">#FFE6C4A7</color>
-    <color name="flashcard_deck_layer_3">#FFD8B496</color>
-    <color name="flashcard_deck_layer_4">#FFC9A588</color>
+    <!-- Deck under the card: 1 = right under it, 4 = the bottom one (darker = deeper): res/color (per palette) -->
 
     <!-- Web links in rich text -->
     <color name="rich_text_link">#5B86B5</color>
@@ -178,14 +189,14 @@
 <!--    LIST ITEMS -->
 <!-- ====================================== -->
 
-    <color name="list_icons_item_background">@color/_orange_lvl_1</color>
+    <color name="list_icons_item_background">@color/_palette_lvl_1</color>
 
 <!-- ====================================== -->
 <!--    DECORATORS -->
 <!-- ====================================== -->
 
     <!-- Separator / dividers -->
-    <color name="separator_background">@color/_orange_lvl_0</color>
+    <color name="separator_background">@color/_palette_lvl_0</color>
 
     <!-- Leafs -->
     <color name="separator_leaf">@color/_gray_lvl_2</color>
@@ -193,15 +204,14 @@
     <!-- Tree branches (HexTreeConnector): between _gray_lvl_1 and _gray_lvl_2 -->
     <color name="tree_connector">#D2D2D2</color>
 
-    <!-- Lab bubbles over the onboarding flask on Home: ring in _orange_lvl_2, fill = the same at 20% -->
-    <color name="lab_bubble_stroke">@color/_orange_lvl_2</color>
-    <color name="lab_bubble_fill">#33FFC59A</color>
+    <!-- Lab bubbles over the onboarding flask on Home: ring in _palette_lvl_2, fill = the same at 20% (res/color/lab_bubble_fill) -->
+    <color name="lab_bubble_stroke">@color/_palette_lvl_2</color>
 
     <!-- X of a thought form (SecondaryActionButton.Ghost.Delete): ripple a level darker than the plain ghost -->
-    <color name="delete_button_ripple">@color/_orange_lvl_2</color>
+    <color name="delete_button_ripple">@color/_palette_lvl_2</color>
 
     <!-- Unread news badge under the rocket on Home and its wave ring -->
-    <color name="home_news_badge">@color/_orange_lvl_2</color>
+    <color name="home_news_badge">@color/_palette_lvl_2</color>
     <color name="home_news_badge_text">@color/text_primary</color>
 
 <!-- ====================================== -->
@@ -224,7 +234,7 @@
     <color name="spotlight_button_text">@color/graphite_dark</color>
     <color name="spotlight_step_counter">#B3FFFFFF</color>
 
-    <!-- Breadcrumb waiting to be opened (HexBreadcrumbMarker): sparkle and its ring in gold - stands out from the orange theme -->
+    <!-- Breadcrumb waiting to be opened (HexBreadcrumbMarker): sparkle and its ring in gold - stands out from the palette colors -->
     <color name="breadcrumb_marker">#D4AF37</color>
 
 <!-- ====================================== -->
@@ -239,6 +249,6 @@
 <!--    STATES COLORS -->
 <!-- ====================================== -->
 
-    <color name="thought_status_icon">@color/_orange_lvl_2</color>
+    <color name="thought_status_icon">@color/_palette_lvl_2</color>
 
 </resources>

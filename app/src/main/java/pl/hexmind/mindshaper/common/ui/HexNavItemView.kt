@@ -34,8 +34,8 @@ class HexNavItemView @JvmOverloads constructor(
         labelView = findViewById(R.id.hexNavLabel)
         iconView = findViewById(R.id.hexNavIcon)
 
-        // Icons are orange by default; the controller re-tints on selection
-        iconView.imageTintList = ColorStateList.valueOf(context.getColor(R.color._orange_lvl_3))
+        // Icons are in the palette color by default; the controller re-tints on selection
+        iconView.imageTintList = ColorStateList.valueOf(context.getColor(R.color._palette_lvl_3))
 
         context.obtainStyledAttributes(attrs, R.styleable.HexNavItemView).apply {
             getString(R.styleable.HexNavItemView_hexNavLabel)?.let { labelView.text = it }

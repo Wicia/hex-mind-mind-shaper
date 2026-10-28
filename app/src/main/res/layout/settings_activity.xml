@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_background">
+    android:background="@drawable/bg_app_background">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -41,7 +41,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:hintTextColor="#FF8C42">
+                        app:hintTextColor="@color/_palette_lvl_3">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_your_name"
@@ -52,6 +52,19 @@
                             android:maxLines="1" />
 
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
+
+                    <!-- Color palette -->
+                    <TextView
+                        android:id="@+id/tv_color_palette_section_header"
+                        style="@style/AppCardView_Header"
+                        android:text="@string/settings_color_palette_header" />
+
+                    <pl.hexmind.mindshaper.activities.settings.widgets.ColorPaletteTiles
+                        android:id="@+id/tiles_color_palette"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
                     <pl.hexmind.mindshaper.common.ui.views.HexDottedSeparator style="@style/AppCardView_Divider" />
 

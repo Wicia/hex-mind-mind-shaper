@@ -215,7 +215,7 @@ class OnboardingActivity : CoreActivity() {
         // All done = the same green as the rings of done tasks
         val isAllDone = doneCount >= total
         lpiOnboardingProgress.setIndicatorColor(
-            ContextCompat.getColor(this, if (isAllDone) R.color.progress_ring_done else R.color._orange_lvl_3)
+            ContextCompat.getColor(this, if (isAllDone) R.color.progress_ring_done else R.color._palette_lvl_3)
         )
 
         val percent = doneCount * 100 / total
@@ -243,12 +243,12 @@ class OnboardingActivity : CoreActivity() {
 
         cpiRing.setProgressCompat((score * 100 / task.requiredCount).coerceIn(0, 100), false)
         cpiRing.setIndicatorColor(
-            ContextCompat.getColor(this, if (done) R.color.progress_ring_done else R.color._orange_lvl_3)
+            ContextCompat.getColor(this, if (done) R.color.progress_ring_done else R.color._palette_lvl_3)
         )
-        cpiRing.trackColor = ContextCompat.getColor(this, if (done) R.color.progress_ring_done else R.color._orange_lvl_1)
+        cpiRing.trackColor = ContextCompat.getColor(this, if (done) R.color.progress_ring_done else R.color._palette_lvl_1)
 
         tvRingLabel.setTextColor(
-            ContextCompat.getColor(this, if (done) R.color.progress_ring_done else R.color._orange_lvl_3)
+            ContextCompat.getColor(this, if (done) R.color.progress_ring_done else R.color._palette_lvl_3)
         )
         tvRingLabel.text = when {
             done                 -> "✓"

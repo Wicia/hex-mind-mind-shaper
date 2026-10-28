@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Palette level 2 as a background - a palette color straight in android:background is not drawn (theme attr unresolved) -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/_palette_lvl_2" />
+</shape>

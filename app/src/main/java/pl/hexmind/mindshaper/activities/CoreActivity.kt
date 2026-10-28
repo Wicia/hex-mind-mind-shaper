@@ -34,6 +34,7 @@ import pl.hexmind.mindshaper.activities.workshop.WorkshopActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingManager
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.PermissionService
+import pl.hexmind.mindshaper.services.dto.ColorPalette
 import javax.inject.Inject
 
 /**
@@ -52,6 +53,9 @@ open class CoreActivity : AppCompatActivity() {
 
     private var navigationController: NavigationBarController? = null
     private var navigationBarView: View? = null
+
+    // Palette the activity was created with - another one picked meanwhile = recreate on resume
+    private lateinit var appliedColorPalette: ColorPalette
 
     companion object {
         /**
@@ -77,6 +81,10 @@ open class CoreActivity : AppCompatActivity() {
 // -------------------------------------------------------------------------------------------------
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // ! Before super.onCreate: theme overlay ahead of any inflation, preferences read directly (not injected yet)
+        appliedColorPalette = AppSettingsStorage.readColorPalette(this)
+        appliedColorPalette.applyTo(theme)
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdgeDisplay()
     }
@@ -88,6 +96,10 @@ open class CoreActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        if (appliedColorPalette != appSettingsStorage.getColorPalette()) {
+            recreate()
+            return
+        }
         navigationController?.syncFeatureButtons()
         highlightCurrentScreen()
     }

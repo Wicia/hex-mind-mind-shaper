@@ -630,7 +630,7 @@ class DetailsActivity : ThoughtManagerActivity() {
 
                 // Active = nothing to explain: just a sign, no dialog behind it
                 binding.ivStatus.setImageResource(R.drawable.ic_status_active)
-                binding.ivStatus.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color._orange_lvl_1))
+                binding.ivStatus.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color._palette_lvl_1))
                 binding.ivStatus.setOnClickListener(null)
                 setStatusIconTappable(false)
             }

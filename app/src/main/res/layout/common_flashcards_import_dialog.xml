@@ -117,8 +117,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            app:boxStrokeColor="#FF8C42"
-            app:hintTextColor="#FFAF7A">
+            app:boxStrokeColor="@color/_palette_lvl_3"
+            app:hintTextColor="@color/_palette_lvl_3">
 
             <!-- ! Hint (format example) is set by the separator -->
             <com.google.android.material.textfield.TextInputEditText

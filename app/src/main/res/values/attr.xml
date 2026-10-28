@@ -4,6 +4,21 @@
     <!-- To resolve problem with duplication (same attribute used in different widgets) -->
     <attr name="compact" format="boolean" />
 
+    <!-- Color palette levels 0..3 (read by res/color/_palette_lvl_*), values set by ThemeOverlay.MindShaper.Palette.* -->
+    <attr name="paletteLvl0" format="color" />
+    <attr name="paletteLvl1" format="color" />
+    <attr name="paletteLvl2" format="color" />
+    <attr name="paletteLvl3" format="color" />
+    <!-- Level 0 with alpha for gradients - a gradient takes ?attr colors, not a color state list -->
+    <attr name="paletteLvl0FadeStart" format="color" />
+    <attr name="paletteLvl0FadeEnd" format="color" />
+    <!-- Flashcards session colors outside the levels: deck under the card, "Mam to" stamp -->
+    <attr name="paletteDeckLayer1" format="color" />
+    <attr name="paletteDeckLayer2" format="color" />
+    <attr name="paletteDeckLayer3" format="color" />
+    <attr name="paletteDeckLayer4" format="color" />
+    <attr name="paletteStampGood" format="color" />
+
     <declare-styleable name="ValueBar">
         <attr name="radius" format="dimension" />
         <attr name="level" format="integer" />

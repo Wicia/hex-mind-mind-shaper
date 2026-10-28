@@ -573,6 +573,11 @@ Awers - Rewers…"</string>
     <string name="settings_your_name_header">✒️ Moje Prawdziwe Imię?</string>
     <string name="settings_your_name_default">Bezimienn(y/a)</string>
 
+    <!-- Color palette -->
+    <string name="settings_color_palette_header">🎨 Paleta kolorów</string>
+    <string name="settings_color_palette_orange">🥭 Pomarańczowa</string>
+    <string name="settings_color_palette_coffee">☕ Kawowa</string>
+
     <!-- Share app -->
     <string name="settings_share_app_teaser">Podziel się MindShaperem</string>
     <string name="settings_share_app_btn_open">Poleć apkę</string>

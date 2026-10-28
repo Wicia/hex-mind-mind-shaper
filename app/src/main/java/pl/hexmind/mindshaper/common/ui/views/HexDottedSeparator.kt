@@ -34,7 +34,7 @@ class HexDottedSeparator @JvmOverloads constructor(
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = ContextCompat.getColor(context, R.color._orange_lvl_1)
+        color = ContextCompat.getColor(context, R.color._palette_lvl_1)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

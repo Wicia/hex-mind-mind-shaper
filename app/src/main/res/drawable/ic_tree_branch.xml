@@ -7,7 +7,7 @@
     <!-- TODO: maybe replace it with already existing resource ? -->
     <!-- "L" connector: down from the field, then right into the first suggestion -->
     <path
-        android:strokeColor="@color/_orange_lvl_2"
+        android:strokeColor="@color/_palette_lvl_2"
         android:strokeWidth="1.5"
         android:fillColor="@android:color/transparent"
         android:strokeLineCap="round"

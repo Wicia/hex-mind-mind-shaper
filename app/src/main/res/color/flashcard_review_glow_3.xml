@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Today's session frame glow 3: _palette_lvl_2 at 15% -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:alpha="0.15" android:color="?attr/paletteLvl2" />
+</selector>

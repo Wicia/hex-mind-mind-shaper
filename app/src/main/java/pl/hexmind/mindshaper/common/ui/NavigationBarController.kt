@@ -52,8 +52,8 @@ class NavigationBarController(
 
     init {
         val context = navigationBar.context
-        selectedColor = context.getColor(R.color._orange_lvl_3)
-        unselectedColor = context.getColor(R.color._orange_lvl_3)
+        selectedColor = context.getColor(R.color._palette_lvl_3)
+        unselectedColor = context.getColor(R.color._palette_lvl_3)
 
         navDrawer.translationX = hiddenDrawerX()
         navDrawer.visibility = View.GONE

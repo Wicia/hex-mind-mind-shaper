@@ -118,13 +118,13 @@ class HexHourPickerView @JvmOverloads constructor(
             child.scaleY = scale
             child.alpha = ALPHA_MIN + (1f - ALPHA_MIN) * ratio
 
-            // Tint the centermost dot orange, the rest gray
+            // Tint the centermost dot in the palette color, the rest gray
             val dot = child.findViewById<View>(R.id.v_hour_dot) ?: continue
             val isCenter = ratio > CENTER_RATIO_THRESHOLD
             dot.backgroundTintList = ColorStateList.valueOf(
                 ContextCompat.getColor(
                     context,
-                    if (isCenter) R.color._orange_lvl_3 else R.color._gray_lvl_3
+                    if (isCenter) R.color._palette_lvl_3 else R.color._gray_lvl_3
                 )
             )
         }

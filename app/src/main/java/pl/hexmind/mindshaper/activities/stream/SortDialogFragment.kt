@@ -161,7 +161,7 @@ class SortDialogFragment(
 
     private fun updateButtonStyle(button: MaterialButton, isSelected: Boolean) {
         if (isSelected) {
-            button.strokeColor = ContextCompat.getColorStateList(requireContext(), R.color._orange_lvl_3)
+            button.strokeColor = ContextCompat.getColorStateList(requireContext(), R.color._palette_lvl_3)
             button.strokeWidth = 2 // px
             button.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.button_secondary_enabled_background))
             button.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_primary))

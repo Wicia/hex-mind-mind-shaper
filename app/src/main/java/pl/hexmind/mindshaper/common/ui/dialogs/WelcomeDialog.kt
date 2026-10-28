@@ -154,7 +154,7 @@ class WelcomeDialog(
             dot.imageTintList = ColorStateList.valueOf(
                 ContextCompat.getColor(
                     context,
-                    if (i == currentPage) R.color._orange_lvl_2
+                    if (i == currentPage) R.color._palette_lvl_2
                     else R.color._gray_lvl_2
                 )
             )

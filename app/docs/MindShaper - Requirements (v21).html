@@ -450,7 +450,7 @@
     // Side bar sections per mode (names as the groups in Requirements); order defines list order
     const SECTIONS = {
         process: [
-            {name: "Aplikacja", items: ["Nawigowanie po aplikacji", "Zapisywanie preferencji", "Personalizowanie", "Wybór ekranu startowego", "Żądanie Uprawnień", "Onboarding", "Wieści z apki", "Skróty aplikacji", "Sprawdzanie wersji aplikacji", "Udostępnianie aplikacji", "Robienie kopii zapasowej danych"]},
+            {name: "Aplikacja", items: ["Nawigowanie po aplikacji", "Zapisywanie preferencji", "Personalizowanie", "Wybór palety kolorów", "Wybór ekranu startowego", "Żądanie Uprawnień", "Onboarding", "Wieści z apki", "Skróty aplikacji", "Sprawdzanie wersji aplikacji", "Udostępnianie aplikacji", "Robienie kopii zapasowej danych"]},
             {name: "Myśli", items: ["Łapanie myśli", "Zapis w formie Notatki", "Zapis w formie Głosówki", "Zapis w formie Zdjęcia", "Łączenie myśli z hex tagami", "Porządkowanie hex tagów", "Konfigurowanie domen", "Przeglądanie myśli", "Wyszukiwanie myśli", "Sortowanie myśli", "Filtrowanie myśli", "Edytowanie myśli", "Usuwanie myśli", "Wartościowanie myśli"]},
             {name: "Rozwój", items: ["Tryb „Uśpienia”", "Wyznaczanie celów", "Realizowanie kroków", "Łączenie myśli z krokami", "Przypomnienia kroków w kalendarzu", "Ścieżki doświadczeń"]},
             {name: "Zapamiętywanie", items: ["Zapisywanie luźnych fiszek", "Prowadzenie zestawów fiszek", "Importowanie fiszek z tekstu", "Powtarzanie z fiszkami"]},
@@ -476,7 +476,7 @@
     const RULES = [
         // Zapisywanie preferencji
         {fn: "Zapisywanie zmian", col: "data", process: ["Zapisywanie preferencji"], place: P,
-            text: "wspólny Zapisz obejmuje: imię, domyślną formę zapisu, skalę wartości, ekran startowy, limit nowych fiszek, godzinę przypomnienia, tryb uśpienia z progami"},
+            text: "wspólny Zapisz obejmuje: imię, paletę kolorów, domyślną formę zapisu, skalę wartości, ekran startowy, limit nowych fiszek, godzinę przypomnienia, tryb uśpienia z progami"},
         {fn: "Zapisywanie zmian", col: "proc", process: ["Zapisywanie preferencji"], place: P,
             text: "włączniki form zapisu, kopii, fiszek, Warsztatu, przypomnień i kalendarza oraz wybór kalendarza — zapisywane od razu, bez Zapisz"},
         {fn: "Zapisywanie zmian", col: "proc", process: ["Zapisywanie preferencji"], place: P,
@@ -493,6 +493,14 @@
             text: "sekcja „Moje Prawdziwe Imię?” — jedno pole"},
         {fn: "Podawanie imienia", col: "proc", process: ["Personalizowanie"], place: P,
             text: "puste imię — zastępowane „Bezimienn(y/a)”; spacje z brzegów usuwane"},
+
+        // Wybór palety kolorów
+        {fn: "Wybieranie palety", col: "data", process: ["Wybór palety kolorów"], place: P,
+            text: "sekcja „Paleta kolorów” — pod imieniem<ul><li>Pomarańczowa — domyślnie</li><li>Kawowa</li></ul>"},
+        {fn: "Wybieranie palety", col: "proc", process: ["Wybór palety kolorów"], place: P,
+            text: "paleta obejmuje całą aplikację — wszystkie ekrany, okna i powiadomienia; ikony skrótów aplikacji zostają w palecie domyślnej"},
+        {fn: "Wybieranie palety", col: "proc", process: ["Wybór palety kolorów"], place: P,
+            text: "nowa paleta widoczna od razu po zapisie, także na ekranach otwartych wcześniej"},
 
         // Udostępnianie aplikacji
         {fn: "Przekazywanie linku do pobrania", col: "data", process: ["Udostępnianie aplikacji"], place: P,
@@ -1440,6 +1448,8 @@
 
     // Differences from Requirements v12 and doubts found in the code — for the verification pass
     const CHANGE_NOTES = {
+        "Wybieranie palety": "nowe — wybór palety kolorów całej aplikacji: pomarańczowa (domyślna) albo kawowa",
+        "Zapisywanie zmian": "zmiana — Zapisz obejmuje też paletę kolorów",
         "Rozpoczynanie łapania myśli": "zmiana — niedostępne w Warsztacie",
         "Pobieranie zdjęcia": "nowe — zapis kopii zdjęcia myśli w galerii telefonu (Szczegóły myśli)",
         "Zmienianie nagrania": "zmiana — nagranie od nowa z pytaniem „Nagraj ponownie”; usuwanie wydzielone osobno",
@@ -1550,6 +1560,7 @@
         "Nawigowanie po aplikacji": {goal: "szybkie przejście do dowolnego ekranu z każdego miejsca aplikacji, bez zabierania stałego miejsca na ekranie", terms: []},
         "Zapisywanie preferencji": {goal: "jedno miejsce do dopasowania aplikacji do siebie — dane osobiste, formy zapisu, włączanie funkcji i dbanie o dane", terms: []},
         "Personalizowanie": {goal: "aplikacja zwraca się do użytkownika po imieniu — osobiste powitanie przy każdym wejściu", terms: []},
+        "Wybór palety kolorów": {goal: "aplikacja w kolorach, które użytkownikowi odpowiadają — jedna paleta dla całej aplikacji", terms: []},
         "Wybór ekranu startowego": {goal: "szybki dostęp do najczęściej używanego ekranu — aplikacja otwiera się od razu tam, gdzie użytkownik pracuje najczęściej", terms: []},
         "Żądanie Uprawnień": {goal: "funkcje zależne od uprawnień Androida potrzebują jednego, powtarzalnego sposobu proszenia o zgodę i utrzymania stanu funkcji", terms: []},
         "Onboarding": {goal: "poznanie ekranów i funkcji aplikacji w sposób lekki, praktyczny (do wypróbowania od razu po wskazówce) i przejrzysty — z możliwością powrotu do wskazówek pominiętych lub zapomnianych", terms: [

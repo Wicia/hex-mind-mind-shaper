@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/app_background"
+    android:background="@drawable/bg_app_background"
     tools:context=".activities.stream.StreamActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -135,7 +135,7 @@
             android:id="@+id/v_scroll_progress"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/_orange_lvl_2" />
+            android:background="@drawable/bg_palette_lvl_2" />
 
     </FrameLayout>
 

@@ -6,6 +6,7 @@ import androidx.core.content.edit
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem
+import pl.hexmind.mindshaper.services.dto.ColorPalette
 import pl.hexmind.mindshaper.services.dto.DefaultCaptureForm
 import pl.hexmind.mindshaper.services.dto.StartScreen
 import javax.inject.Inject
@@ -41,6 +42,19 @@ class AppSettingsStorage @Inject constructor(
 
         // Start screen
         private const val PARAM_START_SCREEN = "param_start_screen"
+
+        // Color palette
+        private const val PARAM_COLOR_PALETTE = "param_color_palette"
+
+        /**
+         * Picked color palette straight from the preferences - for an activity before its injection (theme overlay)
+         */
+        fun readColorPalette(context: Context): ColorPalette {
+            val value = context.getSharedPreferences(SETTINGS, Context.MODE_PRIVATE)
+                .getString(PARAM_COLOR_PALETTE, "")
+            // Unknown value (e.g. saved by another app version) = orange, not a crash
+            return ColorPalette.entries.firstOrNull { it.name == value } ?: ColorPalette.ORANGE
+        }
 
         private const val PARAM_PHOTO_FEATURE_ENABLED = "photo_feature_enabled"
 
@@ -307,6 +321,16 @@ class AppSettingsStorage @Inject constructor(
         // Unknown value (e.g. saved by another app version) = Home, not a crash
         return StartScreen.entries.firstOrNull { it.name == value } ?: StartScreen.HOME
     }
+
+    // === COLOR PALETTE ===
+
+    fun setColorPalette(palette: ColorPalette) {
+        sharedPreferences.edit {
+            putString(PARAM_COLOR_PALETTE, palette.name)
+        }
+    }
+
+    fun getColorPalette(): ColorPalette = readColorPalette(context)
 
     // === DORMANT MODE ===
 

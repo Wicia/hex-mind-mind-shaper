@@ -84,7 +84,7 @@
         android:insetTop="0dp"
         android:insetBottom="0dp"
         app:iconSize="28dp"
-        app:iconTint="@color/_orange_lvl_2"
+        app:iconTint="@color/_palette_lvl_2"
         app:icon="@drawable/ic_replace_or_renew"
         app:iconGravity="textStart"
         />

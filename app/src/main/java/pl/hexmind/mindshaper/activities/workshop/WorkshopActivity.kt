@@ -266,7 +266,7 @@ class WorkshopActivity : CoreActivity() {
         val bgColor = if (isUnselected)
             ContextCompat.getColor(this, R.color._gray_lvl_1)
         else
-            ContextCompat.getColor(this, R.color._orange_lvl_1)
+            ContextCompat.getColor(this, R.color._palette_lvl_1)
         (card.background?.mutate() as? GradientDrawable)?.setColor(bgColor)
             ?: card.setBackgroundColor(bgColor)
 

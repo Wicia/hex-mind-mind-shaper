@@ -4,5 +4,5 @@
     <solid android:color="@android:color/transparent" />
     <stroke
         android:width="2dp"
-        android:color="@color/_orange_lvl_1" />
+        android:color="@color/_palette_lvl_1" />
 </shape>

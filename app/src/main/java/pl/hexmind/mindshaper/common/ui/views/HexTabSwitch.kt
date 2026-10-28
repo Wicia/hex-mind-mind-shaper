@@ -60,8 +60,8 @@ class HexTabSwitch @JvmOverloads constructor(
     private val iconSize = dp(DEFAULT_ICON_SIZE_DP)
     private val iconGap = dp(DEFAULT_ICON_GAP_DP)
 
-    private var activeColor = ContextCompat.getColor(context, R.color._orange_lvl_2)
-    private var inactiveColor = ContextCompat.getColor(context, R.color._orange_lvl_1)
+    private var activeColor = ContextCompat.getColor(context, R.color._palette_lvl_2)
+    private var inactiveColor = ContextCompat.getColor(context, R.color._palette_lvl_1)
     private var activeTextColor = ContextCompat.getColor(context, R.color.text_primary)
     private var inactiveTextColor = ContextCompat.getColor(context, R.color.text_secondary)
 

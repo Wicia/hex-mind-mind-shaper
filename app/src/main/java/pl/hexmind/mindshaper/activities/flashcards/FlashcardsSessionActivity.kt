@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import dagger.hilt.android.AndroidEntryPoint
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.views.content.HexFlashcardsSessionView
+import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.FlashcardsReview
 import pl.hexmind.mindshaper.services.dto.FlashcardDTO
 import pl.hexmind.mindshaper.services.dto.FlashcardRating
@@ -26,6 +27,9 @@ class FlashcardsSessionActivity : AppCompatActivity() {
     private val viewModel: FlashcardsSessionViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // ! Before super.onCreate - same palette overlay as in CoreActivity
+        AppSettingsStorage.readColorPalette(this).applyTo(theme)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.flashcards_session_activity)
         hideSystemBars()

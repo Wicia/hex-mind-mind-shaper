@@ -496,7 +496,7 @@
             android:id="@+id/v_session_progress_done"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@color/flashcard_accent"
+            android:background="@drawable/bg_flashcard_accent"
             tools:layout_weight="0.39" />
 
         <View
