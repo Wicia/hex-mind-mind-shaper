@@ -114,7 +114,8 @@
     <color name="button_content_empty_background_disabled">@color/_gray_lvl_1</color>
     <color name="button_content_empty_background">@color/_palette_lvl_1</color>
 
-    <color name="button_content_empty_icon_disabled">@color/_white</color>
+    <!-- ! Not white: "?" and the icon have to show on the light gray background -->
+    <color name="button_content_empty_icon_disabled">@color/_gray_lvl_2</color>
     <color name="button_content_empty_icon">@color/_palette_lvl_0</color>
 
     <color name="button_content_filled_background">@color/_palette_lvl_1</color>

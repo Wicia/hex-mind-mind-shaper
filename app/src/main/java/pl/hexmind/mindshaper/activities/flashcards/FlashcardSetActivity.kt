@@ -105,7 +105,7 @@ class FlashcardSetActivity : CoreActivity() {
     }
 
     private fun openAddSeries(set: FlashcardSetDTO) {
-        FlashcardEditDialog.addSeries(this, firstNumber = set.flashcards.size + 1, onAdd = viewModel::addFlashcard).show()
+        FlashcardEditDialog.addSeries(this, onAdd = viewModel::addFlashcard).show()
     }
 
     private fun render(set: FlashcardSetDTO) {

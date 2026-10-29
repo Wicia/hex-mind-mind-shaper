@@ -57,9 +57,8 @@ class StreamActivity : CoreActivity() {
     private lateinit var btnFilter: MaterialButton
     private lateinit var searcher: HexTagsSearcher
 
-    // FAB menu
+    // New thought FAB
     private lateinit var fabNewThought: FloatingActionButton
-    private var isMenuOpen = false
 
     // Scroll progress indicator
     private lateinit var flScrollIndicator: android.widget.FrameLayout
@@ -81,7 +80,7 @@ class StreamActivity : CoreActivity() {
         setupSearcher()
         setupSortButton()
         setupFilterButton()
-        setupFabMenu()
+        setupNewThoughtFab()
         setupScrollIndicator()
         setupReactiveDataObserver()
 
@@ -267,7 +266,7 @@ class StreamActivity : CoreActivity() {
         viewModel.createdPeriod.observe(this)     { updateFilterButtonText(viewModel.selectedDomainId.value) }
     }
 
-    private fun setupFabMenu() {
+    private fun setupNewThoughtFab() {
         fabNewThought.setOnClickListener {
             captureLauncher.launch(Intent(this, CaptureActivity::class.java))
         }

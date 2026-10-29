@@ -16,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtManagerActivity
+import pl.hexmind.mindshaper.common.ui.AddFormButtons
 import pl.hexmind.mindshaper.activities.workshop.GoalDetailActivity
 import pl.hexmind.mindshaper.common.dormant.ThoughtState
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
@@ -182,7 +183,7 @@ class DetailsActivity : ThoughtManagerActivity() {
             // RECORDING
             btnRecordingAdd.setOnClickListener {
                 if (!appSettingsStorage.isVoiceRecordingEnabled()) {
-                    showEnableAdditionalFeaturesDialog()
+                    showEnableVoiceFormDialog()
                     return@setOnClickListener
                 }
 
@@ -199,7 +200,7 @@ class DetailsActivity : ThoughtManagerActivity() {
             // PHOTO
             btnPhotoAdd.setOnClickListener {
                 if (!appSettingsStorage.isPhotoFeatureEnabled()) {
-                    showEnableAdditionalFeaturesDialog()
+                    showEnablePhotoFormDialog()
                     return@setOnClickListener
                 }
 
@@ -352,6 +353,7 @@ class DetailsActivity : ThoughtManagerActivity() {
 
     private fun setupUI() {
         // No header -> skip
+        AddFormButtons.keepWidth(binding.btnRichTextAdd)
         updateAddPhotoButtonVisualState()
         updateAddRecordingButtonVisualState()
     }
@@ -462,14 +464,14 @@ class DetailsActivity : ThoughtManagerActivity() {
     }
 
     private fun updateAddPhotoButtonVisualState() {
-        updateAddButtonVisualState(
+        AddFormButtons.applyState(
             binding.btnPhotoAdd,
             appSettingsStorage.isPhotoFeatureEnabled()
         )
     }
 
     private fun updateAddRecordingButtonVisualState() {
-        updateAddButtonVisualState(
+        AddFormButtons.applyState(
             binding.btnRecordingAdd,
             appSettingsStorage.isVoiceRecordingEnabled()
         )

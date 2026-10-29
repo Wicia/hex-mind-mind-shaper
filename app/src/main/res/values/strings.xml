@@ -47,8 +47,10 @@
     <string name="common_note_show_all">Pokaż wszystko</string>
     <string name="common_note_show_less">Zwiń</string>
     <string name="common_list_dialog_title">Wybierz coś sobie…</string>
-    <string name="common_thoughts_forms_inactive_header">Włączyć nową formę zapisu?</string>
-    <string name="common_thoughts_forms_permissions_needed">Nagrania i zdjęcia włączysz w Preferencjach.</string>
+    <string name="common_thoughts_forms_photo_inactive_header">Włączyć zdjęcia?</string>
+    <string name="common_thoughts_forms_photo_inactive_info">Zapisywanie myśli jako zdjęć włączysz w Preferencjach, w sekcji Formy zapisu myśli.</string>
+    <string name="common_thoughts_forms_voice_inactive_header">Włączyć głosówki?</string>
+    <string name="common_thoughts_forms_voice_inactive_info">Zapisywanie myśli jako głosówek włączysz w Preferencjach, w sekcji Formy zapisu myśli.</string>
     <string name="common_dialog_open_android_settings">Otwórz ustawienia Androida</string>
 
     <!-- Validation -->
@@ -124,8 +126,13 @@
     <string name="flashcards_error_no_name">Zestaw potrzebuje nazwy</string>
     <string name="flashcards_error_incomplete">Każda fiszka potrzebuje awersu i rewersu</string>
     <string name="flashcards_error_incomplete_single">Fiszka potrzebuje awersu i rewersu</string>
-    <string name="flashcards_new_header">Nowa fiszka #%1$d</string>
-    <string name="flashcards_added_count">Dodano: %1$d</string>
+    <string name="flashcards_new_header">Nowa fiszka</string>
+    <plurals name="flashcards_added_count">
+        <item quantity="one">Dodano już %d fiszkę</item>
+        <item quantity="few">Dodano już %d fiszki</item>
+        <item quantity="many">Dodano już %d fiszek</item>
+        <item quantity="other">Dodano już %d fiszek</item>
+    </plurals>
     <string name="flashcards_btn_add_next">Dodaj kolejną</string>
     <string name="flashcards_btn_finish">Zakończ</string>
     <string name="flashcards_btn_create_set">Utwórz</string>
@@ -283,6 +290,14 @@ Awers - Rewers…"</string>
     <string name="home_welcome_onboarding_btn_no">Bez wskazówek</string>
     <string name="home_welcome_onboarding_btn_yes">Ze wskazówkami</string>
     <string name="home_onboarding_spotlight">Tutaj zacznij swoją przygodę z MindShaperem</string>
+
+    <!-- Capture ring (options around the center button) -->
+    <string name="home_capture_note">Złap notatkę</string>
+    <string name="home_capture_photo">Złap zdjęcie</string>
+    <string name="home_capture_voice">Złap głosówkę</string>
+    <string name="home_capture_flashcards">Twórz fiszki</string>
+    <string name="home_capture_flashcards_inactive_header">Włączyć fiszki?</string>
+    <string name="home_capture_flashcards_inactive_info">Fiszki włączysz w Preferencjach, w sekcji Zapamiętywanie.</string>
 
     <!-- App news (badge under the rocket + bottom sheet) -->
     <string name="home_news_title">Wieści z apki</string>

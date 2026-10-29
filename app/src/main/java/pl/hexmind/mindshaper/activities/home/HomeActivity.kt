@@ -13,6 +13,7 @@ import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.flashcards.FlashcardsActivity
 import pl.hexmind.mindshaper.activities.onboarding.OnboardingActivity
+import pl.hexmind.mindshaper.activities.settings.SettingsActivity
 import pl.hexmind.mindshaper.activities.stream.StreamActivity
 import pl.hexmind.mindshaper.activities.workshop.WorkshopActivity
 import pl.hexmind.mindshaper.common.formatting.setColoredText
@@ -22,6 +23,7 @@ import pl.hexmind.mindshaper.common.ui.views.HexSpotlight
 import pl.hexmind.mindshaper.services.AppNewsService
 import pl.hexmind.mindshaper.services.GreetingsService
 import pl.hexmind.mindshaper.services.ThoughtsService
+import pl.hexmind.mindshaper.services.dto.DefaultCaptureForm
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.dto.StartScreen
 import javax.inject.Inject
@@ -39,6 +41,8 @@ class HomeActivity : CoreActivity() {
     lateinit var appNewsService: AppNewsService
 
     private lateinit var fabNewThought: FloatingActionButton
+
+    private lateinit var captureRing: CaptureRing
 
     private lateinit var tvHeaderGreetings : TextView
 
@@ -114,6 +118,8 @@ class HomeActivity : CoreActivity() {
         isScreenResumed = false
         if (::labBubbles.isInitialized) labBubbles.stop()
         if (::newsBadgeSignal.isInitialized) newsBadgeSignal.stop()
+        // Leaving Home (e.g. nav bar) with the ring open = closed on return
+        if (::captureRing.isInitialized) captureRing.close(animate = false)
     }
 
     private fun initViews() {
@@ -175,10 +181,7 @@ class HomeActivity : CoreActivity() {
     }
 
     private fun setupClickListeners() {
-        fabNewThought.setOnClickListener {
-            val intent = Intent(this, CaptureActivity::class.java)
-            startActivity(intent)
-        }
+        setupCaptureRing()
 
         findViewById<ImageView>(R.id.iv_onboarding).setOnClickListener {
             startActivity(Intent(this, OnboardingActivity::class.java))
@@ -187,6 +190,42 @@ class HomeActivity : CoreActivity() {
         findViewById<View>(R.id.ll_home_news_entry).setOnClickListener {
             HomeNewsBottomSheet.show(supportFragmentManager)
         }
+    }
+
+    // Same targets as the launcher shortcuts (AppShortcuts): a capture form or new loose flashcards
+    // Feature off = gray option, its tap leads to Preferences (as the add-form buttons in Details)
+    private fun setupCaptureRing() {
+        captureRing = CaptureRing(this, fabNewThought)
+        captureRing.addOption(findViewById(R.id.btn_capture_note)) { openCapture(DefaultCaptureForm.TEXT) }
+        captureRing.addOption(
+            view          = findViewById(R.id.btn_capture_photo),
+            isEnabled     = { appSettingsStorage.isPhotoFeatureEnabled() },
+            onDisabledTap = { showEnablePhotoFormDialog() }
+        ) { openCapture(DefaultCaptureForm.PHOTO) }
+        captureRing.addOption(
+            view          = findViewById(R.id.btn_capture_voice),
+            isEnabled     = { appSettingsStorage.isVoiceRecordingEnabled() },
+            onDisabledTap = { showEnableVoiceFormDialog() }
+        ) { openCapture(DefaultCaptureForm.VOICE) }
+        captureRing.addOption(
+            view          = findViewById(R.id.btn_capture_flashcards),
+            isEnabled     = { appSettingsStorage.isFlashcardsFeatureEnabled() },
+            onDisabledTap = {
+                showEnableAdditionalFeaturesDialog(
+                    titleRes       = R.string.home_capture_flashcards_inactive_header,
+                    descriptionRes = R.string.home_capture_flashcards_inactive_info,
+                    section        = SettingsActivity.Section.MEMORIZING
+                )
+            }
+        ) {
+            startActivity(Intent(this, FlashcardsActivity::class.java)
+                .putExtra(FlashcardsActivity.EXTRA_NEW_LOOSE_FLASHCARDS, true))
+        }
+    }
+
+    private fun openCapture(captureForm: DefaultCaptureForm) {
+        startActivity(Intent(this, CaptureActivity::class.java)
+            .putExtra(CaptureActivity.EXTRA_CAPTURE_FORM, captureForm.name))
     }
 
     /**

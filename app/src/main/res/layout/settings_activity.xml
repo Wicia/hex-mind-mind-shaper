@@ -109,6 +109,7 @@
                     style="@style/AppCardView_Content">
 
                     <TextView
+                        android:id="@+id/tv_thought_forms_section_header"
                         style="@style/AppCardView_Header"
                         android:text="@string/settings_permissions_section" />
 

@@ -335,6 +335,18 @@
         <item name="android:paddingBottom">8dp</item>
     </style>
 
+    <!-- Option of the capture ring on Home (CaptureRing): add-form button as in Capture / Details, hidden under the center fab -->
+    <!-- ! "+" / "?", colors and width set by AddFormButtons -->
+    <style name="HomeCaptureRingOption" parent="HexContentButton.NotUsed">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:text">@string/common_btn_create</item>
+        <item name="iconGravity">textEnd</item>
+        <item name="iconSize">32dp</item>
+    </style>
+
     <!-- ====================================== -->
     <!--    DIALOGS -->
     <!-- ====================================== -->

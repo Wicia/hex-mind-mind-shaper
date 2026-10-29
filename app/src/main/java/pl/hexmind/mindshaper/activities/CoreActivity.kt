@@ -32,6 +32,7 @@ import pl.hexmind.mindshaper.activities.stream.StreamActivity
 import pl.hexmind.mindshaper.activities.workshop.GoalDetailActivity
 import pl.hexmind.mindshaper.activities.workshop.WorkshopActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingManager
+import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.PermissionService
 import pl.hexmind.mindshaper.services.dto.ColorPalette
@@ -301,6 +302,34 @@ open class CoreActivity : AppCompatActivity() {
     fun showErrorAndFinish(stringResourceId : Int) {
         Toast.makeText(this, getString(stringResourceId), Toast.LENGTH_SHORT).show()
         finish()
+    }
+
+    fun showEnablePhotoFormDialog() = showEnableAdditionalFeaturesDialog(
+        R.string.common_thoughts_forms_photo_inactive_header,
+        R.string.common_thoughts_forms_photo_inactive_info,
+        SettingsActivity.Section.THOUGHT_FORMS
+    )
+
+    fun showEnableVoiceFormDialog() = showEnableAdditionalFeaturesDialog(
+        R.string.common_thoughts_forms_voice_inactive_header,
+        R.string.common_thoughts_forms_voice_inactive_info,
+        SettingsActivity.Section.THOUGHT_FORMS
+    )
+
+    // Tap on a gray option of a feature turned off - Preferences one tap away, scrolled to the feature's section
+    fun showEnableAdditionalFeaturesDialog(
+        @StringRes titleRes: Int,
+        @StringRes descriptionRes: Int,
+        section: SettingsActivity.Section
+    ) {
+        ActionsDialog.Builder(this)
+            .setTitle(getString(titleRes))
+            .setDescription(getString(descriptionRes))
+            .setPrimaryAction(getString(R.string.common_btn_go_to_settings)) {
+                startActivity(Intent(this, SettingsActivity::class.java)
+                    .putExtra(SettingsActivity.EXTRA_SECTION, section.name))
+            }
+            .show()
     }
 
 // -----------------------------------------

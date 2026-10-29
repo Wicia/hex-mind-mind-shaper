@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtManagerActivity
+import pl.hexmind.mindshaper.common.ui.AddFormButtons
 import pl.hexmind.mindshaper.common.onboarding.OnboardingTask
 import pl.hexmind.mindshaper.common.onboarding.OnboardingTaskPoint
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
@@ -106,7 +107,7 @@ class CaptureActivity : ThoughtManagerActivity() {
             // RECORDING
             btnRecordingAdd.setOnClickListener {
                 if (!appSettingsStorage.isVoiceRecordingEnabled()) {
-                    showEnableAdditionalFeaturesDialog()
+                    showEnableVoiceFormDialog()
                     return@setOnClickListener
                 }
 
@@ -122,7 +123,7 @@ class CaptureActivity : ThoughtManagerActivity() {
             // PHOTO
             btnPhotoAdd.setOnClickListener {
                 if (!appSettingsStorage.isPhotoFeatureEnabled()) {
-                    showEnableAdditionalFeaturesDialog()
+                    showEnablePhotoFormDialog()
                     return@setOnClickListener
                 }
 
@@ -277,7 +278,7 @@ class CaptureActivity : ThoughtManagerActivity() {
      */
     private fun autoOpenVoiceRecording() {
         if (!appSettingsStorage.isVoiceRecordingEnabled()) {
-            showEnableAdditionalFeaturesDialog()
+            showEnableVoiceFormDialog()
             return
         }
 
@@ -294,7 +295,7 @@ class CaptureActivity : ThoughtManagerActivity() {
      */
     private fun autoOpenPhoto() {
         if (!appSettingsStorage.isPhotoFeatureEnabled()) {
-            showEnableAdditionalFeaturesDialog()
+            showEnablePhotoFormDialog()
             return
         }
 
@@ -307,6 +308,7 @@ class CaptureActivity : ThoughtManagerActivity() {
 
     private fun setupUI() {
         setupHeader(R.drawable.ic_capture_thought, R.string.capture_main_label)
+        AddFormButtons.keepWidth(binding.btnRichTextAdd)
         updateAddPhotoButtonVisualState()
         updateAddRecordingButtonVisualState()
     }
@@ -376,14 +378,14 @@ class CaptureActivity : ThoughtManagerActivity() {
     }
 
     private fun updateAddPhotoButtonVisualState() {
-        updateAddButtonVisualState(
+        AddFormButtons.applyState(
             binding.btnPhotoAdd,
             appSettingsStorage.isPhotoFeatureEnabled()
         )
     }
 
     private fun updateAddRecordingButtonVisualState() {
-        updateAddButtonVisualState(
+        AddFormButtons.applyState(
             binding.btnRecordingAdd,
             appSettingsStorage.isVoiceRecordingEnabled()
         )

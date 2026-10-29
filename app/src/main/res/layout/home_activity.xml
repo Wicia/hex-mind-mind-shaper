@@ -117,22 +117,56 @@
 
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-        android:id="@+id/fab_new_thought"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <!-- Capture ring (CaptureRing): add-form buttons fly out around the fab - stacked under it while hidden -->
+    <!-- ! 320dp x 240dp = ring radii 100dp / 76dp + half of an option (~92dp x 48dp) on each side, with a margin for the overshoot -->
+    <FrameLayout
+        android:id="@+id/fl_capture_ring"
+        android:layout_width="320dp"
+        android:layout_height="240dp"
         android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_capture_thought"
-        app:backgroundTint="@color/button_primary_enabled_background"
-        app:fabSize="normal"
-        app:elevation="6dp" />
+        android:clipChildren="false">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_capture_note"
+            style="@style/HomeCaptureRingOption"
+            app:icon="@drawable/ic_thought_type_rich_text"
+            android:contentDescription="@string/home_capture_note" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_capture_photo"
+            style="@style/HomeCaptureRingOption"
+            app:icon="@drawable/ic_thought_type_photo"
+            android:contentDescription="@string/home_capture_photo" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_capture_voice"
+            style="@style/HomeCaptureRingOption"
+            app:icon="@drawable/ic_thought_type_recording"
+            android:contentDescription="@string/home_capture_voice" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_capture_flashcards"
+            style="@style/HomeCaptureRingOption"
+            app:icon="@drawable/ic_flashcards_set"
+            android:contentDescription="@string/home_capture_flashcards" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+            android:id="@+id/fab_new_thought"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_capture_thought"
+            app:backgroundTint="@color/button_primary_enabled_background"
+            app:fabSize="normal"
+            app:elevation="6dp" />
+
+    </FrameLayout>
 
     <!-- Onboarding review entry - the space above the icon is where the bubbles rise -->
     <FrameLayout
         android:id="@+id/fl_onboarding_entry"
-        android:layout_width="48dp"
+        android:layout_width="56dp"
         android:layout_height="120dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="8dp"
@@ -141,10 +175,10 @@
         <!-- Onboarding icon -->
         <ImageView
             android:id="@+id/iv_onboarding"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_gravity="bottom"
-            android:padding="5dp"
+            android:padding="6dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"

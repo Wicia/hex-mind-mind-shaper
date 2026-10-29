@@ -1,8 +1,10 @@
 package pl.hexmind.mindshaper.activities.settings
 
 import android.Manifest
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.graphics.Rect
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.text.format.DateFormat
@@ -12,9 +14,14 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.RadioButton
 import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.cardview.widget.CardView
+import androidx.core.animation.doOnEnd
+import androidx.core.content.ContextCompat
+import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
+import pl.hexmind.mindshaper.common.ui.dpToPx
 import pl.hexmind.mindshaper.common.ui.dialogs.ShareAppDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -79,6 +86,68 @@ class SettingsActivity : CoreActivity() {
 
         setupUI()
         loadSavedSettings()
+
+        // Only on the first open - a recreation keeps its own scroll position
+        if (savedInstanceState == null) scrollToRequestedSection()
+    }
+
+    // ========== SECTION ON OPEN ==========
+
+    /** Section the screen scrolls to on open - e.g. from the dialog about a feature turned off */
+    enum class Section { THOUGHT_FORMS, MEMORIZING }
+
+    companion object {
+        const val EXTRA_SECTION = "extra_section"
+
+        // Section highlight: starts once the scroll is about done, two soft pulses
+        private const val HIGHLIGHT_DELAY_MS = 300L
+        private const val HIGHLIGHT_MS = 1200L
+        private const val HIGHLIGHT_ALPHA = 140
+        // Highlight reaches a bit past the section's views; the section stops this far below the screen top
+        private const val HIGHLIGHT_MARGIN_DP = 6
+        private const val HIGHLIGHT_CORNER_DP = 8
+        private const val SCROLL_GAP_DP = 16
+    }
+
+    private fun scrollToRequestedSection() {
+        val section = Section.entries.firstOrNull { it.name == intent.getStringExtra(EXTRA_SECTION) } ?: return
+        // Section = its header down to its last view - only that part of the card, not the options below it
+        val (header, last) = when (section) {
+            Section.THOUGHT_FORMS -> binding.tvThoughtFormsSectionHeader to binding.switchPhotoFeature
+            Section.MEMORIZING    -> binding.tvMemorizingSectionHeader to binding.switchFlashcardsFeature
+        }
+        // Header -> card content -> card
+        val content = header.parent as View
+        val card = content.parent as CardView
+        binding.scrollView.doOnLayout {
+            val headerY = card.top + content.top + header.top
+            binding.scrollView.smoothScrollTo(0, (headerY - dpToPx(SCROLL_GAP_DP)).coerceAtLeast(0))
+            highlightSection(card, content, header, last)
+        }
+    }
+
+    // Overlay in the palette color pulsing over the section's part of the card - which option the dialog meant
+    private fun highlightSection(card: CardView, content: View, first: View, last: View) {
+        val margin = dpToPx(HIGHLIGHT_MARGIN_DP)
+        val overlay = GradientDrawable().apply {
+            cornerRadius = dpToPx(HIGHLIGHT_CORNER_DP).toFloat()
+            setColor(ContextCompat.getColor(this@SettingsActivity, R.color._palette_lvl_2))
+            alpha = 0
+            setBounds(
+                content.left + content.paddingLeft - margin,
+                content.top + first.top - margin,
+                content.right - content.paddingRight + margin,
+                content.top + last.bottom + margin
+            )
+        }
+        card.overlay.add(overlay)
+        ValueAnimator.ofInt(0, HIGHLIGHT_ALPHA, 0, HIGHLIGHT_ALPHA, 0).apply {
+            startDelay = HIGHLIGHT_DELAY_MS
+            duration = HIGHLIGHT_MS
+            addUpdateListener { overlay.alpha = it.animatedValue as Int }
+            doOnEnd { card.overlay.remove(overlay) }
+            start()
+        }
     }
 
     override fun onResume() {

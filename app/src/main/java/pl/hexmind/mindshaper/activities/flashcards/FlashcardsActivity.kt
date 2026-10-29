@@ -146,7 +146,6 @@ class FlashcardsActivity : CoreActivity() {
     private fun openAddLoose() {
         FlashcardEditDialog.addSeries(
             this,
-            firstNumber = library.loose.size + 1,
             onAdd = { flashcard -> viewModel.addFlashcard(null, flashcard) }
         ).show()
     }
