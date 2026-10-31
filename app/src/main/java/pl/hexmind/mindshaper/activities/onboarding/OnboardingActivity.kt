@@ -1,19 +1,22 @@
 package pl.hexmind.mindshaper.activities.onboarding
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CompoundButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -29,6 +32,7 @@ import pl.hexmind.mindshaper.common.onboarding.OnboardingBreadcrumb
 import pl.hexmind.mindshaper.common.onboarding.OnboardingSection
 import pl.hexmind.mindshaper.common.onboarding.OnboardingTask
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
+import pl.hexmind.mindshaper.common.ui.dpToPx
 import pl.hexmind.mindshaper.common.ui.views.HexBreadcrumbMarker
 import pl.hexmind.mindshaper.common.ui.views.HexSpotlight
 import pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
@@ -73,11 +77,22 @@ class OnboardingActivity : CoreActivity() {
         tvOnboardingProgressPercent = findViewById(R.id.tv_onboarding_progress_percent)
         setupTipsToggle()
         llOnboardingTasks = findViewById(R.id.ll_onboarding_tasks)
-        findViewById<MaterialButton>(R.id.btn_onboarding_tasks_open).setOnClickListener {
-            startActivity(Intent(this, StreamActivity::class.java))
-        }
         setupThoughtsBreadcrumb()
         setupOnboardingList()
+
+        // Only on the first open - a recreation keeps its own scroll position
+        if (savedInstanceState == null && intent.getBooleanExtra(EXTRA_SCROLL_TO_TASKS, false)) scrollToTasks()
+    }
+
+    // E.g. after a done task - the next one to pick
+    private fun scrollToTasks() {
+        val scrollView = findViewById<NestedScrollView>(R.id.nsv_onboarding)
+        val tasksCard = findViewById<View>(R.id.ll_onboarding_tasks_card)
+        scrollView.doOnLayout {
+            // Card sits in the options container - its top is relative to it
+            val cardTop = (tasksCard.parent as View).top + tasksCard.top
+            scrollView.smoothScrollTo(0, (cardTop - dpToPx(SCROLL_GAP_DP)).coerceAtLeast(0))
+        }
     }
 
     // Until opened once, a sparkle waits right after the card label - tapping it shows the breadcrumb
@@ -95,7 +110,7 @@ class OnboardingActivity : CoreActivity() {
         }
     }
 
-    // Two steps: the card with its tasks, then the way to the Stream
+    // Two steps: the card with its tasks, then the start button of the first one
     // Counted as seen once opened - the sparkle never comes back
     private fun showThoughtsBreadcrumb() {
         thoughtsBreadcrumbMarker = null
@@ -109,22 +124,23 @@ class OnboardingActivity : CoreActivity() {
             step       = 1,
             stepCount  = THOUGHTS_BREADCRUMB_STEPS,
             // ! After the first one faded out - two dims at once would flash darker
-            onClosed   = { window.decorView.postDelayed({ showThoughtsBreadcrumbOpen() }, HexSpotlight.FADE_DURATION_MS) }
+            onClosed   = { window.decorView.postDelayed({ showThoughtsBreadcrumbStart() }, HexSpotlight.FADE_DURATION_MS) }
         ) {}
     }
 
-    private fun showThoughtsBreadcrumbOpen() {
+    private fun showThoughtsBreadcrumbStart() {
         if (isFinishing || isDestroyed) return
+        val firstTaskStart = llOnboardingTasks.getChildAt(0)?.findViewById<MaterialButton>(R.id.btn_task_start) ?: return
 
         HexSpotlight.show(
             activity   = this,
-            target     = findViewById(R.id.btn_onboarding_tasks_open),
-            text       = getString(R.string.workshop_onboarding_tasks_thoughts_breadcrumb_open),
+            target     = firstTaskStart,
+            text       = getString(R.string.workshop_onboarding_tasks_thoughts_breadcrumb_start),
             buttonText = getString(R.string.common_spotlight_btn_got_it),
             step       = 2,
             stepCount  = THOUGHTS_BREADCRUMB_STEPS
         ) {
-            startActivity(Intent(this, StreamActivity::class.java))
+            firstTaskStart.performClick()
         }
     }
 
@@ -212,7 +228,7 @@ class OnboardingActivity : CoreActivity() {
         lpiOnboardingProgress.max = total
         lpiOnboardingProgress.setProgressCompat(doneCount, animate)
 
-        // All done = the same green as the rings of done tasks
+        // All done = the same green as the ticks of done tasks
         val isAllDone = doneCount >= total
         lpiOnboardingProgress.setIndicatorColor(
             ContextCompat.getColor(this, if (isAllDone) R.color.progress_ring_done else R.color._palette_lvl_3)
@@ -226,51 +242,51 @@ class OnboardingActivity : CoreActivity() {
     private fun bindTasks() {
         llOnboardingTasks.removeAllViews()
         val inflater = LayoutInflater.from(this)
+        val activeTask = onboardingManager.getActiveTask()
 
         OnboardingTask.entries.forEach { task ->
             val row = inflater.inflate(R.layout.onboarding_task_item, llOnboardingTasks, false)
-            bindTaskRow(row, task)
+            bindTaskRow(row, task, isActive = task == activeTask)
             llOnboardingTasks.addView(row)
         }
     }
 
-    private fun bindTaskRow(row: View, task: OnboardingTask) {
-        val cpiRing: CircularProgressIndicator = row.findViewById(R.id.cpi_task_ring)
-        val tvRingLabel: TextView              = row.findViewById(R.id.tv_task_ring_label)
-
-        val score = onboardingManager.getTaskScore(task)
-        val done = score >= task.requiredCount
-
-        cpiRing.setProgressCompat((score * 100 / task.requiredCount).coerceIn(0, 100), false)
-        cpiRing.setIndicatorColor(
-            ContextCompat.getColor(this, if (done) R.color.progress_ring_done else R.color._palette_lvl_3)
-        )
-        cpiRing.trackColor = ContextCompat.getColor(this, if (done) R.color.progress_ring_done else R.color._palette_lvl_1)
-
-        tvRingLabel.setTextColor(
-            ContextCompat.getColor(this, if (done) R.color.progress_ring_done else R.color._palette_lvl_3)
-        )
-        tvRingLabel.text = when {
-            done                 -> "✓"
-            task.requiredCount > 1 -> score.toString()
-            else                 -> ""
-        }
-
+    private fun bindTaskRow(row: View, task: OnboardingTask, isActive: Boolean) {
+        bindTaskStatus(row, isActive, onboardingManager.isTaskDone(task))
         row.findViewById<TextView>(R.id.tv_task_title).setText(task.titleRes)
         row.findViewById<TextView>(R.id.tv_task_description).setText(task.descriptionRes)
-        row.findViewById<MaterialButton>(R.id.btn_task_reset).setOnClickListener { showResetTaskDialog(task) }
+        bindTaskStartButton(row.findViewById(R.id.btn_task_start), task, isActive)
     }
 
-    private fun showResetTaskDialog(task: OnboardingTask) {
-        ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.workshop_dialog_reset_onboarding_task_title))
-            .setDescription(getString(R.string.workshop_dialog_reset_onboarding_task))
-            .setPrimaryAction(getString(R.string.workshop_dialog_reset_onboarding_task_yes)) {
-                onboardingManager.resetTask(task)
+    // In progress wins over done - a done task run again spins as well
+    private fun bindTaskStatus(row: View, isActive: Boolean, isDone: Boolean) {
+        val ivStatus: ImageView = row.findViewById(R.id.iv_task_status)
+        ivStatus.isVisible = !isActive
+        ivStatus.imageTintList = ColorStateList.valueOf(
+            ContextCompat.getColor(this, if (isDone) R.color.progress_ring_done else R.color._gray_lvl_2)
+        )
+        row.findViewById<View>(R.id.cpi_task_in_progress).isVisible = isActive
+    }
+
+    // Start = the task becomes the active one (replacing any other) and its first breadcrumb's screen opens, stop = no task active
+    private fun bindTaskStartButton(button: MaterialButton, task: OnboardingTask, isActive: Boolean) {
+        button.setIconResource(if (isActive) R.drawable.ic_task_stop else R.drawable.ic_task_start)
+        button.contentDescription = getString(
+            if (isActive) R.string.workshop_onboarding_task_stop else R.string.workshop_onboarding_task_start
+        )
+        button.setOnClickListener {
+            if (isActive) {
+                onboardingManager.deactivateTask()
                 bindTasks()
-                refreshProgress(animate = true)
             }
-            .show()
+            else {
+                onboardingManager.activateTask(task)
+                bindTasks()
+                // All Thoughts tasks start in Stream - the one under this screen (via "Do the next one") is reused, not stacked
+                startActivity(Intent(this, StreamActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP))
+            }
+        }
     }
 
     private fun setupOnboardingList() {
@@ -332,6 +348,10 @@ class OnboardingActivity : CoreActivity() {
     }
 
     companion object {
+        const val EXTRA_SCROLL_TO_TASKS = "extra_scroll_to_tasks"
+
+        private const val SCROLL_GAP_DP = 16
+
         // ! No tip is shown on the screens yet (onboarding concept) - their sections stay hidden
         // and out of the progress until the first reworked tip is back
         private const val TIP_SECTIONS_SHOWN = false

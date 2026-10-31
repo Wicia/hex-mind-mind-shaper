@@ -18,14 +18,15 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
+import pl.hexmind.mindshaper.activities.onboarding.OnboardingActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingTask
-import pl.hexmind.mindshaper.common.onboarding.OnboardingTaskPoint
+import pl.hexmind.mindshaper.common.onboarding.OnboardingTaskGuide
 import pl.hexmind.mindshaper.common.ui.views.lists.SortConfig
 import pl.hexmind.mindshaper.common.ui.views.lists.SortDirection
-import pl.hexmind.mindshaper.common.ui.views.lists.SortProperty
 import pl.hexmind.mindshaper.common.regex.HexTags
 import pl.hexmind.mindshaper.common.ui.dialogs.GuideDialog
 import pl.hexmind.mindshaper.common.ui.dpToPx
+import pl.hexmind.mindshaper.common.ui.views.HexSpotlight
 import pl.hexmind.mindshaper.common.ui.views.HexTagsSearcher
 import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
 import pl.hexmind.mindshaper.services.ThoughtStatusService
@@ -170,7 +171,6 @@ class StreamActivity : CoreActivity() {
                 currentTags     = searcher.getTags()
             ) { hexTags ->
                 searcher.setTags(hexTags)
-                onboardingManager.recordTaskPoints(OnboardingTask.SEARCH_STREAM, searchTaskPoints(hexTags))
             }
         }
 
@@ -192,11 +192,6 @@ class StreamActivity : CoreActivity() {
                 viewModel.updateSearchQuery(hexTags)
             }
         }
-    }
-
-    private fun searchTaskPoints(hexTags: HexTags): Set<OnboardingTaskPoint> = buildSet {
-        if (!hexTags.subject.isNullOrBlank()) add(OnboardingTaskPoint.SEARCH_SUBJECT)
-        if (!hexTags.person.isNullOrBlank() || !hexTags.project.isNullOrBlank()) add(OnboardingTaskPoint.SEARCH_HEX_TAG)
     }
 
     // Criteria passed by the caller (e.g. a Metadata tag pill) replace the current search
@@ -248,11 +243,6 @@ class StreamActivity : CoreActivity() {
             viewModel.updateSelectedDomain(domainId)
             viewModel.updateCreatedPeriod(createdPeriod)
 
-            onboardingManager.recordTaskPoints(OnboardingTask.FILTER_STREAM, buildSet {
-                if (domainId != null) add(OnboardingTaskPoint.FILTER_DOMAIN)
-                if (createdPeriod != null) add(OnboardingTaskPoint.FILTER_CREATED_PERIOD)
-            })
-
             // Show count of filtered thoughts after applying filters
             val count = viewModel.filteredThoughts.value?.size ?: 0
             showShortToast(R.string.stream_filter_toast_count, count.toString())
@@ -268,7 +258,45 @@ class StreamActivity : CoreActivity() {
 
     private fun setupNewThoughtFab() {
         fabNewThought.setOnClickListener {
-            captureLauncher.launch(Intent(this, CaptureActivity::class.java))
+            captureLauncher.launch(Intent(this, CaptureActivity::class.java)
+                .putExtra(CaptureActivity.EXTRA_ONBOARDING_GUIDE, onboardingManager.isGuiding(OnboardingTask.CAPTURE_THOUGHT)))
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val completedTask = onboardingManager.takeCompletedActiveTask()
+        if (completedTask != null) showTaskCompletedDialog(completedTask) else showCaptureTaskGuide()
+    }
+
+    // Back from the place the active task was done - next task or just close
+    private fun showTaskCompletedDialog(task: OnboardingTask) {
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.common_onboarding_task_done_title))
+            .setIcon(R.drawable.ic_mountain_flag)
+            .setConfetti()
+            .setDescription(getString(R.string.common_onboarding_task_done_info, getString(task.titleRes)))
+            .setPrimaryAction(getString(R.string.common_onboarding_task_done_next)) {
+                startActivity(Intent(this, OnboardingActivity::class.java)
+                    .putExtra(OnboardingActivity.EXTRA_SCROLL_TO_TASKS, true))
+            }
+            .setCancelText(getString(R.string.common_btn_close))
+            .show()
+    }
+
+    // Capture thought task starts here - once per run
+    private fun showCaptureTaskGuide() {
+        val task = OnboardingTask.CAPTURE_THOUGHT
+        if (!onboardingManager.shouldShowTaskGuide(task, OnboardingTaskGuide.STREAM_CAPTURE)) return
+
+        onboardingManager.markTaskGuideShown(task, OnboardingTaskGuide.STREAM_CAPTURE)
+        HexSpotlight.show(
+            activity   = this,
+            target     = fabNewThought,
+            text       = getString(R.string.stream_onboarding_task_capture),
+            buttonText = getString(R.string.common_spotlight_btn_got_it)
+        ) {
+            fabNewThought.performClick()
         }
     }
 
@@ -316,20 +344,9 @@ class StreamActivity : CoreActivity() {
             // ! raise BEFORE the value changes - the VM's mediator rebuilds the list before this Activity's sortConfig observer runs
             isListResetPending = true
             viewModel.updateSortConfig(newConfig)
-
-            onboardingManager.recordTaskPoints(OnboardingTask.SORT_STREAM, setOf(sortTaskPoint(newConfig.property)))
         }
 
         dialog.show(supportFragmentManager, SortDialogFragment.TAG)
-    }
-
-    private fun sortTaskPoint(property: SortProperty): OnboardingTaskPoint = when (property) {
-        SortProperty.VALUE      -> OnboardingTaskPoint.SORT_VALUE
-        SortProperty.CREATED_AT -> OnboardingTaskPoint.SORT_CREATED_AT
-        SortProperty.UPDATED_AT -> OnboardingTaskPoint.SORT_UPDATED_AT
-        SortProperty.SUBJECT    -> OnboardingTaskPoint.SORT_SUBJECT
-        SortProperty.PERSON     -> OnboardingTaskPoint.SORT_PERSON
-        SortProperty.PROJECT    -> OnboardingTaskPoint.SORT_PROJECT
     }
 
     private fun showDeleteConfirmationDialog(thought: ThoughtDTO) {

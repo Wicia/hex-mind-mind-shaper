@@ -203,9 +203,27 @@
         <li>pierwsze zadanka
           <ul>
             <li>✅ 2026-10-21 „Złap myśl” (3 pkt) — Dom → Łapanie myśli → zapis; punkt za tytuł, za tag (osoba / projekt), za notatkę — każdy raz, mogą przyjść z różnych myśli; tylko nowa myśl (edycja istniejącej nie); resetowalne, wliczane do ogólnego postępu wagą punktów</li>
-            <li>✅ 2026-10-22 „Posortuj myśli” (3 pkt) — Strumień → sortowanie; punkt za każde inne kryterium zatwierdzone w dialogu (domyślne też), wystarczą 3 dowolne z 6; sam kierunek nie daje punktu; bez blokady przy małej liczbie myśli</li>
-            <li>✅ 2026-10-22 „Znajdź myśl” (2 pkt) — Strumień → wyszukiwanie; punkt za temat, za tag (osoba / projekt) — każdy raz, mogą przyjść z różnych wyszukiwań; liczy się zatwierdzenie w arkuszu wyszukiwania (także bez wyników), nie usunięcie kryterium ani wejście z pigułki tagu w Metadanych</li>
-            <li>✅ 2026-10-22 „Przefiltruj myśli” (2 pkt) — Strumień → filtr; punkt za domenę, za okres utworzenia — każdy raz, mogą przyjść z różnych filtrowań; liczy się zastosowanie filtra w arkuszu (także bez wyników); same stany myśli nie dają punktu</li>
+            <li>do zrobienia — kolejne zadanka prowadzone spotlightami, krok po kroku
+              <ul>
+                <li>Scenariusz 2 — rozwijanie myśli
+                  <ol>
+                    <li>oceń dodatkowo myśl</li>
+                    <li>włącz zdjęcia lub nagrania głosowe</li>
+                    <li>dodaj do myśli zdjęcie lub nagranie głosowe</li>
+                  </ol>
+                </li>
+                <li>Scenariusz 3 — tagi i domeny
+                  <ol>
+                    <li>wejdź w utworzoną myśl</li>
+                    <li>tapnij w ikonę na górze</li>
+                    <li>wpisz po 1 tagu: osoba „ty”, projekt „test”</li>
+                    <li>wejdź w Tagi i Domeny</li>
+                    <li>znajdź tagi na liście i tapnij w lupę, by przefiltrować</li>
+                    <li>przejdź na zakładkę domen — tu możesz stworzyć własne kategorie, czyli szufladki na myśli; domenę możesz też stworzyć w miejscu, w którym byłeś wcześniej</li>
+                  </ol>
+                </li>
+              </ul>
+            </li>
           </ul>
         </li>
         <li>postęp zadanek liczony od włączenia wskazówek — wcześniejsze akcje się nie liczą</li>
@@ -733,6 +751,30 @@
         <span class="lbl">Gdzie</span>
         <ul>
           <li>arkusze z FAB-em zatwierdzania: <code>common_hex_tags_bottomsheet</code>, <code>domain_edit_bottomsheet</code>, <code>hex_tag_edit_bottomsheet</code>, <code>step_edit_bottom_sheet</code>, <code>stream_filter_bottomsheet</code>, <code>stream_search_bottomsheet</code></li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
+      <span class="prio minor">Drobny</span>
+      <strong>Ikona <code>ic_replace_or_renew</code> — jedno znaczenie: „od nowa”</strong> — ta sama ikona stoi dziś przy kilku różnych akcjach, a „zamiana” (replace) nigdzie nie występuje.
+      <span class="mods"><span class="mod">Cała aplikacja</span></span>
+    </summary>
+    <div class="body">
+      <ul>
+        <li>zmiana nazwy na <code>ic_redo</code> / <code>ic_renew</code> i zostawienie tylko przy „zrób od nowa”: nagraj od nowa, wylosuj ścieżkę ponownie, reset ścieżek, reset sekcji wskazówek</li>
+        <li>„Odłącz” użycie w szczegółach myśli → osobna ikona, np. przerwane ogniwo (<code>link_off</code>)</li>
+        <li>„Później” w sesji fiszek → zegar / odroczenie (<code>schedule</code> lub <code>update</code>)</li>
+        <li>ozdobnik „zmieniona” na karcie Strumienia — do decyzji: zostaje albo ołówek (<code>edit</code>)</li>
+        <li>po zmianie — tabela ikon w UI Design Guide</li>
+      </ul>
+      <div class="gain"><b>Po co:</b> jedna ikona = jedno znaczenie; użytkownik nie zgaduje, czy strzałki coś odnowią, odłączą czy odłożą.</div>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li>od nowa: <code>HexAudioView</code> (<code>btnRecordNew</code>), <code>path_item</code> (<code>btn_path_redraw</code>), <code>workshop_activity</code> (<code>btn_paths_reset</code>), <code>onboarding_section_item</code> (<code>btn_section_reset</code>)</li>
+          <li>inne znaczenia: <code>thought_details_activity</code> (<code>btn_usage_unlink</code>), <code>common_flashcards_session_view</code> (<code>ll_session_later</code>), <code>StreamAdapter.updateChangedAtCase</code></li>
         </ul>
       </div>
     </div>

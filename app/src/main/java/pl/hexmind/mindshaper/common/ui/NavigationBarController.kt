@@ -36,7 +36,7 @@ class NavigationBarController(
     private var currentAnimator: Animator? = null
 
     private val navButtons = listOf(
-        NavButton(R.id.navHome, "Home", R.drawable.ic_activity_home, R.drawable.ic_activity_home_filled),
+        NavButton(R.id.navHome, "Home", R.drawable.ic_owl, R.drawable.ic_owl),
         NavButton(R.id.navStream, "Stream", R.drawable.ic_activity_stream, R.drawable.ic_activity_stream_filled),
         NavButton(R.id.navFlashcards, "Flashcards", R.drawable.ic_activity_flashcards, R.drawable.ic_activity_flashcards_filled),
         NavButton(R.id.navWorkshop, "Workshop", R.drawable.ic_activity_workshop, R.drawable.ic_activity_workshop_filled),

@@ -28,7 +28,7 @@ class StartScreenTiles @JvmOverloads constructor(
 
     init {
         setOptions(listOf(
-            Option(TILE_HOME,       R.string.settings_start_screen_home,       R.drawable.ic_activity_home),
+            Option(TILE_HOME,       R.string.settings_start_screen_home,       R.drawable.ic_owl),
             Option(TILE_STREAM,     R.string.settings_start_screen_stream,     R.drawable.ic_activity_stream),
             Option(TILE_FLASHCARDS, R.string.settings_start_screen_flashcards, R.drawable.ic_activity_flashcards),
             Option(TILE_WORKSHOP,   R.string.settings_start_screen_workshop,   R.drawable.ic_activity_workshop),

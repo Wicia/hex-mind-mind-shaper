@@ -5,12 +5,15 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.common.ui.views.HexConfettiView
 
 /**
  * Decision dialog - Cancel is always present, layout depends on the number of actions:
@@ -25,6 +28,8 @@ class ActionsDialog private constructor(
     // header and content
     private val title: String,
     private val description: String?,
+    @DrawableRes private val iconRes: Int?,
+    private val confetti: Boolean,
 
     // actions = buttons
     private val primaryText: String,
@@ -35,6 +40,7 @@ class ActionsDialog private constructor(
     private val secondaryAction: (() -> Unit)?,
 
     // Cancel button, tap outside and back
+    private val cancelText: String?,
     private val onCancel: (() -> Unit)?
 ) {
 
@@ -51,6 +57,18 @@ class ActionsDialog private constructor(
         setupButtons(dialogView, dialog)
 
         // Setup additional (not mandatory) dialog elements
+        dialogView.findViewById<ImageView>(R.id.iv_icon).apply {
+            visibility = if (iconRes != null) View.VISIBLE else View.GONE
+            iconRes?.let { setImageResource(it) }
+        }
+        // Out of both top corners, down and toward the middle
+        if (confetti) {
+            dialogView.findViewById<HexConfettiView>(R.id.cv_confetti).start(
+                HexConfettiView.Origin(0f, 0f, CONFETTI_LEFT_DEG),
+                HexConfettiView.Origin(1f, 0f, CONFETTI_RIGHT_DEG)
+            )
+        }
+
         if(description != null){
             dialogView.findViewById<TextView>(R.id.tv_description).visibility = View.VISIBLE
             dialogView.findViewById<TextView>(R.id.tv_description).text = description
@@ -97,18 +115,30 @@ class ActionsDialog private constructor(
         val btnCancelBelow = dialogView.findViewById<MaterialButton>(R.id.btn_cancel_below)
         btnCancelInline.visibility = if (hasSecondary) View.GONE else View.VISIBLE
         btnCancelBelow.visibility = if (hasSecondary) View.VISIBLE else View.GONE
+        cancelText?.let { text ->
+            btnCancelInline.text = text
+            btnCancelBelow.text = text
+        }
         btnCancelInline.setOnClickListener { dialog.cancel() }
         btnCancelBelow.setOnClickListener { dialog.cancel() }
+    }
+
+    private companion object {
+        const val CONFETTI_LEFT_DEG = 35.0       // down and to the right
+        const val CONFETTI_RIGHT_DEG = 145.0     // down and to the left
     }
 
     class Builder(private val context: Context) {
         private var title: String = ""
         private var description: String? = null
+        @DrawableRes private var iconRes: Int? = null
+        private var confetti: Boolean = false
         private var primaryText: String? = null
         private var primaryCaution: Boolean = false
         private var primaryAction: (() -> Unit)? = null
         private var secondaryText: String? = null
         private var secondaryAction: (() -> Unit)? = null
+        private var cancelText: String? = null
         private var onCancel: (() -> Unit)? = null
 
         fun setTitle(title: String) = apply {
@@ -117,6 +147,20 @@ class ActionsDialog private constructor(
 
         fun setDescription(description : String) = apply {
             this.description = description
+        }
+
+        /**
+         * Icon between the title and the description - optional
+         */
+        fun setIcon(@DrawableRes iconRes: Int) = apply {
+            this.iconRes = iconRes
+        }
+
+        /**
+         * Confetti shot from both top corners every 1.5 s - only to celebrate (e.g. a done task)
+         */
+        fun setConfetti() = apply {
+            this.confetti = true
         }
 
         /**
@@ -149,6 +193,13 @@ class ActionsDialog private constructor(
         }
 
         /**
+         * Cancel button text when nothing is being cancelled (e.g. Close after a done task) - default: Cancel
+         */
+        fun setCancelText(text: String) = apply {
+            this.cancelText = text
+        }
+
+        /**
          * Build and show the dialog
          */
         fun show() {
@@ -160,11 +211,14 @@ class ActionsDialog private constructor(
                 context = context,
                 title = title,
                 description = description,
+                iconRes = iconRes,
+                confetti = confetti,
                 primaryText = primaryText,
                 primaryCaution = primaryCaution,
                 primaryAction = primaryAction,
                 secondaryText = secondaryText,
                 secondaryAction = secondaryAction,
+                cancelText = cancelText,
                 onCancel = onCancel
             ).show()
         }

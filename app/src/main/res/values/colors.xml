@@ -103,6 +103,9 @@
 
     <color name="button_secondary_disabled_background">@color/_gray_lvl_1</color>
 
+    <!-- Dialog leading action (left of Cancel / Save) - ! not white: it has to show on the light background -->
+    <color name="button_dialog_leading_icon">@color/graphite_medium</color>
+
     <!--  Auxiliary (no disabled state) -->
     <color name="button_auxiliary_background">@color/_palette_lvl_1</color>
     <color name="button_auxiliary_icon">@color/_gray_lvl_2</color>

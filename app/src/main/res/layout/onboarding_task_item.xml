@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Single onboarding task row: progress ring + title with a short description + reset -->
+<!-- Single onboarding task row: status + title with a short description + start / stop -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -12,32 +12,32 @@
     android:paddingTop="4dp"
     android:paddingBottom="4dp">
 
-    <!-- Progress ring - filled by the app, not tappable -->
+    <!-- Status - not tappable: tick (gray = not done yet, green = done), spinning arc in its place = in progress -->
     <FrameLayout
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center_vertical">
 
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/cpi_task_ring"
+        <ImageView
+            android:id="@+id/iv_task_status"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            app:indicatorSize="32dp"
-            app:trackThickness="6dp"
-            app:trackCornerRadius="4dp"
-            app:indicatorTrackGapSize="0dp"
-            android:indeterminate="false"
+            android:padding="4dp"
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+            android:src="@drawable/ic_task_done"
             />
 
-        <TextView
-            android:id="@+id/tv_task_ring_label"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/cpi_task_in_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="11sp"
-            android:textStyle="bold"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:indicatorSize="26dp"
+            app:trackThickness="3dp"
+            app:trackCornerRadius="2dp"
+            app:indicatorColor="@color/_palette_lvl_3"
             />
 
     </FrameLayout>
@@ -74,8 +74,9 @@
 
     </LinearLayout>
 
+    <!-- Start / stop - a done task can be run again -->
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_task_reset"
+        android:id="@+id/btn_task_start"
         style="@style/SecondaryActionButton.Ghost"
         android:layout_width="36dp"
         android:layout_height="36dp"
@@ -85,7 +86,7 @@
         android:insetBottom="0dp"
         app:iconSize="28dp"
         app:iconTint="@color/_palette_lvl_2"
-        app:icon="@drawable/ic_replace_or_renew"
+        app:icon="@drawable/ic_task_start"
         app:iconGravity="textStart"
         />
 

@@ -290,6 +290,12 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <!-- DIALOG LEADING ACTION variant (left of Cancel / Save, e.g. insert bullet) - graphite icon -->
+
+    <style name="SecondaryActionButton.DialogLeading" parent="SecondaryActionButton">
+        <item name="iconTint">@color/button_dialog_leading_icon</item>
+    </style>
+
     <!-- GHOST variant (no background) -->
 
     <style name="SecondaryActionButton.Ghost" parent="SecondaryActionButton">

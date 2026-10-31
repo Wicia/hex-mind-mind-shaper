@@ -72,6 +72,8 @@ class AppSettingsStorage @Inject constructor(
 
         private const val PARAM_ONBOARDING_ENABLED = "param_onboarding_enabled"
 
+        private const val PARAM_ONBOARDING_ACTIVE_TASK = "param_onboarding_active_task"
+
         // Flashcards - Repetitions System
         private const val PARAM_FLASHCARDS_NEW_PER_DAY = "param_flashcards_new_per_day"
 
@@ -198,6 +200,17 @@ class AppSettingsStorage @Inject constructor(
 
     fun isOnboardingEnabled(): Boolean {
         return sharedPreferences.getBoolean(PARAM_ONBOARDING_ENABLED, false)
+    }
+
+    fun getOnboardingActiveTask(): String? {
+        return sharedPreferences.getString(PARAM_ONBOARDING_ACTIVE_TASK, null)
+    }
+
+    // null = no task active
+    fun setOnboardingActiveTask(taskKey: String?) {
+        sharedPreferences.edit {
+            if (taskKey == null) remove(PARAM_ONBOARDING_ACTIVE_TASK) else putString(PARAM_ONBOARDING_ACTIVE_TASK, taskKey)
+        }
     }
 
     fun isPhotoFeatureEnabled(): Boolean {

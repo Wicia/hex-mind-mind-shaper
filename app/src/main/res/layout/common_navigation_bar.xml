@@ -44,7 +44,7 @@
                 android:layout_height="64dp"
                 android:background="?attr/selectableItemBackground"
                 app:hexNavLabel="@string/home_title"
-                app:hexNavIcon="@drawable/ic_activity_home" />
+                app:hexNavIcon="@drawable/ic_owl" />
 
             <pl.hexmind.mindshaper.common.ui.HexNavItemView
                 android:id="@+id/navStream"

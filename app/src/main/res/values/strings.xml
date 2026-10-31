@@ -25,6 +25,7 @@
     <string name="common_btn_grant_permission">Zezwól</string>
     <string name="common_btn_confirm_replace">Zastąp dane</string>
     <string name="common_btn_go_to_settings">Przejdź do Preferencji</string>
+    <string name="common_btn_close">Zamknij</string>
     <string name="common_guide_btn_next">Mów dalej...</string>
     <string name="common_guide_btn_dismiss">Dzięki</string>
 
@@ -35,6 +36,11 @@
     <string name="common_spotlight_btn_next">Dalej</string>
     <string name="common_spotlight_btn_got_it">Rozumiem</string>
     <string name="common_spotlight_step_counter">%1$d/%2$d</string>
+
+    <!-- Onboarding - active task done (dialog on return) -->
+    <string name="common_onboarding_task_done_title">Zadanko zaliczone!</string>
+    <string name="common_onboarding_task_done_info">„%1$s” masz już za sobą. Bierzesz się za kolejne?</string>
+    <string name="common_onboarding_task_done_next">Zrób kolejne</string>
 
     <!-- Dialogs -->
     <string name="common_deletion_dialog_confirmation">%s usunięto</string>
@@ -252,23 +258,16 @@ Awers - Rewers…"</string>
     <string name="workshop_onboarding_progress_percent">%1$d%%</string>
     <string name="workshop_onboarding_tasks_thoughts_header">Myśli</string>
     <string name="workshop_onboarding_tasks_thoughts_breadcrumb_tasks">Na takich listach czekają na ciebie zadanka, dzięki którym nauczysz się korzystać z funkcji aplikacji</string>
-    <string name="workshop_onboarding_tasks_thoughts_breadcrumb_open">Takie przyciski poprowadzą Cię do miejsc, gdzie możesz zrealizować zadanka</string>
-    <string name="workshop_onboarding_task_capture_title">Złap myśl</string>
-    <string name="workshop_onboarding_task_capture_desc">Nadaj jej temat, dodaj tag i napisz notatkę</string>
-    <string name="workshop_onboarding_task_sort_title">Posortuj myśli</string>
-    <string name="workshop_onboarding_task_sort_desc">Posortuj strumień myśli według co najmniej 3 różnych kryteriów</string>
-    <string name="workshop_onboarding_task_search_title">Znajdź myśl</string>
-    <string name="workshop_onboarding_task_search_desc">Wyszukaj myśli w strumieniu po temacie i po tagu</string>
-    <string name="workshop_onboarding_task_filter_title">Przefiltruj myśli</string>
-    <string name="workshop_onboarding_task_filter_desc">Przefiltruj strumień myśli po domenie i po czasie utworzenia</string>
-    <string name="workshop_dialog_reset_onboarding_task_title">Zacząć zadanko od nowa?</string>
-    <string name="workshop_dialog_reset_onboarding_task">Postęp tego zadanka wróci do zera.</string>
-    <string name="workshop_dialog_reset_onboarding_task_yes">Zacznij od nowa</string>
+    <string name="workshop_onboarding_tasks_thoughts_breadcrumb_start">Tym przyciskiem zaczniesz zadanko — od razu przeniesiemy Cię tam, gdzie się je robi</string>
+    <string name="workshop_onboarding_task_capture_title">Złap swoją pierwszą myśl</string>
+    <string name="workshop_onboarding_task_capture_desc">Napisz notatkę i nadaj myśli temat</string>
+    <string name="workshop_onboarding_task_start">Zacznij zadanko</string>
+    <string name="workshop_onboarding_task_stop">Zatrzymaj zadanko</string>
     <string name="workshop_onboarding_tips_switch">Aktywuj tryb Poznawania</string>
     <string name="workshop_dialog_disable_onboarding_title">Wyłączyć poznawanie?</string>
     <string name="workshop_dialog_disable_onboarding">Postęp realizacji zadań zostanie zresetowany, a okruszki pojawią się ponownie.</string>
     <string name="workshop_dialog_disable_onboarding_yes">Wyłącz i resetuj</string>
-    <string name="workshop_onboarding_tips_hint">Przy pierwszym wejściu na ekran pojawią się mini wskazówki. Wprowadzą Cię w tajniki aplikacji, pokazując \"co gdzie jest, jak tego użyć, no i do czego\" :)</string>
+    <string name="workshop_onboarding_tips_hint">Po włączeniu czekają tu na Ciebie zadanka do przeklikania. Krok po kroku poprowadzimy Cię przez funkcje aplikacji, od razu w praktyce :)</string>
 
     <!-- ============================================================ -->
     <!--    HOME Activity                                             -->
@@ -339,6 +338,11 @@ Awers - Rewers…"</string>
     <!--    CAPTURE Activity                                          -->
     <!-- ============================================================ -->
 
+    <!-- Onboarding - capture thought task (breadcrumbs) -->
+    <string name="capture_onboarding_task_bullet">Tym przyciskiem dodasz w notatce kolejny punkt</string>
+    <string name="capture_onboarding_task_subject">Tu nadasz myśli temat</string>
+    <string name="capture_onboarding_task_save">A tym przyciskiem zapiszesz myśl</string>
+
     <!-- Onboarding -->
     <string name="capture_entry_title">Łapanie myśli</string>
     <string name="capture_entry_tooltip"><![CDATA[
@@ -402,6 +406,9 @@ Awers - Rewers…"</string>
     <!-- ============================================================ -->
     <!--    STREAM Activity                                           -->
     <!-- ============================================================ -->
+
+    <!-- Onboarding - capture thought task (breadcrumb) -->
+    <string name="stream_onboarding_task_capture">Tutaj złapiesz nową myśl</string>
 
     <!-- Onboarding -->
     <string name="stream_entry_title">Twoje myśli</string>
@@ -654,8 +661,8 @@ Awers - Rewers…"</string>
     <string name="workshop_dialog_delete_step_calendar_warning">Usuniemy też jego przypomnienie w kalendarzu.</string>
 
     <!-- Workshop -->
-    <string name="settings_workshop_section">🛠️ Warsztat</string>
-    <string name="settings_permissions_workshop">Włącz Warsztat celów i kroków</string>
+    <string name="settings_workshop_section">🛠️ Warsztat celów</string>
+    <string name="settings_permissions_workshop">Włącz Warsztat celów</string>
     <string name="settings_workshop_feature_hint">Rozpisz cele na kroki, powiąż z nimi swoje myśli i dodawaj przypomnienia do kalendarza</string>
     <string name="settings_calendar_reminders_switch_label">Włącz wpisy do kalendarza</string>
     <string name="settings_calendar_reminders_hint">Kroki celu z ustawionym przypomnieniem trafią do Twojego kalendarza (wybranego poniżej) jako cykliczne wydarzenia</string>
@@ -666,9 +673,9 @@ Awers - Rewers…"</string>
 
     <string name="settings_start_screen_header">🧭 Ekran startowy</string>
     <string name="settings_start_screen_home">Dom</string>
-    <string name="settings_start_screen_stream">Strumień</string>
+    <string name="settings_start_screen_stream">Strumień myśli</string>
     <string name="settings_start_screen_flashcards">Zapamiętywanie</string>
-    <string name="settings_start_screen_workshop">Warsztat</string>
+    <string name="settings_start_screen_workshop">Warsztat celów</string>
     <string name="settings_domain_edit_title">Edytuj domenę</string>
     <string name="settings_domain_edit_icons_title">| Ikona</string>
     <string name="settings_domain_edit_hint_placeholder">Wpisz nazwę domeny</string>
@@ -720,7 +727,7 @@ Awers - Rewers…"</string>
     <!-- ============================================================ -->
 
     <!-- Main -->
-    <string name="workshop_title">Warsztat</string>
+    <string name="workshop_title">Warsztat celów</string>
 
     <!-- Goals -->
     <string name="workshop_section_goals_active">Aktywne cele</string>

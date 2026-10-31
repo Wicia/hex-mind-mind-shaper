@@ -2,7 +2,9 @@ package pl.hexmind.mindshaper.activities.capture
 
 import android.net.Uri
 import android.os.Bundle
+import android.content.Context
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
@@ -16,10 +18,12 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtManagerActivity
 import pl.hexmind.mindshaper.common.ui.AddFormButtons
 import pl.hexmind.mindshaper.common.onboarding.OnboardingTask
+import pl.hexmind.mindshaper.common.onboarding.OnboardingTaskGuide
 import pl.hexmind.mindshaper.common.onboarding.OnboardingTaskPoint
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.common.ui.dialogs.PhotoFullscreenDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
+import pl.hexmind.mindshaper.common.ui.views.HexSpotlight
 import pl.hexmind.mindshaper.common.ui.views.content.HexAudioView
 import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
 import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
@@ -77,16 +81,64 @@ class CaptureActivity : ThoughtManagerActivity() {
 
     private var defaultFormAutoOpened = false
 
+    // Capture thought task guided from Stream only - not from Home or a launcher shortcut
+    private val isTaskGuided by lazy {
+        intent.getBooleanExtra(EXTRA_ONBOARDING_GUIDE, false) && onboardingManager.isGuiding(OnboardingTask.CAPTURE_THOUGHT)
+    }
+
     private fun setupObservers() {
         // Observe draft changes (in memory, NOT from DB)
         viewModel.draftThought.observe(this) { draft ->
             updateUI(draft)
             // Auto-open only once, AFTER first updateUI resets widget states
+            // ! Guided task = always the note, whatever the default form
             if (!defaultFormAutoOpened) {
                 defaultFormAutoOpened = true
-                autoOpenDefaultFormIfNeeded()
+                if (isTaskGuided) showEditRichTextDialog() else autoOpenDefaultFormIfNeeded()
             }
         }
+    }
+
+    // ========== CAPTURE THOUGHT TASK ==========
+
+    // Two steps after the note: the subject, then Save - closing the second one puts the cursor in the subject
+    private fun showSubjectAndSaveGuide() {
+        val task = OnboardingTask.CAPTURE_THOUGHT
+        if (isFinishing || isDestroyed || !onboardingManager.shouldShowTaskGuide(task, OnboardingTaskGuide.SUBJECT_AND_SAVE)) return
+
+        onboardingManager.markTaskGuideShown(task, OnboardingTaskGuide.SUBJECT_AND_SAVE)
+        HexSpotlight.show(
+            activity   = this,
+            target     = binding.etSubject,
+            text       = getString(R.string.capture_onboarding_task_subject),
+            buttonText = getString(R.string.common_spotlight_btn_next),
+            step       = 1,
+            stepCount  = SUBJECT_AND_SAVE_GUIDE_STEPS,
+            holeShape  = HexSpotlight.HoleShape.ROUNDED_RECT,
+            // ! After the first one faded out - two dims at once would flash darker
+            onClosed   = { window.decorView.postDelayed({ showSaveGuide() }, HexSpotlight.FADE_DURATION_MS) }
+        ) {}
+    }
+
+    private fun showSaveGuide() {
+        if (isFinishing || isDestroyed) return
+
+        HexSpotlight.show(
+            activity   = this,
+            target     = binding.btnSave,
+            text       = getString(R.string.capture_onboarding_task_save),
+            buttonText = getString(R.string.common_spotlight_btn_got_it),
+            step       = 2,
+            stepCount  = SUBJECT_AND_SAVE_GUIDE_STEPS,
+            // Tap on Save in the hole does not save - the subject comes first
+            onClosed   = { focusSubject() }
+        ) {}
+    }
+
+    private fun focusSubject() {
+        binding.etSubject.requestFocus()
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(binding.etSubject, InputMethodManager.SHOW_IMPLICIT)
     }
 
     private fun setupListeners() {
@@ -320,15 +372,33 @@ class CaptureActivity : ThoughtManagerActivity() {
         // Edit header only when there is a note to edit
         val titleRes = if (currentText.isBlank()) R.string.common_new_note_header else R.string.common_edit_note_header
 
-        TextEditDialog(
+        // Guided task: the note shows the bullet button, saving it leads on to the subject and Save - each once per run
+        val task = OnboardingTask.CAPTURE_THOUGHT
+        val showBulletGuide = isTaskGuided && onboardingManager.shouldShowTaskGuide(task, OnboardingTaskGuide.NOTE_BULLET)
+
+        val dialog = TextEditDialog(
             context = this,
             title = getString(titleRes),
             textInput = currentText,
             notesStyle = true,
             onSave = { newText ->
                 viewModel.updateRichText(newText)
+                // ! After the dialog and its keyboard are gone - the hole must land on the laid out screen
+                if (isTaskGuided && newText.isNotBlank()) {
+                    window.decorView.postDelayed({ showSubjectAndSaveGuide() }, GUIDE_AFTER_DIALOG_DELAY_MS)
+                }
             }
-        ).show()
+        )
+        if (showBulletGuide) {
+            onboardingManager.markTaskGuideShown(task, OnboardingTaskGuide.NOTE_BULLET)
+            dialog.showWithBulletSpotlight(
+                text       = getString(R.string.capture_onboarding_task_bullet),
+                buttonText = getString(R.string.common_spotlight_btn_got_it)
+            )
+        }
+        else {
+            dialog.show()
+        }
     }
 
     private fun takePhoto() {
@@ -518,7 +588,6 @@ class CaptureActivity : ThoughtManagerActivity() {
 
         return buildSet {
             if (!draft.subject.isNullOrBlank()) add(OnboardingTaskPoint.SUBJECT)
-            if (!draft.person.isNullOrBlank() || !draft.project.isNullOrBlank()) add(OnboardingTaskPoint.HEX_TAG)
             if (!draft.richText.isNullOrBlank()) add(OnboardingTaskPoint.NOTE)
         }
     }
@@ -610,5 +679,10 @@ class CaptureActivity : ThoughtManagerActivity() {
     companion object {
         const val EXTRA_THOUGHT_ID = "EXTRA_THOUGHT_ID"
         const val EXTRA_CAPTURE_FORM = "EXTRA_CAPTURE_FORM"
+        // Opened from the Stream fab while the capture thought task is active
+        const val EXTRA_ONBOARDING_GUIDE = "EXTRA_ONBOARDING_GUIDE"
+
+        private const val SUBJECT_AND_SAVE_GUIDE_STEPS = 2
+        private const val GUIDE_AFTER_DIALOG_DELAY_MS = 400L
     }
 }
