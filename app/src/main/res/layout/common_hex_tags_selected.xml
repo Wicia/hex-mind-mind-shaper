@@ -30,7 +30,7 @@
         android:layout_marginStart="4dp"
         android:padding="5dp"
         android:src="@drawable/ic_delete"
-        app:tint="@color/_orange_lvl_3"
+        app:tint="@color/_palette_lvl_3"
         android:contentDescription="@string/stream_searcher_remove_criterion" />
 
 </LinearLayout>

@@ -290,12 +290,26 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <!-- DIALOG LEADING ACTION variant (left of Cancel / Save, e.g. insert bullet) - graphite icon -->
+
+    <style name="SecondaryActionButton.DialogLeading" parent="SecondaryActionButton">
+        <item name="iconTint">@color/button_dialog_leading_icon</item>
+    </style>
+
     <!-- GHOST variant (no background) -->
 
     <style name="SecondaryActionButton.Ghost" parent="SecondaryActionButton">
         <item name="backgroundTint">@android:color/transparent</item>
         <item name="android:stateListAnimator">@null</item>
-        <item name="rippleColor">@color/_orange_lvl_1</item>
+        <item name="rippleColor">@color/_palette_lvl_1</item>
+    </style>
+
+    <!-- DELETE variant: X of a thought form (note, photo, recording) - a bit smaller, round ripple that shows on light backgrounds -->
+    <style name="SecondaryActionButton.Ghost.Delete" parent="SecondaryActionButton.Ghost">
+        <item name="iconSize">26dp</item>
+        <item name="android:padding">8dp</item>
+        <item name="cornerRadius">21dp</item>
+        <item name="rippleColor">@color/delete_button_ripple</item>
     </style>
 
     <!--=== AUXILIARY ===-->
@@ -325,6 +339,18 @@
         <item name="android:paddingEnd">24dp</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
+    </style>
+
+    <!-- Option of the capture ring on Home (CaptureRing): add-form button as in Capture / Details, hidden under the center fab -->
+    <!-- ! "+" / "?", colors and width set by AddFormButtons -->
+    <style name="HomeCaptureRingOption" parent="HexContentButton.NotUsed">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:text">@string/common_btn_create</item>
+        <item name="iconGravity">textEnd</item>
+        <item name="iconSize">32dp</item>
     </style>
 
     <!-- ====================================== -->
@@ -463,7 +489,7 @@
     <!-- ====================================== -->
 
     <style name="ValueCloude">
-        <item name="cloudColor">@color/_orange_lvl_2</item>
+        <item name="cloudColor">@color/_palette_lvl_2</item>
         <item name="valueTextColor">@color/graphite_dark</item>
     </style>
 
@@ -548,7 +574,7 @@
 
         <!-- Elevation / ripple -->
         <item name="android:stateListAnimator">@null</item>
-        <item name="rippleColor">@color/_orange_lvl_2</item>
+        <item name="rippleColor">@color/_palette_lvl_2</item>
         <item name="cornerRadius">16dp</item>
     </style>
 

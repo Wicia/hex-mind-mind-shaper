@@ -37,8 +37,8 @@ class HexTagsInputView @JvmOverloads constructor(
             refreshSuggestions()
         }
 
-        // The tick commits whatever is typed, exactly as a trailing space would
-        binding.hifTag.setOnConfirmClickListener { commitCurrentText() }
+        // The add button commits whatever is typed, exactly as a trailing space would
+        binding.hifTag.setOnAddClickListener { commitCurrentText() }
     }
 
     fun setHint(hintRes: Int) {
@@ -46,6 +46,13 @@ class HexTagsInputView @JvmOverloads constructor(
     }
 
     fun getTags(): List<String> = tagNames.toList()
+
+    // E.g. the target of a breadcrumb on the field
+    val fieldView: View get() = binding.hifTag
+
+    fun focusField() {
+        binding.hifTag.requestFocusOnField()
+    }
 
     fun setTags(names: List<String>) {
         tagNames.clear()
@@ -61,7 +68,7 @@ class HexTagsInputView @JvmOverloads constructor(
         binding.hifTag.setText("")
     }
 
-    // Tick tap: same outcome as a trailing space, minus the whitespace requirement
+    // Add button tap: same outcome as a trailing space, minus the whitespace requirement
     private fun commitCurrentText() {
         val typedText = binding.hifTag.getText()
         if (typedText.isEmpty()) return

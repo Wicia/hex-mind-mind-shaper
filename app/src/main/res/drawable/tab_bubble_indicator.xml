@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <!-- Active tab bubble -->
-    <solid android:color="@color/_orange_lvl_3" />
+    <solid android:color="@color/_palette_lvl_3" />
     <corners
         android:topLeftRadius="16dp"
         android:topRightRadius="16dp"

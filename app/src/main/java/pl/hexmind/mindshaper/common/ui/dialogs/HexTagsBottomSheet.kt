@@ -24,6 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.views.HexInputField
+import pl.hexmind.mindshaper.common.ui.views.HexSpotlight
 import pl.hexmind.mindshaper.common.ui.views.HexTagsInputView
 import pl.hexmind.mindshaper.database.models.HexTagType
 import pl.hexmind.mindshaper.services.HexTagsService
@@ -36,6 +37,7 @@ import pl.hexmind.mindshaper.databinding.CommonHexTagsBottomsheetBinding
  *
  * Caller provides items + optional pre-selected HexTags, receives filled HexTags on confirm.
  * Dismiss by swiping down or tapping outside — no cancel button needed.
+ * With a guide (onboarding task): spotlight on the project field, then on Save once a project tag is added.
  *
  * Usage:
  *   HexTagsBottomSheet.show(
@@ -58,6 +60,7 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
 
     private var onValidate: ((HexTags) -> ValidationResult)? = null
     private var onConfirm: ((HexTags) -> Unit)? = null
+    private var guide: HexTagsSheetGuide? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -116,6 +119,67 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
                 confirmUnlessSimilarTagExists(result)
             }
         }
+
+        // ! Once the sheet window is shown - the spotlight window must land above it
+        guide?.let { sheetGuide -> binding.root.post { showProjectGuide(sheetGuide) } }
+    }
+
+    // ========== ONBOARDING GUIDE ==========
+
+    // Tap in the hole or the button = the field gets the cursor and the keyboard
+    private fun showProjectGuide(sheetGuide: HexTagsSheetGuide) {
+        val sheetDialog = dialog ?: return
+        if (_binding == null) return
+
+        HexSpotlight.showOverDialog(
+            dialog     = sheetDialog,
+            target     = binding.htvProject.fieldView,
+            text       = sheetGuide.projectText,
+            buttonText = sheetGuide.nextButtonText,
+            step       = 1,
+            stepCount  = GUIDE_STEPS,
+            holeShape  = HexSpotlight.HoleShape.ROUNDED_RECT,
+            // ! Once the spotlight window is gone - it holds the focus until then
+            onClosed   = { _binding?.root?.postDelayed({ focusProjectField() }, HexSpotlight.FADE_DURATION_MS) }
+        ) {}
+
+        binding.htvProject.onTagsChanged = {
+            if (binding.htvProject.getTags().isNotEmpty()) {
+                binding.htvProject.onTagsChanged = null
+                // ! After the keyboard is gone - the sheet moves down and Save with it
+                binding.root.post {
+                    if (_binding == null) return@post
+                    binding.root.findFocus()?.clearFocus()
+                    hideKeyboard()
+                    binding.root.postDelayed({ showSaveGuide(sheetGuide) }, KEYBOARD_HIDE_DELAY_MS)
+                }
+            }
+        }
+    }
+
+    // Tap in the hole = Save, like a plain tap on it
+    private fun showSaveGuide(sheetGuide: HexTagsSheetGuide) {
+        val sheetDialog = dialog ?: return
+        if (_binding == null || !sheetDialog.isShowing) return
+
+        HexSpotlight.showOverDialog(
+            dialog     = sheetDialog,
+            target     = binding.fabConfirm,
+            text       = sheetGuide.saveText,
+            buttonText = sheetGuide.lastButtonText,
+            step       = 2,
+            stepCount  = GUIDE_STEPS
+        ) {
+            _binding?.fabConfirm?.performClick()
+        }
+    }
+
+    private fun focusProjectField() {
+        if (_binding == null) return
+        binding.htvProject.focusField()
+        val focused = binding.root.findFocus() ?: return
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(focused, InputMethodManager.SHOW_IMPLICIT)
     }
 
     private fun setupTagInput(
@@ -206,12 +270,15 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
         private const val ARG_SELECTED_DOMAIN_ID = "arg_selected_domain_id"
         private const val ARG_PERSON = "arg_person"
         private const val ARG_PROJECT = "arg_project"
+        private const val GUIDE_STEPS = 2
+        private const val KEYBOARD_HIDE_DELAY_MS = 300L
 
         fun show(
             fragmentManager: FragmentManager,
             items: List<IconsGridItem>,
             currentTags: HexTags = HexTags(),
             onValidate: (HexTags) -> ValidationResult,
+            guide: HexTagsSheetGuide? = null,
             onConfirm: (HexTags) -> Unit
         ) {
             HexTagsBottomSheet().apply {
@@ -223,10 +290,19 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
                 }
                 this.onValidate = onValidate
                 this.onConfirm = onConfirm
+                this.guide = guide
             }.show(fragmentManager, TAG)
         }
     }
 }
+
+// Texts of the onboarding spotlights in the sheet
+data class HexTagsSheetGuide(
+    val projectText: String,
+    val saveText: String,
+    val nextButtonText: String,
+    val lastButtonText: String
+)
 
 data class HexTags(
     val person: String? = null,

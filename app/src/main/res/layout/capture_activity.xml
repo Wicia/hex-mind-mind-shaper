@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_background"
+    android:background="@drawable/bg_app_background"
     >
 
     <ScrollView
@@ -25,18 +25,18 @@
             <!-- Header -->
             <include layout="@layout/common_header_activity" />
 
-            <!-- HEX TAGS -->
+            <!-- SUBJECT (tags come from the note) -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:minWidth="160dp"
-                app:boxStrokeColor="#FFAF7A"
+                app:boxStrokeColor="@color/_palette_lvl_3"
                 app:hintEnabled="false"
-                app:hintTextColor="#FF8C42">
+                app:hintTextColor="@color/_palette_lvl_3">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_hex_tags"
+                    android:id="@+id/et_subject"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_edit_text"
@@ -45,24 +45,6 @@
                     android:maxLines="2"
                     android:minLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Tag suggestions -->
-            <HorizontalScrollView
-                android:id="@+id/hsv_tag_suggestions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:scrollbars="none"
-                android:visibility="gone">
-
-                <LinearLayout
-                    android:id="@+id/ll_tag_suggestions"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    />
-
-            </HorizontalScrollView>
 
             <!-- VALIDATION INFO -->
             <TextView

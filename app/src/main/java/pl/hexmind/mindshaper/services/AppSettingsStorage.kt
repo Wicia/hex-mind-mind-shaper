@@ -6,6 +6,7 @@ import androidx.core.content.edit
 import dagger.hilt.android.qualifiers.ApplicationContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.views.values.ThoughtValueSystem
+import pl.hexmind.mindshaper.services.dto.ColorPalette
 import pl.hexmind.mindshaper.services.dto.DefaultCaptureForm
 import pl.hexmind.mindshaper.services.dto.StartScreen
 import javax.inject.Inject
@@ -42,6 +43,19 @@ class AppSettingsStorage @Inject constructor(
         // Start screen
         private const val PARAM_START_SCREEN = "param_start_screen"
 
+        // Color palette
+        private const val PARAM_COLOR_PALETTE = "param_color_palette"
+
+        /**
+         * Picked color palette straight from the preferences - for an activity before its injection (theme overlay)
+         */
+        fun readColorPalette(context: Context): ColorPalette {
+            val value = context.getSharedPreferences(SETTINGS, Context.MODE_PRIVATE)
+                .getString(PARAM_COLOR_PALETTE, "")
+            // Unknown value (e.g. saved by another app version) = orange, not a crash
+            return ColorPalette.entries.firstOrNull { it.name == value } ?: ColorPalette.ORANGE
+        }
+
         private const val PARAM_PHOTO_FEATURE_ENABLED = "photo_feature_enabled"
 
         private const val PARAM_FLASHCARDS_FEATURE_ENABLED = "param_flashcards_feature_enabled"
@@ -57,6 +71,8 @@ class AppSettingsStorage @Inject constructor(
         private const val PARAM_BACKUP_ENABLED = "param_backup_enabled"
 
         private const val PARAM_ONBOARDING_ENABLED = "param_onboarding_enabled"
+
+        private const val PARAM_ONBOARDING_ACTIVE_TASK = "param_onboarding_active_task"
 
         // Flashcards - Repetitions System
         private const val PARAM_FLASHCARDS_NEW_PER_DAY = "param_flashcards_new_per_day"
@@ -82,6 +98,9 @@ class AppSettingsStorage @Inject constructor(
         const val DORMANT_DAYS_DEFAULT  = 7
         const val DORMANT_DAYS_MIN      = 3
         const val DORMANT_DAYS_MAX      = 90
+
+        // App news - near-dormant thoughts in the entry when the user last read it (opened or marked)
+        private const val PARAM_NEWS_NEAR_DORMANT_READ_IDS = "param_news_near_dormant_read_ids"
     }
 
     fun getApplicationContext() : Context {
@@ -172,6 +191,18 @@ class AppSettingsStorage @Inject constructor(
         }
     }
 
+    // A value remembered by a task run, e.g. the tag added in it
+    fun getOnboardingTaskRunValue(valueKey: String): String? {
+        return sharedPreferences.getString(valueKey, null)
+    }
+
+    // null = nothing remembered
+    fun setOnboardingTaskRunValue(valueKey: String, value: String?) {
+        sharedPreferences.edit {
+            if (value == null) remove(valueKey) else putString(valueKey, value)
+        }
+    }
+
     // Turned on only on purpose - in the welcome dialog or with the switch behind the flask on Home
     fun setOnboardingEnabled(enabled: Boolean) {
         sharedPreferences.edit {
@@ -181,6 +212,17 @@ class AppSettingsStorage @Inject constructor(
 
     fun isOnboardingEnabled(): Boolean {
         return sharedPreferences.getBoolean(PARAM_ONBOARDING_ENABLED, false)
+    }
+
+    fun getOnboardingActiveTask(): String? {
+        return sharedPreferences.getString(PARAM_ONBOARDING_ACTIVE_TASK, null)
+    }
+
+    // null = no task active
+    fun setOnboardingActiveTask(taskKey: String?) {
+        sharedPreferences.edit {
+            if (taskKey == null) remove(PARAM_ONBOARDING_ACTIVE_TASK) else putString(PARAM_ONBOARDING_ACTIVE_TASK, taskKey)
+        }
     }
 
     fun isPhotoFeatureEnabled(): Boolean {
@@ -305,6 +347,16 @@ class AppSettingsStorage @Inject constructor(
         return StartScreen.entries.firstOrNull { it.name == value } ?: StartScreen.HOME
     }
 
+    // === COLOR PALETTE ===
+
+    fun setColorPalette(palette: ColorPalette) {
+        sharedPreferences.edit {
+            putString(PARAM_COLOR_PALETTE, palette.name)
+        }
+    }
+
+    fun getColorPalette(): ColorPalette = readColorPalette(context)
+
     // === DORMANT MODE ===
 
     fun isDormantModeEnabled(): Boolean =
@@ -332,4 +384,14 @@ class AppSettingsStorage @Inject constructor(
      * Max dormant value threshold - mirrors current ThoughtValueSystem.maxValue
      */
     fun getDormantValueMax(): Int = getThoughtValueSystem().maxValue
+
+    // === APP NEWS ===
+
+    // ! A copy - the set returned by SharedPreferences must not be modified
+    fun getNewsNearDormantReadIds(): Set<String> =
+        sharedPreferences.getStringSet(PARAM_NEWS_NEAR_DORMANT_READ_IDS, emptySet()).orEmpty().toSet()
+
+    fun setNewsNearDormantReadIds(ids: Set<String>) {
+        sharedPreferences.edit { putStringSet(PARAM_NEWS_NEAR_DORMANT_READ_IDS, ids) }
+    }
 }

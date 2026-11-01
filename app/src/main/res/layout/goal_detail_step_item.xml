@@ -36,8 +36,8 @@
                 app:indicatorSize="32dp"
                 app:trackThickness="6dp"
                 app:trackCornerRadius="4dp"
-                app:indicatorColor="@color/_orange_lvl_3"
-                app:trackColor="@color/_orange_lvl_1"
+                app:indicatorColor="@color/_palette_lvl_3"
+                app:trackColor="@color/_palette_lvl_1"
                 app:indicatorTrackGapSize="0dp"
                 android:indeterminate="false" />
 

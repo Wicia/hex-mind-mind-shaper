@@ -11,7 +11,7 @@ import android.view.animation.DecelerateInterpolator
  * Encapsulates all card transition animations for the Workshop path cards.
  *
  * Three animation phases:
- *  1. [revealWithFlip]              — gray card flips on Y-axis to reveal the orange step card
+ *  1. [revealWithFlip]              — gray card flips on Y-axis to reveal the step card in the palette color
  *  2. [advanceWithFade]             — current step fades out, next step fades in
  *  3. [advanceLastStepWithSlideOut] — last step slides up and fades out (with a pause before)
  *

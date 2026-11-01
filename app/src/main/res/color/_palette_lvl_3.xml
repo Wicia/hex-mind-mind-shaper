@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Palette level 3 of the picked color palette (theme attr set by ColorPalette) -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="?attr/paletteLvl3" />
+</selector>

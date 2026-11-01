@@ -25,7 +25,8 @@
     <string name="common_btn_grant_permission">Zezwól</string>
     <string name="common_btn_confirm_replace">Zastąp dane</string>
     <string name="common_btn_go_to_settings">Przejdź do Preferencji</string>
-    <string name="common_guide_btn_next">Mów dalej...</string>
+    <string name="common_btn_close">Zamknij</string>
+    <string name="common_guide_btn_next">Mów dalej…</string>
     <string name="common_guide_btn_dismiss">Dzięki</string>
 
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
@@ -35,6 +36,15 @@
     <string name="common_spotlight_btn_next">Dalej</string>
     <string name="common_spotlight_btn_got_it">Rozumiem</string>
     <string name="common_spotlight_step_counter">%1$d/%2$d</string>
+
+    <!-- Onboarding - active task done (dialog on return) -->
+    <string name="common_onboarding_task_done_title">Zadanko zaliczone!</string>
+    <string name="common_onboarding_task_done_info">„%1$s” masz już za sobą. Bierzesz się za kolejne?</string>
+    <string name="common_onboarding_task_done_next">Zrób kolejne</string>
+
+    <!-- Onboarding - tag thought task (breadcrumbs on the navigation panel) -->
+    <string name="common_onboarding_task_nav_toggle">Otwórz menu nawigacji — pokażę Ci gdzie są tagi</string>
+    <string name="common_onboarding_task_nav_metadata">Wchodzimy teraz tutaj…</string>
 
     <!-- Dialogs -->
     <string name="common_deletion_dialog_confirmation">%s usunięto</string>
@@ -47,8 +57,10 @@
     <string name="common_note_show_all">Pokaż wszystko</string>
     <string name="common_note_show_less">Zwiń</string>
     <string name="common_list_dialog_title">Wybierz coś sobie…</string>
-    <string name="common_thoughts_forms_inactive_header">Włączyć nową formę zapisu?</string>
-    <string name="common_thoughts_forms_permissions_needed">Nagrania i zdjęcia włączysz w Preferencjach.</string>
+    <string name="common_thoughts_forms_photo_inactive_header">Włączyć zdjęcia?</string>
+    <string name="common_thoughts_forms_photo_inactive_info">Zapisywanie myśli jako zdjęć włączysz w Preferencjach, w sekcji Formy zapisu myśli.</string>
+    <string name="common_thoughts_forms_voice_inactive_header">Włączyć głosówki?</string>
+    <string name="common_thoughts_forms_voice_inactive_info">Zapisywanie myśli jako głosówek włączysz w Preferencjach, w sekcji Formy zapisu myśli.</string>
     <string name="common_dialog_open_android_settings">Otwórz ustawienia Androida</string>
 
     <!-- Validation -->
@@ -124,8 +136,13 @@
     <string name="flashcards_error_no_name">Zestaw potrzebuje nazwy</string>
     <string name="flashcards_error_incomplete">Każda fiszka potrzebuje awersu i rewersu</string>
     <string name="flashcards_error_incomplete_single">Fiszka potrzebuje awersu i rewersu</string>
-    <string name="flashcards_new_header">Nowa fiszka #%1$d</string>
-    <string name="flashcards_added_count">Dodano: %1$d</string>
+    <string name="flashcards_new_header">Nowa fiszka</string>
+    <plurals name="flashcards_added_count">
+        <item quantity="one">Dodano już %d fiszkę</item>
+        <item quantity="few">Dodano już %d fiszki</item>
+        <item quantity="many">Dodano już %d fiszek</item>
+        <item quantity="other">Dodano już %d fiszek</item>
+    </plurals>
     <string name="flashcards_btn_add_next">Dodaj kolejną</string>
     <string name="flashcards_btn_finish">Zakończ</string>
     <string name="flashcards_btn_create_set">Utwórz</string>
@@ -245,23 +262,18 @@ Awers - Rewers…"</string>
     <string name="workshop_onboarding_progress_percent">%1$d%%</string>
     <string name="workshop_onboarding_tasks_thoughts_header">Myśli</string>
     <string name="workshop_onboarding_tasks_thoughts_breadcrumb_tasks">Na takich listach czekają na ciebie zadanka, dzięki którym nauczysz się korzystać z funkcji aplikacji</string>
-    <string name="workshop_onboarding_tasks_thoughts_breadcrumb_open">Takie przyciski poprowadzą Cię do miejsc, gdzie możesz zrealizować zadanka</string>
-    <string name="workshop_onboarding_task_capture_title">Złap myśl</string>
-    <string name="workshop_onboarding_task_capture_desc">Nadaj jej temat, dodaj tag i napisz notatkę</string>
-    <string name="workshop_onboarding_task_sort_title">Posortuj myśli</string>
-    <string name="workshop_onboarding_task_sort_desc">Posortuj strumień myśli według co najmniej 3 różnych kryteriów</string>
-    <string name="workshop_onboarding_task_search_title">Znajdź myśl</string>
-    <string name="workshop_onboarding_task_search_desc">Wyszukaj myśli w strumieniu po temacie i po tagu</string>
-    <string name="workshop_onboarding_task_filter_title">Przefiltruj myśli</string>
-    <string name="workshop_onboarding_task_filter_desc">Przefiltruj strumień myśli po domenie i po czasie utworzenia</string>
-    <string name="workshop_dialog_reset_onboarding_task_title">Zacząć zadanko od nowa?</string>
-    <string name="workshop_dialog_reset_onboarding_task">Postęp tego zadanka wróci do zera.</string>
-    <string name="workshop_dialog_reset_onboarding_task_yes">Zacznij od nowa</string>
+    <string name="workshop_onboarding_tasks_thoughts_breadcrumb_start">Tym przyciskiem zaczniesz zadanko — od razu przeniesiemy Cię tam, gdzie się je robi</string>
+    <string name="workshop_onboarding_task_capture_title">Złap swoją pierwszą myśl</string>
+    <string name="workshop_onboarding_task_capture_desc">Napisz notatkę i nadaj myśli temat</string>
+    <string name="workshop_onboarding_task_tag_title">Otaguj myśl i znajdź ją po tagu</string>
+    <string name="workshop_onboarding_task_tag_desc">Dodaj myśli projekt, a potem znajdź ją w Tagach i Domenach</string>
+    <string name="workshop_onboarding_task_start">Zacznij zadanko</string>
+    <string name="workshop_onboarding_task_stop">Zatrzymaj zadanko</string>
     <string name="workshop_onboarding_tips_switch">Aktywuj tryb Poznawania</string>
     <string name="workshop_dialog_disable_onboarding_title">Wyłączyć poznawanie?</string>
     <string name="workshop_dialog_disable_onboarding">Postęp realizacji zadań zostanie zresetowany, a okruszki pojawią się ponownie.</string>
     <string name="workshop_dialog_disable_onboarding_yes">Wyłącz i resetuj</string>
-    <string name="workshop_onboarding_tips_hint">Przy pierwszym wejściu na ekran pojawią się mini wskazówki. Wprowadzą Cię w tajniki aplikacji, pokazując \"co gdzie jest, jak tego użyć, no i do czego\" :)</string>
+    <string name="workshop_onboarding_tips_hint">Po włączeniu czekają tu na Ciebie zadanka do przeklikania. Krok po kroku poprowadzimy Cię przez funkcje aplikacji, od razu w praktyce :)</string>
 
     <!-- ============================================================ -->
     <!--    HOME Activity                                             -->
@@ -283,6 +295,27 @@ Awers - Rewers…"</string>
     <string name="home_welcome_onboarding_btn_no">Bez wskazówek</string>
     <string name="home_welcome_onboarding_btn_yes">Ze wskazówkami</string>
     <string name="home_onboarding_spotlight">Tutaj zacznij swoją przygodę z MindShaperem</string>
+
+    <!-- Capture ring (options around the center button) -->
+    <string name="home_capture_note">Złap notatkę</string>
+    <string name="home_capture_photo">Złap zdjęcie</string>
+    <string name="home_capture_voice">Złap głosówkę</string>
+    <string name="home_capture_flashcards">Twórz fiszki</string>
+    <string name="home_capture_flashcards_inactive_header">Włączyć fiszki?</string>
+    <string name="home_capture_flashcards_inactive_info">Fiszki włączysz w Preferencjach, w sekcji Zapamiętywanie.</string>
+
+    <!-- App news (badge under the rocket + bottom sheet) -->
+    <string name="home_news_title">Wieści z apki</string>
+    <string name="home_news_badge_overflow" translatable="false">9+</string>
+    <string name="home_news_empty">Tutaj pojawią się wieści z apki…</string>
+    <string name="home_news_mark_read">Oznacz jako przeczytane</string>
+    <string name="home_news_mark_unread">Oznacz jako nieprzeczytane</string>
+    <plurals name="home_news_near_dormant">
+        <item quantity="one">%d myśl niebawem uśnie i zostanie ukryta</item>
+        <item quantity="few">%d myśli niebawem usną i zostaną ukryte</item>
+        <item quantity="many">%d myśli niebawem uśnie i zostanie ukrytych</item>
+        <item quantity="other">%d myśli niebawem uśnie i zostanie ukrytych</item>
+    </plurals>
 
     <array name="home_greetings_values_list">
         <item>Dużo dobrego %s!</item>
@@ -311,6 +344,11 @@ Awers - Rewers…"</string>
     <!--    CAPTURE Activity                                          -->
     <!-- ============================================================ -->
 
+    <!-- Onboarding - capture thought task (breadcrumbs) -->
+    <string name="capture_onboarding_task_bullet">Tym przyciskiem dodasz w notatce podpunkt / bullet point</string>
+    <string name="capture_onboarding_task_subject">Najpierw nadaj myśli temat (jej nagłówek)</string>
+    <string name="capture_onboarding_task_save">A następnie tym przyciskiem zapisz (złap) nową myśl</string>
+
     <!-- Onboarding -->
     <string name="capture_entry_title">Łapanie myśli</string>
     <string name="capture_entry_tooltip"><![CDATA[
@@ -318,26 +356,34 @@ Awers - Rewers…"</string>
         Guziorami u dołu z [+] możesz wybrać postać/formę zapisu myśli:\n
         tekst -> dźwięk -> zdjęcie
     ]]></string>
-    <string name="capture_hex_tags_link_title">Skojarzenia lub Tagi dla myśli</string>
-    <string name="capture_hex_tags_link_tooltip">Tapnij na puste pole u góry…</string>
-    <string name="capture_hex_tags_title">Skojarzenia lub Tagi dla myśli</string>
+    <string name="capture_hex_tags_link_title">Temat i tagi myśli</string>
+    <string name="capture_hex_tags_link_tooltip">W polu u góry wpisz temat myśli, a tagi dodasz w notatce…</string>
+    <string name="capture_hex_tags_title">Tagi w notatce</string>
     <string name="capture_hex_tags_onb_tooltip"><![CDATA[
-        W tym polu możesz szybko dodać skojarzenia / tagi do myśli:\n
+        W notatce możesz szybko dodać skojarzenia / tagi do myśli:\n
         ✓ osoba (znak @)\n
-        ✓ projekt (znak #)\n
-        ✓ temat (brak znaku)\n
+        ✓ projekt (znak #)\n\n
+        Linię z samymi tagami możesz przy zapisie usunąć z notatki - tagi i tak zostaną przy myśli
     ]]></string>
     <string name="capture_hex_tags_example_title">Może mały przykład?</string>
     <string name="capture_hex_tags_example_tooltip"><![CDATA[
-        Wpisz w polu tekstowym… tekst:\n\n
-            sukces  #aplikacja  @ja\n\n
+        W polu u góry wpisz temat:\n\n
+            sukces\n\n
+        a w notatce:\n\n
+            #aplikacja  @ja\n\n
         następnie Zapisz i zobacz szczegóły nowo złapanej myśli
     ]]></string>
 
     <!-- Core -->
     <string name="capture_main_label">Łapanie myśli</string>
-    <string name="capture_hex_tags_tooltip">temat @osoba #projekt</string>
+    <string name="capture_hex_tags_tooltip">temat myśli</string>
     <string name="capture_error_no_content">Potrzebujesz cos zapisać (tekst, nagranie, obraz lub fiszki)</string>
+
+    <!-- Lone tag lines in the note (asked on save) -->
+    <string name="capture_lone_tags_dialog_title">Usunąć samotne tagi z notatki?</string>
+    <string name="capture_lone_tags_dialog_description">Linie z samymi tagami @ i # można usunąć z treści notatki. Tagi i tak będą powiązane z myślą.</string>
+    <string name="capture_lone_tags_dialog_keep">Zostaw</string>
+    <string name="capture_lone_tags_dialog_remove">Usuń z notatki</string>
 
     <!-- Leaving without saving -->
     <string name="capture_exit_dialog_title">Zapisać myśl?</string>
@@ -366,6 +412,12 @@ Awers - Rewers…"</string>
     <!-- ============================================================ -->
     <!--    STREAM Activity                                           -->
     <!-- ============================================================ -->
+
+    <!-- Onboarding - capture thought task (breadcrumb) -->
+    <string name="stream_onboarding_task_capture">Tutaj złapiesz nową myśl</string>
+
+    <!-- Onboarding - tag thought task (breadcrumb) -->
+    <string name="stream_onboarding_task_open_thought">Tapnij w myśl, by wejść w jej szczegóły</string>
 
     <!-- Onboarding -->
     <string name="stream_entry_title">Twoje myśli</string>
@@ -490,6 +542,11 @@ Awers - Rewers…"</string>
     <string name="details_toast_note_updated">Notatka zaktualizowana</string>
     <string name="details_toast_tags_updated">Tagi zaktualizowane</string>
 
+    <!-- Onboarding - tag thought task (breadcrumb) -->
+    <string name="details_onboarding_task_tags">Tutaj dodasz do myśli tagi — osobę lub projekt. Dodatkowo możesz przypisać jej kategorię zwaną "domeną"</string>
+    <string name="details_onboarding_task_project">Wpisz w pole projekt „test” i dodaj tag plusem</string>
+    <string name="details_onboarding_task_save">A tym przyciskiem ostatecznie przypiszesz tagi do myśli</string>
+
     <!-- ============================================================ -->
     <!--    METADATA Activity                                         -->
     <!-- ============================================================ -->
@@ -522,6 +579,12 @@ Awers - Rewers…"</string>
 
     <!-- Pill count part - opens Stream searched by the tag -->
     <string name="metadata_tag_search">Szukaj myśli z tym tagiem</string>
+    <string name="metadata_domain_search">Szukaj myśli z tą domeną</string>
+
+    <!-- Onboarding - tag thought task (breadcrumbs) -->
+    <string name="metadata_onboarding_task_projects_tab">Tapnij teraz na zakładkę Projekty</string>
+    <string name="metadata_onboarding_task_domains">Na zakładce "Domeny" stworzysz własne kategorie lub szufladki na myśli. Domenę przypiszesz do myśli w tym samym miejscu co tagi</string>
+    <string name="metadata_onboarding_task_search">Tapnij w lupę przy tagu, a znajdziesz w Strumieniu myśli z tym tagiem</string>
 
     <!-- ============================================================ -->
     <!--    SETTINGS Activity                                         -->
@@ -552,12 +615,17 @@ Awers - Rewers…"</string>
     <string name="settings_your_name_header">✒️ Moje Prawdziwe Imię?</string>
     <string name="settings_your_name_default">Bezimienn(y/a)</string>
 
+    <!-- Color palette -->
+    <string name="settings_color_palette_header">🎨 Paleta kolorów</string>
+    <string name="settings_color_palette_orange">🥭 Pomarańczowa</string>
+    <string name="settings_color_palette_coffee">☕ Kawowa</string>
+
     <!-- Share app -->
     <string name="settings_share_app_teaser">Podziel się MindShaperem</string>
     <string name="settings_share_app_btn_open">Poleć apkę</string>
     <string name="settings_share_app_info">Zeskanuj kod albo wyślij link - plik APK czeka na dysku Google</string>
     <string name="settings_share_app_link" translatable="false">https://drive.google.com/drive/folders/1_uJcc-aC19KcGAOGWESI_-pyfmmuU1_U</string>
-    <string name="settings_share_app_message">MindShaper - aplikacja do rzeźbienia umysłu małymi krokami.\nPobierz APK i zainstaluj eksperymentalną wersję: %1$s</string>
+    <string name="settings_share_app_message">🥭 MindShaper - aplikacja do rzeźbienia umysłu małymi krokami.\nPobierz APK i zainstaluj eksperymentalną wersję: %1$s</string>
     <string name="settings_share_app_btn_copy">Kopiuj link</string>
     <string name="settings_share_app_btn_send">Udostępnij</string>
     <string name="settings_share_app_copied">Link skopiowany</string>
@@ -613,8 +681,8 @@ Awers - Rewers…"</string>
     <string name="workshop_dialog_delete_step_calendar_warning">Usuniemy też jego przypomnienie w kalendarzu.</string>
 
     <!-- Workshop -->
-    <string name="settings_workshop_section">🛠️ Warsztat</string>
-    <string name="settings_permissions_workshop">Włącz Warsztat celów i kroków</string>
+    <string name="settings_workshop_section">🛠️ Warsztat celów</string>
+    <string name="settings_permissions_workshop">Włącz Warsztat celów</string>
     <string name="settings_workshop_feature_hint">Rozpisz cele na kroki, powiąż z nimi swoje myśli i dodawaj przypomnienia do kalendarza</string>
     <string name="settings_calendar_reminders_switch_label">Włącz wpisy do kalendarza</string>
     <string name="settings_calendar_reminders_hint">Kroki celu z ustawionym przypomnieniem trafią do Twojego kalendarza (wybranego poniżej) jako cykliczne wydarzenia</string>
@@ -625,9 +693,9 @@ Awers - Rewers…"</string>
 
     <string name="settings_start_screen_header">🧭 Ekran startowy</string>
     <string name="settings_start_screen_home">Dom</string>
-    <string name="settings_start_screen_stream">Strumień</string>
+    <string name="settings_start_screen_stream">Strumień myśli</string>
     <string name="settings_start_screen_flashcards">Zapamiętywanie</string>
-    <string name="settings_start_screen_workshop">Warsztat</string>
+    <string name="settings_start_screen_workshop">Warsztat celów</string>
     <string name="settings_domain_edit_title">Edytuj domenę</string>
     <string name="settings_domain_edit_icons_title">| Ikona</string>
     <string name="settings_domain_edit_hint_placeholder">Wpisz nazwę domeny</string>
@@ -679,7 +747,7 @@ Awers - Rewers…"</string>
     <!-- ============================================================ -->
 
     <!-- Main -->
-    <string name="workshop_title">Warsztat</string>
+    <string name="workshop_title">Warsztat celów</string>
 
     <!-- Goals -->
     <string name="workshop_section_goals_active">Aktywne cele</string>

@@ -1,6 +1,7 @@
 package pl.hexmind.mindshaper.database.repositories
 
 import pl.hexmind.mindshaper.database.models.DomainEntity
+import pl.hexmind.mindshaper.database.models.DomainThoughtCount
 import pl.hexmind.mindshaper.database.models.DomainWithIcon
 import pl.hexmind.mindshaper.database.models.IconEntity
 import timber.log.Timber
@@ -25,6 +26,10 @@ class DomainRepository @Inject constructor(
 
     suspend fun updateDomain(domain: DomainEntity) {
         domainDAO.updateDomain(domain)
+    }
+
+    suspend fun getThoughtCounts(): List<DomainThoughtCount> {
+        return domainDAO.getThoughtCounts()
     }
 
     suspend fun seedDomains(domains: List<DomainEntity>) {

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GOOD pile fill: _palette_lvl_3 at 10% -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:alpha="0.10" android:color="?attr/paletteLvl3" />
+</selector>

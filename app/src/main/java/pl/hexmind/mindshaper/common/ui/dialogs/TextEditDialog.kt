@@ -14,6 +14,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.common.ui.views.HexSpotlight
 
 /**
  * Reusable dialog for text editing with custom dimmed background
@@ -135,13 +136,37 @@ class TextEditDialog(
         dialog.show()
         // Request focus and show keyboard
         etInput.requestFocus()
+        showKeyboard(KEYBOARD_DELAY_MS)
+    }
+
+    /**
+     * Notes style only: shown with a breadcrumb on the bullet button (e.g. a guided onboarding task).
+     * Tap in the hole inserts a bullet. The keyboard waits until the breadcrumb is gone - it would cover the dialog.
+     */
+    fun showWithBulletSpotlight(text: String, buttonText: String) {
+        dialog.show()
+        etInput.requestFocus()
+        HexSpotlight.showOverDialog(
+            dialog     = dialog,
+            target     = btnInsertBullet,
+            text       = text,
+            buttonText = buttonText,
+            // ! Once the spotlight window is gone - it holds the focus until then
+            onClosed   = { showKeyboard(HexSpotlight.FADE_DURATION_MS + KEYBOARD_DELAY_MS) }
+        ) {
+            insertBulletAtCursor()
+        }
+    }
+
+    private fun showKeyboard(delayMs: Long) {
         etInput.postDelayed({
             val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(etInput, InputMethodManager.SHOW_IMPLICIT)
-        }, 100)
+        }, delayMs)
     }
 
     companion object {
         private const val BULLET_PREFIX = "* "
+        private const val KEYBOARD_DELAY_MS = 100L
     }
 }

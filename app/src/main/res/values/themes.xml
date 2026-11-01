@@ -3,28 +3,41 @@
     <!-- Base application theme for light mode -->
     <style name="Theme.MindShaper" parent="Theme.Material3.Light">
 
+        <!-- Color palette: orange by default, the picked one is applied on top by ColorPalette -->
+        <item name="paletteLvl0">@color/_palette_orange_lvl_0</item>
+        <item name="paletteLvl1">@color/_palette_orange_lvl_1</item>
+        <item name="paletteLvl2">@color/_palette_orange_lvl_2</item>
+        <item name="paletteLvl3">@color/_palette_orange_lvl_3</item>
+        <item name="paletteLvl0FadeStart">@color/_palette_orange_lvl_0_fade_start</item>
+        <item name="paletteLvl0FadeEnd">@color/_palette_orange_lvl_0_fade_end</item>
+        <item name="paletteDeckLayer1">@color/_palette_orange_deck_layer_1</item>
+        <item name="paletteDeckLayer2">@color/_palette_orange_deck_layer_2</item>
+        <item name="paletteDeckLayer3">@color/_palette_orange_deck_layer_3</item>
+        <item name="paletteDeckLayer4">@color/_palette_orange_deck_layer_4</item>
+        <item name="paletteStampGood">@color/_palette_orange_stamp_good</item>
+
         <!-- Primary color -->
         <item name="colorPrimary">@color/app_primary</item>
         <item name="colorOnPrimary">@color/text_on_primary</item>
-        <item name="colorPrimaryContainer">@color/_orange_lvl_2</item>
+        <item name="colorPrimaryContainer">@color/_palette_lvl_2</item>
         <item name="colorOnPrimaryContainer">@color/text_primary</item>
 
         <!-- Secondary color -->
         <item name="colorSecondary">@color/app_secondary</item>
         <item name="colorOnSecondary">@color/_white</item>
-        <item name="colorSecondaryContainer">@color/_orange_lvl_0</item>
+        <item name="colorSecondaryContainer">@color/_palette_lvl_0</item>
         <item name="colorOnSecondaryContainer">@color/text_primary</item>
 
         <!-- Surface color -->
         <item name="colorSurface">@color/app_surface</item>
         <item name="colorOnSurface">@color/text_primary</item>
-        <item name="colorSurfaceVariant">@color/_orange_lvl_0</item>
+        <item name="colorSurfaceVariant">@color/_palette_lvl_0</item>
         <item name="colorOnSurfaceVariant">@color/text_secondary</item>
 
         <!-- Background color -->
         <item name="android:colorBackground">@color/app_background</item>
         <item name="colorOnBackground">@color/text_primary</item>
-        <item name="android:windowBackground">@color/app_background</item>
+        <item name="android:windowBackground">@drawable/bg_app_background</item>
 
         <!-- Error color -->
         <item name="colorError">@color/validation_error</item>
@@ -44,6 +57,35 @@
         <item name="android:fontFamily">@font/baloo2</item>
         <item name="fontFamily">@font/baloo2</item>
 
+    </style>
+
+    <!-- Color palettes - overlays applied on the activity and application theme (ColorPalette) -->
+    <style name="ThemeOverlay.MindShaper.Palette.Orange" parent="">
+        <item name="paletteLvl0">@color/_palette_orange_lvl_0</item>
+        <item name="paletteLvl1">@color/_palette_orange_lvl_1</item>
+        <item name="paletteLvl2">@color/_palette_orange_lvl_2</item>
+        <item name="paletteLvl3">@color/_palette_orange_lvl_3</item>
+        <item name="paletteLvl0FadeStart">@color/_palette_orange_lvl_0_fade_start</item>
+        <item name="paletteLvl0FadeEnd">@color/_palette_orange_lvl_0_fade_end</item>
+        <item name="paletteDeckLayer1">@color/_palette_orange_deck_layer_1</item>
+        <item name="paletteDeckLayer2">@color/_palette_orange_deck_layer_2</item>
+        <item name="paletteDeckLayer3">@color/_palette_orange_deck_layer_3</item>
+        <item name="paletteDeckLayer4">@color/_palette_orange_deck_layer_4</item>
+        <item name="paletteStampGood">@color/_palette_orange_stamp_good</item>
+    </style>
+
+    <style name="ThemeOverlay.MindShaper.Palette.Coffee" parent="">
+        <item name="paletteLvl0">@color/_palette_coffee_lvl_0</item>
+        <item name="paletteLvl1">@color/_palette_coffee_lvl_1</item>
+        <item name="paletteLvl2">@color/_palette_coffee_lvl_2</item>
+        <item name="paletteLvl3">@color/_palette_coffee_lvl_3</item>
+        <item name="paletteLvl0FadeStart">@color/_palette_coffee_lvl_0_fade_start</item>
+        <item name="paletteLvl0FadeEnd">@color/_palette_coffee_lvl_0_fade_end</item>
+        <item name="paletteDeckLayer1">@color/_palette_coffee_deck_layer_1</item>
+        <item name="paletteDeckLayer2">@color/_palette_coffee_deck_layer_2</item>
+        <item name="paletteDeckLayer3">@color/_palette_coffee_deck_layer_3</item>
+        <item name="paletteDeckLayer4">@color/_palette_coffee_deck_layer_4</item>
+        <item name="paletteStampGood">@color/_palette_coffee_stamp_good</item>
     </style>
 
     <!-- Theme for activity without action bar -->

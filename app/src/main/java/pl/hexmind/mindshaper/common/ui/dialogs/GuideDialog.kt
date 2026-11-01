@@ -82,7 +82,7 @@ class GuideDialog private constructor(
                 imageTintList = ColorStateList.valueOf(
                     ContextCompat.getColor(
                         context,
-                        if (i == currentIndex) R.color._orange_lvl_2
+                        if (i == currentIndex) R.color._palette_lvl_2
                         else R.color._gray_lvl_2
                     )
                 )
@@ -99,7 +99,7 @@ class GuideDialog private constructor(
             dot.imageTintList = ColorStateList.valueOf(
                 ContextCompat.getColor(
                     context,
-                    if (i == currentIndex) R.color._orange_lvl_2
+                    if (i == currentIndex) R.color._palette_lvl_2
                     else R.color._gray_lvl_2
                 )
             )

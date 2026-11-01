@@ -62,7 +62,7 @@
     <!-- Edit only: Move - goes to the left end of the button bar (ScrimDialogs leading action) -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_flashcard_move"
-        style="@style/SecondaryActionButton"
+        style="@style/SecondaryActionButton.DialogLeading"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dialog_leading_action_height"
         android:contentDescription="@string/flashcards_btn_move"

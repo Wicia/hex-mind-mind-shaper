@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/app_background"
+    android:background="@drawable/bg_app_background"
     tools:context=".activities.stream.StreamActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -116,7 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_capture_thought"
+        android:src="@drawable/ic_action_add"
         app:backgroundTint="@color/button_primary_enabled_background"
         app:fabSize="normal"
         app:elevation="6dp"
@@ -135,7 +135,7 @@
             android:id="@+id/v_scroll_progress"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/_orange_lvl_2" />
+            android:background="@drawable/bg_palette_lvl_2" />
 
     </FrameLayout>
 

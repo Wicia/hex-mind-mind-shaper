@@ -75,7 +75,7 @@ class FlashcardsReminders @Inject constructor(
         ensureChannel()
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification_flashcards)
-            // Android 12+: white brain on an orange circle, older: orange brain - MIUI ignores both and shows the app icon
+            // Android 12+: white brain on a circle in the palette color, older: brain in the palette color - MIUI ignores both and shows the app icon
             .setColor(ContextCompat.getColor(context, R.color.app_primary))
             .setContentTitle(context.getString(R.string.notifications_flashcards_session_title))
             .setContentText(context.getString(R.string.notifications_flashcards_session_text, plan.queue.size))

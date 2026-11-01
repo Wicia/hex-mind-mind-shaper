@@ -22,8 +22,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxStrokeColor="#FF8C42"
-        app:hintTextColor="#FFAF7A">
+        app:boxStrokeColor="@color/_palette_lvl_3"
+        app:hintTextColor="@color/_palette_lvl_3">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_input"
@@ -54,7 +54,7 @@
         <!-- Insert bullet point at cursor position -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_insert_bullet"
-            style="@style/SecondaryActionButton"
+            style="@style/SecondaryActionButton.DialogLeading"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dialog_leading_action_height"
             android:focusable="false"

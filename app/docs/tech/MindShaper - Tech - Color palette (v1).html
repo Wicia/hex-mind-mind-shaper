@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mind Shaper — Tech: Color palette</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>:root{
+    --cream:#FFF4E6;
+    --surface:#FFFFFF;
+    --orange-1:#FFE1C8;
+    --orange-2:#FFC59A;
+    --orange-3:#FFA86B;
+    --graphite:#48433F;
+    --muted:#88807A;
+    --rule:#E6E6E6;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:40px 20px 80px;
+    background:var(--cream);
+    color:var(--graphite);
+    font-family:"Alegreya",Georgia,serif;
+    font-size:17px; line-height:1.65;
+  }
+  .wrap{max-width:760px; margin:0 auto}
+  h1{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:600; font-size:30px; line-height:1.25;
+    margin:0 0 6px;
+  }
+  .lede{margin:0 0 34px; color:var(--muted); font-style:italic}
+  h2{
+    font-family:"Baloo 2",system-ui,sans-serif;
+    font-weight:500; font-size:20px;
+    margin:38px 0 8px;
+  }
+  h2::before{
+    content:"\2726";
+    color:var(--orange-3);
+    font-size:1.3em; line-height:1;
+    margin-right:8px;
+  }
+  section{
+    background:var(--surface);
+    border:1px solid var(--orange-1);
+    border-radius:12px;
+    padding:6px 22px 14px;
+  }
+  section > p{margin:12px 0}
+  ul{margin:10px 0; padding-left:20px}
+  li{margin:4px 0}
+  li ul{margin:4px 0}
+  code{
+    font-family:ui-monospace,Consolas,monospace; font-size:14px;
+    background:#FBF4EC; border:1px solid #F0E4D6;
+    padding:1px 5px; border-radius:5px;
+  }
+  figure{margin:10px 0 16px}
+  figure svg{display:block; max-width:100%; height:auto; border-radius:8px}
+  .note{color:var(--muted); font-style:italic; font-size:15px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Tech: Paleta kolorów</h1>
+<p class="lede">Jak aplikacja podmienia swoje kolory na wybraną paletę (Pomarańczowa, Kawowa). Dokument opisuje rzeczy zaimplementowane. Wybór palety w Preferencjach opisuje dokument wymagań (<i>Ustawienia</i>).</p>
+
+<h2>Mechanizm</h2>
+<section>
+  <figure>
+    <svg viewBox="0 0 700 250" width="700" height="250" xmlns="http://www.w3.org/2000/svg" font-family="Alegreya, Georgia, serif" font-size="14" fill="#48433F">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#C9733A"/>
+        </marker>
+      </defs>
+      <rect width="700" height="250" fill="#FFFFFF"/>
+
+      <!-- Concrete colors -->
+      <text x="80" y="22" text-anchor="middle" font-size="12" fill="#88807A">colors.xml</text>
+      <rect x="10" y="32" width="140" height="44" rx="10" fill="#FFE1C8" stroke="#FFA86B"/>
+      <text x="80" y="59" text-anchor="middle" font-family="Consolas, monospace" font-size="11">_palette_orange_*</text>
+      <rect x="10" y="88" width="140" height="44" rx="10" fill="#E8D9C8" stroke="#A87C5A"/>
+      <text x="80" y="115" text-anchor="middle" font-family="Consolas, monospace" font-size="11">_palette_coffee_*</text>
+
+      <path d="M150,54 L198,80" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+      <path d="M150,110 L198,88" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+
+      <!-- Overlay -->
+      <text x="290" y="22" text-anchor="middle" font-size="12" fill="#88807A">themes.xml</text>
+      <rect x="200" y="50" width="180" height="64" rx="10" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="290" y="74" text-anchor="middle" font-size="13">ThemeOverlay…Palette.*</text>
+      <text x="290" y="94" text-anchor="middle" font-size="12" fill="#88807A">ustawia atrybuty</text>
+      <text x="290" y="108" text-anchor="middle" font-family="Consolas, monospace" font-size="11">paletteLvl0..3, …</text>
+
+      <path d="M380,82 L428,82" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+
+      <!-- Color state lists -->
+      <text x="520" y="22" text-anchor="middle" font-size="12" fill="#88807A">res/color</text>
+      <rect x="430" y="50" width="180" height="64" rx="10" fill="#FFE1C8" stroke="#FFA86B"/>
+      <text x="520" y="76" text-anchor="middle" font-family="Consolas, monospace" font-size="12">_palette_lvl_0..3</text>
+      <text x="520" y="96" text-anchor="middle" font-size="12">= ?attr/paletteLvlN</text>
+
+      <path d="M520,114 L520,148" stroke="#C9733A" fill="none" marker-end="url(#arr)"/>
+
+      <rect x="400" y="150" width="240" height="54" rx="10" fill="#FFF4E6" stroke="#FFC59A"/>
+      <text x="520" y="172" text-anchor="middle">kolory semantyczne, layouty,</text>
+      <text x="520" y="190" text-anchor="middle">selektory, drawable</text>
+      <text x="520" y="226" text-anchor="middle" font-size="12" fill="#88807A">wskazują @color/_palette_lvl_N</text>
+
+      <!-- Where applied -->
+      <rect x="20" y="160" width="300" height="60" rx="10" fill="#FFFFFF" stroke="#E6E6E6" stroke-dasharray="4 3"/>
+      <text x="170" y="183" text-anchor="middle" font-size="12">nakładka na motyw aktywności</text>
+      <text x="170" y="201" text-anchor="middle" font-size="12">(przed inflacją) i motyw aplikacji</text>
+      <path d="M290,160 L290,118" stroke="#C9733A" fill="none" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+    </svg>
+  </figure>
+  <ul>
+    <li><b>Paleta to nakładka motywu.</b> Każda paleta (<code>ColorPalette</code>) ma swój styl <code>ThemeOverlay.MindShaper.Palette.*</code>, który ustawia te same atrybuty <code>palette*</code> innymi kolorami.</li>
+    <li><b>Reszta aplikacji nie wie o paletach.</b> <code>_palette_lvl_0..3</code> to listy kolorów w <code>res/color</code> czytające <code>?attr/paletteLvlN</code>. Wszystko, co na nie wskazuje, dostaje poziom wybranej palety.</li>
+    <li><b>Domyślne wartości w <code>Theme.MindShaper</code></b> = paleta pomarańczowa. Kontekst bez nakładki nadal rozwiązuje atrybuty.</li>
+  </ul>
+</section>
+
+<h2>Gdzie paleta jest nakładana</h2>
+<section>
+  <ul>
+    <li><b><code>CoreActivity.onCreate</code>, przed <code>super.onCreate</code></b> — zanim cokolwiek się zinflatuje. Wstrzykiwanie zależności jeszcze nie działa, więc wybór czytany jest wprost z preferencji: <code>AppSettingsStorage.readColorPalette(context)</code>.</li>
+    <li><b>Aktywności spoza <code>CoreActivity</code></b> nakładają paletę same w ten sam sposób (<code>FlashcardsSessionActivity</code>).</li>
+    <li><b>Motyw aplikacji</b> (<code>ApplicationMain</code>) — dla kolorów rozwiązywanych poza aktywnościami, np. w powiadomieniach.</li>
+    <li><b>Nieznana wartość w preferencjach</b> (np. zapisana przez inną wersję apki) = Pomarańczowa.</li>
+  </ul>
+</section>
+
+<h2>Zmiana palety</h2>
+<section>
+  <ul>
+    <li><b>Zapis razem z resztą Preferencji.</b> Przy innej palecie niż obecna: zapis do preferencji + nałożenie na motyw aplikacji.</li>
+    <li><b>Otwarte aktywności</b> pamiętają paletę, z którą powstały. <code>CoreActivity.onResume</code> przy innej zapisanej palecie wywołuje <code>recreate()</code> — każdy ekran na stosie przebudowuje się po powrocie do niego.</li>
+  </ul>
+</section>
+
+<h2>Jaki zasób w jakim miejscu</h2>
+<section>
+  <ul>
+    <li><b>Zwykły kolor</b> (tekst, tint, selektor, <code>fillColor</code> wektora) — <code>@color/_palette_lvl_N</code> albo kolor semantyczny, który na niego wskazuje.</li>
+    <li><b>Tło widoku</b> (<code>android:background</code>, <code>windowBackground</code>) — drawable <code>bg_*</code> (np. <code>bg_palette_lvl_0</code>, kształt z kolorem palety), nie sam kolor.</li>
+    <li><b>Kolor z przezroczystością</b> — lista kolorów w <code>res/color</code> z <code>android:alpha</code> na atrybucie palety (poświata sesji, wypełnienia stosów fiszek, bańki kolby).</li>
+    <li><b>Gradient</b> — <code>?attr/paletteLvl0FadeStart</code> / <code>FadeEnd</code> bezpośrednio.</li>
+    <li><b>Kolory spoza poziomów 0..3</b> (talia pod kartą, pieczątka „Mam to”) — własne atrybuty <code>paletteDeckLayer1..4</code>, <code>paletteStampGood</code>.</li>
+    <li><b>Kod Kotlin</b> — <code>ContextCompat.getColor(context, R.color._palette_lvl_N)</code> z kontekstem aktywności.</li>
+  </ul>
+</section>
+
+<h2>Nowa paleta / nowy kolor palety</h2>
+<section>
+  <ul>
+    <li><b>Nowa paleta:</b> kolory <code>_palette_&lt;nazwa&gt;_*</code>, styl nakładki z kompletem atrybutów, wpis w <code>ColorPalette</code>, kafelek w <code>ColorPaletteTiles</code> + string.</li>
+    <li><b>Nowy atrybut palety:</b> <code>attr.xml</code> + <code>Theme.MindShaper</code> + <b>każda</b> nakładka. Jeśli któraś nakładka go nie ma, aktywność dostaje pomarańczowy kolor z motywu bazowego, a motyw aplikacji kolor poprzednio wybranej palety.</li>
+  </ul>
+</section>
+
+<h2>Pułapki — nie ruszać</h2>
+<section>
+  <ul>
+    <li><b>Kolor palety wprost w <code>android:background</code> nie jest rysowany</b> — atrybut motywu nie zostaje rozwiązany. Stąd drawable <code>bg_*</code>.</li>
+    <li><b>Gradient nie przyjmuje listy kolorów</b> z <code>res/color</code> — tylko <code>?attr/…</code> lub stały kolor.</li>
+    <li><b>Ikony skrótów aplikacji</b> mają stały kolor <code>_palette_orange_*</code>. Launcher rysuje je we własnym motywie, gdzie atrybuty i listy kolorów rozwiązują się nieprzewidywalnie — skróty zostają pomarańczowe w każdej palecie.</li>
+    <li><b>Kolejność w <code>onCreate</code>.</b> Nakładka po <code>super.onCreate</code> / <code>setContentView</code> = część widoków w starej palecie.</li>
+    <li><b>Kontekst aplikacji w kodzie</b> rozwiązuje kolory z motywu aplikacji — jest aktualny tylko dlatego, że zapis palety nakłada ją też tam.</li>
+  </ul>
+</section>
+
+<h2>Implementacja</h2>
+<section>
+  <ul>
+    <li><code>ColorPalette</code>, <code>ColorPaletteTiles</code>, <code>AppSettingsStorage</code> (<code>readColorPalette</code>)</li>
+    <li><code>CoreActivity</code>, <code>FlashcardsSessionActivity</code>, <code>ApplicationMain</code>, <code>SettingsActivity</code></li>
+    <li><code>attr.xml</code>, <code>themes.xml</code>, <code>colors.xml</code>, <code>res/color/_palette_lvl_*</code>, <code>res/drawable/bg_*</code></li>
+  </ul>
+</section>
+
+<h2>Do weryfikacji na urządzeniu</h2>
+<section>
+  <ul>
+    <li>zmiana palety i powrót przez kilka ekranów na stosie — każdy w nowej palecie</li>
+    <li>tła ekranów, przyciski, chipy, gradient listy strumienia, sesja fiszek (talia, pieczątka, stosy)</li>
+    <li>powiadomienie fiszek po zmianie palety</li>
+    <li>ikony skrótów aplikacji — pomarańczowe w obu paletach</li>
+    <li>ponowne uruchomienie apki — paleta zachowana</li>
+  </ul>
+</section>
+
+</div>
+</body>
+</html>

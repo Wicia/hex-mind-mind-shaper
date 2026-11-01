@@ -60,8 +60,8 @@ class HexTabSwitch @JvmOverloads constructor(
     private val iconSize = dp(DEFAULT_ICON_SIZE_DP)
     private val iconGap = dp(DEFAULT_ICON_GAP_DP)
 
-    private var activeColor = ContextCompat.getColor(context, R.color._orange_lvl_2)
-    private var inactiveColor = ContextCompat.getColor(context, R.color._orange_lvl_1)
+    private var activeColor = ContextCompat.getColor(context, R.color._palette_lvl_2)
+    private var inactiveColor = ContextCompat.getColor(context, R.color._palette_lvl_1)
     private var activeTextColor = ContextCompat.getColor(context, R.color.text_primary)
     private var inactiveTextColor = ContextCompat.getColor(context, R.color.text_secondary)
 
@@ -163,6 +163,12 @@ class HexTabSwitch @JvmOverloads constructor(
         bracePosition = selectedIndex.toFloat()
         updateContentDescription()
         requestLayout()
+    }
+
+    /** Tabs fromIndex..toIndex in this view's coordinates - e.g. a spotlight hole around some of them. */
+    fun tabsBounds(fromIndex: Int, toIndex: Int): RectF {
+        val segmentWidth = width.toFloat() / tabs.size.coerceAtLeast(1)
+        return RectF(fromIndex * segmentWidth, 0f, (toIndex + 1) * segmentWidth, height.toFloat())
     }
 
     /** Moves the brace without firing onTabSelected - for restoring state. */

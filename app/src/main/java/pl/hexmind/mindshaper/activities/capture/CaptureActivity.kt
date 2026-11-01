@@ -2,7 +2,9 @@ package pl.hexmind.mindshaper.activities.capture
 
 import android.net.Uri
 import android.os.Bundle
+import android.content.Context
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
@@ -14,20 +16,20 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.ThoughtManagerActivity
+import pl.hexmind.mindshaper.common.ui.AddFormButtons
 import pl.hexmind.mindshaper.common.onboarding.OnboardingTask
+import pl.hexmind.mindshaper.common.onboarding.OnboardingTaskGuide
 import pl.hexmind.mindshaper.common.onboarding.OnboardingTaskPoint
 import pl.hexmind.mindshaper.common.regex.HexTagsUtils
 import pl.hexmind.mindshaper.common.ui.dialogs.PhotoFullscreenDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
+import pl.hexmind.mindshaper.common.ui.views.HexSpotlight
 import pl.hexmind.mindshaper.common.ui.views.content.HexAudioView
 import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
 import pl.hexmind.mindshaper.common.ui.views.content.HexTextView
 import pl.hexmind.mindshaper.common.validation.ValidationResult
 import pl.hexmind.mindshaper.common.validation.resolveMessage
 import pl.hexmind.mindshaper.databinding.CaptureActivityBinding
-import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
-import android.widget.TextView
 import pl.hexmind.mindshaper.database.models.HexTagType
 import pl.hexmind.mindshaper.services.HexTagsService
 import pl.hexmind.mindshaper.services.SimilarTag
@@ -79,28 +81,68 @@ class CaptureActivity : ThoughtManagerActivity() {
 
     private var defaultFormAutoOpened = false
 
+    // Capture thought task guided from Stream only - not from Home or a launcher shortcut
+    private val isTaskGuided by lazy {
+        intent.getBooleanExtra(EXTRA_ONBOARDING_GUIDE, false) && onboardingManager.isGuiding(OnboardingTask.CAPTURE_THOUGHT)
+    }
+
     private fun setupObservers() {
         // Observe draft changes (in memory, NOT from DB)
         viewModel.draftThought.observe(this) { draft ->
             updateUI(draft)
             // Auto-open only once, AFTER first updateUI resets widget states
+            // ! Guided task = always the note, whatever the default form
             if (!defaultFormAutoOpened) {
                 defaultFormAutoOpened = true
-                autoOpenDefaultFormIfNeeded()
+                if (isTaskGuided) showEditRichTextDialog() else autoOpenDefaultFormIfNeeded()
             }
         }
     }
 
+    // ========== CAPTURE THOUGHT TASK ==========
+
+    // Two steps after the note: the subject, then Save - closing the second one puts the cursor in the subject
+    private fun showSubjectAndSaveGuide() {
+        val task = OnboardingTask.CAPTURE_THOUGHT
+        if (isFinishing || isDestroyed || !onboardingManager.shouldShowTaskGuide(task, OnboardingTaskGuide.SUBJECT_AND_SAVE)) return
+
+        onboardingManager.markTaskGuideShown(task, OnboardingTaskGuide.SUBJECT_AND_SAVE)
+        HexSpotlight.show(
+            activity   = this,
+            target     = binding.etSubject,
+            text       = getString(R.string.capture_onboarding_task_subject),
+            buttonText = getString(R.string.common_spotlight_btn_next),
+            step       = 1,
+            stepCount  = SUBJECT_AND_SAVE_GUIDE_STEPS,
+            holeShape  = HexSpotlight.HoleShape.ROUNDED_RECT,
+            // ! After the first one faded out - two dims at once would flash darker
+            onClosed   = { window.decorView.postDelayed({ showSaveGuide() }, HexSpotlight.FADE_DURATION_MS) }
+        ) {}
+    }
+
+    private fun showSaveGuide() {
+        if (isFinishing || isDestroyed) return
+
+        HexSpotlight.show(
+            activity   = this,
+            target     = binding.btnSave,
+            text       = getString(R.string.capture_onboarding_task_save),
+            buttonText = getString(R.string.common_spotlight_btn_got_it),
+            step       = 2,
+            stepCount  = SUBJECT_AND_SAVE_GUIDE_STEPS,
+            // Tap on Save in the hole does not save - the subject comes first
+            onClosed   = { focusSubject() }
+        ) {}
+    }
+
+    private fun focusSubject() {
+        binding.etSubject.requestFocus()
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(binding.etSubject, InputMethodManager.SHOW_IMPLICIT)
+    }
+
     private fun setupListeners() {
         binding.apply {
-
-            etHexTags.setOnFocusChangeListener { _, hasFocus ->
-                if (!hasFocus) {
-                    hsvTagSuggestions.isVisible = false
-                }
-            }
-
-            etHexTags.addTextChangedListener { refreshTagSuggestions() }
 
             // SAVE BUTTON
             btnSave.setOnClickListener {
@@ -117,7 +159,7 @@ class CaptureActivity : ThoughtManagerActivity() {
             // RECORDING
             btnRecordingAdd.setOnClickListener {
                 if (!appSettingsStorage.isVoiceRecordingEnabled()) {
-                    showEnableAdditionalFeaturesDialog()
+                    showEnableVoiceFormDialog()
                     return@setOnClickListener
                 }
 
@@ -133,7 +175,7 @@ class CaptureActivity : ThoughtManagerActivity() {
             // PHOTO
             btnPhotoAdd.setOnClickListener {
                 if (!appSettingsStorage.isPhotoFeatureEnabled()) {
-                    showEnableAdditionalFeaturesDialog()
+                    showEnablePhotoFormDialog()
                     return@setOnClickListener
                 }
 
@@ -288,7 +330,7 @@ class CaptureActivity : ThoughtManagerActivity() {
      */
     private fun autoOpenVoiceRecording() {
         if (!appSettingsStorage.isVoiceRecordingEnabled()) {
-            showEnableAdditionalFeaturesDialog()
+            showEnableVoiceFormDialog()
             return
         }
 
@@ -305,7 +347,7 @@ class CaptureActivity : ThoughtManagerActivity() {
      */
     private fun autoOpenPhoto() {
         if (!appSettingsStorage.isPhotoFeatureEnabled()) {
-            showEnableAdditionalFeaturesDialog()
+            showEnablePhotoFormDialog()
             return
         }
 
@@ -318,6 +360,7 @@ class CaptureActivity : ThoughtManagerActivity() {
 
     private fun setupUI() {
         setupHeader(R.drawable.ic_capture_thought, R.string.capture_main_label)
+        AddFormButtons.keepWidth(binding.btnRichTextAdd)
         updateAddPhotoButtonVisualState()
         updateAddRecordingButtonVisualState()
     }
@@ -329,15 +372,33 @@ class CaptureActivity : ThoughtManagerActivity() {
         // Edit header only when there is a note to edit
         val titleRes = if (currentText.isBlank()) R.string.common_new_note_header else R.string.common_edit_note_header
 
-        TextEditDialog(
+        // Guided task: the note shows the bullet button, saving it leads on to the subject and Save - each once per run
+        val task = OnboardingTask.CAPTURE_THOUGHT
+        val showBulletGuide = isTaskGuided && onboardingManager.shouldShowTaskGuide(task, OnboardingTaskGuide.NOTE_BULLET)
+
+        val dialog = TextEditDialog(
             context = this,
             title = getString(titleRes),
             textInput = currentText,
             notesStyle = true,
             onSave = { newText ->
                 viewModel.updateRichText(newText)
+                // ! After the dialog and its keyboard are gone - the hole must land on the laid out screen
+                if (isTaskGuided && newText.isNotBlank()) {
+                    window.decorView.postDelayed({ showSubjectAndSaveGuide() }, GUIDE_AFTER_DIALOG_DELAY_MS)
+                }
             }
-        ).show()
+        )
+        if (showBulletGuide) {
+            onboardingManager.markTaskGuideShown(task, OnboardingTaskGuide.NOTE_BULLET)
+            dialog.showWithBulletSpotlight(
+                text       = getString(R.string.capture_onboarding_task_bullet),
+                buttonText = getString(R.string.common_spotlight_btn_got_it)
+            )
+        }
+        else {
+            dialog.show()
+        }
     }
 
     private fun takePhoto() {
@@ -387,39 +448,66 @@ class CaptureActivity : ThoughtManagerActivity() {
     }
 
     private fun updateAddPhotoButtonVisualState() {
-        updateAddButtonVisualState(
+        AddFormButtons.applyState(
             binding.btnPhotoAdd,
             appSettingsStorage.isPhotoFeatureEnabled()
         )
     }
 
     private fun updateAddRecordingButtonVisualState() {
-        updateAddButtonVisualState(
+        AddFormButtons.applyState(
             binding.btnRecordingAdd,
             appSettingsStorage.isVoiceRecordingEnabled()
         )
     }
 
     /**
-     * Save draft to database
+     * Save draft to database.
+     * Lone tag lines in the note (tags only, e.g. "@ola #dom") - first a question whether to drop them
+     * from the note; either way their tags stay with the thought.
+     * ! Not asked when the note is nothing but such lines and the only form - nothing would be left to save
      */
     private suspend fun saveDraft() {
         // Reset validation UI
         binding.tvHexTagsValidationInfo.text = ""
 
-        // Parse hex tags from EditText
-        val hexTagsInput = binding.etHexTags.text?.toString().orEmpty()
-        val tags = HexTagsUtils.parseInput(hexTagsInput)
+        val noteText = viewModel.draftThought.value?.richText
+        val noteWithoutLoneTags = HexTagsUtils.removeLoneTagLines(noteText)
+        val wouldLeaveNothing = noteWithoutLoneTags == null && !viewModel.hasFormsBesidesNote()
 
-        // Pick up @/# markers typed inline in the note text and fold them into the same tags
-        val embeddedTags = HexTagsUtils.extractEmbeddedTags(viewModel.draftThought.value?.richText)
+        if (!HexTagsUtils.hasLoneTagLines(noteText) || wouldLeaveNothing) {
+            saveDraftWithTagsFrom(noteText)
+            return
+        }
 
-        val project = HexTagsUtils.mergeTagNames(tags.project, embeddedTags.project)
-        val person = HexTagsUtils.mergeTagNames(tags.person, embeddedTags.person)
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.capture_lone_tags_dialog_title))
+            .setDescription(getString(R.string.capture_lone_tags_dialog_description))
+            .setSecondaryAction(getString(R.string.capture_lone_tags_dialog_keep)) {
+                lifecycleScope.launch { saveDraftWithTagsFrom(noteText) }
+            }
+            .setPrimaryAction(getString(R.string.capture_lone_tags_dialog_remove)) {
+                if (noteWithoutLoneTags == null) viewModel.deleteRichText() else viewModel.updateRichText(noteWithoutLoneTags)
+                lifecycleScope.launch { saveDraftWithTagsFrom(noteText) }
+            }
+            .show()
+    }
+
+    /**
+     * The top field is the subject only - "@" and "#" there are plain text.
+     * Tags come from the note: @/# markers anywhere in it, taken from [noteText] as typed, before any lone line is dropped.
+     */
+    private suspend fun saveDraftWithTagsFrom(noteText: String?) {
+        val subject = binding.etSubject.text?.toString()?.trim()?.ifEmpty { null }
+        val embeddedTags = HexTagsUtils.extractEmbeddedTags(noteText)
+
+        // Same tag typed twice in the note - kept once
+        val project = HexTagsUtils.mergeTagNames(embeddedTags.project, null)
+        val person = HexTagsUtils.mergeTagNames(embeddedTags.person, null)
 
         // Update draft with hex tags
         viewModel.updateHexTags(
-            subject = tags.subject,
+            subject = subject,
             project = project,
             person = person
         )
@@ -446,7 +534,7 @@ class CaptureActivity : ThoughtManagerActivity() {
                 lifecycleScope.launch { saveNewThought() }
             }
             .setPrimaryAction(getString(R.string.common_hex_tags_similar_use, similarTag.suggestion)) {
-                applySimilarTag(tags.subject, person, project, similarTag)
+                applySimilarTag(subject, person, project, similarTag)
                 lifecycleScope.launch { saveNewThought() }
             }
             .show()
@@ -500,7 +588,6 @@ class CaptureActivity : ThoughtManagerActivity() {
 
         return buildSet {
             if (!draft.subject.isNullOrBlank()) add(OnboardingTaskPoint.SUBJECT)
-            if (!draft.person.isNullOrBlank() || !draft.project.isNullOrBlank()) add(OnboardingTaskPoint.HEX_TAG)
             if (!draft.richText.isNullOrBlank()) add(OnboardingTaskPoint.NOTE)
         }
     }
@@ -592,84 +679,10 @@ class CaptureActivity : ThoughtManagerActivity() {
     companion object {
         const val EXTRA_THOUGHT_ID = "EXTRA_THOUGHT_ID"
         const val EXTRA_CAPTURE_FORM = "EXTRA_CAPTURE_FORM"
+        // Opened from the Stream fab while the capture thought task is active
+        const val EXTRA_ONBOARDING_GUIDE = "EXTRA_ONBOARDING_GUIDE"
 
-        // Marker plus two characters - enough to narrow the list without flashing it on every "@"
-        private const val SUGGESTION_MIN_CHARS = 2
-
-        private const val PERSON_MARKER = '@'
-        private const val PROJECT_MARKER = '#'
+        private const val SUBJECT_AND_SAVE_GUIDE_STEPS = 2
+        private const val GUIDE_AFTER_DIALOG_DELAY_MS = 400L
     }
-
-    // ===========================================
-    //      Tag suggestions
-    // ===========================================
-
-    /**
-     * Suggestions follow the tag being typed right now: the marker before the caret says whether it
-     * is a person or a project, so one field can serve both.
-     */
-    private fun refreshTagSuggestions() {
-        val typedTag = typedTagUnderCaret()
-
-        if (typedTag == null || typedTag.fragment.length < SUGGESTION_MIN_CHARS) {
-            binding.hsvTagSuggestions.isVisible = false
-            return
-        }
-
-        lifecycleScope.launch {
-            val names = hexTagsService.getSuggestions(typedTag.tagType, typedTag.fragment)
-
-            binding.llTagSuggestions.removeAllViews()
-            names.forEach { name -> binding.llTagSuggestions.addView(buildSuggestionChip(name, typedTag)) }
-            binding.hsvTagSuggestions.isVisible = names.isNotEmpty()
-        }
-    }
-
-    private fun buildSuggestionChip(name: String, typedTag: TypedTag): TextView {
-        val chip = layoutInflater
-            .inflate(R.layout.common_hex_tags_suggestion, binding.llTagSuggestions, false) as TextView
-
-        chip.text = name
-        chip.setOnClickListener { applySuggestion(name, typedTag) }
-        return chip
-    }
-
-    private fun applySuggestion(chosenName: String, typedTag: TypedTag) {
-        val text = binding.etHexTags.text?.toString().orEmpty()
-        val tagEnd = typedTag.startIndex + typedTag.fragment.length
-
-        val updated = text.substring(0, typedTag.startIndex) + chosenName + " " + text.substring(tagEnd)
-
-        binding.etHexTags.setText(updated)
-        binding.etHexTags.setSelection((typedTag.startIndex + chosenName.length + 1).coerceAtMost(updated.length))
-    }
-
-    /** The unfinished tag before the caret, or null when the caret is not inside one. */
-    private fun typedTagUnderCaret(): TypedTag? {
-        val text = binding.etHexTags.text?.toString().orEmpty()
-        val caret = binding.etHexTags.selectionStart.coerceIn(0, text.length)
-        val before = text.substring(0, caret)
-
-        val markerIndex = maxOf(before.lastIndexOf(PERSON_MARKER), before.lastIndexOf(PROJECT_MARKER))
-        if (markerIndex == -1) return null
-
-        val tagType = if (before[markerIndex] == PERSON_MARKER) HexTagType.PERSON else HexTagType.PROJECT
-
-        // A separator after the marker means the tag is already finished and a new one has begun
-        val afterMarker = before.substring(markerIndex + 1)
-        val separatorIndex = afterMarker.indexOfLast { character -> character.isWhitespace() || character == ',' }
-
-        return TypedTag(
-            tagType    = tagType,
-            fragment   = afterMarker.substring(separatorIndex + 1),
-            startIndex = markerIndex + 1 + separatorIndex + 1
-        )
-    }
-
-    private data class TypedTag(
-        val tagType   : HexTagType,
-        val fragment  : String,
-        val startIndex: Int
-    )
-
 }

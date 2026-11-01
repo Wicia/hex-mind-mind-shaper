@@ -2,7 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/app_background"
+    android:background="@drawable/bg_app_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -19,7 +19,9 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:padding="18dp">
+            android:padding="18dp"
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
             <ImageView
                 android:layout_width="45dp"
@@ -34,13 +36,62 @@
                 app:tint="@color/separator_leaf"
                 />
 
-            <ImageView
-                android:id="@+id/iv_header_icon"
-                style="@style/ImageView_Header_Activity"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_margin="8dp"
-                android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+            <!-- App news entry: rocket + unread badge over its bottom - one tap target -->
+            <LinearLayout
+                android:id="@+id/ll_home_news_entry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:clipChildren="false"
+                android:contentDescription="@string/home_news_title">
+
+                <ImageView
+                    android:id="@+id/iv_header_icon"
+                    style="@style/ImageView_Header_Activity"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_margin="8dp"
+                    android:importantForAccessibility="no" />
+
+                <!-- Badge with the wave ring behind it - the ring grows past the frame -->
+                <!-- ! Negative top margin = the badge covers the bottom of the rocket -->
+                <FrameLayout
+                    android:id="@+id/fl_home_news_badge"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="-6dp"
+                    android:clipChildren="false">
+
+                    <ImageView
+                        android:id="@+id/iv_home_news_signal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/shape_sparkle_signal"
+                        app:tint="@color/home_news_badge"
+                        android:alpha="0"
+                        android:importantForAccessibility="no" />
+
+                    <TextView
+                        android:id="@+id/tv_home_news_badge"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_circle"
+                        android:backgroundTint="@color/home_news_badge"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/home_news_badge_text"
+                        android:importantForAccessibility="no" />
+
+                </FrameLayout>
+
+            </LinearLayout>
 
             <ImageView
                 android:layout_width="45dp"
@@ -66,22 +117,56 @@
 
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:contentDescription="@string/common_placeholder_accessibility_content_desc"
-        android:id="@+id/fab_new_thought"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <!-- Capture ring (CaptureRing): add-form buttons fly out around the fab - stacked under it while hidden -->
+    <!-- ! 320dp x 240dp = ring radii 100dp / 76dp + half of an option (~92dp x 48dp) on each side, with a margin for the overshoot -->
+    <FrameLayout
+        android:id="@+id/fl_capture_ring"
+        android:layout_width="320dp"
+        android:layout_height="240dp"
         android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_capture_thought"
-        app:backgroundTint="@color/button_primary_enabled_background"
-        app:fabSize="normal"
-        app:elevation="6dp" />
+        android:clipChildren="false">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_capture_note"
+            style="@style/HomeCaptureRingOption"
+            app:icon="@drawable/ic_thought_type_rich_text"
+            android:contentDescription="@string/home_capture_note" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_capture_photo"
+            style="@style/HomeCaptureRingOption"
+            app:icon="@drawable/ic_thought_type_photo"
+            android:contentDescription="@string/home_capture_photo" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_capture_voice"
+            style="@style/HomeCaptureRingOption"
+            app:icon="@drawable/ic_thought_type_recording"
+            android:contentDescription="@string/home_capture_voice" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_capture_flashcards"
+            style="@style/HomeCaptureRingOption"
+            app:icon="@drawable/ic_flashcards_set"
+            android:contentDescription="@string/home_capture_flashcards" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+            android:id="@+id/fab_new_thought"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_capture_thought"
+            app:backgroundTint="@color/button_primary_enabled_background"
+            app:fabSize="normal"
+            app:elevation="6dp" />
+
+    </FrameLayout>
 
     <!-- Onboarding review entry - the space above the icon is where the bubbles rise -->
     <FrameLayout
         android:id="@+id/fl_onboarding_entry"
-        android:layout_width="48dp"
+        android:layout_width="56dp"
         android:layout_height="120dp"
         android:layout_gravity="bottom|end"
         android:layout_margin="8dp"
@@ -90,15 +175,15 @@
         <!-- Onboarding icon -->
         <ImageView
             android:id="@+id/iv_onboarding"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_gravity="bottom"
-            android:padding="5dp"
+            android:padding="6dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_activity_onboarding"
-            app:tint="@color/_orange_lvl_2"
+            app:tint="@color/_palette_lvl_2"
             android:contentDescription="@string/common_placeholder_accessibility_content_desc"
             />
 

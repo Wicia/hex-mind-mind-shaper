@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_background">
+    android:background="@drawable/bg_app_background">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -274,12 +274,12 @@
                         android:layout_width="0dp"
                         android:layout_height="48dp"
                         android:layout_weight="1.25"
-                        app:backgroundTint="@color/_orange_lvl_1"
+                        app:backgroundTint="@color/_palette_lvl_1"
                         app:icon="@drawable/ic_replace_or_renew"
                         app:iconGravity="textStart"
                         app:iconPadding="0dp"
                         app:iconSize="28dp"
-                        app:iconTint="@color/_orange_lvl_3" />
+                        app:iconTint="@color/_palette_lvl_3" />
 
                     <TextView
                         android:id="@+id/tv_usage_goal_context"

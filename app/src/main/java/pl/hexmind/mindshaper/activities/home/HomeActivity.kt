@@ -2,6 +2,7 @@ package pl.hexmind.mindshaper.activities.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -12,14 +13,20 @@ import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.flashcards.FlashcardsActivity
 import pl.hexmind.mindshaper.activities.onboarding.OnboardingActivity
+import pl.hexmind.mindshaper.activities.settings.SettingsActivity
 import pl.hexmind.mindshaper.activities.stream.StreamActivity
 import pl.hexmind.mindshaper.activities.workshop.WorkshopActivity
 import pl.hexmind.mindshaper.common.formatting.setColoredText
 import pl.hexmind.mindshaper.common.onboarding.OnboardingSection
 import pl.hexmind.mindshaper.common.ui.dialogs.WelcomeDialog
 import pl.hexmind.mindshaper.common.ui.views.HexSpotlight
+import pl.hexmind.mindshaper.services.AppNewsService
 import pl.hexmind.mindshaper.services.GreetingsService
+import pl.hexmind.mindshaper.services.ThoughtsService
+import pl.hexmind.mindshaper.services.dto.DefaultCaptureForm
+import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import pl.hexmind.mindshaper.services.dto.StartScreen
+import javax.inject.Inject
 
 /**
  * Main activity handling FAB menu and swipe gestures for  access
@@ -27,11 +34,26 @@ import pl.hexmind.mindshaper.services.dto.StartScreen
 @AndroidEntryPoint
 class HomeActivity : CoreActivity() {
 
+    @Inject
+    lateinit var thoughtsService: ThoughtsService
+
+    @Inject
+    lateinit var appNewsService: AppNewsService
+
     private lateinit var fabNewThought: FloatingActionButton
+
+    private lateinit var captureRing: CaptureRing
 
     private lateinit var tvHeaderGreetings : TextView
 
     private lateinit var labBubbles: LabBubblesAnimator
+
+    private lateinit var newsBadgeSignal: NewsBadgeSignal
+
+    private var allThoughts: List<ThoughtDTO> = emptyList()
+
+    // ! Own flag - inside onResume the lifecycle state is not RESUMED yet
+    private var isScreenResumed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +68,7 @@ class HomeActivity : CoreActivity() {
 
         initViews()
         setupClickListeners()
+        setupNewsBadge()
 
         if (onboardingManager.isWelcomePending()) {
             showWelcomeDialog()
@@ -85,21 +108,28 @@ class HomeActivity : CoreActivity() {
     // ! Guarded: a rerouted cold launch finishes in onCreate before the views exist
     override fun onResume() {
         super.onResume()
+        isScreenResumed = true
         if (::labBubbles.isInitialized) syncOnboardingEntry()
+        if (::newsBadgeSignal.isInitialized) syncNewsBadge()
     }
 
     override fun onPause() {
         super.onPause()
+        isScreenResumed = false
         if (::labBubbles.isInitialized) labBubbles.stop()
+        if (::newsBadgeSignal.isInitialized) newsBadgeSignal.stop()
+        // Leaving Home (e.g. nav bar) with the ring open = closed on return
+        if (::captureRing.isInitialized) captureRing.close(animate = false)
     }
 
     private fun initViews() {
-        setupHeader(R.drawable.ic_activity_home, R.string.common_foobar)
+        setupHeader(R.drawable.ic_owl, R.string.common_foobar)
         fabNewThought = findViewById(R.id.fab_new_thought)
         labBubbles = LabBubblesAnimator(
             container = findViewById(R.id.fl_onboarding_entry),
             flaskIcon = findViewById(R.id.iv_onboarding)
         )
+        newsBadgeSignal = NewsBadgeSignal(findViewById(R.id.iv_home_news_signal))
         setupHeaderWithGreetings()
     }
 
@@ -115,6 +145,29 @@ class HomeActivity : CoreActivity() {
         }
     }
 
+    // Counted again on every change of thoughts, on every return to Home (e.g. from an opened entry)
+    // and when an entry is marked as read / unread in the news bottom sheet
+    private fun setupNewsBadge() {
+        thoughtsService.getAllThoughts().observe(this) { thoughts ->
+            allThoughts = thoughts
+            syncNewsBadge()
+        }
+        supportFragmentManager.setFragmentResultListener(HomeNewsBottomSheet.RESULT_NEWS_CHANGED, this) { _, _ ->
+            syncNewsBadge()
+        }
+    }
+
+    // Badge always shown, also with 0; the wave only with unread news
+    private fun syncNewsBadge() {
+        val unreadCount = appNewsService.countUnread(allThoughts)
+
+        findViewById<TextView>(R.id.tv_home_news_badge).text =
+            if (unreadCount > NEWS_BADGE_MAX) getString(R.string.home_news_badge_overflow) else unreadCount.toString()
+
+        // ! Thoughts may change while the screen is paused - the wave starts only on a resumed screen
+        if (unreadCount > 0 && isScreenResumed) newsBadgeSignal.start() else newsBadgeSignal.stop()
+    }
+
     private fun setupHeaderWithGreetings(){
         tvHeaderGreetings = findViewById(R.id.tv_header_title)
         val currentGreetingsText = tvHeaderGreetings.text.toString()
@@ -124,18 +177,55 @@ class HomeActivity : CoreActivity() {
         } while (currentGreetingsText == newGreetingsText)
 
         tvHeaderGreetings.setColoredText(newGreetingsText, appSettingsStorage.getYourName(),
-            ContextCompat.getColor(this, R.color._orange_lvl_3))
+            ContextCompat.getColor(this, R.color._palette_lvl_3))
     }
 
     private fun setupClickListeners() {
-        fabNewThought.setOnClickListener {
-            val intent = Intent(this, CaptureActivity::class.java)
-            startActivity(intent)
-        }
+        setupCaptureRing()
 
         findViewById<ImageView>(R.id.iv_onboarding).setOnClickListener {
             startActivity(Intent(this, OnboardingActivity::class.java))
         }
+
+        findViewById<View>(R.id.ll_home_news_entry).setOnClickListener {
+            HomeNewsBottomSheet.show(supportFragmentManager)
+        }
+    }
+
+    // Same targets as the launcher shortcuts (AppShortcuts): a capture form or new loose flashcards
+    // Feature off = gray option, its tap leads to Preferences (as the add-form buttons in Details)
+    private fun setupCaptureRing() {
+        captureRing = CaptureRing(this, fabNewThought)
+        captureRing.addOption(findViewById(R.id.btn_capture_note)) { openCapture(DefaultCaptureForm.TEXT) }
+        captureRing.addOption(
+            view          = findViewById(R.id.btn_capture_photo),
+            isEnabled     = { appSettingsStorage.isPhotoFeatureEnabled() },
+            onDisabledTap = { showEnablePhotoFormDialog() }
+        ) { openCapture(DefaultCaptureForm.PHOTO) }
+        captureRing.addOption(
+            view          = findViewById(R.id.btn_capture_voice),
+            isEnabled     = { appSettingsStorage.isVoiceRecordingEnabled() },
+            onDisabledTap = { showEnableVoiceFormDialog() }
+        ) { openCapture(DefaultCaptureForm.VOICE) }
+        captureRing.addOption(
+            view          = findViewById(R.id.btn_capture_flashcards),
+            isEnabled     = { appSettingsStorage.isFlashcardsFeatureEnabled() },
+            onDisabledTap = {
+                showEnableAdditionalFeaturesDialog(
+                    titleRes       = R.string.home_capture_flashcards_inactive_header,
+                    descriptionRes = R.string.home_capture_flashcards_inactive_info,
+                    section        = SettingsActivity.Section.MEMORIZING
+                )
+            }
+        ) {
+            startActivity(Intent(this, FlashcardsActivity::class.java)
+                .putExtra(FlashcardsActivity.EXTRA_NEW_LOOSE_FLASHCARDS, true))
+        }
+    }
+
+    private fun openCapture(captureForm: DefaultCaptureForm) {
+        startActivity(Intent(this, CaptureActivity::class.java)
+            .putExtra(CaptureActivity.EXTRA_CAPTURE_FORM, captureForm.name))
     }
 
     /**
@@ -171,5 +261,9 @@ class HomeActivity : CoreActivity() {
         ))
         finish()
         return true
+    }
+
+    private companion object {
+        const val NEWS_BADGE_MAX = 9
     }
 }

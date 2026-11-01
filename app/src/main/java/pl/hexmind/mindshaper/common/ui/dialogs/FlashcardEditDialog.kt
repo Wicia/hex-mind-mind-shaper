@@ -23,7 +23,7 @@ import pl.hexmind.mindshaper.services.dto.FlashcardDTO
 class FlashcardEditDialog private constructor(
     private val context: Context,
     private val flashcard: FlashcardDTO?, // null = series of new flashcards
-    private var number: Int,              // 1-based position in the set - shown in the header
+    private val number: Int,              // Edit only: 1-based position in the set - shown in the header
     private val onSave: (FlashcardDTO) -> Unit,
     private val newSet: NewSetSteps? = null,
     private val onMove: (() -> Unit)? = null // Edit only - null = nowhere to move, no Move button
@@ -47,9 +47,9 @@ class FlashcardEditDialog private constructor(
             onMove: (() -> Unit)? = null
         ) = FlashcardEditDialog(context, flashcard, number, onSave, onMove = onMove)
 
-        /** @param firstNumber number the first new flashcard gets - the set's size + 1 */
-        fun addSeries(context: Context, firstNumber: Int, onAdd: (FlashcardDTO) -> Unit) =
-            FlashcardEditDialog(context, null, firstNumber, onAdd)
+        /** New flashcards one after another - the header without a number (the added count says how many) */
+        fun addSeries(context: Context, onAdd: (FlashcardDTO) -> Unit) =
+            FlashcardEditDialog(context, null, 0, onAdd)
 
         /** Name of a new set, then its flashcards in a series - all in one dialog */
         fun newSet(
@@ -57,7 +57,7 @@ class FlashcardEditDialog private constructor(
             onCreateSet: (name: String, onCreated: () -> Unit) -> Unit,
             onAdd: (FlashcardDTO) -> Unit,
             onFinish: () -> Unit
-        ) = FlashcardEditDialog(context, null, 1, onAdd, NewSetSteps(onCreateSet, onFinish))
+        ) = FlashcardEditDialog(context, null, 0, onAdd, NewSetSteps(onCreateSet, onFinish))
     }
 
     private val isSeries = flashcard == null
@@ -128,9 +128,10 @@ class FlashcardEditDialog private constructor(
     private fun renderHeader() {
         tvHeader.text =
             if (isNamingSet) context.getString(R.string.flashcards_create_header)
-            else context.getString(if (isSeries) R.string.flashcards_new_header else R.string.flashcards_row_label, number)
+            else if (isSeries) context.getString(R.string.flashcards_new_header)
+            else context.getString(R.string.flashcards_row_label, number)
         if (addedCount > 0) {
-            tvAddedCount.text = context.getString(R.string.flashcards_added_count, addedCount)
+            tvAddedCount.text = context.resources.getQuantityString(R.plurals.flashcards_added_count, addedCount, addedCount)
             tvAddedCount.visibility = View.VISIBLE
         }
     }
@@ -157,7 +158,6 @@ class FlashcardEditDialog private constructor(
         if (!validate()) return
         onSave(row.getFlashcard())
         addedCount++
-        number++
         renderHeader()
         row.clear()
         row.focusFront()

@@ -117,8 +117,8 @@
         <!-- Delete: X, always on the right; ghost. Only with a recording at rest - never next to the skip buttons -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_recording_delete"
-            style="@style/SecondaryActionButton.Ghost"
-            android:layout_width="wrap_content"
+            style="@style/SecondaryActionButton.Ghost.Delete"
+            android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_gravity="end|center_vertical"
             android:visibility="gone"

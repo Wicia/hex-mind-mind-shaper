@@ -172,10 +172,10 @@ class CaptureActivityViewModel @Inject constructor(
     fun hasContent(): Boolean {
         val draft = _draftThought.value ?: return false
 
-        return !draft.richText.isNullOrBlank()
-                || tempAudioFile != null
-                || tempPhotoUri != null
+        return !draft.richText.isNullOrBlank() || hasFormsBesidesNote()
     }
+
+    fun hasFormsBesidesNote(): Boolean = tempAudioFile != null || tempPhotoUri != null
 
     // ========================================
     // SAVE TO DB (on SAVE fab)

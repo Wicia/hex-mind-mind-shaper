@@ -63,7 +63,7 @@ class ValueBar @JvmOverloads constructor(
             invalidate()
         }
 
-    var dotBackgroundColor: Int = R.color._orange_lvl_2
+    var dotBackgroundColor: Int = R.color._palette_lvl_2
         set(value) {
             field = value
             backgroundPaint.color = value
@@ -114,7 +114,7 @@ class ValueBar @JvmOverloads constructor(
     private val glowPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         strokeWidth = 5f
-        color = ContextCompat.getColor(context, R.color._orange_lvl_3)
+        color = ContextCompat.getColor(context, R.color._palette_lvl_3)
         alpha = 0
     }
 

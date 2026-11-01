@@ -4,9 +4,9 @@
     android:viewportWidth="960"
     android:viewportHeight="960">
 
-    <!-- Disc mirrors the new-thought FAB (_orange_lvl_3). Concrete color, not ?attr/... - the launcher renders shortcut icons in its own theme where theme attrs resolve unpredictably -->
+    <!-- Disc mirrors the new-thought FAB (_palette_lvl_3). Concrete color, not ?attr/... or the palette colors - the launcher renders shortcut icons in its own theme where theme attrs resolve unpredictably -->
     <path
-        android:fillColor="#FFA86B"
+        android:fillColor="@color/_palette_orange_lvl_3"
         android:pathData="M0,480 A480,480 0 1,1 960,480 A480,480 0 1,1 0,480 Z"
         />
 

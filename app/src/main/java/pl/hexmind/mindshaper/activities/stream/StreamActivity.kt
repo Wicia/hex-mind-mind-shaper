@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.core.content.IntentCompat
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.button.MaterialButton
@@ -18,14 +19,15 @@ import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.CoreActivity
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.activities.details.DetailsActivity
+import pl.hexmind.mindshaper.activities.onboarding.OnboardingActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingTask
-import pl.hexmind.mindshaper.common.onboarding.OnboardingTaskPoint
+import pl.hexmind.mindshaper.common.onboarding.OnboardingTaskGuide
 import pl.hexmind.mindshaper.common.ui.views.lists.SortConfig
 import pl.hexmind.mindshaper.common.ui.views.lists.SortDirection
-import pl.hexmind.mindshaper.common.ui.views.lists.SortProperty
 import pl.hexmind.mindshaper.common.regex.HexTags
 import pl.hexmind.mindshaper.common.ui.dialogs.GuideDialog
 import pl.hexmind.mindshaper.common.ui.dpToPx
+import pl.hexmind.mindshaper.common.ui.views.HexSpotlight
 import pl.hexmind.mindshaper.common.ui.views.HexTagsSearcher
 import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
 import pl.hexmind.mindshaper.services.ThoughtStatusService
@@ -57,9 +59,8 @@ class StreamActivity : CoreActivity() {
     private lateinit var btnFilter: MaterialButton
     private lateinit var searcher: HexTagsSearcher
 
-    // FAB menu
+    // New thought FAB
     private lateinit var fabNewThought: FloatingActionButton
-    private var isMenuOpen = false
 
     // Scroll progress indicator
     private lateinit var flScrollIndicator: android.widget.FrameLayout
@@ -81,7 +82,7 @@ class StreamActivity : CoreActivity() {
         setupSearcher()
         setupSortButton()
         setupFilterButton()
-        setupFabMenu()
+        setupNewThoughtFab()
         setupScrollIndicator()
         setupReactiveDataObserver()
 
@@ -90,6 +91,8 @@ class StreamActivity : CoreActivity() {
         // Only on the first creation - after a recreation the ViewModel already holds this (or a newer) search
         if (savedInstanceState == null) {
             applyLaunchSearchCriteria()
+            applyLaunchDomainFilter()
+            applyLaunchStateFilter()
         }
     }
 
@@ -112,11 +115,7 @@ class StreamActivity : CoreActivity() {
             onDeleteThought = { thoughtToDelete ->
                 showDeleteConfirmationDialog(thoughtToDelete)
             },
-            onThoughtTap = { thoughtTap ->
-                val intent = Intent(this, DetailsActivity::class.java)
-                intent.putExtra(DetailsActivity.P_SELECTED_THOUGHT_ID, thoughtTap.id ?: -1)
-                startActivity(intent)
-            },
+            onThoughtTap = { thoughtTap -> openThoughtDetails(thoughtTap) },
             onLoadAudio = { thoughtId, onReady ->
                 viewModel.loadAudioForPlayback(thoughtId, onReady)
             },
@@ -141,6 +140,12 @@ class StreamActivity : CoreActivity() {
                 updateScrollIndicator(position)
             }
         })
+    }
+
+    private fun openThoughtDetails(thought: ThoughtDTO) {
+        val intent = Intent(this, DetailsActivity::class.java)
+        intent.putExtra(DetailsActivity.P_SELECTED_THOUGHT_ID, thought.id ?: -1)
+        startActivity(intent)
     }
 
     private fun setupScrollIndicator() {
@@ -170,7 +175,6 @@ class StreamActivity : CoreActivity() {
                 currentTags     = searcher.getTags()
             ) { hexTags ->
                 searcher.setTags(hexTags)
-                onboardingManager.recordTaskPoints(OnboardingTask.SEARCH_STREAM, searchTaskPoints(hexTags))
             }
         }
 
@@ -194,15 +198,33 @@ class StreamActivity : CoreActivity() {
         }
     }
 
-    private fun searchTaskPoints(hexTags: HexTags): Set<OnboardingTaskPoint> = buildSet {
-        if (!hexTags.subject.isNullOrBlank()) add(OnboardingTaskPoint.SEARCH_SUBJECT)
-        if (!hexTags.person.isNullOrBlank() || !hexTags.project.isNullOrBlank()) add(OnboardingTaskPoint.SEARCH_HEX_TAG)
-    }
-
     // Criteria passed by the caller (e.g. a Metadata tag pill) replace the current search
+    // Every thought with the tag, whatever its state - dormant ones included
     private fun applyLaunchSearchCriteria() {
         val criteria = IntentCompat.getParcelableExtra(intent, P_SEARCH_CRITERIA, HexTags::class.java) ?: return
+        showAllStates()
         searcher.setTags(criteria)
+    }
+
+    // Domain passed by the caller (a Metadata domain tile) - every thought in it, whatever its state
+    private fun applyLaunchDomainFilter() {
+        if (!intent.hasExtra(P_DOMAIN_ID)) return
+        showAllStates()
+        viewModel.updateSelectedDomain(intent.getIntExtra(P_DOMAIN_ID, -1))
+    }
+
+    private fun showAllStates() {
+        viewModel.updateShowActive(true)
+        viewModel.updateShowNearDormant(true)
+        viewModel.updateShowDormant(true)
+    }
+
+    // Opened for the near-dormant thoughts only - the state filter shows just them, still editable
+    private fun applyLaunchStateFilter() {
+        if (!intent.getBooleanExtra(P_NEAR_DORMANT_ONLY, false)) return
+        viewModel.updateShowActive(false)
+        viewModel.updateShowNearDormant(true)
+        viewModel.updateShowDormant(false)
     }
 
     // TODO: to be used when "traditional" searching will be brought back as alternative (like setting config)
@@ -240,11 +262,6 @@ class StreamActivity : CoreActivity() {
             viewModel.updateSelectedDomain(domainId)
             viewModel.updateCreatedPeriod(createdPeriod)
 
-            onboardingManager.recordTaskPoints(OnboardingTask.FILTER_STREAM, buildSet {
-                if (domainId != null) add(OnboardingTaskPoint.FILTER_DOMAIN)
-                if (createdPeriod != null) add(OnboardingTaskPoint.FILTER_CREATED_PERIOD)
-            })
-
             // Show count of filtered thoughts after applying filters
             val count = viewModel.filteredThoughts.value?.size ?: 0
             showShortToast(R.string.stream_filter_toast_count, count.toString())
@@ -258,9 +275,74 @@ class StreamActivity : CoreActivity() {
         viewModel.createdPeriod.observe(this)     { updateFilterButtonText(viewModel.selectedDomainId.value) }
     }
 
-    private fun setupFabMenu() {
+    private fun setupNewThoughtFab() {
         fabNewThought.setOnClickListener {
-            captureLauncher.launch(Intent(this, CaptureActivity::class.java))
+            captureLauncher.launch(Intent(this, CaptureActivity::class.java)
+                .putExtra(CaptureActivity.EXTRA_ONBOARDING_GUIDE, onboardingManager.isGuiding(OnboardingTask.CAPTURE_THOUGHT)))
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val completedTask = onboardingManager.takeCompletedActiveTask()
+        if (completedTask != null) {
+            showTaskCompletedDialog(completedTask)
+        }
+        else {
+            showCaptureTaskGuide()
+            showTagTaskGuide()
+        }
+    }
+
+    // Back from the place the active task was done - next task or just close
+    private fun showTaskCompletedDialog(task: OnboardingTask) {
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.common_onboarding_task_done_title))
+            .setIcon(R.drawable.ic_mountain_flag)
+            .setConfetti()
+            .setDescription(getString(R.string.common_onboarding_task_done_info, getString(task.titleRes)))
+            .setPrimaryAction(getString(R.string.common_onboarding_task_done_next)) {
+                startActivity(Intent(this, OnboardingActivity::class.java)
+                    .putExtra(OnboardingActivity.EXTRA_SCROLL_TO_TASKS, true))
+            }
+            .setCancelText(getString(R.string.common_btn_close))
+            .show()
+    }
+
+    // Capture thought task starts here - once per run
+    private fun showCaptureTaskGuide() {
+        val task = OnboardingTask.CAPTURE_THOUGHT
+        if (!onboardingManager.shouldShowTaskGuide(task, OnboardingTaskGuide.STREAM_CAPTURE)) return
+
+        onboardingManager.markTaskGuideShown(task, OnboardingTaskGuide.STREAM_CAPTURE)
+        HexSpotlight.show(
+            activity   = this,
+            target     = fabNewThought,
+            text       = getString(R.string.stream_onboarding_task_capture),
+            buttonText = getString(R.string.common_spotlight_btn_got_it)
+        ) {
+            fabNewThought.performClick()
+        }
+    }
+
+    // Tag thought task starts here - once per run, on the thought in view; called again once the list lands
+    private fun showTagTaskGuide() {
+        val task = OnboardingTask.TAG_THOUGHT
+        if (!onboardingManager.shouldShowTaskGuide(task, OnboardingTaskGuide.STREAM_THOUGHT)) return
+
+        val position = viewPager.currentItem
+        val thought = adapter.currentList.getOrNull(position) ?: return
+        val card = (viewPager.getChildAt(0) as? RecyclerView)?.findViewHolderForAdapterPosition(position)?.itemView ?: return
+
+        onboardingManager.markTaskGuideShown(task, OnboardingTaskGuide.STREAM_THOUGHT)
+        HexSpotlight.show(
+            activity   = this,
+            target     = card,
+            text       = getString(R.string.stream_onboarding_task_open_thought),
+            buttonText = getString(R.string.common_spotlight_btn_got_it),
+            holeShape  = HexSpotlight.HoleShape.ROUNDED_RECT
+        ) {
+            openThoughtDetails(thought)
         }
     }
 
@@ -308,20 +390,9 @@ class StreamActivity : CoreActivity() {
             // ! raise BEFORE the value changes - the VM's mediator rebuilds the list before this Activity's sortConfig observer runs
             isListResetPending = true
             viewModel.updateSortConfig(newConfig)
-
-            onboardingManager.recordTaskPoints(OnboardingTask.SORT_STREAM, setOf(sortTaskPoint(newConfig.property)))
         }
 
         dialog.show(supportFragmentManager, SortDialogFragment.TAG)
-    }
-
-    private fun sortTaskPoint(property: SortProperty): OnboardingTaskPoint = when (property) {
-        SortProperty.VALUE      -> OnboardingTaskPoint.SORT_VALUE
-        SortProperty.CREATED_AT -> OnboardingTaskPoint.SORT_CREATED_AT
-        SortProperty.UPDATED_AT -> OnboardingTaskPoint.SORT_UPDATED_AT
-        SortProperty.SUBJECT    -> OnboardingTaskPoint.SORT_SUBJECT
-        SortProperty.PERSON     -> OnboardingTaskPoint.SORT_PERSON
-        SortProperty.PROJECT    -> OnboardingTaskPoint.SORT_PROJECT
     }
 
     private fun showDeleteConfirmationDialog(thought: ThoughtDTO) {
@@ -369,6 +440,9 @@ class StreamActivity : CoreActivity() {
                     // so "go to 0" does nothing until the inserted rows shift the current thought down
                     viewPager.doOnPreDraw { viewPager.setCurrentItem(0, false) }
                 }
+
+                // ! The card is there only once the pager laid out the committed list
+                viewPager.post { if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) showTagTaskGuide() }
             }
         }
 
@@ -417,7 +491,9 @@ class StreamActivity : CoreActivity() {
     }
 
     companion object {
-        const val P_SEARCH_CRITERIA = "search_criteria"
+        const val P_SEARCH_CRITERIA   = "search_criteria"
+        const val P_NEAR_DORMANT_ONLY = "near_dormant_only"
+        const val P_DOMAIN_ID         = "domain_id"
 
         private const val FADING_EDGE_DP = 16
     }

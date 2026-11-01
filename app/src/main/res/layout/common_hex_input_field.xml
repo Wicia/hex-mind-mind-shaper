@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <!-- Field + optional confirm tick overlaid on its right edge -->
+    <!-- Field + optional add button (plus) overlaid on its right edge -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -33,9 +33,9 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Confirm tick -->
+        <!-- Add button (plus) - commits the typed tag -->
         <ImageView
-            android:id="@+id/iv_confirm"
+            android:id="@+id/iv_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
@@ -44,7 +44,7 @@
             android:padding="6dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/common_hex_tags_add_tag_content_desc"
-            android:src="@drawable/ic_action_approve"
+            android:src="@drawable/ic_add"
             android:visibility="gone"
             app:tint="@color/app_primary" />
 

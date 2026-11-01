@@ -224,8 +224,8 @@ open class HexOptionTiles @JvmOverloads constructor(
                 view.isClickable = false
             }
             selected -> {
-                bgColor      = ContextCompat.getColor(context, R.color._orange_lvl_1)
-                strokeColor  = ContextCompat.getColor(context, R.color._orange_lvl_2)
+                bgColor      = ContextCompat.getColor(context, R.color._palette_lvl_1)
+                strokeColor  = ContextCompat.getColor(context, R.color._palette_lvl_2)
                 strokeWidth  = dpToPx(2)
                 contentColor = ContextCompat.getColor(context, R.color._black)
                 view.alpha       = 1f

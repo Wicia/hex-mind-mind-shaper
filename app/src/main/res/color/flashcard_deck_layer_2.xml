@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Flashcards session deck layer 2 of the picked palette (1 = right under the card, 4 = the bottom one) -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="?attr/paletteDeckLayer2" />
+</selector>

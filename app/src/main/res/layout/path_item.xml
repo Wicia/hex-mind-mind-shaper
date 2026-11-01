@@ -57,7 +57,7 @@
         android:layout_width="1dp"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
-        android:background="@color/_orange_lvl_0"
+        android:background="@drawable/bg_palette_lvl_0"
         />
 
     <LinearLayout

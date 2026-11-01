@@ -148,10 +148,95 @@ class OnboardingManager @Inject constructor(
 
         val earnedKeys = appSettingsStorage.getOnboardingTaskPoints(task.settingsParamName)
         appSettingsStorage.setOnboardingTaskPoints(task.settingsParamName, earnedKeys + newKeys)
+
+        if (getActiveTask() != task) return
+
+        // A run counts on its own - a task done before can be run again, the overall progress stays as it was
+        val runKeys = appSettingsStorage.getOnboardingTaskPoints(runParamName(task)) + newKeys
+        appSettingsStorage.setOnboardingTaskPoints(runParamName(task), runKeys)
+
+        // Run done = nothing more to guide; the screen the task leads back to congratulates once
+        if (task.points.count { point -> point.key in runKeys } >= task.requiredCount) {
+            deactivateTask()
+            completedActiveTask = task
+        }
+    }
+
+    // Points of the current run only - e.g. to lead on once a part of the task is done
+    fun hasRunPoints(task: OnboardingTask, points: Set<OnboardingTaskPoint>): Boolean {
+        val runKeys = appSettingsStorage.getOnboardingTaskPoints(runParamName(task))
+        return points.all { point -> point.key in runKeys }
+    }
+
+    // The tag added in the current run - later guides point at it, not at any tag
+    fun setRunTagName(task: OnboardingTask, tagName: String) {
+        if (getActiveTask() != task) return
+        appSettingsStorage.setOnboardingTaskRunValue(runTagParamName(task), tagName)
+    }
+
+    fun getRunTagName(task: OnboardingTask): String? {
+        return appSettingsStorage.getOnboardingTaskRunValue(runTagParamName(task))
+    }
+
+    private fun runParamName(task: OnboardingTask): String = task.settingsParamName + RUN_PARAM_SUFFIX
+
+    private fun runGuidesParamName(task: OnboardingTask): String = task.settingsParamName + RUN_GUIDES_PARAM_SUFFIX
+
+    private fun runTagParamName(task: OnboardingTask): String = task.settingsParamName + RUN_TAG_PARAM_SUFFIX
+
+    // A run starts from scratch - its points, the guides already seen and the tag it added
+    private fun clearRun(task: OnboardingTask) {
+        appSettingsStorage.clearOnboardingTaskPoints(runParamName(task))
+        appSettingsStorage.clearOnboardingTaskPoints(runGuidesParamName(task))
+        appSettingsStorage.setOnboardingTaskRunValue(runTagParamName(task), null)
+    }
+
+    // In memory only - lost with the process, the task stays done anyway
+    private var completedActiveTask: OnboardingTask? = null
+
+    // Active task done since the last call - taken once
+    fun takeCompletedActiveTask(): OnboardingTask? {
+        return completedActiveTask.also { completedActiveTask = null }
+    }
+
+    fun isTaskDone(task: OnboardingTask): Boolean {
+        return getTaskScore(task) >= task.requiredCount
     }
 
     fun resetTask(task: OnboardingTask) {
         appSettingsStorage.clearOnboardingTaskPoints(task.settingsParamName)
+    }
+
+    fun getActiveTask(): OnboardingTask? {
+        val taskKey = appSettingsStorage.getOnboardingActiveTask() ?: return null
+        return OnboardingTask.entries.firstOrNull { task -> task.settingsParamName == taskKey }
+    }
+
+    // One active task at a time - starting another one replaces it; every start is a new run from scratch
+    fun activateTask(task: OnboardingTask) {
+        getActiveTask()?.let { activeTask -> clearRun(activeTask) }
+        clearRun(task)
+        appSettingsStorage.setOnboardingActiveTask(task.settingsParamName)
+    }
+
+    fun deactivateTask() {
+        getActiveTask()?.let { activeTask -> clearRun(activeTask) }
+        appSettingsStorage.setOnboardingActiveTask(null)
+    }
+
+    // Screens show the task's breadcrumbs only while it is active and the tips are on
+    fun isGuiding(task: OnboardingTask): Boolean {
+        return appSettingsStorage.isOnboardingEnabled() && getActiveTask() == task
+    }
+
+    // Each breadcrumb of a run is seen once - not again on a return to its screen
+    fun shouldShowTaskGuide(task: OnboardingTask, guide: OnboardingTaskGuide): Boolean {
+        return isGuiding(task) && guide.key !in appSettingsStorage.getOnboardingTaskPoints(runGuidesParamName(task))
+    }
+
+    fun markTaskGuideShown(task: OnboardingTask, guide: OnboardingTaskGuide) {
+        val shownKeys = appSettingsStorage.getOnboardingTaskPoints(runGuidesParamName(task)) + guide.key
+        appSettingsStorage.setOnboardingTaskPoints(runGuidesParamName(task), shownKeys)
     }
 
     // Welcome is not a step - it stays out of the review panel and its section resets
@@ -186,6 +271,7 @@ class OnboardingManager @Inject constructor(
             appSettingsStorage.clearOnboardingTooltipShown(step.settingsParamName)
         }
         OnboardingTask.entries.forEach { task -> resetTask(task) }
+        deactivateTask()
         OnboardingBreadcrumb.entries.forEach { breadcrumb ->
             appSettingsStorage.clearOnboardingTooltipShown(breadcrumb.settingsParamName)
         }
@@ -193,6 +279,9 @@ class OnboardingManager @Inject constructor(
 
     companion object {
         private const val WELCOME_SHOWN_KEY = "onb_welcome_shown"
+        private const val RUN_PARAM_SUFFIX = "_run"
+        private const val RUN_GUIDES_PARAM_SUFFIX = "_run_guides"
+        private const val RUN_TAG_PARAM_SUFFIX = "_run_tag"
     }
 }
 
@@ -206,7 +295,7 @@ enum class OnboardingSection(
 ) {
     HOME(
         R.string.workshop_onboarding_section_home,
-        R.drawable.ic_activity_home,
+        R.drawable.ic_owl,
         listOf(OnboardingProgressStep.HOME_TOOLTIP)
     ),
     SETTINGS(
