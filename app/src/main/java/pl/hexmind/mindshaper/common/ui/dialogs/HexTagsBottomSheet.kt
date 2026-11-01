@@ -106,6 +106,9 @@ class HexTagsBottomSheet : BottomSheetDialogFragment() {
         )
 
         binding.fabConfirm.setOnClickListener {
+            binding.htvPerson.commitPendingText()
+            binding.htvProject.commitPendingText()
+
             val result = HexTags(
                 person = binding.htvPerson.getTags().joinToString(" ").takeIf { it.isNotEmpty() },
                 project = binding.htvProject.getTags().joinToString(" ").takeIf { it.isNotEmpty() },

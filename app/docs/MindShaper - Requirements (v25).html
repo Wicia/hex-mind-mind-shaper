@@ -1115,6 +1115,8 @@
             text: "przycisk okna pokazuje liczbę nadanych tagów i domeny"},
         {fn: "Edytowanie tagów i domeny", col: "proc", process: ["Edytowanie myśli", "Łączenie myśli z hex tagami"], place: DET,
             text: "tag dodawany po spacji albo zatwierdzeniu pola; tagi usuwane pojedynczo"},
+        {fn: "Edytowanie tagów i domeny", col: "proc", process: ["Edytowanie myśli", "Łączenie myśli z hex tagami"], place: DET,
+            text: "Zapisz dodaje jako tag tekst pozostawiony w polu osoby lub projektu — nic wpisanego nie przepada"},
         {fn: "Edytowanie tagów i domeny", col: "proc", process: ["Edytowanie myśli", "Konfigurowanie domen"], place: DET,
             text: "jedna domena na myśl; ponowny wybór zaznaczonej ją odznacza"},
         {fn: "Edytowanie tagów i domeny", col: "proc", process: ["Edytowanie myśli", "Łączenie myśli z hex tagami"], place: DET,
@@ -1446,7 +1448,8 @@
 
     // Differences from Requirements v12 and doubts found in the code — for the verification pass
     const CHANGE_NOTES = {
-        "Wybieranie palety": "nowe — wybór palety kolorów całej aplikacji: pomarańczowa (domyślna) albo kawowa",
+        "Edytowanie tagów i domeny": "nowe — Zapisz dodaje jako tag tekst pozostawiony w polu osoby lub projektu (wcześniej przepadał)",
+        "Wybieranie palety":"nowe — wybór palety kolorów całej aplikacji: pomarańczowa (domyślna) albo kawowa",
         "Zapisywanie zmian": "zmiana — Zapisz obejmuje też paletę kolorów",
         "Rozpoczynanie łapania myśli": "zmiana — niedostępne w Warsztacie; nowe — w Domu wybór, co łapać: notatka, zdjęcie, głosówka, fiszki (wyłączone — nieaktywne, z przejściem do Preferencji)",
         "Wybieranie domyślnej formy zapisu myśli": "zmiana — domyślna forma obowiązuje tylko przy łapaniu ze Strumienia myśli",

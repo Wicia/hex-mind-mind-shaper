@@ -60,6 +60,15 @@ class HexTagsInputView @JvmOverloads constructor(
         renderChips()
     }
 
+    // Save in the sheet: text left in the field becomes a tag instead of being lost
+    fun commitPendingText() {
+        val typedText = binding.hifTag.getText()
+        if (typedText.isBlank()) return
+
+        addTag(typedText)
+        binding.hifTag.setText("")
+    }
+
     // Only space commits a tag here - a single tag never needs a comma
     private fun commitOnSpace(text: String) {
         if (text.isEmpty() || !text.last().isWhitespace()) return
