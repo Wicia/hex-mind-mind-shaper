@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Soft shadow around the navigation toggle (48dp button, 8dp corners) - even on all sides, unlike elevation's
-     spot shadow that falls downwards. Overlapping rings, 1.5dp each: darkest at the button edge, fading out over 4.5dp -->
+<!-- Soft shadow around the navigation toggle (48dp button, 8dp corners, 8dp from the left and bottom screen edges) -
+     unlike elevation's spot shadow that falls downwards. Overlapping rings: darkest at the button edge;
+     top and right fade out over 4.5dp, left and bottom stretch to the screen edges so no gap is left there -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:left="0dp" android:top="0dp" android:right="0dp" android:bottom="0dp">
         <shape android:shape="rectangle">
             <solid android:color="#0B000000" />
-            <corners android:radius="12.5dp" />
+            <!-- ! Bottom-left sits in the screen corner - a rounding would leave a light gap there -->
+            <corners
+                android:topLeftRadius="12.5dp"
+                android:topRightRadius="12.5dp"
+                android:bottomRightRadius="12.5dp"
+                android:bottomLeftRadius="0dp" />
         </shape>
     </item>
 
-    <item android:left="1.5dp" android:top="1.5dp" android:right="1.5dp" android:bottom="1.5dp">
+    <item android:left="3.25dp" android:top="1.5dp" android:right="1.5dp" android:bottom="3.25dp">
         <shape android:shape="rectangle">
             <solid android:color="#0B000000" />
             <corners android:radius="11dp" />
         </shape>
     </item>
 
-    <item android:left="3dp" android:top="3dp" android:right="3dp" android:bottom="3dp">
+    <item android:left="6.5dp" android:top="3dp" android:right="3dp" android:bottom="6.5dp">
         <shape android:shape="rectangle">
             <solid android:color="#0B000000" />
             <corners android:radius="9.5dp" />

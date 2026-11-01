@@ -110,6 +110,10 @@
     <color name="button_auxiliary_background">@color/_palette_lvl_1</color>
     <color name="button_auxiliary_icon">@color/_gray_lvl_2</color>
 
+    <!-- Navigation button: icon (drawer closed) darker than auxiliary, stroke one palette level above its background -->
+    <color name="button_nav_toggle_icon">@color/_gray_lvl_3</color>
+    <color name="button_nav_toggle_stroke">@color/_palette_lvl_2</color>
+
 <!-- ====================================== -->
 <!--    CONTENT BUTTONS -->
 <!-- ====================================== -->

@@ -101,7 +101,7 @@ class NavigationBarController(
         // would cover the toggle - kill it and lift Z above the drawer
         btnToggle.stateListAnimator = null
         btnToggle.elevation = navigationBar.resources.displayMetrics.density * 24f
-        // Elevation only orders it above the drawer; the shadow comes from navToggleHalo, even on all sides
+        // Elevation only orders it above the drawer; the shadow comes from navToggleHalo
         btnToggle.outlineProvider = null
         btnToggle.setIconResource(R.drawable.ic_nav_menu)
 
@@ -124,7 +124,7 @@ class NavigationBarController(
     private fun setToggleActive(active: Boolean) {
         val context = navigationBar.context
         val backgroundColor = if (active) R.color.app_primary else R.color.button_auxiliary_background
-        val iconColor = if (active) R.color.text_on_primary else R.color.button_auxiliary_icon
+        val iconColor = if (active) R.color.text_on_primary else R.color.button_nav_toggle_icon
         btnToggle.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, backgroundColor))
         btnToggle.iconTint = ColorStateList.valueOf(ContextCompat.getColor(context, iconColor))
         btnToggle.animate().rotation(if (active) 180f else 0f).setDuration(200).start()

@@ -90,14 +90,12 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Shadow around the navigation button: centered under it, Z between the drawer (12dp) and the button (24dp) -->
+    <!-- Shadow around the navigation button: reaches the left and bottom screen edges, Z between the drawer (12dp) and the button (24dp) -->
     <View
         android:id="@+id/navToggleHalo"
-        android:layout_width="57dp"
-        android:layout_height="57dp"
+        android:layout_width="60.5dp"
+        android:layout_height="60.5dp"
         android:layout_gravity="bottom|start"
-        android:layout_marginStart="3.5dp"
-        android:layout_marginBottom="3.5dp"
         android:background="@drawable/shape_nav_toggle_halo"
         android:elevation="20dp"
         android:outlineProvider="none" />
@@ -113,6 +111,9 @@
         android:layout_marginBottom="8dp"
         android:elevation="16dp"
         android:contentDescription="@string/common_placeholder_accessibility_content_desc"
+        app:iconTint="@color/button_nav_toggle_icon"
+        app:strokeColor="@color/button_nav_toggle_stroke"
+        app:strokeWidth="1.5dp"
         app:icon="@drawable/ic_nav_expand" />
 
 </FrameLayout>
