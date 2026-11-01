@@ -91,6 +91,7 @@ class StreamActivity : CoreActivity() {
         // Only on the first creation - after a recreation the ViewModel already holds this (or a newer) search
         if (savedInstanceState == null) {
             applyLaunchSearchCriteria()
+            applyLaunchDomainFilter()
             applyLaunchStateFilter()
         }
     }
@@ -201,10 +202,21 @@ class StreamActivity : CoreActivity() {
     // Every thought with the tag, whatever its state - dormant ones included
     private fun applyLaunchSearchCriteria() {
         val criteria = IntentCompat.getParcelableExtra(intent, P_SEARCH_CRITERIA, HexTags::class.java) ?: return
+        showAllStates()
+        searcher.setTags(criteria)
+    }
+
+    // Domain passed by the caller (a Metadata domain tile) - every thought in it, whatever its state
+    private fun applyLaunchDomainFilter() {
+        if (!intent.hasExtra(P_DOMAIN_ID)) return
+        showAllStates()
+        viewModel.updateSelectedDomain(intent.getIntExtra(P_DOMAIN_ID, -1))
+    }
+
+    private fun showAllStates() {
         viewModel.updateShowActive(true)
         viewModel.updateShowNearDormant(true)
         viewModel.updateShowDormant(true)
-        searcher.setTags(criteria)
     }
 
     // Opened for the near-dormant thoughts only - the state filter shows just them, still editable
@@ -481,6 +493,7 @@ class StreamActivity : CoreActivity() {
     companion object {
         const val P_SEARCH_CRITERIA   = "search_criteria"
         const val P_NEAR_DORMANT_ONLY = "near_dormant_only"
+        const val P_DOMAIN_ID         = "domain_id"
 
         private const val FADING_EDGE_DP = 16
     }

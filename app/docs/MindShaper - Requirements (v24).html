@@ -995,6 +995,12 @@
             text: "bez wybranej ikony — domena dostaje ikonę domyślną"},
         {fn: "Edytowanie domeny", col: "proc", process: ["Konfigurowanie domen"], place: META,
             text: "zmiana zapisuje się od razu; nowa nazwa i ikona obowiązują wszędzie, gdzie domena jest pokazywana"},
+        {fn: "Wyszukiwanie myśli z domeną", col: "data", process: ["Konfigurowanie domen", "Filtrowanie myśli"], place: META,
+            text: "liczba myśli z domeną, na dolnym pasku domeny — oddzielnie od edycji domeny"},
+        {fn: "Wyszukiwanie myśli z domeną", col: "proc", process: ["Konfigurowanie domen", "Filtrowanie myśli"], place: [...META, ...STR],
+            text: "otwiera Strumień myśli z filtrem tej domeny — wszystkie myśli z domeną, w każdym stanie, także uśpione"},
+        {fn: "Wyszukiwanie myśli z domeną", col: "proc", process: ["Konfigurowanie domen", "Filtrowanie myśli"], place: [...META, ...STR],
+            text: "cofnięcie ze Strumienia wraca do Tagi i Domeny"},
         {fn: "Przygotowanie domen domyślnych", col: "proc", process: ["Konfigurowanie domen"], place: META,
             text: "pierwsze uruchomienie aplikacji — 10 domen ze startowymi nazwami (np. „Rozwój, Praca, Biznes”), do późniejszej zmiany"},
         {fn: "Przygotowanie domen domyślnych", col: "proc", process: ["Konfigurowanie domen"], place: META,
@@ -1494,6 +1500,8 @@
         "Podpowiadanie tagów": "zmiana — brak podpowiedzi w Łapaniu myśli (pole u góry to sam temat)",
         "Wyświetlanie liczby nieprzeczytanych wieści": "nowe — liczba wieści jeszcze niewybranych w „Wieściach z apki”",
         "Przeglądanie wieści": "nowe — pierwsza wieść: myśli bliskie uśpienia, z przejściem do Strumienia; nieprzeczytane nad przeczytanymi, z oznaczeniem przeczytania i zachętą do wybrania nieprzeczytanych; wybrana wieść zostaje wśród przeczytanych; oznaczanie jako przeczytane / nieprzeczytane",
+        "Wyszukiwanie myśli z tagiem": "zmiana — wszystkie myśli z tagiem, w każdym stanie, także uśpione",
+        "Wyszukiwanie myśli z domeną": "nowe — liczba myśli na dolnym pasku domeny; jego wybranie otwiera Strumień z filtrem tej domeny, w każdym stanie",
     };
 
     // Places where the user verified a function; value = dd/mm of the check.

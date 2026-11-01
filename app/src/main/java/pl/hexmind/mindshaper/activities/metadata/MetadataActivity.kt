@@ -294,6 +294,7 @@ class MetadataActivity : CoreActivity() {
     private fun loadDomainButtons() {
         lifecycleScope.launch {
             val titles = domainService.getAllDomains()
+            val thoughtCounts = domainService.getThoughtCountsByDomain()
 
             try {
                 // Rebuilt on every visit - the tab is reopened on resume as well
@@ -308,8 +309,15 @@ class MetadataActivity : CoreActivity() {
                     val resourceId = domainIconsService.getIconResourceId(domainDTO.iconId)
                     buttonView.findViewById<ImageView>(R.id.iv_domain_icon).setImageResource(resourceId)
 
-                    buttonView.setOnClickListener {
+                    // Two parts, two actions: the top part edits the domain, the bottom bar searches the Stream by it
+                    buttonView.findViewById<View>(R.id.ll_domain_edit).setOnClickListener {
                         onDomainButtonClick(domainIndex, domainDTO)
+                    }
+
+                    buttonView.findViewById<TextView>(R.id.tv_domain_count).text =
+                        (thoughtCounts[domainDTO.id] ?: 0).toString()
+                    buttonView.findViewById<View>(R.id.ll_domain_search).setOnClickListener {
+                        domainDTO.id?.let { domainId -> openStreamFilteredBy(domainId) }
                     }
 
                     glDomains.addView(buttonView)
@@ -319,6 +327,13 @@ class MetadataActivity : CoreActivity() {
                 // TODO: add UI control + handle error using: R.string.settings_domains_loading_error))
             }
         }
+    }
+
+    // ! No CLEAR_TOP, like the tag search - Stream lands on top of this screen, so Back returns here
+    private fun openStreamFilteredBy(domainId: Int) {
+        val intent = Intent(this, StreamActivity::class.java)
+        intent.putExtra(StreamActivity.P_DOMAIN_ID, domainId)
+        startActivity(intent)
     }
 
     private fun onDomainButtonClick(domainTileIndex: Int, currentDomainDTO : DomainDTO) {

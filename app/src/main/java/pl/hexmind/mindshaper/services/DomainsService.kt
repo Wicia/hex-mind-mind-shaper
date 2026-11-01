@@ -23,6 +23,11 @@ class DomainsService @Inject constructor(
         return DomainMapper.INSTANCE.entityListToDtoList(domains)
     }
 
+    // Domain id -> how many thoughts carry it; a domain missing here has none
+    suspend fun getThoughtCountsByDomain(): Map<Int, Int> {
+        return domainRepository.getThoughtCounts().associate { row -> row.domainId to row.thoughtCount }
+    }
+
     suspend fun getIconIdForDomain(domainId: Int): Int? {
         val domain = domainRepository.getDomainById(domainId) ?: return null
         return domain.assetsIconId

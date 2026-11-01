@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import pl.hexmind.mindshaper.database.models.DomainEntity
+import pl.hexmind.mindshaper.database.models.DomainThoughtCount
 import pl.hexmind.mindshaper.database.models.DomainWithIcon
 
 @Dao
@@ -22,6 +23,10 @@ interface DomainDAO {
     @Transaction
     @Query("SELECT * FROM DOMAINS")
     suspend fun getAllDomainsWithIcons(): List<DomainWithIcon>
+
+    // Domains without thoughts are left out - their count is 0
+    @Query("SELECT domain_id, COUNT(*) AS thought_count FROM thoughts WHERE domain_id IS NOT NULL GROUP BY domain_id")
+    suspend fun getThoughtCounts(): List<DomainThoughtCount>
 
     @Query("SELECT id FROM domains")
     suspend fun getUsedDomainIds(): List<Int>

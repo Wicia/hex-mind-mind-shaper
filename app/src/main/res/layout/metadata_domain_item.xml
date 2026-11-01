@@ -1,42 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Domain tile split in two tappable parts: icon + name (edit) | bottom bar with thought count + lens (search in Stream) -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="120dp"
-    android:layout_height="104dp"
+    android:layout_height="144dp"
     android:layout_columnWeight="1"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
-    android:padding="8dp"
     android:orientation="vertical"
-    android:gravity="center"
     android:background="@drawable/shape_domain_tile"
-    android:elevation="4dp"
-    android:clickable="true"
-    android:focusable="true">
+    android:elevation="4dp">
 
-    <ImageView
-        android:id="@+id/iv_domain_icon"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginBottom="6dp"
-        app:tint="@color/_black"
-        android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
-
-    <!-- ! includeFontPadding off: Baloo 2's own padding would make the gap under the name look bigger than above the icon -->
-    <TextView
-        android:id="@+id/tv_domain_name"
+    <!-- Part 1: icon + name -->
+    <LinearLayout
+        android:id="@+id/ll_domain_edit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="4dp"
-        android:textSize="14sp"
-        android:fontFamily="@font/baloo2"
-        android:textColor="@color/text_primary"
-        android:textAlignment="center"
-        android:lineSpacingMultiplier="0.85"
-        android:includeFontPadding="false"
-        android:maxLines="2"
-        />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@drawable/ripple_domain_tile_edit"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:id="@+id/iv_domain_icon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginBottom="6dp"
+            app:tint="@color/_black"
+            android:contentDescription="@string/common_placeholder_accessibility_content_desc" />
+
+        <!-- ! includeFontPadding off: Baloo 2's own padding would make the gap under the name look bigger than above the icon -->
+        <TextView
+            android:id="@+id/tv_domain_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="4dp"
+            android:textSize="14sp"
+            android:fontFamily="@font/baloo2"
+            android:textColor="@color/text_primary"
+            android:textAlignment="center"
+            android:lineSpacingMultiplier="0.85"
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            />
+
+    </LinearLayout>
+
+    <!-- Separator between the two parts: cuts the tile through its full width -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/bg_app_background" />
+
+    <!-- Part 2: thought count + search hint -->
+    <LinearLayout
+        android:id="@+id/ll_domain_search"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@drawable/ripple_domain_tile_search"
+        android:clickable="true"
+        android:focusable="true"
+        android:contentDescription="@string/metadata_domain_search">
+
+        <TextView
+            android:id="@+id/tv_domain_count"
+            style="@style/TextView_Metadata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textSize="14sp"
+            android:textColor="@color/graphite_soft" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/ic_search"
+            android:contentDescription="@null"
+            app:tint="@color/graphite_soft" />
+
+    </LinearLayout>
 
 </LinearLayout>
