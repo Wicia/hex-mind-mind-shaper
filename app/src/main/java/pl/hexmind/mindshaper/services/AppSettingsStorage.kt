@@ -191,6 +191,18 @@ class AppSettingsStorage @Inject constructor(
         }
     }
 
+    // A value remembered by a task run, e.g. the tag added in it
+    fun getOnboardingTaskRunValue(valueKey: String): String? {
+        return sharedPreferences.getString(valueKey, null)
+    }
+
+    // null = nothing remembered
+    fun setOnboardingTaskRunValue(valueKey: String, value: String?) {
+        sharedPreferences.edit {
+            if (value == null) remove(valueKey) else putString(valueKey, value)
+        }
+    }
+
     // Turned on only on purpose - in the welcome dialog or with the switch behind the flask on Home
     fun setOnboardingEnabled(enabled: Boolean) {
         sharedPreferences.edit {

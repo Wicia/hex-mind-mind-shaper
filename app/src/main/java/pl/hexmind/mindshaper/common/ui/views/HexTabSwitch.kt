@@ -165,6 +165,12 @@ class HexTabSwitch @JvmOverloads constructor(
         requestLayout()
     }
 
+    /** Tabs fromIndex..toIndex in this view's coordinates - e.g. a spotlight hole around some of them. */
+    fun tabsBounds(fromIndex: Int, toIndex: Int): RectF {
+        val segmentWidth = width.toFloat() / tabs.size.coerceAtLeast(1)
+        return RectF(fromIndex * segmentWidth, 0f, (toIndex + 1) * segmentWidth, height.toFloat())
+    }
+
     /** Moves the brace without firing onTabSelected - for restoring state. */
     fun setSelectedIndex(index: Int, animate: Boolean = false) {
         if (tabs.isEmpty()) {

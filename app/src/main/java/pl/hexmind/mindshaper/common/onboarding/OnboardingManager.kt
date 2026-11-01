@@ -162,14 +162,33 @@ class OnboardingManager @Inject constructor(
         }
     }
 
+    // Points of the current run only - e.g. to lead on once a part of the task is done
+    fun hasRunPoints(task: OnboardingTask, points: Set<OnboardingTaskPoint>): Boolean {
+        val runKeys = appSettingsStorage.getOnboardingTaskPoints(runParamName(task))
+        return points.all { point -> point.key in runKeys }
+    }
+
+    // The tag added in the current run - later guides point at it, not at any tag
+    fun setRunTagName(task: OnboardingTask, tagName: String) {
+        if (getActiveTask() != task) return
+        appSettingsStorage.setOnboardingTaskRunValue(runTagParamName(task), tagName)
+    }
+
+    fun getRunTagName(task: OnboardingTask): String? {
+        return appSettingsStorage.getOnboardingTaskRunValue(runTagParamName(task))
+    }
+
     private fun runParamName(task: OnboardingTask): String = task.settingsParamName + RUN_PARAM_SUFFIX
 
     private fun runGuidesParamName(task: OnboardingTask): String = task.settingsParamName + RUN_GUIDES_PARAM_SUFFIX
 
-    // A run starts from scratch - its points and the guides already seen
+    private fun runTagParamName(task: OnboardingTask): String = task.settingsParamName + RUN_TAG_PARAM_SUFFIX
+
+    // A run starts from scratch - its points, the guides already seen and the tag it added
     private fun clearRun(task: OnboardingTask) {
         appSettingsStorage.clearOnboardingTaskPoints(runParamName(task))
         appSettingsStorage.clearOnboardingTaskPoints(runGuidesParamName(task))
+        appSettingsStorage.setOnboardingTaskRunValue(runTagParamName(task), null)
     }
 
     // In memory only - lost with the process, the task stays done anyway
@@ -262,6 +281,7 @@ class OnboardingManager @Inject constructor(
         private const val WELCOME_SHOWN_KEY = "onb_welcome_shown"
         private const val RUN_PARAM_SUFFIX = "_run"
         private const val RUN_GUIDES_PARAM_SUFFIX = "_run_guides"
+        private const val RUN_TAG_PARAM_SUFFIX = "_run_tag"
     }
 }
 

@@ -233,6 +233,8 @@
     <color name="spotlight_dim">#CC000000</color>
     <color name="spotlight_text">@color/_white</color>
     <color name="spotlight_arrow">@color/breadcrumb_marker</color>
+    <!-- Under the text inside the hole, when the target leaves no room outside it -->
+    <color name="spotlight_bubble">#E6000000</color>
     <!-- Footer under the text: gold button with dark text, step counter dimmer than the text -->
     <color name="spotlight_button_background">@color/breadcrumb_marker</color>
     <color name="spotlight_button_text">@color/graphite_dark</color>

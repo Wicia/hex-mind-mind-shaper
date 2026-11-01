@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -33,6 +34,7 @@ import pl.hexmind.mindshaper.activities.workshop.GoalDetailActivity
 import pl.hexmind.mindshaper.activities.workshop.WorkshopActivity
 import pl.hexmind.mindshaper.common.onboarding.OnboardingManager
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
+import pl.hexmind.mindshaper.common.ui.views.HexSpotlight
 import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.PermissionService
 import pl.hexmind.mindshaper.services.dto.ColorPalette
@@ -75,6 +77,8 @@ open class CoreActivity : AppCompatActivity() {
             MetadataActivity::class.java.simpleName to 4,
             SettingsActivity::class.java.simpleName to 5
         )
+
+        private const val NAVIGATION_GUIDE_STEPS = 2
     }
 
 // -------------------------------------------------------------------------------------------------
@@ -288,6 +292,50 @@ open class CoreActivity : AppCompatActivity() {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
             overrideTransitions()
+        }
+    }
+
+// -----------------------------------------
+//      ONBOARDING
+// -----------------------------------------
+
+    // Breadcrumb to another screen in two steps: the panel toggle (closing it opens the panel), then the screen's item
+    // Picking the item in the hole goes to its screen, like a plain tap on it
+    fun showNavigationGuide(@IdRes navItemId: Int, toggleText: String, itemText: String) {
+        val controller = navigationController ?: return
+
+        HexSpotlight.show(
+            activity   = this,
+            target     = controller.toggleButton,
+            text       = toggleText,
+            buttonText = getString(R.string.common_spotlight_btn_next),
+            step       = 1,
+            stepCount  = NAVIGATION_GUIDE_STEPS,
+            onClosed   = {
+                controller.expandDrawer()
+                // ! After the panel slid in and the first spotlight faded out - the hole lands on the item at rest
+                window.decorView.postDelayed(
+                    { showNavigationItemGuide(navItemId, itemText) },
+                    NavigationBarController.DRAWER_OPEN_DURATION_MS + HexSpotlight.FADE_DURATION_MS
+                )
+            }
+        ) {}
+    }
+
+    private fun showNavigationItemGuide(@IdRes navItemId: Int, itemText: String) {
+        if (isFinishing || isDestroyed) return
+        val navItem = navigationBarView?.findViewById<View>(navItemId) ?: return
+
+        HexSpotlight.show(
+            activity   = this,
+            target     = navItem,
+            text       = itemText,
+            buttonText = getString(R.string.common_spotlight_btn_got_it),
+            step       = 2,
+            stepCount  = NAVIGATION_GUIDE_STEPS,
+            holeShape  = HexSpotlight.HoleShape.ROUNDED_RECT
+        ) {
+            navItem.performClick()
         }
     }
 

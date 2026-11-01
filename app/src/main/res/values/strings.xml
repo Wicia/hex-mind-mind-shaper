@@ -26,7 +26,7 @@
     <string name="common_btn_confirm_replace">Zastąp dane</string>
     <string name="common_btn_go_to_settings">Przejdź do Preferencji</string>
     <string name="common_btn_close">Zamknij</string>
-    <string name="common_guide_btn_next">Mów dalej...</string>
+    <string name="common_guide_btn_next">Mów dalej…</string>
     <string name="common_guide_btn_dismiss">Dzięki</string>
 
     <string name="common_info_changes_saved">Zmiany zostały zapisane</string>
@@ -41,6 +41,10 @@
     <string name="common_onboarding_task_done_title">Zadanko zaliczone!</string>
     <string name="common_onboarding_task_done_info">„%1$s” masz już za sobą. Bierzesz się za kolejne?</string>
     <string name="common_onboarding_task_done_next">Zrób kolejne</string>
+
+    <!-- Onboarding - tag thought task (breadcrumbs on the navigation panel) -->
+    <string name="common_onboarding_task_nav_toggle">Otwórz menu nawigacji — pokażę Ci gdzie są tagi</string>
+    <string name="common_onboarding_task_nav_metadata">Wchodzimy teraz tutaj…</string>
 
     <!-- Dialogs -->
     <string name="common_deletion_dialog_confirmation">%s usunięto</string>
@@ -261,6 +265,8 @@ Awers - Rewers…"</string>
     <string name="workshop_onboarding_tasks_thoughts_breadcrumb_start">Tym przyciskiem zaczniesz zadanko — od razu przeniesiemy Cię tam, gdzie się je robi</string>
     <string name="workshop_onboarding_task_capture_title">Złap swoją pierwszą myśl</string>
     <string name="workshop_onboarding_task_capture_desc">Napisz notatkę i nadaj myśli temat</string>
+    <string name="workshop_onboarding_task_tag_title">Otaguj myśl i znajdź ją po tagu</string>
+    <string name="workshop_onboarding_task_tag_desc">Dodaj myśli projekt, a potem znajdź ją w Tagach i Domenach</string>
     <string name="workshop_onboarding_task_start">Zacznij zadanko</string>
     <string name="workshop_onboarding_task_stop">Zatrzymaj zadanko</string>
     <string name="workshop_onboarding_tips_switch">Aktywuj tryb Poznawania</string>
@@ -339,9 +345,9 @@ Awers - Rewers…"</string>
     <!-- ============================================================ -->
 
     <!-- Onboarding - capture thought task (breadcrumbs) -->
-    <string name="capture_onboarding_task_bullet">Tym przyciskiem dodasz w notatce kolejny punkt</string>
-    <string name="capture_onboarding_task_subject">Tu nadasz myśli temat</string>
-    <string name="capture_onboarding_task_save">A tym przyciskiem zapiszesz myśl</string>
+    <string name="capture_onboarding_task_bullet">Tym przyciskiem dodasz w notatce podpunkt / bullet point</string>
+    <string name="capture_onboarding_task_subject">Najpierw nadaj myśli temat (jej nagłówek)</string>
+    <string name="capture_onboarding_task_save">A następnie tym przyciskiem zapisz (złap) nową myśl</string>
 
     <!-- Onboarding -->
     <string name="capture_entry_title">Łapanie myśli</string>
@@ -409,6 +415,9 @@ Awers - Rewers…"</string>
 
     <!-- Onboarding - capture thought task (breadcrumb) -->
     <string name="stream_onboarding_task_capture">Tutaj złapiesz nową myśl</string>
+
+    <!-- Onboarding - tag thought task (breadcrumb) -->
+    <string name="stream_onboarding_task_open_thought">Tapnij w myśl, by wejść w jej szczegóły</string>
 
     <!-- Onboarding -->
     <string name="stream_entry_title">Twoje myśli</string>
@@ -533,6 +542,11 @@ Awers - Rewers…"</string>
     <string name="details_toast_note_updated">Notatka zaktualizowana</string>
     <string name="details_toast_tags_updated">Tagi zaktualizowane</string>
 
+    <!-- Onboarding - tag thought task (breadcrumb) -->
+    <string name="details_onboarding_task_tags">Tutaj dodasz do myśli tagi — osobę lub projekt. Dodatkowo możesz przypisać jej kategorię zwaną "domeną"</string>
+    <string name="details_onboarding_task_project">Wpisz w pole projekt „test” i dodaj tag plusem</string>
+    <string name="details_onboarding_task_save">A tym przyciskiem ostatecznie przypiszesz tagi do myśli</string>
+
     <!-- ============================================================ -->
     <!--    METADATA Activity                                         -->
     <!-- ============================================================ -->
@@ -565,6 +579,11 @@ Awers - Rewers…"</string>
 
     <!-- Pill count part - opens Stream searched by the tag -->
     <string name="metadata_tag_search">Szukaj myśli z tym tagiem</string>
+
+    <!-- Onboarding - tag thought task (breadcrumbs) -->
+    <string name="metadata_onboarding_task_projects_tab">Tapnij teraz na zakładkę Projekty</string>
+    <string name="metadata_onboarding_task_domains">Na zakładce "Domeny" stworzysz własne kategorie lub szufladki na myśli. Domenę przypiszesz do myśli w tym samym miejscu co tagi</string>
+    <string name="metadata_onboarding_task_search">Tapnij w lupę przy tagu, a znajdziesz w Strumieniu myśli z tym tagiem</string>
 
     <!-- ============================================================ -->
     <!--    SETTINGS Activity                                         -->

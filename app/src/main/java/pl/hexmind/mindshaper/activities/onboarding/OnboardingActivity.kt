@@ -279,14 +279,33 @@ class OnboardingActivity : CoreActivity() {
                 onboardingManager.deactivateTask()
                 bindTasks()
             }
+            else if (task.needsThought) {
+                startTaskOnThought(task)
+            }
             else {
-                onboardingManager.activateTask(task)
-                bindTasks()
-                // All Thoughts tasks start in Stream - the one under this screen (via "Do the next one") is reused, not stacked
-                startActivity(Intent(this, StreamActivity::class.java)
-                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP))
+                startTask(task)
             }
         }
+    }
+
+    // No thought to work on yet = just the hint, the task is not started
+    private fun startTaskOnThought(task: OnboardingTask) {
+        lifecycleScope.launch {
+            if (thoughtsService.getNewestThoughtId() == null) {
+                showShortToast(R.string.workshop_onboarding_no_thoughts)
+            }
+            else {
+                startTask(task)
+            }
+        }
+    }
+
+    private fun startTask(task: OnboardingTask) {
+        onboardingManager.activateTask(task)
+        bindTasks()
+        // All Thoughts tasks start in Stream - the one under this screen (via "Do the next one") is reused, not stacked
+        startActivity(Intent(this, StreamActivity::class.java)
+            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP))
     }
 
     private fun setupOnboardingList() {

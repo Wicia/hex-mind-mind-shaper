@@ -46,10 +46,13 @@ import kotlin.math.sin
  * a short text with a button under it and a hand-drawn arrow from them to the hole.
  *
  * Text goes above the target when it sits in the lower half of the screen, below it otherwise.
+ * A target too big for the text outside the hole (e.g. a whole card) gets the text and the button
+ * in a dark bubble in the middle of the hole, without the arrow; a tap on the bubble is not a tap in the hole.
  * Tap in the hole = onTargetClick, the button or back = just closes; onClosed runs in all three.
  * Tap anywhere else does nothing - the spotlight is not closed by accident before it is read.
  * One of several steps (stepCount > 1) shows a counter next to the button.
  * Hole: a circle for buttons, a rounded rectangle for wide views (fields, rows).
+ * targetArea = the hole only around a part of the target (e.g. some tabs of a tab switch), in the target's own coordinates.
  * A target inside a dialog (own window) gets the spotlight in a full-screen window above that dialog.
  *
  * Usage: HexSpotlight.show(activity, targetView, text, buttonText) { ... }
@@ -68,7 +71,8 @@ class HexSpotlight private constructor(
     private val holeShape: HoleShape,
     private val onClosed: () -> Unit,
     private val onTargetClick: () -> Unit,
-    private val onRemoved: () -> Unit = {}
+    private val onRemoved: () -> Unit = {},
+    private val targetArea: RectF? = null
 ) : FrameLayout(context) {
 
     enum class HoleShape { CIRCLE, ROUNDED_RECT }
@@ -88,6 +92,10 @@ class HexSpotlight private constructor(
         private const val ARROW_HEAD_ANGLE_DEG = 28.0
         private const val ARROW_HEAD_LONG_DP = 16f   // uneven sides of the head look drawn by hand
         private const val ARROW_HEAD_SHORT_DP = 12f
+        private const val OVERLAY_Z_DP = 32f
+        private const val SCREEN_EDGE_MARGIN_DP = 24f   // the text block outside the hole keeps off the screen edge
+        private const val BUBBLE_PADDING_DP = 20f
+        private const val BUBBLE_CORNER_DP = 16f
         const val FADE_DURATION_MS = 200L
 
         /**
@@ -102,14 +110,19 @@ class HexSpotlight private constructor(
             step: Int = 1,
             stepCount: Int = 1,
             holeShape: HoleShape = HoleShape.CIRCLE,
+            targetArea: RectF? = null,
             onClosed: () -> Unit = {},
             onTargetClick: () -> Unit
         ) {
             val decorView = activity.window.decorView as ViewGroup
             val spotlight = HexSpotlight(
                 activity, activity.onBackPressedDispatcher, activity,
-                target, text, buttonText, step, stepCount, holeShape, onClosed, onTargetClick
+                target, text, buttonText, step, stepCount, holeShape, onClosed, onTargetClick,
+                targetArea = targetArea
             )
+            // ! Above the navigation bar overlay (elevated sibling in the decor view) - dims it and takes its touches
+            spotlight.outlineProvider = null
+            spotlight.translationZ = spotlight.dp(OVERLAY_Z_DP)
             decorView.addView(spotlight, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
         }
 
@@ -163,11 +176,17 @@ class HexSpotlight private constructor(
     }
 
     private val dimPath = Path().apply { fillType = Path.FillType.EVEN_ODD }
+    private val bubbleRect = RectF()     // empty = the text sits outside the hole
     private val arrowPath = Path()
 
     private val dimPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
         color = ContextCompat.getColor(context, R.color.spotlight_dim)
+    }
+
+    private val bubblePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.FILL
+        color = ContextCompat.getColor(context, R.color.spotlight_bubble)
     }
 
     // Round caps and joins keep the arrow soft, like a marker
@@ -238,15 +257,18 @@ class HexSpotlight private constructor(
         val ownLocation = IntArray(2).also { getLocationOnScreen(it) }
         targetLocation.copyInto(placedTargetLocation)
 
+        // The whole target, or only its targetArea
+        val areaWidth = targetArea?.width() ?: target.width.toFloat()
+        val areaHeight = targetArea?.height() ?: target.height.toFloat()
         holeCenter.set(
-            targetLocation[0] - ownLocation[0] + target.width / 2f,
-            targetLocation[1] - ownLocation[1] + target.height / 2f
+            targetLocation[0] - ownLocation[0] + (targetArea?.left ?: 0f) + areaWidth / 2f,
+            targetLocation[1] - ownLocation[1] + (targetArea?.top ?: 0f) + areaHeight / 2f
         )
         val padding = dp(HOLE_PADDING_DP)
-        holeRadius = max(target.width, target.height) / 2f + padding
+        holeRadius = max(areaWidth, areaHeight) / 2f + padding
         holeRect.set(
-            holeCenter.x - target.width / 2f - padding, holeCenter.y - target.height / 2f - padding,
-            holeCenter.x + target.width / 2f + padding, holeCenter.y + target.height / 2f + padding
+            holeCenter.x - areaWidth / 2f - padding, holeCenter.y - areaHeight / 2f - padding,
+            holeCenter.x + areaWidth / 2f + padding, holeCenter.y + areaHeight / 2f + padding
         )
 
         dimPath.reset()
@@ -272,14 +294,29 @@ class HexSpotlight private constructor(
         val footerTopInBlock = layout.height + dp(TEXT_TO_FOOTER_GAP_DP)
         val blockHeight = footerTopInBlock + footer.height
         val holeHalfHeight = if (holeShape == HoleShape.CIRCLE) holeRadius else holeRect.height() / 2f
-        val blockTop = if (isTargetLow) holeCenter.y - holeHalfHeight - gap - blockHeight else holeCenter.y + holeHalfHeight + gap
+        val outsideTop = if (isTargetLow) holeCenter.y - holeHalfHeight - gap - blockHeight else holeCenter.y + holeHalfHeight + gap
+        val edgeMargin = dp(SCREEN_EDGE_MARGIN_DP)
+        val fitsOutside = outsideTop >= edgeMargin && outsideTop + blockHeight <= height - edgeMargin
+
+        val blockTop = if (fitsOutside) outsideTop else holeCenter.y - blockHeight / 2f
         textOrigin.set(sideMargin, blockTop)
 
         footer.x = (width - footer.width) / 2f
         footer.y = blockTop + footerTopInBlock
         footer.visibility = VISIBLE
 
-        buildArrow(isTargetLow, blockTop, blockTop + blockHeight)
+        if (fitsOutside) {
+            bubbleRect.setEmpty()
+            buildArrow(isTargetLow, blockTop, blockTop + blockHeight)
+        }
+        else {
+            val bubblePadding = dp(BUBBLE_PADDING_DP)
+            bubbleRect.set(
+                sideMargin - bubblePadding, blockTop - bubblePadding,
+                width - sideMargin + bubblePadding, blockTop + blockHeight + bubblePadding
+            )
+            arrowPath.reset()
+        }
         invalidate()
     }
 
@@ -346,6 +383,7 @@ class HexSpotlight private constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         canvas.drawPath(dimPath, dimPaint)
+        if (!bubbleRect.isEmpty) canvas.drawRoundRect(bubbleRect, dp(BUBBLE_CORNER_DP), dp(BUBBLE_CORNER_DP), bubblePaint)
         canvas.drawPath(arrowPath, arrowPaint)
 
         textLayout?.let { layout ->
@@ -364,7 +402,7 @@ class HexSpotlight private constructor(
                 HoleShape.CIRCLE       -> hypot(event.x - holeCenter.x, event.y - holeCenter.y) <= holeRadius
                 HoleShape.ROUNDED_RECT -> holeRect.contains(event.x, event.y)
             }
-            if (isInHole) {
+            if (isInHole && !bubbleRect.contains(event.x, event.y)) {
                 dismiss()
                 onClosed()
                 onTargetClick()

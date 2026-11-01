@@ -91,9 +91,9 @@ class HexInputField @JvmOverloads constructor(
 
                 if (inputFilters.isNotEmpty()) binding.etInput.filters = inputFilters.toTypedArray()
 
-                // Tick shown only where the field commits tags; hidden in plain inputs
-                binding.ivConfirm.isVisible =
-                    typedArray.getBoolean(R.styleable.HexInputField_showConfirmIcon, false)
+                // Add button shown only where the field commits tags; hidden in plain inputs
+                binding.ivAdd.isVisible =
+                    typedArray.getBoolean(R.styleable.HexInputField_showAddIcon, false)
 
             } finally {
                 typedArray.recycle()
@@ -179,9 +179,9 @@ class HexInputField @JvmOverloads constructor(
 
     // ── Public API ────────────────────────────────────────────────
 
-    /** The "confirm tick" commits the typed text as a tag - same effect as ending with a space. */
-    fun setOnConfirmClickListener(listener: () -> Unit) {
-        binding.ivConfirm.setOnClickListener { listener() }
+    /** The add button (plus) commits the typed text as a tag - same effect as ending with a space. */
+    fun setOnAddClickListener(listener: () -> Unit) {
+        binding.ivAdd.setOnClickListener { listener() }
     }
 
     fun setOnFocusChangeListener(listener: (Boolean) -> Unit) {

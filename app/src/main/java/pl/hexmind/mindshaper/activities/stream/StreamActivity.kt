@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.core.content.IntentCompat
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.button.MaterialButton
@@ -113,11 +114,7 @@ class StreamActivity : CoreActivity() {
             onDeleteThought = { thoughtToDelete ->
                 showDeleteConfirmationDialog(thoughtToDelete)
             },
-            onThoughtTap = { thoughtTap ->
-                val intent = Intent(this, DetailsActivity::class.java)
-                intent.putExtra(DetailsActivity.P_SELECTED_THOUGHT_ID, thoughtTap.id ?: -1)
-                startActivity(intent)
-            },
+            onThoughtTap = { thoughtTap -> openThoughtDetails(thoughtTap) },
             onLoadAudio = { thoughtId, onReady ->
                 viewModel.loadAudioForPlayback(thoughtId, onReady)
             },
@@ -142,6 +139,12 @@ class StreamActivity : CoreActivity() {
                 updateScrollIndicator(position)
             }
         })
+    }
+
+    private fun openThoughtDetails(thought: ThoughtDTO) {
+        val intent = Intent(this, DetailsActivity::class.java)
+        intent.putExtra(DetailsActivity.P_SELECTED_THOUGHT_ID, thought.id ?: -1)
+        startActivity(intent)
     }
 
     private fun setupScrollIndicator() {
@@ -195,8 +198,12 @@ class StreamActivity : CoreActivity() {
     }
 
     // Criteria passed by the caller (e.g. a Metadata tag pill) replace the current search
+    // Every thought with the tag, whatever its state - dormant ones included
     private fun applyLaunchSearchCriteria() {
         val criteria = IntentCompat.getParcelableExtra(intent, P_SEARCH_CRITERIA, HexTags::class.java) ?: return
+        viewModel.updateShowActive(true)
+        viewModel.updateShowNearDormant(true)
+        viewModel.updateShowDormant(true)
         searcher.setTags(criteria)
     }
 
@@ -266,7 +273,13 @@ class StreamActivity : CoreActivity() {
     override fun onResume() {
         super.onResume()
         val completedTask = onboardingManager.takeCompletedActiveTask()
-        if (completedTask != null) showTaskCompletedDialog(completedTask) else showCaptureTaskGuide()
+        if (completedTask != null) {
+            showTaskCompletedDialog(completedTask)
+        }
+        else {
+            showCaptureTaskGuide()
+            showTagTaskGuide()
+        }
     }
 
     // Back from the place the active task was done - next task or just close
@@ -297,6 +310,27 @@ class StreamActivity : CoreActivity() {
             buttonText = getString(R.string.common_spotlight_btn_got_it)
         ) {
             fabNewThought.performClick()
+        }
+    }
+
+    // Tag thought task starts here - once per run, on the thought in view; called again once the list lands
+    private fun showTagTaskGuide() {
+        val task = OnboardingTask.TAG_THOUGHT
+        if (!onboardingManager.shouldShowTaskGuide(task, OnboardingTaskGuide.STREAM_THOUGHT)) return
+
+        val position = viewPager.currentItem
+        val thought = adapter.currentList.getOrNull(position) ?: return
+        val card = (viewPager.getChildAt(0) as? RecyclerView)?.findViewHolderForAdapterPosition(position)?.itemView ?: return
+
+        onboardingManager.markTaskGuideShown(task, OnboardingTaskGuide.STREAM_THOUGHT)
+        HexSpotlight.show(
+            activity   = this,
+            target     = card,
+            text       = getString(R.string.stream_onboarding_task_open_thought),
+            buttonText = getString(R.string.common_spotlight_btn_got_it),
+            holeShape  = HexSpotlight.HoleShape.ROUNDED_RECT
+        ) {
+            openThoughtDetails(thought)
         }
     }
 
@@ -394,6 +428,9 @@ class StreamActivity : CoreActivity() {
                     // so "go to 0" does nothing until the inserted rows shift the current thought down
                     viewPager.doOnPreDraw { viewPager.setCurrentItem(0, false) }
                 }
+
+                // ! The card is there only once the pager laid out the committed list
+                viewPager.post { if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) showTagTaskGuide() }
             }
         }
 

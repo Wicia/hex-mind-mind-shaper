@@ -35,6 +35,9 @@ class NavigationBarController(
     private var isExpanded = false
     private var currentAnimator: Animator? = null
 
+    // E.g. the target of a breadcrumb leading to another screen
+    val toggleButton: View get() = btnToggle
+
     private val navButtons = listOf(
         NavButton(R.id.navHome, "Home", R.drawable.ic_owl, R.drawable.ic_owl),
         NavButton(R.id.navStream, "Stream", R.drawable.ic_activity_stream, R.drawable.ic_activity_stream_filled),
@@ -127,6 +130,11 @@ class NavigationBarController(
         btnToggle.animate().rotation(if (active) 180f else 0f).setDuration(200).start()
     }
 
+    // Opened from outside the toggle - an open drawer stays as it is
+    fun expandDrawer() {
+        if (!isExpanded) openDrawer()
+    }
+
     private fun openDrawer() {
         currentAnimator?.cancel()
         isExpanded = true
@@ -141,7 +149,7 @@ class NavigationBarController(
 
         currentAnimator = AnimatorSet().apply {
             playTogether(drawerAnimator, scrimAnimator)
-            duration = 280
+            duration = DRAWER_OPEN_DURATION_MS
             interpolator = android.view.animation.DecelerateInterpolator()
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
@@ -242,4 +250,8 @@ class NavigationBarController(
         val icon: Int,
         val iconFilled: Int
     )
+
+    companion object {
+        const val DRAWER_OPEN_DURATION_MS = 280L
+    }
 }

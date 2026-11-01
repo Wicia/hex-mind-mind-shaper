@@ -19,12 +19,17 @@ import pl.hexmind.mindshaper.activities.ThoughtManagerActivity
 import pl.hexmind.mindshaper.common.ui.AddFormButtons
 import pl.hexmind.mindshaper.activities.workshop.GoalDetailActivity
 import pl.hexmind.mindshaper.common.dormant.ThoughtState
+import pl.hexmind.mindshaper.common.onboarding.OnboardingTask
+import pl.hexmind.mindshaper.common.onboarding.OnboardingTaskGuide
+import pl.hexmind.mindshaper.common.onboarding.OnboardingTaskPoint
 import pl.hexmind.mindshaper.common.ui.dialogs.ActionsDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.GuideDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.HexTags
 import pl.hexmind.mindshaper.common.ui.dialogs.HexTagsBottomSheet
+import pl.hexmind.mindshaper.common.ui.dialogs.HexTagsSheetGuide
 import pl.hexmind.mindshaper.common.ui.dialogs.PhotoFullscreenDialog
 import pl.hexmind.mindshaper.common.ui.dialogs.TextEditDialog
+import pl.hexmind.mindshaper.common.ui.views.HexSpotlight
 import pl.hexmind.mindshaper.common.ui.views.IconsGridItem
 import pl.hexmind.mindshaper.common.ui.views.content.HexAudioView
 import pl.hexmind.mindshaper.common.ui.views.content.HexPhotoView
@@ -68,6 +73,9 @@ class DetailsActivity : ThoughtManagerActivity() {
 
     companion object PARAMS {
         const val P_SELECTED_THOUGHT_ID = "P_SELECTED_THOUGHT_ID"
+
+        private const val GUIDE_AFTER_SHEET_DELAY_MS = 400L
+        private val TAG_SEPARATOR_PATTERN = Regex("[,\\s]+")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,6 +103,7 @@ class DetailsActivity : ThoughtManagerActivity() {
         viewModel.thoughtDetails.observe(this) { thought ->
             if (thought != null) {
                 updateUI(thought)
+                showTagsTaskGuide()
             }
             else {
                 showErrorAndFinish(R.string.details_edit_thought_not_found)
@@ -104,6 +113,63 @@ class DetailsActivity : ThoughtManagerActivity() {
         viewModel.linkedStep.observe(this) { linked ->
             updateUsageSection(linked)
         }
+
+        // The tags sheet needs the domains - the guide waits for them as well
+        viewModel.domainsWithIcons.observe(this) { showTagsTaskGuide() }
+    }
+
+    // ========== TAG THOUGHT TASK ==========
+
+    // Tags button, once per run - shown when both the thought and the domains are loaded
+    private fun showTagsTaskGuide() {
+        val task = OnboardingTask.TAG_THOUGHT
+        if (!onboardingManager.shouldShowTaskGuide(task, OnboardingTaskGuide.DETAILS_TAGS)) return
+        if (viewModel.thoughtDetails.value == null || viewModel.domainsWithIcons.value.isNullOrEmpty()) return
+
+        onboardingManager.markTaskGuideShown(task, OnboardingTaskGuide.DETAILS_TAGS)
+        HexSpotlight.show(
+            activity   = this,
+            target     = binding.btnHexTags.root,
+            text       = getString(R.string.details_onboarding_task_tags),
+            buttonText = getString(R.string.common_spotlight_btn_got_it)
+        ) {
+            showHexTagsBottomSheet()
+        }
+    }
+
+    // A project in this run = on to Tags and Domains through the navigation panel
+    private fun showMetadataTaskGuide() {
+        val task = OnboardingTask.TAG_THOUGHT
+        if (isFinishing || isDestroyed || !onboardingManager.shouldShowTaskGuide(task, OnboardingTaskGuide.NAV_METADATA)) return
+        if (!onboardingManager.hasRunPoints(task, setOf(OnboardingTaskPoint.PROJECT_TAG))) return
+
+        onboardingManager.markTaskGuideShown(task, OnboardingTaskGuide.NAV_METADATA)
+        showNavigationGuide(
+            navItemId  = R.id.navMetadata,
+            toggleText = getString(R.string.common_onboarding_task_nav_toggle),
+            itemText   = getString(R.string.common_onboarding_task_nav_metadata)
+        )
+    }
+
+    // Project tags the thought did not have before - the first one scores and is the one the later guides point at
+    private fun addedProjectTags(before: HexTags, after: HexTags): List<String> =
+        splitTagNames(after.project) - splitTagNames(before.project).toSet()
+
+    private fun splitTagNames(fieldText: String?): List<String> =
+        fieldText.orEmpty().split(TAG_SEPARATOR_PATTERN).filter { tagName -> tagName.isNotBlank() }
+
+    // Project field and Save in the sheet, once per run - on any opening of the sheet, not only from the breadcrumb
+    private fun takeTagsSheetGuide(): HexTagsSheetGuide? {
+        val task = OnboardingTask.TAG_THOUGHT
+        if (!onboardingManager.shouldShowTaskGuide(task, OnboardingTaskGuide.TAGS_SHEET)) return null
+
+        onboardingManager.markTaskGuideShown(task, OnboardingTaskGuide.TAGS_SHEET)
+        return HexTagsSheetGuide(
+            projectText    = getString(R.string.details_onboarding_task_project),
+            saveText       = getString(R.string.details_onboarding_task_save),
+            nextButtonText = getString(R.string.common_spotlight_btn_next),
+            lastButtonText = getString(R.string.common_spotlight_btn_got_it)
+        )
     }
 
     private fun updateUsageSection(linked: StepWithGoalDTO?) {
@@ -701,7 +767,8 @@ class DetailsActivity : ThoughtManagerActivity() {
             fragmentManager = supportFragmentManager,
             items = items,
             onValidate = { tags -> viewModel.validateTags(tags) },
-            currentTags = tags
+            currentTags = tags,
+            guide = takeTagsSheetGuide()
         ) { result ->
             // ! Empty person / project come back as "" or null - both mean "no tag"
             val isChanged = result.domainId != tags.domainId ||
@@ -711,6 +778,13 @@ class DetailsActivity : ThoughtManagerActivity() {
 
             viewModel.updateHexTags(result)
             showShortToast(R.string.details_toast_tags_updated)
+
+            addedProjectTags(tags, result).firstOrNull()?.let { tagName ->
+                onboardingManager.setRunTagName(OnboardingTask.TAG_THOUGHT, tagName)
+                onboardingManager.recordTaskPoints(OnboardingTask.TAG_THOUGHT, setOf(OnboardingTaskPoint.PROJECT_TAG))
+            }
+            // ! After the sheet is gone - the hole must land on the settled screen
+            window.decorView.postDelayed({ showMetadataTaskGuide() }, GUIDE_AFTER_SHEET_DELAY_MS)
         }
     }
 }
