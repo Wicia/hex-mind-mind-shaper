@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tag merge mode: the tag picked first (the one that stays) - selected fill + accent frame -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/_palette_lvl_1" />
+    <stroke android:width="2dp" android:color="@color/_palette_lvl_3" />
+    <corners android:radius="20dp" />
+</shape>

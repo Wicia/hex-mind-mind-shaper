@@ -63,6 +63,16 @@ class MetadataViewModel @Inject constructor(
         }
     }
 
+    /** Tag [sourceName] is replaced by [targetName] on every thought and leaves the list. */
+    fun mergeTags(targetName: String, sourceName: String) {
+        viewModelScope.launch {
+            val isMerged = hexTagsService.mergeTag(currentType, targetName, sourceName)
+            if (isMerged) {
+                _tagRows.value = hexTagsService.getTagsWithUsage(currentType).chunked(ROW_MAX)
+            }
+        }
+    }
+
     fun onRenameResultShown() {
         _renameResult.value = null
     }

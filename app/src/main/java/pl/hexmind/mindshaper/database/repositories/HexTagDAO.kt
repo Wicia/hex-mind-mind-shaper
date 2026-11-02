@@ -79,6 +79,24 @@ interface HexTagDAO {
     @Query("DELETE FROM HEX_TAGS WHERE id = :tagId")
     suspend fun deleteTag(tagId: Int)
 
+    /**
+     * Gives every thought linked to the source tag a link to the target tag as well.
+     * IGNORE skips thoughts that already carry both - the (thought, tag) pair is the primary key.
+     */
+    @Query("""
+        INSERT OR IGNORE INTO THOUGHT_HEX_TAGS (thought_id, hex_tag_id)
+        SELECT thought_id, :targetTagId FROM THOUGHT_HEX_TAGS WHERE hex_tag_id = :sourceTagId
+    """)
+    suspend fun copyLinks(sourceTagId: Int, targetTagId: Int)
+
+    /** Replaces the source tag with the target one on every thought, then drops the source tag. */
+    @Transaction
+    suspend fun mergeTag(sourceTagId: Int, targetTagId: Int) {
+        copyLinks(sourceTagId, targetTagId)
+        // The source's own links go with it via ON DELETE CASCADE
+        deleteTag(sourceTagId)
+    }
+
 
     // ===========================================
     //      Thought links
