@@ -137,6 +137,9 @@
 
     <color name="card_section_header">@color/_black</color>
 
+    <!-- Sign in front of the subject on a stream card -->
+    <color name="stream_subject_sign">@color/graphite_light</color>
+
     <!-- Inline @person / #project tags in rich text -->
     <color name="rich_text_inline_tag">@color/graphite_light</color>
 

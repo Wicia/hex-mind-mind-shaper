@@ -459,22 +459,50 @@ class DetailsActivity : ThoughtManagerActivity() {
             title = getString(titleRes),
             notesStyle = true,
             onSave = { newText ->
-                saveRichTextUnlessSimilarTagExists(newText)
+                saveRichTextAskingAboutLoneTags(newText)
             }
         ).show()
     }
 
     /**
+     * Lone tag lines in the note (tags only, e.g. "@ola #dom") - on every save a question whether to drop them
+     * from the note; either way their tags stay with the thought. Asked before the tag variant check.
+     * ! Not asked when the note is nothing but such lines - nothing would be left of it
+     */
+    private fun saveRichTextAskingAboutLoneTags(richText: String) {
+        val noteWithoutLoneTags = HexTagsUtils.removeLoneTagLines(richText)
+
+        if (!HexTagsUtils.hasLoneTagLines(richText) || noteWithoutLoneTags == null) {
+            saveRichTextUnlessSimilarTagExists(richText)
+            return
+        }
+
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.common_lone_tags_dialog_title))
+            .setDescription(getString(R.string.common_lone_tags_dialog_description))
+            .setSecondaryAction(getString(R.string.common_lone_tags_dialog_keep)) {
+                saveRichTextUnlessSimilarTagExists(richText)
+            }
+            .setPrimaryAction(getString(R.string.common_lone_tags_dialog_remove)) {
+                saveRichTextUnlessSimilarTagExists(noteWithoutLoneTags, tagSource = richText)
+            }
+            // ! The note is not saved yet - back to the editor, so the typed text is not lost
+            .setOnCancel { showEditRichTextDialog(richText) }
+            .show()
+    }
+
+    /**
      * Inline @/# markers become tags on save, so a variant typed in the note gets the same choice
      * as one typed in the tag fields.
+     * [tagSource] = the note as typed, before lone tag lines were dropped - their tags still count.
      */
-    private fun saveRichTextUnlessSimilarTagExists(richText: String) {
+    private fun saveRichTextUnlessSimilarTagExists(richText: String, tagSource: String = richText) {
         lifecycleScope.launch {
-            val embeddedTags = HexTagsUtils.extractEmbeddedTags(richText)
+            val embeddedTags = HexTagsUtils.extractEmbeddedTags(tagSource)
             val similarTag = hexTagsService.findFirstSimilarTag(embeddedTags.person, embeddedTags.project)
 
             if (similarTag == null) {
-                saveRichText(richText)
+                saveRichText(richText, tagSource)
                 return@launch
             }
 
@@ -482,27 +510,31 @@ class DetailsActivity : ThoughtManagerActivity() {
                 .setTitle(getString(R.string.common_hex_tags_similar_title))
                 .setDescription(getString(R.string.common_hex_tags_similar_description, similarTag.suggestion))
                 .setSecondaryAction(getString(R.string.common_hex_tags_similar_keep_mine)) {
-                    saveRichText(richText)
+                    saveRichText(richText, tagSource)
                 }
                 .setPrimaryAction(getString(R.string.common_hex_tags_similar_use, similarTag.suggestion)) {
-                    val correctedRichText = HexTagsUtils.replaceEmbeddedTag(
-                        richText, similarTag.tagType, similarTag.typedTag, similarTag.suggestion
-                    )
-                    saveRichText(correctedRichText ?: richText)
+                    fun corrected(text: String) = HexTagsUtils.replaceEmbeddedTag(
+                        text, similarTag.tagType, similarTag.typedTag, similarTag.suggestion
+                    ) ?: text
+                    saveRichText(corrected(richText), corrected(tagSource))
                 }
                 // ! The note is not saved yet - back to the editor, so the typed text is not lost
-                .setOnCancel { showEditRichTextDialog(richText) }
+                .setOnCancel { showEditRichTextDialog(tagSource) }
                 .show()
         }
     }
 
     // Compared with the saved note, not the editor's input - the editor may reopen with unsaved text
-    private fun saveRichText(richText: String) {
+    // ! Same note after dropping lone tag lines - still saved, the dropped lines may carry new tags
+    private fun saveRichText(richText: String, tagSource: String = richText) {
         val savedText = viewModel.thoughtDetails.value?.richText.orEmpty()
-        if (richText == savedText) return
+        val noteChanged = richText != savedText
+        if (!noteChanged && tagSource == richText) return
 
-        viewModel.updateRichText(richText)
-        showSavedToast(savedText.isBlank(), R.string.details_toast_note_added, R.string.details_toast_note_updated)
+        viewModel.updateRichText(richText, tagSource)
+        if (noteChanged) {
+            showSavedToast(savedText.isBlank(), R.string.details_toast_note_added, R.string.details_toast_note_updated)
+        }
     }
 
     private fun takePhoto() {

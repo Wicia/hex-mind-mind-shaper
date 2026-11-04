@@ -96,12 +96,18 @@
     <string name="common_hex_tags_similar_use">Użyj\n[%1$s]</string>
     <string name="common_hex_tags_similar_keep_mine">Utwórz nowy tag</string>
 
+    <!-- Lone tag lines in the note (asked on save - Capture, Details) -->
+    <string name="common_lone_tags_dialog_title">Usunąć samotne tagi z notatki?</string>
+    <string name="common_lone_tags_dialog_description">Linie z samymi tagami @ i # można usunąć z treści notatki. Tagi i tak będą powiązane z myślą.</string>
+    <string name="common_lone_tags_dialog_keep">Zostaw</string>
+    <string name="common_lone_tags_dialog_remove">Usuń z notatki</string>
+
     <string name="common_hex_tags_hint_person">Osoba lub Ekipa</string>
     <string name="common_hex_tags_hint_project">Projekt lub Zajawka</string>
     <string name="common_hex_tags_add_tag_content_desc">Dodaj tag</string>
     <string name="common_hex_tag_hint_subject">Temat</string>
     <string name="common_hex_tags_label_domain">| Domena</string>
-    <string name="common_hex_tags_subject_prefix">"⧽  %s"</string>
+    <string name="common_hex_tags_subject_prefix">"∫  %s"</string>
     <string name="common_subject_error_chars_exceeded">Temat nie może przekroczyć %s znaków…</string>
     <string name="common_hex_tag_error_chars_exceeded">Pojedynczy tag nie może mieć więcej niż %s znaków…</string>
 
@@ -378,12 +384,6 @@ Awers - Rewers…"</string>
     <string name="capture_main_label">Łapanie myśli</string>
     <string name="capture_hex_tags_tooltip">temat myśli</string>
     <string name="capture_error_no_content">Potrzebujesz cos zapisać (tekst, nagranie, obraz lub fiszki)</string>
-
-    <!-- Lone tag lines in the note (asked on save) -->
-    <string name="capture_lone_tags_dialog_title">Usunąć samotne tagi z notatki?</string>
-    <string name="capture_lone_tags_dialog_description">Linie z samymi tagami @ i # można usunąć z treści notatki. Tagi i tak będą powiązane z myślą.</string>
-    <string name="capture_lone_tags_dialog_keep">Zostaw</string>
-    <string name="capture_lone_tags_dialog_remove">Usuń z notatki</string>
 
     <!-- Leaving without saving -->
     <string name="capture_exit_dialog_title">Zapisać myśl?</string>

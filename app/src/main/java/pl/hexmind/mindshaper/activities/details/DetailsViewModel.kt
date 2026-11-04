@@ -138,14 +138,15 @@ class DetailsViewModel @Inject constructor(
         } ?: false
     }
 
-    fun updateRichText(richText: String) {
+    // [tagSource] = the note as typed - may still hold lone tag lines dropped from [richText]
+    fun updateRichText(richText: String, tagSource: String = richText) {
         viewModelScope.launch {
             thoughtDetails.value?.let { thought ->
                 val thoughtId = thought.id ?: return@let
                 thoughtsService.updateThoughtRichText(thoughtId, richText)
 
                 // Fold @/# markers typed inline in the note text into this thought's hex tags
-                val embeddedTags = HexTagsUtils.extractEmbeddedTags(richText)
+                val embeddedTags = HexTagsUtils.extractEmbeddedTags(tagSource)
                 if (embeddedTags.person != null || embeddedTags.project != null) {
                     thought.person = HexTagsUtils.mergeTagNames(thought.person, embeddedTags.person)
                     thought.project = HexTagsUtils.mergeTagNames(thought.project, embeddedTags.project)

@@ -8,6 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.DiffUtil
@@ -27,6 +31,9 @@ import pl.hexmind.mindshaper.services.AppSettingsStorage
 import pl.hexmind.mindshaper.services.dto.ThoughtDTO
 import timber.log.Timber
 import java.io.File
+
+// Sign of the subject label vs the label text
+private const val SUBJECT_SIGN_SCALE = 1.35f
 
 /**
  * Adapter for vertical stream - shows ALL filled fields (text, audio, photo) in one card
@@ -184,11 +191,22 @@ class StreamAdapter(
             updateStatusIcon(thought)
         }
 
+        // Sign in front of the subject - larger than the subject text, in its own color
+        private fun buildSubjectLabel(subject: String): CharSequence {
+            val label = SpannableString(itemView.context.getString(R.string.common_hex_tags_subject_prefix, subject))
+            label.setSpan(RelativeSizeSpan(SUBJECT_SIGN_SCALE), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            label.setSpan(
+                ForegroundColorSpan(ContextCompat.getColor(itemView.context, R.color.stream_subject_sign)),
+                0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            return label
+        }
+
         fun updateMetadataUI(thought: ThoughtDTO, sortConfig: SortConfig) {
             // Showing subject label basing on sorting config
             val showSubjectLabel = !thought.subject.isNullOrBlank() && sortConfig.property != SortProperty.SUBJECT
             tvSubjectLabel.visibility = if (showSubjectLabel) View.VISIBLE else View.GONE
-            if (showSubjectLabel) tvSubjectLabel.text = itemView.context.getString(R.string.common_hex_tags_subject_prefix, thought.subject)
+            if (showSubjectLabel) tvSubjectLabel.text = buildSubjectLabel(thought.subject.orEmpty())
 
             // Cases by sorting properties
             when (sortConfig.property) {

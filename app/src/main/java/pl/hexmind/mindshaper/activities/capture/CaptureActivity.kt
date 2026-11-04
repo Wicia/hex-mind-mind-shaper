@@ -481,12 +481,12 @@ class CaptureActivity : ThoughtManagerActivity() {
         }
 
         ActionsDialog.Builder(this)
-            .setTitle(getString(R.string.capture_lone_tags_dialog_title))
-            .setDescription(getString(R.string.capture_lone_tags_dialog_description))
-            .setSecondaryAction(getString(R.string.capture_lone_tags_dialog_keep)) {
+            .setTitle(getString(R.string.common_lone_tags_dialog_title))
+            .setDescription(getString(R.string.common_lone_tags_dialog_description))
+            .setSecondaryAction(getString(R.string.common_lone_tags_dialog_keep)) {
                 lifecycleScope.launch { saveDraftWithTagsFrom(noteText) }
             }
-            .setPrimaryAction(getString(R.string.capture_lone_tags_dialog_remove)) {
+            .setPrimaryAction(getString(R.string.common_lone_tags_dialog_remove)) {
                 if (noteWithoutLoneTags == null) viewModel.deleteRichText() else viewModel.updateRichText(noteWithoutLoneTags)
                 lifecycleScope.launch { saveDraftWithTagsFrom(noteText) }
             }
