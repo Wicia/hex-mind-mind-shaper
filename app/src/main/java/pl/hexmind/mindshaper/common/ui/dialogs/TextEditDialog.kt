@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -133,6 +134,9 @@ class TextEditDialog(
     }
 
     fun show() {
+        // ! Opened while the activity is still starting (Capture auto-open) the window has no focus yet
+        // and the request below is dropped - this mode shows the keyboard once it gets the focus
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         dialog.show()
         // Request focus and show keyboard
         etInput.requestFocus()
