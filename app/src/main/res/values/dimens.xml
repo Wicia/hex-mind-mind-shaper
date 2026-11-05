@@ -37,8 +37,8 @@
     <!-- Accent edge on the left of a set card (shape_flashcard_set_card) - its width mid-side -->
     <dimen name="flashcard_set_edge_width">3dp</dimen>
 
-    <!-- Level bar in the set preview (vertical twin of the session progress) -->
-    <dimen name="flashcard_level_bar_width">4dp</dimen>
+    <!-- Level hexagon on the flashcard lists -->
+    <dimen name="flashcard_level_hexagon_size">24dp</dimen>
 
     <!-- Gap between the flashcard rows in the set edit dialog -->
     <dimen name="flashcards_edit_row_spacing">12dp</dimen>

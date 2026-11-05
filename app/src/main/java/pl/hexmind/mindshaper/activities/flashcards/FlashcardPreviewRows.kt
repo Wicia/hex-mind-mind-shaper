@@ -7,8 +7,8 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.updateLayoutParams
 import pl.hexmind.mindshaper.R
+import pl.hexmind.mindshaper.common.ui.views.HexLevelHexagon
 import pl.hexmind.mindshaper.services.FlashcardsScheduler
 import pl.hexmind.mindshaper.services.dto.FlashcardDTO
 import pl.hexmind.mindshaper.services.dto.FlashcardStatus
@@ -57,22 +57,24 @@ object FlashcardPreviewRows {
     }
 
     /**
-     * Level 0 (new) - 5: "lvl: N" on top + the bar filled from the bottom.
-     * Mastered = a star instead of "lvl: N"
+     * Level 0 (new) - 5: "lvl: N" on top + one hexagon side per level.
+     * Mastered = a star instead of "lvl: N" and the last side closes the hexagon
      */
     private fun bindLevel(row: View, flashcard: FlashcardDTO) {
         val context = row.context
-        val filled = flashcard.level.coerceIn(0, FlashcardsScheduler.MAX_LEVEL).toFloat() / FlashcardsScheduler.MAX_LEVEL
         val tvLevel = row.findViewById<TextView>(R.id.tv_preview_level)
+        val hexagon = row.findViewById<HexLevelHexagon>(R.id.v_preview_level_hexagon)
         if (flashcard.status == FlashcardStatus.MASTERED) {
             tvLevel.text = context.getString(R.string.flashcards_level_mastered)
             tvLevel.setTextColor(context.getColor(R.color.flashcard_accent))
             tvLevel.setTextSize(TypedValue.COMPLEX_UNIT_SP, STAR_TEXT_SIZE_SP)
+            hexagon.litSides = HexLevelHexagon.SIDE_COUNT
             startStarSignal(row.findViewById(R.id.v_preview_level_signal))
         }
-        else tvLevel.text = context.getString(R.string.flashcards_level, flashcard.level)
-        row.findViewById<View>(R.id.v_preview_level_done).updateLayoutParams<LinearLayout.LayoutParams> { weight = filled }
-        row.findViewById<View>(R.id.v_preview_level_left).updateLayoutParams<LinearLayout.LayoutParams> { weight = 1f - filled }
+        else {
+            tvLevel.text = context.getString(R.string.flashcards_level, flashcard.level)
+            hexagon.litSides = flashcard.level.coerceIn(0, FlashcardsScheduler.MAX_LEVEL)
+        }
     }
 
     /**
