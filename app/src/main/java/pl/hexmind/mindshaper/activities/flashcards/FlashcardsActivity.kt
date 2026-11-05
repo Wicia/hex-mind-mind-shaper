@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,6 +42,7 @@ class FlashcardsActivity : CoreActivity() {
     private lateinit var tvLooseEmpty: TextView
     private lateinit var rvSets: RecyclerView
     private lateinit var tvSetsEmpty: TextView
+    private lateinit var appBar: AppBarLayout
     private lateinit var reviewToday: View
     private lateinit var tvReviewTodayStatus: TextView
     private lateinit var btnReviewToday: MaterialButton
@@ -83,6 +85,7 @@ class FlashcardsActivity : CoreActivity() {
         // Nav overlay + current-screen highlight are added by CoreActivity (onContentChanged / onResume)
         setupHeader(R.drawable.ic_activity_flashcards, R.string.flashcards_title)
 
+        appBar = findViewById(R.id.app_bar_flashcards)
         tabsFlashcards = findViewById(R.id.tabs_flashcards)
         llLoose = findViewById(R.id.ll_loose_flashcards)
         tvLooseEmpty = findViewById(R.id.tv_loose_empty)
@@ -105,6 +108,8 @@ class FlashcardsActivity : CoreActivity() {
             initialIndex = savedInstanceState?.getInt(STATE_TAB) ?: TAB_LOOSE
         )
         tabsFlashcards.onTabSelected = {
+            // ! A shorter list may not scroll - the header left hidden would have no way back
+            appBar.setExpanded(true)
             speedDial.close()
             renderTabs()
         }
@@ -198,6 +203,7 @@ class FlashcardsActivity : CoreActivity() {
         pendingNewLoose = false
 
         tabsFlashcards.setSelectedIndex(TAB_LOOSE)
+        appBar.setExpanded(true)
         renderTabs()
         openAddLoose()
     }

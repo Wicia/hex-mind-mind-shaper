@@ -8,21 +8,26 @@
     android:background="@drawable/bg_app_background"
     tools:context=".activities.flashcards.FlashcardsActivity">
 
-    <androidx.core.widget.NestedScrollView
+    <!-- Scrolling the list hides the header and today's session, any scroll back returns them, the tabs stay at the top
+         ! clipChildren / clipToPadding false: the glow of today's session falls into the 16dp padding -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_flashcards"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
 
-        <!-- ! clipChildren / clipToPadding false: the cards' shadows fall into the 16dp padding - clipped here, their sides would look cut off -->
+        <!-- ! Wrapper: an include carrying the scroll flags would lose the margins of the header's root -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="80dp"
             android:clipChildren="false"
-            android:clipToPadding="false">
+            app:layout_scrollFlags="scroll|enterAlways">
 
             <!-- Activity header (icon + title) -->
             <include layout="@layout/common_header_activity" />
@@ -40,13 +45,34 @@
                 android:visibility="gone"
                 tools:visibility="visible" />
 
-            <!-- Tab switch (Luźne fiszki / Zestawy) -->
-            <pl.hexmind.mindshaper.common.ui.views.HexTabSwitch
-                android:id="@+id/tabs_flashcards"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                />
+        </LinearLayout>
+
+        <!-- Tab switch (Luźne fiszki / Zestawy) -->
+        <pl.hexmind.mindshaper.common.ui.views.HexTabSwitch
+            android:id="@+id/tabs_flashcards"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- ! clipChildren / clipToPadding false: the cards' shadows fall into the 16dp padding - clipped here, their sides would look cut off -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="80dp"
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
             <!-- Loose flashcards: flashcard_preview_row -->
             <LinearLayout
