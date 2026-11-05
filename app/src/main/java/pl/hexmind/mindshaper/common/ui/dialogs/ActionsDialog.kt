@@ -27,7 +27,7 @@ class ActionsDialog private constructor(
 
     // header and content
     private val title: String,
-    private val description: String?,
+    private val description: CharSequence?,
     @DrawableRes private val iconRes: Int?,
     private val confetti: Boolean,
 
@@ -130,7 +130,7 @@ class ActionsDialog private constructor(
 
     class Builder(private val context: Context) {
         private var title: String = ""
-        private var description: String? = null
+        private var description: CharSequence? = null
         @DrawableRes private var iconRes: Int? = null
         private var confetti: Boolean = false
         private var primaryText: String? = null
@@ -145,7 +145,7 @@ class ActionsDialog private constructor(
             this.title = title
         }
 
-        fun setDescription(description : String) = apply {
+        fun setDescription(description : CharSequence) = apply {
             this.description = description
         }
 

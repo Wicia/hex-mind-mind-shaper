@@ -464,25 +464,6 @@
 
   <details class="item">
     <summary>
-      <span class="prio imp">Istotny</span> 
-      <strong>Scalanie tagów przez drag &amp; drop</strong> — przeciągnięcie jednej piguły na drugą łączy oba tagi w jeden.
-      <span class="mods"><span class="mod">Tagi i Domeny</span></span>
-    </summary>
-    <div class="body">
-      <ul>
-        <li><strong>Gest</strong> — chwyt piguły <code>AAA (2)</code> i upuszczenie na <code>BBB (3)</code>; upuszczenie na samą siebie ignorowane</li>
-        <li><strong>Bottom sheet</strong> — pole nazwy domyślnie <code>AAA / BBB</code>; user ustala finalną nazwę (wzór z <code>HexTagEditBottomSheet</code>)</li>
-        <li><strong>Liczba</strong> — <code>3 + 2 = 5</code> tylko gdy zbiory myśli rozłączne; realnie liczba <strong>unikalnych</strong> myśli (myśl z oboma tagami liczona raz), bo klucz <code>THOUGHT_HEX_TAGS(thought_id, hex_tag_id)</code> dedupuje</li>
-        <li><strong>UI drag</strong> — piguły to dzieci wiersza, nie itemy RecyclerView → <code>View.startDragAndDrop</code> + <code>OnDragListener</code>, nie <code>ItemTouchHelper</code></li>
-        <li><strong>Edge</strong> — finalna nazwa = trzeci istniejący tag → scalanie 3-drożne (reuse <code>getOrCreateTagId</code>)</li>
-      </ul>
-      <div class="gain"><b>Po co:</b> duplikaty i warianty tej samej osoby („kasia" / „kaśka") łączysz jednym gestem, zamiast czyścić bazę ręcznie.</div>
-      <div class="where"><span class="lbl">Gdzie</span><ul><li><code>services/HexTagsService.kt</code> + <code>HexTagDAO</code> — scalenie w <code>@Transaction</code> (<code>UPDATE OR IGNORE</code> re-link + sprzątnięcie kolizji + usunięcie taga)</li><li><code>activities/metadata/</code> — adapter (drag) + bottom sheet scalania</li></ul></div>
-    </div>
-  </details>
-
-  <details class="item">
-    <summary>
       <span class="prio minor">Drobny</span> 
       <strong>Seed startowych tagów (Osoba + Projekt)</strong> — zestaw tagów istnieje od pierwszego uruchomienia, nie dopiero gdy user je stworzy.
       <span class="mods"><span class="mod">Tagi i Domeny</span></span>

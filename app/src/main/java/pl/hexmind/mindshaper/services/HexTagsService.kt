@@ -92,7 +92,7 @@ class HexTagsService @Inject constructor(
 
     /**
      * Renames a tag in the dictionary. A name already held by another tag of the same type is
-     * rejected (combining the two is a separate merge feature), so the caller can warn instead of
+     * rejected (combining the two is mergeTag), so the caller can warn instead of
      * hitting the unique (display_name, type) index.
      */
     suspend fun renameTag(tagType: HexTagType, currentName: String, newName: String): RenameOutcome {
@@ -123,6 +123,20 @@ class HexTagsService @Inject constructor(
     suspend fun deleteTag(tagType: HexTagType, tagName: String) {
         val tag = hexTagDAO.findTag(tagType.name, tagName) ?: return
         hexTagDAO.deleteTag(tag.id!!)
+    }
+
+    /**
+     * Replaces the source tag with the target one: thoughts tagged with the source get the target
+     * instead (no duplicate when they already had both) and the source leaves the dictionary.
+     * @return false when either tag is missing or both are the same tag - nothing was changed
+     */
+    suspend fun mergeTag(tagType: HexTagType, targetName: String, sourceName: String): Boolean {
+        val targetTag = hexTagDAO.findTag(tagType.name, targetName) ?: return false
+        val sourceTag = hexTagDAO.findTag(tagType.name, sourceName) ?: return false
+        if (targetTag.id == sourceTag.id) return false
+
+        hexTagDAO.mergeTag(sourceTagId = sourceTag.id!!, targetTagId = targetTag.id!!)
+        return true
     }
 
     // Recent first so the shortlist reacts to what the user is doing now, then filled with favourites

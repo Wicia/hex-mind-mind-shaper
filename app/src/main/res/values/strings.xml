@@ -577,6 +577,15 @@ Awers - Rewers…"</string>
     <string name="metadata_tag_delete_yes">Usuń tag</string>
     <string name="metadata_tag_delete_confirmation">Tag [%1$s] usunięto</string>
 
+    <!-- Tag merge mode -->
+    <string name="metadata_tag_merge_start">Scal tagi</string>
+    <string name="metadata_tag_merge_pick_target">Scalanie: wskaż tag, który zostaje</string>
+    <string name="metadata_tag_merge_pick_source"><![CDATA[Wskaż tag, który zastąpisz tagiem [<b>%1$s</b>]]]></string>
+    <string name="metadata_tag_merge_title">Zastąpić taga tagiem?</string>
+    <string name="metadata_tag_merge_message"><![CDATA[Myśli z tagiem [<b>%2$s</b>] dostaną tag [<b>%1$s</b>], zaś [<b>%2$s</b>] zniknie z listy. Tego nie da się cofnąć.]]></string>
+    <string name="metadata_tag_merge_yes">Zastąp</string>
+    <string name="metadata_tag_merge_confirmation">Tag [%2$s] zastąpiono tagiem [%1$s]</string>
+
     <!-- Pill count part - opens Stream searched by the tag -->
     <string name="metadata_tag_search">Szukaj myśli z tym tagiem</string>
     <string name="metadata_domain_search">Szukaj myśli z tą domeną</string>

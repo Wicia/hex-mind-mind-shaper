@@ -2,16 +2,22 @@ package pl.hexmind.mindshaper.activities.metadata
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.core.text.HtmlCompat
 import androidx.core.view.children
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pl.hexmind.mindshaper.R
@@ -41,6 +47,18 @@ class MetadataActivity : CoreActivity() {
     private lateinit var rvTags: RecyclerView
     private lateinit var tvEmpty: TextView
     private lateinit var tabsTagType: HexTabSwitch
+    private lateinit var appBar: AppBarLayout
+    private lateinit var fabMergeTags: FloatingActionButton
+    private lateinit var llMergeHint: View
+    private lateinit var tvMergeHint: TextView
+
+    // Tag merge mode: tap the fab, pick tag A (stays), pick tag B (replaced) - then the question
+    private var isMergeMode = false
+    private var mergeTargetName: String? = null
+
+    private val mergeBackCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() = exitMergeMode()
+    }
 
     // Tag task: the search guide waits for the projects list the previous step switched to
     private var isSearchGuidePending = false
@@ -58,7 +76,8 @@ class MetadataActivity : CoreActivity() {
     private val tagsAdapter = MetadataTagRowAdapter(
         onTagTap = { tagName -> showTagEditSheet(tagName) },
         onTagLongPress = { tagName -> showTagDeleteDialog(tagName) },
-        onTagSearch = { tagName -> openStreamSearchedBy(tagName) }
+        onTagSearch = { tagName -> openStreamSearchedBy(tagName) },
+        onTagMergePick = { tagName -> onMergeTagPicked(tagName) }
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +90,14 @@ class MetadataActivity : CoreActivity() {
         rvTags = findViewById(R.id.rv_tags)
         tvEmpty = findViewById(R.id.tv_tags_empty)
         tabsTagType = findViewById(R.id.tabs_tag_type)
+        appBar = findViewById(R.id.app_bar_metadata)
+        fabMergeTags = findViewById(R.id.fab_merge_tags)
+        llMergeHint = findViewById(R.id.ll_merge_hint)
+        tvMergeHint = findViewById(R.id.tv_merge_hint)
+
+        fabMergeTags.setOnClickListener { enterMergeMode() }
+        findViewById<View>(R.id.btn_merge_cancel).setOnClickListener { exitMergeMode() }
+        onBackPressedDispatcher.addCallback(this, mergeBackCallback)
 
         rvTags.layoutManager = LinearLayoutManager(this)
         rvTags.adapter = tagsAdapter
@@ -85,6 +112,8 @@ class MetadataActivity : CoreActivity() {
             )
         )
         tabsTagType.onTabSelected = { tabIndex ->
+            // ! A shorter list may not scroll - the header left hidden would have no way back
+            appBar.setExpanded(true)
             when (tabIndex) {
                 TAB_PERSONS  -> selectTagType(HexTagType.PERSON)
                 TAB_PROJECTS -> selectTagType(HexTagType.PROJECT)
@@ -118,6 +147,13 @@ class MetadataActivity : CoreActivity() {
             rvTags.visibility = if (hasTags) View.VISIBLE else View.GONE
             tvEmpty.visibility = if (hasTags) View.GONE else View.VISIBLE
 
+            // Merging takes two tags - with fewer there is nothing to merge
+            val tagCount = rows.sumOf { row -> row.size }
+            if (tagCount < MERGE_MIN_TAGS) {
+                exitMergeMode()
+            }
+            fabMergeTags.visibility = if (tagCount >= MERGE_MIN_TAGS && !isMergeMode) View.VISIBLE else View.GONE
+
             // ! Once the list laid out the new rows - the guide ends on a pill
             rvTags.post { showTagTaskGuide() }
             if (isSearchGuidePending && viewModel.currentType == HexTagType.PROJECT) {
@@ -132,8 +168,7 @@ class MetadataActivity : CoreActivity() {
                 return@observe
             }
 
-            // Renaming onto an existing tag is blocked - combining the two is the drag & drop merge
-            // feature parked in the TODO
+            // Renaming onto an existing tag is blocked - combining the two is the merge mode (fab)
             if (outcome == RenameOutcome.NAME_TAKEN) {
                 showShortToast(R.string.metadata_tag_edit_exists)
             }
@@ -143,6 +178,10 @@ class MetadataActivity : CoreActivity() {
     }
 
     private fun selectTagType(tagType: HexTagType) {
+        // Merging stays within one list - another one (e.g. a guide's tab switch) starts clean
+        if (tagType != viewModel.currentType || viewModel.domainsSelected) {
+            exitMergeMode()
+        }
         tabsTagType.setSelectedIndex(if (tagType == HexTagType.PERSON) TAB_PERSONS else TAB_PROJECTS)
         glDomains.visibility = View.GONE
 
@@ -192,6 +231,78 @@ class MetadataActivity : CoreActivity() {
         }
     }
 
+    // ========== TAG MERGE ==========
+
+    private fun enterMergeMode() {
+        isMergeMode = true
+        mergeTargetName = null
+        mergeBackCallback.isEnabled = true
+
+        fabMergeTags.visibility = View.GONE
+        llMergeHint.visibility = View.VISIBLE
+        refreshMergeState()
+    }
+
+    private fun exitMergeMode() {
+        if (!isMergeMode) return
+
+        isMergeMode = false
+        mergeTargetName = null
+        mergeBackCallback.isEnabled = false
+
+        fabMergeTags.visibility = View.VISIBLE
+        llMergeHint.visibility = View.GONE
+        tagsAdapter.setMergeMode(false)
+    }
+
+    // First tap = tag A (stays), second = tag B (replaced); A tapped again is unpicked
+    private fun onMergeTagPicked(tagName: String) {
+        val targetName = mergeTargetName
+        when (targetName) {
+            null    -> mergeTargetName = tagName
+            tagName -> mergeTargetName = null
+            else    -> {
+                showTagMergeDialog(targetName = targetName, sourceName = tagName)
+                return
+            }
+        }
+        refreshMergeState()
+    }
+
+    private fun refreshMergeState() {
+        val targetName = mergeTargetName
+        tvMergeHint.text = if (targetName == null) {
+            getString(R.string.metadata_tag_merge_pick_target)
+        }
+        else {
+            // ! Tag name is user text and the hint is HTML (bold name) - escaped before formatting
+            val hint = getString(R.string.metadata_tag_merge_pick_source, TextUtils.htmlEncode(targetName))
+            HtmlCompat.fromHtml(hint, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        }
+        tagsAdapter.setMergeMode(true, targetName)
+    }
+
+    // Either answer ends the mode - one merge per fab tap
+    private fun showTagMergeDialog(targetName: String, sourceName: String) {
+        // ! Tag names are user text and the message is HTML (bold names) - escaped before formatting
+        val message = getString(
+            R.string.metadata_tag_merge_message,
+            TextUtils.htmlEncode(targetName),
+            TextUtils.htmlEncode(sourceName)
+        )
+        ActionsDialog.Builder(this)
+            .setTitle(getString(R.string.metadata_tag_merge_title))
+            .setDescription(HtmlCompat.fromHtml(message, HtmlCompat.FROM_HTML_MODE_LEGACY))
+            .setPrimaryAction(getString(R.string.metadata_tag_merge_yes), caution = true) {
+                exitMergeMode()
+                viewModel.mergeTags(targetName = targetName, sourceName = sourceName)
+                val confirmation = getString(R.string.metadata_tag_merge_confirmation, targetName, sourceName)
+                Toast.makeText(this, confirmation, Toast.LENGTH_SHORT).show()
+            }
+            .setOnCancel { exitMergeMode() }
+            .show()
+    }
+
     // ========== TAG THOUGHT TASK ==========
 
     // Three steps, once per run: the Domains tab (info), Persons and Projects tabs (on to Projects),
@@ -239,6 +350,7 @@ class MetadataActivity : CoreActivity() {
                 }
             }
         ) {
+            appBar.setExpanded(true)
             selectTagType(HexTagType.PROJECT)
         }
     }
@@ -282,6 +394,8 @@ class MetadataActivity : CoreActivity() {
 
     private fun selectDomains() {
         tabsTagType.setSelectedIndex(TAB_DOMAINS)
+        exitMergeMode()
+        fabMergeTags.visibility = View.GONE
         viewModel.selectDomains()
 
         rvTags.visibility = View.GONE
@@ -393,5 +507,7 @@ class MetadataActivity : CoreActivity() {
         const val TAB_DOMAINS  = 2
 
         const val TAG_TASK_GUIDE_STEPS = 3
+
+        const val MERGE_MIN_TAGS = 2
     }
 }
