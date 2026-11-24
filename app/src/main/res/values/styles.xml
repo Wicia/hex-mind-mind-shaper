@@ -52,6 +52,7 @@
 
     <!-- Info on an empty list - one look everywhere; spacing stays in the layout (48dp under a screen list, 20dp in a card) -->
     <style name="TextView_EmptyState" parent="TextView_Metadata">
+        <item name="android:textColor">@color/_gray_lvl_3</item>
         <item name="android:gravity">center</item>
         <item name="android:textAlignment">center</item>
     </style>

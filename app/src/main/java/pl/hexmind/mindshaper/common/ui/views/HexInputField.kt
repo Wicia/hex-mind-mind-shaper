@@ -49,6 +49,9 @@ class HexInputField @JvmOverloads constructor(
     // inline hint - placeholder lives in the EditText itself and disappears on focus, no floating label
     private var inlineHint = false
 
+    // inline hint kept on focus - only the first typed character hides it
+    private var inlineHintUntilTyped = false
+
     init {
         orientation = VERTICAL
 
@@ -62,7 +65,10 @@ class HexInputField @JvmOverloads constructor(
                 twoStateHint = restingHint != floatingHint
                 binding.tilInput.hint = restingHint
 
-                inlineHint = typedArray.getBoolean(R.styleable.HexInputField_inlineHint, false)
+                inlineHintUntilTyped =
+                    typedArray.getBoolean(R.styleable.HexInputField_inlineHintUntilTyped, false)
+                inlineHint = inlineHintUntilTyped ||
+                    typedArray.getBoolean(R.styleable.HexInputField_inlineHint, false)
                 if (inlineHint) applyInlineHintMode()
 
                 if (typedArray.getBoolean(R.styleable.HexInputField_compact, false)) applyCompactMode()
@@ -109,7 +115,7 @@ class HexInputField @JvmOverloads constructor(
         // Tone focus listener owns the view slot (a View has only one) - it does the hint swap AND forwards to the listener stored via setOnFocusChangeListener
         binding.etInput.setOnFocusChangeListener { _, hasFocus ->
             if (twoStateHint) applyStatefulHint()
-            if (inlineHint) binding.etInput.hint = if (hasFocus) null else restingHint
+            if (inlineHint && !inlineHintUntilTyped) binding.etInput.hint = if (hasFocus) null else restingHint
             externalFocusListener?.invoke(hasFocus)
         }
     }
@@ -195,7 +201,8 @@ class HexInputField @JvmOverloads constructor(
         floatingHint = hint
         twoStateHint = false
         if (inlineHint) {
-            binding.etInput.hint = if (binding.etInput.hasFocus()) null else hint
+            val hiddenOnFocus = !inlineHintUntilTyped && binding.etInput.hasFocus()
+            binding.etInput.hint = if (hiddenOnFocus) null else hint
         }
         else {
             binding.tilInput.hint = hint

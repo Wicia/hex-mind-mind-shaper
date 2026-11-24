@@ -769,8 +769,8 @@ Awers - Rewers…"</string>
     <string name="workshop_goals_view_active">Pokaż aktywne</string>
     <string name="workshop_goals_view_archived">Pokaż archiwalne</string>
     <string name="workshop_goals_view_archive_empty">Archiwum świeci pustkami…</string>
-    <string name="workshop_goals_empty">Nie masz aktywnych celów…\nDodaj pierwszy przyciskiem +</string>
-    <string name="workshop_goal_steps_empty">Ten cel nie ma jeszcze kroków…\nDodaj pierwszy przyciskiem +</string>
+    <string name="workshop_goals_empty">Nie masz aktywnych celów… Dodaj pierwszy przyciskiem +</string>
+    <string name="workshop_goal_steps_empty">Do tego celu nie prowadzi jeszcze żaden krok… Dodaj pierwszy przyciskiem +</string>
     <string name="workshop_dialog_add_goal">Nowy cel / kierunek</string>
     <string name="workshop_dialog_edit_goal">Edytuj cel / kierunek</string>
     <string name="workshop_dialog_delete_goal_title">Usunąć cel?</string>
@@ -788,17 +788,20 @@ Awers - Rewers…"</string>
     <string name="workshop_dialog_delete_step_title">Usunąć krok?</string>
     <string name="workshop_dialog_delete_step_yes">Usuń krok</string>
     <string name="workshop_dialog_delete_step_calendar_yes">Usuń krok i przypomnienie</string>
+    <string name="workshop_step_repetitions_switch">Powtarzanie kroku</string>
     <string name="workshop_step_repetitions_header">Ile razy trzeba zrobić ten krok?</string>
     <string name="workshop_step_repetitions_label">Liczba</string>
-    <string name="workshop_step_repetitions_single">Jeden raz</string>
+    <string name="workshop_goal_repetitions_3">3 ⟳</string>
+    <string name="workshop_goal_repetitions_5">5 ⟳</string>
     <string name="workshop_goal_repetitions_7">7 ⟳</string>
     <string name="workshop_goal_repetitions_14">14 ⟳</string>
     <string name="workshop_goal_repetitions_21">21 ⟳</string>
     <string name="workshop_goal_repetitions_31">31 ⟳</string>
     <string name="workshop_goal_quick_complete_done">Ukończono wszystkie kroki</string>
+    <string name="workshop_step_description_hint">Jaki krok należy postawić?</string>
     <string name="workshop_step_description_error_no_input">Krok musi mieć jakiś opis…</string>
     <string name="workshop_step_repetitions_error_no_input">Brak liczby</string>
-    <string name="workshop_step_repetitions_error_below_min"><![CDATA[Liczba < 0]]></string>
+    <string name="workshop_step_repetitions_error_below_min"><![CDATA[Liczba < 1]]></string>
     <string name="workshop_step_repetitions_error_above_max"><![CDATA[Liczba > 31]]></string>
 
     <!-- Step menu -->
@@ -823,7 +826,12 @@ Awers - Rewers…"</string>
     <string name="workshop_path_pool_empty">Nie mam Cię już czego nauczyć…</string>
 
     <!-- Step reminder -->
-    <string name="workshop_reminder_checkbox_label">Wrzuć mi %d wpis(y) w kalendarz</string>
+    <plurals name="workshop_reminder_switch_label">
+        <item quantity="one">Wrzuć mi wpis do kalendarza</item>
+        <item quantity="few">Wrzuć mi %d wpisy do kalendarza</item>
+        <item quantity="many">Wrzuć mi %d wpisów do kalendarza</item>
+        <item quantity="other">Wrzuć mi %d wpisów do kalendarza</item>
+    </plurals>
     <string name="workshop_reminder_time_header">O tej godzinie</string>
     <string name="workshop_reminder_days_header">I w te dni</string>
     <string name="workshop_reminder_day_mon">Pon</string>

@@ -14,10 +14,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.common.ui.views.HexInputField
+import pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
 
 /**
  * Bottom sheet for adding or editing a step.
@@ -47,11 +47,13 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
     private lateinit var rootView: ViewGroup
 
     // Repetitions
+    private lateinit var switchRepetitions: HexSwitchRow
+    private lateinit var repetitionsViews: List<View>
     private lateinit var chipButtons: List<Pair<MaterialButton, Int>>
 
     private lateinit var hifRepetitions: HexInputField
 
-    private lateinit var cbReminderEnabled: MaterialCheckBox
+    private lateinit var switchReminderEnabled: HexSwitchRow
     private lateinit var reminderView: GoalReminderView
 
     override fun onCreateView(
@@ -70,16 +72,21 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
         setupInitialValues()
         setupChips()
         setupRepetitionsField()
+        setupRepetitionsSwitch()
         setupReminderToggle()
         setupConfirm()
         focusDescriptionForNewStep()
     }
 
-    // A new step opens straight into typing the description; editing opens without the keyboard
+    // A new step opens straight into typing the description; editing opens without the keyboard.
+    // The sheet resizes above the keyboard, so the switches below the field stay visible
     private fun focusDescriptionForNewStep() {
         // Edited steps always have a description (it is required on confirm)
         if (!arguments?.getString(ARG_DESCRIPTION).isNullOrEmpty()) return
-        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        dialog?.window?.setSoftInputMode(
+            WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE or
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+        )
         hifDescription.requestFocusOnField()
     }
 
@@ -90,11 +97,18 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
         hifRepetitions  = view.findViewById(R.id.hif_repetitions)
         fabConfirm      = view.findViewById(R.id.fab_step_confirm)
 
-        cbReminderEnabled = view.findViewById(R.id.cb_reminder_enabled)
+        switchReminderEnabled = view.findViewById(R.id.switch_reminder_enabled)
         reminderView      = view.findViewById(R.id.reminder_view)
 
+        switchRepetitions = view.findViewById(R.id.switch_repetitions)
+        repetitionsViews = listOf(
+            view.findViewById(R.id.tv_repetitions_header),
+            view.findViewById(R.id.ll_repetitions)
+        )
+
         chipButtons = listOf(
-            view.findViewById<MaterialButton>(R.id.chip_1x)  to 1,
+            view.findViewById<MaterialButton>(R.id.chip_3x)  to 3,
+            view.findViewById<MaterialButton>(R.id.chip_5x)  to 5,
             view.findViewById<MaterialButton>(R.id.chip_7x)  to 7,
             view.findViewById<MaterialButton>(R.id.chip_14x) to 14,
             view.findViewById<MaterialButton>(R.id.chip_21x) to 21,
@@ -124,7 +138,7 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
         // Hide config details when feature is off
         val calendarEnabled = arguments?.getBoolean(ARG_CALENDAR_ENABLED, false) ?: false
         if (!calendarEnabled) {
-            cbReminderEnabled.visibility = View.GONE
+            switchReminderEnabled.visibility = View.GONE
             reminderView.visibility = View.GONE
             return
         }
@@ -133,7 +147,7 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
         val reminderTime = arguments?.getString(ARG_REMINDER_TIME)
         val reminderDays = arguments?.getString(ARG_REMINDER_DAYS)
         if (reminderTime != null || reminderDays != null) {
-            cbReminderEnabled.isChecked = true
+            switchReminderEnabled.isChecked = true
             reminderView.visibility = View.VISIBLE
             reminderView.setReminder(reminderTime, reminderDays)
         }
@@ -158,10 +172,35 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    // Reflect the entered repetitions count in the reminder checkbox label
+    // A step runs once by default; repeating is opt-in, so its config stays hidden until switched on
+    private fun setupRepetitionsSwitch() {
+        switchRepetitions.isChecked = (hifRepetitions.getText().toIntOrNull() ?: 1) > 1
+        updateRepetitionsVisibility(switchRepetitions.isChecked)
+
+        switchRepetitions.setOnCheckedChangeListener { _, isChecked ->
+            updateRepetitionsVisibility(isChecked)
+            if (isChecked && (hifRepetitions.getText().toIntOrNull() ?: 1) <= 1) {
+                hifRepetitions.setText(DEFAULT_REPEATED_COUNT.toString())
+            }
+            updateReminderLabel(selectedRepetitions())
+        }
+    }
+
+    private fun updateRepetitionsVisibility(isVisible: Boolean) {
+        repetitionsViews.forEach { view ->
+            view.visibility = if (isVisible) View.VISIBLE else View.GONE
+        }
+    }
+
+    // Null when the switch is on and the field holds no number
+    private fun selectedRepetitions(): Int? =
+        if (switchRepetitions.isChecked) hifRepetitions.getText().toIntOrNull() else 1
+
+    // Reflect the entered repetitions count in the reminder switch label
     private fun updateReminderLabel(repetitions: Int?) {
         val count = repetitions ?: 0
-        cbReminderEnabled.text = getString(R.string.workshop_reminder_checkbox_label, count)
+        switchReminderEnabled.text =
+            resources.getQuantityString(R.plurals.workshop_reminder_switch_label, count, count)
     }
 
     // Highlight chip matching [value]; deselect all if null or no match
@@ -172,7 +211,7 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun setupReminderToggle() {
-        cbReminderEnabled.setOnCheckedChangeListener { _, isChecked ->
+        switchReminderEnabled.setOnCheckedChangeListener { _, isChecked ->
             reminderView.visibility = if (isChecked) View.VISIBLE else View.GONE
         }
     }
@@ -184,8 +223,7 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
                 hifDescription.showError(getString(R.string.workshop_step_description_error_no_input))
                 return@setOnClickListener
             }
-            val maxRepsText = hifRepetitions.getText()
-            val maxRepetitions = maxRepsText.toIntOrNull()
+            val maxRepetitions = selectedRepetitions()
 
             // TODO Move it to validation in view model + callback here (Nice to have)
             if (maxRepetitions == null) {
@@ -204,7 +242,7 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
             // Reminder is opt-in; when enabled at least one day must be selected
             var reminderTime: String? = null
             var reminderDays: String? = null
-            if (cbReminderEnabled.isChecked) {
+            if (switchReminderEnabled.isChecked) {
                 if (!reminderView.hasSelectedDays()) {
                     clearFocusAndHideKeyboard()
                     android.widget.Toast.makeText(
@@ -242,6 +280,8 @@ class StepEditBottomSheet : BottomSheetDialogFragment() {
         private const val ARG_REMINDER_TIME   = "arg_reminder_time"
         private const val ARG_REMINDER_DAYS   = "arg_reminder_days"
         private const val ARG_CALENDAR_ENABLED = "arg_calendar_enabled"
+
+        private const val DEFAULT_REPEATED_COUNT = 3
 
         fun show(
             fragmentManager: FragmentManager,

@@ -96,6 +96,8 @@
         <attr name="hintFloating" format="string|reference" />
         <!-- true = plain placeholder inside the field, gone on focus - no floating label -->
         <attr name="inlineHint" format="boolean" />
+        <!-- true = plain placeholder inside the field, kept on focus and gone with the first typed character -->
+        <attr name="inlineHintUntilTyped" format="boolean" />
         <attr name="hexMaxLength" format="integer" />
         <!-- true = slimmer resting height (smaller vertical padding) -->
         <attr name="compact" />

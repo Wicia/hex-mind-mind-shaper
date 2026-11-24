@@ -144,8 +144,7 @@ class GoalDetailViewModel @Inject constructor(
             if (step.id == stepId) step.copy(
                 description        = description.trim(),
                 // Clamp current so it never exceeds the new max
-                currentRepetitions = if (maxRepetitions < step.maxRepetitions) 0
-                    else step.currentRepetitions.coerceAtMost(maxRepetitions),
+                currentRepetitions = step.currentRepetitions.coerceAtMost(maxRepetitions),
                 maxRepetitions = maxRepetitions,
                 reminderTime   = reminderTime,
                 reminderDays   = reminderDays

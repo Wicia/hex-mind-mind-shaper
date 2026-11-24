@@ -74,6 +74,12 @@ class HexSwitchRow @JvmOverloads constructor(
             binding.switchToggle.isChecked = value
         }
 
+    var text: CharSequence
+        get() = binding.tvLabel.text
+        set(value) {
+            binding.tvLabel.text = value
+        }
+
     fun setOnCheckedChangeListener(listener: CompoundButton.OnCheckedChangeListener?) {
         binding.switchToggle.setOnCheckedChangeListener(listener)
     }

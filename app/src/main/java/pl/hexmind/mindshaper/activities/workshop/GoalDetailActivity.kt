@@ -80,6 +80,12 @@ class GoalDetailActivity : CoreActivity() {
         observeGoal()
     }
 
+    // Progress can change while the screen waits in the background (calendar deep link)
+    override fun onRestart() {
+        super.onRestart()
+        viewModel.loadGoal()
+    }
+
     // ── Init ───────────────────────────────────────────────────────────────────
 
     private fun initViews() {

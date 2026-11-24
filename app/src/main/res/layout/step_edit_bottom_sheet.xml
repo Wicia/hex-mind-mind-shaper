@@ -76,27 +76,43 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
                 app:hexInputType="text"
+                app:hint="@string/workshop_step_description_hint"
+                app:inlineHintUntilTyped="true"
                 app:maxLines="2" />
+
+            <!-- Repetitions toggle -->
+            <pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
+                android:id="@+id/switch_repetitions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/workshop_step_repetitions_switch"
+                />
 
             <!-- Repetitions section label -->
             <TextView
+                android:id="@+id/tv_repetitions_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:text="@string/workshop_step_repetitions_header"
                 android:textSize="16sp"
                 android:fontFamily="@font/baloo2"
-                android:textColor="@color/_gray_lvl_3" />
+                android:textColor="@color/_gray_lvl_3"
+                android:visibility="gone" />
 
             <!-- Number field + chip presets row -->
             <LinearLayout
+                android:id="@+id/ll_repetitions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                android:visibility="gone">
 
                 <!-- Repetitions number -->
                 <pl.hexmind.mindshaper.common.ui.views.HexInputField
@@ -115,7 +131,7 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <!-- Row 1: 1x + 7x -->
+                    <!-- Row 1: 3x + 5x + 7x -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -123,13 +139,22 @@
                         android:layout_marginBottom="6dp">
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/chip_1x"
+                            android:id="@+id/chip_3x"
                             style="@style/ChipButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
+                            android:layout_weight="1"
                             android:layout_marginEnd="6dp"
-                            android:text="@string/workshop_step_repetitions_single" />
+                            android:text="@string/workshop_goal_repetitions_3" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/chip_5x"
+                            style="@style/ChipButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="6dp"
+                            android:text="@string/workshop_goal_repetitions_5" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/chip_7x"
@@ -181,16 +206,14 @@
 
 
             <!-- Calendar reminder toggle -->
-            <com.google.android.material.checkbox.MaterialCheckBox
-                android:id="@+id/cb_reminder_enabled"
-                style="@style/HexCheckBox"
+            <pl.hexmind.mindshaper.common.ui.views.HexSwitchRow
+                android:id="@+id/switch_reminder_enabled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/workshop_reminder_checkbox_label"
                 />
 
             <!-- Reminder config : time picker + weekday toggles -->
