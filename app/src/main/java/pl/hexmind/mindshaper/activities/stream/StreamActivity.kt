@@ -1,13 +1,18 @@
 package pl.hexmind.mindshaper.activities.stream
 
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.animation.doOnEnd
 import androidx.core.content.IntentCompat
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -68,6 +73,17 @@ class StreamActivity : CoreActivity() {
 
     private lateinit var tvStreamEmpty: TextView
 
+    // Header (icon + title) folds away while paging forward and returns on any page back
+    private lateinit var header: View
+    private var headerFullHeight = 0
+    private var headerMarginTop = 0
+    private var headerMarginBottom = 0
+    private var headerFraction = 1f
+    private var isHeaderShown = true
+    private var isHeaderShownPending = true
+    private var headerAnimator: ValueAnimator? = null
+    private var lastPagePosition = 0
+
     // Capture returns RESULT_OK only after a thought was saved - leaving it without saving shows nothing
     private val captureLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) showShortToast(R.string.stream_toast_thought_created)
@@ -105,6 +121,11 @@ class StreamActivity : CoreActivity() {
         flScrollIndicator = findViewById(R.id.fl_scroll_indicator)
         vScrollProgress   = findViewById(R.id.v_scroll_progress)
         tvStreamEmpty     = findViewById(R.id.tv_stream_empty)
+        header            = findViewById(R.id.header)
+        (header.layoutParams as ViewGroup.MarginLayoutParams).let {
+            headerMarginTop    = it.topMargin
+            headerMarginBottom = it.bottomMargin
+        }
         setupHeader(R.drawable.ic_activity_stream, R.string.stream_title)
     }
 
@@ -138,8 +159,56 @@ class StreamActivity : CoreActivity() {
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 updateScrollIndicator(position)
+                trackHeaderForPage(position)
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+                if (state == ViewPager2.SCROLL_STATE_IDLE) setHeaderShown(isHeaderShownPending)
             }
         })
+    }
+
+    // Paging forward hides the header, paging back or the first thought shows it.
+    // ! Applied once the page settles - resizing the pager mid-swipe would disturb its snapping
+    private fun trackHeaderForPage(position: Int) {
+        when {
+            position == 0 || position < lastPagePosition -> isHeaderShownPending = true
+            position > lastPagePosition                  -> isHeaderShownPending = false
+        }
+        lastPagePosition = position
+        if (viewPager.scrollState == ViewPager2.SCROLL_STATE_IDLE) setHeaderShown(isHeaderShownPending)
+    }
+
+    private fun setHeaderShown(isShown: Boolean) {
+        if (isShown == isHeaderShown) return
+        isHeaderShown = isShown
+        headerAnimator?.cancel()
+
+        // Full height is read while the header still wraps its content
+        if (!isShown && header.layoutParams.height == ViewGroup.LayoutParams.WRAP_CONTENT) {
+            headerFullHeight = header.height
+        }
+
+        headerAnimator = ValueAnimator.ofFloat(headerFraction, if (isShown) 1f else 0f).apply {
+            duration = HEADER_ANIMATION_MS
+            addUpdateListener { applyHeaderFraction(it.animatedValue as Float) }
+            doOnEnd {
+                // Fully shown header wraps its content again
+                if (headerFraction == 1f) header.updateLayoutParams { height = ViewGroup.LayoutParams.WRAP_CONTENT }
+            }
+            start()
+        }
+    }
+
+    // Height and margins shrink together, so the search bar slides up instead of jumping
+    private fun applyHeaderFraction(fraction: Float) {
+        headerFraction = fraction
+        header.alpha = fraction
+        header.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            height       = (headerFullHeight * fraction).toInt()
+            topMargin    = (headerMarginTop * fraction).toInt()
+            bottomMargin = (headerMarginBottom * fraction).toInt()
+        }
     }
 
     private fun openThoughtDetails(thought: ThoughtDTO) {
@@ -418,6 +487,11 @@ class StreamActivity : CoreActivity() {
         tvStreamEmpty.isVisible = isListEmpty
         if (!isListEmpty) return
 
+        // No page to swipe back to - the header has to be visible
+        lastPagePosition = 0
+        isHeaderShownPending = true
+        setHeaderShown(true)
+
         tvStreamEmpty.setText(
             if (viewModel.hasAnyThoughts()) R.string.stream_empty_no_matches else R.string.stream_empty_no_thoughts
         )
@@ -496,5 +570,6 @@ class StreamActivity : CoreActivity() {
         const val P_DOMAIN_ID         = "domain_id"
 
         private const val FADING_EDGE_DP = 16
+        private const val HEADER_ANIMATION_MS = 200L
     }
 }

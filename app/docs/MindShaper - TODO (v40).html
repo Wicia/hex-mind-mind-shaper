@@ -668,6 +668,32 @@
   <h2>Sprzątanie / Refactoring</h2>
   <details class="item">
     <summary>
+      <span class="prio minor">Drobny</span>
+      <strong>Wspólny ekran listy — nagłówek, szukajka, filtr / sortowanie, lista</strong> — jeden szkielet dla ekranów do przeglądania; najpierw Strumień, potem np. fiszki.
+      <span class="mods"><span class="mod">Cała aplikacja</span><span class="mod">Myśli</span><span class="mod">Fiszki</span></span>
+    </summary>
+    <div class="body">
+      <ul>
+        <li>szkielet: nagłówek ekranu (chowany przy ruchu w dół, wracający przy ruchu w górę), szukajka, przyciski filtra i sortowania, pod spodem lista; ekran podaje tylko treść, kryteria i opcje sortowania</li>
+        <li>stan (2026-11-24): szukajkę, filtr i sortowanie ma tylko Strumień; Tagi i Domeny oraz Zapamiętywanie mają zwijany nagłówek z zakładkami, bez szukajki</li>
+        <li>wyciągnąć dopiero przy drugim ekranie z szukaniem lub sortowaniem (np. lista fiszek) — przy jednym użyciu wspólny komponent zgadywałby potrzeby</li>
+        <li>dwa rodzaje treści: Strumień to pager (jedna myśl na stronę, chowanie nagłówka po zmianie strony), reszta to przewijane listy (<code>AppBarLayout</code>) — szkielet musi przyjąć oba albo mieć chowanie nagłówka niezależne od <code>AppBarLayout</code></li>
+        <li>sortowanie już częściowo wspólne (<code>SortConfig</code>, <code>SortingConfigs.kt</code>); dialog sortowania i filtr siedzą w pakiecie Strumienia</li>
+        <li>miejsce na pusty stan (<code>TextView_EmptyState</code>) i opcjonalne zakładki nad listą</li>
+      </ul>
+      <div class="where">
+        <span class="lbl">Gdzie</span>
+        <ul>
+          <li><code>stream_activity.xml</code>, <code>StreamActivity.kt</code> — chowanie nagłówka, szukajka, filtr, sortowanie</li>
+          <li><code>activities/stream/SortDialogFragment.kt</code> — do przeniesienia do <code>common</code></li>
+          <li><code>common/ui/views/lists/SortingConfigs.kt</code></li>
+          <li><code>flashcards_activity.xml</code> — zwijany nagłówek z zakładkami</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+  <details class="item">
+    <summary>
       <span class="prio imp">Istotny</span>
       <strong>Repo — porządek w gałęziach: bez <code>wicia_main</code></strong> — docelowo trzy gałęzie: <code>main</code> = release, <code>hexing</code> = testowe APK, <code>fuze</code> = eksperymenty.
       <span class="mods"><span class="mod">Technika</span></span>
