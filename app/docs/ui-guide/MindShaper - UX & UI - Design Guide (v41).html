@@ -910,6 +910,46 @@
       <dd><code>PhotoFullscreenDialog</code></dd>
     </dl>
   </details>
+
+  <details class="comp" open>
+    <summary><h3>Tryb skupienia</h3></summary>
+    <dl>
+      <dt>Przeznaczenie</dt>
+      <dd>Ekran zostawiony sam sobie gasi wszystko poza jedną kartą — nic nie odciąga od czytanej myśli (<i>Strumień myśli</i>).</dd>
+      <dt>Wygląd</dt>
+      <dd>
+        <figure><svg role="img" aria-label="stream-focus-mode" xmlns="http://www.w3.org/2000/svg" width="207" height="345" viewBox="0 0 180 300">
+  <rect width="180" height="300" fill="#FFF4E6"/>
+  <rect width="180" height="300" fill="#2F2C2A" fill-opacity="0.94"/>
+  <rect x="16" y="78" width="148" height="146" rx="10" fill="#FFE1C8"/>
+  <text x="28" y="98" dominant-baseline="central" font-size="9" fill="#857C75" font-family="'Baloo 2', 'Segoe UI', sans-serif">~ Temat</text>
+  <g fill="#625A54">
+    <rect x="28" y="112" width="112" height="5" rx="2.5"/>
+    <rect x="28" y="126" width="124" height="5" rx="2.5"/>
+    <rect x="28" y="140" width="98" height="5" rx="2.5"/>
+    <rect x="28" y="154" width="120" height="5" rx="2.5"/>
+    <rect x="28" y="168" width="66" height="5" rx="2.5"/>
+  </g>
+  <circle cx="150" cy="250" r="13" fill="#FFA86B"/>
+  <path d="M143,250H157M150,243V257" stroke="#FFF4E6" stroke-width="2.6" stroke-linecap="round"/>
+  <g transform="translate(20,278) scale(0.46)" fill="none" stroke="#F6EFE8" stroke-width="2.6" stroke-linejoin="round">
+    <path d="M3,12 Q12,3 21,12 Q12,21 3,12 Z"/>
+  </g>
+  <circle cx="25.5" cy="283.5" r="1.4" fill="#F6EFE8"/>
+  <text x="36" y="283.5" dominant-baseline="central" font-size="8.5" fill="#F6EFE8" font-family="'Baloo 2', 'Segoe UI', sans-serif">Zamknij</text>
+</svg></figure>
+        <ul>
+          <li>przygaszenie: <code>graphite_dark</code> z 94% krycia na całym ekranie — pasek statusu i systemowa nawigacja są grafitowe same z siebie</li>
+          <li>jasne zostają karta bieżącej myśli i FAB, w swoich zwykłych kolorach; gasną nagłówek, szukajka, filtr i sortowanie, wskaźnik położenia oraz panel nawigacyjny</li>
+          <li>karta zjeżdża na środek ciemności w pionie — zgaszony chrom dalej trzyma swoje miejsce, więc bez tego zostawałoby puste pole u góry; rozmiar karty się nie zmienia</li>
+        </ul>
+      </dd>
+      <dt>Działanie</dt>
+      <dd>5 s bez dotknięcia ekranu gasi światło (250 ms), każde dotknięcie liczy od nowa. Karta działa jak zwykle — przewijanie myśli i wejście w szczegóły skupienia nie przerywają; zwijanie nagłówka czeka na światło, żeby karta nie drgnęła w ciemności. Światło wraca przyciskiem <b>„Zamknij”</b> z otwartym okiem — oko odsłania, X byłby usuwaniem (<code>common_btn_close</code>) — albo powrotem na ekran z innego miejsca. Dialog lub arkusz z przodu wstrzymuje gaszenie, pusty strumień go nie włącza.</dd>
+      <dt>Kod</dt>
+      <dd><code>StreamActivity</code>, <code>stream_focus_scrim</code>, <code>setNavigationBarShown</code></dd>
+    </dl>
+  </details>
 </div>
 </div>
 

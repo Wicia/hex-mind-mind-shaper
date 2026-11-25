@@ -8,6 +8,15 @@
     android:background="@drawable/bg_app_background"
     tools:context=".activities.stream.StreamActivity">
 
+    <!-- FOCUS MODE SCRIM - first child, so the thought card and the FAB stay lit above it -->
+    <View
+        android:id="@+id/v_focus_scrim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:background="@color/stream_focus_scrim"
+        android:visibility="invisible" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -138,5 +147,24 @@
             android:background="@drawable/bg_palette_lvl_2" />
 
     </FrameLayout>
+
+    <!-- FOCUS MODE EXIT - the only chrome left while the lights are out -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_focus_exit"
+        style="@style/SecondaryActionButton.Ghost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
+        android:alpha="0"
+        android:text="@string/common_btn_close"
+        android:textColor="@color/stream_focus_exit"
+        android:visibility="invisible"
+        app:icon="@drawable/ic_action_view"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"
+        app:iconSize="20dp"
+        app:iconTint="@color/stream_focus_exit" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -19,6 +19,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.isInvisible
 import pl.hexmind.mindshaper.R
 import pl.hexmind.mindshaper.activities.capture.CaptureActivity
 import pl.hexmind.mindshaper.common.ui.NavigationBarController
@@ -79,6 +80,7 @@ open class CoreActivity : AppCompatActivity() {
         )
 
         private const val NAVIGATION_GUIDE_STEPS = 2
+        private const val NAVIGATION_FADE_MS = 250L
     }
 
 // -------------------------------------------------------------------------------------------------
@@ -226,6 +228,22 @@ open class CoreActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    /**
+     * Fades the bottom navigation overlay in or out - a screen's focus mode leaves nothing but its content.
+     *
+     * More: an invisible bar takes no touches either, so the strip along the bottom stays free.
+     */
+    protected fun setNavigationBarShown(isShown: Boolean) {
+        val navBar = navigationBarView ?: return
+        navBar.animate().cancel()
+        if (isShown) navBar.isInvisible = false
+        navBar.animate()
+            .alpha(if (isShown) 1f else 0f)
+            .setDuration(NAVIGATION_FADE_MS)
+            .withEndAction { if (!isShown) navBar.isInvisible = true }
+            .start()
     }
 
     /**

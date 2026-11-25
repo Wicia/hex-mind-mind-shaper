@@ -3,6 +3,9 @@ package pl.hexmind.mindshaper.activities.stream
 import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -11,6 +14,7 @@ import androidx.activity.viewModels
 import androidx.core.animation.doOnEnd
 import androidx.core.content.IntentCompat
 import androidx.core.view.doOnPreDraw
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Lifecycle
@@ -84,6 +88,17 @@ class StreamActivity : CoreActivity() {
     private var headerAnimator: ValueAnimator? = null
     private var lastPagePosition = 0
 
+    // Focus mode: left alone for a while, the stream dims to the thought card and the FAB
+    private lateinit var cvSearchBar: View
+    private lateinit var vFocusScrim: View
+    private lateinit var btnFocusExit: MaterialButton
+    private var isFocusMode = false
+    private var focusFraction = 0f
+    private var focusCardShift = 0f
+    private var focusAnimator: ValueAnimator? = null
+    private val focusModeHandler = Handler(Looper.getMainLooper())
+    private val focusModeRunnable = Runnable { enterFocusMode() }
+
     // Capture returns RESULT_OK only after a thought was saved - leaving it without saving shows nothing
     private val captureLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) showShortToast(R.string.stream_toast_thought_created)
@@ -100,6 +115,7 @@ class StreamActivity : CoreActivity() {
         setupFilterButton()
         setupNewThoughtFab()
         setupScrollIndicator()
+        setupFocusMode()
         setupReactiveDataObserver()
 
         viewModel.loadDomains()
@@ -121,6 +137,9 @@ class StreamActivity : CoreActivity() {
         flScrollIndicator = findViewById(R.id.fl_scroll_indicator)
         vScrollProgress   = findViewById(R.id.v_scroll_progress)
         tvStreamEmpty     = findViewById(R.id.tv_stream_empty)
+        cvSearchBar       = findViewById(R.id.cv_search_bar)
+        vFocusScrim       = findViewById(R.id.v_focus_scrim)
+        btnFocusExit      = findViewById(R.id.btn_focus_exit)
         header            = findViewById(R.id.header)
         (header.layoutParams as ViewGroup.MarginLayoutParams).let {
             headerMarginTop    = it.topMargin
@@ -181,6 +200,10 @@ class StreamActivity : CoreActivity() {
 
     private fun setHeaderShown(isShown: Boolean) {
         if (isShown == isHeaderShown) return
+
+        // ! Behind the scrim the fold waits - resizing the pager would move the one card that is lit
+        if (isFocusMode) return
+
         isHeaderShown = isShown
         headerAnimator?.cancel()
 
@@ -203,11 +226,98 @@ class StreamActivity : CoreActivity() {
     // Height and margins shrink together, so the search bar slides up instead of jumping
     private fun applyHeaderFraction(fraction: Float) {
         headerFraction = fraction
-        header.alpha = fraction
+        applyChromeAlpha()
         header.updateLayoutParams<ViewGroup.MarginLayoutParams> {
             height       = (headerFullHeight * fraction).toInt()
             topMargin    = (headerMarginTop * fraction).toInt()
             bottomMargin = (headerMarginBottom * fraction).toInt()
+        }
+    }
+
+    private fun setupFocusMode() {
+        btnFocusExit.setOnClickListener { exitFocusMode() }
+        scheduleFocusMode()
+    }
+
+    // ! Every touch postpones the dimming; with the lights out the countdown is off - the card itself works as always
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (!isFocusMode) scheduleFocusMode()
+        return super.dispatchTouchEvent(ev)
+    }
+
+    private fun scheduleFocusMode() {
+        focusModeHandler.removeCallbacks(focusModeRunnable)
+        focusModeHandler.postDelayed(focusModeRunnable, FOCUS_IDLE_MS)
+    }
+
+    private fun enterFocusMode() {
+        if (isFocusMode) return
+
+        // A dialog or a sheet in front holds the window focus - the lights wait for the stream itself to go idle
+        if (!hasWindowFocus()) {
+            scheduleFocusMode()
+            return
+        }
+
+        // Nothing to focus on without a card - the countdown starts again once a thought lands
+        if (tvStreamEmpty.isVisible) return
+
+        isFocusMode = true
+
+        // The gone chrome still holds its place, so the card has to be moved to the middle of the dark screen
+        focusCardShift = cardShiftToCenter()
+        setFocusModeShown(true)
+    }
+
+    private fun exitFocusMode() {
+        if (!isFocusMode) return
+        isFocusMode = false
+        setFocusModeShown(false)
+
+        // The fold waited in the dark - the header comes back folded the way the current page wants it
+        setHeaderShown(isHeaderShownPending)
+        scheduleFocusMode()
+    }
+
+    // Scrim and the exit button come in as the rest of the screen goes out; the card and the FAB stay untouched
+    private fun setFocusModeShown(isShown: Boolean) {
+        setNavigationBarShown(!isShown)
+        focusAnimator?.cancel()
+        focusAnimator = ValueAnimator.ofFloat(focusFraction, if (isShown) 1f else 0f).apply {
+            duration = FOCUS_ANIMATION_MS
+            addUpdateListener { applyFocusFraction(it.animatedValue as Float) }
+            start()
+        }
+    }
+
+    // Measured on the way in, with the fold already frozen - the same shift takes the card back on the way out
+    private fun cardShiftToCenter(): Float {
+        val content = viewPager.parent as? View ?: return 0f
+        if (viewPager.height == 0) return 0f
+        return content.height / 2f - (viewPager.top + viewPager.height / 2f)
+    }
+
+    private fun applyFocusFraction(fraction: Float) {
+        focusFraction          = fraction
+        viewPager.translationY = focusCardShift * fraction
+        vFocusScrim.alpha      = fraction
+        btnFocusExit.alpha     = fraction
+
+        vFocusScrim.isInvisible  = fraction == 0f
+        btnFocusExit.isInvisible = fraction == 0f
+        applyChromeAlpha()
+    }
+
+    // ! The folding header and the scrim both set these alphas, so one formula keeps the two fractions together
+    private fun applyChromeAlpha() {
+        val chromeAlpha = 1f - focusFraction
+        header.alpha = headerFraction * chromeAlpha
+
+        // Transparent is not enough - a faded out view would still catch the taps meant for the card
+        header.isInvisible = header.alpha == 0f
+        listOf(cvSearchBar, btnFilter, btnSort, flScrollIndicator).forEach {
+            it.alpha = chromeAlpha
+            it.isInvisible = chromeAlpha == 0f
         }
     }
 
@@ -353,6 +463,11 @@ class StreamActivity : CoreActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        // Back on the screen with the light on, and the countdown from the start
+        exitFocusMode()
+        scheduleFocusMode()
+
         val completedTask = onboardingManager.takeCompletedActiveTask()
         if (completedTask != null) {
             showTaskCompletedDialog(completedTask)
@@ -361,6 +476,11 @@ class StreamActivity : CoreActivity() {
             showCaptureTaskGuide()
             showTagTaskGuide()
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        focusModeHandler.removeCallbacks(focusModeRunnable)
     }
 
     // Back from the place the active task was done - next task or just close
@@ -485,7 +605,10 @@ class StreamActivity : CoreActivity() {
     // No thoughts at all = invite to capture the first one; thoughts hidden by the criteria = say so
     private fun bindEmptyState(isListEmpty: Boolean) {
         tvStreamEmpty.isVisible = isListEmpty
-        if (!isListEmpty) return
+        if (!isListEmpty) {
+            scheduleFocusMode()
+            return
+        }
 
         // No page to swipe back to - the header has to be visible
         lastPagePosition = 0
@@ -571,5 +694,7 @@ class StreamActivity : CoreActivity() {
 
         private const val FADING_EDGE_DP = 16
         private const val HEADER_ANIMATION_MS = 200L
+        private const val FOCUS_ANIMATION_MS = 250L
+        private const val FOCUS_IDLE_MS = 5_000L
     }
 }
