@@ -99,6 +99,9 @@ class StreamActivity : CoreActivity() {
     private val focusModeHandler = Handler(Looper.getMainLooper())
     private val focusModeRunnable = Runnable { enterFocusMode() }
 
+    // Thought details are opened from the card in focus, so that one trip leaves the lights as they were
+    private var isReturningFromDetails = false
+
     // Capture returns RESULT_OK only after a thought was saved - leaving it without saving shows nothing
     private val captureLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) showShortToast(R.string.stream_toast_thought_created)
@@ -284,7 +287,7 @@ class StreamActivity : CoreActivity() {
         setNavigationBarShown(!isShown)
         focusAnimator?.cancel()
         focusAnimator = ValueAnimator.ofFloat(focusFraction, if (isShown) 1f else 0f).apply {
-            duration = FOCUS_ANIMATION_MS
+            duration = if (isShown) FOCUS_FADE_OUT_MS else FOCUS_FADE_IN_MS
             addUpdateListener { applyFocusFraction(it.animatedValue as Float) }
             start()
         }
@@ -322,6 +325,7 @@ class StreamActivity : CoreActivity() {
     }
 
     private fun openThoughtDetails(thought: ThoughtDTO) {
+        isReturningFromDetails = true
         val intent = Intent(this, DetailsActivity::class.java)
         intent.putExtra(DetailsActivity.P_SELECTED_THOUGHT_ID, thought.id ?: -1)
         startActivity(intent)
@@ -461,12 +465,21 @@ class StreamActivity : CoreActivity() {
         }
     }
 
+    // Arriving from another screen is a fresh entry - the trip to the details is over wherever it ended
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        isReturningFromDetails = false
+    }
+
     override fun onResume() {
         super.onResume()
 
-        // Back on the screen with the light on, and the countdown from the start
-        exitFocusMode()
-        scheduleFocusMode()
+        // Back on the screen with the light on, and the countdown from the start - except back from the details
+        if (!isReturningFromDetails) exitFocusMode()
+        isReturningFromDetails = false
+
+        // With the lights out the countdown is off - the card works as always
+        if (!isFocusMode) scheduleFocusMode()
 
         val completedTask = onboardingManager.takeCompletedActiveTask()
         if (completedTask != null) {
@@ -694,7 +707,9 @@ class StreamActivity : CoreActivity() {
 
         private const val FADING_EDGE_DP = 16
         private const val HEADER_ANIMATION_MS = 200L
-        private const val FOCUS_ANIMATION_MS = 250L
-        private const val FOCUS_IDLE_MS = 5_000L
+        // Lights go out slowly, come back at a tap speed
+        private const val FOCUS_FADE_OUT_MS = 350L
+        private const val FOCUS_FADE_IN_MS = 250L
+        private const val FOCUS_IDLE_MS = 3_500L
     }
 }
